@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>GST / VAT Calculator - Free Online Tools</title>
+
+  <meta
+    name="description"
+    content="Calculate GST or VAT, tax amount, and total price with this free online calculator."
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      color: #222;
+    }
+
+    nav {
+      background: #222;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      color: white;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 13px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .calculate-button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #222;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .calculate-button:hover {
+      opacity: 0.85;
+    }
+
+    .results {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .result-box {
+      background: #f4f7fb;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .result-box strong {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .result-box span {
+      color: #666;
+    }
+
+    .info {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f4f7fb;
+      border-radius: 10px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #777;
+    }
+
+    @media (max-width: 600px) {
+
+      nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links a {
+        margin: 0 8px;
+      }
+
+      .container {
+        margin: 20px 10px;
+        padding: 20px;
+      }
+
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+
+    <a href="index.html" class="logo">
+      Free Online Tools
+    </a>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#tools">All Tools</a>
+    </div>
+
+  </nav>
+
+
+  <main class="container">
+
+    <h1>GST / VAT Calculator</h1>
+
+    <p class="subtitle">
+      Calculate GST or VAT and find the total price instantly.
+    </p>
+
+
+    <!-- Calculation Type -->
+
+    <div class="form-group">
+
+      <label for="calculationType">
+        Calculation Type
+      </label>
+
+      <select id="calculationType">
+
+        <option value="add">
+          Add GST/VAT to Price
+        </option>
+
+        <option value="remove">
+          Remove GST/VAT from Price
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- Amount -->
+
+    <div class="form-group">
+
+      <label for="amount">
+        Amount
+      </label>
+
+      <input
+        type="number"
+        id="amount"
+        placeholder="Enter amount"
+        min="0"
+        step="0.01"
+      >
+
+    </div>
+
+
+    <!-- GST / VAT Rate -->
+
+    <div class="form-group">
+
+      <label for="taxRate">
+        GST / VAT Rate (%)
+      </label>
+
+      <input
+        type="number"
+        id="taxRate"
+        placeholder="Example: 18"
+        min="0"
+        step="0.01"
+      >
+
+    </div>
+
+
+    <!-- Calculate -->
+
+    <button
+      class="calculate-button"
+      onclick="calculateTax()"
+    >
+      Calculate
+    </button>
+
+
+    <!-- Results -->
+
+    <div
+      class="results"
+      id="results"
+    >
+
+      <div class="results-grid">
+
+        <div class="result-box">
+
+          <strong id="baseAmount">
+            0
+          </strong>
+
+          <span>
+            Price Before Tax
+          </span>
+
+        </div>
+
+
+        <div class="result-box">
+
+          <strong id="taxAmount">
+            0
+          </strong>
+
+          <span>
+            GST / VAT Amount
+          </span>
+
+        </div>
+
+
+        <div class="result-box">
+
+          <strong id="totalAmount">
+            0
+          </strong>
+
+          <span>
+            Total Price
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Information -->
+
+    <div class="info">
+
+      <strong>How it works:</strong>
+
+      <p>
+        Choose whether you want to add GST/VAT to a price
+        or remove GST/VAT from a total price. Enter the amount
+        and tax rate, then click Calculate.
+      </p>
+
+      <p>
+        This calculator provides a general mathematical estimate.
+        Tax rules, exemptions, and rates can vary by country,
+        product, and situation.
+      </p>
+
+    </div>
+
+  </main>
+
+
+  <footer>
+    © 2026 Free Online Tools
+  </footer>
+
+
+  <script>
+
+    function calculateTax() {
+
+      const amount =
+        parseFloat(
+          document.getElementById(
+            "amount"
+          ).value
+        );
+
+      const taxRate =
+        parseFloat(
+          document.getElementById(
+            "taxRate"
+          ).value
+        );
+
+      const calculationType =
+        document.getElementById(
+          "calculationType"
+        ).value;
+
+
+      /* Validation */
+
+      if (
+        isNaN(amount) ||
+        amount < 0 ||
+        isNaN(taxRate) ||
+        taxRate < 0
+      ) {
+
+        alert(
+          "Please enter valid values."
+        );
+
+        return;
+
+      }
+
+
+      let baseAmount;
+      let taxAmount;
+      let totalAmount;
+
+
+      /* Add GST / VAT */
+
+      if (calculationType === "add") {
+
+        baseAmount =
+          amount;
+
+        taxAmount =
+          amount *
+          (taxRate / 100);
+
+        totalAmount =
+          amount +
+          taxAmount;
+
+      }
+
+
+      /* Remove GST / VAT */
+
+      else {
+
+        totalAmount =
+          amount;
+
+        baseAmount =
+          amount /
+          (1 + taxRate / 100);
+
+        taxAmount =
+          totalAmount -
+          baseAmount;
+
+      }
+
+
+      /* Display Results */
+
+      document.getElementById(
+        "baseAmount"
+      ).textContent =
+        baseAmount.toFixed(2);
+
+
+      document.getElementById(
+        "taxAmount"
+      ).textContent =
+        taxAmount.toFixed(2);
+
+
+      document.getElementById(
+        "totalAmount"
+      ).textContent =
+        totalAmount.toFixed(2);
+
+
+      document.getElementById(
+        "results"
+      ).style.display =
+        "block";
+
+    }
+
+  </script>
+
+</body>
+</html>
