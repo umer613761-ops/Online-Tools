@@ -4,8 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Free Online Tools</title>
-  <meta name="description" content="Free online tools including Word Counter and Percentage Calculator.">
+  <title>Free Online Tools | Simple & Useful Tools</title>
+
+  <meta
+    name="description"
+    content="Free online tools including a Word Counter, Percentage Calculator, Case Converter and Password Generator."
+  >
 
   <style>
     * {
@@ -19,37 +23,74 @@
       color: #222;
     }
 
-    header {
+    /* Navigation */
+    nav {
       background: #222;
       color: white;
-      padding: 50px 20px;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 18px;
+    }
+
+    /* Hero */
+    .hero {
       text-align: center;
+      padding: 70px 20px;
+      background: white;
     }
 
-    header h1 {
-      margin: 0 0 10px;
-      font-size: 36px;
+    .hero h1 {
+      font-size: 40px;
+      margin: 0 0 15px;
     }
 
-    header p {
-      margin: 0;
-      color: #ddd;
-    }
-
-    main {
-      max-width: 900px;
+    .hero p {
+      max-width: 600px;
       margin: auto;
-      padding: 40px 20px;
+      color: #666;
+      font-size: 18px;
+      line-height: 1.6;
     }
 
-    h2 {
+    .hero a {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 14px 24px;
+      background: #222;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+
+    /* Main Content */
+    main {
+      max-width: 1000px;
+      margin: auto;
+      padding: 50px 20px;
+    }
+
+    .section-title {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 35px;
+      font-size: 28px;
     }
 
+    /* Tool Cards */
     .tools {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
     }
 
@@ -58,10 +99,16 @@
       padding: 25px;
       border-radius: 12px;
       box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+      transition: transform 0.2s;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-5px);
     }
 
     .tool-card h3 {
       margin-top: 0;
+      font-size: 20px;
     }
 
     .tool-card p {
@@ -72,76 +119,204 @@
     .tool-card a {
       display: inline-block;
       margin-top: 10px;
-      padding: 10px 18px;
+      padding: 10px 16px;
       background: #222;
       color: white;
       text-decoration: none;
-      border-radius: 8px;
+      border-radius: 7px;
     }
 
+    /* How It Works */
+    .how-it-works {
+      margin-top: 70px;
+      text-align: center;
+    }
+
+    .steps {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .step {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      width: 250px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+    .step-number {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    /* Footer */
     footer {
+      background: #222;
+      color: #aaa;
       text-align: center;
       padding: 30px 20px;
-      color: #777;
+      margin-top: 50px;
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links a {
+        margin: 0 8px;
+      }
+
+      .hero h1 {
+        font-size: 32px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <header>
+  <!-- Navigation -->
+
+  <nav>
+    <div class="logo">Free Online Tools</div>
+
+    <div class="nav-links">
+      <a href="#tools">Tools</a>
+      <a href="#how-it-works">How It Works</a>
+    </div>
+  </nav>
+
+
+  <!-- Hero -->
+
+  <section class="hero">
+
     <h1>Free Online Tools</h1>
-    <p>Simple, free and useful online tools.</p>
-  </header>
+
+    <p>
+      Simple, fast and useful online tools for everyday tasks.
+    </p>
+
+    <a href="#tools">
+      Explore Tools
+    </a>
+
+  </section>
+
+
+  <!-- Tools -->
 
   <main>
 
-    <h2>Our Tools</h2>
+    <section id="tools">
 
-    <div class="tools">
+      <h2 class="section-title">Our Free Tools</h2>
 
-      <div class="tool-card">
-        <h3>Word Counter</h3>
-        <p>Count words, characters and characters without spaces instantly.</p>
+      <div class="tools">
 
-        <a href="word-counter.html">
-          Use Word Counter
-        </a>
+        <div class="tool-card">
+          <h3>Word Counter</h3>
+          <p>
+            Count words, characters and characters without spaces instantly.
+          </p>
+
+          <a href="word-counter.html">
+            Use Tool
+          </a>
+        </div>
+
+
+        <div class="tool-card">
+          <h3>Percentage Calculator</h3>
+          <p>
+            Quickly calculate the percentage of any number.
+          </p>
+
+          <a href="percentage-calculator.html">
+            Use Tool
+          </a>
+        </div>
+
+
+        <div class="tool-card">
+          <h3>Case Converter</h3>
+          <p>
+            Convert text to uppercase, lowercase, title case and sentence case.
+          </p>
+
+          <a href="case-converter.html">
+            Use Tool
+          </a>
+        </div>
+
+
+        <div class="tool-card">
+          <h3>Password Generator</h3>
+          <p>
+            Create a random password using letters, numbers and symbols.
+          </p>
+
+          <a href="password-generator.html">
+            Use Tool
+          </a>
+        </div>
+
       </div>
 
-      <div class="tool-card">
-        <h3>Percentage Calculator</h3>
-        <p>Quickly calculate the percentage of any number.</p>
+    </section>
 
-        <a href="percentage-calculator.html">
-          Use Calculator
-        </a>
+
+    <!-- How It Works -->
+
+    <section
+      class="how-it-works"
+      id="how-it-works"
+    >
+
+      <h2 class="section-title">
+        How It Works
+      </h2>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Choose a Tool</h3>
+          <p>Select the tool you need.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Enter Your Information</h3>
+          <p>Type or paste the required information.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Get Results</h3>
+          <p>Get your results instantly.</p>
+        </div>
+
       </div>
 
-      <div class="tool-card">
-  <h3>Case Converter</h3>
-  <p>Convert text to uppercase, lowercase, title case and sentence case.</p>
-
-  <a href="case-converter.html">
-    Use Case Converter
-  </a>
-</div>
-
-      <div class="tool-card">
-  <h3>Password Generator</h3>
-  <p>Create a random password with letters, numbers and optional symbols.</p>
-
-  <a href="password-generator.html">
-    Generate Password
-  </a>
-</div>
-
-    </div>
+    </section>
 
   </main>
 
+
+  <!-- Footer -->
+
   <footer>
-    © 2026 Free Online Tools
+    <p>© 2026 Free Online Tools</p>
+    <p>Simple tools for everyday tasks.</p>
   </footer>
 
 </body>
