@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Loan EMI Calculator - Free Online Tools</title>
+
+  <meta
+    name="description"
+    content="Calculate your monthly loan EMI, total interest, and total payment with this free online EMI calculator."
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      color: #222;
+    }
+
+    /* Navigation */
+
+    nav {
+      background: #222;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      color: white;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    /* Main Container */
+
+    .container {
+      max-width: 850px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      margin-bottom: 30px;
+    }
+
+    /* Input Fields */
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 13px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    /* Button */
+
+    .calculate-button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #222;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    .calculate-button:hover {
+      opacity: 0.85;
+    }
+
+    /* Results */
+
+    .results {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .result-box {
+      background: #f4f7fb;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .result-box strong {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .result-box span {
+      color: #666;
+    }
+
+    /* Info */
+
+    .info {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f4f7fb;
+      border-radius: 10px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #777;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 600px) {
+
+      nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links a {
+        margin: 0 8px;
+      }
+
+      .container {
+        margin: 20px 10px;
+        padding: 20px;
+      }
+
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+
+  <nav>
+
+    <a href="index.html" class="logo">
+      Free Online Tools
+    </a>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#tools">All Tools</a>
+    </div>
+
+  </nav>
+
+
+  <!-- Main -->
+
+  <main class="container">
+
+    <h1>Loan EMI Calculator</h1>
+
+    <p class="subtitle">
+      Calculate your monthly loan payment, total interest, and total payment.
+    </p>
+
+
+    <!-- Loan Amount -->
+
+    <div class="form-group">
+
+      <label for="loanAmount">
+        Loan Amount
+      </label>
+
+      <input
+        type="number"
+        id="loanAmount"
+        placeholder="Enter loan amount"
+        min="1"
+      >
+
+    </div>
+
+
+    <!-- Interest Rate -->
+
+    <div class="form-group">
+
+      <label for="interestRate">
+        Annual Interest Rate (%)
+      </label>
+
+      <input
+        type="number"
+        id="interestRate"
+        placeholder="Example: 12"
+        min="0"
+        step="0.01"
+      >
+
+    </div>
+
+
+    <!-- Loan Term -->
+
+    <div class="form-group">
+
+      <label for="loanTerm">
+        Loan Term
+      </label>
+
+      <input
+        type="number"
+        id="loanTerm"
+        placeholder="Enter loan term"
+        min="1"
+      >
+
+    </div>
+
+
+    <!-- Term Type -->
+
+    <div class="form-group">
+
+      <label for="termType">
+        Loan Term Type
+      </label>
+
+      <select id="termType">
+        <option value="years">
+          Years
+        </option>
+
+        <option value="months">
+          Months
+        </option>
+      </select>
+
+    </div>
+
+
+    <!-- Calculate -->
+
+    <button
+      class="calculate-button"
+      onclick="calculateEMI()"
+    >
+      Calculate EMI
+    </button>
+
+
+    <!-- Results -->
+
+    <div
+      class="results"
+      id="results"
+    >
+
+      <div class="results-grid">
+
+        <div class="result-box">
+
+          <strong id="monthlyEMI">
+            0
+          </strong>
+
+          <span>
+            Monthly EMI
+          </span>
+
+        </div>
+
+
+        <div class="result-box">
+
+          <strong id="totalInterest">
+            0
+          </strong>
+
+          <span>
+            Total Interest
+          </span>
+
+        </div>
+
+
+        <div class="result-box">
+
+          <strong id="totalPayment">
+            0
+          </strong>
+
+          <span>
+            Total Payment
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Information -->
+
+    <div class="info">
+
+      <strong>How it works:</strong>
+
+      <p>
+        Enter your loan amount, annual interest rate, and loan term.
+        The calculator will estimate your monthly EMI, total interest,
+        and total amount paid over the loan period.
+      </p>
+
+    </div>
+
+  </main>
+
+
+  <!-- Footer -->
+
+  <footer>
+    © 2026 Free Online Tools
+  </footer>
+
+
+  <script>
+
+    function calculateEMI() {
+
+      const loanAmount =
+        parseFloat(
+          document.getElementById(
+            "loanAmount"
+          ).value
+        );
+
+      const annualInterestRate =
+        parseFloat(
+          document.getElementById(
+            "interestRate"
+          ).value
+        );
+
+      const loanTerm =
+        parseFloat(
+          document.getElementById(
+            "loanTerm"
+          ).value
+        );
+
+      const termType =
+        document.getElementById(
+          "termType"
+        ).value;
+
+
+      /* Validation */
+
+      if (
+        !loanAmount ||
+        loanAmount <= 0 ||
+        loanTerm <= 0 ||
+        annualInterestRate < 0
+      ) {
+
+        alert(
+          "Please enter valid loan details."
+        );
+
+        return;
+
+      }
+
+
+      /* Convert term to months */
+
+      let numberOfMonths;
+
+      if (termType === "years") {
+
+        numberOfMonths =
+          loanTerm * 12;
+
+      } else {
+
+        numberOfMonths =
+          loanTerm;
+
+      }
+
+
+      /* Monthly interest rate */
+
+      const monthlyInterestRate =
+        annualInterestRate /
+        12 /
+        100;
+
+
+      let emi;
+
+
+      /* EMI calculation */
+
+      if (monthlyInterestRate === 0) {
+
+        emi =
+          loanAmount /
+          numberOfMonths;
+
+      } else {
+
+        emi =
+          loanAmount *
+          monthlyInterestRate *
+          Math.pow(
+            1 + monthlyInterestRate,
+            numberOfMonths
+          ) /
+          (
+            Math.pow(
+              1 + monthlyInterestRate,
+              numberOfMonths
+            ) - 1
+          );
+
+      }
+
+
+      const totalPayment =
+        emi *
+        numberOfMonths;
+
+
+      const totalInterest =
+        totalPayment -
+        loanAmount;
+
+
+      /* Display results */
+
+      document.getElementById(
+        "monthlyEMI"
+      ).textContent =
+        emi.toFixed(2);
+
+
+      document.getElementById(
+        "totalInterest"
+      ).textContent =
+        totalInterest.toFixed(2);
+
+
+      document.getElementById(
+        "totalPayment"
+      ).textContent =
+        totalPayment.toFixed(2);
+
+
+      document.getElementById(
+        "results"
+      ).style.display =
+        "block";
+
+    }
+
+  </script>
+
+</body>
+</html>
