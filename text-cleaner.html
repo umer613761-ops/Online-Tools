@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Text Cleaner - Free Online Text Cleaning Tool</title>
+
+  <meta
+    name="description"
+    content="Clean your text online by removing extra spaces, empty lines, tabs, duplicate lines and more."
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      color: #222;
+    }
+
+    /* Navigation */
+
+    nav {
+      background: #ffffff;
+      border-bottom: 1px solid #e5e5e5;
+      padding: 18px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      text-decoration: none;
+      color: #222;
+    }
+
+    .logo span {
+      color: #555;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #555;
+      margin-left: 20px;
+      font-size: 15px;
+    }
+
+    /* Main */
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    /* Editors */
+
+    .editor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .editor-box label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 300px;
+      padding: 15px;
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: vertical;
+    }
+
+    /* Options */
+
+    .options {
+      margin-top: 25px;
+      padding: 20px;
+      background: #f4f7fb;
+      border-radius: 10px;
+    }
+
+    .options h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .option input {
+      width: auto;
+    }
+
+    /* Buttons */
+
+    .main-button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #222;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    .action-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .action-buttons button {
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      background: #222;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    /* Info */
+
+    .info {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f4f7fb;
+      border-radius: 10px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #777;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 700px) {
+
+      nav {
+        padding: 15px 20px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .container {
+        margin: 20px 10px;
+        padding: 20px;
+      }
+
+      .editor-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .action-buttons {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+
+  <nav>
+
+    <a href="index.html" class="logo">
+      Text <span>Tools</span>
+    </a>
+
+    <div class="nav-links">
+      <a href="index.html#tools">All Tools</a>
+    </div>
+
+  </nav>
+
+
+  <!-- Main -->
+
+  <main class="container">
+
+    <h1>Text Cleaner</h1>
+
+    <p class="subtitle">
+      Clean and organize your text by removing unnecessary spaces,
+      empty lines, tabs and duplicate lines.
+    </p>
+
+
+    <!-- Text Editors -->
+
+    <div class="editor-grid">
+
+      <div class="editor-box">
+
+        <label for="textInput">
+          Your Text
+        </label>
+
+        <textarea
+          id="textInput"
+          placeholder="Paste your text here..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="editor-box">
+
+        <label for="textOutput">
+          Cleaned Text
+        </label>
+
+        <textarea
+          id="textOutput"
+          placeholder="Your cleaned text will appear here..."
+          readonly
+        ></textarea>
+
+      </div>
+
+    </div>
+
+
+    <!-- Cleaning Options -->
+
+    <div class="options">
+
+      <h2>Cleaning Options</h2>
+
+      <div class="options-grid">
+
+        <label class="option">
+
+          <input
+            type="checkbox"
+            id="extraSpaces"
+            checked
+          >
+
+          Remove extra spaces
+
+        </label>
+
+
+        <label class="option">
+
+          <input
+            type="checkbox"
+            id="emptyLines"
+            checked
+          >
+
+          Remove empty lines
+
+        </label>
+
+
+        <label class="option">
+
+          <input
+            type="checkbox"
+            id="trimLines"
+            checked
+          >
+
+          Trim spaces from each line
+
+        </label>
+
+
+        <label class="option">
+
+          <input
+            type="checkbox"
+            id="tabs"
+            checked
+          >
+
+          Remove tabs
+
+        </label>
+
+
+        <label class="option">
+
+          <input
+            type="checkbox"
+            id="duplicates"
+          >
+
+          Remove duplicate lines
+
+        </label>
+
+
+        <label class="option">
+
+          <input
+            type="checkbox"
+            id="normalizeBreaks"
+            checked
+          >
+
+          Normalize line breaks
+
+        </label>
+
+      </div>
+
+    </div>
+
+
+    <!-- Clean Button -->
+
+    <button
+      class="main-button"
+      onclick="cleanText()"
+    >
+      Clean Text
+    </button>
+
+
+    <!-- Action Buttons -->
+
+    <div class="action-buttons">
+
+      <button onclick="copyText()">
+        Copy Result
+      </button>
+
+      <button onclick="clearText()">
+        Clear
+      </button>
+
+    </div>
+
+
+    <!-- Information -->
+
+    <div class="info">
+
+      <strong>How to use Text Cleaner:</strong>
+
+      <p>
+        Paste your text into the input box, choose the cleaning
+        options you want, and click <strong>Clean Text</strong>.
+        Your cleaned text will appear in the result box.
+      </p>
+
+    </div>
+
+  </main>
+
+
+  <!-- Footer -->
+
+  <footer>
+
+    © 2026 Text Tools · Simple, Fast & Free
+
+  </footer>
+
+
+  <script>
+
+    function cleanText() {
+
+      let text =
+        document.getElementById(
+          "textInput"
+        ).value;
+
+
+      if (text.trim() === "") {
+
+        alert(
+          "Please enter some text first."
+        );
+
+        return;
+
+      }
+
+
+      /* Normalize line breaks */
+
+      if (
+        document.getElementById(
+          "normalizeBreaks"
+        ).checked
+      ) {
+
+        text =
+          text.replace(
+            /\r\n/g,
+            "\n"
+          );
+
+        text =
+          text.replace(
+            /\r/g,
+            "\n"
+          );
+
+      }
+
+
+      /* Remove tabs */
+
+      if (
+        document.getElementById(
+          "tabs"
+        ).checked
+      ) {
+
+        text =
+          text.replace(
+            /\t/g,
+            ""
+          );
+
+      }
+
+
+      /* Trim each line */
+
+      if (
+        document.getElementById(
+          "trimLines"
+        ).checked
+      ) {
+
+        text =
+          text
+            .split("\n")
+            .map(function(line) {
+
+              return line.trim();
+
+            })
+            .join("\n");
+
+      }
+
+
+      /* Remove extra spaces */
+
+      if (
+        document.getElementById(
+          "extraSpaces"
+        ).checked
+      ) {
+
+        text =
+          text.replace(
+            / {2,}/g,
+            " "
+          );
+
+      }
+
+
+      /* Remove empty lines */
+
+      if (
+        document.getElementById(
+          "emptyLines"
+        ).checked
+      ) {
+
+        text =
+          text
+            .split("\n")
+            .filter(function(line) {
+
+              return line.trim() !== "";
+
+            })
+            .join("\n");
+
+      }
+
+
+      /* Remove duplicate lines */
+
+      if (
+        document.getElementById(
+          "duplicates"
+        ).checked
+      ) {
+
+        const lines =
+          text.split("\n");
+
+
+        const uniqueLines =
+          [...new Set(lines)];
+
+
+        text =
+          uniqueLines.join("\n");
+
+      }
+
+
+      /* Display result */
+
+      document.getElementById(
+        "textOutput"
+      ).value =
+        text;
+
+    }
+
+
+    function copyText() {
+
+      const output =
+        document.getElementById(
+          "textOutput"
+        ).value;
+
+
+      if (output === "") {
+
+        alert(
+          "There is no cleaned text to copy."
+        );
+
+        return;
+
+      }
+
+
+      navigator.clipboard
+        .writeText(output)
+        .then(function() {
+
+          alert(
+            "Cleaned text copied!"
+          );
+
+        });
+
+    }
+
+
+    function clearText() {
+
+      document.getElementById(
+        "textInput"
+      ).value =
+        "";
+
+
+      document.getElementById(
+        "textOutput"
+      ).value =
+        "";
+
+    }
+
+  </script>
+
+</body>
+</html>
