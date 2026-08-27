@@ -4,184 +4,198 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Free Online Tools | Simple & Useful Tools</title>
+  <title>Text Tools - Free Online Text Tools</title>
 
   <meta
     name="description"
-    content="Free online tools including a Word Counter, Percentage Calculator, Case Converter and Password Generator."
+    content="Free online text tools including word counter, case converter, text sorter, duplicate line remover, and more."
   >
 
   <style>
+
     * {
       box-sizing: border-box;
     }
 
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      background: #f4f7fb;
+      font-family: Arial, sans-serif;
+      background: #f6f7fb;
       color: #222;
     }
 
     /* Navigation */
+
     nav {
-      background: #222;
-      color: white;
-      padding: 15px 20px;
+      background: #ffffff;
+      border-bottom: 1px solid #e5e5e5;
+      padding: 18px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .logo {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: bold;
+      text-decoration: none;
+      color: #222;
+    }
+
+    .logo span {
+      color: #555;
     }
 
     .nav-links a {
-      color: white;
       text-decoration: none;
-      margin-left: 18px;
+      color: #555;
+      margin-left: 20px;
+      font-size: 15px;
+    }
+
+    .nav-links a:hover {
+      color: #000;
     }
 
     /* Hero */
+
     .hero {
       text-align: center;
-      padding: 70px 20px;
-      background: white;
+      padding: 80px 20px 60px;
     }
 
     .hero h1 {
-      font-size: 40px;
+      font-size: 42px;
       margin: 0 0 15px;
     }
 
     .hero p {
-      max-width: 600px;
+      max-width: 650px;
       margin: auto;
       color: #666;
       font-size: 18px;
       line-height: 1.6;
     }
 
-    .hero a {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 14px 24px;
-      background: #222;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-    }
+    /* Tools Section */
 
-    /* Main Content */
-    main {
-      max-width: 1000px;
+    .tools-section {
+      max-width: 1100px;
       margin: auto;
-      padding: 50px 20px;
+      padding: 20px 20px 70px;
     }
 
     .section-title {
       text-align: center;
       margin-bottom: 35px;
-      font-size: 28px;
     }
 
-    /* Tool Cards */
-    .tools {
+    .section-title h2 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .section-title p {
+      color: #777;
+      margin: 0;
+    }
+
+    /* Tool Grid */
+
+    .tools-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 20px;
     }
 
     .tool-card {
       display: block;
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-      background: white;
+      background: #ffffff;
       padding: 25px;
       border-radius: 12px;
-      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-      transition: transform 0.2s;
+      text-decoration: none;
+      color: #222;
+      border: 1px solid #e8e8e8;
+      transition: 0.2s;
     }
 
     .tool-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .tool-icon {
+      font-size: 30px;
+      margin-bottom: 15px;
     }
 
     .tool-card h3 {
-      margin-top: 0;
-      font-size: 20px;
+      margin: 0 0 10px;
+      font-size: 18px;
     }
 
     .tool-card p {
-      color: #666;
+      margin: 0;
+      color: #777;
       line-height: 1.5;
-    }
-
-    .tool-card a {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 16px;
-      background: #222;
-      color: white;
-      text-decoration: none;
-      border-radius: 7px;
-    }
-
-    /* How It Works */
-    .how-it-works {
-      margin-top: 70px;
-      text-align: center;
-    }
-
-    .steps {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 30px;
-    }
-
-    .step {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      width: 250px;
-      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-    }
-
-    .step-number {
-      font-size: 28px;
-      font-weight: bold;
-      margin-bottom: 10px;
+      font-size: 14px;
     }
 
     /* Footer */
+
     footer {
-      background: #222;
-      color: #aaa;
       text-align: center;
       padding: 30px 20px;
-      margin-top: 50px;
+      border-top: 1px solid #e5e5e5;
+      background: #ffffff;
+      color: #777;
+      font-size: 14px;
+    }
+
+    /* Tablet */
+
+    @media (max-width: 850px) {
+
+      .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
     }
 
     /* Mobile */
+
     @media (max-width: 600px) {
+
       nav {
-        flex-direction: column;
-        gap: 10px;
+        padding: 15px 20px;
       }
 
-      .nav-links a {
-        margin: 0 8px;
+      .logo {
+        font-size: 20px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 60px 20px 40px;
       }
 
       .hero h1 {
         font-size: 32px;
       }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+
     }
+
   </style>
 </head>
 
@@ -190,12 +204,15 @@
   <!-- Navigation -->
 
   <nav>
-    <div class="logo">Free Online Tools</div>
+
+    <a href="index.html" class="logo">
+      Text <span>Tools</span>
+    </a>
 
     <div class="nav-links">
-      <a href="#tools">Tools</a>
-      <a href="#how-it-works">How It Works</a>
+      <a href="#tools">All Tools</a>
     </div>
+
   </nav>
 
 
@@ -203,141 +220,179 @@
 
   <section class="hero">
 
-    <h1>Free Online Tools</h1>
+    <h1>Simple, Fast & Free Text Tools</h1>
 
     <p>
-      Simple, fast and useful online tools for everyday tasks.
+      Free online tools to help you count, format, clean,
+      sort and transform text quickly and easily.
     </p>
-
-    <a href="#tools">
-      Explore Tools
-    </a>
 
   </section>
 
 
   <!-- Tools -->
 
-  <main>
+  <section
+    class="tools-section"
+    id="tools"
+  >
 
-    <section id="tools">
+    <div class="section-title">
 
-      <h2 class="section-title">Our Free Tools</h2>
+      <h2>Popular Text Tools</h2>
 
-      <div class="tools">
+      <p>
+        Choose a tool to get started.
+      </p>
 
-        <a href="word-counter.html" class="tool-card">
-  <h3>Word Counter</h3>
-  <p>Count words, characters, sentences and paragraphs.</p>
-</a>
-
-        <a href="percentage-calculator.html" class="tool-card">
-  <h3>Percentage Calculator</h3>
-  <p>Calculate percentages, increases and decreases easily.</p>
-</a>
-
-        <a href="case-converter.html" class="tool-card">
-  <h3>Case Converter</h3>
-  <p>Convert text to uppercase, lowercase, title case and more.</p>
-</a>
+    </div>
 
 
-        <a href="password-generator.html" class="tool-card">
-  <h3>Password Generator</h3>
-  <p>Generate strong and secure random passwords.</p>
-</a>
+    <div class="tools-grid">
 
-        <a href="remove-extra-spaces.html" class="tool-card">
-  <h3>Remove Extra Spaces</h3>
-  <p>Clean your text by removing unnecessary spaces.</p>
-</a>
+      <!-- Word Counter -->
 
-      <a href="text-sorter.html" class="tool-card">
-  <h3>Text Sorter</h3>
-  <p>Sort text lines alphabetically or numerically.</p>
-</a>
+      <a
+        href="word-counter.html"
+        class="tool-card"
+      >
 
-        <a href="remove-duplicate-lines.html" class="tool-card">
-  <h3>Remove Duplicate Lines</h3>
-  <p>Remove repeated lines from your text quickly and easily.</p>
-</a>
-
-      <a href="username-generator.html" class="tool-card">
-  <h3>Username Generator</h3>
-  <p>Generate random and unique username ideas instantly.</p>
-</a>
-
-      <a href="loan-emi-calculator.html" class="tool-card">
-  <h3>Loan EMI Calculator</h3>
-  <p>Calculate your monthly loan payment, total interest, and total payment.</p>
-</a>
-
-       <a href="bmi-calculator.html" class="tool-card">
-  <h3>BMI Calculator</h3>
-  <p>Calculate your Body Mass Index using your height and weight.</p>
-</a>
-
-        <a href="gst-vat-calculator.html" class="tool-card">
-  <h3>GST/VAT Calculator</h3>
-  <p>Calculate GST or VAT, tax amount, and total price instantly.</p>
-</a>
-
-        <a href="discount-calculator.html" class="tool-card">
-  <h3>Discount Calculator</h3>
-  <p>Calculate discounts, savings, and final sale prices instantly.</p>
-</a>
-
-        <a href="profit-margin-calculator.html" class="tool-card">
-  <h3>Profit Margin Calculator</h3>
-  <p>Calculate profit, loss, profit margin, and markup instantly.</p>
-</a>
-        
-    </section>
-
-
-    <!-- How It Works -->
-
-    <section
-      class="how-it-works"
-      id="how-it-works"
-    >
-
-      <h2 class="section-title">
-        How It Works
-      </h2>
-
-      <div class="steps">
-
-        <div class="step">
-          <div class="step-number">1</div>
-          <h3>Choose a Tool</h3>
-          <p>Select the tool you need.</p>
+        <div class="tool-icon">
+          📝
         </div>
 
-        <div class="step">
-          <div class="step-number">2</div>
-          <h3>Enter Your Information</h3>
-          <p>Type or paste the required information.</p>
+        <h3>
+          Word Counter
+        </h3>
+
+        <p>
+          Count words, characters, sentences and paragraphs.
+        </p>
+
+      </a>
+
+
+      <!-- Case Converter -->
+
+      <a
+        href="case-converter.html"
+        class="tool-card"
+      >
+
+        <div class="tool-icon">
+          🔤
         </div>
 
-        <div class="step">
-          <div class="step-number">3</div>
-          <h3>Get Results</h3>
-          <p>Get your results instantly.</p>
+        <h3>
+          Case Converter
+        </h3>
+
+        <p>
+          Convert text to uppercase, lowercase,
+          title case and more.
+        </p>
+
+      </a>
+
+
+      <!-- Remove Extra Spaces -->
+
+      <a
+        href="remove-extra-spaces.html"
+        class="tool-card"
+      >
+
+        <div class="tool-icon">
+          🧹
         </div>
 
-      </div>
+        <h3>
+          Remove Extra Spaces
+        </h3>
 
-    </section>
+        <p>
+          Remove unnecessary spaces from your text.
+        </p>
 
-  </main>
+      </a>
+
+
+      <!-- Text Sorter -->
+
+      <a
+        href="text-sorter.html"
+        class="tool-card"
+      >
+
+        <div class="tool-icon">
+          🔡
+        </div>
+
+        <h3>
+          Text Sorter
+        </h3>
+
+        <p>
+          Sort lines of text alphabetically.
+        </p>
+
+      </a>
+
+
+      <!-- Remove Duplicate Lines -->
+
+      <a
+        href="remove-duplicate-lines.html"
+        class="tool-card"
+      >
+
+        <div class="tool-icon">
+          🗑️
+        </div>
+
+        <h3>
+          Remove Duplicate Lines
+        </h3>
+
+        <p>
+          Remove duplicate lines from your text instantly.
+        </p>
+
+      </a>
+
+
+      <!-- Future Tool -->
+
+      <a
+        href="#"
+        class="tool-card"
+      >
+
+        <div class="tool-icon">
+          🔄
+        </div>
+
+        <h3>
+          Text Reverser
+        </h3>
+
+        <p>
+          Reverse text quickly and easily.
+        </p>
+
+      </a>
+
+    </div>
+
+  </section>
 
 
   <!-- Footer -->
 
   <footer>
-    <p>© 2026 Free Online Tools</p>
-    <p>Simple tools for everyday tasks.</p>
+
+    © 2026 Text Tools · Simple, Fast & Free
+
   </footer>
 
 </body>
