@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Username Generator - Free Online Tools</title>
+
+  <meta
+    name="description"
+    content="Generate random and unique username ideas instantly with this free online username generator."
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      color: #222;
+    }
+
+    nav {
+      background: #222;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      color: white;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      margin-bottom: 25px;
+    }
+
+    .result-box {
+      background: #f4f7fb;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 25px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #username {
+      font-size: 28px;
+      font-weight: bold;
+      word-break: break-word;
+    }
+
+    .options {
+      background: #f4f7fb;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .option {
+      margin: 12px 0;
+    }
+
+    .option label {
+      margin-left: 8px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      flex: 1;
+      min-width: 150px;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #222;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    .info {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f4f7fb;
+      border-radius: 10px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #777;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links a {
+        margin: 0 8px;
+      }
+
+      .container {
+        margin: 20px 10px;
+        padding: 20px;
+      }
+
+      .buttons {
+        flex-direction: column;
+      }
+
+      #username {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">
+      Free Online Tools
+    </a>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#tools">All Tools</a>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <h1>Username Generator</h1>
+
+    <p class="subtitle">
+      Generate random username ideas instantly.
+    </p>
+
+    <div class="result-box">
+      <div id="username">
+        Click Generate Username
+      </div>
+    </div>
+
+    <div class="options">
+
+      <div class="option">
+        <input type="checkbox" id="includeNumbers" checked>
+        <label for="includeNumbers">
+          Include numbers
+        </label>
+      </div>
+
+      <div class="option">
+        <input type="checkbox" id="includeUnderscore">
+        <label for="includeUnderscore">
+          Include underscore
+        </label>
+      </div>
+
+    </div>
+
+    <div class="buttons">
+      <button onclick="generateUsername()">
+        Generate Username
+      </button>
+
+      <button onclick="copyUsername()">
+        Copy Username
+      </button>
+    </div>
+
+    <div class="info">
+      <strong>How it works:</strong>
+      <p>
+        Choose your options and click Generate Username.
+        The tool combines random words and optional numbers
+        to create username ideas.
+      </p>
+    </div>
+
+  </main>
+
+  <footer>
+    © 2026 Free Online Tools
+  </footer>
+
+  <script>
+
+    const adjectives = [
+      "Cool",
+      "Happy",
+      "Swift",
+      "Bright",
+      "Smart",
+      "Lucky",
+      "Epic",
+      "Wild",
+      "Super",
+      "Fast",
+      "Silent",
+      "Bold",
+      "Clever",
+      "Magic",
+      "Cyber",
+      "Pixel"
+    ];
+
+    const nouns = [
+      "Tiger",
+      "Falcon",
+      "Wolf",
+      "Lion",
+      "Panda",
+      "Eagle",
+      "Coder",
+      "Gamer",
+      "Ninja",
+      "Dragon",
+      "Fox",
+      "Shark",
+      "Wizard",
+      "Knight",
+      "Rocket",
+      "Storm"
+    ];
+
+    function generateUsername() {
+
+      const adjective =
+        adjectives[
+          Math.floor(
+            Math.random() * adjectives.length
+          )
+        ];
+
+      const noun =
+        nouns[
+          Math.floor(
+            Math.random() * nouns.length
+          )
+        ];
+
+      const includeNumbers =
+        document.getElementById(
+          "includeNumbers"
+        ).checked;
+
+      const includeUnderscore =
+        document.getElementById(
+          "includeUnderscore"
+        ).checked;
+
+      let username =
+        adjective;
+
+      if (includeUnderscore) {
+        username += "_";
+      }
+
+      username += noun;
+
+      if (includeNumbers) {
+        username +=
+          Math.floor(
+            Math.random() * 1000
+          );
+      }
+
+      document.getElementById(
+        "username"
+      ).textContent =
+        username;
+
+    }
+
+    function copyUsername() {
+
+      const username =
+        document.getElementById(
+          "username"
+        ).textContent;
+
+      if (
+        username ===
+        "Click Generate Username"
+      ) {
+        alert(
+          "Generate a username first."
+        );
+
+        return;
+      }
+
+      navigator.clipboard
+        .writeText(username)
+        .then(function() {
+
+          alert(
+            "Username copied!"
+          );
+
+        });
+
+    }
+
+  </script>
+
+</body>
+</html>
