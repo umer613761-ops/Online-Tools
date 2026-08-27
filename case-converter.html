@@ -5,7 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Case Converter - Free Online Tools</title>
-  <meta name="description" content="Convert text to uppercase, lowercase, title case and sentence case for free.">
+
+  <meta
+    name="description"
+    content="Convert text to uppercase, lowercase, title case and sentence case for free."
+  >
 
   <style>
     * {
@@ -16,22 +20,47 @@
       font-family: Arial, sans-serif;
       background: #f4f7fb;
       margin: 0;
-      padding: 30px 15px;
       color: #222;
     }
 
+    /* Navigation */
+
+    nav {
+      background: #222;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      color: white;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    /* Main */
+
     .container {
-      max-width: 750px;
-      margin: auto;
-      background: white;
+      max-width: 850px;
+      margin: 40px auto;
       padding: 30px;
+      background: white;
       border-radius: 16px;
       box-shadow: 0 5px 25px rgba(0,0,0,0.08);
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
     }
 
     .subtitle {
@@ -50,16 +79,16 @@
       resize: vertical;
     }
 
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
+    /* Conversion Buttons */
+
+    .convert-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
-      margin-top: 20px;
+      margin-top: 15px;
     }
 
     button {
-      flex: 1;
-      min-width: 120px;
       padding: 12px;
       border: none;
       border-radius: 8px;
@@ -73,19 +102,100 @@
       opacity: 0.85;
     }
 
-    .back {
-      display: block;
-      text-align: center;
+    /* Statistics */
+
+    .statistics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
       margin-top: 25px;
-      color: #555;
-      text-decoration: none;
     }
+
+    .stat {
+      background: #f4f7fb;
+      padding: 18px;
+      text-align: center;
+      border-radius: 10px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+
+    .stat span {
+      color: #666;
+    }
+
+    /* Action Buttons */
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .action-buttons button {
+      flex: 1;
+    }
+
+    /* Footer */
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #777;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 600px) {
+
+      nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links a {
+        margin: 0 8px;
+      }
+
+      .container {
+        margin: 20px 10px;
+        padding: 20px;
+      }
+
+      .convert-buttons {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    }
+
   </style>
 </head>
 
 <body>
 
-  <div class="container">
+  <!-- Navigation -->
+
+  <nav>
+
+    <a href="index.html" class="logo">
+      Free Online Tools
+    </a>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#tools">All Tools</a>
+    </div>
+
+  </nav>
+
+
+  <!-- Main -->
+
+  <main class="container">
 
     <h1>Case Converter</h1>
 
@@ -93,12 +203,16 @@
       Convert your text into different letter cases instantly.
     </p>
 
+
     <textarea
       id="text"
       placeholder="Type or paste your text here..."
     ></textarea>
 
-    <div class="buttons">
+
+    <!-- Convert Buttons -->
+
+    <div class="convert-buttons">
 
       <button onclick="toUpperCase()">
         UPPERCASE
@@ -116,49 +230,175 @@
         Sentence case
       </button>
 
+    </div>
+
+
+    <!-- Statistics -->
+
+    <div class="statistics">
+
+      <div class="stat">
+        <strong id="wordCount">0</strong>
+        <span>Words</span>
+      </div>
+
+      <div class="stat">
+        <strong id="characterCount">0</strong>
+        <span>Characters</span>
+      </div>
+
+    </div>
+
+
+    <!-- Action Buttons -->
+
+    <div class="action-buttons">
+
+      <button onclick="copyText()">
+        Copy Text
+      </button>
+
       <button onclick="clearText()">
-        Clear
+        Clear Text
       </button>
 
     </div>
 
-    <a class="back" href="index.html">
-      ← Back to Homepage
-    </a>
+  </main>
 
-  </div>
+
+  <!-- Footer -->
+
+  <footer>
+    © 2026 Free Online Tools
+  </footer>
+
 
   <script>
 
-    const text = document.getElementById("text");
+    const text =
+      document.getElementById("text");
+
+
+    /* Update Statistics */
+
+    text.addEventListener(
+      "input",
+      updateStatistics
+    );
+
+
+    function updateStatistics() {
+
+      const value =
+        text.value;
+
+      const words =
+        value.trim() === ""
+          ? 0
+          : value.trim()
+              .split(/\s+/)
+              .length;
+
+      document.getElementById(
+        "wordCount"
+      ).textContent = words;
+
+
+      document.getElementById(
+        "characterCount"
+      ).textContent =
+        value.length;
+
+    }
+
+
+    /* Uppercase */
 
     function toUpperCase() {
-      text.value = text.value.toUpperCase();
-    }
-
-    function toLowerCase() {
-      text.value = text.value.toLowerCase();
-    }
-
-    function toTitleCase() {
-      text.value = text.value
-        .toLowerCase()
-        .split(" ")
-        .map(function(word) {
-          return word.charAt(0).toUpperCase() + word.slice(1);
-        })
-        .join(" ");
-    }
-
-    function toSentenceCase() {
-      const value = text.value.toLowerCase();
 
       text.value =
-        value.charAt(0).toUpperCase() + value.slice(1);
+        text.value.toUpperCase();
+
+      updateStatistics();
+
     }
 
+
+    /* Lowercase */
+
+    function toLowerCase() {
+
+      text.value =
+        text.value.toLowerCase();
+
+      updateStatistics();
+
+    }
+
+
+    /* Title Case */
+
+    function toTitleCase() {
+
+      text.value =
+        text.value
+          .toLowerCase()
+          .split(/\s+/)
+          .map(function(word) {
+
+            return word.charAt(0)
+              .toUpperCase()
+              + word.slice(1);
+
+          })
+          .join(" ");
+
+      updateStatistics();
+
+    }
+
+
+    /* Sentence Case */
+
+    function toSentenceCase() {
+
+      const value =
+        text.value.toLowerCase();
+
+      text.value =
+        value.charAt(0)
+          .toUpperCase()
+          + value.slice(1);
+
+      updateStatistics();
+
+    }
+
+
+    /* Copy Text */
+
+    function copyText() {
+
+      navigator.clipboard
+        .writeText(text.value)
+        .then(function() {
+
+          alert("Text copied!");
+
+        });
+
+    }
+
+
+    /* Clear Text */
+
     function clearText() {
+
       text.value = "";
+
+      updateStatistics();
+
     }
 
   </script>
