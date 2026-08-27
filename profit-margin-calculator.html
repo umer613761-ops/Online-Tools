@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Profit Margin Calculator - Free Online Tools</title>
+
+  <meta
+    name="description"
+    content="Calculate profit, loss, profit margin, and markup with this free online calculator."
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      color: #222;
+    }
+
+    /* Navigation */
+
+    nav {
+      background: #222;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      color: white;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    /* Main */
+
+    .container {
+      max-width: 850px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      margin-bottom: 30px;
+    }
+
+    /* Form */
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    /* Button */
+
+    .calculate-button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #222;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .calculate-button:hover {
+      opacity: 0.85;
+    }
+
+    /* Results */
+
+    .results {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .result-box {
+      background: #f4f7fb;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .result-box strong {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+
+    .result-box span {
+      color: #666;
+    }
+
+    /* Info */
+
+    .info {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f4f7fb;
+      border-radius: 10px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #777;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 750px) {
+      .results-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+
+      nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links a {
+        margin: 0 8px;
+      }
+
+      .container {
+        margin: 20px 10px;
+        padding: 20px;
+      }
+
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+
+  <nav>
+
+    <a href="index.html" class="logo">
+      Free Online Tools
+    </a>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#tools">All Tools</a>
+    </div>
+
+  </nav>
+
+
+  <!-- Main -->
+
+  <main class="container">
+
+    <h1>Profit Margin Calculator</h1>
+
+    <p class="subtitle">
+      Calculate profit, loss, profit margin, and markup instantly.
+    </p>
+
+
+    <!-- Cost Price -->
+
+    <div class="form-group">
+
+      <label for="costPrice">
+        Cost Price
+      </label>
+
+      <input
+        type="number"
+        id="costPrice"
+        placeholder="Enter cost price"
+        min="0"
+        step="0.01"
+      >
+
+    </div>
+
+
+    <!-- Selling Price -->
+
+    <div class="form-group">
+
+      <label for="sellingPrice">
+        Selling Price
+      </label>
+
+      <input
+        type="number"
+        id="sellingPrice"
+        placeholder="Enter selling price"
+        min="0"
+        step="0.01"
+      >
+
+    </div>
+
+
+    <!-- Calculate -->
+
+    <button
+      class="calculate-button"
+      onclick="calculateProfit()"
+    >
+      Calculate
+    </button>
+
+
+    <!-- Results -->
+
+    <div
+      class="results"
+      id="results"
+    >
+
+      <div class="results-grid">
+
+        <div class="result-box">
+
+          <strong id="profitResult">
+            0
+          </strong>
+
+          <span id="profitLabel">
+            Profit
+          </span>
+
+        </div>
+
+
+        <div class="result-box">
+
+          <strong id="marginResult">
+            0%
+          </strong>
+
+          <span>
+            Profit Margin
+          </span>
+
+        </div>
+
+
+        <div class="result-box">
+
+          <strong id="markupResult">
+            0%
+          </strong>
+
+          <span>
+            Markup
+          </span>
+
+        </div>
+
+
+        <div class="result-box">
+
+          <strong id="roiResult">
+            0%
+          </strong>
+
+          <span>
+            Return on Cost
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Information -->
+
+    <div class="info">
+
+      <strong>How it works:</strong>
+
+      <p>
+        Enter the cost price and selling price. The calculator
+        compares them to show your profit or loss.
+      </p>
+
+      <p>
+        <strong>Profit:</strong> Selling Price − Cost Price
+      </p>
+
+      <p>
+        <strong>Profit Margin:</strong>
+        Profit ÷ Selling Price × 100
+      </p>
+
+      <p>
+        <strong>Markup:</strong>
+        Profit ÷ Cost Price × 100
+      </p>
+
+    </div>
+
+  </main>
+
+
+  <!-- Footer -->
+
+  <footer>
+    © 2026 Free Online Tools
+  </footer>
+
+
+  <script>
+
+    function calculateProfit() {
+
+      const costPrice =
+        parseFloat(
+          document.getElementById(
+            "costPrice"
+          ).value
+        );
+
+      const sellingPrice =
+        parseFloat(
+          document.getElementById(
+            "sellingPrice"
+          ).value
+        );
+
+
+      /* Validation */
+
+      if (
+        isNaN(costPrice) ||
+        costPrice < 0 ||
+        isNaN(sellingPrice) ||
+        sellingPrice < 0
+      ) {
+
+        alert(
+          "Please enter valid prices."
+        );
+
+        return;
+
+      }
+
+
+      /* Calculate */
+
+      const profit =
+        sellingPrice -
+        costPrice;
+
+
+      let profitMargin =
+        sellingPrice === 0
+          ? 0
+          : (
+              profit /
+              sellingPrice
+            ) * 100;
+
+
+      let markup =
+        costPrice === 0
+          ? 0
+          : (
+              profit /
+              costPrice
+            ) * 100;
+
+
+      let returnOnCost =
+        costPrice === 0
+          ? 0
+          : (
+              profit /
+              costPrice
+            ) * 100;
+
+
+      /* Profit or Loss */
+
+      if (profit >= 0) {
+
+        document.getElementById(
+          "profitLabel"
+        ).textContent =
+          "Profit";
+
+      } else {
+
+        document.getElementById(
+          "profitLabel"
+        ).textContent =
+          "Loss";
+
+      }
+
+
+      /* Display Results */
+
+      document.getElementById(
+        "profitResult"
+      ).textContent =
+        Math.abs(profit).toFixed(2);
+
+
+      document.getElementById(
+        "marginResult"
+      ).textContent =
+        profitMargin.toFixed(2) +
+        "%";
+
+
+      document.getElementById(
+        "markupResult"
+      ).textContent =
+        markup.toFixed(2) +
+        "%";
+
+
+      document.getElementById(
+        "roiResult"
+      ).textContent =
+        returnOnCost.toFixed(2) +
+        "%";
+
+
+      document.getElementById(
+        "results"
+      ).style.display =
+        "block";
+
+    }
+
+  </script>
+
+</body>
+</html>
