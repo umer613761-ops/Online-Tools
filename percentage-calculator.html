@@ -4,7 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Percentage Calculator</title>
+  <title>Percentage Calculator - Free Online Tools</title>
+
+  <meta
+    name="description"
+    content="Free online percentage calculator. Calculate percentages, percentage differences, increases and decreases instantly."
+  >
 
   <style>
     * {
@@ -15,39 +20,82 @@
       font-family: Arial, sans-serif;
       background: #f4f7fb;
       margin: 0;
-      padding: 30px 15px;
       color: #222;
     }
 
+    /* Navigation */
+
+    nav {
+      background: #222;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      color: white;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    /* Main */
+
     .container {
-      max-width: 600px;
-      margin: auto;
-      background: white;
+      max-width: 850px;
+      margin: 40px auto;
       padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.08);
     }
 
     h1 {
       text-align: center;
+      margin-bottom: 8px;
     }
 
     .subtitle {
       text-align: center;
       color: #777;
-      margin-bottom: 25px;
+      margin-bottom: 30px;
+    }
+
+    /* Calculator Cards */
+
+    .calculators {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .calculator {
+      background: white;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .calculator h2 {
+      font-size: 20px;
+      margin-top: 0;
     }
 
     label {
       display: block;
       margin-top: 15px;
+      margin-bottom: 6px;
       font-weight: bold;
     }
 
     input {
       width: 100%;
-      padding: 14px;
-      margin-top: 7px;
+      padding: 12px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 8px;
@@ -55,97 +103,411 @@
 
     button {
       width: 100%;
-      margin-top: 20px;
-      padding: 14px;
-      font-size: 16px;
+      margin-top: 18px;
+      padding: 12px;
       border: none;
       border-radius: 8px;
       background: #222;
       color: white;
+      font-size: 16px;
       cursor: pointer;
     }
 
-    #result {
-      display: none;
-      margin-top: 25px;
-      padding: 20px;
-      text-align: center;
-      background: #f4f4f4;
-      border-radius: 10px;
+    button:hover {
+      opacity: 0.85;
     }
 
-    #answer {
-      display: block;
-      font-size: 32px;
-      margin-top: 8px;
+    .result {
+      margin-top: 18px;
+      padding: 15px;
+      background: #f4f7fb;
+      border-radius: 8px;
+      text-align: center;
+      min-height: 50px;
     }
 
-    a {
+    .clear-button {
+      max-width: 300px;
       display: block;
+      margin: 30px auto 0;
+    }
+
+    /* Footer */
+
+    footer {
       text-align: center;
-      margin-top: 25px;
-      color: #555;
+      padding: 25px;
+      color: #777;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links a {
+        margin: 0 8px;
+      }
+
+      .container {
+        margin: 20px auto;
+        padding: 20px 15px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="container">
+  <!-- Navigation -->
+
+  <nav>
+
+    <a href="index.html" class="logo">
+      Free Online Tools
+    </a>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#tools">All Tools</a>
+    </div>
+
+  </nav>
+
+
+  <!-- Main -->
+
+  <main class="container">
 
     <h1>Percentage Calculator</h1>
 
     <p class="subtitle">
-      Calculate a percentage of any number instantly.
+      Calculate percentages quickly and easily.
     </p>
 
-    <label>Percentage</label>
-    <input
-      type="number"
-      id="percentage"
-      placeholder="Example: 20"
-    >
 
-    <label>Number</label>
-    <input
-      type="number"
-      id="number"
-      placeholder="Example: 500"
-    >
+    <div class="calculators">
 
-    <button onclick="calculate()">
-      Calculate
-    </button>
 
-    <div id="result">
-      Result
-      <strong id="answer">0</strong>
+      <!-- Calculator 1 -->
+
+      <div class="calculator">
+
+        <h2>What is X% of Y?</h2>
+
+        <label>Percentage (X)</label>
+
+        <input
+          type="number"
+          id="percent1"
+          placeholder="Example: 20"
+        >
+
+        <label>Number (Y)</label>
+
+        <input
+          type="number"
+          id="number1"
+          placeholder="Example: 500"
+        >
+
+        <button onclick="calculatePercentOf()">
+          Calculate
+        </button>
+
+        <div class="result" id="result1">
+          Your answer will appear here
+        </div>
+
+      </div>
+
+
+      <!-- Calculator 2 -->
+
+      <div class="calculator">
+
+        <h2>X is what percentage of Y?</h2>
+
+        <label>Number (X)</label>
+
+        <input
+          type="number"
+          id="number2a"
+          placeholder="Example: 50"
+        >
+
+        <label>Total (Y)</label>
+
+        <input
+          type="number"
+          id="number2b"
+          placeholder="Example: 200"
+        >
+
+        <button onclick="calculateWhatPercent()">
+          Calculate
+        </button>
+
+        <div class="result" id="result2">
+          Your answer will appear here
+        </div>
+
+      </div>
+
+
+      <!-- Calculator 3 -->
+
+      <div class="calculator">
+
+        <h2>Increase a Number by X%</h2>
+
+        <label>Number</label>
+
+        <input
+          type="number"
+          id="number3"
+          placeholder="Example: 500"
+        >
+
+        <label>Percentage</label>
+
+        <input
+          type="number"
+          id="percent3"
+          placeholder="Example: 20"
+        >
+
+        <button onclick="calculateIncrease()">
+          Calculate
+        </button>
+
+        <div class="result" id="result3">
+          Your answer will appear here
+        </div>
+
+      </div>
+
+
+      <!-- Calculator 4 -->
+
+      <div class="calculator">
+
+        <h2>Decrease a Number by X%</h2>
+
+        <label>Number</label>
+
+        <input
+          type="number"
+          id="number4"
+          placeholder="Example: 500"
+        >
+
+        <label>Percentage</label>
+
+        <input
+          type="number"
+          id="percent4"
+          placeholder="Example: 20"
+        >
+
+        <button onclick="calculateDecrease()">
+          Calculate
+        </button>
+
+        <div class="result" id="result4">
+          Your answer will appear here
+        </div>
+
+      </div>
+
+
     </div>
 
-    <a href="index.html">
-      ← Back to Word Counter
-    </a>
 
-  </div>
+    <button
+      class="clear-button"
+      onclick="clearAll()"
+    >
+      Clear All
+    </button>
+
+  </main>
+
+
+  <!-- Footer -->
+
+  <footer>
+    © 2026 Free Online Tools
+  </footer>
+
 
   <script>
 
-    function calculate() {
+    function getNumber(id) {
+      return parseFloat(
+        document.getElementById(id).value
+      );
+    }
 
-      const percentage =
-        document.getElementById("percentage").value;
+
+    function calculatePercentOf() {
+
+      const percent =
+        getNumber("percent1");
 
       const number =
-        document.getElementById("number").value;
+        getNumber("number1");
 
-      const result =
-        (percentage / 100) * number;
+      if (
+        isNaN(percent) ||
+        isNaN(number)
+      ) {
+        document.getElementById(
+          "result1"
+        ).textContent =
+          "Please enter valid numbers.";
+        return;
+      }
 
-      document.getElementById("answer").textContent =
-        result;
+      const answer =
+        (percent / 100) * number;
 
-      document.getElementById("result").style.display =
-        "block";
+      document.getElementById(
+        "result1"
+      ).textContent =
+        percent + "% of " + number +
+        " = " + answer;
+
+    }
+
+
+    function calculateWhatPercent() {
+
+      const number =
+        getNumber("number2a");
+
+      const total =
+        getNumber("number2b");
+
+      if (
+        isNaN(number) ||
+        isNaN(total) ||
+        total === 0
+      ) {
+        document.getElementById(
+          "result2"
+        ).textContent =
+          "Please enter valid numbers. Total cannot be 0.";
+        return;
+      }
+
+      const answer =
+        (number / total) * 100;
+
+      document.getElementById(
+        "result2"
+      ).textContent =
+        number + " is " +
+        answer.toFixed(2) +
+        "% of " + total;
+
+    }
+
+
+    function calculateIncrease() {
+
+      const number =
+        getNumber("number3");
+
+      const percent =
+        getNumber("percent3");
+
+      if (
+        isNaN(number) ||
+        isNaN(percent)
+      ) {
+        document.getElementById(
+          "result3"
+        ).textContent =
+          "Please enter valid numbers.";
+        return;
+      }
+
+      const answer =
+        number * (1 + percent / 100);
+
+      document.getElementById(
+        "result3"
+      ).textContent =
+        number + " increased by " +
+        percent + "% = " + answer;
+
+    }
+
+
+    function calculateDecrease() {
+
+      const number =
+        getNumber("number4");
+
+      const percent =
+        getNumber("percent4");
+
+      if (
+        isNaN(number) ||
+        isNaN(percent)
+      ) {
+        document.getElementById(
+          "result4"
+        ).textContent =
+          "Please enter valid numbers.";
+        return;
+      }
+
+      const answer =
+        number * (1 - percent / 100);
+
+      document.getElementById(
+        "result4"
+      ).textContent =
+        number + " decreased by " +
+        percent + "% = " + answer;
+
+    }
+
+
+    function clearAll() {
+
+      const inputs =
+        document.querySelectorAll("input");
+
+      inputs.forEach(function(input) {
+        input.value = "";
+      });
+
+
+      document.getElementById(
+        "result1"
+      ).textContent =
+        "Your answer will appear here";
+
+      document.getElementById(
+        "result2"
+      ).textContent =
+        "Your answer will appear here";
+
+      document.getElementById(
+        "result3"
+      ).textContent =
+        "Your answer will appear here";
+
+      document.getElementById(
+        "result4"
+      ).textContent =
+        "Your answer will appear here";
 
     }
 
