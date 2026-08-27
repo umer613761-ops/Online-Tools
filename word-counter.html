@@ -1,1 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Free Word Counter</title>
+  <meta name="description" content="Free online word counter. Count words, characters and characters without spaces instantly.">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 30px 15px;
+      color: #222;
+    }
+
+    .container {
+      max-width: 750px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      margin-bottom: 25px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 250px;
+      padding: 15px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      resize: vertical;
+    }
+
+    .buttons {
+      margin-top: 15px;
+      text-align: right;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #222;
+      color: white;
+      cursor: pointer;
+    }
+
+    .results {
+      display: flex;
+      gap: 15px;
+      margin-top: 25px;
+      flex-wrap: wrap;
+    }
+
+    .results div {
+      flex: 1;
+      min-width: 150px;
+      background: #f4f4f4;
+      padding: 18px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .results strong {
+      display: block;
+      font-size: 28px;
+    }
+
+    .results span {
+      color: #777;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 25px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>Word Counter</h1>
+
+    <p class="subtitle">
+      Count words and characters instantly.
+    </p>
+
+    <textarea id="text" placeholder="Type or paste your text here..."></textarea>
+
+    <div class="buttons">
+      <button id="clear">Clear</button>
+    </div>
+
+    <div class="results">
+
+      <div>
+        <strong id="words">0</strong>
+        <span>Words</span>
+      </div>
+
+      <div>
+        <strong id="characters">0</strong>
+        <span>Characters</span>
+      </div>
+
+      <div>
+        <strong id="noSpaces">0</strong>
+        <span>Without spaces</span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer>
+    Free Online Tools
+  </footer>
+
+  <script>
+
+    const text = document.getElementById("text");
+    const words = document.getElementById("words");
+    const characters = document.getElementById("characters");
+    const noSpaces = document.getElementById("noSpaces");
+    const clear = document.getElementById("clear");
+
+    text.addEventListener("input", function () {
+
+      const value = text.value;
+
+      characters.textContent = value.length;
+
+      noSpaces.textContent =
+        value.replace(/\s/g, "").length;
+
+      const wordList =
+        value.trim().split(/\s+/);
+
+      words.textContent =
+        value.trim() === "" ? 0 : wordList.length;
+
+    });
+
+    clear.addEventListener("click", function () {
+
+      text.value = "";
+
+      words.textContent = "0";
+      characters.textContent = "0";
+      noSpaces.textContent = "0";
+
+    });
+
+  </script>
 
