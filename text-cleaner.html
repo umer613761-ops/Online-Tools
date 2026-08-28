@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Text Cleaner - Free Online Text Cleaning Tool</title><meta
+name="description"
+content="Clean and format text online. Remove extra spaces, empty lines, tabs, invisible characters, duplicate lines and more."
 
-  <title>Text Cleaner - Free Online Text Cleaning Tool</title>
-
-  <meta
-    name="description"
-    content="Clean your text online by removing extra spaces, empty lines, tabs, duplicate lines and more."
-  >
+«»
 
   <style>
 
@@ -51,6 +47,10 @@
       color: #555;
       margin-left: 20px;
       font-size: 15px;
+    }
+
+    .nav-links a:hover {
+      color: #000;
     }
 
     /* Main */
@@ -167,7 +167,33 @@
       cursor: pointer;
     }
 
-    /* Info */
+    /* Statistics */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .stat {
+      background: #f4f7fb;
+      padding: 18px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+
+    .stat span {
+      color: #666;
+    }
+
+    /* Information */
 
     .info {
       margin-top: 30px;
@@ -213,216 +239,226 @@
         grid-template-columns: 1fr;
       }
 
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
     }
 
-  </style>
-</head>
+  </style></head><body>  <!-- Navigation -->  <nav><a href="index.html" class="logo">
+  Text <span>Tools</span>
+</a>
 
-<body>
+<div class="nav-links">
+  <a href="index.html#tools">All Tools</a>
+</div>
 
-  <!-- Navigation -->
+  </nav>  <!-- Main -->  <main class="container"><h1>Text Cleaner</h1>
 
-  <nav>
+<p class="subtitle">
+  Clean messy text by removing unwanted spaces, empty lines,
+  invisible characters and other unnecessary formatting.
+</p>
 
-    <a href="index.html" class="logo">
-      Text <span>Tools</span>
-    </a>
 
-    <div class="nav-links">
-      <a href="index.html#tools">All Tools</a>
-    </div>
+<!-- Text Editors -->
 
-  </nav>
+<div class="editor-grid">
 
+  <div class="editor-box">
 
-  <!-- Main -->
+    <label for="textInput">
+      Your Text
+    </label>
 
-  <main class="container">
+    <textarea
+      id="textInput"
+      placeholder="Paste your text here..."
+    ></textarea>
 
-    <h1>Text Cleaner</h1>
+  </div>
 
-    <p class="subtitle">
-      Clean and organize your text by removing unnecessary spaces,
-      empty lines, tabs and duplicate lines.
-    </p>
 
+  <div class="editor-box">
 
-    <!-- Text Editors -->
+    <label for="textOutput">
+      Cleaned Text
+    </label>
 
-    <div class="editor-grid">
+    <textarea
+      id="textOutput"
+      placeholder="Your cleaned text will appear here..."
+      readonly
+    ></textarea>
 
-      <div class="editor-box">
+  </div>
 
-        <label for="textInput">
-          Your Text
-        </label>
+</div>
 
-        <textarea
-          id="textInput"
-          placeholder="Paste your text here..."
-        ></textarea>
 
-      </div>
+<!-- Cleaning Options -->
 
+<div class="options">
 
-      <div class="editor-box">
+  <h2>Cleaning Options</h2>
 
-        <label for="textOutput">
-          Cleaned Text
-        </label>
+  <div class="options-grid">
 
-        <textarea
-          id="textOutput"
-          placeholder="Your cleaned text will appear here..."
-          readonly
-        ></textarea>
+    <label class="option">
+      <input
+        type="checkbox"
+        id="extraSpaces"
+        checked
+      >
+      Remove extra spaces
+    </label>
 
-      </div>
 
-    </div>
+    <label class="option">
+      <input
+        type="checkbox"
+        id="emptyLines"
+        checked
+      >
+      Remove empty lines
+    </label>
 
 
-    <!-- Cleaning Options -->
+    <label class="option">
+      <input
+        type="checkbox"
+        id="trimLines"
+        checked
+      >
+      Trim spaces from each line
+    </label>
 
-    <div class="options">
 
-      <h2>Cleaning Options</h2>
+    <label class="option">
+      <input
+        type="checkbox"
+        id="tabs"
+        checked
+      >
+      Remove tabs
+    </label>
 
-      <div class="options-grid">
 
-        <label class="option">
+    <label class="option">
+      <input
+        type="checkbox"
+        id="normalizeBreaks"
+        checked
+      >
+      Normalize line breaks
+    </label>
 
-          <input
-            type="checkbox"
-            id="extraSpaces"
-            checked
-          >
 
-          Remove extra spaces
+    <label class="option">
+      <input
+        type="checkbox"
+        id="invisibleCharacters"
+        checked
+      >
+      Remove invisible characters
+    </label>
 
-        </label>
 
+    <label class="option">
+      <input
+        type="checkbox"
+        id="smartQuotes"
+      >
+      Convert smart quotes
+    </label>
 
-        <label class="option">
 
-          <input
-            type="checkbox"
-            id="emptyLines"
-            checked
-          >
+    <label class="option">
+      <input
+        type="checkbox"
+        id="repeatedPunctuation"
+      >
+      Reduce repeated punctuation
+    </label>
 
-          Remove empty lines
 
-        </label>
+    <label class="option">
+      <input
+        type="checkbox"
+        id="duplicates"
+      >
+      Remove duplicate lines
+    </label>
 
+  </div>
 
-        <label class="option">
+</div>
 
-          <input
-            type="checkbox"
-            id="trimLines"
-            checked
-          >
 
-          Trim spaces from each line
+<!-- Clean Button -->
 
-        </label>
+<button
+  class="main-button"
+  onclick="cleanText()"
+>
+  Clean Text
+</button>
 
 
-        <label class="option">
+<!-- Statistics -->
 
-          <input
-            type="checkbox"
-            id="tabs"
-            checked
-          >
+<div class="stats">
 
-          Remove tabs
+  <div class="stat">
+    <strong id="lineCount">0</strong>
+    <span>Lines</span>
+  </div>
 
-        </label>
+  <div class="stat">
+    <strong id="wordCount">0</strong>
+    <span>Words</span>
+  </div>
 
+  <div class="stat">
+    <strong id="characterCount">0</strong>
+    <span>Characters</span>
+  </div>
 
-        <label class="option">
+</div>
 
-          <input
-            type="checkbox"
-            id="duplicates"
-          >
 
-          Remove duplicate lines
+<!-- Action Buttons -->
 
-        </label>
+<div class="action-buttons">
 
+  <button onclick="copyText()">
+    Copy Result
+  </button>
 
-        <label class="option">
+  <button onclick="clearText()">
+    Clear
+  </button>
 
-          <input
-            type="checkbox"
-            id="normalizeBreaks"
-            checked
-          >
+</div>
 
-          Normalize line breaks
 
-        </label>
+<!-- Information -->
 
-      </div>
+<div class="info">
 
-    </div>
+  <strong>How to use Text Cleaner:</strong>
 
+  <p>
+    Paste your text into the input box, select the cleaning
+    options you need, and click <strong>Clean Text</strong>.
+    Your cleaned and formatted text will appear in the result box.
+  </p>
 
-    <!-- Clean Button -->
+</div>
 
-    <button
-      class="main-button"
-      onclick="cleanText()"
-    >
-      Clean Text
-    </button>
+  </main>  <!-- Footer -->  <footer>© 2026 Text Tools · Simple, Fast & Free
 
-
-    <!-- Action Buttons -->
-
-    <div class="action-buttons">
-
-      <button onclick="copyText()">
-        Copy Result
-      </button>
-
-      <button onclick="clearText()">
-        Clear
-      </button>
-
-    </div>
-
-
-    <!-- Information -->
-
-    <div class="info">
-
-      <strong>How to use Text Cleaner:</strong>
-
-      <p>
-        Paste your text into the input box, choose the cleaning
-        options you want, and click <strong>Clean Text</strong>.
-        Your cleaned text will appear in the result box.
-      </p>
-
-    </div>
-
-  </main>
-
-
-  <!-- Footer -->
-
-  <footer>
-
-    © 2026 Text Tools · Simple, Fast & Free
-
-  </footer>
-
-
-  <script>
+  </footer>  <script>
 
     function cleanText() {
 
@@ -443,7 +479,7 @@
       }
 
 
-      /* Normalize line breaks */
+      /* Normalize Line Breaks */
 
       if (
         document.getElementById(
@@ -452,21 +488,31 @@
       ) {
 
         text =
-          text.replace(
-            /\r\n/g,
-            "\n"
-          );
+          text
+            .replace(/\r\n/g, "\n")
+            .replace(/\r/g, "\n");
+
+      }
+
+
+      /* Remove Invisible Characters */
+
+      if (
+        document.getElementById(
+          "invisibleCharacters"
+        ).checked
+      ) {
 
         text =
           text.replace(
-            /\r/g,
-            "\n"
+            /[\u200B-\u200D\uFEFF]/g,
+            ""
           );
 
       }
 
 
-      /* Remove tabs */
+      /* Remove Tabs */
 
       if (
         document.getElementById(
@@ -476,14 +522,30 @@
 
         text =
           text.replace(
-            /\t/g,
-            ""
+            /\t+/g,
+            " "
           );
 
       }
 
 
-      /* Trim each line */
+      /* Convert Smart Quotes */
+
+      if (
+        document.getElementById(
+          "smartQuotes"
+        ).checked
+      ) {
+
+        text =
+          text
+            .replace(/[“”]/g, '"')
+            .replace(/[‘’]/g, "'");
+
+      }
+
+
+      /* Trim Each Line */
 
       if (
         document.getElementById(
@@ -504,7 +566,7 @@
       }
 
 
-      /* Remove extra spaces */
+      /* Remove Extra Spaces */
 
       if (
         document.getElementById(
@@ -521,7 +583,24 @@
       }
 
 
-      /* Remove empty lines */
+      /* Reduce Repeated Punctuation */
+
+      if (
+        document.getElementById(
+          "repeatedPunctuation"
+        ).checked
+      ) {
+
+        text =
+          text
+            .replace(/!{2,}/g, "!")
+            .replace(/\?{2,}/g, "?")
+            .replace(/\.{4,}/g, "...");
+
+      }
+
+
+      /* Remove Empty Lines */
 
       if (
         document.getElementById(
@@ -542,7 +621,7 @@
       }
 
 
-      /* Remove duplicate lines */
+      /* Remove Duplicate Lines */
 
       if (
         document.getElementById(
@@ -553,9 +632,33 @@
         const lines =
           text.split("\n");
 
-
         const uniqueLines =
-          [...new Set(lines)];
+          [];
+
+        const seen =
+          new Set();
+
+
+        lines.forEach(
+          function(line) {
+
+            const key =
+              line
+                .trim()
+                .toLowerCase();
+
+            if (
+              !seen.has(key)
+            ) {
+
+              seen.add(key);
+
+              uniqueLines.push(line);
+
+            }
+
+          }
+        );
 
 
         text =
@@ -564,15 +667,70 @@
       }
 
 
-      /* Display result */
+      /* Display Result */
 
       document.getElementById(
         "textOutput"
       ).value =
         text;
 
+
+      updateStatistics();
+
     }
 
+
+    /* Statistics */
+
+    function updateStatistics() {
+
+      const output =
+        document.getElementById(
+          "textOutput"
+        ).value;
+
+
+      const lines =
+        output.trim() === ""
+          ? 0
+          : output
+              .split("\n")
+              .filter(
+                line =>
+                  line.trim() !== ""
+              ).length;
+
+
+      const words =
+        output.trim() === ""
+          ? 0
+          : output
+              .trim()
+              .split(/\s+/)
+              .length;
+
+
+      document.getElementById(
+        "lineCount"
+      ).textContent =
+        lines;
+
+
+      document.getElementById(
+        "wordCount"
+      ).textContent =
+        words;
+
+
+      document.getElementById(
+        "characterCount"
+      ).textContent =
+        output.length;
+
+    }
+
+
+    /* Copy Result */
 
     function copyText() {
 
@@ -606,6 +764,8 @@
     }
 
 
+    /* Clear */
+
     function clearText() {
 
       document.getElementById(
@@ -619,9 +779,10 @@
       ).value =
         "";
 
+
+      updateStatistics();
+
     }
 
-  </script>
-
-</body>
+  </script></body>
 </html>
