@@ -1,24 +1,22 @@
 <!DOCTYPE html>
+
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 
-  <title>
-    Free Online Text Tools - Text Tools
-  </title>
+>
 
-  <meta
-    name="description"
-    content="Free online text tools to count words, convert letter case, clean messy text and sort text lines quickly and easily."
-  >
+  <title>Free Online Text Tools - Text Tools</title>
 
+<meta
+name="description"
+content="Free online text tools to count words, convert letter case, clean messy text and sort text lines quickly and easily."
+
+>
 
   <style>
 
@@ -26,6 +24,9 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       margin: 0;
@@ -33,7 +34,6 @@
       background: #f6f7fb;
       color: #222;
     }
-
 
     /* Navigation */
 
@@ -47,7 +47,6 @@
       align-items: center;
     }
 
-
     .logo {
       font-size: 24px;
       font-weight: bold;
@@ -55,51 +54,68 @@
       color: #222;
     }
 
-
     .logo span {
       color: #555;
     }
 
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
 
     .nav-links a {
       text-decoration: none;
       color: #555;
-      margin-left: 20px;
       font-size: 15px;
     }
-
 
     .nav-links a:hover {
       color: #000;
     }
 
-
     /* Hero */
 
     .hero {
       text-align: center;
-      padding: 80px 20px 60px;
+      padding: 80px 20px 65px;
     }
 
-
     .hero h1 {
-      max-width: 800px;
+      max-width: 850px;
       margin: 0 auto 15px;
 
-      font-size: 42px;
+      font-size: 44px;
       line-height: 1.2;
     }
 
-
     .hero p {
-      max-width: 650px;
-      margin: auto;
+      max-width: 680px;
+      margin: 0 auto;
 
       color: #666;
       font-size: 18px;
       line-height: 1.6;
     }
 
+    .hero-button {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 13px 24px;
+
+      background: #222;
+      color: white;
+
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 15px;
+
+      transition: opacity 0.2s;
+    }
+
+    .hero-button:hover {
+      opacity: 0.85;
+    }
 
     /* Tools Section */
 
@@ -109,24 +125,45 @@
       padding: 20px 20px 70px;
     }
 
-
     .section-title {
       text-align: center;
-      margin-bottom: 35px;
+      margin-bottom: 25px;
     }
-
 
     .section-title h2 {
-      font-size: 28px;
+      font-size: 30px;
       margin: 0 0 8px;
     }
-
 
     .section-title p {
       color: #777;
       margin: 0;
     }
 
+    /* Search */
+
+    .search-container {
+      max-width: 600px;
+      margin: 0 auto 35px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 14px 16px;
+
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+
+      border: 1px solid #dcdcdc;
+      border-radius: 10px;
+
+      background: white;
+    }
+
+    .search-container input:focus {
+      outline: none;
+      border-color: #888;
+    }
 
     /* Tool Grid */
 
@@ -135,10 +172,9 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 20px;
 
-      max-width: 800px;
+      max-width: 850px;
       margin: auto;
     }
-
 
     .tool-card {
       display: block;
@@ -146,7 +182,7 @@
       background: #ffffff;
       padding: 25px;
 
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1px solid #e8e8e8;
 
       text-decoration: none;
@@ -158,102 +194,205 @@
         border-color 0.2s;
     }
 
-
     .tool-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-5px);
 
       box-shadow:
-        0 10px 25px
+        0 12px 30px
         rgba(0, 0, 0, 0.08);
 
-      border-color: #dcdcdc;
+      border-color: #d5d5d5;
     }
-
 
     .tool-card:focus {
       outline: 3px solid #b5b5b5;
       outline-offset: 3px;
     }
 
-
     .tool-icon {
-      font-size: 30px;
+      font-size: 32px;
       margin-bottom: 15px;
     }
 
-
     .tool-card h3 {
       margin: 0 0 10px;
-      font-size: 19px;
+      font-size: 20px;
     }
-
 
     .tool-card p {
       margin: 0;
 
       color: #777;
-      line-height: 1.5;
+      line-height: 1.6;
       font-size: 14px;
     }
 
+    /* No Results */
+
+    .no-results {
+      display: none;
+      text-align: center;
+      color: #777;
+      margin-top: 25px;
+    }
+
+    /* Why Use Section */
+
+    .why-section {
+      background: #ffffff;
+      border-top: 1px solid #e5e5e5;
+      border-bottom: 1px solid #e5e5e5;
+
+      padding: 70px 20px;
+    }
+
+    .why-container {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .why-title {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .why-title h2 {
+      margin: 0 0 10px;
+      font-size: 30px;
+    }
+
+    .why-title p {
+      margin: 0;
+      color: #777;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .feature {
+      background: #f6f7fb;
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .feature-icon {
+      font-size: 30px;
+      margin-bottom: 12px;
+    }
+
+    .feature h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .feature p {
+      margin: 0;
+      color: #777;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* About Section */
+
+    .about-section {
+      max-width: 850px;
+      margin: auto;
+      padding: 70px 20px;
+      text-align: center;
+    }
+
+    .about-section h2 {
+      margin: 0 0 15px;
+      font-size: 30px;
+    }
+
+    .about-section p {
+      margin: 0;
+      color: #666;
+      line-height: 1.7;
+    }
 
     /* Footer */
 
     footer {
       text-align: center;
+      padding: 35px 20px;
 
-      padding: 30px 20px;
-
-      border-top: 1px solid #e5e5e5;
       background: #ffffff;
+      border-top: 1px solid #e5e5e5;
 
       color: #777;
       font-size: 14px;
     }
 
+    .footer-links {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: #555;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    .footer-links a:hover {
+      color: #000;
+    }
+
+    /* Tablet */
+
+    @media (max-width: 800px) {
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+    }
 
     /* Mobile */
 
     @media (max-width: 600px) {
 
-
       nav {
         padding: 15px 20px;
       }
-
 
       .logo {
         font-size: 20px;
       }
 
-
       .nav-links {
         display: none;
       }
 
-
       .hero {
-        padding: 60px 20px 40px;
+        padding: 60px 20px 45px;
       }
-
 
       .hero h1 {
         font-size: 32px;
       }
 
-
       .hero p {
         font-size: 16px;
       }
-
 
       .tools-grid {
         grid-template-columns: 1fr;
       }
 
-
       .tools-section {
         padding-bottom: 50px;
+      }
+
+      .section-title h2,
+      .why-title h2,
+      .about-section h2 {
+        font-size: 26px;
       }
 
     }
@@ -262,51 +401,59 @@
 
 </head>
 
-
 <body>
-
 
   <!-- Navigation -->
 
   <nav>
 
-    <a
-      href="index.html"
-      class="logo"
-    >
-      Text <span>Tools</span>
-    </a>
+```
+<a
+  href="index.html"
+  class="logo"
+>
+  Text <span>Tools</span>
+</a>
 
+<div class="nav-links">
 
-    <div class="nav-links">
+  <a href="#tools">
+    All Tools
+  </a>
 
-      <a href="#tools">
-        All Tools
-      </a>
+  <a href="#about">
+    About
+  </a>
 
-    </div>
+</div>
+```
 
   </nav>
-
-
 
   <!-- Hero -->
 
   <section class="hero">
 
-    <h1>
-      Simple, Fast & Free Text Tools
-    </h1>
+```
+<h1>
+  Simple, Fast & Free Text Tools
+</h1>
 
+<p>
+  Free online tools to help you count, format,
+  clean and sort text quickly and easily.
+  No registration or downloads required.
+</p>
 
-    <p>
-      Free online tools to help you count, format,
-      clean and sort text quickly and easily.
-    </p>
+<a
+  href="#tools"
+  class="hero-button"
+>
+  Explore Tools
+</a>
+```
 
   </section>
-
-
 
   <!-- Tools -->
 
@@ -315,144 +462,324 @@
     id="tools"
   >
 
+```
+<div class="section-title">
 
-    <div class="section-title">
+  <h2>
+    Text Tools
+  </h2>
 
-      <h2>
-        Text Tools
-      </h2>
+  <p>
+    Choose a tool to get started.
+  </p>
 
+</div>
+
+<!-- Tool Search -->
+
+<div class="search-container">
+
+  <input
+    type="text"
+    id="toolSearch"
+    placeholder="Search for a tool..."
+    aria-label="Search for a tool"
+  >
+
+</div>
+
+<!-- Tool Cards -->
+
+<div
+  class="tools-grid"
+  id="toolsGrid"
+>
+
+  <a
+    href="word-counter.html"
+    class="tool-card"
+    data-name="word counter words characters sentences paragraphs"
+  >
+
+    <div class="tool-icon">
+      📝
+    </div>
+
+    <h3>
+      Word Counter
+    </h3>
+
+    <p>
+      Count words, characters, sentences,
+      paragraphs and more instantly.
+    </p>
+
+  </a>
+
+  <a
+    href="case-converter.html"
+    class="tool-card"
+    data-name="case converter uppercase lowercase title sentence camel snake kebab"
+  >
+
+    <div class="tool-icon">
+      🔤
+    </div>
+
+    <h3>
+      Case Converter
+    </h3>
+
+    <p>
+      Convert text into uppercase, lowercase,
+      title case, sentence case and more.
+    </p>
+
+  </a>
+
+  <a
+    href="text-cleaner.html"
+    class="tool-card"
+    data-name="text cleaner clean spaces empty lines tabs duplicates"
+  >
+
+    <div class="tool-icon">
+      🧼
+    </div>
+
+    <h3>
+      Text Cleaner
+    </h3>
+
+    <p>
+      Clean messy text by removing extra spaces,
+      empty lines, tabs and unnecessary formatting.
+    </p>
+
+  </a>
+
+  <a
+    href="text-sorter.html"
+    class="tool-card"
+    data-name="text sorter sort alphabetical reverse numerical numbers lines"
+  >
+
+    <div class="tool-icon">
+      🔡
+    </div>
+
+    <h3>
+      Text Sorter
+    </h3>
+
+    <p>
+      Sort text lines alphabetically,
+      in reverse order or numerically.
+    </p>
+
+  </a>
+
+</div>
+
+<p
+  class="no-results"
+  id="noResults"
+>
+  No tools found.
+</p>
+```
+
+  </section>
+
+  <!-- Why Use -->
+
+  <section class="why-section">
+
+```
+<div class="why-container">
+
+  <div class="why-title">
+
+    <h2>
+      Why Use Text Tools?
+    </h2>
+
+    <p>
+      Simple tools designed to help you work with text faster.
+    </p>
+
+  </div>
+
+  <div class="features">
+
+    <div class="feature">
+
+      <div class="feature-icon">
+        ⚡
+      </div>
+
+      <h3>
+        Fast
+      </h3>
 
       <p>
-        Choose a tool to get started.
+        Get results instantly without unnecessary steps.
       </p>
 
     </div>
 
+    <div class="feature">
 
+      <div class="feature-icon">
+        🔒
+      </div>
 
-    <div class="tools-grid">
+      <h3>
+        Simple
+      </h3>
 
-
-      <!-- Word Counter -->
-
-      <a
-        href="word-counter.html"
-        class="tool-card"
-      >
-
-        <div class="tool-icon">
-          📝
-        </div>
-
-
-        <h3>
-          Word Counter
-        </h3>
-
-
-        <p>
-          Count words, characters, sentences
-          and paragraphs instantly.
-        </p>
-
-      </a>
-
-
-
-      <!-- Case Converter -->
-
-      <a
-        href="case-converter.html"
-        class="tool-card"
-      >
-
-        <div class="tool-icon">
-          🔤
-        </div>
-
-
-        <h3>
-          Case Converter
-        </h3>
-
-
-        <p>
-          Convert text to uppercase, lowercase,
-          title case and sentence case.
-        </p>
-
-      </a>
-
-
-
-      <!-- Text Cleaner -->
-
-      <a
-        href="text-cleaner.html"
-        class="tool-card"
-      >
-
-        <div class="tool-icon">
-          🧼
-        </div>
-
-
-        <h3>
-          Text Cleaner
-        </h3>
-
-
-        <p>
-          Clean text by removing extra spaces,
-          empty lines, tabs and unnecessary formatting.
-        </p>
-
-      </a>
-
-
-
-      <!-- Text Sorter -->
-
-      <a
-        href="text-sorter.html"
-        class="tool-card"
-      >
-
-        <div class="tool-icon">
-          🔡
-        </div>
-
-
-        <h3>
-          Text Sorter
-        </h3>
-
-
-        <p>
-          Sort text lines alphabetically,
-          in reverse order or numerically.
-        </p>
-
-      </a>
-
+      <p>
+        Easy-to-use tools with a clean and straightforward interface.
+      </p>
 
     </div>
 
+    <div class="feature">
+
+      <div class="feature-icon">
+        🆓
+      </div>
+
+      <h3>
+        Free
+      </h3>
+
+      <p>
+        Use all available text tools without registration or payment.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+```
 
   </section>
 
+  <!-- About -->
 
+  <section
+    class="about-section"
+    id="about"
+  >
+
+```
+<h2>
+  Free Online Text Tools
+</h2>
+
+<p>
+  Text Tools provides simple and useful online tools
+  for everyday text tasks. Whether you need to count
+  words, change letter case, clean messy text or sort
+  lines, our tools are designed to help you complete
+  the task quickly and easily.
+</p>
+```
+
+  </section>
 
   <!-- Footer -->
 
   <footer>
 
-    © 2026 Text Tools · Simple, Fast & Free
+```
+<div class="footer-links">
+
+  <a href="#tools">
+    All Tools
+  </a>
+
+  <a href="#about">
+    About
+  </a>
+
+</div>
+
+© 2026 Text Tools · Simple, Fast & Free
+```
 
   </footer>
 
+  <script>
+
+    const toolSearch =
+      document.getElementById(
+        "toolSearch"
+      );
+
+    const toolCards =
+      document.querySelectorAll(
+        ".tool-card"
+      );
+
+    const noResults =
+      document.getElementById(
+        "noResults"
+      );
+
+    toolSearch.addEventListener(
+      "input",
+      function() {
+
+        const searchValue =
+          toolSearch.value
+            .toLowerCase()
+            .trim();
+
+        let visibleTools =
+          0;
+
+        toolCards.forEach(
+          function(card) {
+
+            const toolName =
+              card
+                .dataset
+                .name
+                .toLowerCase();
+
+            if (
+              toolName.includes(
+                searchValue
+              )
+            ) {
+
+              card.style.display =
+                "block";
+
+              visibleTools++;
+
+            } else {
+
+              card.style.display =
+                "none";
+
+            }
+
+          }
+        );
+
+        noResults.style.display =
+          visibleTools === 0
+            ? "block"
+            : "none";
+
+      }
+    );
+
+  </script>
 
 </body>
-
 </html>
