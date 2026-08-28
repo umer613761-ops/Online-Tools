@@ -1,15 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Word Counter - Free Online Tools</title>
+  <title>Word Counter - Free Online Text Tool</title>
 
-  <meta
-    name="description"
-    content="Free online word counter. Count words, characters, characters without spaces, sentences and paragraphs instantly."
-  >
+<meta
+name="description"
+content="Free online word counter. Count words, characters, sentences, paragraphs, reading time, speaking time and more."
+
+>
 
   <style>
     * {
@@ -26,25 +28,34 @@
     /* Navigation */
 
     nav {
-      background: #222;
-      color: white;
-      padding: 15px 20px;
+      background: #ffffff;
+      border-bottom: 1px solid #e5e5e5;
+      padding: 18px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .logo {
-      color: white;
-      text-decoration: none;
-      font-size: 20px;
+      font-size: 24px;
       font-weight: bold;
+      text-decoration: none;
+      color: #222;
+    }
+
+    .logo span {
+      color: #555;
     }
 
     .nav-links a {
-      color: white;
       text-decoration: none;
+      color: #555;
       margin-left: 20px;
+      font-size: 15px;
+    }
+
+    .nav-links a:hover {
+      color: #000;
     }
 
     /* Main */
@@ -67,6 +78,7 @@
       text-align: center;
       color: #777;
       margin-bottom: 25px;
+      line-height: 1.5;
     }
 
     textarea {
@@ -139,13 +151,13 @@
     /* Mobile */
 
     @media (max-width: 600px) {
+
       nav {
-        flex-direction: column;
-        gap: 10px;
+        padding: 15px 20px;
       }
 
-      .nav-links a {
-        margin: 0 8px;
+      .nav-links {
+        display: none;
       }
 
       .container {
@@ -156,8 +168,10 @@
       button {
         flex: 1;
       }
+
     }
   </style>
+
 </head>
 
 <body>
@@ -166,90 +180,105 @@
 
   <nav>
 
-    <a href="index.html" class="logo">
-      Free Online Tools
-    </a>
+```
+<a href="index.html" class="logo">
+  Text <span>Tools</span>
+</a>
 
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="index.html#tools">All Tools</a>
-    </div>
+<div class="nav-links">
+  <a href="index.html#tools">All Tools</a>
+</div>
+```
 
   </nav>
-
 
   <!-- Main Tool -->
 
   <main class="container">
 
-    <h1>Word Counter</h1>
+```
+<h1>Word Counter</h1>
 
-    <p class="subtitle">
-      Count words, characters, sentences and paragraphs instantly.
-    </p>
-
-
-    <textarea
-      id="text"
-      placeholder="Type or paste your text here..."
-    ></textarea>
+<p class="subtitle">
+  Count and analyze your words, characters, sentences and more.
+</p>
 
 
-    <!-- Buttons -->
-
-    <div class="buttons">
-
-      <button onclick="copyText()">
-        Copy Text
-      </button>
-
-      <button onclick="clearText()">
-        Clear Text
-      </button>
-
-    </div>
+<textarea
+  id="text"
+  placeholder="Type or paste your text here..."
+></textarea>
 
 
-    <!-- Results -->
+<!-- Buttons -->
 
-    <div class="results">
+<div class="buttons">
 
-      <div class="result-card">
-        <strong id="words">0</strong>
-        <span>Words</span>
-      </div>
+  <button onclick="copyText()">
+    Copy Text
+  </button>
 
-      <div class="result-card">
-        <strong id="characters">0</strong>
-        <span>Characters</span>
-      </div>
+  <button onclick="clearText()">
+    Clear Text
+  </button>
 
-      <div class="result-card">
-        <strong id="noSpaces">0</strong>
-        <span>Without Spaces</span>
-      </div>
+</div>
 
-      <div class="result-card">
-        <strong id="sentences">0</strong>
-        <span>Sentences</span>
-      </div>
 
-      <div class="result-card">
-        <strong id="paragraphs">0</strong>
-        <span>Paragraphs</span>
-      </div>
+<!-- Results -->
 
-    </div>
+<div class="results">
+
+  <div class="result-card">
+    <strong id="words">0</strong>
+    <span>Words</span>
+  </div>
+
+  <div class="result-card">
+    <strong id="characters">0</strong>
+    <span>Characters</span>
+  </div>
+
+  <div class="result-card">
+    <strong id="noSpaces">0</strong>
+    <span>Without Spaces</span>
+  </div>
+
+  <div class="result-card">
+    <strong id="sentences">0</strong>
+    <span>Sentences</span>
+  </div>
+
+  <div class="result-card">
+    <strong id="paragraphs">0</strong>
+    <span>Paragraphs</span>
+  </div>
+
+  <div class="result-card">
+    <strong id="readingTime">0 min</strong>
+    <span>Reading Time</span>
+  </div>
+
+  <div class="result-card">
+    <strong id="speakingTime">0 min</strong>
+    <span>Speaking Time</span>
+  </div>
+
+  <div class="result-card">
+    <strong id="averageWordLength">0</strong>
+    <span>Avg. Word Length</span>
+  </div>
+
+</div>
+```
 
   </main>
-
 
   <!-- Footer -->
 
   <footer>
-    © 2026 Free Online Tools
+    © 2026 Text Tools · Simple, Fast & Free
   </footer>
-
 
   <script>
 
@@ -257,35 +286,54 @@
       document.getElementById("text");
 
 
-    text.addEventListener("input", updateCount);
+    text.addEventListener(
+      "input",
+      updateCount
+    );
 
 
     function updateCount() {
 
-      const value = text.value;
+      const value =
+        text.value;
 
 
-      /* Words */
+      /* Get Words */
+
+      const words =
+        value.trim() === ""
+          ? []
+          : value
+              .trim()
+              .split(/\s+/);
+
 
       const wordCount =
-        value.trim() === ""
-          ? 0
-          : value.trim().split(/\s+/).length;
+        words.length;
 
-      document.getElementById("words").textContent =
+
+      document.getElementById(
+        "words"
+      ).textContent =
         wordCount;
 
 
       /* Characters */
 
-      document.getElementById("characters").textContent =
+      document.getElementById(
+        "characters"
+      ).textContent =
         value.length;
 
 
       /* Characters Without Spaces */
 
-      document.getElementById("noSpaces").textContent =
-        value.replace(/\s/g, "").length;
+      document.getElementById(
+        "noSpaces"
+      ).textContent =
+        value
+          .replace(/\s/g, "")
+          .length;
 
 
       /* Sentences */
@@ -300,7 +348,10 @@
                   sentence.trim().length > 0
               ).length;
 
-      document.getElementById("sentences").textContent =
+
+      document.getElementById(
+        "sentences"
+      ).textContent =
         sentenceCount;
 
 
@@ -316,8 +367,77 @@
                   paragraph.trim().length > 0
               ).length;
 
-      document.getElementById("paragraphs").textContent =
+
+      document.getElementById(
+        "paragraphs"
+      ).textContent =
         paragraphCount;
+
+
+      /* Reading Time */
+
+      const readingMinutes =
+        Math.ceil(
+          wordCount / 200
+        );
+
+
+      document.getElementById(
+        "readingTime"
+      ).textContent =
+        wordCount === 0
+          ? "0 min"
+          : readingMinutes + " min";
+
+
+      /* Speaking Time */
+
+      const speakingMinutes =
+        Math.ceil(
+          wordCount / 130
+        );
+
+
+      document.getElementById(
+        "speakingTime"
+      ).textContent =
+        wordCount === 0
+          ? "0 min"
+          : speakingMinutes + " min";
+
+
+      /* Average Word Length */
+
+      const totalLetters =
+        words.reduce(
+          function(total, word) {
+
+            return (
+              total +
+              word.replace(
+                /[^a-zA-Z0-9]/g,
+                ""
+              ).length
+            );
+
+          },
+          0
+        );
+
+
+      const averageLength =
+        wordCount === 0
+          ? 0
+          : (
+              totalLetters /
+              wordCount
+            ).toFixed(1);
+
+
+      document.getElementById(
+        "averageWordLength"
+      ).textContent =
+        averageLength;
 
     }
 
@@ -326,9 +446,28 @@
 
     function copyText() {
 
-      navigator.clipboard.writeText(text.value);
+      if (text.value === "") {
 
-      alert("Text copied!");
+        alert(
+          "There is no text to copy."
+        );
+
+        return;
+
+      }
+
+
+      navigator.clipboard
+        .writeText(
+          text.value
+        )
+        .then(function() {
+
+          alert(
+            "Text copied!"
+          );
+
+        });
 
     }
 
@@ -337,7 +476,8 @@
 
     function clearText() {
 
-      text.value = "";
+      text.value =
+        "";
 
       updateCount();
 
@@ -347,3 +487,4 @@
 
 </body>
 </html>
+
