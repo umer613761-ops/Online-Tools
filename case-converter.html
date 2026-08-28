@@ -1,16 +1,9 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
-
->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Case Converter - Free Online Text Tool</title>
 
@@ -27,11 +20,13 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
     }
 
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
       background: #f4f7fb;
-      margin: 0;
       color: #222;
     }
+
+    /* Navigation */
 
     nav {
       background: #ffffff;
@@ -56,7 +51,6 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
     .nav-links a {
       text-decoration: none;
       color: #555;
-      margin-left: 20px;
       font-size: 15px;
     }
 
@@ -64,75 +58,118 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
       color: #000;
     }
 
+    /* Main Container */
+
     .container {
-      max-width: 850px;
+      max-width: 1000px;
       margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .page-header h1 {
+      margin: 0 0 10px;
+      font-size: 38px;
+    }
+
+    .page-header p {
+      margin: 0;
+      color: #666;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    /* Main Card */
+
+    .tool-card {
+      background: #ffffff;
       padding: 30px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+      border-radius: 18px;
+      border: 1px solid #e8e8e8;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
     }
 
-    h1 {
-      text-align: center;
-      margin: 0 0 8px;
-    }
-
-    .subtitle {
-      text-align: center;
-      color: #777;
-      margin-bottom: 25px;
-      line-height: 1.5;
-    }
+    /* Text Area */
 
     textarea {
       width: 100%;
       height: 250px;
-      padding: 15px;
+      padding: 18px;
       font-family: Arial, sans-serif;
       font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
+      line-height: 1.5;
+      border: 1px solid #dcdcdc;
+      border-radius: 12px;
       resize: vertical;
+      background: #fafafa;
     }
 
     textarea:focus {
       outline: none;
       border-color: #888;
+      background: #ffffff;
     }
 
-    .case-category {
+    /* Categories */
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
       margin-top: 25px;
-      padding: 20px;
-      background: #f4f7fb;
-      border-radius: 10px;
     }
 
-    .case-category h2 {
-      margin: 0 0 15px;
-      font-size: 18px;
-      color: #222;
+    .category-card {
+      background: #f8f9fc;
+      border: 1px solid #e8e8e8;
+      border-radius: 14px;
+      padding: 20px;
     }
+
+    .category-card h2 {
+      margin: 0 0 15px;
+      font-size: 17px;
+    }
+
+    .category-card p {
+      margin: -5px 0 15px;
+      color: #777;
+      font-size: 13px;
+    }
+
+    /* Conversion Buttons */
 
     .convert-buttons {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      grid-template-columns: 1fr;
+      gap: 9px;
     }
 
     button {
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: #222;
-      color: white;
-      font-size: 15px;
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #dddddd;
+      border-radius: 9px;
+      background: #ffffff;
+      color: #333;
+      font-size: 14px;
       cursor: pointer;
+      transition: 0.2s;
     }
 
     button:hover {
-      opacity: 0.85;
+      background: #222;
+      color: #ffffff;
+      border-color: #222;
     }
+
+    /* Statistics */
 
     .statistics {
       display: grid;
@@ -142,10 +179,11 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
     }
 
     .stat {
-      background: #f4f7fb;
-      padding: 18px;
+      background: #f8f9fc;
+      border: 1px solid #e8e8e8;
+      padding: 20px;
+      border-radius: 12px;
       text-align: center;
-      border-radius: 10px;
     }
 
     .stat strong {
@@ -155,25 +193,41 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
     }
 
     .stat span {
-      color: #666;
+      color: #777;
+      font-size: 14px;
     }
+
+    /* Action Buttons */
 
     .action-buttons {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 12px;
       margin-top: 20px;
     }
 
     .action-buttons button {
-      padding: 13px;
+      padding: 14px;
     }
 
+    .copy-button {
+      background: #222;
+      color: #ffffff;
+      border-color: #222;
+    }
+
+    .copy-button:hover {
+      opacity: 0.85;
+    }
+
+    /* Information Card */
+
     .info {
-      margin-top: 30px;
+      margin-top: 25px;
       padding: 20px;
-      background: #f4f7fb;
-      border-radius: 10px;
+      background: #f8f9fc;
+      border: 1px solid #e8e8e8;
+      border-radius: 12px;
       color: #555;
       line-height: 1.6;
     }
@@ -182,24 +236,28 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
       color: #222;
     }
 
-    footer {
-      text-align: center;
-      padding: 30px;
-      color: #777;
+    .info p {
+      margin-bottom: 0;
     }
 
-    @media (max-width: 700px) {
+    /* Footer */
 
-      nav {
-        padding: 15px 20px;
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: #777;
+      font-size: 14px;
+    }
+
+    /* Tablet */
+
+    @media (max-width: 850px) {
+
+      .categories {
+        grid-template-columns: 1fr;
       }
 
-      .nav-links {
-        display: none;
-      }
-
-      .container {
-        margin: 20px 10px;
+      .category-card {
         padding: 20px;
       }
 
@@ -209,10 +267,52 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
 
     }
 
-    @media (max-width: 450px) {
+    /* Mobile */
 
-      .convert-buttons,
-      .statistics,
+    @media (max-width: 600px) {
+
+      nav {
+        padding: 15px 20px;
+      }
+
+      .logo {
+        font-size: 20px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .container {
+        margin: 25px auto;
+        padding: 0 12px;
+      }
+
+      .page-header h1 {
+        font-size: 30px;
+      }
+
+      .page-header p {
+        font-size: 16px;
+      }
+
+      .tool-card {
+        padding: 18px;
+        border-radius: 14px;
+      }
+
+      textarea {
+        height: 220px;
+      }
+
+      .convert-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .statistics {
+        grid-template-columns: 1fr;
+      }
+
       .action-buttons {
         grid-template-columns: 1fr;
       }
@@ -239,138 +339,173 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
 
   <main class="container">
 
-<h1>Case Converter</h1>
+<div class="page-header">
 
-<p class="subtitle">
-  Convert your text into different letter cases instantly and easily.
-</p>
-
-<textarea
-  id="text"
-  placeholder="Type or paste your text here..."
-></textarea>
-
-
-<div class="case-category">
-
-  <h2>Basic Case</h2>
-
-  <div class="convert-buttons">
-
-    <button onclick="toUpperCase()">
-      UPPERCASE
-    </button>
-
-    <button onclick="toLowerCase()">
-      lowercase
-    </button>
-
-    <button onclick="toTitleCase()">
-      Title Case
-    </button>
-
-    <button onclick="toSentenceCase()">
-      Sentence case
-    </button>
-
-  </div>
-
-</div>
-
-
-<div class="case-category">
-
-  <h2>Programming Case</h2>
-
-  <div class="convert-buttons">
-
-    <button onclick="toCamelCase()">
-      camelCase
-    </button>
-
-    <button onclick="toPascalCase()">
-      PascalCase
-    </button>
-
-    <button onclick="toSnakeCase()">
-      snake_case
-    </button>
-
-    <button onclick="toKebabCase()">
-      kebab-case
-    </button>
-
-    <button onclick="toConstantCase()">
-      CONSTANT_CASE
-    </button>
-
-    <button onclick="toDotCase()">
-      dot.case
-    </button>
-
-  </div>
-
-</div>
-
-
-<div class="case-category">
-
-  <h2>Special Case</h2>
-
-  <div class="convert-buttons">
-
-    <button onclick="toAlternatingCase()">
-      aLtErNaTiNg
-    </button>
-
-    <button onclick="toInverseCase()">
-      iNVERSE cASE
-    </button>
-
-  </div>
-
-</div>
-
-
-<div class="statistics">
-
-  <div class="stat">
-    <strong id="wordCount">0</strong>
-    <span>Words</span>
-  </div>
-
-  <div class="stat">
-    <strong id="characterCount">0</strong>
-    <span>Characters</span>
-  </div>
-
-</div>
-
-
-<div class="action-buttons">
-
-  <button onclick="copyText()">
-    Copy Text
-  </button>
-
-  <button onclick="clearText()">
-    Clear Text
-  </button>
-
-</div>
-
-
-<div class="info">
-
-  <strong>How to use Case Converter:</strong>
+  <h1>Case Converter</h1>
 
   <p>
-    Type or paste your text into the box above, then choose the
-    text format you want. Your text will be converted instantly.
+    Convert your text into different letter cases instantly and easily.
   </p>
 
 </div>
 
+<div class="tool-card">
+
+  <textarea
+    id="text"
+    placeholder="Type or paste your text here..."
+  ></textarea>
+
+  <!-- Case Categories -->
+
+  <div class="categories">
+
+    <!-- Basic Cases -->
+
+    <div class="category-card">
+
+      <h2>Basic Cases</h2>
+
+      <p>
+        Common text formatting styles.
+      </p>
+
+      <div class="convert-buttons">
+
+        <button onclick="toUpperCase()">
+          UPPERCASE
+        </button>
+
+        <button onclick="toLowerCase()">
+          lowercase
+        </button>
+
+        <button onclick="toTitleCase()">
+          Title Case
+        </button>
+
+        <button onclick="toSentenceCase()">
+          Sentence case
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- Programming Cases -->
+
+    <div class="category-card">
+
+      <h2>Programming Cases</h2>
+
+      <p>
+        Popular formats used in programming.
+      </p>
+
+      <div class="convert-buttons">
+
+        <button onclick="toCamelCase()">
+          camelCase
+        </button>
+
+        <button onclick="toPascalCase()">
+          PascalCase
+        </button>
+
+        <button onclick="toSnakeCase()">
+          snake_case
+        </button>
+
+        <button onclick="toKebabCase()">
+          kebab-case
+        </button>
+
+        <button onclick="toConstantCase()">
+          CONSTANT_CASE
+        </button>
+
+        <button onclick="toDotCase()">
+          dot.case
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- Special Cases -->
+
+    <div class="category-card">
+
+      <h2>Special Cases</h2>
+
+      <p>
+        Alternative text styles.
+      </p>
+
+      <div class="convert-buttons">
+
+        <button onclick="toAlternatingCase()">
+          aLtErNaTiNg
+        </button>
+
+        <button onclick="toInverseCase()">
+          iNVERSE cASE
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Statistics -->
+
+  <div class="statistics">
+
+    <div class="stat">
+      <strong id="wordCount">0</strong>
+      <span>Words</span>
+    </div>
+
+    <div class="stat">
+      <strong id="characterCount">0</strong>
+      <span>Characters</span>
+    </div>
+
+  </div>
+
+  <!-- Actions -->
+
+  <div class="action-buttons">
+
+    <button
+      class="copy-button"
+      onclick="copyText()"
+    >
+      Copy Text
+    </button>
+
+    <button onclick="clearText()">
+      Clear Text
+    </button>
+
+  </div>
+
+  <!-- Information -->
+
+  <div class="info">
+
+    <strong>How to use Case Converter:</strong>
+
+    <p>
+      Type or paste your text into the box above. Choose one of the
+      conversion options from the Basic Cases, Programming Cases or
+      Special Cases categories. Your text will be converted instantly.
+    </p>
+
+  </div>
+
+</div>
 
   </main>
 
@@ -394,11 +529,13 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
           ? 0
           : value.trim().split(/\s+/).length;
 
-      document.getElementById("wordCount").textContent =
-        words;
+      document.getElementById(
+        "wordCount"
+      ).textContent = words;
 
-      document.getElementById("characterCount").textContent =
-        value.length;
+      document.getElementById(
+        "characterCount"
+      ).textContent = value.length;
 
     }
 
@@ -653,9 +790,7 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
 
     function copyText() {
 
-      if (
-        text.value.trim() === ""
-      ) {
+      if (text.value.trim() === "") {
 
         alert(
           "There is no text to copy."
@@ -689,5 +824,4 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
   </script>
 
 </body>
-
 </html>
