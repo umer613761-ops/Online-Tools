@@ -1,19 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Image Converter - Free Online Image Converter | ToolNest</title>
 
-  <meta
-    name="description"
-    content="Convert images to JPG, PNG, WEBP, GIF, BMP and ICO. Convert small video clips to animated GIFs online for free."
-  >
+<meta
+name="description"
+content="Convert images to JPG, PNG, WEBP, GIF, BMP and ICO. Convert video clips to animated GIFs online for free."
+
+>
 
   <style>
 
@@ -28,13 +26,10 @@
       color: #222;
     }
 
-    /* Navigation */
-
     nav {
       background: #ffffff;
       border-bottom: 1px solid #e5e5e5;
       padding: 18px 30px;
-
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -61,8 +56,6 @@
       color: #000;
     }
 
-    /* Main */
-
     .container {
       max-width: 850px;
       margin: 40px auto;
@@ -86,16 +79,12 @@
       line-height: 1.6;
     }
 
-    /* Converter */
-
     .converter-card {
       background: white;
       border: 1px solid #e5e5e5;
       border-radius: 16px;
       padding: 30px;
     }
-
-    /* Upload */
 
     .upload-area {
       border: 2px dashed #cfcfcf;
@@ -133,10 +122,8 @@
       display: inline-block;
       margin-top: 18px;
       padding: 12px 20px;
-
       background: #222;
       color: white;
-
       border-radius: 8px;
       font-size: 15px;
     }
@@ -145,13 +132,10 @@
       display: none;
     }
 
-    /* File Info */
-
     .file-info {
       display: none;
       margin-top: 25px;
       padding: 18px;
-
       background: #f6f7fb;
       border-radius: 10px;
     }
@@ -167,40 +151,32 @@
       font-size: 14px;
     }
 
-    /* Preview */
-
     .preview-container {
       display: none;
       margin-top: 25px;
       text-align: center;
     }
 
-    .preview-image {
-      display: none;
-      max-width: 100%;
-      max-height: 350px;
-
-      border-radius: 10px;
-      border: 1px solid #e5e5e5;
-    }
-
+    .preview-image,
     .preview-video {
       display: none;
       max-width: 100%;
       max-height: 350px;
-
       border-radius: 10px;
       border: 1px solid #e5e5e5;
     }
 
-    /* Format */
-
-    .format-section {
+    .format-section,
+    .quality-section,
+    .video-section,
+    .convert-section {
       display: none;
       margin-top: 30px;
     }
 
-    .format-section h2 {
+    .format-section h2,
+    .quality-section h2,
+    .video-section h2 {
       margin: 0 0 15px;
       font-size: 20px;
     }
@@ -223,13 +199,10 @@
     .format-option label {
       display: block;
       padding: 16px 10px;
-
       text-align: center;
       cursor: pointer;
-
       border: 1px solid #ddd;
       border-radius: 10px;
-
       font-weight: bold;
       transition: 0.2s;
     }
@@ -242,41 +215,6 @@
       background: #222;
       color: white;
       border-color: #222;
-    }
-
-    /* Video Options */
-
-    .video-section {
-      display: none;
-      margin-top: 25px;
-      padding: 20px;
-
-      background: #f6f7fb;
-      border-radius: 10px;
-    }
-
-    .video-section h2 {
-      margin: 0 0 8px;
-      font-size: 20px;
-    }
-
-    .video-section p {
-      margin: 0 0 15px;
-      color: #777;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    /* Quality */
-
-    .quality-section {
-      display: none;
-      margin-top: 25px;
-    }
-
-    .quality-section h2 {
-      margin: 0 0 12px;
-      font-size: 20px;
     }
 
     .quality-row {
@@ -296,23 +234,54 @@
       font-weight: bold;
     }
 
-    /* Convert */
+    .video-section {
+      padding: 20px;
+      background: #f6f7fb;
+      border-radius: 10px;
+    }
 
-    .convert-section {
-      display: none;
-      margin-top: 30px;
+    .video-section p {
+      color: #777;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-top: 0;
+    }
+
+    .video-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .video-option {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .video-option label {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .video-option input,
+    .video-option select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
+      font-size: 14px;
     }
 
     .convert-button {
       width: 100%;
       padding: 15px;
-
       border: none;
       border-radius: 10px;
-
       background: #222;
       color: white;
-
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
@@ -327,8 +296,6 @@
       cursor: not-allowed;
     }
 
-    /* Progress */
-
     .progress-container {
       display: none;
       margin-top: 20px;
@@ -342,7 +309,7 @@
     }
 
     .progress-fill {
-      width: 0;
+      width: 0%;
       height: 100%;
       background: #222;
       transition: width 0.2s;
@@ -355,15 +322,11 @@
       font-size: 14px;
     }
 
-    /* Result */
-
     .result {
       display: none;
       margin-top: 25px;
       padding: 20px;
-
       text-align: center;
-
       background: #f6f7fb;
       border-radius: 10px;
     }
@@ -375,17 +338,12 @@
 
     .download-button {
       display: inline-block;
-
       padding: 12px 22px;
-
       background: #222;
       color: white;
-
       text-decoration: none;
       border-radius: 8px;
     }
-
-    /* Footer */
 
     footer {
       text-align: center;
@@ -393,8 +351,6 @@
       color: #777;
       font-size: 14px;
     }
-
-    /* Mobile */
 
     @media (max-width: 600px) {
 
@@ -426,6 +382,10 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
+      .video-options {
+        grid-template-columns: 1fr;
+      }
+
     }
 
   </style>
@@ -434,353 +394,283 @@
 
 <body>
 
-  <!-- Navigation -->
-
   <nav>
 
-    <a
-      href="index.html"
-      class="logo"
-    >
-      Tool<span>Nest</span>
-    </a>
+```
+<a href="index.html" class="logo">
+  Tool<span>Nest</span>
+</a>
 
-    <div class="nav-links">
-
-      <a href="index.html">
-        All Tools
-      </a>
-
-    </div>
+<div class="nav-links">
+  <a href="index.html">All Tools</a>
+</div>
+```
 
   </nav>
 
-  <!-- Main -->
-
   <main class="container">
 
-    <div class="tool-header">
+```
+<div class="tool-header">
 
-      <h1>
-        Image Converter
-      </h1>
+  <h1>Image Converter</h1>
 
-      <p>
-        Convert images to different formats or turn a small video clip into an animated GIF.
-      </p>
+  <p>
+    Convert images to different formats or turn a short video clip into an animated GIF.
+  </p>
+
+</div>
+
+<div class="converter-card">
+
+  <div class="upload-area" id="uploadArea">
+
+    <div class="upload-icon">🖼️</div>
+
+    <h2>Upload an Image or Video</h2>
+
+    <p>
+      Upload JPG, PNG, WEBP, GIF, BMP, ICO, MP4, WebM or supported video files.
+    </p>
+
+    <div class="upload-button">
+      Choose File
+    </div>
+
+    <input
+      type="file"
+      id="fileInput"
+      accept="image/*,video/mp4,video/webm,video/quicktime"
+    >
+
+  </div>
+
+  <div class="file-info" id="fileInfo">
+
+    <div class="file-name" id="fileName"></div>
+
+    <div class="file-details" id="fileDetails"></div>
+
+  </div>
+
+  <div class="preview-container" id="previewContainer">
+
+    <img
+      class="preview-image"
+      id="previewImage"
+      alt="Preview"
+    >
+
+    <video
+      class="preview-video"
+      id="previewVideo"
+      controls
+      muted
+    ></video>
+
+  </div>
+
+  <div class="format-section" id="formatSection">
+
+    <h2>Convert To</h2>
+
+    <div class="format-grid">
+
+      <div class="format-option">
+        <input type="radio" id="jpg" name="format" value="jpg" checked>
+        <label for="jpg">JPG</label>
+      </div>
+
+      <div class="format-option">
+        <input type="radio" id="png" name="format" value="png">
+        <label for="png">PNG</label>
+      </div>
+
+      <div class="format-option">
+        <input type="radio" id="webp" name="format" value="webp">
+        <label for="webp">WEBP</label>
+      </div>
+
+      <div class="format-option">
+        <input type="radio" id="gif" name="format" value="gif">
+        <label for="gif">GIF</label>
+      </div>
+
+      <div class="format-option">
+        <input type="radio" id="bmp" name="format" value="bmp">
+        <label for="bmp">BMP</label>
+      </div>
+
+      <div class="format-option">
+        <input type="radio" id="ico" name="format" value="ico">
+        <label for="ico">ICO</label>
+      </div>
 
     </div>
 
-    <div class="converter-card">
+  </div>
 
-      <!-- Upload -->
+  <div class="video-section" id="videoSection">
 
-      <div
-        class="upload-area"
-        id="uploadArea"
-      >
+    <h2>Video to GIF Settings</h2>
 
-        <div class="upload-icon">
-          🖼️
-        </div>
+    <p>
+      Lower resolution, FPS and duration create GIFs much faster and reduce the chance of browser freezing.
+    </p>
 
-        <h2>
-          Upload an Image or Video
-        </h2>
+    <div class="video-options">
 
-        <p>
-          Drag and drop a file here or click to browse.
-        </p>
+      <div class="video-option">
 
-        <div class="upload-button">
-          Choose File
-        </div>
+        <label for="videoStart">
+          Start Time (seconds)
+        </label>
 
         <input
-          type="file"
-          id="fileInput"
-          accept="image/*,video/mp4,video/webm,video/quicktime"
+          type="number"
+          id="videoStart"
+          value="0"
+          min="0"
+          step="0.1"
         >
 
       </div>
 
-      <!-- File Information -->
+      <div class="video-option">
 
-      <div
-        class="file-info"
-        id="fileInfo"
-      >
+        <label for="videoDuration">
+          GIF Duration (seconds)
+        </label>
 
-        <div
-          class="file-name"
-          id="fileName"
-        ></div>
-
-        <div
-          class="file-details"
-          id="fileDetails"
-        ></div>
-
-      </div>
-
-      <!-- Preview -->
-
-      <div
-        class="preview-container"
-        id="previewContainer"
-      >
-
-        <img
-          class="preview-image"
-          id="previewImage"
-          alt="Image preview"
+        <input
+          type="number"
+          id="videoDuration"
+          value="5"
+          min="1"
+          max="15"
+          step="1"
         >
 
-        <video
-          class="preview-video"
-          id="previewVideo"
-          controls
-        ></video>
+      </div>
+
+      <div class="video-option">
+
+        <label for="videoFps">
+          Frames Per Second
+        </label>
+
+        <select id="videoFps">
+          <option value="4">4 FPS - Fast</option>
+          <option value="6">6 FPS</option>
+          <option value="8" selected>8 FPS - Recommended</option>
+          <option value="10">10 FPS</option>
+          <option value="12">12 FPS - Slow</option>
+        </select>
 
       </div>
 
-      <!-- Format -->
+      <div class="video-option">
 
-      <div
-        class="format-section"
-        id="formatSection"
-      >
+        <label for="videoWidth">
+          GIF Width
+        </label>
 
-        <h2>
-          Convert To
-        </h2>
-
-        <div
-          class="format-grid"
-          id="formatGrid"
-        >
-
-          <div class="format-option">
-
-            <input
-              type="radio"
-              id="jpg"
-              name="format"
-              value="jpg"
-              checked
-            >
-
-            <label for="jpg">
-              JPG
-            </label>
-
-          </div>
-
-          <div class="format-option">
-
-            <input
-              type="radio"
-              id="png"
-              name="format"
-              value="png"
-            >
-
-            <label for="png">
-              PNG
-            </label>
-
-          </div>
-
-          <div class="format-option">
-
-            <input
-              type="radio"
-              id="webp"
-              name="format"
-              value="webp"
-            >
-
-            <label for="webp">
-              WEBP
-            </label>
-
-          </div>
-
-          <div class="format-option">
-
-            <input
-              type="radio"
-              id="gif"
-              name="format"
-              value="gif"
-            >
-
-            <label for="gif">
-              GIF
-            </label>
-
-          </div>
-
-          <div class="format-option">
-
-            <input
-              type="radio"
-              id="bmp"
-              name="format"
-              value="bmp"
-            >
-
-            <label for="bmp">
-              BMP
-            </label>
-
-          </div>
-
-          <div class="format-option">
-
-            <input
-              type="radio"
-              id="ico"
-              name="format"
-              value="ico"
-            >
-
-            <label for="ico">
-              ICO
-            </label>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- Video Information -->
-
-      <div
-        class="video-section"
-        id="videoSection"
-      >
-
-        <h2>
-          Video to GIF
-        </h2>
-
-        <p>
-          The first 15 seconds of your video will be converted to an animated GIF.
-        </p>
-
-      </div>
-
-      <!-- Quality -->
-
-      <div
-        class="quality-section"
-        id="qualitySection"
-      >
-
-        <h2>
-          Quality
-        </h2>
-
-        <div class="quality-row">
-
-          <input
-            type="range"
-            id="quality"
-            min="10"
-            max="100"
-            value="90"
-          >
-
-          <span
-            class="quality-value"
-            id="qualityValue"
-          >
-            90%
-          </span>
-
-        </div>
-
-      </div>
-
-      <!-- Convert -->
-
-      <div
-        class="convert-section"
-        id="convertSection"
-      >
-
-        <button
-          class="convert-button"
-          id="convertButton"
-        >
-          Convert File
-        </button>
-
-      </div>
-
-      <!-- Progress -->
-
-      <div
-        class="progress-container"
-        id="progressContainer"
-      >
-
-        <div class="progress-bar">
-
-          <div
-            class="progress-fill"
-            id="progressFill"
-          ></div>
-
-        </div>
-
-        <div
-          class="progress-text"
-          id="progressText"
-        >
-          Preparing...
-        </div>
-
-      </div>
-
-      <!-- Result -->
-
-      <div
-        class="result"
-        id="result"
-      >
-
-        <p
-          id="resultText"
-        >
-          Your converted file is ready.
-        </p>
-
-        <a
-          id="downloadButton"
-          class="download-button"
-          href="#"
-        >
-          Download File
-        </a>
+        <select id="videoWidth">
+          <option value="240">240px - Fast</option>
+          <option value="320" selected>320px - Recommended</option>
+          <option value="480">480px - Large</option>
+        </select>
 
       </div>
 
     </div>
+
+  </div>
+
+  <div class="quality-section" id="qualitySection">
+
+    <h2>Quality</h2>
+
+    <div class="quality-row">
+
+      <input
+        type="range"
+        id="quality"
+        min="10"
+        max="100"
+        value="90"
+      >
+
+      <span class="quality-value" id="qualityValue">
+        90%
+      </span>
+
+    </div>
+
+  </div>
+
+  <div class="convert-section" id="convertSection">
+
+    <button
+      class="convert-button"
+      id="convertButton"
+    >
+      Convert File
+    </button>
+
+  </div>
+
+  <div
+    class="progress-container"
+    id="progressContainer"
+  >
+
+    <div class="progress-bar">
+      <div
+        class="progress-fill"
+        id="progressFill"
+      ></div>
+    </div>
+
+    <div
+      class="progress-text"
+      id="progressText"
+    >
+      Preparing...
+    </div>
+
+  </div>
+
+  <div class="result" id="result">
+
+    <p id="resultText">
+      Your converted file is ready.
+    </p>
+
+    <a
+      id="downloadButton"
+      class="download-button"
+      href="#"
+    >
+      Download File
+    </a>
+
+  </div>
+
+</div>
+```
 
   </main>
 
   <footer>
-
     © 2026 ToolNest · Simple, Fast & Free
-
   </footer>
 
-  <!-- GIF.js -->
+  <!-- GIF.js Library -->
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"
+  ></script>
 
   <script>
 
@@ -847,6 +737,18 @@
     const progressText =
       document.getElementById("progressText");
 
+    const videoStart =
+      document.getElementById("videoStart");
+
+    const videoDuration =
+      document.getElementById("videoDuration");
+
+    const videoFps =
+      document.getElementById("videoFps");
+
+    const videoWidth =
+      document.getElementById("videoWidth");
+
 
     let imageObject = null;
 
@@ -856,38 +758,28 @@
 
     let downloadUrl = null;
 
+    let videoUrl = null;
 
-    /* Upload Click */
 
     uploadArea.addEventListener(
       "click",
       function() {
-
         fileInput.click();
-
       }
     );
 
-
-    /* File Selection */
 
     fileInput.addEventListener(
       "change",
       function() {
 
         if (fileInput.files.length > 0) {
-
-          loadFile(
-            fileInput.files[0]
-          );
-
+          loadFile(fileInput.files[0]);
         }
 
       }
     );
 
-
-    /* Drag Over */
 
     uploadArea.addEventListener(
       "dragover",
@@ -895,29 +787,21 @@
 
         event.preventDefault();
 
-        uploadArea.classList.add(
-          "dragging"
-        );
+        uploadArea.classList.add("dragging");
 
       }
     );
 
-
-    /* Drag Leave */
 
     uploadArea.addEventListener(
       "dragleave",
       function() {
 
-        uploadArea.classList.remove(
-          "dragging"
-        );
+        uploadArea.classList.remove("dragging");
 
       }
     );
 
-
-    /* Drop */
 
     uploadArea.addEventListener(
       "drop",
@@ -925,25 +809,15 @@
 
         event.preventDefault();
 
-        uploadArea.classList.remove(
-          "dragging"
-        );
+        uploadArea.classList.remove("dragging");
 
-        if (
-          event.dataTransfer.files.length > 0
-        ) {
-
-          loadFile(
-            event.dataTransfer.files[0]
-          );
-
+        if (event.dataTransfer.files.length > 0) {
+          loadFile(event.dataTransfer.files[0]);
         }
 
       }
     );
 
-
-    /* Load File */
 
     function loadFile(file) {
 
@@ -953,17 +827,14 @@
         !file.type.startsWith("video/")
       ) {
 
-        alert(
-          "Please choose a valid image or video."
-        );
+        alert("Please choose a valid image or video.");
 
         return;
 
       }
 
 
-      selectedFile =
-        file;
+      selectedFile = file;
 
 
       fileType =
@@ -972,17 +843,25 @@
           : "image";
 
 
-      result.style.display =
-        "none";
+      result.style.display = "none";
+
+      progressContainer.style.display = "none";
+
+
+      if (downloadUrl) {
+
+        URL.revokeObjectURL(downloadUrl);
+
+        downloadUrl = null;
+
+      }
 
 
       if (fileType === "image") {
 
         loadImage(file);
 
-      }
-
-      else {
+      } else {
 
         loadVideo(file);
 
@@ -991,19 +870,24 @@
     }
 
 
-    /* Load Image */
-
     function loadImage(file) {
 
-      const reader =
-        new FileReader();
+      if (videoUrl) {
+
+        URL.revokeObjectURL(videoUrl);
+
+        videoUrl = null;
+
+      }
+
+
+      const reader = new FileReader();
 
 
       reader.onload =
         function(event) {
 
-          imageObject =
-            new Image();
+          imageObject = new Image();
 
 
           imageObject.onload =
@@ -1027,17 +911,23 @@
               formatSection.style.display =
                 "block";
 
-              qualitySection.style.display =
-                "block";
-
               videoSection.style.display =
                 "none";
+
+              qualitySection.style.display =
+                "block";
 
               convertSection.style.display =
                 "block";
 
+
+              convertButton.textContent =
+                "Convert Image";
+
+
               fileName.textContent =
                 file.name;
+
 
               fileDetails.textContent =
                 imageObject.naturalWidth
@@ -1048,9 +938,7 @@
                 +
                 " pixels · "
                 +
-                formatFileSize(
-                  file.size
-                );
+                formatFileSize(file.size);
 
             };
 
@@ -1059,7 +947,7 @@
             function() {
 
               alert(
-                "This image format cannot be read by your browser."
+                "This image cannot be read by your browser."
               );
 
             };
@@ -1076,20 +964,25 @@
     }
 
 
-    /* Load Video */
-
     function loadVideo(file) {
 
-      imageObject =
-        null;
+      imageObject = null;
 
 
-      const videoUrl =
+      if (videoUrl) {
+        URL.revokeObjectURL(videoUrl);
+      }
+
+
+      videoUrl =
         URL.createObjectURL(file);
 
 
       previewVideo.src =
         videoUrl;
+
+
+      previewVideo.load();
 
 
       previewVideo.onloadedmetadata =
@@ -1099,7 +992,7 @@
             "none";
 
           previewVideo.style.display =
-            "block";
+            "inline-block";
 
           previewContainer.style.display =
             "block";
@@ -1120,90 +1013,70 @@
             "block";
 
 
+          convertButton.textContent =
+            "Convert Video to GIF";
+
+
           fileName.textContent =
             file.name;
 
 
           fileDetails.textContent =
-            Math.round(
-              previewVideo.videoWidth
-            )
+            previewVideo.videoWidth
             +
             " × "
             +
-            Math.round(
-              previewVideo.videoHeight
-            )
+            previewVideo.videoHeight
             +
             " pixels · "
             +
-            formatDuration(
-              previewVideo.duration
-            )
+            formatDuration(previewVideo.duration)
             +
             " · "
             +
-            formatFileSize(
-              file.size
+            formatFileSize(file.size);
+
+
+          const maxDuration =
+            Math.min(
+              5,
+              Math.floor(previewVideo.duration)
             );
 
 
-          convertButton.textContent =
-            "Convert Video to GIF";
+          videoDuration.value =
+            Math.max(1, maxDuration);
+
+        };
+
+
+      previewVideo.onerror =
+        function() {
+
+          alert(
+            "This video cannot be read by your browser. Try MP4 or WebM."
+          );
 
         };
 
     }
 
 
-    /* Quality */
-
     quality.addEventListener(
       "input",
       function() {
 
         qualityValue.textContent =
-          quality.value
-          +
-          "%";
+          quality.value + "%";
 
       }
     );
 
-
-    /* Format Change */
-
-    document.querySelectorAll(
-      'input[name="format"]'
-    ).forEach(
-      function(input) {
-
-        input.addEventListener(
-          "change",
-          function() {
-
-            if (fileType === "image") {
-
-              convertButton.textContent =
-                "Convert Image";
-
-            }
-
-          }
-        );
-
-      }
-    );
-
-
-    /* Create Canvas */
 
     function createCanvas() {
 
       const canvas =
-        document.createElement(
-          "canvas"
-        );
+        document.createElement("canvas");
 
 
       canvas.width =
@@ -1215,9 +1088,7 @@
 
 
       const context =
-        canvas.getContext(
-          "2d"
-        );
+        canvas.getContext("2d");
 
 
       context.fillStyle =
@@ -1244,8 +1115,6 @@
     }
 
 
-    /* Convert Button */
-
     convertButton.addEventListener(
       "click",
       async function() {
@@ -1255,19 +1124,20 @@
         }
 
 
-        convertButton.disabled =
-          true;
+        convertButton.disabled = true;
 
+        result.style.display = "none";
 
-        progressContainer.style.display =
-          "block";
+        progressContainer.style.display = "block";
 
-
-        progressFill.style.width =
-          "0%";
+        updateProgress(0);
 
 
         try {
+
+          let blob;
+          let format;
+
 
           if (fileType === "video") {
 
@@ -1275,20 +1145,18 @@
               "Creating GIF...";
 
 
-            const blob =
+            blob =
               await convertVideoToGif();
 
 
-            showDownload(
-              blob,
-              "gif"
-            );
+            format =
+              "gif";
 
           }
 
           else {
 
-            const format =
+            format =
               document.querySelector(
                 'input[name="format"]:checked'
               ).value;
@@ -1296,9 +1164,6 @@
 
             convertButton.textContent =
               "Converting...";
-
-
-            let blob;
 
 
             if (format === "gif") {
@@ -1325,39 +1190,38 @@
             else {
 
               blob =
-                await convertStandard(
-                  format
-                );
+                await convertStandard(format);
 
             }
 
-
-            if (!blob) {
-
-              throw new Error(
-                "Conversion failed."
-              );
-
-            }
+          }
 
 
-            showDownload(
-              blob,
-              format
+          if (!blob) {
+
+            throw new Error(
+              "No output file was created."
             );
 
           }
+
+
+          showDownload(
+            blob,
+            format
+          );
 
         }
 
         catch(error) {
 
-          console.error(
-            error
-          );
+          console.error(error);
+
 
           alert(
-            "Conversion failed. Please try a smaller file or another format."
+            "Conversion failed: "
+            +
+            error.message
           );
 
         }
@@ -1379,8 +1243,6 @@
       }
     );
 
-
-    /* Standard Image Conversion */
 
     function convertStandard(format) {
 
@@ -1432,20 +1294,56 @@
     }
 
 
-    /* Image To GIF */
+    function createGifEncoder() {
+
+      if (typeof GIF === "undefined") {
+
+        throw new Error(
+          "GIF encoder library failed to load. Check your internet connection."
+        );
+
+      }
+
+
+      return new GIF({
+
+        workers: 2,
+
+        quality:
+          Math.max(
+            5,
+            20 -
+            Math.round(
+              Number(quality.value) / 5
+            )
+          ),
+
+        workerScript:
+          "https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js"
+
+      });
+
+    }
+
 
     function convertImageToGif() {
 
       return new Promise(
         function(resolve, reject) {
 
-          if (typeof GIF === "undefined") {
+          let gif;
 
-            reject(
-              new Error(
-                "GIF library failed to load."
-              )
-            );
+
+          try {
+
+            gif =
+              createGifEncoder();
+
+          }
+
+          catch(error) {
+
+            reject(error);
 
             return;
 
@@ -1454,26 +1352,6 @@
 
           const canvas =
             createCanvas();
-
-
-          const gif =
-            new GIF({
-
-              workers: 2,
-
-              quality:
-                Math.max(
-                  1,
-                  20 -
-                  Math.round(
-                    Number(quality.value) / 5
-                  )
-                ),
-
-              workerScript:
-                "https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js"
-
-            });
 
 
           gif.addFrame(
@@ -1490,8 +1368,15 @@
             function(progress) {
 
               updateProgress(
-                progress
+                progress * 100
               );
+
+              progressText.textContent =
+                "Creating GIF... "
+                +
+                Math.round(progress * 100)
+                +
+                "%";
 
             }
           );
@@ -1513,7 +1398,7 @@
 
               reject(
                 new Error(
-                  "GIF creation stopped."
+                  "GIF conversion was stopped."
                 )
               );
 
@@ -1529,214 +1414,379 @@
     }
 
 
-    /* Video To GIF */
-
-    async function convertVideoToGif() {
+    async function seekVideo(video, time) {
 
       return new Promise(
         function(resolve, reject) {
 
-          if (typeof GIF === "undefined") {
+          const timeout =
+            setTimeout(
+              function() {
+
+                cleanup();
+
+                reject(
+                  new Error(
+                    "Video frame loading timed out."
+                  )
+                );
+
+              },
+              8000
+            );
+
+
+          function cleanup() {
+
+            clearTimeout(timeout);
+
+            video.removeEventListener(
+              "seeked",
+              onSeeked
+            );
+
+            video.removeEventListener(
+              "error",
+              onError
+            );
+
+          }
+
+
+          function onSeeked() {
+
+            cleanup();
+
+            resolve();
+
+          }
+
+
+          function onError() {
+
+            cleanup();
 
             reject(
               new Error(
-                "GIF library failed to load."
+                "Unable to read video frame."
               )
             );
+
+          }
+
+
+          video.addEventListener(
+            "seeked",
+            onSeeked,
+            { once: true }
+          );
+
+
+          video.addEventListener(
+            "error",
+            onError,
+            { once: true }
+          );
+
+
+          if (
+            Math.abs(
+              video.currentTime - time
+            ) < 0.02
+          ) {
+
+            cleanup();
+
+            resolve();
 
             return;
 
           }
 
 
-          const video =
-            previewVideo;
-
-
-          const maxDuration =
+          video.currentTime =
             Math.min(
-              video.duration,
-              15
+              time,
+              Math.max(
+                0,
+                video.duration - 0.01
+              )
             );
 
+        }
+      );
 
-          const maxWidth =
-            480;
-
-
-          let width =
-            video.videoWidth;
+    }
 
 
-          let height =
-            video.videoHeight;
+    async function convertVideoToGif() {
+
+      let gif;
 
 
-          if (width > maxWidth) {
+      try {
 
-            const ratio =
-              maxWidth / width;
+        gif =
+          createGifEncoder();
 
-            width =
-              Math.round(
-                width * ratio
-              );
+      }
 
-            height =
-              Math.round(
-                height * ratio
-              );
+      catch(error) {
+
+        throw error;
+
+      }
+
+
+      const video =
+        previewVideo;
+
+
+      video.pause();
+
+
+      if (
+        !isFinite(video.duration)
+        ||
+        video.duration <= 0
+      ) {
+
+        throw new Error(
+          "Video duration could not be determined."
+        );
+
+      }
+
+
+      const start =
+        Math.max(
+          0,
+          Number(videoStart.value) || 0
+        );
+
+
+      const requestedDuration =
+        Math.max(
+          1,
+          Number(videoDuration.value) || 5
+        );
+
+
+      const availableDuration =
+        video.duration - start;
+
+
+      if (availableDuration <= 0) {
+
+        throw new Error(
+          "Start time is outside the video."
+        );
+
+      }
+
+
+      const duration =
+        Math.min(
+          requestedDuration,
+          availableDuration,
+          15
+        );
+
+
+      const fps =
+        Math.min(
+          12,
+          Math.max(
+            2,
+            Number(videoFps.value) || 8
+          )
+        );
+
+
+      const targetWidth =
+        Number(videoWidth.value) || 320;
+
+
+      let width =
+        video.videoWidth;
+
+
+      let height =
+        video.videoHeight;
+
+
+      if (
+        width <= 0
+        ||
+        height <= 0
+      ) {
+
+        throw new Error(
+          "Video dimensions could not be read."
+        );
+
+      }
+
+
+      if (width > targetWidth) {
+
+        const ratio =
+          targetWidth / width;
+
+
+        width =
+          Math.round(width * ratio);
+
+
+        height =
+          Math.round(height * ratio);
+
+      }
+
+
+      if (width % 2 !== 0) {
+        width--;
+      }
+
+
+      if (height % 2 !== 0) {
+        height--;
+      }
+
+
+      const canvas =
+        document.createElement("canvas");
+
+
+      canvas.width =
+        width;
+
+
+      canvas.height =
+        height;
+
+
+      const context =
+        canvas.getContext(
+          "2d",
+          {
+            willReadFrequently: true
+          }
+        );
+
+
+      const frameCount =
+        Math.max(
+          1,
+          Math.floor(
+            duration * fps
+          )
+        );
+
+
+      const frameDelay =
+        Math.round(
+          1000 / fps
+        );
+
+
+      progressText.textContent =
+        "Preparing "
+        +
+        frameCount
+        +
+        " frames...";
+
+
+      for (
+        let frame = 0;
+        frame < frameCount;
+        frame++
+      ) {
+
+        const frameTime =
+          start
+          +
+          frame / fps;
+
+
+        await seekVideo(
+          video,
+          frameTime
+        );
+
+
+        context.drawImage(
+          video,
+          0,
+          0,
+          width,
+          height
+        );
+
+
+        gif.addFrame(
+          canvas,
+          {
+            copy: true,
+            delay: frameDelay
+          }
+        );
+
+
+        const progress =
+          (
+            frame + 1
+          )
+          /
+          frameCount;
+
+
+        updateProgress(
+          progress * 50
+        );
+
+
+        progressText.textContent =
+          "Capturing frame "
+          +
+          (
+            frame + 1
+          )
+          +
+          " of "
+          +
+          frameCount;
+
+
+        await new Promise(
+          function(resolve) {
+
+            setTimeout(
+              resolve,
+              0
+            );
 
           }
+        );
+
+      }
 
 
-          const canvas =
-            document.createElement(
-              "canvas"
-            );
+      progressText.textContent =
+        "Encoding GIF...";
 
 
-          canvas.width =
-            width;
-
-
-          canvas.height =
-            height;
-
-
-          const context =
-            canvas.getContext(
-              "2d"
-            );
-
-
-          const gif =
-            new GIF({
-
-              workers: 2,
-
-              quality:
-                Math.max(
-                  5,
-                  20 -
-                  Math.round(
-                    Number(quality.value) / 5
-                  )
-                ),
-
-              workerScript:
-                "https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js"
-
-            });
-
-
-          const frameRate =
-            8;
-
-
-          const frameDelay =
-            1000 / frameRate;
-
-
-          const totalFrames =
-            Math.floor(
-              maxDuration *
-              frameRate
-            );
-
-
-          let frame =
-            0;
-
-
-          video.pause();
-
-
-          function captureNextFrame() {
-
-            if (
-              frame >= totalFrames
-            ) {
-
-              progressText.textContent =
-                "Creating GIF...";
-
-
-              gif.render();
-
-              return;
-
-            }
-
-
-            const time =
-              frame / frameRate;
-
-
-            video.currentTime =
-              time;
-
-
-            video.onseeked =
-              function() {
-
-                context.drawImage(
-                  video,
-                  0,
-                  0,
-                  width,
-                  height
-                );
-
-
-                gif.addFrame(
-                  canvas,
-                  {
-                    copy: true,
-                    delay: frameDelay
-                  }
-                );
-
-
-                frame++;
-
-
-                const progress =
-                  frame /
-                  totalFrames;
-
-
-                updateProgress(
-                  progress * 0.5
-                );
-
-
-                progressText.textContent =
-                  "Capturing frame "
-                  +
-                  frame
-                  +
-                  " of "
-                  +
-                  totalFrames;
-
-
-                setTimeout(
-                  captureNextFrame,
-                  20
-                );
-
-              };
-
-          }
-
+      return new Promise(
+        function(resolve, reject) {
 
           gif.on(
             "progress",
             function(progress) {
 
               updateProgress(
-                50 +
+                50
+                +
                 progress * 50
               );
 
@@ -1758,9 +1808,9 @@
             "finished",
             function(blob) {
 
-              resolve(
-                blob
-              );
+              updateProgress(100);
+
+              resolve(blob);
 
             }
           );
@@ -1772,7 +1822,7 @@
 
               reject(
                 new Error(
-                  "GIF creation stopped."
+                  "GIF creation was stopped."
                 )
               );
 
@@ -1780,19 +1830,23 @@
           );
 
 
-          video.currentTime =
-            0;
+          try {
 
+            gif.render();
 
-          captureNextFrame();
+          }
+
+          catch(error) {
+
+            reject(error);
+
+          }
 
         }
       );
 
     }
 
-
-    /* BMP */
 
     function convertToBmp() {
 
@@ -1801,9 +1855,7 @@
 
 
       const context =
-        canvas.getContext(
-          "2d"
-        );
+        canvas.getContext("2d");
 
 
       const imageData =
@@ -1825,7 +1877,9 @@
 
       const rowSize =
         Math.floor(
-          (width * 3 + 3) / 4
+          (
+            width * 3 + 3
+          ) / 4
         ) * 4;
 
 
@@ -1838,26 +1892,15 @@
 
 
       const buffer =
-        new ArrayBuffer(
-          fileSize
-        );
+        new ArrayBuffer(fileSize);
 
 
       const view =
-        new DataView(
-          buffer
-        );
+        new DataView(buffer);
 
 
-      view.setUint8(
-        0,
-        0x42
-      );
-
-      view.setUint8(
-        1,
-        0x4D
-      );
+      view.setUint8(0, 0x42);
+      view.setUint8(1, 0x4D);
 
       view.setUint32(
         2,
@@ -1946,9 +1989,7 @@
 
           const pixel =
             (
-              y *
-              width +
-              x
+              y * width + x
             ) * 4;
 
 
@@ -1995,8 +2036,6 @@
     }
 
 
-    /* ICO */
-
     function convertToIco() {
 
       return new Promise(
@@ -2016,9 +2055,7 @@
 
 
           const canvas =
-            document.createElement(
-              "canvas"
-            );
+            document.createElement("canvas");
 
 
           canvas.width =
@@ -2030,9 +2067,7 @@
 
 
           const context =
-            canvas.getContext(
-              "2d"
-            );
+            canvas.getContext("2d");
 
 
           context.clearRect(
@@ -2045,39 +2080,43 @@
 
           const scale =
             Math.min(
-              size /
-              imageObject.naturalWidth,
-
-              size /
-              imageObject.naturalHeight
+              size / imageObject.naturalWidth,
+              size / imageObject.naturalHeight
             );
 
 
           const width =
-            imageObject.naturalWidth *
-            scale;
+            imageObject.naturalWidth * scale;
 
 
           const height =
-            imageObject.naturalHeight *
-            scale;
+            imageObject.naturalHeight * scale;
 
 
           context.drawImage(
             imageObject,
-
             (size - width) / 2,
-
             (size - height) / 2,
-
             width,
-
             height
           );
 
 
           canvas.toBlob(
             async function(pngBlob) {
+
+              if (!pngBlob) {
+
+                reject(
+                  new Error(
+                    "Unable to create icon image."
+                  )
+                );
+
+                return;
+
+              }
+
 
               try {
 
@@ -2091,15 +2130,14 @@
 
                 const buffer =
                   new ArrayBuffer(
-                    imageOffset +
+                    imageOffset
+                    +
                     pngBuffer.byteLength
                   );
 
 
                 const view =
-                  new DataView(
-                    buffer
-                  );
+                  new DataView(buffer);
 
 
                 view.setUint16(
@@ -2171,15 +2209,11 @@
 
 
                 const output =
-                  new Uint8Array(
-                    buffer
-                  );
+                  new Uint8Array(buffer);
 
 
                 output.set(
-                  new Uint8Array(
-                    pngBuffer
-                  ),
+                  new Uint8Array(pngBuffer),
                   imageOffset
                 );
 
@@ -2188,8 +2222,7 @@
                   new Blob(
                     [buffer],
                     {
-                      type:
-                        "image/x-icon"
+                      type: "image/x-icon"
                     }
                   )
                 );
@@ -2198,9 +2231,7 @@
 
               catch(error) {
 
-                reject(
-                  error
-                );
+                reject(error);
 
               }
 
@@ -2214,33 +2245,25 @@
     }
 
 
-    /* Progress */
-
     function updateProgress(value) {
 
       const percent =
-        Math.min(
-          100,
-          Math.round(
-            value
+        Math.max(
+          0,
+          Math.min(
+            100,
+            Math.round(value)
           )
         );
 
 
       progressFill.style.width =
-        percent
-        +
-        "%";
+        percent + "%";
 
     }
 
 
-    /* Download */
-
-    function showDownload(
-      blob,
-      format
-    ) {
+    function showDownload(blob, format) {
 
       if (downloadUrl) {
 
@@ -2252,9 +2275,7 @@
 
 
       downloadUrl =
-        URL.createObjectURL(
-          blob
-        );
+        URL.createObjectURL(blob);
 
 
       const name =
@@ -2302,63 +2323,49 @@
     }
 
 
-    /* File Size */
-
     function formatFileSize(bytes) {
 
       if (bytes < 1024) {
 
-        return (
-          bytes
-          +
-          " B"
-        );
+        return bytes + " B";
 
       }
 
 
-      if (
-        bytes <
-        1024 * 1024
-      ) {
+      if (bytes < 1024 * 1024) {
 
         return (
-          (
-            bytes / 1024
-          ).toFixed(1)
-          +
-          " KB"
-        );
+          bytes / 1024
+        ).toFixed(1)
+        +
+        " KB";
 
       }
 
 
       return (
-        (
-          bytes /
-          (1024 * 1024)
-        ).toFixed(1)
-        +
-        " MB"
-      );
+        bytes /
+        (1024 * 1024)
+      ).toFixed(1)
+      +
+      " MB";
 
     }
 
 
-    /* Duration */
-
     function formatDuration(seconds) {
 
+      if (!isFinite(seconds)) {
+        return "Unknown";
+      }
+
+
       const minutes =
-        Math.floor(
-          seconds / 60
-        );
+        Math.floor(seconds / 60);
 
 
       const remainingSeconds =
-        Math.floor(
-          seconds % 60
-        );
+        Math.floor(seconds % 60);
 
 
       return (
@@ -2375,6 +2382,22 @@
       );
 
     }
+
+
+    window.addEventListener(
+      "beforeunload",
+      function() {
+
+        if (downloadUrl) {
+          URL.revokeObjectURL(downloadUrl);
+        }
+
+        if (videoUrl) {
+          URL.revokeObjectURL(videoUrl);
+        }
+
+      }
+    );
 
   </script>
 
