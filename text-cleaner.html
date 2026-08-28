@@ -3,27 +3,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <title>Case Converter - Free Online Text Tool</title>
+  <title>Text Cleaner - Free Online Text Tool</title>
 
 <meta
 name="description"
-content="Free online case converter. Convert text to uppercase, lowercase, title case, sentence case, camel case, snake case and more."
+content="Free online text cleaner. Remove extra spaces, empty lines, tabs, invisible characters and duplicate lines."
 
 >
 
   <style>
+
     * {
       box-sizing: border-box;
     }
 
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
       background: #f4f7fb;
-      margin: 0;
       color: #222;
     }
+
+    /* Navigation */
 
     nav {
       background: #ffffff;
@@ -56,8 +62,10 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
       color: #000;
     }
 
+    /* Main */
+
     .container {
-      max-width: 850px;
+      max-width: 1000px;
       margin: 40px auto;
       padding: 30px;
       background: white;
@@ -73,18 +81,32 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
     .subtitle {
       text-align: center;
       color: #777;
-      margin-bottom: 25px;
+      margin-bottom: 30px;
       line-height: 1.5;
+    }
+
+    /* Text Editors */
+
+    .editor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .editor-box label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
     }
 
     textarea {
       width: 100%;
-      height: 250px;
+      height: 300px;
       padding: 15px;
       font-family: Arial, sans-serif;
-      font-size: 16px;
+      font-size: 15px;
       border: 1px solid #ccc;
-      border-radius: 10px;
+      border-radius: 8px;
       resize: vertical;
     }
 
@@ -93,15 +115,41 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
       border-color: #888;
     }
 
-    .convert-buttons {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 20px;
+    /* Options */
+
+    .options {
+      margin-top: 25px;
+      padding: 20px;
+      background: #f4f7fb;
+      border-radius: 10px;
     }
 
+    .options h2 {
+      margin: 0 0 18px;
+      font-size: 20px;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .option input {
+      width: auto;
+      cursor: pointer;
+    }
+
+    /* Buttons */
+
     button {
-      padding: 12px;
       border: none;
       border-radius: 8px;
       background: #222;
@@ -114,9 +162,29 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
       opacity: 0.85;
     }
 
-    .statistics {
+    .main-button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      font-size: 16px;
+    }
+
+    .action-buttons {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .action-buttons button {
+      padding: 13px;
+    }
+
+    /* Statistics */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 15px;
       margin-top: 25px;
     }
@@ -124,8 +192,8 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
     .stat {
       background: #f4f7fb;
       padding: 18px;
-      text-align: center;
       border-radius: 10px;
+      text-align: center;
     }
 
     .stat strong {
@@ -138,16 +206,7 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
       color: #666;
     }
 
-    .action-buttons {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .action-buttons button {
-      padding: 13px;
-    }
+    /* Information */
 
     .info {
       margin-top: 30px;
@@ -162,13 +221,18 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
       color: #222;
     }
 
+    /* Footer */
+
     footer {
       text-align: center;
       padding: 30px;
       color: #777;
     }
 
+    /* Mobile */
+
     @media (max-width: 700px) {
+
       nav {
         padding: 15px 20px;
       }
@@ -182,136 +246,310 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
         padding: 20px;
       }
 
-      .convert-buttons {
-        grid-template-columns: repeat(2, 1fr);
+      .editor-grid {
+        grid-template-columns: 1fr;
       }
+
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+
     }
 
     @media (max-width: 450px) {
-      .convert-buttons,
-      .statistics,
+
+      .stats,
       .action-buttons {
         grid-template-columns: 1fr;
       }
+
     }
+
   </style>
 
 </head>
 
 <body>
 
+  <!-- Navigation -->
+
   <nav>
-    <a href="index.html" class="logo">
-      Text <span>Tools</span>
-    </a>
 
 ```
+<a
+  href="index.html"
+  class="logo"
+>
+  Text <span>Tools</span>
+</a>
+
 <div class="nav-links">
-  <a href="index.html#tools">All Tools</a>
+
+  <a href="index.html#tools">
+    All Tools
+  </a>
+
 </div>
 ```
 
   </nav>
 
+  <!-- Main -->
+
   <main class="container">
 
 ```
-<h1>Case Converter</h1>
+<h1>Text Cleaner</h1>
 
 <p class="subtitle">
-  Convert your text into different letter cases instantly and easily.
+  Clean messy text by removing unwanted spaces, empty lines,
+  tabs, invisible characters and duplicate lines.
 </p>
 
-<textarea
-  id="text"
-  placeholder="Type or paste your text here..."
-></textarea>
 
-<div class="convert-buttons">
+<!-- Text Editors -->
 
-  <button onclick="toUpperCase()">
-    UPPERCASE
-  </button>
+<div class="editor-grid">
 
-  <button onclick="toLowerCase()">
-    lowercase
-  </button>
+  <div class="editor-box">
 
-  <button onclick="toTitleCase()">
-    Title Case
-  </button>
+    <label for="textInput">
+      Your Text
+    </label>
 
-  <button onclick="toSentenceCase()">
-    Sentence case
-  </button>
+    <textarea
+      id="textInput"
+      placeholder="Paste your text here..."
+    ></textarea>
 
-  <button onclick="toCamelCase()">
-    camelCase
-  </button>
-
-  <button onclick="toPascalCase()">
-    PascalCase
-  </button>
-
-  <button onclick="toSnakeCase()">
-    snake_case
-  </button>
-
-  <button onclick="toKebabCase()">
-    kebab-case
-  </button>
-
-  <button onclick="toConstantCase()">
-    CONSTANT_CASE
-  </button>
-
-  <button onclick="toDotCase()">
-    dot.case
-  </button>
-
-  <button onclick="toAlternatingCase()">
-    aLtErNaTiNg
-  </button>
-
-  <button onclick="toInverseCase()">
-    iNVERSE cASE
-  </button>
-
-</div>
-
-<div class="statistics">
-
-  <div class="stat">
-    <strong id="wordCount">0</strong>
-    <span>Words</span>
   </div>
 
-  <div class="stat">
-    <strong id="characterCount">0</strong>
-    <span>Characters</span>
+
+  <div class="editor-box">
+
+    <label for="textOutput">
+      Cleaned Text
+    </label>
+
+    <textarea
+      id="textOutput"
+      placeholder="Your cleaned text will appear here..."
+      readonly
+    ></textarea>
+
   </div>
 
 </div>
+
+
+<!-- Cleaning Options -->
+
+<div class="options">
+
+  <h2>Cleaning Options</h2>
+
+  <div class="options-grid">
+
+    <label class="option">
+
+      <input
+        type="checkbox"
+        id="extraSpaces"
+        checked
+      >
+
+      Remove extra spaces
+
+    </label>
+
+
+    <label class="option">
+
+      <input
+        type="checkbox"
+        id="emptyLines"
+        checked
+      >
+
+      Remove empty lines
+
+    </label>
+
+
+    <label class="option">
+
+      <input
+        type="checkbox"
+        id="trimLines"
+        checked
+      >
+
+      Trim spaces from each line
+
+    </label>
+
+
+    <label class="option">
+
+      <input
+        type="checkbox"
+        id="tabs"
+        checked
+      >
+
+      Replace tabs with spaces
+
+    </label>
+
+
+    <label class="option">
+
+      <input
+        type="checkbox"
+        id="normalizeBreaks"
+        checked
+      >
+
+      Normalize line breaks
+
+    </label>
+
+
+    <label class="option">
+
+      <input
+        type="checkbox"
+        id="invisibleCharacters"
+        checked
+      >
+
+      Remove invisible characters
+
+    </label>
+
+
+    <label class="option">
+
+      <input
+        type="checkbox"
+        id="smartQuotes"
+      >
+
+      Convert smart quotes
+
+    </label>
+
+
+    <label class="option">
+
+      <input
+        type="checkbox"
+        id="repeatedPunctuation"
+      >
+
+      Reduce repeated punctuation
+
+    </label>
+
+
+    <label class="option">
+
+      <input
+        type="checkbox"
+        id="duplicates"
+      >
+
+      Remove duplicate lines
+
+    </label>
+
+  </div>
+
+</div>
+
+
+<!-- Clean Button -->
+
+<button
+  class="main-button"
+  onclick="cleanText()"
+>
+  Clean Text
+</button>
+
+
+<!-- Statistics -->
+
+<div class="stats">
+
+  <div class="stat">
+
+    <strong id="lineCount">
+      0
+    </strong>
+
+    <span>
+      Lines
+    </span>
+
+  </div>
+
+
+  <div class="stat">
+
+    <strong id="wordCount">
+      0
+    </strong>
+
+    <span>
+      Words
+    </span>
+
+  </div>
+
+
+  <div class="stat">
+
+    <strong id="characterCount">
+      0
+    </strong>
+
+    <span>
+      Characters
+    </span>
+
+  </div>
+
+</div>
+
+
+<!-- Action Buttons -->
 
 <div class="action-buttons">
 
   <button onclick="copyText()">
-    Copy Text
+    Copy Result
   </button>
 
   <button onclick="clearText()">
-    Clear Text
+    Clear
   </button>
 
 </div>
 
+
+<!-- Information -->
+
 <div class="info">
 
-  <strong>How to use Case Converter:</strong>
+  <strong>
+    How to use Text Cleaner:
+  </strong>
 
   <p>
-    Type or paste your text into the box above, then choose the
-    text format you want. Your text will be converted instantly.
+    Paste your text into the input box, select the cleaning options
+    you want, and click Clean Text. Your cleaned text will appear
+    in the result box.
   </p>
 
 </div>
@@ -319,258 +557,383 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
 
   </main>
 
+  <!-- Footer -->
+
   <footer>
-    © 2026 Text Tools · Simple, Fast & Free
+
+```
+© 2026 Text Tools · Simple, Fast & Free
+```
+
   </footer>
 
   <script>
 
-    const text = document.getElementById("text");
+    const input =
+      document.getElementById(
+        "textInput"
+      );
 
-    text.addEventListener("input", updateStatistics);
+
+    const output =
+      document.getElementById(
+        "textOutput"
+      );
+
+
+    /* Clean Text */
+
+    function cleanText() {
+
+      let value =
+        input.value;
+
+
+      if (
+        value.trim() === ""
+      ) {
+
+        alert(
+          "Please enter some text first."
+        );
+
+        return;
+
+      }
+
+
+      /* Normalize Line Breaks */
+
+      if (
+        document.getElementById(
+          "normalizeBreaks"
+        ).checked
+      ) {
+
+        value =
+          value
+            .replace(
+              /\r\n/g,
+              "\n"
+            )
+            .replace(
+              /\r/g,
+              "\n"
+            );
+
+      }
+
+
+      /* Remove Invisible Characters */
+
+      if (
+        document.getElementById(
+          "invisibleCharacters"
+        ).checked
+      ) {
+
+        value =
+          value.replace(
+            /[\u200B-\u200D\uFEFF]/g,
+            ""
+          );
+
+      }
+
+
+      /* Replace Tabs */
+
+      if (
+        document.getElementById(
+          "tabs"
+        ).checked
+      ) {
+
+        value =
+          value.replace(
+            /\t+/g,
+            " "
+          );
+
+      }
+
+
+      /* Convert Smart Quotes */
+
+      if (
+        document.getElementById(
+          "smartQuotes"
+        ).checked
+      ) {
+
+        value =
+          value
+            .replace(
+              /[“”]/g,
+              '"'
+            )
+            .replace(
+              /[‘’]/g,
+              "'"
+            );
+
+      }
+
+
+      /* Trim Each Line */
+
+      if (
+        document.getElementById(
+          "trimLines"
+        ).checked
+      ) {
+
+        value =
+          value
+            .split("\n")
+            .map(
+              function(line) {
+
+                return line.trim();
+
+              }
+            )
+            .join("\n");
+
+      }
+
+
+      /* Remove Extra Spaces */
+
+      if (
+        document.getElementById(
+          "extraSpaces"
+        ).checked
+      ) {
+
+        value =
+          value.replace(
+            / {2,}/g,
+            " "
+          );
+
+      }
+
+
+      /* Reduce Repeated Punctuation */
+
+      if (
+        document.getElementById(
+          "repeatedPunctuation"
+        ).checked
+      ) {
+
+        value =
+          value
+            .replace(
+              /!{2,}/g,
+              "!"
+            )
+            .replace(
+              /\?{2,}/g,
+              "?"
+            )
+            .replace(
+              /\.{4,}/g,
+              "..."
+            );
+
+      }
+
+
+      /* Remove Empty Lines */
+
+      if (
+        document.getElementById(
+          "emptyLines"
+        ).checked
+      ) {
+
+        value =
+          value
+            .split("\n")
+            .filter(
+              function(line) {
+
+                return (
+                  line.trim() !== ""
+                );
+
+              }
+            )
+            .join("\n");
+
+      }
+
+
+      /* Remove Duplicate Lines */
+
+      if (
+        document.getElementById(
+          "duplicates"
+        ).checked
+      ) {
+
+        const lines =
+          value.split("\n");
+
+
+        const uniqueLines =
+          [];
+
+
+        const seen =
+          new Set();
+
+
+        lines.forEach(
+          function(line) {
+
+            const key =
+              line
+                .trim()
+                .toLowerCase();
+
+
+            if (
+              !seen.has(key)
+            ) {
+
+              seen.add(key);
+
+              uniqueLines.push(
+                line
+              );
+
+            }
+
+          }
+        );
+
+
+        value =
+          uniqueLines.join(
+            "\n"
+          );
+
+      }
+
+
+      /* Display Result */
+
+      output.value =
+        value;
+
+
+      updateStatistics();
+
+    }
+
+
+    /* Update Statistics */
 
     function updateStatistics() {
 
-      const value = text.value;
+      const value =
+        output.value;
 
-      const words =
+
+      const lineCount =
         value.trim() === ""
           ? 0
-          : value.trim().split(/\s+/).length;
+          : value
+              .split("\n")
+              .filter(
+                function(line) {
 
-      document.getElementById("wordCount").textContent = words;
+                  return (
+                    line.trim() !== ""
+                  );
 
-      document.getElementById("characterCount").textContent =
+                }
+              )
+              .length;
+
+
+      const wordCount =
+        value.trim() === ""
+          ? 0
+          : value
+              .trim()
+              .split(/\s+/)
+              .length;
+
+
+      document.getElementById(
+        "lineCount"
+      ).textContent =
+        lineCount;
+
+
+      document.getElementById(
+        "wordCount"
+      ).textContent =
+        wordCount;
+
+
+      document.getElementById(
+        "characterCount"
+      ).textContent =
         value.length;
 
     }
 
-    function getWords() {
 
-      return text.value
-        .trim()
-        .split(/[^a-zA-Z0-9]+/)
-        .filter(function(word) {
-          return word !== "";
-        });
-
-    }
-
-    function toUpperCase() {
-      text.value = text.value.toUpperCase();
-      updateStatistics();
-    }
-
-    function toLowerCase() {
-      text.value = text.value.toLowerCase();
-      updateStatistics();
-    }
-
-    function toTitleCase() {
-
-      text.value = text.value
-        .toLowerCase()
-        .replace(/\b\w/g, function(letter) {
-          return letter.toUpperCase();
-        });
-
-      updateStatistics();
-
-    }
-
-    function toSentenceCase() {
-
-      const value = text.value.toLowerCase();
-
-      text.value = value.replace(
-        /(^\s*\w|[.!?]\s+\w)/g,
-        function(letter) {
-          return letter.toUpperCase();
-        }
-      );
-
-      updateStatistics();
-
-    }
-
-    function toCamelCase() {
-
-      const words = getWords();
-
-      if (words.length === 0) {
-        return;
-      }
-
-      text.value =
-        words[0].toLowerCase() +
-        words.slice(1)
-          .map(function(word) {
-            return (
-              word.charAt(0).toUpperCase() +
-              word.slice(1).toLowerCase()
-            );
-          })
-          .join("");
-
-      updateStatistics();
-
-    }
-
-    function toPascalCase() {
-
-      const words = getWords();
-
-      text.value =
-        words
-          .map(function(word) {
-            return (
-              word.charAt(0).toUpperCase() +
-              word.slice(1).toLowerCase()
-            );
-          })
-          .join("");
-
-      updateStatistics();
-
-    }
-
-    function toSnakeCase() {
-
-      text.value =
-        getWords()
-          .map(function(word) {
-            return word.toLowerCase();
-          })
-          .join("_");
-
-      updateStatistics();
-
-    }
-
-    function toKebabCase() {
-
-      text.value =
-        getWords()
-          .map(function(word) {
-            return word.toLowerCase();
-          })
-          .join("-");
-
-      updateStatistics();
-
-    }
-
-    function toConstantCase() {
-
-      text.value =
-        getWords()
-          .map(function(word) {
-            return word.toUpperCase();
-          })
-          .join("_");
-
-      updateStatistics();
-
-    }
-
-    function toDotCase() {
-
-      text.value =
-        getWords()
-          .map(function(word) {
-            return word.toLowerCase();
-          })
-          .join(".");
-
-      updateStatistics();
-
-    }
-
-    function toAlternatingCase() {
-
-      let result = "";
-      let upper = true;
-
-      for (let i = 0; i < text.value.length; i++) {
-
-        const character = text.value[i];
-
-        if (/[a-zA-Z]/.test(character)) {
-
-          result += upper
-            ? character.toUpperCase()
-            : character.toLowerCase();
-
-          upper = !upper;
-
-        } else {
-
-          result += character;
-
-        }
-
-      }
-
-      text.value = result;
-
-      updateStatistics();
-
-    }
-
-    function toInverseCase() {
-
-      let result = "";
-
-      for (let i = 0; i < text.value.length; i++) {
-
-        const character = text.value[i];
-
-        if (
-          character >= "a" &&
-          character <= "z"
-        ) {
-
-          result += character.toUpperCase();
-
-        } else if (
-          character >= "A" &&
-          character <= "Z"
-        ) {
-
-          result += character.toLowerCase();
-
-        } else {
-
-          result += character;
-
-        }
-
-      }
-
-      text.value = result;
-
-      updateStatistics();
-
-    }
+    /* Copy Result */
 
     function copyText() {
 
-      if (text.value.trim() === "") {
-        alert("There is no text to copy.");
+      if (
+        output.value.trim() === ""
+      ) {
+
+        alert(
+          "There is no cleaned text to copy."
+        );
+
         return;
+
       }
 
+
       navigator.clipboard
-        .writeText(text.value)
-        .then(function() {
-          alert("Text copied!");
-        });
+        .writeText(
+          output.value
+        )
+        .then(
+          function() {
+
+            alert(
+              "Cleaned text copied!"
+            );
+
+          }
+        );
 
     }
 
+
+    /* Clear */
+
     function clearText() {
 
-      text.value = "";
+      input.value =
+        "";
+
+
+      output.value =
+        "";
+
 
       updateStatistics();
 
