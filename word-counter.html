@@ -1,27 +1,31 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Word Counter - Free Online Text Tool</title>
 
-<meta
-name="description"
-content="Free online word counter. Count words, characters, sentences, paragraphs, reading time, speaking time and more."
-
->
+  <meta
+    name="description"
+    content="Free online word counter. Count words, characters, sentences, paragraphs, reading time, speaking time and more."
+  >
 
   <style>
+
     * {
       box-sizing: border-box;
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f7fb;
       margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f6f7fb;
       color: #222;
     }
 
@@ -31,6 +35,7 @@ content="Free online word counter. Count words, characters, sentences, paragraph
       background: #ffffff;
       border-bottom: 1px solid #e5e5e5;
       padding: 18px 30px;
+
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -50,7 +55,6 @@ content="Free online word counter. Count words, characters, sentences, paragraph
     .nav-links a {
       text-decoration: none;
       color: #555;
-      margin-left: 20px;
       font-size: 15px;
     }
 
@@ -61,64 +65,56 @@ content="Free online word counter. Count words, characters, sentences, paragraph
     /* Main */
 
     .container {
-      max-width: 800px;
+      max-width: 1000px;
       margin: 40px auto;
       padding: 30px;
-      background: white;
+
+      background: #ffffff;
       border-radius: 16px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+
+      box-shadow:
+        0 5px 25px
+        rgba(0, 0, 0, 0.08);
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 8px;
+      margin: 0 0 8px;
     }
 
     .subtitle {
       text-align: center;
       color: #777;
-      margin-bottom: 25px;
+      margin: 0 0 30px;
       line-height: 1.5;
     }
 
+    /* Text Area */
+
     textarea {
       width: 100%;
-      height: 250px;
+      height: 280px;
       padding: 15px;
+
+      font-family: Arial, sans-serif;
       font-size: 16px;
+
       border: 1px solid #ccc;
-      border-radius: 10px;
+      border-radius: 8px;
+
       resize: vertical;
     }
 
-    /* Buttons */
-
-    .buttons {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 15px;
-    }
-
-    button {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      background: #222;
-      color: white;
-      font-size: 15px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      opacity: 0.85;
+    textarea:focus {
+      outline: none;
+      border-color: #888;
     }
 
     /* Results */
 
     .results {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 15px;
       margin-top: 25px;
     }
@@ -132,20 +128,69 @@ content="Free online word counter. Count words, characters, sentences, paragraph
 
     .result-card strong {
       display: block;
-      font-size: 28px;
-      margin-bottom: 5px;
+      font-size: 26px;
+      margin-bottom: 6px;
     }
 
     .result-card span {
       color: #666;
+      font-size: 14px;
+    }
+
+    /* Buttons */
+
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    button {
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+
+      background: #222;
+      color: white;
+
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    /* Info */
+
+    .info {
+      margin-top: 30px;
+      padding: 20px;
+
+      background: #f4f7fb;
+      border-radius: 10px;
+
+      color: #555;
+      line-height: 1.6;
     }
 
     /* Footer */
 
     footer {
       text-align: center;
-      padding: 25px;
+      padding: 30px;
       color: #777;
+    }
+
+    /* Tablet */
+
+    @media (max-width: 850px) {
+
+      .results {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
     }
 
     /* Mobile */
@@ -154,6 +199,10 @@ content="Free online word counter. Count words, characters, sentences, paragraph
 
       nav {
         padding: 15px 20px;
+      }
+
+      .logo {
+        font-size: 20px;
       }
 
       .nav-links {
@@ -165,125 +214,260 @@ content="Free online word counter. Count words, characters, sentences, paragraph
         padding: 20px;
       }
 
-      button {
-        flex: 1;
+      textarea {
+        height: 220px;
+      }
+
+      .results {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .result-card {
+        padding: 15px 10px;
+      }
+
+      .result-card strong {
+        font-size: 22px;
+      }
+
+      .action-buttons {
+        grid-template-columns: 1fr;
       }
 
     }
+
   </style>
 
 </head>
 
+
 <body>
+
 
   <!-- Navigation -->
 
   <nav>
 
-```
-<a href="index.html" class="logo">
-  Text <span>Tools</span>
-</a>
+    <a
+      href="index.html"
+      class="logo"
+    >
+      Text <span>Tools</span>
+    </a>
 
-<div class="nav-links">
-  <a href="index.html#tools">All Tools</a>
-</div>
-```
+
+    <div class="nav-links">
+
+      <a href="index.html#tools">
+        All Tools
+      </a>
+
+    </div>
 
   </nav>
 
-  <!-- Main Tool -->
+
+
+  <!-- Main -->
 
   <main class="container">
 
-```
-<h1>Word Counter</h1>
 
-<p class="subtitle">
-  Count and analyze your words, characters, sentences and more.
-</p>
+    <h1>
+      Word Counter
+    </h1>
 
 
-<textarea
-  id="text"
-  placeholder="Type or paste your text here..."
-></textarea>
+    <p class="subtitle">
+      Count and analyze your words, characters,
+      sentences, paragraphs and more instantly.
+    </p>
 
 
-<!-- Buttons -->
 
-<div class="buttons">
+    <!-- Text Input -->
 
-  <button onclick="copyText()">
-    Copy Text
-  </button>
-
-  <button onclick="clearText()">
-    Clear Text
-  </button>
-
-</div>
+    <textarea
+      id="text"
+      placeholder="Type or paste your text here..."
+    ></textarea>
 
 
-<!-- Results -->
 
-<div class="results">
+    <!-- Results -->
 
-  <div class="result-card">
-    <strong id="words">0</strong>
-    <span>Words</span>
-  </div>
+    <div class="results">
 
-  <div class="result-card">
-    <strong id="characters">0</strong>
-    <span>Characters</span>
-  </div>
 
-  <div class="result-card">
-    <strong id="noSpaces">0</strong>
-    <span>Without Spaces</span>
-  </div>
+      <div class="result-card">
 
-  <div class="result-card">
-    <strong id="sentences">0</strong>
-    <span>Sentences</span>
-  </div>
+        <strong id="words">
+          0
+        </strong>
 
-  <div class="result-card">
-    <strong id="paragraphs">0</strong>
-    <span>Paragraphs</span>
-  </div>
+        <span>
+          Words
+        </span>
 
-  <div class="result-card">
-    <strong id="readingTime">0 min</strong>
-    <span>Reading Time</span>
-  </div>
+      </div>
 
-  <div class="result-card">
-    <strong id="speakingTime">0 min</strong>
-    <span>Speaking Time</span>
-  </div>
 
-  <div class="result-card">
-    <strong id="averageWordLength">0</strong>
-    <span>Avg. Word Length</span>
-  </div>
 
-</div>
-```
+      <div class="result-card">
+
+        <strong id="characters">
+          0
+        </strong>
+
+        <span>
+          Characters
+        </span>
+
+      </div>
+
+
+
+      <div class="result-card">
+
+        <strong id="noSpaces">
+          0
+        </strong>
+
+        <span>
+          Without Spaces
+        </span>
+
+      </div>
+
+
+
+      <div class="result-card">
+
+        <strong id="sentences">
+          0
+        </strong>
+
+        <span>
+          Sentences
+        </span>
+
+      </div>
+
+
+
+      <div class="result-card">
+
+        <strong id="paragraphs">
+          0
+        </strong>
+
+        <span>
+          Paragraphs
+        </span>
+
+      </div>
+
+
+
+      <div class="result-card">
+
+        <strong id="readingTime">
+          0 min
+        </strong>
+
+        <span>
+          Reading Time
+        </span>
+
+      </div>
+
+
+
+      <div class="result-card">
+
+        <strong id="speakingTime">
+          0 min
+        </strong>
+
+        <span>
+          Speaking Time
+        </span>
+
+      </div>
+
+
+
+      <div class="result-card">
+
+        <strong id="averageWordLength">
+          0
+        </strong>
+
+        <span>
+          Avg. Word Length
+        </span>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- Action Buttons -->
+
+    <div class="action-buttons">
+
+      <button onclick="copyText()">
+        Copy Text
+      </button>
+
+      <button onclick="clearText()">
+        Clear Text
+      </button>
+
+    </div>
+
+
+
+    <!-- Information -->
+
+    <div class="info">
+
+      <strong>
+        How to use Word Counter:
+      </strong>
+
+      <p>
+        Type or paste your text into the box above.
+        The statistics update automatically as you type,
+        including words, characters, sentences and paragraphs.
+      </p>
+
+    </div>
+
 
   </main>
+
+
 
   <!-- Footer -->
 
   <footer>
+
     © 2026 Text Tools · Simple, Fast & Free
+
   </footer>
+
+
 
   <script>
 
     const text =
-      document.getElementById("text");
+      document.getElementById(
+        "text"
+      );
 
 
     text.addEventListener(
@@ -294,11 +478,12 @@ content="Free online word counter. Count words, characters, sentences, paragraph
 
     function updateCount() {
 
+
       const value =
         text.value;
 
 
-      /* Get Words */
+      /* Words */
 
       const words =
         value.trim() === ""
@@ -318,12 +503,14 @@ content="Free online word counter. Count words, characters, sentences, paragraph
         wordCount;
 
 
+
       /* Characters */
 
       document.getElementById(
         "characters"
       ).textContent =
         value.length;
+
 
 
       /* Characters Without Spaces */
@@ -336,6 +523,7 @@ content="Free online word counter. Count words, characters, sentences, paragraph
           .length;
 
 
+
       /* Sentences */
 
       const sentenceCount =
@@ -344,15 +532,22 @@ content="Free online word counter. Count words, characters, sentences, paragraph
           : value
               .split(/[.!?]+/)
               .filter(
-                sentence =>
-                  sentence.trim().length > 0
-              ).length;
+                function(sentence) {
+
+                  return (
+                    sentence.trim().length > 0
+                  );
+
+                }
+              )
+              .length;
 
 
       document.getElementById(
         "sentences"
       ).textContent =
         sentenceCount;
+
 
 
       /* Paragraphs */
@@ -363,15 +558,22 @@ content="Free online word counter. Count words, characters, sentences, paragraph
           : value
               .split(/\n+/)
               .filter(
-                paragraph =>
-                  paragraph.trim().length > 0
-              ).length;
+                function(paragraph) {
+
+                  return (
+                    paragraph.trim().length > 0
+                  );
+
+                }
+              )
+              .length;
 
 
       document.getElementById(
         "paragraphs"
       ).textContent =
         paragraphCount;
+
 
 
       /* Reading Time */
@@ -390,6 +592,7 @@ content="Free online word counter. Count words, characters, sentences, paragraph
           : readingMinutes + " min";
 
 
+
       /* Speaking Time */
 
       const speakingMinutes =
@@ -406,6 +609,7 @@ content="Free online word counter. Count words, characters, sentences, paragraph
           : speakingMinutes + " min";
 
 
+
       /* Average Word Length */
 
       const totalLetters =
@@ -414,10 +618,12 @@ content="Free online word counter. Count words, characters, sentences, paragraph
 
             return (
               total +
-              word.replace(
-                /[^a-zA-Z0-9]/g,
-                ""
-              ).length
+              word
+                .replace(
+                  /[^a-zA-Z0-9]/g,
+                  ""
+                )
+                .length
             );
 
           },
@@ -439,14 +645,19 @@ content="Free online word counter. Count words, characters, sentences, paragraph
       ).textContent =
         averageLength;
 
+
     }
+
 
 
     /* Copy Text */
 
     function copyText() {
 
-      if (text.value === "") {
+
+      if (
+        text.value.trim() === ""
+      ) {
 
         alert(
           "There is no text to copy."
@@ -461,30 +672,39 @@ content="Free online word counter. Count words, characters, sentences, paragraph
         .writeText(
           text.value
         )
-        .then(function() {
+        .then(
+          function() {
 
-          alert(
-            "Text copied!"
-          );
+            alert(
+              "Text copied!"
+            );
 
-        });
+          }
+        );
+
 
     }
+
 
 
     /* Clear Text */
 
     function clearText() {
 
+
       text.value =
         "";
 
+
       updateCount();
+
 
     }
 
+
   </script>
 
-</body>
-</html>
 
+</body>
+
+</html>
