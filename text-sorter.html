@@ -1,27 +1,30 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Text Sorter - Free Online Text Tool</title>
 
-<meta
-name="description"
-content="Sort, organize and manage text lines online. Sort alphabetically, numerically or by length, shuffle lines, remove duplicates and more."
-
->
+  <meta
+    name="description"
+    content="Free online text sorter. Sort lines alphabetically, naturally, numerically, reverse lines and remove duplicate or empty lines."
+  >
 
   <style>
+
     * {
       box-sizing: border-box;
     }
 
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
       background: #f4f7fb;
-      margin: 0;
       color: #222;
     }
 
@@ -64,14 +67,14 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
       max-width: 900px;
       margin: 40px auto;
       padding: 30px;
-      background: white;
+      background: #ffffff;
       border-radius: 16px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 8px;
+      margin: 0 0 8px;
     }
 
     .subtitle {
@@ -81,35 +84,31 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
       line-height: 1.5;
     }
 
+    /* Text Area */
+
     textarea {
       width: 100%;
-      height: 260px;
+      height: 280px;
       padding: 15px;
+      font-family: Arial, sans-serif;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 10px;
       resize: vertical;
-      font-family: Arial, sans-serif;
     }
 
-    /* Tool Sections */
-
-    .tool-section {
-      margin-top: 25px;
+    textarea:focus {
+      outline: none;
+      border-color: #888;
     }
 
-    .tool-section h2 {
-      font-size: 18px;
-      margin: 0 0 12px;
-      color: #444;
-    }
+    /* Sort Buttons */
 
-    /* Buttons */
-
-    .buttons {
+    .sort-buttons {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
+      margin-top: 20px;
     }
 
     button {
@@ -118,7 +117,7 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
       border-radius: 8px;
       background: #222;
       color: white;
-      font-size: 14px;
+      font-size: 15px;
       cursor: pointer;
     }
 
@@ -126,21 +125,9 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
       opacity: 0.85;
     }
 
-    /* Action Buttons */
-
-    .action-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .action-buttons button {
-      flex: 1;
-    }
-
     /* Statistics */
 
-    .stats {
+    .statistics {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 15px;
@@ -150,8 +137,8 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
     .stat {
       background: #f4f7fb;
       padding: 18px;
-      border-radius: 10px;
       text-align: center;
+      border-radius: 10px;
     }
 
     .stat strong {
@@ -162,6 +149,15 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
 
     .stat span {
       color: #666;
+    }
+
+    /* Action Buttons */
+
+    .action-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 20px;
     }
 
     /* Information */
@@ -175,11 +171,15 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
       line-height: 1.6;
     }
 
+    .info strong {
+      color: #222;
+    }
+
     /* Footer */
 
     footer {
       text-align: center;
-      padding: 25px;
+      padding: 30px;
       color: #777;
     }
 
@@ -200,18 +200,29 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
         padding: 20px;
       }
 
-      .buttons {
+      .sort-buttons {
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .stats {
+    }
+
+    @media (max-width: 450px) {
+
+      .sort-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .statistics {
+        grid-template-columns: 1fr;
+      }
+
+      .action-buttons {
         grid-template-columns: 1fr;
       }
 
     }
 
   </style>
-
 </head>
 
 <body>
@@ -220,166 +231,159 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
 
   <nav>
 
-```
-<a href="index.html" class="logo">
-  Text <span>Tools</span>
-</a>
+    <a
+      href="index.html"
+      class="logo"
+    >
+      Text <span>Tools</span>
+    </a>
 
-<div class="nav-links">
-  <a href="index.html#tools">All Tools</a>
-</div>
-```
+    <div class="nav-links">
+
+      <a
+        href="index.html#tools"
+      >
+        All Tools
+      </a>
+
+    </div>
 
   </nav>
+
 
   <!-- Main -->
 
   <main class="container">
 
-```
-<h1>Text Sorter</h1>
+    <h1>Text Sorter</h1>
 
-<p class="subtitle">
-  Sort, organize and manage your text lines quickly and easily.
-</p>
-
-
-<textarea
-  id="text"
-  placeholder="Enter one item per line..."
-></textarea>
+    <p class="subtitle">
+      Sort, organize and clean your text lines quickly and easily.
+    </p>
 
 
-<!-- Sort -->
+    <!-- Text Input -->
 
-<div class="tool-section">
-
-  <h2>Sort</h2>
-
-  <div class="buttons">
-
-    <button onclick="sortAZ()">
-      A → Z
-    </button>
-
-    <button onclick="sortZA()">
-      Z → A
-    </button>
-
-    <button onclick="sortNumbers()">
-      Numbers
-    </button>
-
-    <button onclick="sortShortest()">
-      Shortest First
-    </button>
-
-    <button onclick="sortLongest()">
-      Longest First
-    </button>
-
-    <button onclick="reverseLines()">
-      Reverse Lines
-    </button>
-
-    <button onclick="shuffleLines()">
-      Shuffle
-    </button>
-
-  </div>
-
-</div>
+    <textarea
+      id="text"
+      placeholder="Enter one item per line..."
+    ></textarea>
 
 
-<!-- Clean Up -->
+    <!-- Sort Buttons -->
 
-<div class="tool-section">
+    <div class="sort-buttons">
 
-  <h2>Clean Up</h2>
+      <button onclick="sortAZ()">
+        Sort A → Z
+      </button>
 
-  <div class="buttons">
+      <button onclick="sortZA()">
+        Sort Z → A
+      </button>
 
-    <button onclick="removeEmptyLines()">
-      Remove Empty Lines
-    </button>
+      <button onclick="sortNumbers()">
+        Sort Numbers
+      </button>
 
-    <button onclick="removeDuplicates()">
-      Remove Duplicates
-    </button>
+      <button onclick="reverseLines()">
+        Reverse Lines
+      </button>
 
-    <button onclick="addLineNumbers()">
-      Add Line Numbers
-    </button>
+      <button onclick="removeDuplicates()">
+        Remove Duplicates
+      </button>
 
-    <button onclick="removeLineNumbers()">
-      Remove Line Numbers
-    </button>
+      <button onclick="removeEmptyLines()">
+        Remove Empty Lines
+      </button>
 
-  </div>
-
-</div>
-
-
-<!-- Statistics -->
-
-<div class="stats">
-
-  <div class="stat">
-    <strong id="lineCount">0</strong>
-    <span>Total Lines</span>
-  </div>
-
-  <div class="stat">
-    <strong id="wordCount">0</strong>
-    <span>Total Words</span>
-  </div>
-
-  <div class="stat">
-    <strong id="characterCount">0</strong>
-    <span>Characters</span>
-  </div>
-
-</div>
+    </div>
 
 
-<!-- Action Buttons -->
+    <!-- Statistics -->
 
-<div class="action-buttons">
+    <div class="statistics">
 
-  <button onclick="copyText()">
-    Copy Result
-  </button>
+      <div class="stat">
 
-  <button onclick="clearText()">
-    Clear Text
-  </button>
+        <strong id="lineCount">
+          0
+        </strong>
 
-</div>
+        <span>
+          Lines
+        </span>
+
+      </div>
+
+      <div class="stat">
+
+        <strong id="wordCount">
+          0
+        </strong>
+
+        <span>
+          Words
+        </span>
+
+      </div>
+
+      <div class="stat">
+
+        <strong id="characterCount">
+          0
+        </strong>
+
+        <span>
+          Characters
+        </span>
+
+      </div>
+
+    </div>
 
 
-<!-- Information -->
+    <!-- Action Buttons -->
 
-<div class="info">
+    <div class="action-buttons">
 
-  <strong>How to use Text Sorter:</strong>
+      <button onclick="copyText()">
+        Copy Result
+      </button>
 
-  <p>
-    Enter one item per line, then choose an option to sort,
-    organize or clean your list. You can sort alphabetically,
-    numerically or by length, reverse or shuffle your lines,
-    remove duplicates, and add or remove line numbers.
-  </p>
+      <button onclick="clearText()">
+        Clear Text
+      </button>
 
-</div>
-```
+    </div>
+
+
+    <!-- Information -->
+
+    <div class="info">
+
+      <strong>
+        How to use Text Sorter:
+      </strong>
+
+      <p>
+        Enter or paste one item per line, then choose a sorting
+        option. You can sort alphabetically, sort numbers, reverse
+        the line order, remove duplicate lines or remove empty lines.
+      </p>
+
+    </div>
 
   </main>
+
 
   <!-- Footer -->
 
   <footer>
     © 2026 Text Tools · Simple, Fast & Free
   </footer>
+
 
   <script>
 
@@ -397,13 +401,16 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
 
     function getLines() {
 
+      if (
+        text.value === ""
+      ) {
+
+        return [];
+
+      }
+
       return text.value
-        .split(/\r?\n/)
-        .filter(function(line) {
-
-          return line.trim() !== "";
-
-        });
+        .split(/\r?\n/);
 
     }
 
@@ -415,20 +422,25 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
       const lines =
         getLines();
 
-      lines.sort(function(a, b) {
+      lines.sort(
+        function(a, b) {
 
-        return a.localeCompare(
-          b,
-          undefined,
-          {
-            sensitivity: "base"
-          }
-        );
+          return a.localeCompare(
+            b,
+            undefined,
+            {
+              sensitivity: "base",
+              numeric: true
+            }
+          );
 
-      });
+        }
+      );
+
 
       text.value =
         lines.join("\n");
+
 
       updateStatistics();
 
@@ -442,20 +454,25 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
       const lines =
         getLines();
 
-      lines.sort(function(a, b) {
+      lines.sort(
+        function(a, b) {
 
-        return b.localeCompare(
-          a,
-          undefined,
-          {
-            sensitivity: "base"
-          }
-        );
+          return b.localeCompare(
+            a,
+            undefined,
+            {
+              sensitivity: "base",
+              numeric: true
+            }
+          );
 
-      });
+        }
+      );
+
 
       text.value =
         lines.join("\n");
+
 
       updateStatistics();
 
@@ -469,65 +486,56 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
       const lines =
         getLines();
 
-      lines.sort(function(a, b) {
+      lines.sort(
+        function(a, b) {
 
-        return (
-          parseFloat(a) -
-          parseFloat(b)
-        );
+          const numberA =
+            parseFloat(a);
 
-      });
-
-      text.value =
-        lines.join("\n");
-
-      updateStatistics();
-
-    }
+          const numberB =
+            parseFloat(b);
 
 
-    /* Shortest First */
+          if (
+            isNaN(numberA) &&
+            isNaN(numberB)
+          ) {
 
-    function sortShortest() {
+            return a.localeCompare(b);
 
-      const lines =
-        getLines();
-
-      lines.sort(function(a, b) {
-
-        return (
-          a.length -
-          b.length
-        );
-
-      });
-
-      text.value =
-        lines.join("\n");
-
-      updateStatistics();
-
-    }
+          }
 
 
-    /* Longest First */
+          if (
+            isNaN(numberA)
+          ) {
 
-    function sortLongest() {
+            return 1;
 
-      const lines =
-        getLines();
+          }
 
-      lines.sort(function(a, b) {
 
-        return (
-          b.length -
-          a.length
-        );
+          if (
+            isNaN(numberB)
+          ) {
 
-      });
+            return -1;
+
+          }
+
+
+          return (
+            numberA -
+            numberB
+          );
+
+        }
+      );
+
 
       text.value =
         lines.join("\n");
+
 
       updateStatistics();
 
@@ -546,68 +554,13 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
           .reverse()
           .join("\n");
 
-      updateStatistics();
-
-    }
-
-
-    /* Shuffle Lines */
-
-    function shuffleLines() {
-
-      const lines =
-        getLines();
-
-      for (
-        let i =
-          lines.length - 1;
-
-        i > 0;
-
-        i--
-      ) {
-
-        const j =
-          Math.floor(
-            Math.random() *
-            (i + 1)
-          );
-
-        [
-          lines[i],
-          lines[j]
-        ] =
-        [
-          lines[j],
-          lines[i]
-        ];
-
-      }
-
-      text.value =
-        lines.join("\n");
 
       updateStatistics();
 
     }
 
 
-    /* Remove Empty Lines */
-
-    function removeEmptyLines() {
-
-      const lines =
-        getLines();
-
-      text.value =
-        lines.join("\n");
-
-      updateStatistics();
-
-    }
-
-
-    /* Remove Duplicates */
+    /* Remove Duplicate Lines */
 
     function removeDuplicates() {
 
@@ -629,6 +582,7 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
               .trim()
               .toLowerCase();
 
+
           if (
             !seen.has(key)
           ) {
@@ -646,58 +600,32 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
       text.value =
         uniqueLines.join("\n");
 
-      updateStatistics();
-
-    }
-
-
-    /* Add Line Numbers */
-
-    function addLineNumbers() {
-
-      const lines =
-        getLines();
-
-      text.value =
-        lines
-          .map(
-            function(line, index) {
-
-              return (
-                (index + 1) +
-                ". " +
-                line
-              );
-
-            }
-          )
-          .join("\n");
 
       updateStatistics();
 
     }
 
 
-    /* Remove Line Numbers */
+    /* Remove Empty Lines */
 
-    function removeLineNumbers() {
+    function removeEmptyLines() {
 
       const lines =
         getLines();
 
       text.value =
         lines
-          .map(
+          .filter(
             function(line) {
 
-              return line.replace(
-                /^\s*\d+[\.\)\-:]\s*/,
-                ""
+              return (
+                line.trim() !== ""
               );
 
             }
           )
           .join("\n");
+
 
       updateStatistics();
 
@@ -711,8 +639,23 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
       const value =
         text.value;
 
+
       const lines =
-        getLines();
+        value.trim() === ""
+          ? 0
+          : value
+              .split(/\r?\n/)
+              .filter(
+                function(line) {
+
+                  return (
+                    line.trim() !== ""
+                  );
+
+                }
+              )
+              .length;
+
 
       const words =
         value.trim() === ""
@@ -726,7 +669,7 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
       document.getElementById(
         "lineCount"
       ).textContent =
-        lines.length;
+        lines;
 
 
       document.getElementById(
@@ -743,7 +686,7 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
     }
 
 
-    /* Copy Result */
+    /* Copy Text */
 
     function copyText() {
 
@@ -764,13 +707,15 @@ content="Sort, organize and manage text lines online. Sort alphabetically, numer
         .writeText(
           text.value
         )
-        .then(function() {
+        .then(
+          function() {
 
-          alert(
-            "Result copied!"
-          );
+            alert(
+              "Text copied!"
+            );
 
-        });
+          }
+        );
 
     }
 
