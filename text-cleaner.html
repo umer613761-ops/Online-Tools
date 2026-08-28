@@ -305,88 +305,47 @@ content="Clean and format text online. Remove extra spaces, empty lines, tabs, i
   <div class="options-grid">
 
     <label class="option">
-      <input
-        type="checkbox"
-        id="extraSpaces"
-        checked
-      >
+      <input type="checkbox" id="extraSpaces" checked>
       Remove extra spaces
     </label>
 
-
     <label class="option">
-      <input
-        type="checkbox"
-        id="emptyLines"
-        checked
-      >
+      <input type="checkbox" id="emptyLines" checked>
       Remove empty lines
     </label>
 
-
     <label class="option">
-      <input
-        type="checkbox"
-        id="trimLines"
-        checked
-      >
+      <input type="checkbox" id="trimLines" checked>
       Trim spaces from each line
     </label>
 
-
     <label class="option">
-      <input
-        type="checkbox"
-        id="tabs"
-        checked
-      >
+      <input type="checkbox" id="tabs" checked>
       Remove tabs
     </label>
 
-
     <label class="option">
-      <input
-        type="checkbox"
-        id="normalizeBreaks"
-        checked
-      >
+      <input type="checkbox" id="normalizeBreaks" checked>
       Normalize line breaks
     </label>
 
-
     <label class="option">
-      <input
-        type="checkbox"
-        id="invisibleCharacters"
-        checked
-      >
+      <input type="checkbox" id="invisibleCharacters" checked>
       Remove invisible characters
     </label>
 
-
     <label class="option">
-      <input
-        type="checkbox"
-        id="smartQuotes"
-      >
+      <input type="checkbox" id="smartQuotes">
       Convert smart quotes
     </label>
 
-
     <label class="option">
-      <input
-        type="checkbox"
-        id="repeatedPunctuation"
-      >
+      <input type="checkbox" id="repeatedPunctuation">
       Reduce repeated punctuation
     </label>
 
-
     <label class="option">
-      <input
-        type="checkbox"
-        id="duplicates"
-      >
+      <input type="checkbox" id="duplicates">
       Remove duplicate lines
     </label>
 
@@ -397,10 +356,7 @@ content="Clean and format text online. Remove extra spaces, empty lines, tabs, i
 
 <!-- Clean Button -->
 
-<button
-  class="main-button"
-  onclick="cleanText()"
->
+<button class="main-button" onclick="cleanText()">
   Clean Text
 </button>
 
@@ -456,24 +412,19 @@ content="Clean and format text online. Remove extra spaces, empty lines, tabs, i
 
 </div>
 
-  </main>  <!-- Footer -->  <footer>© 2026 Text Tools · Simple, Fast & Free
-
+  </main>  <!-- Footer -->  <footer>
+    © 2026 Text Tools · Simple, Fast & Free
   </footer>  <script>
 
     function cleanText() {
 
       let text =
-        document.getElementById(
-          "textInput"
-        ).value;
+        document.getElementById("textInput").value;
 
 
       if (text.trim() === "") {
 
-        alert(
-          "Please enter some text first."
-        );
-
+        alert("Please enter some text first.");
         return;
 
       }
@@ -521,10 +472,7 @@ content="Clean and format text online. Remove extra spaces, empty lines, tabs, i
       ) {
 
         text =
-          text.replace(
-            /\t+/g,
-            " "
-          );
+          text.replace(/\t+/g, " ");
 
       }
 
@@ -557,9 +505,7 @@ content="Clean and format text online. Remove extra spaces, empty lines, tabs, i
           text
             .split("\n")
             .map(function(line) {
-
               return line.trim();
-
             })
             .join("\n");
 
@@ -575,10 +521,7 @@ content="Clean and format text online. Remove extra spaces, empty lines, tabs, i
       ) {
 
         text =
-          text.replace(
-            / {2,}/g,
-            " "
-          );
+          text.replace(/ {2,}/g, " ");
 
       }
 
@@ -612,9 +555,7 @@ content="Clean and format text online. Remove extra spaces, empty lines, tabs, i
           text
             .split("\n")
             .filter(function(line) {
-
               return line.trim() !== "";
-
             })
             .join("\n");
 
@@ -632,33 +573,23 @@ content="Clean and format text online. Remove extra spaces, empty lines, tabs, i
         const lines =
           text.split("\n");
 
-        const uniqueLines =
-          [];
-
-        const seen =
-          new Set();
+        const uniqueLines = [];
+        const seen = new Set();
 
 
-        lines.forEach(
-          function(line) {
+        lines.forEach(function(line) {
 
-            const key =
-              line
-                .trim()
-                .toLowerCase();
+          const key =
+            line.trim().toLowerCase();
 
-            if (
-              !seen.has(key)
-            ) {
+          if (!seen.has(key)) {
 
-              seen.add(key);
-
-              uniqueLines.push(line);
-
-            }
+            seen.add(key);
+            uniqueLines.push(line);
 
           }
-        );
+
+        });
 
 
         text =
@@ -666,8 +597,6 @@ content="Clean and format text online. Remove extra spaces, empty lines, tabs, i
 
       }
 
-
-      /* Display Result */
 
       document.getElementById(
         "textOutput"
@@ -679,8 +608,6 @@ content="Clean and format text online. Remove extra spaces, empty lines, tabs, i
 
     }
 
-
-    /* Statistics */
 
     function updateStatistics() {
 
@@ -695,10 +622,9 @@ content="Clean and format text online. Remove extra spaces, empty lines, tabs, i
           ? 0
           : output
               .split("\n")
-              .filter(
-                line =>
-                  line.trim() !== ""
-              ).length;
+              .filter(function(line) {
+                return line.trim() !== "";
+              }).length;
 
 
       const words =
@@ -729,8 +655,6 @@ content="Clean and format text online. Remove extra spaces, empty lines, tabs, i
 
     }
 
-
-    /* Copy Result */
 
     function copyText() {
 
@@ -764,20 +688,16 @@ content="Clean and format text online. Remove extra spaces, empty lines, tabs, i
     }
 
 
-    /* Clear */
-
     function clearText() {
 
       document.getElementById(
         "textInput"
-      ).value =
-        "";
+      ).value = "";
 
 
       document.getElementById(
         "textOutput"
-      ).value =
-        "";
+      ).value = "";
 
 
       updateStatistics();
