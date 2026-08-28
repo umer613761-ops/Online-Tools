@@ -1,1981 +1,1969 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 
-<meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
-
->
-
-<title>Image Converter - Free Online Image Converter | ToolNest</title>
-
-<meta
-name="description"
-content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and ICO files quickly and easily."
-
->
-
-<style>
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f6f7fb;
-  color: #222;
-}
-
-/* Navigation */
-
-nav {
-  background: #ffffff;
-  border-bottom: 1px solid #e5e5e5;
-  padding: 18px 30px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-  color: #222;
-  text-decoration: none;
-}
-
-.logo span {
-  color: #666;
-}
-
-.nav-links a {
-  color: #555;
-  text-decoration: none;
-  font-size: 15px;
-}
-
-.nav-links a:hover {
-  color: #000;
-}
-
-/* Main */
-
-.container {
-  max-width: 850px;
-  margin: 40px auto;
-  padding: 0 20px;
-}
-
-.tool-header {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.tool-header h1 {
-  margin: 0 0 10px;
-  font-size: 38px;
-}
-
-.tool-header p {
-  margin: 0;
-  color: #777;
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-/* Converter */
-
-.converter-card {
-  background: white;
-  border: 1px solid #e5e5e5;
-  border-radius: 16px;
-  padding: 30px;
-}
-
-/* Upload */
-
-.upload-area {
-  border: 2px dashed #cfcfcf;
-  border-radius: 12px;
-  padding: 50px 20px;
-  text-align: center;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.upload-area:hover,
-.upload-area.dragging {
-  border-color: #555;
-  background: #fafafa;
-}
-
-.upload-icon {
-  font-size: 45px;
-  margin-bottom: 15px;
-}
-
-.upload-area h2 {
-  margin: 0 0 8px;
-  font-size: 21px;
-}
-
-.upload-area p {
-  margin: 0;
-  color: #777;
-  font-size: 14px;
-}
-
-.upload-button {
-  display: inline-block;
-  margin-top: 18px;
-  padding: 12px 20px;
-
-  background: #222;
-  color: white;
-
-  border-radius: 8px;
-  font-size: 15px;
-}
-
-input[type="file"] {
-  display: none;
-}
-
-/* File Info */
-
-.file-info {
-  display: none;
-  margin-top: 25px;
-  padding: 18px;
-
-  background: #f6f7fb;
-  border-radius: 10px;
-}
-
-.file-name {
-  font-weight: bold;
-  margin-bottom: 5px;
-  word-break: break-word;
-}
-
-.file-details {
-  color: #777;
-  font-size: 14px;
-}
-
-/* Preview */
-
-.preview-container {
-  display: none;
-  margin-top: 25px;
-  text-align: center;
-}
-
-.preview-container img {
-  max-width: 100%;
-  max-height: 350px;
-
-  border-radius: 10px;
-  border: 1px solid #e5e5e5;
-}
-
-/* Format */
-
-.format-section {
-  display: none;
-  margin-top: 30px;
-}
-
-.format-section h2 {
-  margin: 0 0 15px;
-  font-size: 20px;
-}
-
-.format-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-
-.format-option {
-  position: relative;
-}
-
-.format-option input {
-  position: absolute;
-  opacity: 0;
-}
-
-.format-option label {
-  display: block;
-  padding: 16px 10px;
-
-  text-align: center;
-  cursor: pointer;
-
-  border: 1px solid #ddd;
-  border-radius: 10px;
-
-  font-weight: bold;
-  transition: 0.2s;
-}
-
-.format-option label:hover {
-  border-color: #888;
-}
-
-.format-option input:checked + label {
-  background: #222;
-  color: white;
-  border-color: #222;
-}
-
-/* Quality */
-
-.quality-section {
-  display: none;
-  margin-top: 25px;
-}
-
-.quality-section h2 {
-  margin: 0 0 12px;
-  font-size: 20px;
-}
-
-.quality-row {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.quality-row input {
-  display: block;
-  flex: 1;
-}
-
-.quality-value {
-  min-width: 45px;
-  text-align: right;
-  font-weight: bold;
-}
-
-/* Convert */
-
-.convert-section {
-  display: none;
-  margin-top: 30px;
-}
-
-.convert-button {
-  width: 100%;
-  padding: 15px;
-
-  border: none;
-  border-radius: 10px;
-
-  background: #222;
-  color: white;
-
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.convert-button:hover {
-  opacity: 0.85;
-}
-
-.convert-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Result */
-
-.result {
-  display: none;
-  margin-top: 25px;
-  padding: 20px;
-
-  text-align: center;
-
-  background: #f6f7fb;
-  border-radius: 10px;
-}
-
-.result p {
-  margin: 0 0 15px;
-  color: #555;
-}
-
-.download-button {
-  display: inline-block;
-
-  padding: 12px 22px;
-
-  background: #222;
-  color: white;
-
-  text-decoration: none;
-  border-radius: 8px;
-}
-
-/* Footer */
-
-footer {
-  text-align: center;
-  padding: 35px 20px;
-  color: #777;
-  font-size: 14px;
-}
-
-/* Mobile */
-
-@media (max-width: 600px) {
-
-  nav {
-    padding: 15px 20px;
-  }
-
-  .logo {
-    font-size: 20px;
-  }
-
-  .nav-links {
-    display: none;
-  }
-
-  .container {
-    margin: 30px auto;
-  }
-
-  .tool-header h1 {
-    font-size: 30px;
-  }
-
-  .converter-card {
-    padding: 20px;
-  }
-
-  .format-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-}
-
-</style>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Image Converter - Free Online Image Converter | ToolNest</title>
+
+  <meta
+    name="description"
+    content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and ICO files quickly and easily."
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f6f7fb;
+      color: #222;
+    }
+
+    /* Navigation */
+
+    nav {
+      background: #ffffff;
+      border-bottom: 1px solid #e5e5e5;
+      padding: 18px 30px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #222;
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: #666;
+    }
+
+    .nav-links a {
+      color: #555;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .nav-links a:hover {
+      color: #000;
+    }
+
+    /* Main */
+
+    .container {
+      max-width: 850px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .tool-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .tool-header h1 {
+      margin: 0 0 10px;
+      font-size: 38px;
+    }
+
+    .tool-header p {
+      margin: 0;
+      color: #777;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* Converter */
+
+    .converter-card {
+      background: white;
+      border: 1px solid #e5e5e5;
+      border-radius: 16px;
+      padding: 30px;
+    }
+
+    /* Upload */
+
+    .upload-area {
+      border: 2px dashed #cfcfcf;
+      border-radius: 12px;
+      padding: 50px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .upload-area:hover,
+    .upload-area.dragging {
+      border-color: #555;
+      background: #fafafa;
+    }
+
+    .upload-icon {
+      font-size: 45px;
+      margin-bottom: 15px;
+    }
+
+    .upload-area h2 {
+      margin: 0 0 8px;
+      font-size: 21px;
+    }
+
+    .upload-area p {
+      margin: 0;
+      color: #777;
+      font-size: 14px;
+    }
+
+    .upload-button {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 12px 20px;
+
+      background: #222;
+      color: white;
+
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    /* File Information */
+
+    .file-info {
+      display: none;
+      margin-top: 25px;
+      padding: 18px;
+
+      background: #f6f7fb;
+      border-radius: 10px;
+    }
+
+    .file-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+      word-break: break-word;
+    }
+
+    .file-details {
+      color: #777;
+      font-size: 14px;
+    }
+
+    /* Preview */
+
+    .preview-container {
+      display: none;
+      margin-top: 25px;
+      text-align: center;
+    }
+
+    .preview-container img {
+      max-width: 100%;
+      max-height: 350px;
+
+      border-radius: 10px;
+      border: 1px solid #e5e5e5;
+    }
+
+    /* Format */
+
+    .format-section {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .format-section h2 {
+      margin: 0 0 15px;
+      font-size: 20px;
+    }
+
+    .format-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .format-option {
+      position: relative;
+    }
+
+    .format-option input {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .format-option label {
+      display: block;
+      padding: 16px 10px;
+
+      text-align: center;
+      cursor: pointer;
+
+      border: 1px solid #ddd;
+      border-radius: 10px;
+
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .format-option label:hover {
+      border-color: #888;
+    }
+
+    .format-option input:checked + label {
+      background: #222;
+      color: white;
+      border-color: #222;
+    }
+
+    /* Quality */
+
+    .quality-section {
+      display: none;
+      margin-top: 25px;
+    }
+
+    .quality-section h2 {
+      margin: 0 0 12px;
+      font-size: 20px;
+    }
+
+    .quality-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .quality-row input {
+      display: block;
+      flex: 1;
+    }
+
+    .quality-value {
+      min-width: 45px;
+      text-align: right;
+      font-weight: bold;
+    }
+
+    /* Convert */
+
+    .convert-section {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .convert-button {
+      width: 100%;
+      padding: 15px;
+
+      border: none;
+      border-radius: 10px;
+
+      background: #222;
+      color: white;
+
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .convert-button:hover {
+      opacity: 0.85;
+    }
+
+    .convert-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Result */
+
+    .result {
+      display: none;
+      margin-top: 25px;
+      padding: 20px;
+
+      text-align: center;
+
+      background: #f6f7fb;
+      border-radius: 10px;
+    }
+
+    .result p {
+      margin: 0 0 15px;
+      color: #555;
+    }
+
+    .download-button {
+      display: inline-block;
+      padding: 12px 22px;
+
+      background: #222;
+      color: white;
+
+      text-decoration: none;
+      border-radius: 8px;
+    }
+
+    /* Footer */
+
+    footer {
+      text-align: center;
+      padding: 35px 20px;
+      color: #777;
+      font-size: 14px;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 600px) {
+
+      nav {
+        padding: 15px 20px;
+      }
+
+      .logo {
+        font-size: 20px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .container {
+        margin: 30px auto;
+      }
+
+      .tool-header h1 {
+        font-size: 30px;
+      }
+
+      .converter-card {
+        padding: 20px;
+      }
+
+      .format-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    }
+
+  </style>
 
 </head>
 
 <body>
 
-<nav>
+  <!-- Navigation -->
 
-<a
-href="index.html"
-class="logo"
+  <nav>
 
->
+    <a
+      href="index.html"
+      class="logo"
+    >
+      Tool<span>Nest</span>
+    </a>
 
-Tool<span>Nest</span> </a>
+    <div class="nav-links">
 
-<div class="nav-links">
+      <a href="index.html">
+        All Tools
+      </a>
 
-<a href="index.html">
-All Tools
-</a>
+    </div>
 
-</div>
+  </nav>
 
-</nav>
+  <!-- Main -->
 
-<main class="container">
+  <main class="container">
 
-<div class="tool-header">
+    <div class="tool-header">
 
-<h1>
-Image Converter
-</h1>
+      <h1>
+        Image Converter
+      </h1>
 
-<p>
-Convert your images to JPG, PNG, WEBP, GIF, BMP or ICO.
-</p>
+      <p>
+        Convert your images to JPG, PNG, WEBP, GIF, BMP or ICO.
+      </p>
 
-</div>
+    </div>
 
-<div class="converter-card">
+    <div class="converter-card">
 
-<!-- Upload -->
+      <!-- Upload -->
 
-<div
-class="upload-area"
-id="uploadArea"
->
+      <div
+        class="upload-area"
+        id="uploadArea"
+      >
 
-<div class="upload-icon">
-🖼️
-</div>
+        <div class="upload-icon">
+          🖼️
+        </div>
 
-<h2>
-Upload an Image
-</h2>
+        <h2>
+          Upload an Image
+        </h2>
 
-<p>
-Drag and drop an image here or click to browse.
-</p>
+        <p>
+          Drag and drop an image here or click to browse.
+        </p>
 
-<div class="upload-button">
-Choose Image
-</div>
+        <div class="upload-button">
+          Choose Image
+        </div>
 
-<input
-type="file"
-id="fileInput"
-accept="image/*"
+        <input
+          type="file"
+          id="fileInput"
+          accept="image/*"
+        >
 
->
+      </div>
 
-</div>
+      <!-- File Information -->
 
-<!-- File Information -->
+      <div
+        class="file-info"
+        id="fileInfo"
+      >
 
-<div
-class="file-info"
-id="fileInfo"
->
+        <div
+          class="file-name"
+          id="fileName"
+        ></div>
 
-<div
-class="file-name"
-id="fileName"
->
-</div>
+        <div
+          class="file-details"
+          id="fileDetails"
+        ></div>
 
-<div
-class="file-details"
-id="fileDetails"
->
-</div>
+      </div>
 
-</div>
+      <!-- Preview -->
 
-<!-- Preview -->
+      <div
+        class="preview-container"
+        id="previewContainer"
+      >
 
-<div
-class="preview-container"
-id="previewContainer"
->
+        <img
+          id="preview"
+          alt="Image preview"
+        >
 
-<img
-id="preview"
-alt="Image preview"
+      </div>
 
->
+      <!-- Format -->
 
-</div>
+      <div
+        class="format-section"
+        id="formatSection"
+      >
 
-<!-- Format -->
+        <h2>
+          Convert To
+        </h2>
 
-<div
-class="format-section"
-id="formatSection"
->
+        <div class="format-grid">
 
-<h2>
-Convert To
-</h2>
+          <div class="format-option">
 
-<div class="format-grid">
+            <input
+              type="radio"
+              id="jpg"
+              name="format"
+              value="jpg"
+              checked
+            >
 
-<div class="format-option">
+            <label for="jpg">
+              JPG
+            </label>
 
-<input
-type="radio"
-id="jpg"
-name="format"
-value="jpg"
-checked
+          </div>
 
->
+          <div class="format-option">
 
-<label for="jpg">
-JPG
-</label>
+            <input
+              type="radio"
+              id="png"
+              name="format"
+              value="png"
+            >
 
-</div>
+            <label for="png">
+              PNG
+            </label>
 
-<div class="format-option">
+          </div>
 
-<input
-type="radio"
-id="png"
-name="format"
-value="png"
+          <div class="format-option">
 
->
+            <input
+              type="radio"
+              id="webp"
+              name="format"
+              value="webp"
+            >
 
-<label for="png">
-PNG
-</label>
+            <label for="webp">
+              WEBP
+            </label>
 
-</div>
+          </div>
 
-<div class="format-option">
+          <div class="format-option">
 
-<input
-type="radio"
-id="webp"
-name="format"
-value="webp"
+            <input
+              type="radio"
+              id="gif"
+              name="format"
+              value="gif"
+            >
 
->
+            <label for="gif">
+              GIF
+            </label>
 
-<label for="webp">
-WEBP
-</label>
+          </div>
 
-</div>
+          <div class="format-option">
 
-<div class="format-option">
+            <input
+              type="radio"
+              id="bmp"
+              name="format"
+              value="bmp"
+            >
 
-<input
-type="radio"
-id="gif"
-name="format"
-value="gif"
+            <label for="bmp">
+              BMP
+            </label>
 
->
+          </div>
 
-<label for="gif">
-GIF
-</label>
+          <div class="format-option">
 
-</div>
+            <input
+              type="radio"
+              id="ico"
+              name="format"
+              value="ico"
+            >
 
-<div class="format-option">
+            <label for="ico">
+              ICO
+            </label>
 
-<input
-type="radio"
-id="bmp"
-name="format"
-value="bmp"
+          </div>
 
->
+        </div>
 
-<label for="bmp">
-BMP
-</label>
+      </div>
 
-</div>
+      <!-- Quality -->
 
-<div class="format-option">
+      <div
+        class="quality-section"
+        id="qualitySection"
+      >
 
-<input
-type="radio"
-id="ico"
-name="format"
-value="ico"
+        <h2>
+          Quality
+        </h2>
 
->
+        <div class="quality-row">
 
-<label for="ico">
-ICO
-</label>
+          <input
+            type="range"
+            id="quality"
+            min="10"
+            max="100"
+            value="90"
+          >
 
-</div>
+          <span
+            class="quality-value"
+            id="qualityValue"
+          >
+            90%
+          </span>
 
-</div>
+        </div>
 
-</div>
+      </div>
 
-<!-- Quality -->
+      <!-- Convert -->
 
-<div
-class="quality-section"
-id="qualitySection"
->
+      <div
+        class="convert-section"
+        id="convertSection"
+      >
 
-<h2>
-Quality
-</h2>
+        <button
+          class="convert-button"
+          id="convertButton"
+          type="button"
+        >
+          Convert Image
+        </button>
 
-<div class="quality-row">
+      </div>
 
-<input
-type="range"
-id="quality"
-min="10"
-max="100"
-value="90"
+      <!-- Result -->
 
->
+      <div
+        class="result"
+        id="result"
+      >
 
-<span
-class="quality-value"
-id="qualityValue"
+        <p
+          id="resultText"
+        >
+          Your converted image is ready.
+        </p>
 
->
+        <a
+          id="downloadButton"
+          class="download-button"
+          href="#"
+        >
+          Download Image
+        </a>
 
-90% </span>
+      </div>
 
-</div>
+    </div>
 
-</div>
+  </main>
 
-<!-- Convert -->
+  <!-- Footer -->
 
-<div
-class="convert-section"
-id="convertSection"
->
+  <footer>
 
-<button
-class="convert-button"
-id="convertButton"
+    © 2026 ToolNest · Simple, Fast & Free
 
->
+  </footer>
 
-Convert Image </button>
+  <!-- GIF Encoder -->
 
-</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
 
-<!-- Result -->
+  <script>
 
-<div
-class="result"
-id="result"
->
+    const fileInput =
+      document.getElementById("fileInput");
 
-<p
-id="resultText"
->
-Your converted image is ready.
-</p>
+    const uploadArea =
+      document.getElementById("uploadArea");
 
-<a
-id="downloadButton"
-class="download-button"
-href="#"
+    const preview =
+      document.getElementById("preview");
 
->
+    const previewContainer =
+      document.getElementById("previewContainer");
 
-Download Image </a>
+    const fileInfo =
+      document.getElementById("fileInfo");
 
-</div>
+    const fileName =
+      document.getElementById("fileName");
 
-</div>
+    const fileDetails =
+      document.getElementById("fileDetails");
 
-</main>
+    const formatSection =
+      document.getElementById("formatSection");
 
-<footer>
+    const qualitySection =
+      document.getElementById("qualitySection");
 
-© 2026 ToolNest · Simple, Fast & Free
+    const convertSection =
+      document.getElementById("convertSection");
 
-</footer>
+    const quality =
+      document.getElementById("quality");
 
-<!-- GIF Encoder -->
+    const qualityValue =
+      document.getElementById("qualityValue");
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
+    const convertButton =
+      document.getElementById("convertButton");
 
-<script>
+    const result =
+      document.getElementById("result");
 
-const fileInput =
-document.getElementById("fileInput");
+    const resultText =
+      document.getElementById("resultText");
 
-const uploadArea =
-document.getElementById("uploadArea");
+    const downloadButton =
+      document.getElementById("downloadButton");
 
-const preview =
-document.getElementById("preview");
 
-const previewContainer =
-document.getElementById("previewContainer");
+    let imageObject = null;
 
-const fileInfo =
-document.getElementById("fileInfo");
+    let selectedFile = null;
 
-const fileName =
-document.getElementById("fileName");
+    let downloadUrl = null;
 
-const fileDetails =
-document.getElementById("fileDetails");
 
-const formatSection =
-document.getElementById("formatSection");
+    /* Upload Click */
 
-const qualitySection =
-document.getElementById("qualitySection");
+    uploadArea.addEventListener(
+      "click",
+      function() {
 
-const convertSection =
-document.getElementById("convertSection");
+        fileInput.click();
 
-const quality =
-document.getElementById("quality");
+      }
+    );
 
-const qualityValue =
-document.getElementById("qualityValue");
 
-const convertButton =
-document.getElementById("convertButton");
+    /* File Selection */
 
-const result =
-document.getElementById("result");
+    fileInput.addEventListener(
+      "change",
+      function() {
 
-const resultText =
-document.getElementById("resultText");
+        if (
+          fileInput.files.length > 0
+        ) {
 
-const downloadButton =
-document.getElementById("downloadButton");
+          loadFile(
+            fileInput.files[0]
+          );
 
+        }
 
-let imageObject = null;
+      }
+    );
 
-let selectedFile = null;
 
-let downloadUrl = null;
+    /* Drag Events */
 
+    uploadArea.addEventListener(
+      "dragover",
+      function(event) {
 
-/* Upload Click */
+        event.preventDefault();
 
-uploadArea.addEventListener(
-"click",
-function() {
+        uploadArea.classList.add(
+          "dragging"
+        );
 
-fileInput.click();
+      }
+    );
 
-}
-);
 
+    uploadArea.addEventListener(
+      "dragleave",
+      function() {
 
-/* File Selection */
+        uploadArea.classList.remove(
+          "dragging"
+        );
 
-fileInput.addEventListener(
-"change",
-function() {
+      }
+    );
 
-if (
-fileInput.files.length > 0
-) {
 
-loadFile(
-fileInput.files[0]
-);
+    uploadArea.addEventListener(
+      "drop",
+      function(event) {
 
-}
+        event.preventDefault();
 
-}
-);
+        uploadArea.classList.remove(
+          "dragging"
+        );
 
+        if (
+          event.dataTransfer.files.length > 0
+        ) {
 
-/* Drag */
+          loadFile(
+            event.dataTransfer.files[0]
+          );
 
-uploadArea.addEventListener(
-"dragover",
-function(event) {
+        }
 
-event.preventDefault();
+      }
+    );
 
-uploadArea.classList.add(
-"dragging"
-);
 
-}
-);
+    /* Load Image */
 
+    function loadFile(file) {
 
-uploadArea.addEventListener(
-"dragleave",
-function() {
+      if (
+        !file.type.startsWith(
+          "image/"
+        )
+      ) {
 
-uploadArea.classList.remove(
-"dragging"
-);
+        alert(
+          "Please choose a valid image."
+        );
 
-}
-);
+        return;
 
+      }
 
-uploadArea.addEventListener(
-"drop",
-function(event) {
 
-event.preventDefault();
+      selectedFile =
+        file;
 
-uploadArea.classList.remove(
-"dragging"
-);
 
-if (
-event.dataTransfer.files.length > 0
-) {
+      const reader =
+        new FileReader();
 
-loadFile(
-event.dataTransfer.files[0]
-);
 
-}
+      reader.onload =
+        function(event) {
 
-}
-);
+          imageObject =
+            new Image();
 
 
-/* Load Image */
+          imageObject.onload =
+            function() {
 
-function loadFile(file) {
+              preview.src =
+                event.target.result;
 
-if (
-!file.type.startsWith(
-"image/"
-)
-) {
 
-alert(
-"Please choose a valid image."
-);
+              previewContainer.style.display =
+                "block";
 
-return;
 
-}
+              fileInfo.style.display =
+                "block";
 
-selectedFile =
-file;
 
+              formatSection.style.display =
+                "block";
 
-const reader =
-new FileReader();
 
+              qualitySection.style.display =
+                "block";
 
-reader.onload =
-function(event) {
 
-imageObject =
-new Image();
+              convertSection.style.display =
+                "block";
 
 
-imageObject.onload =
-function() {
+              result.style.display =
+                "none";
 
-preview.src =
-event.target.result;
 
+              fileName.textContent =
+                file.name;
 
-previewContainer.style.display =
-"block";
 
+              fileDetails.textContent =
+                imageObject.naturalWidth
+                +
+                " × "
+                +
+                imageObject.naturalHeight
+                +
+                " pixels · "
+                +
+                formatFileSize(
+                  file.size
+                );
 
-fileInfo.style.display =
-"block";
+            };
 
 
-formatSection.style.display =
-"block";
+          imageObject.onerror =
+            function() {
 
+              alert(
+                "This image format cannot be read by your browser."
+              );
 
-qualitySection.style.display =
-"block";
+            };
 
 
-convertSection.style.display =
-"block";
+          imageObject.src =
+            event.target.result;
 
+        };
 
-fileName.textContent =
-file.name;
 
+      reader.readAsDataURL(
+        file
+      );
 
-fileDetails.textContent =
-imageObject.naturalWidth
-+
-" × "
-+
-imageObject.naturalHeight
-+
-" pixels · "
-+
-formatFileSize(
-file.size
-);
+    }
 
-};
 
+    /* Quality */
 
-imageObject.onerror =
-function() {
+    quality.addEventListener(
+      "input",
+      function() {
 
-alert(
-"This image format cannot be read by your browser."
-);
+        qualityValue.textContent =
+          quality.value
+          +
+          "%";
 
-};
+      }
+    );
 
 
-imageObject.src =
-event.target.result;
+    /* Create Canvas */
 
-};
+    function createCanvas() {
 
+      const canvas =
+        document.createElement(
+          "canvas"
+        );
 
-reader.readAsDataURL(
-file
-);
 
-}
+      canvas.width =
+        imageObject.naturalWidth;
 
 
-/* Quality */
+      canvas.height =
+        imageObject.naturalHeight;
 
-quality.addEventListener(
-"input",
-function() {
 
-qualityValue.textContent =
-quality.value
-+
-"%";
+      const context =
+        canvas.getContext(
+          "2d"
+        );
 
-}
-);
 
+      context.fillStyle =
+        "#ffffff";
 
-/* Create Canvas */
 
-function createCanvas() {
+      context.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
 
-const canvas =
-document.createElement(
-"canvas"
-);
 
+      context.drawImage(
+        imageObject,
+        0,
+        0
+      );
 
-canvas.width =
-imageObject.naturalWidth;
 
+      return canvas;
 
-canvas.height =
-imageObject.naturalHeight;
+    }
 
 
-const context =
-canvas.getContext(
-"2d"
-);
+    /* Convert Button */
 
+    convertButton.addEventListener(
+      "click",
+      async function() {
 
-/*
-White background prevents
-black transparency in JPG.
-*/
+        if (
+          !imageObject
+        ) {
 
-context.fillStyle =
-"#ffffff";
+          return;
 
+        }
 
-context.fillRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
 
+        const format =
+          document.querySelector(
+            'input[name="format"]:checked'
+          ).value;
 
-context.drawImage(
-imageObject,
-0,
-0
-);
 
+        convertButton.disabled =
+          true;
 
-return canvas;
 
-}
+        convertButton.textContent =
+          format === "gif"
+            ? "Creating GIF..."
+            : "Converting...";
 
 
-/* Convert */
+        try {
 
-convertButton.addEventListener(
-"click",
-async function() {
+          let blob;
 
-if (
-!imageObject
-) {
 
-return;
+          if (
+            format === "gif"
+          ) {
 
-}
+            blob =
+              await convertToGif();
 
+          }
 
-const format =
-document.querySelector(
-'input[name="format"]:checked'
-).value;
 
+          else if (
+            format === "bmp"
+          ) {
 
-convertButton.disabled =
-true;
+            blob =
+              convertToBmp();
 
+          }
 
-convertButton.textContent =
-format === "gif"
-? "Creating GIF..."
-: "Converting...";
 
+          else if (
+            format === "ico"
+          ) {
 
-try {
+            blob =
+              await convertToIco();
 
-let blob;
+          }
 
 
-if (
-format === "gif"
-) {
+          else {
 
-blob =
-await convertToGif();
+            blob =
+              await convertStandard(
+                format
+              );
 
-}
+          }
 
 
-else if (
-format === "bmp"
-) {
+          if (
+            !blob ||
+            blob.size === 0
+          ) {
 
-blob =
-convertToBmp();
+            throw new Error(
+              "Conversion failed."
+            );
 
-}
+          }
 
 
-else if (
-format === "ico"
-) {
+          showDownload(
+            blob,
+            format
+          );
 
-blob =
-await convertToIco();
+        }
 
-}
+        catch(error) {
 
+          console.error(
+            error
+          );
 
-else {
+          alert(
+            "Conversion failed. Please try another image."
+          );
 
-blob =
-await convertStandard(
-format
-);
+        }
 
-}
 
+        convertButton.disabled =
+          false;
 
-if (
-!blob
-) {
 
-throw new Error(
-"Conversion failed."
-);
+        convertButton.textContent =
+          "Convert Image";
 
-}
+      }
+    );
 
 
-showDownload(
-blob,
-format
-);
+    /* JPG PNG WEBP */
 
-}
+    function convertStandard(
+      format
+    ) {
 
-catch(error) {
+      return new Promise(
+        function(resolve) {
 
-console.error(
-error
-);
+          const canvas =
+            createCanvas();
 
-alert(
-"Conversion failed. Please try another image."
-);
 
-}
+          let mime;
 
 
-convertButton.disabled =
-false;
+          if (
+            format === "jpg"
+          ) {
 
+            mime =
+              "image/jpeg";
 
-convertButton.textContent =
-"Convert Image";
+          }
 
-}
-);
 
+          else if (
+            format === "png"
+          ) {
 
-/* JPG PNG WEBP */
+            mime =
+              "image/png";
 
-function convertStandard(
-format
-) {
+          }
 
-return new Promise(
-function(resolve) {
 
-const canvas =
-createCanvas();
+          else {
 
+            mime =
+              "image/webp";
 
-let mime;
+          }
 
 
-if (
-format === "jpg"
-) {
+          canvas.toBlob(
+            function(blob) {
 
-mime =
-"image/jpeg";
+              resolve(
+                blob
+              );
 
-}
+            },
+            mime,
+            Number(
+              quality.value
+            )
+            /
+            100
+          );
 
+        }
+      );
 
-else if (
-format === "png"
-) {
+    }
 
-mime =
-"image/png";
 
-}
+    /* GIF Conversion */
 
+    function convertToGif() {
 
-else {
+      return new Promise(
+        function(resolve, reject) {
 
-mime =
-"image/webp";
+          if (
+            typeof GIF ===
+            "undefined"
+          ) {
 
-}
+            reject(
+              new Error(
+                "The GIF encoder library could not be loaded."
+              )
+            );
 
+            return;
 
-canvas.toBlob(
-function(blob) {
+          }
 
-resolve(
-blob
-);
 
-},
-mime,
-Number(
-quality.value
-)
-/
-100
-);
+          const canvas =
+            createCanvas();
 
-}
-);
 
-}
+          const gif =
+            new GIF({
 
+              workers: 2,
 
-/* GIF */
+              quality: 10,
 
-function convertToGif() {
+              width:
+                canvas.width,
 
-return new Promise(
-function(resolve, reject) {
+              height:
+                canvas.height,
 
-if (
-typeof GIF ===
-"undefined"
-) {
+              workerScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js"
 
-reject(
-new Error(
-"GIF encoder failed to load."
-)
-);
+            });
 
-return;
 
-}
+          gif.addFrame(
+            canvas,
+            {
 
+              copy: true,
 
-const canvas =
-createCanvas();
+              delay: 100
 
+            }
+          );
 
-const gif =
-new GIF({
 
-workers: 2,
+          gif.on(
+            "finished",
+            function(blob) {
 
-quality: 10,
+              if (
+                !blob ||
+                blob.size === 0
+              ) {
 
-workerScript:
-"https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js"
+                reject(
+                  new Error(
+                    "The GIF encoder produced an empty file."
+                  )
+                );
 
-});
+                return;
 
+              }
 
-gif.addFrame(
-canvas,
-{
 
-copy: true,
+              resolve(
+                blob
+              );
 
-delay: 100
+            }
+          );
 
-}
-);
 
+          gif.on(
+            "abort",
+            function() {
 
-gif.on(
-"finished",
-function(blob) {
+              reject(
+                new Error(
+                  "GIF conversion was cancelled."
+                )
+              );
 
-resolve(
-blob
-);
+            }
+          );
 
-}
-);
 
+          try {
 
-gif.on(
-"abort",
-function() {
+            gif.render();
 
-reject(
-new Error(
-"GIF conversion stopped."
-)
-);
+          }
 
-}
-);
+          catch(error) {
 
+            reject(
+              error
+            );
 
-gif.render();
+          }
 
-}
-);
+        }
+      );
 
-}
+    }
 
 
-/* BMP */
+    /* BMP Conversion */
 
-function convertToBmp() {
+    function convertToBmp() {
 
-const canvas =
-createCanvas();
+      const canvas =
+        createCanvas();
 
 
-const context =
-canvas.getContext(
-"2d"
-);
+      const context =
+        canvas.getContext(
+          "2d"
+        );
 
 
-const imageData =
-context.getImageData(
-0,
-0,
-canvas.width,
-canvas.height
-);
+      const imageData =
+        context.getImageData(
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        );
 
 
-const width =
-canvas.width;
+      const width =
+        canvas.width;
 
 
-const height =
-canvas.height;
+      const height =
+        canvas.height;
 
 
-const rowSize =
-Math.floor(
-(
-width * 3
-+
-3
-)
-/
-4
-)
-*
-4;
+      const rowSize =
+        Math.floor(
+          (
+            width * 3
+            +
+            3
+          )
+          /
+          4
+        )
+        *
+        4;
 
 
-const imageSize =
-rowSize
-*
-height;
+      const imageSize =
+        rowSize
+        *
+        height;
 
 
-const fileSize =
-54
-+
-imageSize;
+      const fileSize =
+        54
+        +
+        imageSize;
 
 
-const buffer =
-new ArrayBuffer(
-fileSize
-);
+      const buffer =
+        new ArrayBuffer(
+          fileSize
+        );
 
 
-const view =
-new DataView(
-buffer
-);
+      const view =
+        new DataView(
+          buffer
+        );
 
 
-let offset =
-0;
+      let offset =
+        0;
 
 
-/* BMP Header */
+      /* BMP Header */
 
-view.setUint8(
-offset++,
-0x42
-);
+      view.setUint8(
+        offset++,
+        0x42
+      );
 
-view.setUint8(
-offset++,
-0x4D
-);
+      view.setUint8(
+        offset++,
+        0x4D
+      );
 
-view.setUint32(
-offset,
-fileSize,
-true
-);
+      view.setUint32(
+        offset,
+        fileSize,
+        true
+      );
 
-offset += 4;
+      offset += 4;
 
 
-view.setUint32(
-offset,
-0,
-true
-);
+      view.setUint32(
+        offset,
+        0,
+        true
+      );
 
-offset += 4;
+      offset += 4;
 
 
-view.setUint32(
-offset,
-54,
-true
-);
+      view.setUint32(
+        offset,
+        54,
+        true
+      );
 
-offset += 4;
+      offset += 4;
 
 
-/* DIB Header */
+      /* DIB Header */
 
-view.setUint32(
-offset,
-40,
-true
-);
+      view.setUint32(
+        offset,
+        40,
+        true
+      );
 
-offset += 4;
+      offset += 4;
 
 
-view.setInt32(
-offset,
-width,
-true
-);
+      view.setInt32(
+        offset,
+        width,
+        true
+      );
 
-offset += 4;
+      offset += 4;
 
 
-view.setInt32(
-offset,
-height,
-true
-);
+      view.setInt32(
+        offset,
+        height,
+        true
+      );
 
-offset += 4;
+      offset += 4;
 
 
-view.setUint16(
-offset,
-1,
-true
-);
+      view.setUint16(
+        offset,
+        1,
+        true
+      );
 
-offset += 2;
+      offset += 2;
 
 
-view.setUint16(
-offset,
-24,
-true
-);
+      view.setUint16(
+        offset,
+        24,
+        true
+      );
 
-offset += 2;
+      offset += 2;
 
 
-view.setUint32(
-offset,
-0,
-true
-);
+      view.setUint32(
+        offset,
+        0,
+        true
+      );
 
-offset += 4;
+      offset += 4;
 
 
-view.setUint32(
-offset,
-imageSize,
-true
-);
+      view.setUint32(
+        offset,
+        imageSize,
+        true
+      );
 
-offset += 4;
+      offset += 4;
 
 
-view.setInt32(
-offset,
-2835,
-true
-);
+      view.setInt32(
+        offset,
+        2835,
+        true
+      );
 
-offset += 4;
+      offset += 4;
 
 
-view.setInt32(
-offset,
-2835,
-true
-);
+      view.setInt32(
+        offset,
+        2835,
+        true
+      );
 
-offset += 4;
+      offset += 4;
 
 
-view.setUint32(
-offset,
-0,
-true
-);
+      view.setUint32(
+        offset,
+        0,
+        true
+      );
 
-offset += 4;
+      offset += 4;
 
 
-view.setUint32(
-offset,
-0,
-true
-);
+      view.setUint32(
+        offset,
+        0,
+        true
+      );
 
-offset += 4;
+      offset += 4;
 
 
-const pixels =
-imageData.data;
+      const pixels =
+        imageData.data;
 
 
-for (
-let y = height - 1;
-y >= 0;
-y--
-) {
+      for (
+        let y = height - 1;
+        y >= 0;
+        y--
+      ) {
 
-let rowStart =
-offset;
+        const rowStart =
+          offset;
 
 
-for (
-let x = 0;
-x < width;
-x++
-) {
+        for (
+          let x = 0;
+          x < width;
+          x++
+        ) {
 
-const pixel =
-(
-y
-*
-width
-+
-x
-)
-*
-4;
+          const pixel =
+            (
+              y
+              *
+              width
+              +
+              x
+            )
+            *
+            4;
 
 
-/* BGR */
+          view.setUint8(
+            offset++,
+            pixels[
+              pixel + 2
+            ]
+          );
 
-view.setUint8(
-offset++,
-pixels[
-pixel + 2
-]
-);
 
+          view.setUint8(
+            offset++,
+            pixels[
+              pixel + 1
+            ]
+          );
 
-view.setUint8(
-offset++,
-pixels[
-pixel + 1
-]
-);
 
+          view.setUint8(
+            offset++,
+            pixels[
+              pixel
+            ]
+          );
 
-view.setUint8(
-offset++,
-pixels[
-pixel
-]
-);
+        }
 
-}
 
+        while (
+          offset
+          <
+          rowStart
+          +
+          rowSize
+        ) {
 
-/* Row Padding */
+          view.setUint8(
+            offset++,
+            0
+          );
 
-while (
-offset
-<
-rowStart
-+
-rowSize
-) {
+        }
 
-view.setUint8(
-offset++,
-0
-);
+      }
 
-}
 
-}
+      return new Blob(
+        [
+          buffer
+        ],
+        {
 
+          type:
+            "image/bmp"
 
-return new Blob(
-[
-buffer
-],
-{
+        }
+      );
 
-type:
-"image/bmp"
+    }
 
-}
-);
 
-}
+    /* ICO Conversion */
 
+    function convertToIco() {
 
-/* ICO */
+      return new Promise(
+        function(resolve, reject) {
 
-function convertToIco() {
+          const size =
+            256;
 
-return new Promise(
-function(resolve, reject) {
 
+          const canvas =
+            document.createElement(
+              "canvas"
+            );
 
-const size =
-Math.min(
-256,
-Math.max(
-16,
-Math.max(
-imageObject.naturalWidth,
-imageObject.naturalHeight
-)
-)
-);
 
+          canvas.width =
+            size;
 
-const canvas =
-document.createElement(
-"canvas"
-);
 
+          canvas.height =
+            size;
 
-canvas.width =
-size;
 
+          const context =
+            canvas.getContext(
+              "2d"
+            );
 
-canvas.height =
-size;
 
+          context.clearRect(
+            0,
+            0,
+            size,
+            size
+          );
 
-const context =
-canvas.getContext(
-"2d"
-);
 
+          const scale =
+            Math.min(
+              size
+              /
+              imageObject.naturalWidth,
+              size
+              /
+              imageObject.naturalHeight
+            );
 
-/* Transparent Icon */
 
-context.clearRect(
-0,
-0,
-size,
-size
-);
+          const width =
+            imageObject.naturalWidth
+            *
+            scale;
 
 
-const scale =
-Math.min(
-size
-/
-imageObject.naturalWidth,
+          const height =
+            imageObject.naturalHeight
+            *
+            scale;
 
-size
-/
-imageObject.naturalHeight
-);
 
+          const x =
+            (
+              size
+              -
+              width
+            )
+            /
+            2;
 
-const width =
-imageObject.naturalWidth
-*
-scale;
 
+          const y =
+            (
+              size
+              -
+              height
+            )
+            /
+            2;
 
-const height =
-imageObject.naturalHeight
-*
-scale;
 
+          context.drawImage(
+            imageObject,
+            x,
+            y,
+            width,
+            height
+          );
 
-const x =
-(
-size
--
-width
-)
-/
-2;
 
+          canvas.toBlob(
+            async function(pngBlob) {
 
-const y =
-(
-size
--
-height
-)
-/
-2;
+              try {
 
+                const pngBuffer =
+                  await pngBlob.arrayBuffer();
 
-context.drawImage(
-imageObject,
-x,
-y,
-width,
-height
-);
 
+                const headerSize =
+                  6;
 
-/*
-Create PNG image
-for the ICO container.
-*/
 
-canvas.toBlob(
-async function(pngBlob) {
+                const directorySize =
+                  16;
 
-try {
 
-const pngBuffer =
-await pngBlob.arrayBuffer();
+                const imageOffset =
+                  headerSize
+                  +
+                  directorySize;
 
 
-const headerSize =
-6;
+                const buffer =
+                  new ArrayBuffer(
+                    imageOffset
+                    +
+                    pngBuffer.byteLength
+                  );
 
 
-const directorySize =
-16;
+                const view =
+                  new DataView(
+                    buffer
+                  );
 
 
-const imageOffset =
-headerSize
-+
-directorySize;
+                /* ICO Header */
 
+                view.setUint16(
+                  0,
+                  0,
+                  true
+                );
 
-const buffer =
-new ArrayBuffer(
-imageOffset
-+
-pngBuffer.byteLength
-);
+                view.setUint16(
+                  2,
+                  1,
+                  true
+                );
 
+                view.setUint16(
+                  4,
+                  1,
+                  true
+                );
 
-const view =
-new DataView(
-buffer
-);
 
+                /* Directory */
 
-/* ICO Header */
+                view.setUint8(
+                  6,
+                  0
+                );
 
-view.setUint16(
-0,
-0,
-true
-);
+                view.setUint8(
+                  7,
+                  0
+                );
 
+                view.setUint8(
+                  8,
+                  0
+                );
 
-view.setUint16(
-2,
-1,
-true
-);
+                view.setUint8(
+                  9,
+                  0
+                );
 
+                view.setUint16(
+                  10,
+                  1,
+                  true
+                );
 
-view.setUint16(
-4,
-1,
-true
-);
+                view.setUint16(
+                  12,
+                  32,
+                  true
+                );
 
+                view.setUint32(
+                  14,
+                  pngBuffer.byteLength,
+                  true
+                );
 
-/* Directory Entry */
+                view.setUint32(
+                  18,
+                  imageOffset,
+                  true
+                );
 
-view.setUint8(
-6,
-size === 256
-? 0
-: size
-);
 
+                const output =
+                  new Uint8Array(
+                    buffer
+                  );
 
-view.setUint8(
-7,
-size === 256
-? 0
-: size
-);
 
+                output.set(
+                  new Uint8Array(
+                    pngBuffer
+                  ),
+                  imageOffset
+                );
 
-view.setUint8(
-8,
-0
-);
 
+                resolve(
+                  new Blob(
+                    [
+                      buffer
+                    ],
+                    {
 
-view.setUint8(
-9,
-0
-);
+                      type:
+                        "image/x-icon"
 
+                    }
+                  )
+                );
 
-view.setUint16(
-10,
-1,
-true
-);
+              }
 
+              catch(error) {
 
-view.setUint16(
-12,
-32,
-true
-);
+                reject(
+                  error
+                );
 
+              }
 
-view.setUint32(
-14,
-pngBuffer.byteLength,
-true
-);
+            },
+            "image/png"
+          );
 
+        }
+      );
 
-view.setUint32(
-18,
-imageOffset,
-true
-);
+    }
 
 
-/* Copy PNG */
+    /* Show Download */
 
-const output =
-new Uint8Array(
-buffer
-);
+    function showDownload(
+      blob,
+      format
+    ) {
 
+      if (
+        downloadUrl
+      ) {
 
-output.set(
-new Uint8Array(
-pngBuffer
-),
-imageOffset
-);
+        URL.revokeObjectURL(
+          downloadUrl
+        );
 
+      }
 
-resolve(
-new Blob(
-[
-buffer
-],
-{
 
-type:
-"image/x-icon"
+      downloadUrl =
+        URL.createObjectURL(
+          blob
+        );
 
-}
-)
-);
 
-}
+      const name =
+        selectedFile.name.replace(
+          /\.[^/.]+$/,
+          ""
+        );
 
-catch(error) {
 
-reject(
-error
-);
+      downloadButton.href =
+        downloadUrl;
 
-}
 
-},
-"image/png"
-);
+      downloadButton.download =
+        name
+        +
+        "."
+        +
+        format;
 
-}
-);
 
-}
+      resultText.textContent =
+        "Your "
+        +
+        format.toUpperCase()
+        +
+        " image is ready.";
 
 
-/* Show Download */
+      result.style.display =
+        "block";
 
-function showDownload(
-blob,
-format
-) {
 
-if (
-downloadUrl
-) {
+      result.scrollIntoView(
+        {
 
-URL.revokeObjectURL(
-downloadUrl
-);
+          behavior:
+            "smooth",
 
-}
+          block:
+            "nearest"
 
+        }
+      );
 
-downloadUrl =
-URL.createObjectURL(
-blob
-);
+    }
 
 
-const name =
-selectedFile.name.replace(
-/\.[^/.]+$/,
-""
-);
+    /* Format File Size */
 
+    function formatFileSize(
+      bytes
+    ) {
 
-downloadButton.href =
-downloadUrl;
+      if (
+        bytes < 1024
+      ) {
 
+        return (
+          bytes
+          +
+          " B"
+        );
 
-downloadButton.download =
-name
-+
-"."
-+
-format;
+      }
 
 
-resultText.textContent =
-"Your "
-+
-format.toUpperCase()
-+
-" image is ready.";
+      if (
+        bytes
+        <
+        1024
+        *
+        1024
+      ) {
 
+        return (
+          (
+            bytes
+            /
+            1024
+          ).toFixed(1)
+          +
+          " KB"
+        );
 
-result.style.display =
-"block";
+      }
 
 
-result.scrollIntoView({
+      return (
+        (
+          bytes
+          /
+          (
+            1024
+            *
+            1024
+          )
+        ).toFixed(1)
+        +
+        " MB"
+      );
 
-behavior:
-"smooth",
+    }
 
-block:
-"nearest"
-
-});
-
-}
-
-
-/* File Size */
-
-function formatFileSize(
-bytes
-) {
-
-if (
-bytes < 1024
-) {
-
-return (
-bytes
-+
-" B"
-);
-
-}
-
-
-if (
-bytes
-<
-1024
-*
-1024
-) {
-
-return (
-(
-bytes
-/
-1024
-).toFixed(1)
-+
-" KB"
-);
-
-}
-
-
-return (
-(
-bytes
-/
-(
-1024
-*
-1024
-)
-).toFixed(1)
-+
-" MB"
-);
-
-}
-
-</script>
+  </script>
 
 </body>
 </html>
