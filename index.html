@@ -6,9 +6,11 @@ content="width=device-width, initial-scale=1.0"
 
 «»
 
-  <title>ToolNest - Free Online Tools</title><meta
+  <title>
+    ToolNest - Free Online Tools
+  </title><meta
 name="description"
-content="ToolNest offers simple, fast and free online tools for everyday tasks."
+content="ToolNest offers free online text and image tools to help you work faster and get more done."
 
 «»
 
@@ -16,6 +18,10 @@ content="ToolNest offers simple, fast and free online tools for everyday tasks."
 
     * {
       box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -40,17 +46,22 @@ content="ToolNest offers simple, fast and free online tools for everyday tasks."
     .logo {
       font-size: 24px;
       font-weight: bold;
-      color: #222;
       text-decoration: none;
+      color: #222;
     }
 
     .logo span {
       color: #666;
     }
 
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
     .nav-links a {
-      color: #555;
       text-decoration: none;
+      color: #555;
       font-size: 15px;
     }
 
@@ -61,66 +72,100 @@ content="ToolNest offers simple, fast and free online tools for everyday tasks."
     /* Hero */
 
     .hero {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 80px 20px 60px;
       text-align: center;
+      padding: 85px 20px 70px;
     }
 
     .hero h1 {
-      margin: 0 0 18px;
-      font-size: 48px;
+      max-width: 850px;
+      margin: 0 auto 15px;
+
+      font-size: 46px;
       line-height: 1.2;
     }
 
-    .hero h1 span {
-      color: #666;
-    }
-
     .hero p {
-      max-width: 650px;
+      max-width: 700px;
       margin: 0 auto;
-      color: #777;
-      font-size: 17px;
-      line-height: 1.7;
+
+      color: #666;
+      font-size: 18px;
+      line-height: 1.6;
     }
 
-    /* Tools Section */
+    .hero-button {
+      display: inline-block;
+
+      margin-top: 28px;
+      padding: 13px 25px;
+
+      background: #222;
+      color: #ffffff;
+
+      border-radius: 8px;
+      text-decoration: none;
+
+      font-size: 15px;
+
+      transition: opacity 0.2s;
+    }
+
+    .hero-button:hover {
+      opacity: 0.85;
+    }
+
+    /* Main Tools Area */
 
     .tools-section {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 10px 20px 70px;
+      max-width: 1050px;
+      margin: auto;
+      padding: 20px 20px 80px;
     }
 
-    .section-title {
-      margin-bottom: 25px;
+    /* Tool Category */
+
+    .category {
+      margin-bottom: 60px;
     }
 
-    .section-title h2 {
+    .category-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .category-header h2 {
       margin: 0 0 8px;
-      font-size: 28px;
+      font-size: 30px;
     }
 
-    .section-title p {
+    .category-header p {
       margin: 0;
       color: #777;
-      font-size: 15px;
+      line-height: 1.6;
     }
 
     /* Tool Grid */
 
     .tools-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
+
+      max-width: 850px;
+      margin: auto;
     }
 
+    /* Tool Card */
+
     .tool-card {
-      background: white;
-      border: 1px solid #e5e5e5;
-      border-radius: 14px;
+      display: block;
+
+      background: #ffffff;
+
       padding: 25px;
+
+      border: 1px solid #e7e7e7;
+      border-radius: 14px;
 
       text-decoration: none;
       color: #222;
@@ -133,83 +178,163 @@ content="ToolNest offers simple, fast and free online tools for everyday tasks."
 
     .tool-card:hover {
       transform: translateY(-4px);
-      border-color: #bbb;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+
+      border-color: #d5d5d5;
+
+      box-shadow:
+        0 12px 30px
+        rgba(0, 0, 0, 0.08);
+    }
+
+    .tool-card:focus {
+      outline: 3px solid #b5b5b5;
+      outline-offset: 3px;
     }
 
     .tool-icon {
-      width: 52px;
-      height: 52px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background: #f6f7fb;
-      border-radius: 12px;
-
-      font-size: 26px;
-      margin-bottom: 18px;
+      font-size: 32px;
+      margin-bottom: 15px;
     }
 
     .tool-card h3 {
       margin: 0 0 10px;
-      font-size: 19px;
+      font-size: 20px;
     }
 
     .tool-card p {
       margin: 0;
+
       color: #777;
       font-size: 14px;
       line-height: 1.6;
     }
 
-    .tool-link {
-      display: inline-block;
-      margin-top: 18px;
+    /* Why ToolNest */
 
-      font-size: 14px;
-      font-weight: bold;
-      color: #222;
+    .why-section {
+      background: #ffffff;
+
+      border-top: 1px solid #e5e5e5;
+      border-bottom: 1px solid #e5e5e5;
+
+      padding: 70px 20px;
     }
 
-    /* Coming Soon */
-
-    .coming-soon {
-      opacity: 0.65;
-      cursor: default;
+    .why-container {
+      max-width: 1000px;
+      margin: auto;
     }
 
-    .coming-soon:hover {
-      transform: none;
-      box-shadow: none;
-      border-color: #e5e5e5;
+    .why-title {
+      text-align: center;
+      margin-bottom: 35px;
     }
 
-    .coming-soon .tool-link {
+    .why-title h2 {
+      margin: 0 0 10px;
+      font-size: 30px;
+    }
+
+    .why-title p {
+      margin: 0;
       color: #777;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .feature {
+      background: #f6f7fb;
+
+      padding: 25px;
+
+      border-radius: 14px;
+      text-align: center;
+    }
+
+    .feature-icon {
+      font-size: 30px;
+      margin-bottom: 12px;
+    }
+
+    .feature h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .feature p {
+      margin: 0;
+
+      color: #777;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* About */
+
+    .about-section {
+      max-width: 850px;
+      margin: auto;
+
+      padding: 75px 20px;
+
+      text-align: center;
+    }
+
+    .about-section h2 {
+      margin: 0 0 15px;
+      font-size: 30px;
+    }
+
+    .about-section p {
+      margin: 0;
+
+      color: #666;
+      line-height: 1.7;
     }
 
     /* Footer */
 
     footer {
       text-align: center;
+
       padding: 35px 20px;
+
+      background: #ffffff;
       border-top: 1px solid #e5e5e5;
+
       color: #777;
       font-size: 14px;
-      background: white;
     }
 
-    /* Mobile */
+    .footer-links {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: #555;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    .footer-links a:hover {
+      color: #000;
+    }
+
+    /* Tablet */
 
     @media (max-width: 800px) {
 
-      .tools-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .features {
+        grid-template-columns: 1fr;
       }
 
     }
+
+    /* Mobile */
 
     @media (max-width: 600px) {
 
@@ -226,7 +351,7 @@ content="ToolNest offers simple, fast and free online tools for everyday tasks."
       }
 
       .hero {
-        padding: 60px 20px 45px;
+        padding: 65px 20px 55px;
       }
 
       .hero h1 {
@@ -241,8 +366,14 @@ content="ToolNest offers simple, fast and free online tools for everyday tasks."
         grid-template-columns: 1fr;
       }
 
-      .tools-section {
-        padding-bottom: 50px;
+      .category {
+        margin-bottom: 50px;
+      }
+
+      .category-header h2,
+      .why-title h2,
+      .about-section h2 {
+        font-size: 26px;
       }
 
     }
@@ -256,194 +387,308 @@ content="ToolNest offers simple, fast and free online tools for everyday tasks."
 
 <div class="nav-links">
 
-  <a href="#tools">
-    All Tools
+  <a href="#text-tools">
+    Text Tools
+  </a>
+
+  <a href="#image-tools">
+    Image Tools
+  </a>
+
+  <a href="#about">
+    About
   </a>
 
 </div>
 
   </nav>  <!-- Hero -->  <section class="hero"><h1>
-  Simple Tools.
-  <span>Made for Everyone.</span>
+  Simple, Fast & Free Online Tools
 </h1>
 
 <p>
-  ToolNest provides fast, simple and free online tools
-  that help you get things done without complicated software.
+  ToolNest provides free and easy-to-use tools
+  for working with text, images and more.
+  No registration or downloads required.
 </p>
 
-  </section>  <!-- Tools -->  <main
-    class="tools-section"
-    id="tools"
-  ><div class="section-title">
+<a
+  href="#text-tools"
+  class="hero-button"
+>
+  Explore Tools
+</a>
 
-  <h2>
-    Our Tools
-  </h2>
+  </section>  <!-- Tools -->  <main class="tools-section"><!-- Text Tools -->
 
-  <p>
-    Choose a tool to get started.
-  </p>
+<section
+  class="category"
+  id="text-tools"
+>
 
-</div>
+  <div class="category-header">
 
-
-<div class="tools-grid">
-
-
-  <!-- PDF Tools -->
-
-  <div
-    class="tool-card coming-soon"
-  >
-
-    <div class="tool-icon">
-      📄
-    </div>
-
-    <h3>
-      PDF Tools
-    </h3>
-
-    <p>
-      Convert, organize and work with PDF files online.
-    </p>
-
-    <span class="tool-link">
-      Coming Soon
-    </span>
-
-  </div>
-
-
-  <!-- Calculators -->
-
-  <div
-    class="tool-card coming-soon"
-  >
-
-    <div class="tool-icon">
-      🔢
-    </div>
-
-    <h3>
-      Calculators
-    </h3>
-
-    <p>
-      Useful calculators for everyday tasks and quick calculations.
-    </p>
-
-    <span class="tool-link">
-      Coming Soon
-    </span>
-
-  </div>
-
-
-  <!-- Text Tools -->
-
-  <div
-    class="tool-card coming-soon"
-  >
-
-    <div class="tool-icon">
-      📝
-    </div>
-
-    <h3>
+    <h2>
       Text Tools
-    </h3>
+    </h2>
 
     <p>
-      Edit, format and transform text quickly and easily.
+      Simple tools to count, format, clean
+      and organize your text.
     </p>
-
-    <span class="tool-link">
-      Coming Soon
-    </span>
 
   </div>
 
 
-  <!-- URL Tools -->
+  <div class="tools-grid">
 
-  <div
-    class="tool-card coming-soon"
-  >
 
-    <div class="tool-icon">
-      🔗
+    <a
+      href="word-counter.html"
+      class="tool-card"
+    >
+
+      <div class="tool-icon">
+        📝
+      </div>
+
+      <h3>
+        Word Counter
+      </h3>
+
+      <p>
+        Count words, characters, sentences,
+        paragraphs and more instantly.
+      </p>
+
+    </a>
+
+
+    <a
+      href="case-converter.html"
+      class="tool-card"
+    >
+
+      <div class="tool-icon">
+        🔤
+      </div>
+
+      <h3>
+        Case Converter
+      </h3>
+
+      <p>
+        Convert text into uppercase, lowercase,
+        title case, sentence case and more.
+      </p>
+
+    </a>
+
+
+    <a
+      href="text-cleaner.html"
+      class="tool-card"
+    >
+
+      <div class="tool-icon">
+        🧼
+      </div>
+
+      <h3>
+        Text Cleaner
+      </h3>
+
+      <p>
+        Remove extra spaces, empty lines,
+        tabs and unnecessary formatting.
+      </p>
+
+    </a>
+
+
+    <a
+      href="text-sorter.html"
+      class="tool-card"
+    >
+
+      <div class="tool-icon">
+        🔡
+      </div>
+
+      <h3>
+        Text Sorter
+      </h3>
+
+      <p>
+        Sort text lines alphabetically,
+        in reverse order or numerically.
+      </p>
+
+    </a>
+
+
+  </div>
+
+</section>
+
+
+<!-- Image Tools -->
+
+<section
+  class="category"
+  id="image-tools"
+>
+
+  <div class="category-header">
+
+    <h2>
+      Image Tools
+    </h2>
+
+    <p>
+      Useful tools to compress, convert
+      and optimize your images.
+    </p>
+
+  </div>
+
+
+  <div class="tools-grid">
+
+
+    <a
+      href="image-compressor.html"
+      class="tool-card"
+    >
+
+      <div class="tool-icon">
+        🗜️
+      </div>
+
+      <h3>
+        Image Compressor
+      </h3>
+
+      <p>
+        Compress your images and reduce
+        file size while maintaining quality.
+      </p>
+
+    </a>
+
+
+  </div>
+
+</section>
+
+  </main>  <!-- Why ToolNest -->  <section class="why-section"><div class="why-container">
+
+  <div class="why-title">
+
+    <h2>
+      Why Use ToolNest?
+    </h2>
+
+    <p>
+      Simple online tools designed to help
+      you get things done faster.
+    </p>
+
+  </div>
+
+
+  <div class="features">
+
+
+    <div class="feature">
+
+      <div class="feature-icon">
+        ⚡
+      </div>
+
+      <h3>
+        Fast
+      </h3>
+
+      <p>
+        Get results quickly without
+        unnecessary steps.
+      </p>
+
     </div>
 
-    <h3>
-      URL Tools
-    </h3>
 
-    <p>
-      Useful tools for working with links, URLs and web content.
-    </p>
+    <div class="feature">
 
-    <span class="tool-link">
-      Coming Soon
-    </span>
+      <div class="feature-icon">
+        ✨
+      </div>
 
-  </div>
+      <h3>
+        Easy to Use
+      </h3>
 
+      <p>
+        Clean and simple tools designed
+        for everyday tasks.
+      </p>
 
-  <!-- More Tools -->
-
-  <div
-    class="tool-card coming-soon"
-  >
-
-    <div class="tool-icon">
-      ⚙️
     </div>
 
-    <h3>
-      More Tools
-    </h3>
 
-    <p>
-      New free tools will be added to ToolNest regularly.
-    </p>
+    <div class="feature">
 
-    <span class="tool-link">
-      Coming Soon
-    </span>
+      <div class="feature-icon">
+        🆓
+      </div>
 
-  </div>
+      <h3>
+        Completely Free
+      </h3>
 
+      <p>
+        Use all available tools without
+        registration or payment.
+      </p>
 
-  <!-- More Tools -->
-
-  <div
-    class="tool-card coming-soon"
-  >
-
-    <div class="tool-icon">
-      ✨
     </div>
 
-    <h3>
-      New Tools
-    </h3>
-
-    <p>
-      More useful online tools are coming soon.
-    </p>
-
-    <span class="tool-link">
-      Coming Soon
-    </span>
 
   </div>
-
 
 </div>
 
-  </main>  <!-- Footer -->  <footer>
-    © 2026 ToolNest · Simple, Fast & Free
+  </section>  <!-- About -->  <section
+    class="about-section"
+    id="about"
+  ><h2>
+  About ToolNest
+</h2>
+
+<p>
+  ToolNest is a growing collection of simple,
+  fast and free online tools. Whether you need
+  to work with text, images or other files,
+  our goal is to provide useful tools that help
+  you complete everyday tasks quickly and easily.
+</p>
+
+  </section>  <!-- Footer -->  <footer><div class="footer-links">
+
+  <a href="#text-tools">
+    Text Tools
+  </a>
+
+  <a href="#image-tools">
+    Image Tools
+  </a>
+
+  <a href="#about">
+    About
+  </a>
+
+</div>
+
+© 2026 ToolNest · Simple, Fast & Free
+
   </footer></body>
 </html>
