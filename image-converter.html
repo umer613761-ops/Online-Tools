@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
+>
+
+<title>Image Converter - Free Online Image Converter | ToolNest</title>
+
+<meta
+name="description"
+content="Convert images online for free. Convert JPG, PNG and WEBP images quickly and easily."
+
+>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f6f7fb;
+  color: #222;
+}
+
+
+/* Navigation */
+
+nav {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 18px 30px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #222;
+}
+
+.logo span {
+  color: #555;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #555;
+  font-size: 15px;
+}
+
+.nav-links a:hover {
+  color: #000;
+}
+
+
+/* Main */
+
+.container {
+  max-width: 850px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.tool-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.tool-header h1 {
+  margin: 0 0 12px;
+  font-size: 36px;
+}
+
+.tool-header p {
+  margin: 0;
+  color: #777;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+
+/* Converter Card */
+
+.converter {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 16px;
+  padding: 30px;
+}
+
+
+/* Upload Area */
+
+.upload-area {
+  border: 2px dashed #d5d5d5;
+  border-radius: 14px;
+  padding: 50px 20px;
+
+  text-align: center;
+  cursor: pointer;
+
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.upload-area:hover {
+  background: #fafafa;
+  border-color: #999;
+}
+
+.upload-icon {
+  font-size: 42px;
+  margin-bottom: 15px;
+}
+
+.upload-area h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+.upload-area p {
+  margin: 0;
+  color: #777;
+  font-size: 14px;
+}
+
+#imageInput {
+  display: none;
+}
+
+
+/* Image Preview */
+
+.preview-container {
+  display: none;
+  margin-top: 30px;
+}
+
+.preview-image {
+  width: 100%;
+  max-height: 420px;
+
+  object-fit: contain;
+
+  border-radius: 12px;
+  background: #f6f7fb;
+  border: 1px solid #e5e5e5;
+}
+
+
+/* File Information */
+
+.file-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+
+  margin-top: 20px;
+}
+
+.info-box {
+  background: #f6f7fb;
+  border-radius: 10px;
+  padding: 15px;
+
+  text-align: center;
+}
+
+.info-box strong {
+  display: block;
+  font-size: 17px;
+  margin-bottom: 5px;
+}
+
+.info-box span {
+  color: #777;
+  font-size: 13px;
+}
+
+
+/* Options */
+
+.options {
+  margin-top: 30px;
+}
+
+.options h2 {
+  font-size: 18px;
+  margin: 0 0 15px;
+}
+
+.format-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.format-button {
+  padding: 14px;
+
+  border: 1px solid #ddd;
+  border-radius: 10px;
+
+  background: #fff;
+  color: #333;
+
+  font-size: 15px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.format-button:hover {
+  border-color: #888;
+}
+
+.format-button.active {
+  background: #222;
+  color: #fff;
+  border-color: #222;
+}
+
+
+/* Quality */
+
+.quality-container {
+  display: none;
+  margin-top: 25px;
+}
+
+.quality-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.quality-header span {
+  color: #666;
+}
+
+input[type="range"] {
+  width: 100%;
+}
+
+
+/* Convert Button */
+
+.convert-button {
+  width: 100%;
+
+  margin-top: 30px;
+  padding: 15px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #222;
+  color: white;
+
+  font-size: 16px;
+  cursor: pointer;
+
+  transition: opacity 0.2s;
+}
+
+.convert-button:hover {
+  opacity: 0.85;
+}
+
+
+/* Download */
+
+.download-area {
+  display: none;
+  text-align: center;
+  margin-top: 25px;
+}
+
+.download-button {
+  display: inline-block;
+
+  padding: 14px 24px;
+
+  background: #222;
+  color: white;
+
+  text-decoration: none;
+  border-radius: 10px;
+
+  font-size: 15px;
+}
+
+.download-button:hover {
+  opacity: 0.85;
+}
+
+
+/* New Image */
+
+.new-image-button {
+  display: none;
+
+  width: 100%;
+  margin-top: 15px;
+
+  padding: 13px;
+
+  background: white;
+  border: 1px solid #ddd;
+
+  border-radius: 10px;
+
+  font-size: 15px;
+  cursor: pointer;
+}
+
+
+/* Info */
+
+.info-section {
+  margin-top: 35px;
+
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+
+  border-radius: 14px;
+  padding: 25px;
+}
+
+.info-section h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.info-section p {
+  margin-bottom: 0;
+  color: #666;
+  line-height: 1.7;
+}
+
+
+/* Footer */
+
+footer {
+  text-align: center;
+
+  padding: 35px 20px;
+
+  color: #777;
+  font-size: 14px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  nav {
+    padding: 15px 20px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .container {
+    margin: 35px auto;
+  }
+
+  .tool-header h1 {
+    font-size: 30px;
+  }
+
+  .converter {
+    padding: 20px;
+  }
+
+  .upload-area {
+    padding: 40px 15px;
+  }
+
+  .file-info {
+    grid-template-columns: 1fr;
+  }
+
+  .format-options {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav>
+
+<a
+href="index.html"
+class="logo"
+
+>
+
+```
+Tool<span>Nest</span>
+```
+
+  </a>
+
+  <div class="nav-links">
+
+```
+<a href="index.html">
+  All Tools
+</a>
+```
+
+  </div>
+
+</nav>
+
+<main class="container">
+
+<section class="tool-header">
+
+  <h1>
+    Image Converter
+  </h1>
+
+  <p>
+    Convert your images to JPG, PNG or WEBP
+    quickly and easily.
+  </p>
+
+</section>
+
+<section class="converter">
+
+<label
+for="imageInput"
+class="upload-area"
+
+>
+
+  <div class="upload-icon">
+    🖼️
+  </div>
+
+  <h2>
+    Choose an Image
+  </h2>
+
+  <p>
+    Click here to upload a JPG, PNG or WEBP image.
+  </p>
+
+</label>
+
+<input
+type="file"
+id="imageInput"
+accept="image/*"
+
+>
+
+<div
+  class="preview-container"
+  id="previewContainer"
+>
+
+<img
+id="previewImage"
+class="preview-image"
+alt="Image preview"
+
+>
+
+  <div class="file-info">
+
+```
+<div class="info-box">
+
+  <strong id="imageDimensions">
+    -
+  </strong>
+
+  <span>
+    Dimensions
+  </span>
+
+</div>
+
+
+<div class="info-box">
+
+  <strong id="imageSize">
+    -
+  </strong>
+
+  <span>
+    File Size
+  </span>
+
+</div>
+
+
+<div class="info-box">
+
+  <strong id="imageType">
+    -
+  </strong>
+
+  <span>
+    Format
+  </span>
+
+</div>
+```
+
+  </div>
+
+  <div class="options">
+
+```
+<h2>
+  Convert To
+</h2>
+
+
+<div class="format-options">
+
+  <button
+    class="format-button active"
+    data-format="image/jpeg"
+  >
+    JPG
+  </button>
+
+
+  <button
+    class="format-button"
+    data-format="image/png"
+  >
+    PNG
+  </button>
+
+
+  <button
+    class="format-button"
+    data-format="image/webp"
+  >
+    WEBP
+  </button>
+
+</div>
+```
+
+  </div>
+
+  <div
+    class="quality-container"
+    id="qualityContainer"
+  >
+
+```
+<div class="quality-header">
+
+  <span>
+    Image Quality
+  </span>
+
+  <strong
+    id="qualityValue"
+  >
+    90%
+  </strong>
+
+</div>
+
+
+<input
+  type="range"
+  id="quality"
+  min="10"
+  max="100"
+  value="90"
+>
+```
+
+  </div>
+
+<button
+class="convert-button"
+id="convertButton"
+
+>
+
+```
+Convert Image
+```
+
+  </button>
+
+  <div
+    class="download-area"
+    id="downloadArea"
+  >
+
+```
+<a
+  id="downloadButton"
+  class="download-button"
+  download
+>
+  Download Converted Image
+</a>
+```
+
+  </div>
+
+<button
+class="new-image-button"
+id="newImageButton"
+
+>
+
+```
+Choose Another Image
+```
+
+  </button>
+
+</div>
+
+</section>
+
+<section class="info-section">
+
+  <h2>
+    Free Online Image Converter
+  </h2>
+
+  <p>
+    Upload your image, choose the format you want,
+    and convert it instantly. ToolNest supports
+    JPG, PNG and WEBP image conversion directly
+    in your browser.
+  </p>
+
+</section>
+
+</main>
+
+<footer>
+
+© 2026 ToolNest · Simple, Fast & Free
+
+</footer>
+
+<script>
+
+
+const imageInput =
+  document.getElementById(
+    "imageInput"
+  );
+
+
+const previewContainer =
+  document.getElementById(
+    "previewContainer"
+  );
+
+
+const previewImage =
+  document.getElementById(
+    "previewImage"
+  );
+
+
+const formatButtons =
+  document.querySelectorAll(
+    ".format-button"
+  );
+
+
+const qualityContainer =
+  document.getElementById(
+    "qualityContainer"
+  );
+
+
+const qualitySlider =
+  document.getElementById(
+    "quality"
+  );
+
+
+const qualityValue =
+  document.getElementById(
+    "qualityValue"
+  );
+
+
+const convertButton =
+  document.getElementById(
+    "convertButton"
+  );
+
+
+const downloadArea =
+  document.getElementById(
+    "downloadArea"
+  );
+
+
+const downloadButton =
+  document.getElementById(
+    "downloadButton"
+  );
+
+
+const newImageButton =
+  document.getElementById(
+    "newImageButton"
+  );
+
+
+let selectedFile =
+  null;
+
+
+let selectedFormat =
+  "image/jpeg";
+
+
+let imageObject =
+  null;
+
+
+/* Upload Image */
+
+imageInput.addEventListener(
+  "change",
+  function() {
+
+    const file =
+      imageInput.files[0];
+
+
+    if (!file) {
+      return;
+    }
+
+
+    if (
+      !file.type.startsWith(
+        "image/"
+      )
+    ) {
+
+      alert(
+        "Please select an image file."
+      );
+
+      return;
+
+    }
+
+
+    selectedFile =
+      file;
+
+
+    const reader =
+      new FileReader();
+
+
+    reader.onload =
+      function(event) {
+
+        previewImage.src =
+          event.target.result;
+
+
+        previewContainer.style.display =
+          "block";
+
+
+        imageObject =
+          new Image();
+
+
+        imageObject.onload =
+          function() {
+
+            document.getElementById(
+              "imageDimensions"
+            ).textContent =
+              imageObject.width
+              +
+              " × "
+              +
+              imageObject.height;
+
+          };
+
+
+        imageObject.src =
+          event.target.result;
+
+      };
+
+
+    reader.readAsDataURL(
+      file
+    );
+
+
+    document.getElementById(
+      "imageSize"
+    ).textContent =
+      formatFileSize(
+        file.size
+      );
+
+
+    document.getElementById(
+      "imageType"
+    ).textContent =
+      file.type
+        .replace(
+          "image/",
+          ""
+        )
+        .toUpperCase();
+
+
+    downloadArea.style.display =
+      "none";
+
+
+    newImageButton.style.display =
+      "block";
+
+  }
+);
+
+
+/* Format Buttons */
+
+formatButtons.forEach(
+  function(button) {
+
+    button.addEventListener(
+      "click",
+      function() {
+
+        formatButtons.forEach(
+          function(btn) {
+
+            btn.classList.remove(
+              "active"
+            );
+
+          }
+        );
+
+
+        button.classList.add(
+          "active"
+        );
+
+
+        selectedFormat =
+          button.dataset.format;
+
+
+        if (
+          selectedFormat ===
+          "image/jpeg"
+          ||
+          selectedFormat ===
+          "image/webp"
+        ) {
+
+          qualityContainer.style.display =
+            "block";
+
+        }
+
+        else {
+
+          qualityContainer.style.display =
+            "none";
+
+        }
+
+      }
+    );
+
+  }
+);
+
+
+/* Quality */
+
+qualitySlider.addEventListener(
+  "input",
+  function() {
+
+    qualityValue.textContent =
+      qualitySlider.value
+      +
+      "%";
+
+  }
+);
+
+
+/* Convert Image */
+
+convertButton.addEventListener(
+  "click",
+  function() {
+
+    if (
+      !selectedFile
+      ||
+      !imageObject
+    ) {
+
+      alert(
+        "Please upload an image first."
+      );
+
+      return;
+
+    }
+
+
+    const canvas =
+      document.createElement(
+        "canvas"
+      );
+
+
+    canvas.width =
+      imageObject.width;
+
+
+    canvas.height =
+      imageObject.height;
+
+
+    const context =
+      canvas.getContext(
+        "2d"
+      );
+
+
+    if (
+      selectedFormat ===
+      "image/jpeg"
+    ) {
+
+      context.fillStyle =
+        "#ffffff";
+
+
+      context.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
+    }
+
+
+    context.drawImage(
+      imageObject,
+      0,
+      0
+    );
+
+
+    const quality =
+      Number(
+        qualitySlider.value
+      )
+      /
+      100;
+
+
+    const convertedImage =
+      canvas.toDataURL(
+        selectedFormat,
+        quality
+      );
+
+
+    let extension =
+      "jpg";
+
+
+    if (
+      selectedFormat ===
+      "image/png"
+    ) {
+
+      extension =
+        "png";
+
+    }
+
+
+    if (
+      selectedFormat ===
+      "image/webp"
+    ) {
+
+      extension =
+        "webp";
+
+    }
+
+
+    const originalName =
+      selectedFile.name
+        .replace(
+          /\.[^/.]+$/,
+          ""
+        );
+
+
+    downloadButton.href =
+      convertedImage;
+
+
+    downloadButton.download =
+      originalName
+      +
+      "-converted."
+      +
+      extension;
+
+
+    downloadArea.style.display =
+      "block";
+
+
+    downloadArea.scrollIntoView(
+      {
+        behavior:
+          "smooth",
+        block:
+          "nearest"
+      }
+    );
+
+  }
+);
+
+
+/* New Image */
+
+newImageButton.addEventListener(
+  "click",
+  function() {
+
+    imageInput.value =
+      "";
+
+
+    selectedFile =
+      null;
+
+
+    imageObject =
+      null;
+
+
+    previewImage.src =
+      "";
+
+
+    previewContainer.style.display =
+      "none";
+
+
+    downloadArea.style.display =
+      "none";
+
+
+    newImageButton.style.display =
+      "none";
+
+
+  }
+);
+
+
+/* File Size */
+
+function formatFileSize(
+  bytes
+) {
+
+  if (
+    bytes < 1024
+  ) {
+
+    return (
+      bytes
+      +
+      " Bytes"
+    );
+
+  }
+
+
+  if (
+    bytes <
+    1024 * 1024
+  ) {
+
+    return (
+      (
+        bytes / 1024
+      ).toFixed(1)
+      +
+      " KB"
+    );
+
+  }
+
+
+  return (
+    (
+      bytes /
+      (
+        1024 * 1024
+      )
+    ).toFixed(2)
+    +
+    " MB"
+  );
+
+}
+
+
+</script>
+
+</body>
+
+</html>
