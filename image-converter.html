@@ -1,20 +1,22 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
+>
 
   <title>Image Converter - Free Online Image Converter | ToolNest</title>
 
-  <meta
-    name="description"
-    content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and ICO files quickly and easily."
-  >
+<meta
+name="description"
+content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and ICO files quickly and easily."
+
+>
 
   <style>
 
@@ -29,13 +31,10 @@
       color: #222;
     }
 
-    /* Navigation */
-
     nav {
       background: #ffffff;
       border-bottom: 1px solid #e5e5e5;
       padding: 18px 30px;
-
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -62,8 +61,6 @@
       color: #000;
     }
 
-    /* Main */
-
     .container {
       max-width: 850px;
       margin: 40px auto;
@@ -87,16 +84,12 @@
       line-height: 1.6;
     }
 
-    /* Converter */
-
     .converter-card {
-      background: white;
+      background: #ffffff;
       border: 1px solid #e5e5e5;
       border-radius: 16px;
       padding: 30px;
     }
-
-    /* Upload */
 
     .upload-area {
       border: 2px dashed #cfcfcf;
@@ -133,10 +126,8 @@
       display: inline-block;
       margin-top: 18px;
       padding: 12px 20px;
-
       background: #222;
       color: white;
-
       border-radius: 8px;
       font-size: 15px;
     }
@@ -145,13 +136,10 @@
       display: none;
     }
 
-    /* File Information */
-
     .file-info {
       display: none;
       margin-top: 25px;
       padding: 18px;
-
       background: #f6f7fb;
       border-radius: 10px;
     }
@@ -167,8 +155,6 @@
       font-size: 14px;
     }
 
-    /* Preview */
-
     .preview-container {
       display: none;
       margin-top: 25px;
@@ -178,12 +164,9 @@
     .preview-container img {
       max-width: 100%;
       max-height: 350px;
-
       border-radius: 10px;
       border: 1px solid #e5e5e5;
     }
-
-    /* Format */
 
     .format-section {
       display: none;
@@ -213,13 +196,10 @@
     .format-option label {
       display: block;
       padding: 16px 10px;
-
       text-align: center;
       cursor: pointer;
-
       border: 1px solid #ddd;
       border-radius: 10px;
-
       font-weight: bold;
       transition: 0.2s;
     }
@@ -233,8 +213,6 @@
       color: white;
       border-color: #222;
     }
-
-    /* Quality */
 
     .quality-section {
       display: none;
@@ -263,8 +241,6 @@
       font-weight: bold;
     }
 
-    /* Convert */
-
     .convert-section {
       display: none;
       margin-top: 30px;
@@ -273,13 +249,10 @@
     .convert-button {
       width: 100%;
       padding: 15px;
-
       border: none;
       border-radius: 10px;
-
       background: #222;
       color: white;
-
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
@@ -294,15 +267,11 @@
       cursor: not-allowed;
     }
 
-    /* Result */
-
     .result {
       display: none;
       margin-top: 25px;
       padding: 20px;
-
       text-align: center;
-
       background: #f6f7fb;
       border-radius: 10px;
     }
@@ -315,15 +284,11 @@
     .download-button {
       display: inline-block;
       padding: 12px 22px;
-
       background: #222;
       color: white;
-
       text-decoration: none;
       border-radius: 8px;
     }
-
-    /* Footer */
 
     footer {
       text-align: center;
@@ -331,8 +296,6 @@
       color: #777;
       font-size: 14px;
     }
-
-    /* Mobile */
 
     @media (max-width: 600px) {
 
@@ -372,302 +335,234 @@
 
 <body>
 
-  <!-- Navigation -->
-
   <nav>
 
-    <a
-      href="index.html"
-      class="logo"
-    >
-      Tool<span>Nest</span>
-    </a>
+```
+<a href="index.html" class="logo">
+  Tool<span>Nest</span>
+</a>
 
-    <div class="nav-links">
-
-      <a href="index.html">
-        All Tools
-      </a>
-
-    </div>
+<div class="nav-links">
+  <a href="index.html">All Tools</a>
+</div>
+```
 
   </nav>
 
-  <!-- Main -->
-
   <main class="container">
 
-    <div class="tool-header">
+```
+<div class="tool-header">
 
-      <h1>
-        Image Converter
-      </h1>
+  <h1>Image Converter</h1>
 
-      <p>
-        Convert your images to JPG, PNG, WEBP, GIF, BMP or ICO.
-      </p>
+  <p>
+    Convert your images to JPG, PNG, WEBP, GIF, BMP or ICO.
+  </p>
 
+</div>
+
+<div class="converter-card">
+
+  <div
+    class="upload-area"
+    id="uploadArea"
+  >
+
+    <div class="upload-icon">
+      🖼️
     </div>
 
-    <div class="converter-card">
+    <h2>Upload an Image</h2>
 
-      <!-- Upload -->
+    <p>
+      Drag and drop an image here or click to browse.
+    </p>
 
-      <div
-        class="upload-area"
-        id="uploadArea"
-      >
+    <div class="upload-button">
+      Choose Image
+    </div>
 
-        <div class="upload-icon">
-          🖼️
-        </div>
+    <input
+      type="file"
+      id="fileInput"
+      accept="image/*"
+    >
 
-        <h2>
-          Upload an Image
-        </h2>
+  </div>
 
-        <p>
-          Drag and drop an image here or click to browse.
-        </p>
+  <div
+    class="file-info"
+    id="fileInfo"
+  >
 
-        <div class="upload-button">
-          Choose Image
-        </div>
+    <div
+      class="file-name"
+      id="fileName"
+    ></div>
 
+    <div
+      class="file-details"
+      id="fileDetails"
+    ></div>
+
+  </div>
+
+  <div
+    class="preview-container"
+    id="previewContainer"
+  >
+
+    <img
+      id="preview"
+      alt="Image preview"
+    >
+
+  </div>
+
+  <div
+    class="format-section"
+    id="formatSection"
+  >
+
+    <h2>Convert To</h2>
+
+    <div class="format-grid">
+
+      <div class="format-option">
         <input
-          type="file"
-          id="fileInput"
-          accept="image/*"
+          type="radio"
+          id="jpg"
+          name="format"
+          value="jpg"
+          checked
         >
-
+        <label for="jpg">JPG</label>
       </div>
 
-      <!-- File Information -->
-
-      <div
-        class="file-info"
-        id="fileInfo"
-      >
-
-        <div
-          class="file-name"
-          id="fileName"
-        ></div>
-
-        <div
-          class="file-details"
-          id="fileDetails"
-        ></div>
-
-      </div>
-
-      <!-- Preview -->
-
-      <div
-        class="preview-container"
-        id="previewContainer"
-      >
-
-        <img
-          id="preview"
-          alt="Image preview"
+      <div class="format-option">
+        <input
+          type="radio"
+          id="png"
+          name="format"
+          value="png"
         >
-
+        <label for="png">PNG</label>
       </div>
 
-      <!-- Format -->
-
-      <div
-        class="format-section"
-        id="formatSection"
-      >
-
-        <h2>
-          Convert To
-        </h2>
-
-        <div class="format-grid">
-
-          <div class="format-option">
-
-            <input
-              type="radio"
-              id="jpg"
-              name="format"
-              value="jpg"
-              checked
-            >
-
-            <label for="jpg">
-              JPG
-            </label>
-
-          </div>
-
-          <div class="format-option">
-
-            <input
-              type="radio"
-              id="png"
-              name="format"
-              value="png"
-            >
-
-            <label for="png">
-              PNG
-            </label>
-
-          </div>
-
-          <div class="format-option">
-
-            <input
-              type="radio"
-              id="webp"
-              name="format"
-              value="webp"
-            >
-
-            <label for="webp">
-              WEBP
-            </label>
-
-          </div>
-
-          <div class="format-option">
-
-            <input
-              type="radio"
-              id="gif"
-              name="format"
-              value="gif"
-            >
-
-            <label for="gif">
-              GIF
-            </label>
-
-          </div>
-
-          <div class="format-option">
-
-            <input
-              type="radio"
-              id="bmp"
-              name="format"
-              value="bmp"
-            >
-
-            <label for="bmp">
-              BMP
-            </label>
-
-          </div>
-
-          <div class="format-option">
-
-            <input
-              type="radio"
-              id="ico"
-              name="format"
-              value="ico"
-            >
-
-            <label for="ico">
-              ICO
-            </label>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- Quality -->
-
-      <div
-        class="quality-section"
-        id="qualitySection"
-      >
-
-        <h2>
-          Quality
-        </h2>
-
-        <div class="quality-row">
-
-          <input
-            type="range"
-            id="quality"
-            min="10"
-            max="100"
-            value="90"
-          >
-
-          <span
-            class="quality-value"
-            id="qualityValue"
-          >
-            90%
-          </span>
-
-        </div>
-
-      </div>
-
-      <!-- Convert -->
-
-      <div
-        class="convert-section"
-        id="convertSection"
-      >
-
-        <button
-          class="convert-button"
-          id="convertButton"
-          type="button"
+      <div class="format-option">
+        <input
+          type="radio"
+          id="webp"
+          name="format"
+          value="webp"
         >
-          Convert Image
-        </button>
-
+        <label for="webp">WEBP</label>
       </div>
 
-      <!-- Result -->
-
-      <div
-        class="result"
-        id="result"
-      >
-
-        <p
-          id="resultText"
+      <div class="format-option">
+        <input
+          type="radio"
+          id="gif"
+          name="format"
+          value="gif"
         >
-          Your converted image is ready.
-        </p>
+        <label for="gif">GIF</label>
+      </div>
 
-        <a
-          id="downloadButton"
-          class="download-button"
-          href="#"
+      <div class="format-option">
+        <input
+          type="radio"
+          id="bmp"
+          name="format"
+          value="bmp"
         >
-          Download Image
-        </a>
+        <label for="bmp">BMP</label>
+      </div>
 
+      <div class="format-option">
+        <input
+          type="radio"
+          id="ico"
+          name="format"
+          value="ico"
+        >
+        <label for="ico">ICO</label>
       </div>
 
     </div>
+
+  </div>
+
+  <div
+    class="quality-section"
+    id="qualitySection"
+  >
+
+    <h2>Quality</h2>
+
+    <div class="quality-row">
+
+      <input
+        type="range"
+        id="quality"
+        min="10"
+        max="100"
+        value="90"
+      >
+
+      <span
+        class="quality-value"
+        id="qualityValue"
+      >
+        90%
+      </span>
+
+    </div>
+
+  </div>
+
+  <div
+    class="convert-section"
+    id="convertSection"
+  >
+
+    <button
+      class="convert-button"
+      id="convertButton"
+    >
+      Convert Image
+    </button>
+
+  </div>
+
+  <div
+    class="result"
+    id="result"
+  >
+
+    <p id="resultText">
+      Your converted image is ready.
+    </p>
+
+    <a
+      id="downloadButton"
+      class="download-button"
+      href="#"
+    >
+      Download Image
+    </a>
+
+  </div>
+
+</div>
+```
 
   </main>
 
-  <!-- Footer -->
-
   <footer>
-
     © 2026 ToolNest · Simple, Fast & Free
-
   </footer>
-
-  <!-- GIF Encoder -->
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
 
@@ -729,8 +624,6 @@
     let downloadUrl = null;
 
 
-    /* Upload Click */
-
     uploadArea.addEventListener(
       "click",
       function() {
@@ -740,8 +633,6 @@
       }
     );
 
-
-    /* File Selection */
 
     fileInput.addEventListener(
       "change",
@@ -760,8 +651,6 @@
       }
     );
 
-
-    /* Drag Events */
 
     uploadArea.addEventListener(
       "dragover",
@@ -813,14 +702,10 @@
     );
 
 
-    /* Load Image */
-
     function loadFile(file) {
 
       if (
-        !file.type.startsWith(
-          "image/"
-        )
+        !file.type.startsWith("image/")
       ) {
 
         alert(
@@ -832,8 +717,7 @@
       }
 
 
-      selectedFile =
-        file;
+      selectedFile = file;
 
 
       const reader =
@@ -884,16 +768,10 @@
 
               fileDetails.textContent =
                 imageObject.naturalWidth
-                +
-                " × "
-                +
-                imageObject.naturalHeight
-                +
-                " pixels · "
-                +
-                formatFileSize(
-                  file.size
-                );
+                + " × "
+                + imageObject.naturalHeight
+                + " pixels · "
+                + formatFileSize(file.size);
 
             };
 
@@ -914,36 +792,26 @@
         };
 
 
-      reader.readAsDataURL(
-        file
-      );
+      reader.readAsDataURL(file);
 
     }
 
-
-    /* Quality */
 
     quality.addEventListener(
       "input",
       function() {
 
         qualityValue.textContent =
-          quality.value
-          +
-          "%";
+          quality.value + "%";
 
       }
     );
 
 
-    /* Create Canvas */
-
     function createCanvas() {
 
       const canvas =
-        document.createElement(
-          "canvas"
-        );
+        document.createElement("canvas");
 
 
       canvas.width =
@@ -955,9 +823,7 @@
 
 
       const context =
-        canvas.getContext(
-          "2d"
-        );
+        canvas.getContext("2d");
 
 
       context.fillStyle =
@@ -984,18 +850,12 @@
     }
 
 
-    /* Convert Button */
-
     convertButton.addEventListener(
       "click",
       async function() {
 
-        if (
-          !imageObject
-        ) {
-
+        if (!imageObject) {
           return;
-
         }
 
 
@@ -1005,8 +865,7 @@
           ).value;
 
 
-        convertButton.disabled =
-          true;
+        convertButton.disabled = true;
 
 
         convertButton.textContent =
@@ -1020,9 +879,7 @@
           let blob;
 
 
-          if (
-            format === "gif"
-          ) {
+          if (format === "gif") {
 
             blob =
               await convertToGif();
@@ -1030,9 +887,7 @@
           }
 
 
-          else if (
-            format === "bmp"
-          ) {
+          else if (format === "bmp") {
 
             blob =
               convertToBmp();
@@ -1040,9 +895,7 @@
           }
 
 
-          else if (
-            format === "ico"
-          ) {
+          else if (format === "ico") {
 
             blob =
               await convertToIco();
@@ -1053,17 +906,12 @@
           else {
 
             blob =
-              await convertStandard(
-                format
-              );
+              await convertStandard(format);
 
           }
 
 
-          if (
-            !blob ||
-            blob.size === 0
-          ) {
+          if (!blob) {
 
             throw new Error(
               "Conversion failed."
@@ -1079,11 +927,9 @@
 
         }
 
-        catch(error) {
+        catch (error) {
 
-          console.error(
-            error
-          );
+          console.error(error);
 
           alert(
             "Conversion failed. Please try another image."
@@ -1092,9 +938,7 @@
         }
 
 
-        convertButton.disabled =
-          false;
-
+        convertButton.disabled = false;
 
         convertButton.textContent =
           "Convert Image";
@@ -1103,11 +947,7 @@
     );
 
 
-    /* JPG PNG WEBP */
-
-    function convertStandard(
-      format
-    ) {
+    function convertStandard(format) {
 
       return new Promise(
         function(resolve) {
@@ -1119,9 +959,7 @@
           let mime;
 
 
-          if (
-            format === "jpg"
-          ) {
+          if (format === "jpg") {
 
             mime =
               "image/jpeg";
@@ -1129,9 +967,7 @@
           }
 
 
-          else if (
-            format === "png"
-          ) {
+          else if (format === "png") {
 
             mime =
               "image/png";
@@ -1150,17 +986,11 @@
           canvas.toBlob(
             function(blob) {
 
-              resolve(
-                blob
-              );
+              resolve(blob);
 
             },
             mime,
-            Number(
-              quality.value
-            )
-            /
-            100
+            Number(quality.value) / 100
           );
 
         }
@@ -1169,21 +999,18 @@
     }
 
 
-    /* GIF Conversion */
-
     function convertToGif() {
 
       return new Promise(
         function(resolve, reject) {
 
           if (
-            typeof GIF ===
-            "undefined"
+            typeof GIF === "undefined"
           ) {
 
             reject(
               new Error(
-                "The GIF encoder library could not be loaded."
+                "GIF encoder could not load."
               )
             );
 
@@ -1203,12 +1030,6 @@
 
               quality: 10,
 
-              width:
-                canvas.width,
-
-              height:
-                canvas.height,
-
               workerScript:
                 "https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js"
 
@@ -1218,11 +1039,8 @@
           gif.addFrame(
             canvas,
             {
-
               copy: true,
-
               delay: 100
-
             }
           );
 
@@ -1231,25 +1049,7 @@
             "finished",
             function(blob) {
 
-              if (
-                !blob ||
-                blob.size === 0
-              ) {
-
-                reject(
-                  new Error(
-                    "The GIF encoder produced an empty file."
-                  )
-                );
-
-                return;
-
-              }
-
-
-              resolve(
-                blob
-              );
+              resolve(blob);
 
             }
           );
@@ -1261,7 +1061,7 @@
 
               reject(
                 new Error(
-                  "GIF conversion was cancelled."
+                  "GIF conversion stopped."
                 )
               );
 
@@ -1269,27 +1069,13 @@
           );
 
 
-          try {
-
-            gif.render();
-
-          }
-
-          catch(error) {
-
-            reject(
-              error
-            );
-
-          }
+          gif.render();
 
         }
       );
 
     }
 
-
-    /* BMP Conversion */
 
     function convertToBmp() {
 
@@ -1298,9 +1084,7 @@
 
 
       const context =
-        canvas.getContext(
-          "2d"
-        );
+        canvas.getContext("2d");
 
 
       const imageData =
@@ -1322,47 +1106,28 @@
 
       const rowSize =
         Math.floor(
-          (
-            width * 3
-            +
-            3
-          )
-          /
-          4
-        )
-        *
-        4;
+          (width * 3 + 3) / 4
+        ) * 4;
 
 
       const imageSize =
-        rowSize
-        *
-        height;
+        rowSize * height;
 
 
       const fileSize =
-        54
-        +
-        imageSize;
+        54 + imageSize;
 
 
       const buffer =
-        new ArrayBuffer(
-          fileSize
-        );
+        new ArrayBuffer(fileSize);
 
 
       const view =
-        new DataView(
-          buffer
-        );
+        new DataView(buffer);
 
 
-      let offset =
-        0;
+      let offset = 0;
 
-
-      /* BMP Header */
 
       view.setUint8(
         offset++,
@@ -1373,6 +1138,7 @@
         offset++,
         0x4D
       );
+
 
       view.setUint32(
         offset,
@@ -1400,8 +1166,6 @@
 
       offset += 4;
 
-
-      /* DIB Header */
 
       view.setUint32(
         offset,
@@ -1523,49 +1287,31 @@
         ) {
 
           const pixel =
-            (
-              y
-              *
-              width
-              +
-              x
-            )
-            *
-            4;
+            (y * width + x) * 4;
 
 
           view.setUint8(
             offset++,
-            pixels[
-              pixel + 2
-            ]
+            pixels[pixel + 2]
           );
 
 
           view.setUint8(
             offset++,
-            pixels[
-              pixel + 1
-            ]
+            pixels[pixel + 1]
           );
 
 
           view.setUint8(
             offset++,
-            pixels[
-              pixel
-            ]
+            pixels[pixel]
           );
 
         }
 
 
         while (
-          offset
-          <
-          rowStart
-          +
-          rowSize
+          offset < rowStart + rowSize
         ) {
 
           view.setUint8(
@@ -1579,21 +1325,14 @@
 
 
       return new Blob(
-        [
-          buffer
-        ],
+        [buffer],
         {
-
-          type:
-            "image/bmp"
-
+          type: "image/bmp"
         }
       );
 
     }
 
-
-    /* ICO Conversion */
 
     function convertToIco() {
 
@@ -1601,27 +1340,28 @@
         function(resolve, reject) {
 
           const size =
-            256;
+            Math.min(
+              256,
+              Math.max(
+                16,
+                Math.max(
+                  imageObject.naturalWidth,
+                  imageObject.naturalHeight
+                )
+              )
+            );
 
 
           const canvas =
-            document.createElement(
-              "canvas"
-            );
+            document.createElement("canvas");
 
 
-          canvas.width =
-            size;
-
-
-          canvas.height =
-            size;
+          canvas.width = size;
+          canvas.height = size;
 
 
           const context =
-            canvas.getContext(
-              "2d"
-            );
+            canvas.getContext("2d");
 
 
           context.clearRect(
@@ -1634,45 +1374,25 @@
 
           const scale =
             Math.min(
-              size
-              /
-              imageObject.naturalWidth,
-              size
-              /
-              imageObject.naturalHeight
+              size / imageObject.naturalWidth,
+              size / imageObject.naturalHeight
             );
 
 
           const width =
-            imageObject.naturalWidth
-            *
-            scale;
+            imageObject.naturalWidth * scale;
 
 
           const height =
-            imageObject.naturalHeight
-            *
-            scale;
+            imageObject.naturalHeight * scale;
 
 
           const x =
-            (
-              size
-              -
-              width
-            )
-            /
-            2;
+            (size - width) / 2;
 
 
           const y =
-            (
-              size
-              -
-              height
-            )
-            /
-            2;
+            (size - height) / 2;
 
 
           context.drawImage(
@@ -1693,47 +1413,34 @@
                   await pngBlob.arrayBuffer();
 
 
-                const headerSize =
-                  6;
-
-
-                const directorySize =
-                  16;
-
-
                 const imageOffset =
-                  headerSize
-                  +
-                  directorySize;
+                  22;
 
 
                 const buffer =
                   new ArrayBuffer(
                     imageOffset
-                    +
-                    pngBuffer.byteLength
+                    + pngBuffer.byteLength
                   );
 
 
                 const view =
-                  new DataView(
-                    buffer
-                  );
+                  new DataView(buffer);
 
-
-                /* ICO Header */
 
                 view.setUint16(
                   0,
                   0,
                   true
                 );
+
 
                 view.setUint16(
                   2,
                   1,
                   true
                 );
+
 
                 view.setUint16(
                   4,
@@ -1742,27 +1449,26 @@
                 );
 
 
-                /* Directory */
-
                 view.setUint8(
                   6,
-                  0
+                  size === 256
+                    ? 0
+                    : size
                 );
+
 
                 view.setUint8(
                   7,
-                  0
+                  size === 256
+                    ? 0
+                    : size
                 );
 
-                view.setUint8(
-                  8,
-                  0
-                );
 
-                view.setUint8(
-                  9,
-                  0
-                );
+                view.setUint8(8, 0);
+
+                view.setUint8(9, 0);
+
 
                 view.setUint16(
                   10,
@@ -1770,17 +1476,20 @@
                   true
                 );
 
+
                 view.setUint16(
                   12,
                   32,
                   true
                 );
 
+
                 view.setUint32(
                   14,
                   pngBuffer.byteLength,
                   true
                 );
+
 
                 view.setUint32(
                   18,
@@ -1790,40 +1499,29 @@
 
 
                 const output =
-                  new Uint8Array(
-                    buffer
-                  );
+                  new Uint8Array(buffer);
 
 
                 output.set(
-                  new Uint8Array(
-                    pngBuffer
-                  ),
+                  new Uint8Array(pngBuffer),
                   imageOffset
                 );
 
 
                 resolve(
                   new Blob(
-                    [
-                      buffer
-                    ],
+                    [buffer],
                     {
-
-                      type:
-                        "image/x-icon"
-
+                      type: "image/x-icon"
                     }
                   )
                 );
 
               }
 
-              catch(error) {
+              catch (error) {
 
-                reject(
-                  error
-                );
+                reject(error);
 
               }
 
@@ -1837,16 +1535,12 @@
     }
 
 
-    /* Show Download */
-
     function showDownload(
       blob,
       format
     ) {
 
-      if (
-        downloadUrl
-      ) {
+      if (downloadUrl) {
 
         URL.revokeObjectURL(
           downloadUrl
@@ -1856,9 +1550,7 @@
 
 
       downloadUrl =
-        URL.createObjectURL(
-          blob
-        );
+        URL.createObjectURL(blob);
 
 
       const name =
@@ -1873,75 +1565,41 @@
 
 
       downloadButton.download =
-        name
-        +
-        "."
-        +
-        format;
+        name + "." + format;
 
 
       resultText.textContent =
         "Your "
-        +
-        format.toUpperCase()
-        +
-        " image is ready.";
+        + format.toUpperCase()
+        + " image is ready.";
 
 
       result.style.display =
         "block";
 
 
-      result.scrollIntoView(
-        {
-
-          behavior:
-            "smooth",
-
-          block:
-            "nearest"
-
-        }
-      );
+      result.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
 
     }
 
 
-    /* Format File Size */
+    function formatFileSize(bytes) {
 
-    function formatFileSize(
-      bytes
-    ) {
+      if (bytes < 1024) {
 
-      if (
-        bytes < 1024
-      ) {
-
-        return (
-          bytes
-          +
-          " B"
-        );
+        return bytes + " B";
 
       }
 
 
-      if (
-        bytes
-        <
-        1024
-        *
-        1024
-      ) {
+      if (bytes < 1024 * 1024) {
 
         return (
-          (
-            bytes
-            /
-            1024
-          ).toFixed(1)
-          +
-          " KB"
+          (bytes / 1024).toFixed(1)
+          + " KB"
         );
 
       }
@@ -1949,16 +1607,9 @@
 
       return (
         (
-          bytes
-          /
-          (
-            1024
-            *
-            1024
-          )
+          bytes / (1024 * 1024)
         ).toFixed(1)
-        +
-        " MB"
+        + " MB"
       );
 
     }
