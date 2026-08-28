@@ -1,31 +1,22 @@
 <!DOCTYPE html>
+
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <title>Case Converter - Free Online Text Tool</title>
 
-  <title>
-    Text Cleaner - Free Online Text Cleaning Tool
-  </title>
+<meta
+name="description"
+content="Free online case converter. Convert text to uppercase, lowercase, title case, sentence case, camel case, snake case and more."
 
-  <meta
-    name="description"
-    content="Clean and format text online by removing extra spaces, empty lines, tabs and invisible characters."
-  >
-
+>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
-
 
     body {
       font-family: Arial, sans-serif;
@@ -34,19 +25,14 @@
       color: #222;
     }
 
-
-    /* Navigation */
-
     nav {
       background: #ffffff;
       border-bottom: 1px solid #e5e5e5;
       padding: 18px 30px;
-
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-
 
     .logo {
       font-size: 24px;
@@ -55,11 +41,9 @@
       color: #222;
     }
 
-
     .logo span {
       color: #555;
     }
-
 
     .nav-links a {
       text-decoration: none;
@@ -68,168 +52,81 @@
       font-size: 15px;
     }
 
-
-    /* Main */
-
-    .container {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 30px;
-
-      background: white;
-      border-radius: 16px;
-
-      box-shadow:
-        0 5px 25px
-        rgba(0, 0, 0, 0.08);
+    .nav-links a:hover {
+      color: #000;
     }
 
+    .container {
+      max-width: 850px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+    }
 
     h1 {
       text-align: center;
-      margin-bottom: 8px;
+      margin: 0 0 8px;
     }
-
 
     .subtitle {
       text-align: center;
       color: #777;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       line-height: 1.5;
     }
 
-
-    /* Editors */
-
-    .editor-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-
-    .editor-box label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-
     textarea {
       width: 100%;
-      height: 300px;
+      height: 250px;
       padding: 15px;
-
       font-family: Arial, sans-serif;
-      font-size: 15px;
-
+      font-size: 16px;
       border: 1px solid #ccc;
-      border-radius: 8px;
-
+      border-radius: 10px;
       resize: vertical;
     }
 
-
-    /* Options */
-
-    .options {
-      margin-top: 25px;
-      padding: 20px;
-
-      background: #f4f7fb;
-      border-radius: 10px;
+    textarea:focus {
+      outline: none;
+      border-color: #888;
     }
 
-
-    .options h2 {
-      margin-top: 0;
-      font-size: 20px;
-    }
-
-
-    .options-grid {
+    .convert-buttons {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-
-
-    .option {
-      display: flex;
-      align-items: center;
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-
-      cursor: pointer;
+      margin-top: 20px;
     }
-
-
-    .option input {
-      width: auto;
-    }
-
-
-    /* Buttons */
 
     button {
+      padding: 12px;
       border: none;
       border-radius: 8px;
-
       background: #222;
       color: white;
-
+      font-size: 15px;
       cursor: pointer;
     }
-
 
     button:hover {
       opacity: 0.85;
     }
 
-
-    .main-button {
-      width: 100%;
-      margin-top: 20px;
-      padding: 14px;
-
-      font-size: 16px;
-    }
-
-
-    .action-buttons {
+    .statistics {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-
-    .action-buttons button {
-      padding: 13px;
-      font-size: 15px;
-    }
-
-
-    /* Statistics */
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-
+      grid-template-columns: repeat(2, 1fr);
       gap: 15px;
       margin-top: 25px;
     }
 
-
     .stat {
       background: #f4f7fb;
-
       padding: 18px;
-      border-radius: 10px;
-
       text-align: center;
+      border-radius: 10px;
     }
-
 
     .stat strong {
       display: block;
@@ -237,27 +134,33 @@
       margin-bottom: 5px;
     }
 
-
     .stat span {
       color: #666;
     }
 
+    .action-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
 
-    /* Information */
+    .action-buttons button {
+      padding: 13px;
+    }
 
     .info {
       margin-top: 30px;
       padding: 20px;
-
       background: #f4f7fb;
       border-radius: 10px;
-
       color: #555;
       line-height: 1.6;
     }
 
-
-    /* Footer */
+    .info strong {
+      color: #222;
+    }
 
     footer {
       text-align: center;
@@ -265,671 +168,415 @@
       color: #777;
     }
 
-
-    /* Mobile */
-
     @media (max-width: 700px) {
-
       nav {
         padding: 15px 20px;
       }
 
-
       .nav-links {
         display: none;
       }
-
 
       .container {
         margin: 20px 10px;
         padding: 20px;
       }
 
-
-      .editor-grid {
-        grid-template-columns: 1fr;
+      .convert-buttons {
+        grid-template-columns: repeat(2, 1fr);
       }
+    }
 
-
-      .options-grid {
-        grid-template-columns: 1fr;
-      }
-
-
+    @media (max-width: 450px) {
+      .convert-buttons,
+      .statistics,
       .action-buttons {
         grid-template-columns: 1fr;
       }
-
-
-      .stats {
-        grid-template-columns: 1fr;
-      }
-
     }
-
   </style>
 
 </head>
 
-
 <body>
 
-
-  <!-- Navigation -->
-
   <nav>
-
-    <a
-      href="index.html"
-      class="logo"
-    >
+    <a href="index.html" class="logo">
       Text <span>Tools</span>
     </a>
 
-
-    <div class="nav-links">
-
-      <a href="index.html#tools">
-        All Tools
-      </a>
-
-    </div>
+```
+<div class="nav-links">
+  <a href="index.html#tools">All Tools</a>
+</div>
+```
 
   </nav>
 
-
-
-  <!-- Main -->
-
   <main class="container">
 
+```
+<h1>Case Converter</h1>
 
-    <h1>
-      Text Cleaner
-    </h1>
+<p class="subtitle">
+  Convert your text into different letter cases instantly and easily.
+</p>
 
+<textarea
+  id="text"
+  placeholder="Type or paste your text here..."
+></textarea>
 
-    <p class="subtitle">
+<div class="convert-buttons">
 
-      Clean messy text by removing unwanted spaces,
-      empty lines, tabs and unnecessary formatting.
+  <button onclick="toUpperCase()">
+    UPPERCASE
+  </button>
 
-    </p>
+  <button onclick="toLowerCase()">
+    lowercase
+  </button>
 
+  <button onclick="toTitleCase()">
+    Title Case
+  </button>
 
+  <button onclick="toSentenceCase()">
+    Sentence case
+  </button>
 
-    <!-- Editors -->
+  <button onclick="toCamelCase()">
+    camelCase
+  </button>
 
-    <div class="editor-grid">
+  <button onclick="toPascalCase()">
+    PascalCase
+  </button>
 
+  <button onclick="toSnakeCase()">
+    snake_case
+  </button>
 
-      <!-- Input -->
+  <button onclick="toKebabCase()">
+    kebab-case
+  </button>
 
-      <div class="editor-box">
+  <button onclick="toConstantCase()">
+    CONSTANT_CASE
+  </button>
 
-        <label for="textInput">
-          Your Text
-        </label>
+  <button onclick="toDotCase()">
+    dot.case
+  </button>
 
+  <button onclick="toAlternatingCase()">
+    aLtErNaTiNg
+  </button>
 
-        <textarea
-          id="textInput"
-          placeholder="Paste your text here..."
-        ></textarea>
+  <button onclick="toInverseCase()">
+    iNVERSE cASE
+  </button>
 
-      </div>
+</div>
 
+<div class="statistics">
 
+  <div class="stat">
+    <strong id="wordCount">0</strong>
+    <span>Words</span>
+  </div>
 
-      <!-- Output -->
+  <div class="stat">
+    <strong id="characterCount">0</strong>
+    <span>Characters</span>
+  </div>
 
-      <div class="editor-box">
+</div>
 
-        <label for="textOutput">
-          Cleaned Text
-        </label>
+<div class="action-buttons">
 
+  <button onclick="copyText()">
+    Copy Text
+  </button>
 
-        <textarea
-          id="textOutput"
-          placeholder="Your cleaned text will appear here..."
-          readonly
-        ></textarea>
+  <button onclick="clearText()">
+    Clear Text
+  </button>
 
-      </div>
+</div>
 
+<div class="info">
 
-    </div>
+  <strong>How to use Case Converter:</strong>
 
+  <p>
+    Type or paste your text into the box above, then choose the
+    text format you want. Your text will be converted instantly.
+  </p>
 
-
-    <!-- Cleaning Options -->
-
-    <div class="options">
-
-
-      <h2>
-        Cleaning Options
-      </h2>
-
-
-      <div class="options-grid">
-
-
-        <label class="option">
-
-          <input
-            type="checkbox"
-            id="extraSpaces"
-            checked
-          >
-
-          Remove extra spaces
-
-        </label>
-
-
-
-        <label class="option">
-
-          <input
-            type="checkbox"
-            id="emptyLines"
-            checked
-          >
-
-          Remove empty lines
-
-        </label>
-
-
-
-        <label class="option">
-
-          <input
-            type="checkbox"
-            id="trimLines"
-            checked
-          >
-
-          Trim spaces from each line
-
-        </label>
-
-
-
-        <label class="option">
-
-          <input
-            type="checkbox"
-            id="tabs"
-            checked
-          >
-
-          Remove tabs
-
-        </label>
-
-
-
-        <label class="option">
-
-          <input
-            type="checkbox"
-            id="normalizeBreaks"
-            checked
-          >
-
-          Normalize line breaks
-
-        </label>
-
-
-
-        <label class="option">
-
-          <input
-            type="checkbox"
-            id="invisibleCharacters"
-            checked
-          >
-
-          Remove invisible characters
-
-        </label>
-
-
-      </div>
-
-
-    </div>
-
-
-
-    <!-- Clean Button -->
-
-    <button
-      class="main-button"
-      onclick="cleanText()"
-    >
-
-      Clean Text
-
-    </button>
-
-
-
-    <!-- Statistics -->
-
-    <div class="stats">
-
-
-      <div class="stat">
-
-        <strong id="lineCount">
-          0
-        </strong>
-
-        <span>
-          Lines
-        </span>
-
-      </div>
-
-
-
-      <div class="stat">
-
-        <strong id="wordCount">
-          0
-        </strong>
-
-        <span>
-          Words
-        </span>
-
-      </div>
-
-
-
-      <div class="stat">
-
-        <strong id="characterCount">
-          0
-        </strong>
-
-        <span>
-          Characters
-        </span>
-
-      </div>
-
-
-    </div>
-
-
-
-    <!-- Action Buttons -->
-
-    <div class="action-buttons">
-
-
-      <button onclick="copyText()">
-
-        Copy Result
-
-      </button>
-
-
-
-      <button onclick="clearText()">
-
-        Clear
-
-      </button>
-
-
-    </div>
-
-
-
-    <!-- Information -->
-
-    <div class="info">
-
-
-      <strong>
-        How to use Text Cleaner:
-      </strong>
-
-
-      <p>
-
-        Paste your text into the input box,
-        choose the cleaning options you want,
-        and click Clean Text.
-
-      </p>
-
-
-    </div>
-
+</div>
+```
 
   </main>
 
-
-
-  <!-- Footer -->
-
   <footer>
-
     © 2026 Text Tools · Simple, Fast & Free
-
   </footer>
-
-
 
   <script>
 
+    const text = document.getElementById("text");
 
-    function cleanText() {
-
-
-      let text =
-        document.getElementById(
-          "textInput"
-        ).value;
-
-
-
-      if (
-        text.trim() === ""
-      ) {
-
-        alert(
-          "Please enter some text first."
-        );
-
-        return;
-
-      }
-
-
-
-      /* Normalize line breaks */
-
-      if (
-        document.getElementById(
-          "normalizeBreaks"
-        ).checked
-      ) {
-
-        text =
-          text
-            .replace(
-              /\r\n/g,
-              "\n"
-            )
-            .replace(
-              /\r/g,
-              "\n"
-            );
-
-      }
-
-
-
-      /* Remove invisible characters */
-
-      if (
-        document.getElementById(
-          "invisibleCharacters"
-        ).checked
-      ) {
-
-        text =
-          text.replace(
-            /[\u200B-\u200D\uFEFF]/g,
-            ""
-          );
-
-      }
-
-
-
-      /* Remove tabs */
-
-      if (
-        document.getElementById(
-          "tabs"
-        ).checked
-      ) {
-
-        text =
-          text.replace(
-            /\t+/g,
-            " "
-          );
-
-      }
-
-
-
-      /* Trim lines */
-
-      if (
-        document.getElementById(
-          "trimLines"
-        ).checked
-      ) {
-
-        text =
-          text
-            .split("\n")
-            .map(
-              function(line) {
-
-                return line.trim();
-
-              }
-            )
-            .join("\n");
-
-      }
-
-
-
-      /* Remove extra spaces */
-
-      if (
-        document.getElementById(
-          "extraSpaces"
-        ).checked
-      ) {
-
-        text =
-          text.replace(
-            / {2,}/g,
-            " "
-          );
-
-      }
-
-
-
-      /* Remove empty lines */
-
-      if (
-        document.getElementById(
-          "emptyLines"
-        ).checked
-      ) {
-
-        text =
-          text
-            .split("\n")
-            .filter(
-              function(line) {
-
-                return (
-                  line.trim() !== ""
-                );
-
-              }
-            )
-            .join("\n");
-
-      }
-
-
-
-      /* Display Result */
-
-      document.getElementById(
-        "textOutput"
-      ).value =
-        text;
-
-
-
-      updateStatistics();
-
-
-    }
-
-
+    text.addEventListener("input", updateStatistics);
 
     function updateStatistics() {
 
-
-      const output =
-        document.getElementById(
-          "textOutput"
-        ).value;
-
-
-
-      const lines =
-        output.trim() === ""
-          ? 0
-          : output
-              .split("\n")
-              .filter(
-                function(line) {
-
-                  return (
-                    line.trim() !== ""
-                  );
-
-                }
-              )
-              .length;
-
-
+      const value = text.value;
 
       const words =
-        output.trim() === ""
+        value.trim() === ""
           ? 0
-          : output
-              .trim()
-              .split(/\s+/)
-              .length;
+          : value.trim().split(/\s+/).length;
 
+      document.getElementById("wordCount").textContent = words;
 
-
-      document.getElementById(
-        "lineCount"
-      ).textContent =
-        lines;
-
-
-
-      document.getElementById(
-        "wordCount"
-      ).textContent =
-        words;
-
-
-
-      document.getElementById(
-        "characterCount"
-      ).textContent =
-        output.length;
-
+      document.getElementById("characterCount").textContent =
+        value.length;
 
     }
 
+    function getWords() {
 
-
-    function copyText() {
-
-
-      const output =
-        document.getElementById(
-          "textOutput"
-        ).value;
-
-
-
-      if (
-        output === ""
-      ) {
-
-        alert(
-          "There is no cleaned text to copy."
-        );
-
-        return;
-
-      }
-
-
-
-      navigator.clipboard
-        .writeText(
-          output
-        )
-        .then(
-          function() {
-
-            alert(
-              "Cleaned text copied!"
-            );
-
-          }
-        );
-
+      return text.value
+        .trim()
+        .split(/[^a-zA-Z0-9]+/)
+        .filter(function(word) {
+          return word !== "";
+        });
 
     }
 
+    function toUpperCase() {
+      text.value = text.value.toUpperCase();
+      updateStatistics();
+    }
 
+    function toLowerCase() {
+      text.value = text.value.toLowerCase();
+      updateStatistics();
+    }
 
-    function clearText() {
+    function toTitleCase() {
 
-
-      document.getElementById(
-        "textInput"
-      ).value =
-        "";
-
-
-
-      document.getElementById(
-        "textOutput"
-      ).value =
-        "";
-
-
+      text.value = text.value
+        .toLowerCase()
+        .replace(/\b\w/g, function(letter) {
+          return letter.toUpperCase();
+        });
 
       updateStatistics();
 
+    }
+
+    function toSentenceCase() {
+
+      const value = text.value.toLowerCase();
+
+      text.value = value.replace(
+        /(^\s*\w|[.!?]\s+\w)/g,
+        function(letter) {
+          return letter.toUpperCase();
+        }
+      );
+
+      updateStatistics();
 
     }
 
+    function toCamelCase() {
+
+      const words = getWords();
+
+      if (words.length === 0) {
+        return;
+      }
+
+      text.value =
+        words[0].toLowerCase() +
+        words.slice(1)
+          .map(function(word) {
+            return (
+              word.charAt(0).toUpperCase() +
+              word.slice(1).toLowerCase()
+            );
+          })
+          .join("");
+
+      updateStatistics();
+
+    }
+
+    function toPascalCase() {
+
+      const words = getWords();
+
+      text.value =
+        words
+          .map(function(word) {
+            return (
+              word.charAt(0).toUpperCase() +
+              word.slice(1).toLowerCase()
+            );
+          })
+          .join("");
+
+      updateStatistics();
+
+    }
+
+    function toSnakeCase() {
+
+      text.value =
+        getWords()
+          .map(function(word) {
+            return word.toLowerCase();
+          })
+          .join("_");
+
+      updateStatistics();
+
+    }
+
+    function toKebabCase() {
+
+      text.value =
+        getWords()
+          .map(function(word) {
+            return word.toLowerCase();
+          })
+          .join("-");
+
+      updateStatistics();
+
+    }
+
+    function toConstantCase() {
+
+      text.value =
+        getWords()
+          .map(function(word) {
+            return word.toUpperCase();
+          })
+          .join("_");
+
+      updateStatistics();
+
+    }
+
+    function toDotCase() {
+
+      text.value =
+        getWords()
+          .map(function(word) {
+            return word.toLowerCase();
+          })
+          .join(".");
+
+      updateStatistics();
+
+    }
+
+    function toAlternatingCase() {
+
+      let result = "";
+      let upper = true;
+
+      for (let i = 0; i < text.value.length; i++) {
+
+        const character = text.value[i];
+
+        if (/[a-zA-Z]/.test(character)) {
+
+          result += upper
+            ? character.toUpperCase()
+            : character.toLowerCase();
+
+          upper = !upper;
+
+        } else {
+
+          result += character;
+
+        }
+
+      }
+
+      text.value = result;
+
+      updateStatistics();
+
+    }
+
+    function toInverseCase() {
+
+      let result = "";
+
+      for (let i = 0; i < text.value.length; i++) {
+
+        const character = text.value[i];
+
+        if (
+          character >= "a" &&
+          character <= "z"
+        ) {
+
+          result += character.toUpperCase();
+
+        } else if (
+          character >= "A" &&
+          character <= "Z"
+        ) {
+
+          result += character.toLowerCase();
+
+        } else {
+
+          result += character;
+
+        }
+
+      }
+
+      text.value = result;
+
+      updateStatistics();
+
+    }
+
+    function copyText() {
+
+      if (text.value.trim() === "") {
+        alert("There is no text to copy.");
+        return;
+      }
+
+      navigator.clipboard
+        .writeText(text.value)
+        .then(function() {
+          alert("Text copied!");
+        });
+
+    }
+
+    function clearText() {
+
+      text.value = "";
+
+      updateStatistics();
+
+    }
 
   </script>
 
-
 </body>
-
 </html>
