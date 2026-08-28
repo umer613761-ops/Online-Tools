@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Image Converter - Free Online Image Converter | ToolNest</title>
 
-<meta
-name="description"
-content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and ICO files quickly and easily."
-
->
+  <meta
+    name="description"
+    content="Convert images to JPG, PNG, WEBP, GIF, BMP and ICO. Convert small video clips to animated GIFs online for free."
+  >
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -25,10 +28,13 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
       color: #222;
     }
 
+    /* Navigation */
+
     nav {
       background: #ffffff;
       border-bottom: 1px solid #e5e5e5;
       padding: 18px 30px;
+
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -55,6 +61,8 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
       color: #000;
     }
 
+    /* Main */
+
     .container {
       max-width: 850px;
       margin: 40px auto;
@@ -78,12 +86,16 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
       line-height: 1.6;
     }
 
+    /* Converter */
+
     .converter-card {
-      background: #ffffff;
+      background: white;
       border: 1px solid #e5e5e5;
       border-radius: 16px;
       padding: 30px;
     }
+
+    /* Upload */
 
     .upload-area {
       border: 2px dashed #cfcfcf;
@@ -114,26 +126,32 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
       margin: 0;
       color: #777;
       font-size: 14px;
+      line-height: 1.6;
     }
 
     .upload-button {
       display: inline-block;
       margin-top: 18px;
       padding: 12px 20px;
+
       background: #222;
       color: white;
+
       border-radius: 8px;
       font-size: 15px;
     }
 
-    #fileInput {
+    input[type="file"] {
       display: none;
     }
+
+    /* File Info */
 
     .file-info {
       display: none;
       margin-top: 25px;
       padding: 18px;
+
       background: #f6f7fb;
       border-radius: 10px;
     }
@@ -149,18 +167,33 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
       font-size: 14px;
     }
 
+    /* Preview */
+
     .preview-container {
       display: none;
       margin-top: 25px;
       text-align: center;
     }
 
-    .preview-container img {
+    .preview-image {
+      display: none;
       max-width: 100%;
       max-height: 350px;
+
       border-radius: 10px;
       border: 1px solid #e5e5e5;
     }
+
+    .preview-video {
+      display: none;
+      max-width: 100%;
+      max-height: 350px;
+
+      border-radius: 10px;
+      border: 1px solid #e5e5e5;
+    }
+
+    /* Format */
 
     .format-section {
       display: none;
@@ -190,10 +223,13 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
     .format-option label {
       display: block;
       padding: 16px 10px;
+
       text-align: center;
       cursor: pointer;
+
       border: 1px solid #ddd;
       border-radius: 10px;
+
       font-weight: bold;
       transition: 0.2s;
     }
@@ -207,6 +243,31 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
       color: white;
       border-color: #222;
     }
+
+    /* Video Options */
+
+    .video-section {
+      display: none;
+      margin-top: 25px;
+      padding: 20px;
+
+      background: #f6f7fb;
+      border-radius: 10px;
+    }
+
+    .video-section h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    .video-section p {
+      margin: 0 0 15px;
+      color: #777;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Quality */
 
     .quality-section {
       display: none;
@@ -235,6 +296,8 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
       font-weight: bold;
     }
 
+    /* Convert */
+
     .convert-section {
       display: none;
       margin-top: 30px;
@@ -243,10 +306,13 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
     .convert-button {
       width: 100%;
       padding: 15px;
+
       border: none;
       border-radius: 10px;
+
       background: #222;
       color: white;
+
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
@@ -261,11 +327,43 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
       cursor: not-allowed;
     }
 
+    /* Progress */
+
+    .progress-container {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .progress-bar {
+      height: 8px;
+      overflow: hidden;
+      border-radius: 10px;
+      background: #e5e5e5;
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      background: #222;
+      transition: width 0.2s;
+    }
+
+    .progress-text {
+      margin-top: 8px;
+      text-align: center;
+      color: #777;
+      font-size: 14px;
+    }
+
+    /* Result */
+
     .result {
       display: none;
       margin-top: 25px;
       padding: 20px;
+
       text-align: center;
+
       background: #f6f7fb;
       border-radius: 10px;
     }
@@ -277,12 +375,17 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
 
     .download-button {
       display: inline-block;
+
       padding: 12px 22px;
+
       background: #222;
       color: white;
+
       text-decoration: none;
       border-radius: 8px;
     }
+
+    /* Footer */
 
     footer {
       text-align: center;
@@ -291,7 +394,10 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
       font-size: 14px;
     }
 
+    /* Mobile */
+
     @media (max-width: 600px) {
+
       nav {
         padding: 15px 20px;
       }
@@ -319,203 +425,362 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
       .format-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+
     }
+
   </style>
 
 </head>
 
 <body>
 
+  <!-- Navigation -->
+
   <nav>
-    <a href="index.html" class="logo">
+
+    <a
+      href="index.html"
+      class="logo"
+    >
       Tool<span>Nest</span>
     </a>
 
-```
-<div class="nav-links">
-  <a href="index.html">All Tools</a>
-</div>
-```
+    <div class="nav-links">
+
+      <a href="index.html">
+        All Tools
+      </a>
+
+    </div>
 
   </nav>
 
+  <!-- Main -->
+
   <main class="container">
 
-```
-<div class="tool-header">
-  <h1>Image Converter</h1>
+    <div class="tool-header">
 
-  <p>
-    Convert your images to JPG, PNG, WEBP, GIF, BMP or ICO.
-  </p>
-</div>
+      <h1>
+        Image Converter
+      </h1>
 
-<div class="converter-card">
-
-  <div class="upload-area" id="uploadArea">
-    <div class="upload-icon">🖼️</div>
-
-    <h2>Upload an Image</h2>
-
-    <p>
-      Drag and drop an image here or click to browse.
-    </p>
-
-    <div class="upload-button">
-      Choose Image
-    </div>
-
-    <input
-      type="file"
-      id="fileInput"
-      accept="image/*"
-    >
-  </div>
-
-  <div class="file-info" id="fileInfo">
-    <div class="file-name" id="fileName"></div>
-    <div class="file-details" id="fileDetails"></div>
-  </div>
-
-  <div class="preview-container" id="previewContainer">
-    <img id="preview" alt="Image preview">
-  </div>
-
-  <div class="format-section" id="formatSection">
-
-    <h2>Convert To</h2>
-
-    <div class="format-grid">
-
-      <div class="format-option">
-        <input
-          type="radio"
-          id="jpg"
-          name="format"
-          value="jpg"
-          checked
-        >
-        <label for="jpg">JPG</label>
-      </div>
-
-      <div class="format-option">
-        <input
-          type="radio"
-          id="png"
-          name="format"
-          value="png"
-        >
-        <label for="png">PNG</label>
-      </div>
-
-      <div class="format-option">
-        <input
-          type="radio"
-          id="webp"
-          name="format"
-          value="webp"
-        >
-        <label for="webp">WEBP</label>
-      </div>
-
-      <div class="format-option">
-        <input
-          type="radio"
-          id="gif"
-          name="format"
-          value="gif"
-        >
-        <label for="gif">GIF</label>
-      </div>
-
-      <div class="format-option">
-        <input
-          type="radio"
-          id="bmp"
-          name="format"
-          value="bmp"
-        >
-        <label for="bmp">BMP</label>
-      </div>
-
-      <div class="format-option">
-        <input
-          type="radio"
-          id="ico"
-          name="format"
-          value="ico"
-        >
-        <label for="ico">ICO</label>
-      </div>
+      <p>
+        Convert images to different formats or turn a small video clip into an animated GIF.
+      </p>
 
     </div>
 
-  </div>
+    <div class="converter-card">
 
-  <div class="quality-section" id="qualitySection">
+      <!-- Upload -->
 
-    <h2>Quality</h2>
-
-    <div class="quality-row">
-
-      <input
-        type="range"
-        id="quality"
-        min="10"
-        max="100"
-        value="90"
+      <div
+        class="upload-area"
+        id="uploadArea"
       >
 
-      <span
-        class="quality-value"
-        id="qualityValue"
+        <div class="upload-icon">
+          🖼️
+        </div>
+
+        <h2>
+          Upload an Image or Video
+        </h2>
+
+        <p>
+          Drag and drop a file here or click to browse.
+        </p>
+
+        <div class="upload-button">
+          Choose File
+        </div>
+
+        <input
+          type="file"
+          id="fileInput"
+          accept="image/*,video/mp4,video/webm,video/quicktime"
+        >
+
+      </div>
+
+      <!-- File Information -->
+
+      <div
+        class="file-info"
+        id="fileInfo"
       >
-        90%
-      </span>
+
+        <div
+          class="file-name"
+          id="fileName"
+        ></div>
+
+        <div
+          class="file-details"
+          id="fileDetails"
+        ></div>
+
+      </div>
+
+      <!-- Preview -->
+
+      <div
+        class="preview-container"
+        id="previewContainer"
+      >
+
+        <img
+          class="preview-image"
+          id="previewImage"
+          alt="Image preview"
+        >
+
+        <video
+          class="preview-video"
+          id="previewVideo"
+          controls
+        ></video>
+
+      </div>
+
+      <!-- Format -->
+
+      <div
+        class="format-section"
+        id="formatSection"
+      >
+
+        <h2>
+          Convert To
+        </h2>
+
+        <div
+          class="format-grid"
+          id="formatGrid"
+        >
+
+          <div class="format-option">
+
+            <input
+              type="radio"
+              id="jpg"
+              name="format"
+              value="jpg"
+              checked
+            >
+
+            <label for="jpg">
+              JPG
+            </label>
+
+          </div>
+
+          <div class="format-option">
+
+            <input
+              type="radio"
+              id="png"
+              name="format"
+              value="png"
+            >
+
+            <label for="png">
+              PNG
+            </label>
+
+          </div>
+
+          <div class="format-option">
+
+            <input
+              type="radio"
+              id="webp"
+              name="format"
+              value="webp"
+            >
+
+            <label for="webp">
+              WEBP
+            </label>
+
+          </div>
+
+          <div class="format-option">
+
+            <input
+              type="radio"
+              id="gif"
+              name="format"
+              value="gif"
+            >
+
+            <label for="gif">
+              GIF
+            </label>
+
+          </div>
+
+          <div class="format-option">
+
+            <input
+              type="radio"
+              id="bmp"
+              name="format"
+              value="bmp"
+            >
+
+            <label for="bmp">
+              BMP
+            </label>
+
+          </div>
+
+          <div class="format-option">
+
+            <input
+              type="radio"
+              id="ico"
+              name="format"
+              value="ico"
+            >
+
+            <label for="ico">
+              ICO
+            </label>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Video Information -->
+
+      <div
+        class="video-section"
+        id="videoSection"
+      >
+
+        <h2>
+          Video to GIF
+        </h2>
+
+        <p>
+          The first 15 seconds of your video will be converted to an animated GIF.
+        </p>
+
+      </div>
+
+      <!-- Quality -->
+
+      <div
+        class="quality-section"
+        id="qualitySection"
+      >
+
+        <h2>
+          Quality
+        </h2>
+
+        <div class="quality-row">
+
+          <input
+            type="range"
+            id="quality"
+            min="10"
+            max="100"
+            value="90"
+          >
+
+          <span
+            class="quality-value"
+            id="qualityValue"
+          >
+            90%
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- Convert -->
+
+      <div
+        class="convert-section"
+        id="convertSection"
+      >
+
+        <button
+          class="convert-button"
+          id="convertButton"
+        >
+          Convert File
+        </button>
+
+      </div>
+
+      <!-- Progress -->
+
+      <div
+        class="progress-container"
+        id="progressContainer"
+      >
+
+        <div class="progress-bar">
+
+          <div
+            class="progress-fill"
+            id="progressFill"
+          ></div>
+
+        </div>
+
+        <div
+          class="progress-text"
+          id="progressText"
+        >
+          Preparing...
+        </div>
+
+      </div>
+
+      <!-- Result -->
+
+      <div
+        class="result"
+        id="result"
+      >
+
+        <p
+          id="resultText"
+        >
+          Your converted file is ready.
+        </p>
+
+        <a
+          id="downloadButton"
+          class="download-button"
+          href="#"
+        >
+          Download File
+        </a>
+
+      </div>
 
     </div>
-
-  </div>
-
-  <div class="convert-section" id="convertSection">
-
-    <button
-      class="convert-button"
-      id="convertButton"
-    >
-      Convert Image
-    </button>
-
-  </div>
-
-  <div class="result" id="result">
-
-    <p id="resultText">
-      Your converted image is ready.
-    </p>
-
-    <a
-      id="downloadButton"
-      class="download-button"
-      href="#"
-    >
-      Download Image
-    </a>
-
-  </div>
-
-</div>
-```
 
   </main>
 
   <footer>
+
     © 2026 ToolNest · Simple, Fast & Free
+
   </footer>
 
-  <!-- GIF.js Library -->
+  <!-- GIF.js -->
 
-  <script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
 
   <script>
 
@@ -525,8 +790,11 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
     const uploadArea =
       document.getElementById("uploadArea");
 
-    const preview =
-      document.getElementById("preview");
+    const previewImage =
+      document.getElementById("previewImage");
+
+    const previewVideo =
+      document.getElementById("previewVideo");
 
     const previewContainer =
       document.getElementById("previewContainer");
@@ -542,6 +810,9 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
 
     const formatSection =
       document.getElementById("formatSection");
+
+    const videoSection =
+      document.getElementById("videoSection");
 
     const qualitySection =
       document.getElementById("qualitySection");
@@ -567,35 +838,56 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
     const downloadButton =
       document.getElementById("downloadButton");
 
+    const progressContainer =
+      document.getElementById("progressContainer");
+
+    const progressFill =
+      document.getElementById("progressFill");
+
+    const progressText =
+      document.getElementById("progressText");
+
 
     let imageObject = null;
+
     let selectedFile = null;
+
+    let fileType = null;
+
     let downloadUrl = null;
 
+
+    /* Upload Click */
 
     uploadArea.addEventListener(
       "click",
       function() {
+
         fileInput.click();
+
       }
     );
 
+
+    /* File Selection */
 
     fileInput.addEventListener(
       "change",
       function() {
 
-        if (
-          fileInput.files.length > 0
-        ) {
+        if (fileInput.files.length > 0) {
+
           loadFile(
             fileInput.files[0]
           );
+
         }
 
       }
     );
 
+
+    /* Drag Over */
 
     uploadArea.addEventListener(
       "dragover",
@@ -611,6 +903,8 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
     );
 
 
+    /* Drag Leave */
+
     uploadArea.addEventListener(
       "dragleave",
       function() {
@@ -622,6 +916,8 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
       }
     );
 
+
+    /* Drop */
 
     uploadArea.addEventListener(
       "drop",
@@ -647,16 +943,18 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
     );
 
 
+    /* Load File */
+
     function loadFile(file) {
 
       if (
-        !file.type.startsWith(
-          "image/"
-        )
+        !file.type.startsWith("image/")
+        &&
+        !file.type.startsWith("video/")
       ) {
 
         alert(
-          "Please choose a valid image."
+          "Please choose a valid image or video."
         );
 
         return;
@@ -664,8 +962,38 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
       }
 
 
-      selectedFile = file;
+      selectedFile =
+        file;
 
+
+      fileType =
+        file.type.startsWith("video/")
+          ? "video"
+          : "image";
+
+
+      result.style.display =
+        "none";
+
+
+      if (fileType === "image") {
+
+        loadImage(file);
+
+      }
+
+      else {
+
+        loadVideo(file);
+
+      }
+
+    }
+
+
+    /* Load Image */
+
+    function loadImage(file) {
 
       const reader =
         new FileReader();
@@ -681,37 +1009,35 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
           imageObject.onload =
             function() {
 
-              preview.src =
+              previewImage.src =
                 event.target.result;
 
+              previewImage.style.display =
+                "inline-block";
+
+              previewVideo.style.display =
+                "none";
 
               previewContainer.style.display =
                 "block";
 
-
               fileInfo.style.display =
                 "block";
-
 
               formatSection.style.display =
                 "block";
 
-
               qualitySection.style.display =
                 "block";
 
+              videoSection.style.display =
+                "none";
 
               convertSection.style.display =
                 "block";
 
-
-              result.style.display =
-                "none";
-
-
               fileName.textContent =
                 file.name;
-
 
               fileDetails.textContent =
                 imageObject.naturalWidth
@@ -733,7 +1059,7 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
             function() {
 
               alert(
-                "This image could not be loaded by your browser."
+                "This image format cannot be read by your browser."
               );
 
             };
@@ -745,12 +1071,92 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
         };
 
 
-      reader.readAsDataURL(
-        file
-      );
+      reader.readAsDataURL(file);
 
     }
 
+
+    /* Load Video */
+
+    function loadVideo(file) {
+
+      imageObject =
+        null;
+
+
+      const videoUrl =
+        URL.createObjectURL(file);
+
+
+      previewVideo.src =
+        videoUrl;
+
+
+      previewVideo.onloadedmetadata =
+        function() {
+
+          previewImage.style.display =
+            "none";
+
+          previewVideo.style.display =
+            "block";
+
+          previewContainer.style.display =
+            "block";
+
+          fileInfo.style.display =
+            "block";
+
+          formatSection.style.display =
+            "none";
+
+          videoSection.style.display =
+            "block";
+
+          qualitySection.style.display =
+            "block";
+
+          convertSection.style.display =
+            "block";
+
+
+          fileName.textContent =
+            file.name;
+
+
+          fileDetails.textContent =
+            Math.round(
+              previewVideo.videoWidth
+            )
+            +
+            " × "
+            +
+            Math.round(
+              previewVideo.videoHeight
+            )
+            +
+            " pixels · "
+            +
+            formatDuration(
+              previewVideo.duration
+            )
+            +
+            " · "
+            +
+            formatFileSize(
+              file.size
+            );
+
+
+          convertButton.textContent =
+            "Convert Video to GIF";
+
+        };
+
+    }
+
+
+    /* Quality */
 
     quality.addEventListener(
       "input",
@@ -765,9 +1171,34 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
     );
 
 
-    function createCanvas(
-      whiteBackground
-    ) {
+    /* Format Change */
+
+    document.querySelectorAll(
+      'input[name="format"]'
+    ).forEach(
+      function(input) {
+
+        input.addEventListener(
+          "change",
+          function() {
+
+            if (fileType === "image") {
+
+              convertButton.textContent =
+                "Convert Image";
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+    /* Create Canvas */
+
+    function createCanvas() {
 
       const canvas =
         document.createElement(
@@ -789,22 +1220,16 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
         );
 
 
-      if (
-        whiteBackground
-      ) {
-
-        context.fillStyle =
-          "#ffffff";
+      context.fillStyle =
+        "#ffffff";
 
 
-        context.fillRect(
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
-
-      }
+      context.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
 
 
       context.drawImage(
@@ -819,140 +1244,111 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
     }
 
 
+    /* Convert Button */
+
     convertButton.addEventListener(
       "click",
       async function() {
 
-        if (
-          !imageObject
-        ) {
+        if (!selectedFile) {
           return;
         }
-
-
-        const selectedFormat =
-          document.querySelector(
-            'input[name="format"]:checked'
-          );
-
-
-        const format =
-          selectedFormat.value;
 
 
         convertButton.disabled =
           true;
 
 
-        if (
-          format === "gif"
-        ) {
+        progressContainer.style.display =
+          "block";
 
-          convertButton.textContent =
-            "Creating GIF...";
 
-        }
-
-        else {
-
-          convertButton.textContent =
-            "Converting...";
-
-        }
+        progressFill.style.width =
+          "0%";
 
 
         try {
 
-          let blob;
+          if (fileType === "video") {
+
+            convertButton.textContent =
+              "Creating GIF...";
 
 
-          if (
-            format === "jpg"
-          ) {
-
-            blob =
-              await convertCanvas(
-                "image/jpeg",
-                true
-              );
-
-          }
+            const blob =
+              await convertVideoToGif();
 
 
-          else if (
-            format === "png"
-          ) {
-
-            blob =
-              await convertCanvas(
-                "image/png",
-                false
-              );
-
-          }
-
-
-          else if (
-            format === "webp"
-          ) {
-
-            blob =
-              await convertCanvas(
-                "image/webp",
-                false
-              );
-
-          }
-
-
-          else if (
-            format === "gif"
-          ) {
-
-            blob =
-              await convertToGif();
-
-          }
-
-
-          else if (
-            format === "bmp"
-          ) {
-
-            blob =
-              convertToBmp();
-
-          }
-
-
-          else if (
-            format === "ico"
-          ) {
-
-            blob =
-              await convertToIco();
-
-          }
-
-
-          if (
-            !blob
-          ) {
-
-            throw new Error(
-              "No output file was created."
+            showDownload(
+              blob,
+              "gif"
             );
 
           }
 
+          else {
 
-          showDownload(
-            blob,
-            format
-          );
+            const format =
+              document.querySelector(
+                'input[name="format"]:checked'
+              ).value;
+
+
+            convertButton.textContent =
+              "Converting...";
+
+
+            let blob;
+
+
+            if (format === "gif") {
+
+              blob =
+                await convertImageToGif();
+
+            }
+
+            else if (format === "bmp") {
+
+              blob =
+                convertToBmp();
+
+            }
+
+            else if (format === "ico") {
+
+              blob =
+                await convertToIco();
+
+            }
+
+            else {
+
+              blob =
+                await convertStandard(
+                  format
+                );
+
+            }
+
+
+            if (!blob) {
+
+              throw new Error(
+                "Conversion failed."
+              );
+
+            }
+
+
+            showDownload(
+              blob,
+              format
+            );
+
+          }
 
         }
-
 
         catch(error) {
 
@@ -960,11 +1356,8 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
             error
           );
 
-
           alert(
-            "Conversion failed: "
-            +
-            error.message
+            "Conversion failed. Please try a smaller file or another format."
           );
 
         }
@@ -975,72 +1368,63 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
 
 
         convertButton.textContent =
-          "Convert Image";
+          fileType === "video"
+            ? "Convert Video to GIF"
+            : "Convert Image";
+
+
+        progressContainer.style.display =
+          "none";
 
       }
     );
 
 
-    function convertCanvas(
-      mimeType,
-      whiteBackground
-    ) {
+    /* Standard Image Conversion */
+
+    function convertStandard(format) {
 
       return new Promise(
-        function(resolve, reject) {
+        function(resolve) {
 
-          try {
-
-            const canvas =
-              createCanvas(
-                whiteBackground
-              );
+          const canvas =
+            createCanvas();
 
 
-            canvas.toBlob(
-              function(blob) {
+          let mime;
 
-                if (
-                  blob
-                ) {
 
-                  resolve(
-                    blob
-                  );
+          if (format === "jpg") {
 
-                }
-
-                else {
-
-                  reject(
-                    new Error(
-                      "Browser could not create the image."
-                    )
-                  );
-
-                }
-
-              },
-
-              mimeType,
-
-              Number(
-                quality.value
-              )
-              /
-              100
-
-            );
+            mime =
+              "image/jpeg";
 
           }
 
-          catch(error) {
+          else if (format === "png") {
 
-            reject(
-              error
-            );
+            mime =
+              "image/png";
 
           }
+
+          else {
+
+            mime =
+              "image/webp";
+
+          }
+
+
+          canvas.toBlob(
+            function(blob) {
+
+              resolve(blob);
+
+            },
+            mime,
+            Number(quality.value) / 100
+          );
 
         }
       );
@@ -1048,79 +1432,67 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
     }
 
 
-    async function convertToGif() {
+    /* Image To GIF */
 
-      if (
-        typeof GIF ===
-        "undefined"
-      ) {
-
-        throw new Error(
-          "GIF encoder library could not be loaded."
-        );
-
-      }
-
-
-      const workerResponse =
-        await fetch(
-          "https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js"
-        );
-
-
-      if (
-        !workerResponse.ok
-      ) {
-
-        throw new Error(
-          "GIF worker could not be loaded."
-        );
-
-      }
-
-
-      const workerBlob =
-        await workerResponse.blob();
-
-
-      const workerUrl =
-        URL.createObjectURL(
-          workerBlob
-        );
-
-
-      const canvas =
-        createCanvas(
-          true
-        );
-
+    function convertImageToGif() {
 
       return new Promise(
         function(resolve, reject) {
 
-          const gif =
-            new GIF(
-              {
-                workers: 2,
-                quality: 10,
+          if (typeof GIF === "undefined") {
 
-                workerScript:
-                  workerUrl,
-
-                width:
-                  canvas.width,
-
-                height:
-                  canvas.height
-              }
+            reject(
+              new Error(
+                "GIF library failed to load."
+              )
             );
+
+            return;
+
+          }
+
+
+          const canvas =
+            createCanvas();
+
+
+          const gif =
+            new GIF({
+
+              workers: 2,
+
+              quality:
+                Math.max(
+                  1,
+                  20 -
+                  Math.round(
+                    Number(quality.value) / 5
+                  )
+                ),
+
+              workerScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js"
+
+            });
 
 
           gif.addFrame(
             canvas,
             {
               copy: true,
-              delay: 500
+              delay: 100
+            }
+          );
+
+
+          gif.on(
+            "progress",
+            function(progress) {
+
+              updateProgress(
+                progress
+              );
+
             }
           );
 
@@ -1129,10 +1501,262 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
             "finished",
             function(blob) {
 
-              URL.revokeObjectURL(
-                workerUrl
+              resolve(blob);
+
+            }
+          );
+
+
+          gif.on(
+            "abort",
+            function() {
+
+              reject(
+                new Error(
+                  "GIF creation stopped."
+                )
               );
 
+            }
+          );
+
+
+          gif.render();
+
+        }
+      );
+
+    }
+
+
+    /* Video To GIF */
+
+    async function convertVideoToGif() {
+
+      return new Promise(
+        function(resolve, reject) {
+
+          if (typeof GIF === "undefined") {
+
+            reject(
+              new Error(
+                "GIF library failed to load."
+              )
+            );
+
+            return;
+
+          }
+
+
+          const video =
+            previewVideo;
+
+
+          const maxDuration =
+            Math.min(
+              video.duration,
+              15
+            );
+
+
+          const maxWidth =
+            480;
+
+
+          let width =
+            video.videoWidth;
+
+
+          let height =
+            video.videoHeight;
+
+
+          if (width > maxWidth) {
+
+            const ratio =
+              maxWidth / width;
+
+            width =
+              Math.round(
+                width * ratio
+              );
+
+            height =
+              Math.round(
+                height * ratio
+              );
+
+          }
+
+
+          const canvas =
+            document.createElement(
+              "canvas"
+            );
+
+
+          canvas.width =
+            width;
+
+
+          canvas.height =
+            height;
+
+
+          const context =
+            canvas.getContext(
+              "2d"
+            );
+
+
+          const gif =
+            new GIF({
+
+              workers: 2,
+
+              quality:
+                Math.max(
+                  5,
+                  20 -
+                  Math.round(
+                    Number(quality.value) / 5
+                  )
+                ),
+
+              workerScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js"
+
+            });
+
+
+          const frameRate =
+            8;
+
+
+          const frameDelay =
+            1000 / frameRate;
+
+
+          const totalFrames =
+            Math.floor(
+              maxDuration *
+              frameRate
+            );
+
+
+          let frame =
+            0;
+
+
+          video.pause();
+
+
+          function captureNextFrame() {
+
+            if (
+              frame >= totalFrames
+            ) {
+
+              progressText.textContent =
+                "Creating GIF...";
+
+
+              gif.render();
+
+              return;
+
+            }
+
+
+            const time =
+              frame / frameRate;
+
+
+            video.currentTime =
+              time;
+
+
+            video.onseeked =
+              function() {
+
+                context.drawImage(
+                  video,
+                  0,
+                  0,
+                  width,
+                  height
+                );
+
+
+                gif.addFrame(
+                  canvas,
+                  {
+                    copy: true,
+                    delay: frameDelay
+                  }
+                );
+
+
+                frame++;
+
+
+                const progress =
+                  frame /
+                  totalFrames;
+
+
+                updateProgress(
+                  progress * 0.5
+                );
+
+
+                progressText.textContent =
+                  "Capturing frame "
+                  +
+                  frame
+                  +
+                  " of "
+                  +
+                  totalFrames;
+
+
+                setTimeout(
+                  captureNextFrame,
+                  20
+                );
+
+              };
+
+          }
+
+
+          gif.on(
+            "progress",
+            function(progress) {
+
+              updateProgress(
+                50 +
+                progress * 50
+              );
+
+
+              progressText.textContent =
+                "Creating GIF... "
+                +
+                Math.round(
+                  progress * 100
+                )
+                +
+                "%";
+
+            }
+          );
+
+
+          gif.on(
+            "finished",
+            function(blob) {
 
               resolve(
                 blob
@@ -1146,14 +1770,9 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
             "abort",
             function() {
 
-              URL.revokeObjectURL(
-                workerUrl
-              );
-
-
               reject(
                 new Error(
-                  "GIF conversion was cancelled."
+                  "GIF creation stopped."
                 )
               );
 
@@ -1161,24 +1780,11 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
           );
 
 
-          try {
-
-            gif.render();
-
-          }
-
-          catch(error) {
-
-            URL.revokeObjectURL(
-              workerUrl
-            );
+          video.currentTime =
+            0;
 
 
-            reject(
-              error
-            );
-
-          }
+          captureNextFrame();
 
         }
       );
@@ -1186,12 +1792,12 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
     }
 
 
+    /* BMP */
+
     function convertToBmp() {
 
       const canvas =
-        createCanvas(
-          true
-        );
+        createCanvas();
 
 
       const context =
@@ -1219,28 +1825,16 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
 
       const rowSize =
         Math.floor(
-          (
-            width * 3
-            +
-            3
-          )
-          /
-          4
-        )
-        *
-        4;
+          (width * 3 + 3) / 4
+        ) * 4;
 
 
       const imageSize =
-        rowSize
-        *
-        height;
+        rowSize * height;
 
 
       const fileSize =
-        54
-        +
-        imageSize;
+        54 + imageSize;
 
 
       const buffer =
@@ -1260,12 +1854,10 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
         0x42
       );
 
-
       view.setUint8(
         1,
         0x4D
       );
-
 
       view.setUint32(
         2,
@@ -1273,13 +1865,11 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
         true
       );
 
-
       view.setUint32(
         10,
         54,
         true
       );
-
 
       view.setUint32(
         14,
@@ -1287,13 +1877,11 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
         true
       );
 
-
       view.setInt32(
         18,
         width,
         true
       );
-
 
       view.setInt32(
         22,
@@ -1301,13 +1889,11 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
         true
       );
 
-
       view.setUint16(
         26,
         1,
         true
       );
-
 
       view.setUint16(
         28,
@@ -1315,20 +1901,17 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
         true
       );
 
-
       view.setUint32(
         34,
         imageSize,
         true
       );
 
-
       view.setInt32(
         38,
         2835,
         true
       );
-
 
       view.setInt32(
         42,
@@ -1337,17 +1920,16 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
       );
 
 
-      let offset =
-        54;
-
-
       const pixels =
         imageData.data;
 
 
+      let offset =
+        54;
+
+
       for (
-        let y =
-          height - 1;
+        let y = height - 1;
         y >= 0;
         y--
       ) {
@@ -1364,48 +1946,33 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
 
           const pixel =
             (
-              y
-              *
-              width
-              +
+              y *
+              width +
               x
-            )
-            *
-            4;
+            ) * 4;
 
 
           view.setUint8(
             offset++,
-            pixels[
-              pixel + 2
-            ]
+            pixels[pixel + 2]
           );
 
-
           view.setUint8(
             offset++,
-            pixels[
-              pixel + 1
-            ]
+            pixels[pixel + 1]
           );
 
-
           view.setUint8(
             offset++,
-            pixels[
-              pixel
-            ]
+            pixels[pixel]
           );
 
         }
 
 
         while (
-          offset
-          <
-          rowStart
-          +
-          rowSize
+          offset <
+          rowStart + rowSize
         ) {
 
           view.setUint8(
@@ -1419,17 +1986,16 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
 
 
       return new Blob(
-        [
-          buffer
-        ],
+        [buffer],
         {
-          type:
-            "image/bmp"
+          type: "image/bmp"
         }
       );
 
     }
 
+
+    /* ICO */
 
     function convertToIco() {
 
@@ -1437,7 +2003,16 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
         function(resolve, reject) {
 
           const size =
-            256;
+            Math.min(
+              256,
+              Math.max(
+                16,
+                Math.max(
+                  imageObject.naturalWidth,
+                  imageObject.naturalHeight
+                )
+              )
+            );
 
 
           const canvas =
@@ -1470,53 +2045,33 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
 
           const scale =
             Math.min(
-              size
-              /
+              size /
               imageObject.naturalWidth,
 
-              size
-              /
+              size /
               imageObject.naturalHeight
             );
 
 
           const width =
-            imageObject.naturalWidth
-            *
+            imageObject.naturalWidth *
             scale;
 
 
           const height =
-            imageObject.naturalHeight
-            *
+            imageObject.naturalHeight *
             scale;
-
-
-          const x =
-            (
-              size
-              -
-              width
-            )
-            /
-            2;
-
-
-          const y =
-            (
-              size
-              -
-              height
-            )
-            /
-            2;
 
 
           context.drawImage(
             imageObject,
-            x,
-            y,
+
+            (size - width) / 2,
+
+            (size - height) / 2,
+
             width,
+
             height
           );
 
@@ -1536,8 +2091,7 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
 
                 const buffer =
                   new ArrayBuffer(
-                    imageOffset
-                    +
+                    imageOffset +
                     pngBuffer.byteLength
                   );
 
@@ -1554,13 +2108,11 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
                   true
                 );
 
-
                 view.setUint16(
                   2,
                   1,
                   true
                 );
-
 
                 view.setUint16(
                   4,
@@ -1571,27 +2123,27 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
 
                 view.setUint8(
                   6,
-                  0
+                  size === 256
+                    ? 0
+                    : size
                 );
-
 
                 view.setUint8(
                   7,
-                  0
+                  size === 256
+                    ? 0
+                    : size
                 );
-
 
                 view.setUint8(
                   8,
                   0
                 );
 
-
                 view.setUint8(
                   9,
                   0
                 );
-
 
                 view.setUint16(
                   10,
@@ -1599,20 +2151,17 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
                   true
                 );
 
-
                 view.setUint16(
                   12,
                   32,
                   true
                 );
 
-
                 view.setUint32(
                   14,
                   pngBuffer.byteLength,
                   true
                 );
-
 
                 view.setUint32(
                   18,
@@ -1637,9 +2186,7 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
 
                 resolve(
                   new Blob(
-                    [
-                      buffer
-                    ],
+                    [buffer],
                     {
                       type:
                         "image/x-icon"
@@ -1658,9 +2205,7 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
               }
 
             },
-
             "image/png"
-
           );
 
         }
@@ -1669,14 +2214,35 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
     }
 
 
+    /* Progress */
+
+    function updateProgress(value) {
+
+      const percent =
+        Math.min(
+          100,
+          Math.round(
+            value
+          )
+        );
+
+
+      progressFill.style.width =
+        percent
+        +
+        "%";
+
+    }
+
+
+    /* Download */
+
     function showDownload(
       blob,
       format
     ) {
 
-      if (
-        downloadUrl
-      ) {
+      if (downloadUrl) {
 
         URL.revokeObjectURL(
           downloadUrl
@@ -1715,32 +2281,32 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
         +
         format.toUpperCase()
         +
-        " image is ready.";
+        " file is ready.";
+
+
+      downloadButton.textContent =
+        "Download "
+        +
+        format.toUpperCase();
 
 
       result.style.display =
         "block";
 
 
-      result.scrollIntoView(
-        {
-          behavior:
-            "smooth",
-            block:
-              "nearest"
-        }
-      );
+      result.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
 
     }
 
 
-    function formatFileSize(
-      bytes
-    ) {
+    /* File Size */
 
-      if (
-        bytes < 1024
-      ) {
+    function formatFileSize(bytes) {
+
+      if (bytes < 1024) {
 
         return (
           bytes
@@ -1752,18 +2318,13 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
 
 
       if (
-        bytes
-        <
-        1024
-        *
-        1024
+        bytes <
+        1024 * 1024
       ) {
 
         return (
           (
-            bytes
-            /
-            1024
+            bytes / 1024
           ).toFixed(1)
           +
           " KB"
@@ -1774,16 +2335,43 @@ content="Convert images online for free. Convert JPG, PNG, WEBP, GIF, BMP and IC
 
       return (
         (
-          bytes
-          /
-          (
-            1024
-            *
-            1024
-          )
+          bytes /
+          (1024 * 1024)
         ).toFixed(1)
         +
         " MB"
+      );
+
+    }
+
+
+    /* Duration */
+
+    function formatDuration(seconds) {
+
+      const minutes =
+        Math.floor(
+          seconds / 60
+        );
+
+
+      const remainingSeconds =
+        Math.floor(
+          seconds % 60
+        );
+
+
+      return (
+        minutes
+        +
+        ":"
+        +
+        String(
+          remainingSeconds
+        ).padStart(
+          2,
+          "0"
+        )
       );
 
     }
