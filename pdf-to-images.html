@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>PDF to Images - Free Online Tool | ToolNest</title>
+
+  <meta
+    name="description"
+    content="Convert PDF pages to high-quality PNG images online for free."
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+
+      font-family: Arial, sans-serif;
+
+      background: #202124;
+      color: #e8e8e8;
+    }
+
+
+    /* Navigation */
+
+    nav {
+      background: #151618;
+
+      border-bottom: 1px solid #383b40;
+
+      padding: 18px 30px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      color: #f1f1f1;
+
+      font-size: 24px;
+      font-weight: bold;
+
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: #9ea4ad;
+    }
+
+    .back-link {
+      color: #aeb4bd;
+
+      text-decoration: none;
+
+      font-size: 15px;
+    }
+
+    .back-link:hover {
+      color: #ffffff;
+    }
+
+
+    /* Main */
+
+    .container {
+      max-width: 900px;
+
+      margin: 0 auto;
+
+      padding: 55px 20px 80px;
+    }
+
+
+    /* Heading */
+
+    .heading {
+      text-align: center;
+
+      margin-bottom: 35px;
+    }
+
+    .heading h1 {
+      margin: 0 0 12px;
+
+      font-size: 38px;
+    }
+
+    .heading p {
+      margin: 0;
+
+      color: #aeb4bd;
+
+      font-size: 16px;
+
+      line-height: 1.6;
+    }
+
+
+    /* Tool Box */
+
+    .tool-box {
+      background: #151618;
+
+      border: 1px solid #3a3d42;
+
+      border-radius: 14px;
+
+      padding: 28px;
+    }
+
+
+    /* Upload Area */
+
+    .upload-area {
+      border: 1px dashed #70747b;
+
+      border-radius: 12px;
+
+      padding: 55px 20px;
+
+      text-align: center;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    .upload-area:hover {
+      border-color: #9da3ab;
+
+      background: #1b1c1f;
+    }
+
+    .upload-icon {
+      font-size: 48px;
+
+      margin-bottom: 15px;
+    }
+
+    .upload-area h2 {
+      margin: 0 0 10px;
+
+      font-size: 20px;
+    }
+
+    .upload-area p {
+      margin: 0;
+
+      color: #aeb4bd;
+
+      font-size: 14px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+
+    /* Editor */
+
+    .editor {
+      display: none;
+    }
+
+
+    /* Selected PDF */
+
+    .selected-section {
+      text-align: center;
+
+      padding: 30px 0;
+
+      border-bottom: 1px solid #34373c;
+    }
+
+    .selected-section h2 {
+      margin: 0 0 8px;
+
+      font-size: 21px;
+    }
+
+    .selected-section p {
+      margin: 0 0 20px;
+
+      color: #9da3ab;
+
+      font-size: 14px;
+    }
+
+
+    /* PDF Card */
+
+    .pdf-card {
+      display: inline-flex;
+
+      align-items: center;
+      gap: 15px;
+
+      background: #222428;
+
+      border: 1px solid #3b3f45;
+
+      border-radius: 12px;
+
+      padding: 15px 18px;
+
+      max-width: 100%;
+    }
+
+    .pdf-icon {
+      font-size: 35px;
+    }
+
+    .pdf-info {
+      text-align: left;
+
+      min-width: 0;
+    }
+
+    .pdf-name {
+      font-size: 15px;
+
+      font-weight: bold;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      max-width: 300px;
+    }
+
+    .pdf-pages {
+      margin-top: 5px;
+
+      color: #aeb4bd;
+
+      font-size: 13px;
+    }
+
+
+    /* Settings */
+
+    .settings-section {
+      padding: 28px 0;
+
+      border-bottom: 1px solid #34373c;
+    }
+
+    .settings-section h2 {
+      margin: 0 0 20px;
+
+      font-size: 21px;
+    }
+
+    .setting-row {
+      display: flex;
+
+      justify-content: center;
+
+      max-width: 400px;
+
+      margin: auto;
+    }
+
+    .setting-group {
+      width: 100%;
+    }
+
+    .setting-group label {
+      display: block;
+
+      margin-bottom: 8px;
+
+      font-size: 14px;
+
+      font-weight: bold;
+    }
+
+    select {
+      width: 100%;
+
+      padding: 13px;
+
+      background: #18191c;
+
+      color: #e8e8e8;
+
+      border: 1px solid #50545b;
+
+      border-radius: 8px;
+
+      font-size: 15px;
+    }
+
+    select:focus {
+      outline: none;
+
+      border-color: #858b94;
+    }
+
+
+    /* Buttons */
+
+    .buttons {
+      display: flex;
+
+      justify-content: center;
+
+      gap: 12px;
+
+      flex-wrap: wrap;
+
+      padding: 28px 0 10px;
+    }
+
+    button {
+      border: none;
+
+      border-radius: 9px;
+
+      padding: 14px 25px;
+
+      font-size: 15px;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    .primary-button {
+      background: #ffffff;
+
+      color: #151618;
+
+      font-weight: bold;
+    }
+
+    .secondary-button {
+      background: #2a2d31;
+
+      color: #e8e8e8;
+    }
+
+
+    /* Status */
+
+    .status {
+      text-align: center;
+
+      color: #aeb4bd;
+
+      font-size: 14px;
+
+      margin-top: 12px;
+    }
+
+
+    /* Results */
+
+    .results {
+      display: none;
+
+      margin-top: 35px;
+    }
+
+    .results h2 {
+      text-align: center;
+
+      margin: 0 0 25px;
+
+      font-size: 24px;
+    }
+
+    .image-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(auto-fit, minmax(200px, 1fr));
+
+      gap: 20px;
+    }
+
+
+    /* Image Card */
+
+    .image-card {
+      background: #18191c;
+
+      border: 1px solid #383b40;
+
+      border-radius: 12px;
+
+      padding: 12px;
+
+      text-align: center;
+    }
+
+    .image-card img {
+      width: 100%;
+
+      display: block;
+
+      border-radius: 7px;
+
+      margin-bottom: 12px;
+    }
+
+    .page-name {
+      margin-bottom: 10px;
+
+      font-size: 14px;
+
+      color: #c4c8ce;
+    }
+
+    .download-page {
+      width: 100%;
+
+      padding: 10px;
+
+      background: #2a2d31;
+
+      color: #ffffff;
+
+      border: none;
+
+      border-radius: 7px;
+
+      cursor: pointer;
+
+      font-size: 13px;
+    }
+
+
+    /* Footer */
+
+    footer {
+      text-align: center;
+
+      padding: 35px 20px;
+
+      background: #151618;
+
+      border-top: 1px solid #383b40;
+
+      color: #8f959d;
+
+      font-size: 14px;
+    }
+
+
+    /* Mobile */
+
+    @media (max-width: 600px) {
+
+      nav {
+        padding: 15px 20px;
+      }
+
+      .logo {
+        font-size: 21px;
+      }
+
+      .container {
+        padding: 40px 15px 60px;
+      }
+
+      .heading h1 {
+        font-size: 30px;
+      }
+
+      .tool-box {
+        padding: 18px;
+      }
+
+      .upload-area {
+        padding: 45px 15px;
+      }
+
+      .pdf-card {
+        width: 100%;
+      }
+
+      .pdf-name {
+        max-width: 180px;
+      }
+
+      .buttons {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- Navigation -->
+
+  <nav>
+
+    <a
+      href="index.html"
+      class="logo"
+    >
+      Tool<span>Nest</span>
+    </a>
+
+
+    <a
+      href="index.html"
+      class="back-link"
+    >
+      ← All Tools
+    </a>
+
+  </nav>
+
+
+
+  <!-- Main -->
+
+  <main class="container">
+
+
+    <!-- Heading -->
+
+    <div class="heading">
+
+      <h1>
+        PDF to Images
+      </h1>
+
+      <p>
+        Convert PDF pages into high-quality images
+        quickly and easily.
+      </p>
+
+    </div>
+
+
+
+    <!-- Tool Box -->
+
+    <div class="tool-box">
+
+
+      <!-- Upload -->
+
+      <label
+        for="pdfInput"
+        class="upload-area"
+        id="uploadArea"
+      >
+
+        <div class="upload-icon">
+          📄
+        </div>
+
+
+        <h2>
+          Upload a PDF
+        </h2>
+
+
+        <p>
+          Click here to choose a PDF from your device.
+        </p>
+
+      </label>
+
+
+      <input
+        type="file"
+        id="pdfInput"
+        accept="application/pdf"
+      >
+
+
+
+      <!-- Editor -->
+
+      <div
+        class="editor"
+        id="editor"
+      >
+
+
+        <!-- Selected PDF -->
+
+        <div class="selected-section">
+
+          <h2>
+            Selected PDF
+          </h2>
+
+
+          <p>
+            Your PDF is ready to be converted.
+          </p>
+
+
+          <div class="pdf-card">
+
+            <div class="pdf-icon">
+              📄
+            </div>
+
+
+            <div class="pdf-info">
+
+              <div
+                class="pdf-name"
+                id="pdfName"
+              >
+              </div>
+
+
+              <div
+                class="pdf-pages"
+                id="pdfPages"
+              >
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Settings -->
+
+        <div class="settings-section">
+
+          <h2>
+            Image Quality
+          </h2>
+
+
+          <div class="setting-row">
+
+            <div class="setting-group">
+
+              <label
+                for="qualitySelect"
+              >
+                Output Quality
+              </label>
+
+
+              <select
+                id="qualitySelect"
+              >
+
+                <option value="1">
+                  Standard
+                </option>
+
+                <option
+                  value="1.5"
+                  selected
+                >
+                  High
+                </option>
+
+                <option value="2">
+                  Maximum
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Buttons -->
+
+        <div class="buttons">
+
+          <button
+            class="primary-button"
+            id="convertButton"
+          >
+            Convert to Images
+          </button>
+
+
+          <button
+            class="secondary-button"
+            id="clearButton"
+          >
+            Choose Another PDF
+          </button>
+
+        </div>
+
+
+        <div
+          class="status"
+          id="status"
+        >
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- Results -->
+
+    <section
+      class="results"
+      id="results"
+    >
+
+      <h2>
+        Converted Images
+      </h2>
+
+
+      <div
+        class="image-grid"
+        id="imageGrid"
+      >
+      </div>
+
+
+      <div class="buttons">
+
+        <button
+          class="primary-button"
+          id="downloadAllButton"
+        >
+          Download All Images
+        </button>
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+
+
+  <!-- Footer -->
+
+  <footer>
+
+    &copy; 2026 ToolNest
+    &middot;
+    Simple, Fast &amp; Free
+
+  </footer>
+
+
+
+  <!-- PDF.js -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+
+  <!-- JSZip -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+
+
+  <script>
+
+
+    /* PDF.js Worker */
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+
+    /* Elements */
+
+    const pdfInput =
+      document.getElementById(
+        "pdfInput"
+      );
+
+
+    const editor =
+      document.getElementById(
+        "editor"
+      );
+
+
+    const pdfName =
+      document.getElementById(
+        "pdfName"
+      );
+
+
+    const pdfPages =
+      document.getElementById(
+        "pdfPages"
+      );
+
+
+    const convertButton =
+      document.getElementById(
+        "convertButton"
+      );
+
+
+    const clearButton =
+      document.getElementById(
+        "clearButton"
+      );
+
+
+    const qualitySelect =
+      document.getElementById(
+        "qualitySelect"
+      );
+
+
+    const results =
+      document.getElementById(
+        "results"
+      );
+
+
+    const imageGrid =
+      document.getElementById(
+        "imageGrid"
+      );
+
+
+    const downloadAllButton =
+      document.getElementById(
+        "downloadAllButton"
+      );
+
+
+    const status =
+      document.getElementById(
+        "status"
+      );
+
+
+    let pdfDocument =
+      null;
+
+
+    let convertedImages =
+      [];
+
+
+
+    /* Upload PDF */
+
+    pdfInput.addEventListener(
+      "change",
+      async function(event) {
+
+
+        const file =
+          event.target.files[0];
+
+
+        if (!file) {
+          return;
+        }
+
+
+        if (
+          file.type !==
+          "application/pdf"
+        ) {
+
+          alert(
+            "Please select a PDF file."
+          );
+
+          return;
+
+        }
+
+
+        status.textContent =
+          "Loading PDF...";
+
+
+        try {
+
+
+          const fileData =
+            await file.arrayBuffer();
+
+
+          const loadingTask =
+            pdfjsLib.getDocument(
+              fileData
+            );
+
+
+          pdfDocument =
+            await loadingTask.promise;
+
+
+          pdfName.textContent =
+            file.name;
+
+
+          pdfPages.textContent =
+            pdfDocument.numPages +
+            " pages";
+
+
+          editor.style.display =
+            "block";
+
+
+          results.style.display =
+            "none";
+
+
+          imageGrid.innerHTML =
+            "";
+
+
+          convertedImages =
+            [];
+
+
+          status.textContent =
+            "PDF ready to convert.";
+
+
+        }
+
+        catch (error) {
+
+
+          console.error(
+            error
+          );
+
+
+          alert(
+            "Unable to open this PDF."
+          );
+
+
+          status.textContent =
+            "";
+
+        }
+
+
+      }
+    );
+
+
+
+    /* Convert PDF */
+
+    convertButton.addEventListener(
+      "click",
+      async function() {
+
+
+        if (!pdfDocument) {
+          return;
+        }
+
+
+        const scale =
+          parseFloat(
+            qualitySelect.value
+          );
+
+
+        convertedImages =
+          [];
+
+
+        imageGrid.innerHTML =
+          "";
+
+
+        results.style.display =
+          "block";
+
+
+        convertButton.disabled =
+          true;
+
+
+        status.textContent =
+          "Converting pages...";
+
+
+        for (
+          let pageNumber = 1;
+          pageNumber <= pdfDocument.numPages;
+          pageNumber++
+        ) {
+
+
+          status.textContent =
+            "Converting page "
+            +
+            pageNumber
+            +
+            " of "
+            +
+            pdfDocument.numPages
+            +
+            "...";
+
+
+          const page =
+            await pdfDocument.getPage(
+              pageNumber
+            );
+
+
+          const viewport =
+            page.getViewport({
+              scale: scale
+            });
+
+
+          const canvas =
+            document.createElement(
+              "canvas"
+            );
+
+
+          const context =
+            canvas.getContext(
+              "2d"
+            );
+
+
+          canvas.width =
+            viewport.width;
+
+
+          canvas.height =
+            viewport.height;
+
+
+          await page.render({
+            canvasContext: context,
+            viewport: viewport
+          }).promise;
+
+
+          const imageData =
+            canvas.toDataURL(
+              "image/png"
+            );
+
+
+          convertedImages.push({
+            page: pageNumber,
+            data: imageData
+          });
+
+
+          const card =
+            document.createElement(
+              "div"
+            );
+
+
+          card.className =
+            "image-card";
+
+
+          const image =
+            document.createElement(
+              "img"
+            );
+
+
+          image.src =
+            imageData;
+
+
+          image.alt =
+            "PDF Page "
+            +
+            pageNumber;
+
+
+          const pageName =
+            document.createElement(
+              "div"
+            );
+
+
+          pageName.className =
+            "page-name";
+
+
+          pageName.textContent =
+            "Page "
+            +
+            pageNumber;
+
+
+          const downloadButton =
+            document.createElement(
+              "button"
+            );
+
+
+          downloadButton.className =
+            "download-page";
+
+
+          downloadButton.textContent =
+            "Download Image";
+
+
+          downloadButton.addEventListener(
+            "click",
+            function() {
+
+
+              const link =
+                document.createElement(
+                  "a"
+                );
+
+
+              link.href =
+                imageData;
+
+
+              link.download =
+                "page-"
+                +
+                pageNumber
+                +
+                ".png";
+
+
+              link.click();
+
+
+            }
+          );
+
+
+          card.appendChild(
+            image
+          );
+
+
+          card.appendChild(
+            pageName
+          );
+
+
+          card.appendChild(
+            downloadButton
+          );
+
+
+          imageGrid.appendChild(
+            card
+          );
+
+
+        }
+
+
+        status.textContent =
+          pdfDocument.numPages +
+          " pages converted successfully.";
+
+
+        convertButton.disabled =
+          false;
+
+
+        results.scrollIntoView({
+          behavior: "smooth"
+        });
+
+
+      }
+    );
+
+
+
+    /* Download All Images */
+
+    downloadAllButton.addEventListener(
+      "click",
+      async function() {
+
+
+        if (
+          convertedImages.length === 0
+        ) {
+          return;
+        }
+
+
+        downloadAllButton.disabled =
+          true;
+
+
+        downloadAllButton.textContent =
+          "Preparing ZIP...";
+
+
+        const zip =
+          new JSZip();
+
+
+        convertedImages.forEach(
+          function(image) {
+
+
+            const base64 =
+              image.data.split(
+                ","
+              )[1];
+
+
+            zip.file(
+              "page-"
+              +
+              image.page
+              +
+              ".png",
+
+              base64,
+
+              {
+                base64: true
+              }
+
+            );
+
+
+          }
+        );
+
+
+        const zipFile =
+          await zip.generateAsync({
+            type: "blob"
+          });
+
+
+        const link =
+          document.createElement(
+            "a"
+          );
+
+
+        link.href =
+          URL.createObjectURL(
+            zipFile
+          );
+
+
+        link.download =
+          "pdf-images.zip";
+
+
+        link.click();
+
+
+        URL.revokeObjectURL(
+          link.href
+        );
+
+
+        downloadAllButton.disabled =
+          false;
+
+
+        downloadAllButton.textContent =
+          "Download All Images";
+
+
+      }
+    );
+
+
+
+    /* Clear PDF */
+
+    clearButton.addEventListener(
+      "click",
+      function() {
+
+
+        pdfInput.value =
+          "";
+
+
+        pdfDocument =
+          null;
+
+
+        convertedImages =
+          [];
+
+
+        editor.style.display =
+          "none";
+
+
+        results.style.display =
+          "none";
+
+
+        imageGrid.innerHTML =
+          "";
+
+
+        status.textContent =
+          "";
+
+
+      }
+    );
+
+
+  </script>
+
+
+</body>
+
+</html>
