@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Text Cleaner - Free Online Text Tool</title>
+  <title>Text Cleaner - Free Online Text Tool | ToolNest</title>
 
-<meta
-name="description"
-content="Free online text cleaner. Remove extra spaces, empty lines, tabs, invisible characters and duplicate lines."
-
->
+  <meta
+    name="description"
+    content="Clean messy text online for free. Remove extra spaces, empty lines, tabs, invisible characters and duplicate lines."
+  >
 
   <style>
 
@@ -22,12 +23,14 @@ content="Free online text cleaner. Remove extra spaces, empty lines, tabs, invis
       box-sizing: border-box;
     }
 
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f7fb;
+      background: #f6f7fb;
       color: #222;
     }
+
 
     /* Navigation */
 
@@ -35,10 +38,12 @@ content="Free online text cleaner. Remove extra spaces, empty lines, tabs, invis
       background: #ffffff;
       border-bottom: 1px solid #e5e5e5;
       padding: 18px 30px;
+
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
+
 
     .logo {
       font-size: 24px;
@@ -47,45 +52,68 @@ content="Free online text cleaner. Remove extra spaces, empty lines, tabs, invis
       color: #222;
     }
 
+
     .logo span {
       color: #555;
     }
 
+
     .nav-links a {
       text-decoration: none;
       color: #555;
-      margin-left: 20px;
       font-size: 15px;
     }
+
 
     .nav-links a:hover {
       color: #000;
     }
 
+
     /* Main */
 
     .container {
       max-width: 1000px;
-      margin: 40px auto;
-      padding: 30px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+      margin: 0 auto;
+      padding: 60px 20px 80px;
     }
 
-    h1 {
+
+    /* Heading */
+
+    .heading {
       text-align: center;
-      margin: 0 0 8px;
+      margin-bottom: 35px;
     }
 
-    .subtitle {
-      text-align: center;
+
+    .heading h1 {
+      margin: 0 0 12px;
+      font-size: 38px;
+    }
+
+
+    .heading p {
+      margin: 0 auto;
+      max-width: 650px;
+
       color: #777;
-      margin-bottom: 30px;
-      line-height: 1.5;
+      font-size: 16px;
+      line-height: 1.6;
     }
 
-    /* Text Editors */
+
+    /* Tool Box */
+
+    .tool-box {
+      background: #ffffff;
+      border: 1px solid #e5e5e5;
+      border-radius: 14px;
+      padding: 30px;
+    }
+
+
+    /* Editors */
 
     .editor-grid {
       display: grid;
@@ -93,141 +121,221 @@ content="Free online text cleaner. Remove extra spaces, empty lines, tabs, invis
       gap: 20px;
     }
 
+
     .editor-box label {
       display: block;
       font-weight: bold;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      font-size: 15px;
     }
+
 
     textarea {
       width: 100%;
       height: 300px;
-      padding: 15px;
+      padding: 16px;
+
       font-family: Arial, sans-serif;
       font-size: 15px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      line-height: 1.6;
+
+      border: 1px solid #dcdcdc;
+      border-radius: 10px;
+
       resize: vertical;
     }
 
+
     textarea:focus {
       outline: none;
-      border-color: #888;
+      border-color: #777;
     }
+
+
+    #textOutput {
+      background: #fafafa;
+    }
+
 
     /* Options */
 
     .options {
-      margin-top: 25px;
-      padding: 20px;
-      background: #f4f7fb;
-      border-radius: 10px;
+      margin-top: 30px;
+      padding-top: 25px;
+      border-top: 1px solid #e5e5e5;
     }
 
+
     .options h2 {
-      margin: 0 0 18px;
-      font-size: 20px;
+      margin: 0 0 20px;
+      font-size: 21px;
     }
+
 
     .options-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+      gap: 12px;
     }
+
 
     .option {
       display: flex;
       align-items: center;
       gap: 10px;
+
+      padding: 14px;
+
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+
+      cursor: pointer;
+      font-size: 14px;
+
+      transition:
+        border-color 0.2s,
+        background 0.2s;
+    }
+
+
+    .option:hover {
+      border-color: #aaa;
+      background: #fafafa;
+    }
+
+
+    .option input {
       cursor: pointer;
     }
 
-    .option input {
-      width: auto;
-      cursor: pointer;
-    }
 
     /* Buttons */
 
     button {
       border: none;
       border-radius: 8px;
-      background: #222;
-      color: white;
+
+      padding: 13px 20px;
+
       font-size: 15px;
       cursor: pointer;
+
+      transition: opacity 0.2s;
     }
+
 
     button:hover {
       opacity: 0.85;
     }
 
-    .main-button {
-      width: 100%;
-      margin-top: 20px;
-      padding: 14px;
+
+    .primary-button {
+      background: #222;
+      color: #ffffff;
+    }
+
+
+    .secondary-button {
+      background: #e9e9e9;
+      color: #222;
+    }
+
+
+    /* Clean Button */
+
+    .clean-section {
+      text-align: center;
+      margin-top: 25px;
+    }
+
+
+    .clean-button {
+      padding: 14px 40px;
       font-size: 16px;
     }
 
-    .action-buttons {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .action-buttons button {
-      padding: 13px;
-    }
 
     /* Statistics */
 
     .stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
+
       gap: 15px;
-      margin-top: 25px;
+
+      margin-top: 30px;
+      padding-top: 30px;
+
+      border-top: 1px solid #e5e5e5;
     }
 
+
     .stat {
-      background: #f4f7fb;
-      padding: 18px;
+      background: #f6f7fb;
+      padding: 20px;
+
       border-radius: 10px;
       text-align: center;
     }
 
+
     .stat strong {
       display: block;
       font-size: 28px;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
+
 
     .stat span {
       color: #666;
+      font-size: 14px;
     }
+
+
+    /* Actions */
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+
+      margin-top: 25px;
+    }
+
 
     /* Information */
 
     .info {
-      margin-top: 30px;
-      padding: 20px;
-      background: #f4f7fb;
-      border-radius: 10px;
-      color: #555;
-      line-height: 1.6;
+      margin-top: 35px;
+      padding-top: 25px;
+
+      border-top: 1px solid #e5e5e5;
+
+      color: #666;
+      line-height: 1.7;
+      font-size: 15px;
     }
 
+
     .info strong {
-      color: #222;
+      color: #333;
     }
+
 
     /* Footer */
 
     footer {
       text-align: center;
-      padding: 30px;
+
+      padding: 35px 20px;
+
+      background: #ffffff;
+      border-top: 1px solid #e5e5e5;
+
       color: #777;
+      font-size: 14px;
     }
+
 
     /* Mobile */
 
@@ -237,30 +345,58 @@ content="Free online text cleaner. Remove extra spaces, empty lines, tabs, invis
         padding: 15px 20px;
       }
 
-      .nav-links {
-        display: none;
-      }
 
       .container {
-        margin: 20px 10px;
+        padding: 45px 15px 60px;
+      }
+
+
+      .heading h1 {
+        font-size: 30px;
+      }
+
+
+      .tool-box {
         padding: 20px;
       }
+
 
       .editor-grid {
         grid-template-columns: 1fr;
       }
 
+
       .options-grid {
         grid-template-columns: 1fr;
       }
 
+
+      textarea {
+        height: 240px;
+      }
+
     }
 
-    @media (max-width: 450px) {
 
-      .stats,
-      .action-buttons {
+    @media (max-width: 500px) {
+
+      .nav-links {
+        display: none;
+      }
+
+
+      .stats {
         grid-template-columns: 1fr;
+      }
+
+
+      .action-buttons {
+        flex-direction: column;
+      }
+
+
+      .action-buttons button {
+        width: 100%;
       }
 
     }
@@ -269,301 +405,352 @@ content="Free online text cleaner. Remove extra spaces, empty lines, tabs, invis
 
 </head>
 
+
 <body>
+
 
   <!-- Navigation -->
 
   <nav>
 
-<a
-  href="index.html"
-  class="logo"
->
-  Text <span>Tools</span>
-</a>
+    <a
+      href="index.html"
+      class="logo"
+    >
+      Tool<span>Nest</span>
+    </a>
 
-<div class="nav-links">
 
-  <a href="index.html#tools">
-    All Tools
-  </a>
+    <div class="nav-links">
 
-</div>
+      <a href="index.html">
+        ← All Tools
+      </a>
 
+    </div>
 
   </nav>
+
 
   <!-- Main -->
 
   <main class="container">
 
-<h1>Text Cleaner</h1>
 
-<p class="subtitle">
-  Clean messy text by removing unwanted spaces, empty lines,
-  tabs, invisible characters and duplicate lines.
-</p>
+    <!-- Heading -->
 
+    <div class="heading">
 
-<!-- Text Editors -->
+      <h1>
+        Text Cleaner
+      </h1>
 
-<div class="editor-grid">
+      <p>
+        Clean messy text by removing unwanted spaces,
+        empty lines, tabs, invisible characters and more.
+      </p>
 
-  <div class="editor-box">
+    </div>
 
-    <label for="textInput">
-      Your Text
-    </label>
 
-    <textarea
-      id="textInput"
-      placeholder="Paste your text here..."
-    ></textarea>
+    <!-- Tool Box -->
 
-  </div>
+    <div class="tool-box">
 
 
-  <div class="editor-box">
+      <!-- Editors -->
 
-    <label for="textOutput">
-      Cleaned Text
-    </label>
+      <div class="editor-grid">
 
-    <textarea
-      id="textOutput"
-      placeholder="Your cleaned text will appear here..."
-      readonly
-    ></textarea>
 
-  </div>
+        <!-- Input -->
 
-</div>
+        <div class="editor-box">
 
+          <label for="textInput">
+            Your Text
+          </label>
 
-<!-- Cleaning Options -->
+          <textarea
+            id="textInput"
+            placeholder="Paste your text here..."
+          ></textarea>
 
-<div class="options">
+        </div>
 
-  <h2>Cleaning Options</h2>
 
-  <div class="options-grid">
+        <!-- Output -->
 
-    <label class="option">
+        <div class="editor-box">
 
-      <input
-        type="checkbox"
-        id="extraSpaces"
-        checked
-      >
+          <label for="textOutput">
+            Cleaned Text
+          </label>
 
-      Remove extra spaces
+          <textarea
+            id="textOutput"
+            placeholder="Your cleaned text will appear here..."
+            readonly
+          ></textarea>
 
-    </label>
+        </div>
 
 
-    <label class="option">
+      </div>
 
-      <input
-        type="checkbox"
-        id="emptyLines"
-        checked
-      >
 
-      Remove empty lines
+      <!-- Options -->
 
-    </label>
+      <div class="options">
 
+        <h2>
+          Cleaning Options
+        </h2>
 
-    <label class="option">
 
-      <input
-        type="checkbox"
-        id="trimLines"
-        checked
-      >
+        <div class="options-grid">
 
-      Trim spaces from each line
 
-    </label>
+          <label class="option">
 
+            <input
+              type="checkbox"
+              id="extraSpaces"
+              checked
+            >
 
-    <label class="option">
+            Remove extra spaces
 
-      <input
-        type="checkbox"
-        id="tabs"
-        checked
-      >
+          </label>
 
-      Replace tabs with spaces
 
-    </label>
+          <label class="option">
 
+            <input
+              type="checkbox"
+              id="emptyLines"
+              checked
+            >
 
-    <label class="option">
+            Remove empty lines
 
-      <input
-        type="checkbox"
-        id="normalizeBreaks"
-        checked
-      >
+          </label>
 
-      Normalize line breaks
 
-    </label>
+          <label class="option">
 
+            <input
+              type="checkbox"
+              id="trimLines"
+              checked
+            >
 
-    <label class="option">
+            Trim spaces from each line
 
-      <input
-        type="checkbox"
-        id="invisibleCharacters"
-        checked
-      >
+          </label>
 
-      Remove invisible characters
 
-    </label>
+          <label class="option">
 
+            <input
+              type="checkbox"
+              id="tabs"
+              checked
+            >
 
-    <label class="option">
+            Replace tabs with spaces
 
-      <input
-        type="checkbox"
-        id="smartQuotes"
-      >
+          </label>
 
-      Convert smart quotes
 
-    </label>
+          <label class="option">
 
+            <input
+              type="checkbox"
+              id="normalizeBreaks"
+              checked
+            >
 
-    <label class="option">
+            Normalize line breaks
 
-      <input
-        type="checkbox"
-        id="repeatedPunctuation"
-      >
+          </label>
 
-      Reduce repeated punctuation
 
-    </label>
+          <label class="option">
 
+            <input
+              type="checkbox"
+              id="invisibleCharacters"
+              checked
+            >
 
-    <label class="option">
+            Remove invisible characters
 
-      <input
-        type="checkbox"
-        id="duplicates"
-      >
+          </label>
 
-      Remove duplicate lines
 
-    </label>
+          <label class="option">
 
-  </div>
+            <input
+              type="checkbox"
+              id="smartQuotes"
+            >
 
-</div>
+            Convert smart quotes
 
+          </label>
 
-<!-- Clean Button -->
 
-<button
-  class="main-button"
-  onclick="cleanText()"
->
-  Clean Text
-</button>
+          <label class="option">
 
+            <input
+              type="checkbox"
+              id="repeatedPunctuation"
+            >
 
-<!-- Statistics -->
+            Reduce repeated punctuation
 
-<div class="stats">
+          </label>
 
-  <div class="stat">
 
-    <strong id="lineCount">
-      0
-    </strong>
+          <label class="option">
 
-    <span>
-      Lines
-    </span>
+            <input
+              type="checkbox"
+              id="duplicates"
+            >
 
-  </div>
+            Remove duplicate lines
 
+          </label>
 
-  <div class="stat">
 
-    <strong id="wordCount">
-      0
-    </strong>
+        </div>
 
-    <span>
-      Words
-    </span>
+      </div>
 
-  </div>
 
+      <!-- Clean Button -->
 
-  <div class="stat">
+      <div class="clean-section">
 
-    <strong id="characterCount">
-      0
-    </strong>
+        <button
+          class="primary-button clean-button"
+          onclick="cleanText()"
+        >
+          Clean Text
+        </button>
 
-    <span>
-      Characters
-    </span>
+      </div>
 
-  </div>
 
-</div>
+      <!-- Statistics -->
 
+      <div class="stats">
 
-<!-- Action Buttons -->
 
-<div class="action-buttons">
+        <div class="stat">
 
-  <button onclick="copyText()">
-    Copy Result
-  </button>
+          <strong id="lineCount">
+            0
+          </strong>
 
-  <button onclick="clearText()">
-    Clear
-  </button>
+          <span>
+            Lines
+          </span>
 
-</div>
+        </div>
 
 
-<!-- Information -->
+        <div class="stat">
 
-<div class="info">
+          <strong id="wordCount">
+            0
+          </strong>
 
-  <strong>
-    How to use Text Cleaner:
-  </strong>
+          <span>
+            Words
+          </span>
 
-  <p>
-    Paste your text into the input box, select the cleaning options
-    you want, and click Clean Text. Your cleaned text will appear
-    in the result box.
-  </p>
+        </div>
 
-</div>
+
+        <div class="stat">
+
+          <strong id="characterCount">
+            0
+          </strong>
+
+          <span>
+            Characters
+          </span>
+
+        </div>
+
+
+      </div>
+
+
+      <!-- Actions -->
+
+      <div class="action-buttons">
+
+        <button
+          class="secondary-button"
+          onclick="copyText()"
+        >
+          Copy Result
+        </button>
+
+
+        <button
+          class="secondary-button"
+          onclick="clearText()"
+        >
+          Clear
+        </button>
+
+      </div>
+
+
+      <!-- Information -->
+
+      <div class="info">
+
+        <strong>
+          How to use Text Cleaner:
+        </strong>
+
+        <p>
+          Paste your text into the input box,
+          choose the cleaning options you want,
+          and click Clean Text.
+          Your cleaned text will appear instantly
+          in the result box.
+        </p>
+
+      </div>
+
+
+    </div>
+
 
   </main>
+
 
   <!-- Footer -->
 
   <footer>
 
-```
-© 2026 Text Tools · Simple, Fast & Free
+    © 2026 ToolNest
+    ·
+    Simple, Fast &amp; Free
 
   </footer>
 
+
   <script>
+
 
     const input =
       document.getElementById(
@@ -580,6 +767,7 @@ content="Free online text cleaner. Remove extra spaces, empty lines, tabs, invis
     /* Clean Text */
 
     function cleanText() {
+
 
       let value =
         input.value;
@@ -790,6 +978,7 @@ content="Free online text cleaner. Remove extra spaces, empty lines, tabs, invis
         lines.forEach(
           function(line) {
 
+
             const key =
               line
                 .trim()
@@ -828,12 +1017,14 @@ content="Free online text cleaner. Remove extra spaces, empty lines, tabs, invis
 
       updateStatistics();
 
+
     }
 
 
     /* Update Statistics */
 
     function updateStatistics() {
+
 
       const value =
         output.value;
@@ -882,12 +1073,14 @@ content="Free online text cleaner. Remove extra spaces, empty lines, tabs, invis
       ).textContent =
         value.length;
 
+
     }
 
 
     /* Copy Result */
 
     function copyText() {
+
 
       if (
         output.value.trim() === ""
@@ -916,12 +1109,14 @@ content="Free online text cleaner. Remove extra spaces, empty lines, tabs, invis
           }
         );
 
+
     }
 
 
     /* Clear */
 
     function clearText() {
+
 
       input.value =
         "";
@@ -933,9 +1128,13 @@ content="Free online text cleaner. Remove extra spaces, empty lines, tabs, invis
 
       updateStatistics();
 
+
     }
+
 
   </script>
 
+
 </body>
+
 </html>
