@@ -1,253 +1,659 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Case Converter - Free Online Text Tool</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-<meta
-name="description"
-content="Free online case converter. Convert text to uppercase, lowercase, title case, sentence case, camel case, snake case and more."
+  <title>Case Converter - Free Online Text Tool | ToolNest</title>
 
->
+  <meta
+    name="description"
+    content="Free online case converter. Convert text to uppercase, lowercase, title case, sentence case, camel case, snake case and more."
+  >
+
 
   <style>
+
+    /* =========================
+       GLOBAL
+    ========================= */
 
     * {
       box-sizing: border-box;
     }
 
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f7f7f7;
-      color: #222;
+      min-height: 100vh;
+
+      display: flex;
+      flex-direction: column;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: #d9dee4;
+      color: #1f2937;
     }
 
-    /* Navigation */
+
+    /* =========================
+       HEADER
+    ========================= */
 
     nav {
-      background: #ffffff;
-      border-bottom: 1px solid #e5e5e5;
-      padding: 18px 30px;
+      background: #1f2937;
+
+      border-bottom:
+        1px solid #374151;
+
+      padding: 16px 32px;
+
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
+
+    /* =========================
+       LOGO
+    ========================= */
+
     .logo {
-      font-size: 24px;
+      display: flex;
+      align-items: center;
+
+      gap: 11px;
+
+      text-decoration: none;
+    }
+
+
+    .logo-icon {
+      width: 43px;
+      height: 43px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #5b9a78,
+          #3f7659
+        );
+
+      color: #ffffff;
+
+      font-size: 22px;
       font-weight: bold;
+
+      box-shadow:
+        0 5px 14px
+        rgba(63, 118, 89, 0.25);
+    }
+
+
+    .logo-text {
+      font-size: 29px;
+      font-weight: 800;
+
+      letter-spacing: -0.8px;
+      line-height: 1;
+    }
+
+
+    .logo-tool {
+      color: #ffffff;
+    }
+
+
+    .logo-nest {
+      color: #a9cdb7;
+    }
+
+
+    /* =========================
+       BACK LINK
+    ========================= */
+
+    .back-link {
+      color: #d1d5db;
+
       text-decoration: none;
-      color: #222;
+
+      font-size: 14px;
+      font-weight: 500;
+
+      padding: 9px 14px;
+
+      border-radius: 9px;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease;
     }
 
-    .logo span {
-      color: #777;
+
+    .back-link:hover {
+      background: #273244;
+      color: #ffffff;
     }
 
-    .nav-links a {
-      text-decoration: none;
-      color: #666;
-      font-size: 15px;
-    }
 
-    .nav-links a:hover {
-      color: #000;
-    }
-
-    /* Main */
+    /* =========================
+       MAIN
+    ========================= */
 
     .container {
-      max-width: 850px;
-      margin: 50px auto;
-      padding: 0 20px;
+      width: 100%;
+      max-width: 900px;
+
+      margin: 0 auto;
+
+      padding: 55px 20px 80px;
+
+      flex: 1;
     }
 
-    h1 {
-      margin: 0 0 10px;
+
+    /* =========================
+       HEADING
+    ========================= */
+
+    .heading {
       text-align: center;
-      font-size: 34px;
+
+      margin-bottom: 35px;
     }
+
+
+    .heading h1 {
+      margin: 0 0 12px;
+
+      font-size: 42px;
+      font-weight: 750;
+
+      letter-spacing: -1px;
+
+      color: #202938;
+    }
+
 
     .subtitle {
-      margin: 0 auto 35px;
-      max-width: 600px;
-      text-align: center;
-      color: #777;
+      max-width: 620px;
+
+      margin: 0 auto;
+
+      color: #667085;
+
+      font-size: 16px;
       line-height: 1.6;
     }
 
-    /* Text Area */
+
+    /* =========================
+       TOOL BOX
+    ========================= */
+
+    .tool-box {
+      background: #e9edf1;
+
+      border:
+        1px solid #bec7d0;
+
+      border-radius: 16px;
+
+      padding: 30px;
+
+      box-shadow:
+        0 8px 24px
+        rgba(31, 41, 55, 0.07);
+    }
+
+
+    /* =========================
+       TEXT AREA
+    ========================= */
 
     textarea {
       width: 100%;
-      height: 240px;
-      padding: 16px;
-      font-family: Arial, sans-serif;
+      height: 250px;
+
+      padding: 18px;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
       font-size: 16px;
-      line-height: 1.5;
-      color: #222;
-      background: #ffffff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
+      line-height: 1.6;
+
+      color: #2d3a32;
+
+      background: #eef1f4;
+
+      border:
+        1px solid #b9c3cc;
+
+      border-radius: 12px;
+
       resize: vertical;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
     }
+
+
+    textarea::placeholder {
+      color: #8a949f;
+    }
+
 
     textarea:focus {
       outline: none;
-      border-color: #999;
+
+      background: #f4f6f7;
+
+      border-color: #78a58a;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(63, 118, 89, 0.12);
     }
 
-    /* Categories */
+
+    /* =========================
+       CATEGORIES
+    ========================= */
 
     .category {
       margin-top: 30px;
     }
 
+
     .category-title {
       margin: 0 0 12px;
+
       font-size: 16px;
-      font-weight: bold;
-      color: #444;
+      font-weight: 700;
+
+      color: #2d3a32;
     }
+
 
     .button-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
       gap: 10px;
     }
 
-    button {
-      padding: 12px 14px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      background: #ffffff;
-      color: #333;
+
+    /* =========================
+       CONVERSION BUTTONS
+    ========================= */
+
+    .button-grid button {
+      padding: 14px;
+
+      border:
+        1px solid #c2d0c7;
+
+      border-radius: 10px;
+
+      background: #dce6df;
+
+      color: #2d3a32;
+
       font-size: 14px;
+      font-weight: 600;
+
       cursor: pointer;
-      transition: 0.15s;
+
+      transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
     }
 
-    button:hover {
-      background: #f2f2f2;
-      border-color: #bbb;
+
+    .button-grid button:hover {
+      background: #d2ddd6;
+
+      border-color: #9bb8a5;
+
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 4px 10px
+        rgba(31, 41, 55, 0.06);
     }
 
-    /* Statistics */
+
+    /* =========================
+       STATISTICS
+    ========================= */
 
     .statistics {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap: 15px;
+
       margin-top: 30px;
     }
 
+
     .stat {
-      padding: 18px;
+      padding: 20px;
+
       text-align: center;
-      background: #ffffff;
-      border: 1px solid #e5e5e5;
-      border-radius: 8px;
+
+      background: #dce6df;
+
+      border:
+        1px solid #c2d0c7;
+
+      border-radius: 12px;
     }
+
 
     .stat strong {
       display: block;
-      font-size: 26px;
-      margin-bottom: 5px;
+
+      font-size: 28px;
+      font-weight: 750;
+
+      margin-bottom: 7px;
+
+      color: #3f7659;
     }
 
+
     .stat span {
-      color: #777;
+      color: #59665e;
+
       font-size: 14px;
     }
 
-    /* Actions */
+
+    /* =========================
+       ACTION BUTTONS
+    ========================= */
 
     .action-buttons {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 20px;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap: 12px;
+
+      margin-top: 25px;
     }
 
-    .action-buttons button {
-      background: #222;
-      border-color: #222;
+
+    button {
+      font-family: inherit;
+    }
+
+
+    .copy-button,
+    .clear-button {
+      padding: 14px;
+
+      border-radius: 10px;
+
+      font-size: 15px;
+      font-weight: 600;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+
+    .copy-button {
+      border: none;
+
+      background: #3f7659;
+
       color: #ffffff;
+
+      box-shadow:
+        0 5px 12px
+        rgba(63, 118, 89, 0.20);
     }
 
-    .action-buttons button:hover {
-      background: #444;
+
+    .copy-button:hover {
+      background: #35654c;
+
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 8px 18px
+        rgba(63, 118, 89, 0.28);
     }
 
-    /* Information */
+
+    .clear-button {
+      background: #dce6df;
+
+      color: #2d3a32;
+
+      border:
+        1px solid #c2d0c7;
+    }
+
+
+    .clear-button:hover {
+      background: #d2ddd6;
+
+      border-color: #9bb8a5;
+
+      transform:
+        translateY(-2px);
+    }
+
+
+    /* =========================
+       INFORMATION
+    ========================= */
 
     .info {
-      margin-top: 35px;
-      padding-top: 25px;
-      border-top: 1px solid #e5e5e5;
-      color: #666;
-      line-height: 1.7;
-      font-size: 15px;
+      margin-top: 30px;
+
+      padding: 22px;
+
+      background: #dce6df;
+
+      border:
+        1px solid #c2d0c7;
+
+      border-radius: 12px;
+
+      color: #59665e;
+
+      line-height: 1.6;
     }
+
 
     .info strong {
-      color: #333;
+      display: block;
+
+      color: #2d3a32;
+
+      font-size: 16px;
     }
 
-    /* Footer */
+
+    .info p {
+      margin:
+        10px 0 0;
+    }
+
+
+    /* =========================
+       FOOTER
+    ========================= */
 
     footer {
-      margin-top: 60px;
-      padding: 30px 20px;
+      background: #1f2937;
+
+      border-top:
+        1px solid #374151;
+
       text-align: center;
-      border-top: 1px solid #e5e5e5;
-      color: #777;
+
+      padding: 32px 20px;
+
+      color: #aeb7c5;
+
       font-size: 14px;
-      background: #ffffff;
     }
 
-    /* Tablet */
 
-    @media (max-width: 700px) {
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 600px) {
 
       nav {
-        padding: 15px 20px;
+        padding: 14px 16px;
+
+        gap: 12px;
       }
+
+
+      .logo {
+        gap: 8px;
+      }
+
+
+      .logo-icon {
+        width: 37px;
+        height: 37px;
+
+        border-radius: 10px;
+
+        font-size: 19px;
+      }
+
+
+      .logo-text {
+        font-size: 24px;
+      }
+
+
+      .back-link {
+        padding: 8px 10px;
+
+        font-size: 13px;
+      }
+
 
       .container {
-        margin: 35px auto;
+        padding:
+          42px
+          16px
+          60px;
       }
 
-      .button-grid {
-        grid-template-columns: repeat(2, 1fr);
+
+      .heading {
+        margin-bottom: 30px;
       }
 
-    }
 
-    /* Mobile */
+      .heading h1 {
+        font-size: 32px;
 
-    @media (max-width: 450px) {
-
-      .nav-links {
-        display: none;
+        letter-spacing: -0.5px;
       }
 
-      h1 {
-        font-size: 28px;
+
+      .subtitle {
+        font-size: 15px;
       }
 
-      .button-grid,
-      .statistics,
-      .action-buttons {
-        grid-template-columns: 1fr;
+
+      .tool-box {
+        padding: 18px;
+
+        border-radius: 14px;
       }
+
 
       textarea {
         height: 220px;
+
+        padding: 15px;
+      }
+
+
+      .button-grid {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .statistics {
+        gap: 10px;
+      }
+
+
+      .stat {
+        padding: 16px;
+      }
+
+
+      .stat strong {
+        font-size: 24px;
+      }
+
+
+      .action-buttons {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .action-buttons button {
+        width: 100%;
+      }
+
+
+      .info {
+        padding: 18px;
       }
 
     }
@@ -256,213 +662,300 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
 
 </head>
 
+
 <body>
 
-  <!-- Navigation -->
+
+  <!-- HEADER -->
 
   <nav>
-    
 
-<a href="index.html" class="logo">
-  Text <span>Tools</span>
-</a>
+    <a
+      href="index.html"
+      class="logo"
+    >
 
-<div class="nav-links">
-  <a href="index.html#tools">
-    All Tools
-  </a>
-</div>
+      <div class="logo-icon">
+        T
+      </div>
 
+
+      <div class="logo-text">
+
+        <span class="logo-tool">
+          Tool
+        </span>
+
+        <span class="logo-nest">
+          Nest
+        </span>
+
+      </div>
+
+    </a>
+
+
+    <a
+      href="index.html"
+      class="back-link"
+    >
+      ← All Tools
+    </a>
 
   </nav>
 
-  <!-- Main -->
+
+
+  <!-- MAIN -->
 
   <main class="container">
 
 
-<h1>
-  Case Converter
-</h1>
+    <!-- HEADING -->
 
-<p class="subtitle">
-  Convert your text into different letter cases quickly and easily.
-</p>
+    <div class="heading">
 
-
-<!-- Text Input -->
-
-<textarea
-  id="text"
-  placeholder="Type or paste your text here..."
-></textarea>
+      <h1>
+        Case Converter
+      </h1>
 
 
-<!-- Basic Cases -->
+      <p class="subtitle">
+        Convert your text into different letter cases quickly and easily.
+      </p>
 
-<section class="category">
-
-  <h2 class="category-title">
-    Basic Cases
-  </h2>
-
-  <div class="button-grid">
-
-    <button onclick="toUpperCase()">
-      UPPERCASE
-    </button>
-
-    <button onclick="toLowerCase()">
-      lowercase
-    </button>
-
-    <button onclick="toTitleCase()">
-      Title Case
-    </button>
-
-    <button onclick="toSentenceCase()">
-      Sentence case
-    </button>
-
-  </div>
-
-</section>
+    </div>
 
 
-<!-- Programming Cases -->
 
-<section class="category">
+    <!-- TOOL BOX -->
 
-  <h2 class="category-title">
-    Programming Cases
-  </h2>
-
-  <div class="button-grid">
-
-    <button onclick="toCamelCase()">
-      camelCase
-    </button>
-
-    <button onclick="toPascalCase()">
-      PascalCase
-    </button>
-
-    <button onclick="toSnakeCase()">
-      snake_case
-    </button>
-
-    <button onclick="toKebabCase()">
-      kebab-case
-    </button>
-
-    <button onclick="toConstantCase()">
-      CONSTANT_CASE
-    </button>
-
-    <button onclick="toDotCase()">
-      dot.case
-    </button>
-
-  </div>
-
-</section>
+    <div class="tool-box">
 
 
-<!-- Special Cases -->
+      <!-- TEXT INPUT -->
 
-<section class="category">
-
-  <h2 class="category-title">
-    Special Cases
-  </h2>
-
-  <div class="button-grid">
-
-    <button onclick="toAlternatingCase()">
-      aLtErNaTiNg
-    </button>
-
-    <button onclick="toInverseCase()">
-      iNVERSE cASE
-    </button>
-
-  </div>
-
-</section>
+      <textarea
+        id="text"
+        placeholder="Type or paste your text here..."
+      ></textarea>
 
 
-<!-- Statistics -->
 
-<div class="statistics">
+      <!-- BASIC CASES -->
 
-  <div class="stat">
+      <section class="category">
 
-    <strong id="wordCount">
-      0
-    </strong>
-
-    <span>
-      Words
-    </span>
-
-  </div>
-
-  <div class="stat">
-
-    <strong id="characterCount">
-      0
-    </strong>
-
-    <span>
-      Characters
-    </span>
-
-  </div>
-
-</div>
+        <h2 class="category-title">
+          Basic Cases
+        </h2>
 
 
-<!-- Actions -->
+        <div class="button-grid">
 
-<div class="action-buttons">
-
-  <button onclick="copyText()">
-    Copy Text
-  </button>
-
-  <button onclick="clearText()">
-    Clear Text
-  </button>
-
-</div>
+          <button onclick="toUpperCase()">
+            UPPERCASE
+          </button>
 
 
-<!-- Information -->
+          <button onclick="toLowerCase()">
+            lowercase
+          </button>
 
-<div class="info">
 
-  <strong>
-    How to use Case Converter:
-  </strong>
+          <button onclick="toTitleCase()">
+            Title Case
+          </button>
 
-  <p>
-    Type or paste your text into the box above, then choose a
-    conversion option. Your text will be converted instantly.
-  </p>
 
-</div>
+          <button onclick="toSentenceCase()">
+            Sentence case
+          </button>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- PROGRAMMING CASES -->
+
+      <section class="category">
+
+        <h2 class="category-title">
+          Programming Cases
+        </h2>
+
+
+        <div class="button-grid">
+
+          <button onclick="toCamelCase()">
+            camelCase
+          </button>
+
+
+          <button onclick="toPascalCase()">
+            PascalCase
+          </button>
+
+
+          <button onclick="toSnakeCase()">
+            snake_case
+          </button>
+
+
+          <button onclick="toKebabCase()">
+            kebab-case
+          </button>
+
+
+          <button onclick="toConstantCase()">
+            CONSTANT_CASE
+          </button>
+
+
+          <button onclick="toDotCase()">
+            dot.case
+          </button>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- SPECIAL CASES -->
+
+      <section class="category">
+
+        <h2 class="category-title">
+          Special Cases
+        </h2>
+
+
+        <div class="button-grid">
+
+          <button onclick="toAlternatingCase()">
+            aLtErNaTiNg
+          </button>
+
+
+          <button onclick="toInverseCase()">
+            iNVERSE cASE
+          </button>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- STATISTICS -->
+
+      <div class="statistics">
+
+
+        <div class="stat">
+
+          <strong id="wordCount">
+            0
+          </strong>
+
+          <span>
+            Words
+          </span>
+
+        </div>
+
+
+
+        <div class="stat">
+
+          <strong id="characterCount">
+            0
+          </strong>
+
+          <span>
+            Characters
+          </span>
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ACTIONS -->
+
+      <div class="action-buttons">
+
+        <button
+          class="copy-button"
+          onclick="copyText()"
+        >
+          Copy Text
+        </button>
+
+
+        <button
+          class="clear-button"
+          onclick="clearText()"
+        >
+          Clear Text
+        </button>
+
+      </div>
+
+
+
+      <!-- INFORMATION -->
+
+      <div class="info">
+
+        <strong>
+          How to use Case Converter
+        </strong>
+
+
+        <p>
+
+          Type or paste your text into the box above,
+          then choose a conversion option.
+          Your text will be converted instantly.
+
+        </p>
+
+      </div>
+
+
+    </div>
+
 
   </main>
 
-  <!-- Footer -->
+
+
+  <!-- FOOTER -->
 
   <footer>
-    © 2026 Text Tools · Simple, Fast & Free
+
+    &copy; 2026 ToolNest
+
+    &middot;
+
+    Simple, Fast &amp; Free
+
   </footer>
+
+
 
   <script>
 
-    const text = document.getElementById("text");
+    const text =
+      document.getElementById(
+        "text"
+      );
 
 
     text.addEventListener(
@@ -471,223 +964,332 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
     );
 
 
-    /* Update Statistics */
+
+    /* =========================
+       UPDATE STATISTICS
+    ========================= */
 
     function updateStatistics() {
 
-      const value = text.value;
+      const value =
+        text.value;
+
 
       const words =
         value.trim() === ""
           ? 0
-          : value.trim().split(/\s+/).length;
+          : value
+              .trim()
+              .split(/\s+/)
+              .length;
+
 
       document.getElementById(
         "wordCount"
-      ).textContent = words;
+      ).textContent =
+        words;
 
 
       document.getElementById(
         "characterCount"
-      ).textContent = value.length;
+      ).textContent =
+        value.length;
 
     }
 
 
-    /* Get Words */
+
+    /* =========================
+       GET WORDS
+    ========================= */
 
     function getWords() {
 
       return text.value
         .trim()
         .split(/[^a-zA-Z0-9]+/)
-        .filter(function(word) {
-          return word !== "";
-        });
+        .filter(
+          function(word) {
+
+            return word !== "";
+
+          }
+        );
 
     }
 
 
-    /* Uppercase */
+
+    /* =========================
+       UPPERCASE
+    ========================= */
 
     function toUpperCase() {
 
-      text.value = text.value.toUpperCase();
+      text.value =
+        text.value.toUpperCase();
+
 
       updateStatistics();
 
     }
 
 
-    /* Lowercase */
+
+    /* =========================
+       LOWERCASE
+    ========================= */
 
     function toLowerCase() {
 
-      text.value = text.value.toLowerCase();
+      text.value =
+        text.value.toLowerCase();
+
 
       updateStatistics();
 
     }
 
 
-    /* Title Case */
+
+    /* =========================
+       TITLE CASE
+    ========================= */
 
     function toTitleCase() {
 
       text.value =
         text.value
           .toLowerCase()
-          .replace(/\b\w/g, function(letter) {
-            return letter.toUpperCase();
-          });
+          .replace(
+            /\b\w/g,
+            function(letter) {
+
+              return letter.toUpperCase();
+
+            }
+          );
+
 
       updateStatistics();
 
     }
 
 
-    /* Sentence Case */
+
+    /* =========================
+       SENTENCE CASE
+    ========================= */
 
     function toSentenceCase() {
 
       const value =
         text.value.toLowerCase();
 
+
       text.value =
         value.replace(
           /(^\s*\w|[.!?]\s+\w)/g,
           function(letter) {
+
             return letter.toUpperCase();
+
           }
         );
 
+
       updateStatistics();
 
     }
 
 
-    /* camelCase */
+
+    /* =========================
+       CAMEL CASE
+    ========================= */
 
     function toCamelCase() {
 
-      const words = getWords();
+      const words =
+        getWords();
 
-      if (words.length === 0) {
+
+      if (
+        words.length === 0
+      ) {
+
         return;
+
       }
 
+
       text.value =
-        words[0].toLowerCase() +
+        words[0].toLowerCase()
+        +
         words
           .slice(1)
-          .map(function(word) {
+          .map(
+            function(word) {
 
-            return (
-              word.charAt(0).toUpperCase() +
-              word.slice(1).toLowerCase()
-            );
+              return (
+                word.charAt(0).toUpperCase()
+                +
+                word
+                  .slice(1)
+                  .toLowerCase()
+              );
 
-          })
+            }
+          )
           .join("");
+
 
       updateStatistics();
 
     }
 
 
-    /* PascalCase */
+
+    /* =========================
+       PASCAL CASE
+    ========================= */
 
     function toPascalCase() {
 
-      const words = getWords();
+      const words =
+        getWords();
+
 
       text.value =
         words
-          .map(function(word) {
+          .map(
+            function(word) {
 
-            return (
-              word.charAt(0).toUpperCase() +
-              word.slice(1).toLowerCase()
-            );
+              return (
+                word.charAt(0).toUpperCase()
+                +
+                word
+                  .slice(1)
+                  .toLowerCase()
+              );
 
-          })
+            }
+          )
           .join("");
+
 
       updateStatistics();
 
     }
 
 
-    /* snake_case */
+
+    /* =========================
+       SNAKE CASE
+    ========================= */
 
     function toSnakeCase() {
 
       text.value =
         getWords()
-          .map(function(word) {
-            return word.toLowerCase();
-          })
+          .map(
+            function(word) {
+
+              return word.toLowerCase();
+
+            }
+          )
           .join("_");
+
 
       updateStatistics();
 
     }
 
 
-    /* kebab-case */
+
+    /* =========================
+       KEBAB CASE
+    ========================= */
 
     function toKebabCase() {
 
       text.value =
         getWords()
-          .map(function(word) {
-            return word.toLowerCase();
-          })
+          .map(
+            function(word) {
+
+              return word.toLowerCase();
+
+            }
+          )
           .join("-");
+
 
       updateStatistics();
 
     }
 
 
-    /* CONSTANT_CASE */
+
+    /* =========================
+       CONSTANT CASE
+    ========================= */
 
     function toConstantCase() {
 
       text.value =
         getWords()
-          .map(function(word) {
-            return word.toUpperCase();
-          })
+          .map(
+            function(word) {
+
+              return word.toUpperCase();
+
+            }
+          )
           .join("_");
+
 
       updateStatistics();
 
     }
 
 
-    /* dot.case */
+
+    /* =========================
+       DOT CASE
+    ========================= */
 
     function toDotCase() {
 
       text.value =
         getWords()
-          .map(function(word) {
-            return word.toLowerCase();
-          })
+          .map(
+            function(word) {
+
+              return word.toLowerCase();
+
+            }
+          )
           .join(".");
+
 
       updateStatistics();
 
     }
 
 
-    /* Alternating Case */
+
+    /* =========================
+       ALTERNATING CASE
+    ========================= */
 
     function toAlternatingCase() {
 
       let result = "";
+
       let upper = true;
+
 
       for (
         let i = 0;
@@ -698,8 +1300,11 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
         const character =
           text.value[i];
 
+
         if (
-          /[a-zA-Z]/.test(character)
+          /[a-zA-Z]/.test(
+            character
+          )
         ) {
 
           result +=
@@ -707,28 +1312,39 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
               ? character.toUpperCase()
               : character.toLowerCase();
 
+
           upper = !upper;
 
-        } else {
+        }
 
-          result += character;
+        else {
+
+          result +=
+            character;
 
         }
 
       }
 
-      text.value = result;
+
+      text.value =
+        result;
+
 
       updateStatistics();
 
     }
 
 
-    /* Inverse Case */
+
+    /* =========================
+       INVERSE CASE
+    ========================= */
 
     function toInverseCase() {
 
       let result = "";
+
 
       for (
         let i = 0;
@@ -739,38 +1355,52 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
         const character =
           text.value[i];
 
+
         if (
-          character >= "a" &&
+          character >= "a"
+          &&
           character <= "z"
         ) {
 
           result +=
             character.toUpperCase();
 
-        } else if (
-          character >= "A" &&
+        }
+
+        else if (
+          character >= "A"
+          &&
           character <= "Z"
         ) {
 
           result +=
             character.toLowerCase();
 
-        } else {
+        }
 
-          result += character;
+        else {
+
+          result +=
+            character;
 
         }
 
       }
 
-      text.value = result;
+
+      text.value =
+        result;
+
 
       updateStatistics();
 
     }
 
 
-    /* Copy Text */
+
+    /* =========================
+       COPY TEXT
+    ========================= */
 
     function copyText() {
 
@@ -786,31 +1416,44 @@ content="Free online case converter. Convert text to uppercase, lowercase, title
 
       }
 
+
       navigator.clipboard
-        .writeText(text.value)
-        .then(function() {
+        .writeText(
+          text.value
+        )
+        .then(
+          function() {
 
-          alert(
-            "Text copied!"
-          );
+            alert(
+              "Text copied!"
+            );
 
-        });
+          }
+        );
 
     }
 
 
-    /* Clear Text */
+
+    /* =========================
+       CLEAR TEXT
+    ========================= */
 
     function clearText() {
 
       text.value = "";
 
+
       updateStatistics();
+
+
+      text.focus();
 
     }
 
   </script>
 
-</body>
-</html>
 
+</body>
+
+</html>
