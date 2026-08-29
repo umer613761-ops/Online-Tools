@@ -1,14 +1,26 @@
 <!DOCTYPE html>
-
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Image Resizer - Free Online Tool | ToolNest</title>
-  <meta name="description" content="Resize images online for free. Change image width and height while keeping the original aspect ratio.">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Image Resizer - Free Online Tool | ToolNest
+  </title>
+
+  <meta
+    name="description"
+    content="Resize and optimize images online for free. Adjust image size and quality with real-time preview."
+  >
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -25,7 +37,9 @@
     nav {
       background: #ffffff;
       border-bottom: 1px solid #e5e5e5;
+
       padding: 18px 30px;
+
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -52,17 +66,21 @@
       color: #000;
     }
 
+
     /* Main */
 
     .container {
-      max-width: 850px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 60px 20px 80px;
+      padding: 50px 20px 80px;
     }
+
+
+    /* Heading */
 
     .heading {
       text-align: center;
-      margin-bottom: 35px;
+      margin-bottom: 30px;
     }
 
     .heading h1 {
@@ -77,23 +95,31 @@
       line-height: 1.6;
     }
 
+
     /* Tool Box */
 
     .tool-box {
       background: #ffffff;
+
       border: 1px solid #e5e5e5;
       border-radius: 14px;
+
       padding: 30px;
     }
+
 
     /* Upload Area */
 
     .upload-area {
+
       border: 2px dashed #ccc;
       border-radius: 12px;
-      padding: 45px 20px;
+
+      padding: 50px 20px;
+
       text-align: center;
       cursor: pointer;
+
       transition: 0.2s;
     }
 
@@ -109,18 +135,19 @@
 
     .upload-area h2 {
       margin: 0 0 10px;
-      font-size: 20px;
+      font-size: 22px;
     }
 
     .upload-area p {
       margin: 0;
       color: #777;
-      font-size: 14px;
+      font-size: 15px;
     }
 
     input[type="file"] {
       display: none;
     }
+
 
     /* Editor */
 
@@ -129,111 +156,173 @@
       margin-top: 30px;
     }
 
+
+    /* Preview */
+
     .preview-container {
       text-align: center;
       margin-bottom: 30px;
     }
 
     #preview {
+      display: block;
+
       max-width: 100%;
-      max-height: 400px;
+      max-height: 450px;
+
+      margin: auto;
+
       border-radius: 10px;
       border: 1px solid #e5e5e5;
     }
 
-    /* Dimensions */
 
-    .dimensions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-bottom: 20px;
+    /* Controls */
+
+    .controls {
+
+      max-width: 650px;
+      margin: auto;
+
     }
 
-    .input-group label {
-      display: block;
-      margin-bottom: 8px;
+    .control-group {
+
+      margin-bottom: 28px;
+
+    }
+
+    .control-header {
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin-bottom: 12px;
+
+    }
+
+    .control-header label {
+
+      font-size: 16px;
+      font-weight: bold;
+
+    }
+
+    .value-display {
+
+      background: #f6f7fb;
+
+      padding: 6px 12px;
+
+      border-radius: 6px;
+
       font-size: 14px;
       font-weight: bold;
+
     }
 
-    .input-group input {
+
+    /* Slider */
+
+    input[type="range"] {
+
       width: 100%;
-      padding: 13px;
-      border: 1px solid #ccc;
+
+      cursor: pointer;
+
+    }
+
+
+    /* Image Information */
+
+    .image-info {
+
+      margin-top: 20px;
+
+      padding: 15px;
+
+      background: #f6f7fb;
+
       border-radius: 8px;
-      font-size: 16px;
-    }
 
-    .input-group input:focus {
-      outline: none;
-      border-color: #777;
-    }
+      text-align: center;
 
-    /* Ratio */
-
-    .ratio-option {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 25px;
-      color: #555;
       font-size: 14px;
+      color: #666;
+
+      line-height: 1.7;
+
     }
+
 
     /* Buttons */
 
     .buttons {
+
       display: flex;
+
       gap: 12px;
-      flex-wrap: wrap;
+
+      margin-top: 25px;
+
+      justify-content: center;
+
     }
 
     button {
+
       border: none;
+
       border-radius: 8px;
-      padding: 13px 20px;
+
+      padding: 13px 22px;
+
       font-size: 15px;
+
       cursor: pointer;
+
       transition: opacity 0.2s;
-    }
 
-    .primary-button {
-      background: #222;
-      color: white;
-    }
-
-    .secondary-button {
-      background: #e9e9e9;
-      color: #222;
     }
 
     button:hover {
       opacity: 0.85;
     }
 
-    /* Image Information */
+    .primary-button {
 
-    .image-info {
-      margin-top: 20px;
-      padding: 15px;
-      background: #f6f7fb;
-      border-radius: 8px;
-      font-size: 14px;
-      color: #666;
-      line-height: 1.7;
+      background: #222;
+      color: white;
+
     }
+
+    .secondary-button {
+
+      background: #e9e9e9;
+      color: #222;
+
+    }
+
 
     /* Footer */
 
     footer {
+
       text-align: center;
+
       padding: 35px 20px;
+
       background: #ffffff;
+
       border-top: 1px solid #e5e5e5;
+
       color: #777;
+
       font-size: 14px;
+
     }
+
 
     /* Mobile */
 
@@ -248,7 +337,7 @@
       }
 
       .container {
-        padding: 45px 15px 60px;
+        padding: 40px 15px 60px;
       }
 
       .heading h1 {
@@ -259,204 +348,322 @@
         padding: 20px;
       }
 
-      .dimensions {
-        grid-template-columns: 1fr;
-      }
-
       .buttons {
+
         flex-direction: column;
+
       }
 
       button {
+
         width: 100%;
+
       }
+
     }
+
   </style>
 
 </head>
 
+
 <body>
+
 
   <!-- Navigation -->
 
   <nav>
-    <a href="index.html" class="logo">
+
+    <a
+      href="index.html"
+      class="logo"
+    >
       Tool<span>Nest</span>
     </a>
 
 
-<a href="index.html" class="back-link">
-  ← All Tools
-</a>
-
+    <a
+      href="index.html"
+      class="back-link"
+    >
+      ← All Tools
+    </a>
 
   </nav>
+
+
 
   <!-- Main -->
 
   <main class="container">
 
 
-<div class="heading">
-  <h1>Image Resizer</h1>
+    <!-- Heading -->
 
-  <p>
-    Resize your images quickly and easily.
-    Upload an image, choose the dimensions and download the result.
-  </p>
-</div>
+    <div class="heading">
 
-<div class="tool-box">
+      <h1>
+        Image Resizer
+      </h1>
 
-  <!-- Upload Area -->
-
-  <label for="imageInput" class="upload-area" id="uploadArea">
-
-    <div class="upload-icon">🖼️</div>
-
-    <h2>Upload an Image</h2>
-
-    <p>
-      Click here to choose an image from your device.
-    </p>
-
-  </label>
-
-  <input
-    type="file"
-    id="imageInput"
-    accept="image/*"
-  >
-
-  <!-- Editor -->
-
-  <div class="editor" id="editor">
-
-    <div class="preview-container">
-      <img id="preview" alt="Image preview">
-    </div>
-
-    <div class="dimensions">
-
-      <div class="input-group">
-        <label for="widthInput">
-          Width (px)
-        </label>
-
-        <input
-          type="number"
-          id="widthInput"
-          min="1"
-        >
-      </div>
-
-      <div class="input-group">
-        <label for="heightInput">
-          Height (px)
-        </label>
-
-        <input
-          type="number"
-          id="heightInput"
-          min="1"
-        >
-      </div>
+      <p>
+        Resize and optimize your image with a real-time preview.
+      </p>
 
     </div>
 
-    <label class="ratio-option">
+
+
+    <!-- Tool Box -->
+
+    <div class="tool-box">
+
+
+      <!-- Upload Area -->
+
+      <label
+        for="imageInput"
+        class="upload-area"
+      >
+
+        <div class="upload-icon">
+          🖼️
+        </div>
+
+
+        <h2>
+          Upload an Image
+        </h2>
+
+
+        <p>
+          Click here to choose an image from your device.
+        </p>
+
+      </label>
+
 
       <input
-        type="checkbox"
-        id="lockRatio"
-        checked
+        type="file"
+        id="imageInput"
+        accept="image/*"
       >
 
-      Keep original aspect ratio
 
-    </label>
 
-    <div class="buttons">
+      <!-- Editor -->
 
-      <button
-        class="primary-button"
-        id="resizeButton"
+      <div
+        class="editor"
+        id="editor"
       >
-        Resize Image
-      </button>
 
-      <button
-        class="secondary-button"
-        id="downloadButton"
-      >
-        Download Image
-      </button>
 
-      <button
-        class="secondary-button"
-        id="newImageButton"
-      >
-        Choose Another Image
-      </button>
+        <!-- Preview -->
+
+        <div class="preview-container">
+
+          <img
+            id="preview"
+            alt="Image preview"
+          >
+
+        </div>
+
+
+
+        <!-- Controls -->
+
+        <div class="controls">
+
+
+          <!-- Resize Percentage -->
+
+          <div class="control-group">
+
+
+            <div class="control-header">
+
+              <label
+                for="resizeSlider"
+              >
+                Resize Image
+              </label>
+
+
+              <span
+                class="value-display"
+                id="resizeValue"
+              >
+                100%
+              </span>
+
+            </div>
+
+
+            <input
+              type="range"
+              id="resizeSlider"
+              min="10"
+              max="200"
+              value="100"
+            >
+
+          </div>
+
+
+
+          <!-- Image Quality -->
+
+          <div class="control-group">
+
+
+            <div class="control-header">
+
+              <label
+                for="qualitySlider"
+              >
+                Image Quality
+              </label>
+
+
+              <span
+                class="value-display"
+                id="qualityValue"
+              >
+                90%
+              </span>
+
+            </div>
+
+
+            <input
+              type="range"
+              id="qualitySlider"
+              min="10"
+              max="100"
+              value="90"
+            >
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- Image Information -->
+
+        <div
+          class="image-info"
+          id="imageInfo"
+        >
+        </div>
+
+
+
+        <!-- Buttons -->
+
+        <div class="buttons">
+
+
+          <button
+            class="primary-button"
+            id="downloadButton"
+          >
+            Download Image
+          </button>
+
+
+          <button
+            class="secondary-button"
+            id="newImageButton"
+          >
+            Choose Another Image
+          </button>
+
+
+        </div>
+
+
+      </div>
+
 
     </div>
-
-    <div class="image-info" id="imageInfo">
-    </div>
-
-  </div>
-
-</div>
 
 
   </main>
 
+
+
   <!-- Footer -->
 
   <footer>
-    &copy; 2026 ToolNest &middot; Simple, Fast &amp; Free
+
+    &copy; 2026 ToolNest
+    &middot;
+    Simple, Fast &amp; Free
+
   </footer>
 
+
+
   <script>
+
 
     const imageInput =
       document.getElementById("imageInput");
 
+
     const preview =
       document.getElementById("preview");
+
 
     const editor =
       document.getElementById("editor");
 
-    const widthInput =
-      document.getElementById("widthInput");
 
-    const heightInput =
-      document.getElementById("heightInput");
+    const resizeSlider =
+      document.getElementById("resizeSlider");
 
-    const lockRatio =
-      document.getElementById("lockRatio");
 
-    const resizeButton =
-      document.getElementById("resizeButton");
+    const qualitySlider =
+      document.getElementById("qualitySlider");
 
-    const downloadButton =
-      document.getElementById("downloadButton");
 
-    const newImageButton =
-      document.getElementById("newImageButton");
+    const resizeValue =
+      document.getElementById("resizeValue");
+
+
+    const qualityValue =
+      document.getElementById("qualityValue");
+
 
     const imageInfo =
       document.getElementById("imageInfo");
 
 
-    let originalImage = new Image();
+    const downloadButton =
+      document.getElementById("downloadButton");
+
+
+    const newImageButton =
+      document.getElementById("newImageButton");
+
+
+
+    let originalImage =
+      new Image();
+
 
     let originalWidth = 0;
 
+
     let originalHeight = 0;
 
-    let aspectRatio = 1;
+
+    let processedImage = "";
+
 
 
     /* Upload Image */
@@ -465,209 +672,219 @@
       "change",
       function(event) {
 
+
         const file =
           event.target.files[0];
 
+
         if (!file) {
+
           return;
+
         }
+
+
 
         const reader =
           new FileReader();
 
+
+
         reader.onload =
           function(e) {
+
 
             originalImage.onload =
               function() {
 
+
                 originalWidth =
                   originalImage.width;
+
 
                 originalHeight =
                   originalImage.height;
 
-                aspectRatio =
-                  originalWidth /
-                  originalHeight;
 
 
-                preview.src =
-                  originalImage.src;
+                resizeSlider.value =
+                  100;
 
 
-                widthInput.value =
-                  originalWidth;
-
-                heightInput.value =
-                  originalHeight;
+                qualitySlider.value =
+                  90;
 
 
-                imageInfo.innerHTML =
-                  "<strong>Original size:</strong> "
-                  +
-                  originalWidth
-                  +
-                  " × "
-                  +
-                  originalHeight
-                  +
-                  " pixels";
+
+                resizeValue.textContent =
+                  "100%";
+
+
+                qualityValue.textContent =
+                  "90%";
+
 
 
                 editor.style.display =
                   "block";
 
+
+
+                updateImage();
+
+
               };
+
 
 
             originalImage.src =
               e.target.result;
 
+
           };
+
 
 
         reader.readAsDataURL(
           file
         );
 
+
       }
     );
 
 
-    /* Keep Aspect Ratio When Width Changes */
 
-    widthInput.addEventListener(
+    /* Resize Slider */
+
+    resizeSlider.addEventListener(
       "input",
       function() {
 
-        if (
-          lockRatio.checked
-          &&
-          widthInput.value
-        ) {
 
-          heightInput.value =
-            Math.round(
-              widthInput.value /
-              aspectRatio
-            );
+        resizeValue.textContent =
+          resizeSlider.value + "%";
 
-        }
+
+        updateImage();
+
 
       }
     );
 
 
-    /* Keep Aspect Ratio When Height Changes */
 
-    heightInput.addEventListener(
+    /* Quality Slider */
+
+    qualitySlider.addEventListener(
       "input",
       function() {
 
-        if (
-          lockRatio.checked
-          &&
-          heightInput.value
-        ) {
 
-          widthInput.value =
-            Math.round(
-              heightInput.value *
-              aspectRatio
-            );
+        qualityValue.textContent =
+          qualitySlider.value + "%";
 
-        }
+
+        updateImage();
+
 
       }
     );
 
 
-    /* Resize Image */
 
-    resizeButton.addEventListener(
-      "click",
-      function() {
+    /* Update Image In Real Time */
 
-        const newWidth =
-          parseInt(
-            widthInput.value
-          );
-
-        const newHeight =
-          parseInt(
-            heightInput.value
-          );
+    function updateImage() {
 
 
-        if (
-          !newWidth
-          ||
-          !newHeight
-          ||
-          newWidth < 1
-          ||
-          newHeight < 1
-        ) {
-
-          alert(
-            "Please enter valid dimensions."
-          );
-
-          return;
-
-        }
+      const percentage =
+        resizeSlider.value / 100;
 
 
-        const canvas =
-          document.createElement(
-            "canvas"
-          );
 
-
-        canvas.width =
-          newWidth;
-
-        canvas.height =
-          newHeight;
-
-
-        const context =
-          canvas.getContext("2d");
-
-
-        context.drawImage(
-          originalImage,
-          0,
-          0,
-          newWidth,
-          newHeight
+      const newWidth =
+        Math.round(
+          originalWidth *
+          percentage
         );
 
 
-        preview.src =
-          canvas.toDataURL(
-            "image/png"
-          );
+
+      const newHeight =
+        Math.round(
+          originalHeight *
+          percentage
+        );
 
 
-        imageInfo.innerHTML =
-          "<strong>New size:</strong> "
-          +
-          newWidth
-          +
-          " × "
-          +
-          newHeight
-          +
-          " pixels";
+
+      const quality =
+        qualitySlider.value / 100;
 
 
-        preview.dataset.resized =
-          "true";
 
-      }
-    );
+      const canvas =
+        document.createElement(
+          "canvas"
+        );
+
+
+
+      canvas.width =
+        newWidth;
+
+
+
+      canvas.height =
+        newHeight;
+
+
+
+      const context =
+        canvas.getContext(
+          "2d"
+        );
+
+
+
+      context.drawImage(
+        originalImage,
+        0,
+        0,
+        newWidth,
+        newHeight
+      );
+
+
+
+      processedImage =
+        canvas.toDataURL(
+          "image/jpeg",
+          quality
+        );
+
+
+
+      preview.src =
+        processedImage;
+
+
+
+      imageInfo.innerHTML =
+        "<strong>Current dimensions:</strong> "
+        +
+        newWidth
+        +
+        " × "
+        +
+        newHeight
+        +
+        " pixels";
+
+
+    }
+
 
 
     /* Download Image */
@@ -676,13 +893,13 @@
       "click",
       function() {
 
-        if (
-          !preview.src
-        ) {
+
+        if (!processedImage) {
 
           return;
 
         }
+
 
 
         const link =
@@ -691,18 +908,21 @@
           );
 
 
+
         link.download =
-          "resized-image.png";
+          "resized-image.jpg";
 
 
         link.href =
-          preview.src;
+          processedImage;
 
 
         link.click();
 
+
       }
     );
+
 
 
     /* Choose Another Image */
@@ -711,19 +931,30 @@
       "click",
       function() {
 
+
         imageInput.value =
           "";
+
 
         preview.src =
           "";
 
+
+        processedImage =
+          "";
+
+
         editor.style.display =
           "none";
+
 
       }
     );
 
+
   </script>
 
+
 </body>
+
 </html>
