@@ -37,7 +37,6 @@
     nav {
       background: #ffffff;
       border-bottom: 1px solid #e5e5e5;
-
       padding: 18px 30px;
 
       display: flex;
@@ -110,16 +109,13 @@
 
     .upload-area {
       display: block;
-
       padding: 45px 20px;
-
       text-align: center;
 
       border: 2px dashed #ccc;
       border-radius: 12px;
 
       cursor: pointer;
-
       transition: 0.2s;
     }
 
@@ -183,10 +179,13 @@
 
       padding: 12px;
 
+      cursor: grab;
+
       transition:
         transform 0.2s,
         border-color 0.2s,
-        box-shadow 0.2s;
+        box-shadow 0.2s,
+        opacity 0.2s;
     }
 
     .pdf-card:hover {
@@ -197,6 +196,27 @@
       box-shadow:
         0 8px 20px
         rgba(0, 0, 0, 0.06);
+    }
+
+    .pdf-card:active {
+      cursor: grabbing;
+    }
+
+
+    /* Dragging */
+
+    .pdf-card.dragging {
+      opacity: 0.45;
+
+      transform: scale(0.97);
+    }
+
+    .pdf-card.drag-over {
+      border-color: #222;
+
+      box-shadow:
+        0 0 0 2px
+        rgba(0, 0, 0, 0.12);
     }
 
 
@@ -242,8 +262,6 @@
       text-align: center;
 
       padding:
-        2px
-        25px
         2px
         25px;
     }
@@ -294,6 +312,10 @@
 
     .ordering .pdf-card:hover {
       border-color: #222;
+    }
+
+    .ordering .pdf-card:active {
+      cursor: pointer;
     }
 
     .order-selected {
@@ -354,6 +376,22 @@
 
     .ordering-notice strong {
       color: #222;
+    }
+
+
+    /* Drag Hint */
+
+    .drag-hint {
+      text-align: center;
+
+      color: #777;
+
+      font-size: 13px;
+
+      margin:
+        0
+        0
+        20px;
     }
 
 
@@ -613,8 +651,6 @@
   <main class="container">
 
 
-    <!-- Heading -->
-
     <div class="heading">
 
       <h1>
@@ -623,14 +659,12 @@
 
       <p>
         Combine multiple PDF files into one PDF.
-        Upload your files and arrange them in the order you want.
+        Drag files to rearrange them or choose a specific order.
       </p>
 
     </div>
 
 
-
-    <!-- Tool Box -->
 
     <div class="tool-box">
 
@@ -687,14 +721,23 @@
 
           <br>
 
-          Click each PDF in the order you want
-          them to appear in the final merged PDF.
+          Click each PDF in the exact order
+          you want it to appear.
 
           <br>
 
-          The numbers show the new order.
+          The numbers show the final order.
 
         </div>
+
+
+
+        <p
+          class="drag-hint"
+          id="dragHint"
+        >
+          Drag and drop PDF previews to quickly change their order.
+        </p>
 
 
 
@@ -708,7 +751,7 @@
 
 
 
-        <!-- Add More Files -->
+        <!-- Add More -->
 
         <div class="add-more">
 
@@ -858,52 +901,49 @@
         "pdfInput"
       );
 
-
     const editor =
       document.getElementById(
         "editor"
       );
-
 
     const pdfGrid =
       document.getElementById(
         "pdfGrid"
       );
 
-
     const changeOrderButton =
       document.getElementById(
         "changeOrderButton"
       );
-
 
     const doneOrderingButton =
       document.getElementById(
         "doneOrderingButton"
       );
 
-
     const mergeButton =
       document.getElementById(
         "mergeButton"
       );
-
 
     const orderModal =
       document.getElementById(
         "orderModal"
       );
 
-
     const startOrderingButton =
       document.getElementById(
         "startOrderingButton"
       );
 
-
     const orderingNotice =
       document.getElementById(
         "orderingNotice"
+      );
+
+    const dragHint =
+      document.getElementById(
+        "dragHint"
       );
 
 
@@ -912,6 +952,9 @@
     let orderingMode = false;
 
     let selectedOrder = [];
+
+    let draggedId = null;
+
 
 
     /* Upload PDF Files */
@@ -964,8 +1007,6 @@
         renderPDFs();
 
 
-        /* Reset input so same file can be selected again */
-
         pdfInput.value =
           "";
 
@@ -974,7 +1015,7 @@
 
 
 
-    /* Render PDF Files */
+    /* Render PDFs */
 
     function renderPDFs() {
 
@@ -1000,7 +1041,220 @@
             item.id;
 
 
-          /* Preview Container */
+          /* Drag only outside ordering mode */
+
+          card.draggable =
+            !orderingMode;
+
+
+
+          /* Drag Start */
+
+          card.addEventListener(
+            "dragstart",
+            function(event) {
+
+              if (
+                orderingMode
+              ) {
+
+                event.preventDefault();
+
+                return;
+
+              }
+
+
+              draggedId =
+                item.id;
+
+
+              card.classList.add(
+                "dragging"
+              );
+
+
+              event.dataTransfer.effectAllowed =
+                "move";
+
+            }
+          );
+
+
+          /* Drag End */
+
+          card.addEventListener(
+            "dragend",
+            function() {
+
+              draggedId =
+                null;
+
+
+              card.classList.remove(
+                "dragging"
+              );
+
+
+              document
+                .querySelectorAll(
+                  ".pdf-card"
+                )
+                .forEach(
+                  function(otherCard) {
+
+                    otherCard.classList.remove(
+                      "drag-over"
+                    );
+
+                  }
+                );
+
+            }
+          );
+
+
+          /* Drag Over */
+
+          card.addEventListener(
+            "dragover",
+            function(event) {
+
+              if (
+                orderingMode
+              ) {
+
+                return;
+
+              }
+
+
+              event.preventDefault();
+
+
+              if (
+                draggedId !==
+                item.id
+              ) {
+
+                card.classList.add(
+                  "drag-over"
+                );
+
+              }
+
+            }
+          );
+
+
+          /* Drag Leave */
+
+          card.addEventListener(
+            "dragleave",
+            function() {
+
+              card.classList.remove(
+                "drag-over"
+              );
+
+            }
+          );
+
+
+          /* Drop */
+
+          card.addEventListener(
+            "drop",
+            function(event) {
+
+              if (
+                orderingMode
+              ) {
+
+                return;
+
+              }
+
+
+              event.preventDefault();
+
+
+              card.classList.remove(
+                "drag-over"
+              );
+
+
+              if (
+                !draggedId
+                ||
+                draggedId ===
+                item.id
+              ) {
+
+                return;
+
+              }
+
+
+              const draggedIndex =
+                pdfFiles.findIndex(
+                  function(pdf) {
+
+                    return (
+                      pdf.id ===
+                      draggedId
+                    );
+
+                  }
+                );
+
+
+              const targetIndex =
+                pdfFiles.findIndex(
+                  function(pdf) {
+
+                    return (
+                      pdf.id ===
+                      item.id
+                    );
+
+                  }
+                );
+
+
+              if (
+                draggedIndex === -1
+                ||
+                targetIndex === -1
+              ) {
+
+                return;
+
+              }
+
+
+              const movedPDF =
+                pdfFiles.splice(
+                  draggedIndex,
+                  1
+                )[0];
+
+
+              pdfFiles.splice(
+                targetIndex,
+                0,
+                movedPDF
+              );
+
+
+              renderPDFs();
+
+            }
+          );
+
+
+
+          /* Preview */
 
           const preview =
             document.createElement(
@@ -1011,8 +1265,6 @@
           preview.className =
             "pdf-preview";
 
-
-          /* Canvas */
 
           const canvas =
             document.createElement(
@@ -1025,7 +1277,8 @@
           );
 
 
-          /* File Name */
+
+          /* Name */
 
           const name =
             document.createElement(
@@ -1039,6 +1292,7 @@
 
           name.textContent =
             item.file.name;
+
 
 
           /* Remove Button */
@@ -1110,6 +1364,7 @@
           );
 
 
+
           /* Add Elements */
 
           card.appendChild(
@@ -1133,7 +1388,8 @@
           }
 
 
-          /* Click for Ordering */
+
+          /* Ordering Click */
 
           card.addEventListener(
             "click",
@@ -1158,8 +1414,6 @@
           );
 
 
-          /* Create Real PDF Preview */
-
           renderPDFPreview(
             item.file,
             canvas
@@ -1175,7 +1429,7 @@
 
 
 
-    /* Render First Page of PDF */
+    /* Render First PDF Page */
 
     async function renderPDFPreview(
       file,
@@ -1246,34 +1500,13 @@
           error
         );
 
-
-        const context =
-          canvas.getContext(
-            "2d"
-          );
-
-
-        context.font =
-          "20px Arial";
-
-
-        context.textAlign =
-          "center";
-
-
-        context.fillText(
-          "PDF",
-          60,
-          60
-        );
-
       }
 
     }
 
 
 
-    /* Open Change Order */
+    /* Change Order */
 
     changeOrderButton.addEventListener(
       "click",
@@ -1326,6 +1559,10 @@
         );
 
 
+        dragHint.style.display =
+          "none";
+
+
         pdfGrid.classList.add(
           "ordering"
         );
@@ -1346,7 +1583,7 @@
 
 
 
-    /* Select PDF Order */
+    /* Select Order */
 
     function selectPDFOrder(
       id
@@ -1359,8 +1596,6 @@
         );
 
 
-      /* Remove selection if clicked again */
-
       if (
         existingIndex !== -1
       ) {
@@ -1371,9 +1606,6 @@
         );
 
       }
-
-
-      /* Add to order */
 
       else {
 
@@ -1390,7 +1622,7 @@
 
 
 
-    /* Update Order Numbers */
+    /* Update Numbers */
 
     function updateOrderNumbers() {
 
@@ -1497,8 +1729,6 @@
             [];
 
 
-          /* Selected files first */
-
           selectedOrder.forEach(
             function(id) {
 
@@ -1529,8 +1759,6 @@
             }
           );
 
-
-          /* Unselected files after */
 
           pdfFiles.forEach(
             function(pdf) {
@@ -1571,6 +1799,10 @@
         );
 
 
+        dragHint.style.display =
+          "block";
+
+
         pdfGrid.classList.remove(
           "ordering"
         );
@@ -1596,7 +1828,6 @@
     mergeButton.addEventListener(
       "click",
       function() {
-
 
         if (
           pdfFiles.length < 2
