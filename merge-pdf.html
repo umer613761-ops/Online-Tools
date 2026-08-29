@@ -20,62 +20,147 @@
 
   <style>
 
+    /* =========================
+       GLOBAL
+    ========================= */
+
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f6f7fb;
-      color: #222;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #d9dee4;
+      color: #1f2937;
+      min-height: 100vh;
+
+      display: flex;
+      flex-direction: column;
     }
 
 
-    /* Navigation */
+    /* =========================
+       HEADER
+    ========================= */
 
     nav {
-      background: #ffffff;
-      border-bottom: 1px solid #e5e5e5;
-      padding: 18px 30px;
+      width: 100%;
+      background: #1f2937;
+      border-bottom: 1px solid #374151;
+
+      padding: 16px 32px;
 
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
+
+    /* =========================
+       LOGO
+    ========================= */
+
     .logo {
-      font-size: 24px;
-      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
       text-decoration: none;
-      color: #222;
     }
 
-    .logo span {
-      color: #666;
+    .logo-icon {
+      width: 43px;
+      height: 43px;
+
+      border-radius: 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #5b9a78,
+          #3f7659
+        );
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: #ffffff;
+
+      font-size: 22px;
+      font-weight: bold;
+
+      box-shadow:
+        0 5px 14px
+        rgba(63, 118, 89, 0.25);
     }
+
+    .logo-text {
+      font-size: 29px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      line-height: 1;
+    }
+
+    .logo-tool {
+      color: #ffffff;
+    }
+
+    .logo-nest {
+      color: #a9cdb7;
+    }
+
+
+    /* =========================
+       BACK LINK
+    ========================= */
 
     .back-link {
-      color: #555;
+      color: #d1d5db;
       text-decoration: none;
-      font-size: 15px;
+
+      font-size: 14px;
+      font-weight: 500;
+
+      padding: 9px 14px;
+
+      border-radius: 9px;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease;
     }
 
     .back-link:hover {
-      color: #000;
+      background: #273244;
+      color: #ffffff;
     }
 
 
-    /* Main */
+    /* =========================
+       MAIN
+    ========================= */
 
     .container {
+      width: 100%;
       max-width: 1000px;
+
       margin: 0 auto;
-      padding: 60px 20px 80px;
+
+      padding: 55px 20px 80px;
+
+      flex: 1;
     }
 
 
-    /* Heading */
+    /* =========================
+       HEADING
+    ========================= */
 
     .heading {
       text-align: center;
@@ -84,59 +169,100 @@
 
     .heading h1 {
       margin: 0 0 12px;
-      font-size: 38px;
+
+      font-size: 42px;
+      font-weight: 750;
+
+      letter-spacing: -1px;
+
+      color: #202938;
     }
 
     .heading p {
-      margin: 0;
-      color: #777;
+      max-width: 650px;
+
+      margin: 0 auto;
+
+      color: #667085;
+
       font-size: 16px;
       line-height: 1.6;
     }
 
 
-    /* Tool Box */
+    /* =========================
+       TOOL BOX
+    ========================= */
 
     .tool-box {
-      background: #ffffff;
-      border: 1px solid #e5e5e5;
-      border-radius: 14px;
+      background: #e9edf1;
+
+      border: 1px solid #bec7d0;
+
+      border-radius: 16px;
+
       padding: 30px;
+
+      box-shadow:
+        0 8px 24px
+        rgba(31, 41, 55, 0.07);
     }
 
 
-    /* Upload Area */
+    /* =========================
+       UPLOAD AREA
+    ========================= */
 
     .upload-area {
       display: block;
-      padding: 45px 20px;
+
+      padding: 48px 20px;
+
       text-align: center;
 
-      border: 2px dashed #ccc;
-      border-radius: 12px;
+      background: #eef1f4;
+
+      border:
+        2px dashed
+        #aeb9c3;
+
+      border-radius: 14px;
 
       cursor: pointer;
-      transition: 0.2s;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
     }
 
     .upload-area:hover {
-      border-color: #888;
-      background: #fafafa;
+      background: #e7ece9;
+
+      border-color: #8bb89c;
+
+      transform:
+        translateY(-2px);
     }
 
     .upload-icon {
-      font-size: 45px;
+      font-size: 46px;
       margin-bottom: 15px;
     }
 
     .upload-area h2 {
       margin: 0 0 10px;
-      font-size: 20px;
+
+      font-size: 21px;
+
+      color: #273246;
     }
 
     .upload-area p {
       margin: 0;
-      color: #777;
+
+      color: #667085;
+
       font-size: 14px;
     }
 
@@ -145,7 +271,9 @@
     }
 
 
-    /* Editor */
+    /* =========================
+       EDITOR
+    ========================= */
 
     .editor {
       display: none;
@@ -153,13 +281,72 @@
     }
 
 
-    /* PDF Grid */
+    /* =========================
+       ORDERING NOTICE
+    ========================= */
+
+    .ordering-notice {
+      display: none;
+
+      text-align: center;
+
+      padding: 18px;
+
+      margin-bottom: 25px;
+
+      background: #dce6df;
+
+      border:
+        1px solid
+        #c2d0c7;
+
+      border-radius: 12px;
+
+      color: #59665e;
+
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .ordering-notice.active {
+      display: block;
+    }
+
+    .ordering-notice strong {
+      color: #2d3a32;
+    }
+
+
+    /* =========================
+       DRAG HINT
+    ========================= */
+
+    .drag-hint {
+      text-align: center;
+
+      color: #667085;
+
+      font-size: 13px;
+
+      margin:
+        0
+        0
+        20px;
+    }
+
+
+    /* =========================
+       PDF GRID
+    ========================= */
 
     .pdf-grid {
       display: grid;
 
       grid-template-columns:
-        repeat(auto-fill, minmax(170px, 1fr));
+        repeat(
+          auto-fill,
+          minmax(170px, 1fr)
+        );
 
       gap: 20px;
 
@@ -167,35 +354,48 @@
     }
 
 
-    /* PDF Card */
+    /* =========================
+       PDF CARD
+    ========================= */
 
     .pdf-card {
       position: relative;
 
-      background: #f8f9fc;
+      background: #dce6df;
 
-      border: 1px solid #e2e2e2;
-      border-radius: 12px;
+      border:
+        1px solid
+        #c2d0c7;
+
+      border-radius: 14px;
 
       padding: 12px;
 
       cursor: grab;
 
+      box-shadow:
+        0 4px 12px
+        rgba(31, 41, 55, 0.06);
+
       transition:
-        transform 0.2s,
-        border-color 0.2s,
-        box-shadow 0.2s,
-        opacity 0.2s;
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease,
+        background 0.2s ease;
     }
 
     .pdf-card:hover {
-      transform: translateY(-3px);
+      transform:
+        translateY(-4px);
 
-      border-color: #aaa;
+      background: #d4e0d8;
+
+      border-color: #9bb8a5;
 
       box-shadow:
-        0 8px 20px
-        rgba(0, 0, 0, 0.06);
+        0 12px 25px
+        rgba(48, 85, 63, 0.12);
     }
 
     .pdf-card:active {
@@ -203,32 +403,40 @@
     }
 
 
-    /* Dragging */
+    /* =========================
+       DRAGGING
+    ========================= */
 
     .pdf-card.dragging {
       opacity: 0.45;
 
-      transform: scale(0.97);
+      transform:
+        scale(0.97);
     }
 
     .pdf-card.drag-over {
-      border-color: #222;
+      border-color: #5b9a78;
 
       box-shadow:
-        0 0 0 2px
-        rgba(0, 0, 0, 0.12);
+        0 0 0 3px
+        rgba(91, 154, 120, 0.18);
     }
 
 
-    /* PDF Preview */
+    /* =========================
+       PDF PREVIEW
+    ========================= */
 
     .pdf-preview {
       height: 180px;
 
-      background: #f3f4f7;
+      background: #edf1ee;
 
-      border: 1px solid #e5e5e5;
-      border-radius: 8px;
+      border:
+        1px solid
+        #d0dbd3;
+
+      border-radius: 9px;
 
       display: flex;
 
@@ -249,11 +457,15 @@
     }
 
 
-    /* PDF Name */
+    /* =========================
+       PDF NAME
+    ========================= */
 
     .pdf-name {
       font-size: 13px;
-      font-weight: bold;
+      font-weight: 600;
+
+      color: #2d3a32;
 
       overflow: hidden;
       text-overflow: ellipsis;
@@ -267,7 +479,9 @@
     }
 
 
-    /* Remove Button */
+    /* =========================
+       REMOVE BUTTON
+    ========================= */
 
     .remove-button {
       position: absolute;
@@ -275,43 +489,52 @@
       top: 7px;
       right: 7px;
 
-      width: 28px;
-      height: 28px;
+      width: 29px;
+      height: 29px;
 
       border: none;
+
       border-radius: 50%;
 
       background: #ffffff;
 
       box-shadow:
         0 2px 8px
-        rgba(0, 0, 0, 0.15);
+        rgba(31, 41, 55, 0.16);
 
-      color: #222;
+      color: #4b5563;
 
       cursor: pointer;
 
-      font-size: 18px;
+      font-size: 19px;
       line-height: 1;
 
       padding: 0;
 
       z-index: 5;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease;
     }
 
     .remove-button:hover {
-      background: #eeeeee;
+      background: #f1f3f5;
+
+      color: #1f2937;
     }
 
 
-    /* Ordering Mode */
+    /* =========================
+       ORDERING MODE
+    ========================= */
 
     .ordering .pdf-card {
       cursor: pointer;
     }
 
     .ordering .pdf-card:hover {
-      border-color: #222;
+      border-color: #5b9a78;
     }
 
     .ordering .pdf-card:active {
@@ -319,11 +542,15 @@
     }
 
     .order-selected {
-      border: 2px solid #222;
+      border:
+        2px solid
+        #5b9a78 !important;
     }
 
 
-    /* Order Number Badge */
+    /* =========================
+       ORDER NUMBER
+    ========================= */
 
     .order-number {
       position: absolute;
@@ -336,66 +563,29 @@
 
       border-radius: 50%;
 
-      background: #222;
-      color: white;
+      background: #3f7659;
+
+      color: #ffffff;
 
       display: flex;
+
       align-items: center;
       justify-content: center;
 
       font-size: 17px;
       font-weight: bold;
 
+      box-shadow:
+        0 3px 8px
+        rgba(63, 118, 89, 0.25);
+
       z-index: 4;
     }
 
 
-    /* Ordering Notice */
-
-    .ordering-notice {
-      display: none;
-
-      text-align: center;
-
-      padding: 18px;
-      margin-bottom: 25px;
-
-      background: #f6f7fb;
-
-      border-radius: 10px;
-
-      color: #555;
-
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .ordering-notice.active {
-      display: block;
-    }
-
-    .ordering-notice strong {
-      color: #222;
-    }
-
-
-    /* Drag Hint */
-
-    .drag-hint {
-      text-align: center;
-
-      color: #777;
-
-      font-size: 13px;
-
-      margin:
-        0
-        0
-        20px;
-    }
-
-
-    /* Add More */
+    /* =========================
+       ADD MORE
+    ========================= */
 
     .add-more {
       margin-top: 15px;
@@ -403,15 +593,25 @@
     }
 
     .add-more label {
-      color: #555;
+      color: #3f7659;
+
       font-size: 14px;
+      font-weight: 600;
 
       cursor: pointer;
-      text-decoration: underline;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .add-more label:hover {
+      color: #2f5c43;
     }
 
 
-    /* Buttons */
+    /* =========================
+       BUTTONS
+    ========================= */
 
     .button-row {
       display: flex;
@@ -428,33 +628,70 @@
     button {
       border: none;
 
-      border-radius: 8px;
+      border-radius: 10px;
 
       padding: 13px 22px;
 
       font-size: 15px;
+      font-weight: 600;
 
       cursor: pointer;
 
-      transition: opacity 0.2s;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
     }
 
     button:hover {
-      opacity: 0.85;
+      transform:
+        translateY(-2px);
     }
+
+
+    /* Primary */
 
     .primary-button {
-      background: #222;
+      background: #3f7659;
+
       color: #ffffff;
+
+      box-shadow:
+        0 5px 12px
+        rgba(63, 118, 89, 0.2);
     }
+
+    .primary-button:hover {
+      background: #35654c;
+
+      box-shadow:
+        0 8px 18px
+        rgba(63, 118, 89, 0.28);
+    }
+
+
+    /* Secondary */
 
     .secondary-button {
-      background: #e9e9e9;
-      color: #222;
+      background: #dce6df;
+
+      color: #2d3a32;
+
+      border:
+        1px solid
+        #c2d0c7;
+    }
+
+    .secondary-button:hover {
+      background: #d2ddd6;
+
+      border-color: #9bb8a5;
     }
 
 
-    /* Modal */
+    /* =========================
+       MODAL
+    ========================= */
 
     .modal {
       display: none;
@@ -468,7 +705,7 @@
       height: 100%;
 
       background:
-        rgba(0, 0, 0, 0.45);
+        rgba(20, 28, 35, 0.55);
 
       z-index: 1000;
 
@@ -483,21 +720,29 @@
     }
 
 
+    /* =========================
+       MODAL BOX
+    ========================= */
+
     .modal-box {
       width: 100%;
       max-width: 460px;
 
-      background: white;
+      background: #e9edf1;
 
-      border-radius: 14px;
+      border:
+        1px solid
+        #bec7d0;
 
-      padding: 30px;
+      border-radius: 16px;
+
+      padding: 32px;
 
       text-align: center;
 
       box-shadow:
         0 20px 50px
-        rgba(0, 0, 0, 0.2);
+        rgba(0, 0, 0, 0.25);
     }
 
     .modal-icon {
@@ -507,19 +752,24 @@
 
     .modal-box h2 {
       margin: 0 0 12px;
+
       font-size: 24px;
+
+      color: #253044;
     }
 
     .modal-box p {
       margin: 0 0 20px;
 
-      color: #666;
+      color: #667085;
 
       line-height: 1.6;
     }
 
 
-    /* Example Numbers */
+    /* =========================
+       INSTRUCTION EXAMPLE
+    ========================= */
 
     .instruction-example {
       display: flex;
@@ -534,6 +784,8 @@
         20px
         0
         25px;
+
+      color: #667085;
     }
 
     .instruction-number {
@@ -542,7 +794,13 @@
 
       border-radius: 50%;
 
-      background: #f0f1f5;
+      background: #dce6df;
+
+      border:
+        1px solid
+        #c2d0c7;
+
+      color: #3f7659;
 
       display: flex;
 
@@ -553,45 +811,117 @@
     }
 
 
-    /* Footer */
+    /* =========================
+       FOOTER
+    ========================= */
 
     footer {
+      width: 100%;
+
+      background: #1f2937;
+
+      border-top:
+        1px solid
+        #374151;
+
       text-align: center;
 
-      padding: 35px 20px;
+      padding: 32px 20px;
 
-      background: #ffffff;
-
-      border-top: 1px solid #e5e5e5;
-
-      color: #777;
+      color: #aeb7c5;
 
       font-size: 14px;
     }
 
 
-    /* Mobile */
+    /* =========================
+       TABLET
+    ========================= */
 
-    @media (max-width: 600px) {
+    @media (
+      max-width: 850px
+    ) {
 
       nav {
-        padding: 15px 20px;
+        padding:
+          15px
+          22px;
+      }
+
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (
+      max-width: 600px
+    ) {
+
+      nav {
+        padding:
+          14px
+          16px;
+
+        gap: 12px;
       }
 
       .logo {
-        font-size: 21px;
+        gap: 8px;
+      }
+
+      .logo-icon {
+        width: 37px;
+        height: 37px;
+
+        border-radius: 10px;
+
+        font-size: 19px;
+      }
+
+      .logo-text {
+        font-size: 24px;
+      }
+
+      .back-link {
+        padding:
+          8px
+          10px;
+
+        font-size: 13px;
       }
 
       .container {
-        padding: 45px 15px 60px;
+        padding:
+          42px
+          16px
+          60px;
+      }
+
+      .heading {
+        margin-bottom: 30px;
       }
 
       .heading h1 {
-        font-size: 30px;
+        font-size: 32px;
+        letter-spacing: -0.5px;
+      }
+
+      .heading p {
+        font-size: 15px;
       }
 
       .tool-box {
-        padding: 20px;
+        padding: 18px;
+
+        border-radius: 14px;
+      }
+
+      .upload-area {
+        padding:
+          40px
+          15px;
       }
 
       .pdf-grid {
@@ -605,12 +935,24 @@
         height: 130px;
       }
 
+      .pdf-card {
+        padding: 9px;
+      }
+
+      .pdf-name {
+        font-size: 12px;
+      }
+
       .button-row {
         flex-direction: column;
       }
 
       .button-row button {
         width: 100%;
+      }
+
+      .modal-box {
+        padding: 25px 20px;
       }
 
     }
@@ -623,7 +965,9 @@
 <body>
 
 
-  <!-- Navigation -->
+  <!-- =========================
+       HEADER
+  ========================= -->
 
   <nav>
 
@@ -631,7 +975,23 @@
       href="index.html"
       class="logo"
     >
-      Tool<span>Nest</span>
+
+      <div class="logo-icon">
+        T
+      </div>
+
+      <div class="logo-text">
+
+        <span class="logo-tool">
+          Tool
+        </span>
+
+        <span class="logo-nest">
+          Nest
+        </span>
+
+      </div>
+
     </a>
 
 
@@ -646,10 +1006,14 @@
 
 
 
-  <!-- Main -->
+  <!-- =========================
+       MAIN
+  ========================= -->
 
   <main class="container">
 
+
+    <!-- Heading -->
 
     <div class="heading">
 
@@ -665,6 +1029,8 @@
     </div>
 
 
+
+    <!-- Tool Box -->
 
     <div class="tool-box">
 
@@ -731,6 +1097,8 @@
         </div>
 
 
+
+        <!-- Drag Hint -->
 
         <p
           class="drag-hint"
@@ -806,7 +1174,9 @@
 
 
 
-  <!-- Change Order Modal -->
+  <!-- =========================
+       CHANGE ORDER MODAL
+  ========================= -->
 
   <div
     class="modal"
@@ -873,22 +1243,33 @@
 
 
 
-  <!-- Footer -->
+  <!-- =========================
+       FOOTER
+  ========================= -->
 
   <footer>
 
     &copy; 2026 ToolNest
+
     &middot;
+
     Simple, Fast &amp; Free
 
   </footer>
 
 
 
-  <!-- PDF.js -->
+  <!-- =========================
+       PDF.JS
+  ========================= -->
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
+
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
 
   <script>
 
@@ -901,45 +1282,54 @@
         "pdfInput"
       );
 
+
     const editor =
       document.getElementById(
         "editor"
       );
+
 
     const pdfGrid =
       document.getElementById(
         "pdfGrid"
       );
 
+
     const changeOrderButton =
       document.getElementById(
         "changeOrderButton"
       );
+
 
     const doneOrderingButton =
       document.getElementById(
         "doneOrderingButton"
       );
 
+
     const mergeButton =
       document.getElementById(
         "mergeButton"
       );
+
 
     const orderModal =
       document.getElementById(
         "orderModal"
       );
 
+
     const startOrderingButton =
       document.getElementById(
         "startOrderingButton"
       );
 
+
     const orderingNotice =
       document.getElementById(
         "orderingNotice"
       );
+
 
     const dragHint =
       document.getElementById(
@@ -957,7 +1347,9 @@
 
 
 
-    /* Upload PDF Files */
+    /* =========================
+       UPLOAD PDF FILES
+    ========================= */
 
     pdfInput.addEventListener(
       "change",
@@ -979,12 +1371,14 @@
 
               pdfFiles.push(
                 {
+
                   file: file,
 
                   id:
                     Date.now()
                     +
                     Math.random()
+
                 }
               );
 
@@ -1015,7 +1409,9 @@
 
 
 
-    /* Render PDFs */
+    /* =========================
+       RENDER PDFs
+    ========================= */
 
     function renderPDFs() {
 
@@ -1081,6 +1477,7 @@
           );
 
 
+
           /* Drag End */
 
           card.addEventListener(
@@ -1112,6 +1509,7 @@
 
             }
           );
+
 
 
           /* Drag Over */
@@ -1147,6 +1545,7 @@
           );
 
 
+
           /* Drag Leave */
 
           card.addEventListener(
@@ -1159,6 +1558,7 @@
 
             }
           );
+
 
 
           /* Drop */
@@ -1429,7 +1829,9 @@
 
 
 
-    /* Render First PDF Page */
+    /* =========================
+       RENDER PDF PREVIEW
+    ========================= */
 
     async function renderPDFPreview(
       file,
@@ -1481,11 +1883,13 @@
 
         await page.render(
           {
+
             canvasContext:
               context,
 
             viewport:
               viewport
+
           }
         ).promise;
 
@@ -1506,7 +1910,9 @@
 
 
 
-    /* Change Order */
+    /* =========================
+       CHANGE ORDER
+    ========================= */
 
     changeOrderButton.addEventListener(
       "click",
@@ -1534,7 +1940,9 @@
 
 
 
-    /* Start Ordering */
+    /* =========================
+       START ORDERING
+    ========================= */
 
     startOrderingButton.addEventListener(
       "click",
@@ -1583,7 +1991,9 @@
 
 
 
-    /* Select Order */
+    /* =========================
+       SELECT ORDER
+    ========================= */
 
     function selectPDFOrder(
       id
@@ -1622,7 +2032,9 @@
 
 
 
-    /* Update Numbers */
+    /* =========================
+       UPDATE ORDER NUMBERS
+    ========================= */
 
     function updateOrderNumbers() {
 
@@ -1713,7 +2125,9 @@
 
 
 
-    /* Done Ordering */
+    /* =========================
+       DONE ORDERING
+    ========================= */
 
     doneOrderingButton.addEventListener(
       "click",
@@ -1823,7 +2237,9 @@
 
 
 
-    /* Merge PDFs */
+    /* =========================
+       MERGE PDFs
+    ========================= */
 
     mergeButton.addEventListener(
       "click",
@@ -1851,7 +2267,9 @@
 
 
 
-    /* Close Modal */
+    /* =========================
+       CLOSE MODAL
+    ========================= */
 
     orderModal.addEventListener(
       "click",
