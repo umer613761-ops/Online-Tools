@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -9,230 +10,591 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Word Counter - Free Online Text Tool</title>
+  <title>Word Counter - Free Online Text Tool | ToolNest</title>
 
   <meta
     name="description"
     content="Free online word counter. Count words, characters, sentences, paragraphs, reading time, speaking time and more."
   >
 
+
   <style>
+
+    /* =========================
+       GLOBAL
+    ========================= */
 
     * {
       box-sizing: border-box;
     }
 
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f6f7fb;
-      color: #222;
+      min-height: 100vh;
+
+      display: flex;
+      flex-direction: column;
+
+      font-family: Arial, Helvetica, sans-serif;
+
+      background: #d9dee4;
+      color: #1f2937;
     }
 
-    /* Navigation */
+
+    /* =========================
+       HEADER
+    ========================= */
 
     nav {
-      background: #ffffff;
-      border-bottom: 1px solid #e5e5e5;
-      padding: 18px 30px;
+      background: #1f2937;
+
+      border-bottom:
+        1px solid #374151;
+
+      padding: 16px 32px;
 
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
+
+    /* =========================
+       LOGO
+    ========================= */
+
     .logo {
-      font-size: 24px;
+      display: flex;
+      align-items: center;
+
+      gap: 11px;
+
+      text-decoration: none;
+    }
+
+
+    .logo-icon {
+      width: 43px;
+      height: 43px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #5b9a78,
+          #3f7659
+        );
+
+      color: #ffffff;
+
+      font-size: 22px;
       font-weight: bold;
-      text-decoration: none;
-      color: #222;
-    }
-
-    .logo span {
-      color: #555;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: #555;
-      font-size: 15px;
-    }
-
-    .nav-links a:hover {
-      color: #000;
-    }
-
-    /* Main */
-
-    .container {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 30px;
-
-      background: #ffffff;
-      border-radius: 16px;
 
       box-shadow:
-        0 5px 25px
-        rgba(0, 0, 0, 0.08);
+        0 5px 14px
+        rgba(63, 118, 89, 0.25);
     }
 
-    h1 {
-      text-align: center;
-      margin: 0 0 8px;
+
+    .logo-text {
+      font-size: 29px;
+      font-weight: 800;
+
+      letter-spacing: -0.8px;
+      line-height: 1;
     }
+
+
+    .logo-tool {
+      color: #ffffff;
+    }
+
+
+    .logo-nest {
+      color: #a9cdb7;
+    }
+
+
+    /* =========================
+       BACK LINK
+    ========================= */
+
+    .back-link {
+      color: #d1d5db;
+
+      text-decoration: none;
+
+      font-size: 14px;
+      font-weight: 500;
+
+      padding: 9px 14px;
+
+      border-radius: 9px;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease;
+    }
+
+
+    .back-link:hover {
+      background: #273244;
+      color: #ffffff;
+    }
+
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .container {
+      width: 100%;
+      max-width: 1000px;
+
+      margin: 0 auto;
+
+      padding: 55px 20px 80px;
+
+      flex: 1;
+    }
+
+
+    /* =========================
+       HEADING
+    ========================= */
+
+    .heading {
+      text-align: center;
+
+      margin-bottom: 35px;
+    }
+
+
+    .heading h1 {
+      margin: 0 0 12px;
+
+      font-size: 42px;
+      font-weight: 750;
+
+      letter-spacing: -1px;
+
+      color: #202938;
+    }
+
 
     .subtitle {
-      text-align: center;
-      color: #777;
-      margin: 0 0 30px;
-      line-height: 1.5;
+      max-width: 650px;
+
+      margin: 0 auto;
+
+      color: #667085;
+
+      font-size: 16px;
+      line-height: 1.6;
     }
 
-    /* Text Area */
+
+    /* =========================
+       TOOL BOX
+    ========================= */
+
+    .tool-box {
+      background: #e9edf1;
+
+      border:
+        1px solid #bec7d0;
+
+      border-radius: 16px;
+
+      padding: 30px;
+
+      box-shadow:
+        0 8px 24px
+        rgba(31, 41, 55, 0.07);
+    }
+
+
+    /* =========================
+       TEXT AREA
+    ========================= */
 
     textarea {
       width: 100%;
       height: 280px;
-      padding: 15px;
 
-      font-family: Arial, sans-serif;
+      padding: 18px;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
       font-size: 16px;
+      line-height: 1.6;
 
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      color: #2d3a32;
+
+      background: #eef1f4;
+
+      border:
+        1px solid #b9c3cc;
+
+      border-radius: 12px;
 
       resize: vertical;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
     }
+
+
+    textarea::placeholder {
+      color: #8a949f;
+    }
+
 
     textarea:focus {
       outline: none;
-      border-color: #888;
+
+      background: #f4f6f7;
+
+      border-color: #78a58a;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(63, 118, 89, 0.12);
     }
 
-    /* Results */
+
+    /* =========================
+       RESULTS
+    ========================= */
 
     .results {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
       gap: 15px;
+
       margin-top: 25px;
     }
 
+
     .result-card {
-      background: #f4f7fb;
-      padding: 20px;
-      border-radius: 10px;
+      padding: 20px 12px;
+
       text-align: center;
+
+      background: #dce6df;
+
+      border:
+        1px solid #c2d0c7;
+
+      border-radius: 12px;
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
     }
+
+
+    .result-card:hover {
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 5px 14px
+        rgba(31, 41, 55, 0.08);
+    }
+
 
     .result-card strong {
       display: block;
+
+      margin-bottom: 7px;
+
       font-size: 26px;
-      margin-bottom: 6px;
+      font-weight: 750;
+
+      color: #3f7659;
     }
+
 
     .result-card span {
-      color: #666;
-      font-size: 14px;
+      color: #59665e;
+
+      font-size: 13px;
     }
 
-    /* Buttons */
+
+    /* =========================
+       BUTTONS
+    ========================= */
 
     .action-buttons {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 12px;
+
       margin-top: 25px;
     }
 
-    button {
-      padding: 13px;
-      border: none;
-      border-radius: 8px;
 
-      background: #222;
-      color: white;
+    button {
+      padding: 14px;
+
+      border: none;
+
+      border-radius: 10px;
 
       font-size: 15px;
+      font-weight: 600;
+
       cursor: pointer;
+
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
     }
+
 
     button:hover {
-      opacity: 0.85;
+      transform:
+        translateY(-2px);
     }
 
-    /* Info */
+
+    .copy-button {
+      background: #3f7659;
+      color: #ffffff;
+
+      box-shadow:
+        0 5px 12px
+        rgba(63, 118, 89, 0.20);
+    }
+
+
+    .copy-button:hover {
+      background: #35654c;
+
+      box-shadow:
+        0 8px 18px
+        rgba(63, 118, 89, 0.28);
+    }
+
+
+    .clear-button {
+      background: #dce6df;
+
+      color: #2d3a32;
+
+      border:
+        1px solid #c2d0c7;
+    }
+
+
+    .clear-button:hover {
+      background: #d2ddd6;
+
+      border-color: #9bb8a5;
+    }
+
+
+    /* =========================
+       INFORMATION
+    ========================= */
 
     .info {
       margin-top: 30px;
-      padding: 20px;
 
-      background: #f4f7fb;
-      border-radius: 10px;
+      padding: 22px;
 
-      color: #555;
+      background: #dce6df;
+
+      border:
+        1px solid #c2d0c7;
+
+      border-radius: 12px;
+
+      color: #59665e;
+
       line-height: 1.6;
     }
 
-    /* Footer */
 
-    footer {
-      text-align: center;
-      padding: 30px;
-      color: #777;
+    .info strong {
+      display: block;
+
+      color: #2d3a32;
+
+      font-size: 16px;
     }
 
-    /* Tablet */
+
+    .info p {
+      margin:
+        10px 0 0;
+    }
+
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      background: #1f2937;
+
+      border-top:
+        1px solid #374151;
+
+      text-align: center;
+
+      padding: 32px 20px;
+
+      color: #aeb7c5;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================
+       TABLET
+    ========================= */
 
     @media (max-width: 850px) {
 
       .results {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+          repeat(2, 1fr);
       }
 
     }
 
-    /* Mobile */
+
+    /* =========================
+       MOBILE
+    ========================= */
 
     @media (max-width: 600px) {
 
       nav {
-        padding: 15px 20px;
+        padding: 14px 16px;
+
+        gap: 12px;
       }
+
 
       .logo {
-        font-size: 20px;
+        gap: 8px;
       }
 
-      .nav-links {
-        display: none;
+
+      .logo-icon {
+        width: 37px;
+        height: 37px;
+
+        border-radius: 10px;
+
+        font-size: 19px;
       }
+
+
+      .logo-text {
+        font-size: 24px;
+      }
+
+
+      .back-link {
+        padding: 8px 10px;
+
+        font-size: 13px;
+      }
+
 
       .container {
-        margin: 20px 10px;
-        padding: 20px;
+        padding:
+          42px
+          16px
+          60px;
       }
+
+
+      .heading {
+        margin-bottom: 30px;
+      }
+
+
+      .heading h1 {
+        font-size: 32px;
+
+        letter-spacing: -0.5px;
+      }
+
+
+      .subtitle {
+        font-size: 15px;
+      }
+
+
+      .tool-box {
+        padding: 18px;
+
+        border-radius: 14px;
+      }
+
 
       textarea {
         height: 220px;
+
+        padding: 15px;
       }
 
+
       .results {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+          repeat(2, 1fr);
+
         gap: 10px;
       }
 
+
       .result-card {
-        padding: 15px 10px;
+        padding: 16px 8px;
       }
+
 
       .result-card strong {
         font-size: 22px;
       }
 
+
       .action-buttons {
         grid-template-columns: 1fr;
+      }
+
+
+      button {
+        width: 100%;
+      }
+
+
+      .info {
+        padding: 18px;
       }
 
     }
@@ -245,7 +607,9 @@
 <body>
 
 
-  <!-- Navigation -->
+  <!-- =========================
+       HEADER
+  ========================= -->
 
   <nav>
 
@@ -253,197 +617,234 @@
       href="index.html"
       class="logo"
     >
-      Text <span>Tools</span>
+
+      <div class="logo-icon">
+        T
+      </div>
+
+
+      <div class="logo-text">
+
+        <span class="logo-tool">
+          Tool
+        </span>
+
+        <span class="logo-nest">
+          Nest
+        </span>
+
+      </div>
+
     </a>
 
 
-    <div class="nav-links">
-
-      <a href="index.html#tools">
-        All Tools
-      </a>
-
-    </div>
+    <a
+      href="index.html"
+      class="back-link"
+    >
+      ← All Tools
+    </a>
 
   </nav>
 
 
 
-  <!-- Main -->
+  <!-- =========================
+       MAIN
+  ========================= -->
 
   <main class="container">
 
 
-    <h1>
-      Word Counter
-    </h1>
+    <!-- Heading -->
 
+    <div class="heading">
 
-    <p class="subtitle">
-      Count and analyze your words, characters,
-      sentences, paragraphs and more instantly.
-    </p>
+      <h1>
+        Word Counter
+      </h1>
 
 
+      <p class="subtitle">
 
-    <!-- Text Input -->
+        Count and analyze your words, characters,
+        sentences, paragraphs and more instantly.
 
-    <textarea
-      id="text"
-      placeholder="Type or paste your text here..."
-    ></textarea>
-
-
-
-    <!-- Results -->
-
-    <div class="results">
-
-
-      <div class="result-card">
-
-        <strong id="words">
-          0
-        </strong>
-
-        <span>
-          Words
-        </span>
-
-      </div>
-
-
-
-      <div class="result-card">
-
-        <strong id="characters">
-          0
-        </strong>
-
-        <span>
-          Characters
-        </span>
-
-      </div>
-
-
-
-      <div class="result-card">
-
-        <strong id="noSpaces">
-          0
-        </strong>
-
-        <span>
-          Without Spaces
-        </span>
-
-      </div>
-
-
-
-      <div class="result-card">
-
-        <strong id="sentences">
-          0
-        </strong>
-
-        <span>
-          Sentences
-        </span>
-
-      </div>
-
-
-
-      <div class="result-card">
-
-        <strong id="paragraphs">
-          0
-        </strong>
-
-        <span>
-          Paragraphs
-        </span>
-
-      </div>
-
-
-
-      <div class="result-card">
-
-        <strong id="readingTime">
-          0 min
-        </strong>
-
-        <span>
-          Reading Time
-        </span>
-
-      </div>
-
-
-
-      <div class="result-card">
-
-        <strong id="speakingTime">
-          0 min
-        </strong>
-
-        <span>
-          Speaking Time
-        </span>
-
-      </div>
-
-
-
-      <div class="result-card">
-
-        <strong id="averageWordLength">
-          0
-        </strong>
-
-        <span>
-          Avg. Word Length
-        </span>
-
-      </div>
-
-
-    </div>
-
-
-
-    <!-- Action Buttons -->
-
-    <div class="action-buttons">
-
-      <button onclick="copyText()">
-        Copy Text
-      </button>
-
-      <button onclick="clearText()">
-        Clear Text
-      </button>
-
-    </div>
-
-
-
-    <!-- Information -->
-
-    <div class="info">
-
-      <strong>
-        How to use Word Counter:
-      </strong>
-
-      <p>
-        Type or paste your text into the box above.
-        The statistics update automatically as you type,
-        including words, characters, sentences and paragraphs.
       </p>
+
+    </div>
+
+
+
+    <!-- Tool Box -->
+
+    <div class="tool-box">
+
+
+      <!-- Text Input -->
+
+      <textarea
+        id="text"
+        placeholder="Type or paste your text here..."
+      ></textarea>
+
+
+
+      <!-- Results -->
+
+      <div class="results">
+
+
+        <div class="result-card">
+
+          <strong id="words">
+            0
+          </strong>
+
+          <span>
+            Words
+          </span>
+
+        </div>
+
+
+        <div class="result-card">
+
+          <strong id="characters">
+            0
+          </strong>
+
+          <span>
+            Characters
+          </span>
+
+        </div>
+
+
+        <div class="result-card">
+
+          <strong id="noSpaces">
+            0
+          </strong>
+
+          <span>
+            Without Spaces
+          </span>
+
+        </div>
+
+
+        <div class="result-card">
+
+          <strong id="sentences">
+            0
+          </strong>
+
+          <span>
+            Sentences
+          </span>
+
+        </div>
+
+
+        <div class="result-card">
+
+          <strong id="paragraphs">
+            0
+          </strong>
+
+          <span>
+            Paragraphs
+          </span>
+
+        </div>
+
+
+        <div class="result-card">
+
+          <strong id="readingTime">
+            0 min
+          </strong>
+
+          <span>
+            Reading Time
+          </span>
+
+        </div>
+
+
+        <div class="result-card">
+
+          <strong id="speakingTime">
+            0 min
+          </strong>
+
+          <span>
+            Speaking Time
+          </span>
+
+        </div>
+
+
+        <div class="result-card">
+
+          <strong id="averageWordLength">
+            0
+          </strong>
+
+          <span>
+            Avg. Word Length
+          </span>
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- Action Buttons -->
+
+      <div class="action-buttons">
+
+        <button
+          class="copy-button"
+          onclick="copyText()"
+        >
+          Copy Text
+        </button>
+
+
+        <button
+          class="clear-button"
+          onclick="clearText()"
+        >
+          Clear Text
+        </button>
+
+      </div>
+
+
+
+      <!-- Information -->
+
+      <div class="info">
+
+        <strong>
+          How to use Word Counter
+        </strong>
+
+
+        <p>
+
+          Type or paste your text into the box above.
+          The statistics update automatically as you type,
+          including words, characters, sentences and paragraphs.
+
+        </p>
+
+      </div>
+
 
     </div>
 
@@ -452,11 +853,17 @@
 
 
 
-  <!-- Footer -->
+  <!-- =========================
+       FOOTER
+  ========================= -->
 
   <footer>
 
-    © 2026 Text Tools · Simple, Fast & Free
+    &copy; 2026 ToolNest
+
+    &middot;
+
+    Simple, Fast &amp; Free
 
   </footer>
 
@@ -476,11 +883,17 @@
     );
 
 
+
+    /* =========================
+       UPDATE COUNTS
+    ========================= */
+
     function updateCount() {
 
 
       const value =
         text.value;
+
 
 
       /* Words */
@@ -645,12 +1058,13 @@
       ).textContent =
         averageLength;
 
-
     }
 
 
 
-    /* Copy Text */
+    /* =========================
+       COPY TEXT
+    ========================= */
 
     function copyText() {
 
@@ -682,12 +1096,13 @@
           }
         );
 
-
     }
 
 
 
-    /* Clear Text */
+    /* =========================
+       CLEAR TEXT
+    ========================= */
 
     function clearText() {
 
@@ -698,6 +1113,8 @@
 
       updateCount();
 
+
+      text.focus();
 
     }
 
