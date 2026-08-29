@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Merge PDF - Free Online Tool | ToolNest</title>
 
   <meta
     name="description"
-    content="Merge multiple PDF files into one PDF online for free. Combine and reorder your PDF files quickly and easily."
+    content="Merge multiple PDF files into one PDF online for free. Arrange and combine your PDF files quickly and easily."
   >
 
   <style>
@@ -60,7 +65,7 @@
     /* Main */
 
     .container {
-      max-width: 850px;
+      max-width: 1000px;
       margin: 0 auto;
       padding: 60px 20px 80px;
     }
@@ -78,8 +83,9 @@
     }
 
     .heading p {
+      max-width: 650px;
       margin: 0 auto;
-      max-width: 620px;
+
       color: #777;
       font-size: 16px;
       line-height: 1.6;
@@ -99,6 +105,7 @@
     .upload-area {
       display: block;
       padding: 45px 20px;
+
       text-align: center;
 
       border: 2px dashed #ccc;
@@ -127,55 +134,114 @@
       margin: 0;
       color: #777;
       font-size: 14px;
-      line-height: 1.6;
     }
 
     input[type="file"] {
       display: none;
     }
 
-    /* File List */
+    /* Editor */
 
     .editor {
       display: none;
-      margin-top: 25px;
+      margin-top: 30px;
     }
 
-    .files-title {
-      margin: 0 0 15px;
-      font-size: 18px;
+    .editor-header {
+      text-align: center;
+      margin-bottom: 20px;
     }
 
-    .files-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    .editor-header h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
     }
 
-    .file-item {
-      display: flex;
-      align-items: center;
-      gap: 15px;
+    .editor-header p {
+      margin: 0;
+      color: #777;
+      font-size: 14px;
+    }
+
+    /* PDF Grid */
+
+    .pdf-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(auto-fill, minmax(180px, 1fr));
+
+      gap: 20px;
+    }
+
+    /* PDF Card */
+
+    .pdf-card {
+      position: relative;
+
+      background: #f6f7fb;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
 
       padding: 15px;
-      background: #f6f7fb;
 
-      border-radius: 10px;
+      text-align: center;
     }
 
-    .file-icon {
-      font-size: 28px;
-      flex-shrink: 0;
+    /* Preview */
+
+    .pdf-preview {
+      width: 100%;
+      height: 200px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #ffffff;
+
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+
+      overflow: hidden;
     }
 
-    .file-details {
-      flex: 1;
-      min-width: 0;
+    .pdf-preview canvas {
+      max-width: 100%;
+      max-height: 100%;
     }
+
+    /* Order Number */
+
+    .file-number {
+      position: absolute;
+
+      top: 8px;
+      left: 8px;
+
+      width: 28px;
+      height: 28px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #222;
+      color: white;
+
+      border-radius: 50%;
+
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    /* File Name */
 
     .file-name {
+      margin-top: 12px;
+
+      font-size: 13px;
       font-weight: bold;
-      font-size: 14px;
 
       white-space: nowrap;
       overflow: hidden;
@@ -183,54 +249,57 @@
     }
 
     .file-pages {
-      margin-top: 4px;
+      margin-top: 5px;
       color: #777;
-      font-size: 13px;
+      font-size: 12px;
     }
 
-    /* File Controls */
+    /* Controls */
 
-    .file-controls {
+    .card-controls {
       display: flex;
-      gap: 6px;
-      flex-shrink: 0;
+      justify-content: center;
+      gap: 8px;
+
+      margin-top: 15px;
     }
 
     .small-button {
-      width: 34px;
-      height: 34px;
-
-      padding: 0;
+      width: 38px;
+      height: 36px;
 
       border: none;
       border-radius: 7px;
 
-      background: #e7e7e7;
+      background: #e5e5e5;
       color: #222;
 
       font-size: 16px;
       cursor: pointer;
+
+      transition: opacity 0.2s;
     }
 
     .small-button:hover {
       opacity: 0.75;
     }
 
-    .remove-button {
-      background: #eeeeee;
+    .small-button:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
     }
 
     /* Add More */
 
     .add-more {
       display: inline-block;
-      margin-top: 18px;
+
+      margin-top: 25px;
 
       color: #555;
       font-size: 14px;
       font-weight: bold;
 
-      text-decoration: none;
       cursor: pointer;
     }
 
@@ -238,11 +307,12 @@
       color: #000;
     }
 
-    /* Buttons */
+    /* Action Buttons */
 
     .buttons {
       display: flex;
       gap: 12px;
+
       margin-top: 25px;
     }
 
@@ -275,7 +345,7 @@
     }
 
     button:disabled {
-      opacity: 0.6;
+      opacity: 0.55;
       cursor: not-allowed;
     }
 
@@ -338,35 +408,51 @@
         padding: 35px 15px;
       }
 
-      .file-item {
-        gap: 10px;
-        padding: 12px;
+      .pdf-grid {
+        grid-template-columns:
+          repeat(2, 1fr);
+
+        gap: 12px;
+      }
+
+      .pdf-preview {
+        height: 160px;
       }
 
       .buttons {
         flex-direction: column;
       }
 
-      button {
+      .buttons button {
         width: 100%;
       }
 
     }
 
   </style>
+
 </head>
 
+
 <body>
+
 
   <!-- Navigation -->
 
   <nav>
 
-    <a href="index.html" class="logo">
+    <a
+      href="index.html"
+      class="logo"
+    >
       Tool<span>Nest</span>
     </a>
 
-    <a href="index.html" class="back-link">
+
+    <a
+      href="index.html"
+      class="back-link"
+    >
       ← All Tools
     </a>
 
@@ -377,13 +463,16 @@
 
   <main class="container">
 
+
     <div class="heading">
 
-      <h1>Merge PDF</h1>
+      <h1>
+        Merge PDF
+      </h1>
 
       <p>
         Combine multiple PDF files into one document.
-        Arrange your files in the order you want before merging.
+        Rearrange your files before merging.
       </p>
 
     </div>
@@ -394,15 +483,20 @@
 
       <!-- Upload Area -->
 
-      <label for="pdfInput" class="upload-area">
+      <label
+        for="pdfInput"
+        class="upload-area"
+      >
 
         <div class="upload-icon">
           📄
         </div>
 
+
         <h2>
           Choose PDF Files
         </h2>
+
 
         <p>
           Select two or more PDF files to merge.
@@ -421,27 +515,41 @@
 
       <!-- Editor -->
 
-      <div class="editor" id="editor">
+      <div
+        class="editor"
+        id="editor"
+      >
 
-        <h2 class="files-title">
-          Selected PDFs
-        </h2>
 
+        <div class="editor-header">
+
+          <h2>
+            Your PDFs
+          </h2>
+
+          <p>
+            Use the arrows to arrange the order.
+          </p>
+
+        </div>
+
+
+        <!-- PDF Cards -->
 
         <div
-          class="files-list"
-          id="filesList"
+          class="pdf-grid"
+          id="pdfGrid"
         >
         </div>
 
 
-        <!-- Add More Files -->
+        <!-- Add More -->
 
         <label
           for="pdfInput"
           class="add-more"
         >
-          + Add more PDF files
+          + Add More PDF Files
         </label>
 
 
@@ -459,7 +567,7 @@
 
           <button
             class="secondary-button"
-            id="newFilesButton"
+            id="startOverButton"
           >
             Start Over
           </button>
@@ -475,9 +583,12 @@
         >
         </div>
 
+
       </div>
 
+
     </div>
+
 
   </main>
 
@@ -493,43 +604,76 @@
   </footer>
 
 
-  <!-- PDF-LIB -->
+  <!-- PDF Libraries -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
 
 
   <script>
 
+
+    /* Configure PDF.js Worker */
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+
+    /* Elements */
+
     const pdfInput =
-      document.getElementById("pdfInput");
+      document.getElementById(
+        "pdfInput"
+      );
+
 
     const editor =
-      document.getElementById("editor");
+      document.getElementById(
+        "editor"
+      );
 
-    const filesList =
-      document.getElementById("filesList");
+
+    const pdfGrid =
+      document.getElementById(
+        "pdfGrid"
+      );
+
 
     const mergeButton =
-      document.getElementById("mergeButton");
+      document.getElementById(
+        "mergeButton"
+      );
 
-    const newFilesButton =
-      document.getElementById("newFilesButton");
+
+    const startOverButton =
+      document.getElementById(
+        "startOverButton"
+      );
+
 
     const status =
-      document.getElementById("status");
+      document.getElementById(
+        "status"
+      );
 
+
+    /* Store Files */
 
     let pdfFiles = [];
 
 
-    /* Add PDF Files */
+    /* Upload PDFs */
 
     pdfInput.addEventListener(
       "change",
       async function(event) {
 
+
         const files =
-          Array.from(event.target.files);
+          Array.from(
+            event.target.files
+          );
 
 
         if (
@@ -545,6 +689,7 @@
           const file of files
         ) {
 
+
           if (
             file.type !==
             "application/pdf"
@@ -556,6 +701,7 @@
 
 
           try {
+
 
             const arrayBuffer =
               await file.arrayBuffer();
@@ -580,15 +726,26 @@
               }
             );
 
+
           }
 
           catch (error) {
+
 
             console.error(
               error
             );
 
+
+            alert(
+              "Could not open: "
+              +
+              file.name
+            );
+
+
           }
+
 
         }
 
@@ -599,15 +756,17 @@
 
         renderFiles();
 
+
       }
     );
 
 
-    /* Display Files */
+    /* Render Files */
 
-    function renderFiles() {
+    async function renderFiles() {
 
-      filesList.innerHTML =
+
+      pdfGrid.innerHTML =
         "";
 
 
@@ -615,11 +774,13 @@
         pdfFiles.length === 0
       ) {
 
+
         editor.style.display =
           "none";
 
 
         return;
+
 
       }
 
@@ -628,114 +789,217 @@
         "block";
 
 
-      pdfFiles.forEach(
-        function(
-          file,
-          index
-        ) {
-
-          const fileItem =
-            document.createElement(
-              "div"
-            );
+      for (
+        let i = 0;
+        i < pdfFiles.length;
+        i++
+      ) {
 
 
-          fileItem.className =
-            "file-item";
+        const file =
+          pdfFiles[i];
 
 
-          const pageText =
-            file.pages === 1
-              ? "1 page"
-              : file.pages + " pages";
-
-
-          fileItem.innerHTML =
-            `
-
-            <div class="file-icon">
-              📄
-            </div>
-
-            <div class="file-details">
-
-              <div class="file-name">
-                ${escapeHtml(file.name)}
-              </div>
-
-              <div class="file-pages">
-                ${pageText}
-              </div>
-
-            </div>
-
-            <div class="file-controls">
-
-              <button
-                class="small-button"
-                onclick="moveFileUp(${index})"
-                title="Move up"
-              >
-                ↑
-              </button>
-
-              <button
-                class="small-button"
-                onclick="moveFileDown(${index})"
-                title="Move down"
-              >
-                ↓
-              </button>
-
-              <button
-                class="small-button remove-button"
-                onclick="removeFile(${index})"
-                title="Remove"
-              >
-                ×
-              </button>
-
-            </div>
-
-            `;
-
-
-          filesList.appendChild(
-            fileItem
+        const card =
+          document.createElement(
+            "div"
           );
 
-        }
-      );
 
-    }
+        card.className =
+          "pdf-card";
 
 
-    /* Escape HTML */
+        card.innerHTML =
+          `
 
-    function escapeHtml(
-      text
-    ) {
+          <div class="file-number">
+            ${i + 1}
+          </div>
 
-      const div =
-        document.createElement(
-          "div"
+          <div
+            class="pdf-preview"
+            id="preview-${i}"
+          >
+            📄
+          </div>
+
+          <div
+            class="file-name"
+            title="${escapeHtml(file.name)}"
+          >
+            ${escapeHtml(file.name)}
+          </div>
+
+          <div class="file-pages">
+
+            ${file.pages}
+            ${file.pages === 1 ? "page" : "pages"}
+
+          </div>
+
+          <div class="card-controls">
+
+            <button
+              class="small-button"
+              onclick="moveLeft(${i})"
+              ${i === 0 ? "disabled" : ""}
+              title="Move left"
+            >
+              ←
+            </button>
+
+
+            <button
+              class="small-button"
+              onclick="moveRight(${i})"
+              ${i === pdfFiles.length - 1 ? "disabled" : ""}
+              title="Move right"
+            >
+              →
+            </button>
+
+
+            <button
+              class="small-button"
+              onclick="removeFile(${i})"
+              title="Remove PDF"
+            >
+              ×
+            </button>
+
+          </div>
+
+          `;
+
+
+        pdfGrid.appendChild(
+          card
         );
 
 
-      div.textContent =
-        text;
+        createPreview(
+          file.data,
+          "preview-" + i
+        );
 
 
-      return div.innerHTML;
+      }
+
 
     }
 
 
-    /* Move File Up */
+    /* Create PDF Preview */
 
-    function moveFileUp(
+    async function createPreview(
+      pdfData,
+      previewId
+    ) {
+
+
+      try {
+
+
+        const pdf =
+          await pdfjsLib.getDocument(
+            {
+              data:
+                pdfData.slice(0)
+            }
+          ).promise;
+
+
+        const page =
+          await pdf.getPage(
+            1
+          );
+
+
+        const viewport =
+          page.getViewport(
+            {
+              scale: 0.4
+            }
+          );
+
+
+        const canvas =
+          document.createElement(
+            "canvas"
+          );
+
+
+        const context =
+          canvas.getContext(
+            "2d"
+          );
+
+
+        canvas.width =
+          viewport.width;
+
+
+        canvas.height =
+          viewport.height;
+
+
+        await page.render(
+          {
+            canvasContext:
+              context,
+
+            viewport:
+              viewport
+          }
+        ).promise;
+
+
+        const preview =
+          document.getElementById(
+            previewId
+          );
+
+
+        if (
+          preview
+        ) {
+
+
+          preview.innerHTML =
+            "";
+
+
+          preview.appendChild(
+            canvas
+          );
+
+
+        }
+
+
+      }
+
+      catch (error) {
+
+
+        console.error(
+          error
+        );
+
+
+      }
+
+
+    }
+
+
+    /* Move Left */
+
+    function moveLeft(
       index
     ) {
+
 
       if (
         index === 0
@@ -760,14 +1024,16 @@
 
       renderFiles();
 
+
     }
 
 
-    /* Move File Down */
+    /* Move Right */
 
-    function moveFileDown(
+    function moveRight(
       index
     ) {
+
 
       if (
         index ===
@@ -793,6 +1059,7 @@
 
       renderFiles();
 
+
     }
 
 
@@ -802,6 +1069,7 @@
       index
     ) {
 
+
       pdfFiles.splice(
         index,
         1
@@ -809,6 +1077,30 @@
 
 
       renderFiles();
+
+
+    }
+
+
+    /* Escape File Names */
+
+    function escapeHtml(
+      text
+    ) {
+
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.textContent =
+        text;
+
+
+      return div.innerHTML;
+
 
     }
 
@@ -819,20 +1111,25 @@
       "click",
       async function() {
 
+
         if (
           pdfFiles.length < 2
         ) {
+
 
           alert(
             "Please select at least two PDF files."
           );
 
+
           return;
+
 
         }
 
 
         try {
+
 
           mergeButton.disabled =
             true;
@@ -847,7 +1144,7 @@
 
 
           status.textContent =
-            "Preparing your PDF files...";
+            "Preparing your PDFs...";
 
 
           const mergedPdf =
@@ -859,6 +1156,7 @@
             i < pdfFiles.length;
             i++
           ) {
+
 
             status.textContent =
               "Adding PDF "
@@ -878,26 +1176,25 @@
               );
 
 
-            const pageIndices =
-              sourcePdf.getPageIndices();
-
-
             const copiedPages =
               await mergedPdf.copyPages(
                 sourcePdf,
-                pageIndices
+                sourcePdf.getPageIndices()
               );
 
 
             copiedPages.forEach(
               function(page) {
 
+
                 mergedPdf.addPage(
                   page
                 );
 
+
               }
             );
+
 
           }
 
@@ -942,15 +1239,27 @@
             "merged.pdf";
 
 
+          document.body.appendChild(
+            link
+          );
+
+
           link.click();
+
+
+          document.body.removeChild(
+            link
+          );
 
 
           setTimeout(
             function() {
 
+
               URL.revokeObjectURL(
                 url
               );
+
 
             },
             1000
@@ -965,6 +1274,7 @@
 
         catch (error) {
 
+
           console.error(
             error
           );
@@ -978,6 +1288,7 @@
           status.style.display =
             "none";
 
+
         }
 
 
@@ -988,15 +1299,17 @@
         mergeButton.textContent =
           "Merge PDFs";
 
+
       }
     );
 
 
     /* Start Over */
 
-    newFilesButton.addEventListener(
+    startOverButton.addEventListener(
       "click",
       function() {
+
 
         pdfFiles =
           [];
@@ -1006,7 +1319,7 @@
           "";
 
 
-        filesList.innerHTML =
+        pdfGrid.innerHTML =
           "";
 
 
@@ -1017,10 +1330,14 @@
         status.style.display =
           "none";
 
+
       }
     );
 
+
   </script>
 
+
 </body>
+
 </html>
