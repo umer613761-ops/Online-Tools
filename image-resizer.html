@@ -16,7 +16,7 @@
 
   <meta
     name="description"
-    content="Resize and optimize images online for free. Adjust image size and quality with real-time preview."
+    content="Resize images online for free with a percentage slider and real-time preview."
   >
 
   <style>
@@ -25,12 +25,14 @@
       box-sizing: border-box;
     }
 
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: #f6f7fb;
       color: #222;
     }
+
 
     /* Navigation */
 
@@ -45,6 +47,7 @@
       align-items: center;
     }
 
+
     .logo {
       font-size: 24px;
       font-weight: bold;
@@ -52,15 +55,18 @@
       color: #222;
     }
 
+
     .logo span {
       color: #666;
     }
+
 
     .back-link {
       color: #555;
       text-decoration: none;
       font-size: 15px;
     }
+
 
     .back-link:hover {
       color: #000;
@@ -70,23 +76,23 @@
     /* Main */
 
     .container {
-      max-width: 900px;
+      max-width: 850px;
       margin: 0 auto;
       padding: 50px 20px 80px;
     }
 
-
-    /* Heading */
 
     .heading {
       text-align: center;
       margin-bottom: 30px;
     }
 
+
     .heading h1 {
       margin: 0 0 12px;
       font-size: 38px;
     }
+
 
     .heading p {
       margin: 0;
@@ -100,10 +106,8 @@
 
     .tool-box {
       background: #ffffff;
-
       border: 1px solid #e5e5e5;
       border-radius: 14px;
-
       padding: 30px;
     }
 
@@ -112,37 +116,50 @@
 
     .upload-area {
 
-      border: 2px dashed #ccc;
-      border-radius: 12px;
+      display: block;
 
-      padding: 50px 20px;
+      width: 100%;
+
+      padding: 55px 20px;
 
       text-align: center;
+
       cursor: pointer;
 
-      transition: 0.2s;
+      background: #f6f7fb;
+
+      border: none;
+
+      border-radius: 12px;
+
+      transition: background 0.2s;
+
     }
 
+
     .upload-area:hover {
-      border-color: #888;
-      background: #fafafa;
+      background: #eeeeee;
     }
+
 
     .upload-icon {
       font-size: 45px;
       margin-bottom: 15px;
     }
 
+
     .upload-area h2 {
       margin: 0 0 10px;
       font-size: 22px;
     }
+
 
     .upload-area p {
       margin: 0;
       color: #777;
       font-size: 15px;
     }
+
 
     input[type="file"] {
       display: none;
@@ -160,54 +177,66 @@
     /* Preview */
 
     .preview-container {
-      text-align: center;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      background: #f6f7fb;
+
+      border-radius: 12px;
+
+      padding: 20px;
+
       margin-bottom: 30px;
+
+      min-height: 200px;
+
     }
 
+
     #preview {
-      display: block;
 
       max-width: 100%;
-      max-height: 450px;
+      max-height: 400px;
 
-      margin: auto;
+      display: block;
 
-      border-radius: 10px;
-      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+
     }
 
 
     /* Controls */
 
     .controls {
-
-      max-width: 650px;
-      margin: auto;
-
+      margin-top: 10px;
     }
+
 
     .control-group {
-
       margin-bottom: 28px;
-
     }
+
 
     .control-header {
 
       display: flex;
+
       justify-content: space-between;
+
       align-items: center;
 
       margin-bottom: 12px;
 
     }
 
-    .control-header label {
 
+    .control-header label {
       font-size: 16px;
       font-weight: bold;
-
     }
+
 
     .value-display {
 
@@ -218,12 +247,13 @@
       border-radius: 6px;
 
       font-size: 14px;
+
       font-weight: bold;
 
     }
 
 
-    /* Slider */
+    /* Sliders */
 
     input[type="range"] {
 
@@ -234,11 +264,11 @@
     }
 
 
-    /* Image Information */
+    /* Image Info */
 
     .image-info {
 
-      margin-top: 20px;
+      margin-top: 5px;
 
       padding: 15px;
 
@@ -249,6 +279,7 @@
       text-align: center;
 
       font-size: 14px;
+
       color: #666;
 
       line-height: 1.7;
@@ -268,7 +299,10 @@
 
       justify-content: center;
 
+      flex-wrap: wrap;
+
     }
+
 
     button {
 
@@ -286,20 +320,25 @@
 
     }
 
+
     button:hover {
       opacity: 0.85;
     }
 
+
     .primary-button {
 
       background: #222;
+
       color: white;
 
     }
 
+
     .secondary-button {
 
       background: #e9e9e9;
+
       color: #222;
 
     }
@@ -332,32 +371,39 @@
         padding: 15px 20px;
       }
 
+
       .logo {
         font-size: 21px;
       }
+
 
       .container {
         padding: 40px 15px 60px;
       }
 
+
       .heading h1 {
         font-size: 30px;
       }
+
 
       .tool-box {
         padding: 20px;
       }
 
-      .buttons {
 
-        flex-direction: column;
-
+      .upload-area {
+        padding: 45px 15px;
       }
 
+
+      .buttons {
+        flex-direction: column;
+      }
+
+
       button {
-
         width: 100%;
-
       }
 
     }
@@ -392,7 +438,6 @@
   </nav>
 
 
-
   <!-- Main -->
 
   <main class="container">
@@ -411,7 +456,6 @@
       </p>
 
     </div>
-
 
 
     <!-- Tool Box -->
@@ -450,7 +494,6 @@
       >
 
 
-
       <!-- Editor -->
 
       <div
@@ -471,7 +514,6 @@
         </div>
 
 
-
         <!-- Controls -->
 
         <div class="controls">
@@ -481,12 +523,9 @@
 
           <div class="control-group">
 
-
             <div class="control-header">
 
-              <label
-                for="resizeSlider"
-              >
+              <label for="resizeSlider">
                 Resize Image
               </label>
 
@@ -512,17 +551,13 @@
           </div>
 
 
-
           <!-- Image Quality -->
 
           <div class="control-group">
 
-
             <div class="control-header">
 
-              <label
-                for="qualitySlider"
-              >
+              <label for="qualitySlider">
                 Image Quality
               </label>
 
@@ -551,7 +586,6 @@
         </div>
 
 
-
         <!-- Image Information -->
 
         <div
@@ -561,11 +595,9 @@
         </div>
 
 
-
         <!-- Buttons -->
 
         <div class="buttons">
-
 
           <button
             class="primary-button"
@@ -582,7 +614,6 @@
             Choose Another Image
           </button>
 
-
         </div>
 
 
@@ -595,7 +626,6 @@
   </main>
 
 
-
   <!-- Footer -->
 
   <footer>
@@ -605,7 +635,6 @@
     Simple, Fast &amp; Free
 
   </footer>
-
 
 
   <script>
@@ -651,7 +680,6 @@
       document.getElementById("newImageButton");
 
 
-
     let originalImage =
       new Image();
 
@@ -663,7 +691,6 @@
 
 
     let processedImage = "";
-
 
 
     /* Upload Image */
@@ -678,16 +705,12 @@
 
 
         if (!file) {
-
           return;
-
         }
-
 
 
         const reader =
           new FileReader();
-
 
 
         reader.onload =
@@ -706,14 +729,12 @@
                   originalImage.height;
 
 
-
                 resizeSlider.value =
                   100;
 
 
                 qualitySlider.value =
                   90;
-
 
 
                 resizeValue.textContent =
@@ -724,35 +745,25 @@
                   "90%";
 
 
-
                 editor.style.display =
                   "block";
 
 
-
                 updateImage();
 
-
               };
-
 
 
             originalImage.src =
               e.target.result;
 
-
           };
 
 
-
-        reader.readAsDataURL(
-          file
-        );
-
+        reader.readAsDataURL(file);
 
       }
     );
-
 
 
     /* Resize Slider */
@@ -768,10 +779,8 @@
 
         updateImage();
 
-
       }
     );
-
 
 
     /* Quality Slider */
@@ -787,10 +796,8 @@
 
         updateImage();
 
-
       }
     );
-
 
 
     /* Update Image In Real Time */
@@ -798,54 +805,53 @@
     function updateImage() {
 
 
+      if (!originalImage.src) {
+        return;
+      }
+
+
       const percentage =
         resizeSlider.value / 100;
 
 
-
       const newWidth =
-        Math.round(
-          originalWidth *
-          percentage
+        Math.max(
+          1,
+          Math.round(
+            originalWidth *
+            percentage
+          )
         );
-
 
 
       const newHeight =
-        Math.round(
-          originalHeight *
-          percentage
+        Math.max(
+          1,
+          Math.round(
+            originalHeight *
+            percentage
+          )
         );
-
 
 
       const quality =
         qualitySlider.value / 100;
 
 
-
       const canvas =
-        document.createElement(
-          "canvas"
-        );
-
+        document.createElement("canvas");
 
 
       canvas.width =
         newWidth;
 
 
-
       canvas.height =
         newHeight;
 
 
-
       const context =
-        canvas.getContext(
-          "2d"
-        );
-
+        canvas.getContext("2d");
 
 
       context.drawImage(
@@ -857,7 +863,6 @@
       );
 
 
-
       processedImage =
         canvas.toDataURL(
           "image/jpeg",
@@ -865,10 +870,8 @@
         );
 
 
-
       preview.src =
         processedImage;
-
 
 
       imageInfo.innerHTML =
@@ -882,9 +885,7 @@
         +
         " pixels";
 
-
     }
-
 
 
     /* Download Image */
@@ -895,18 +896,12 @@
 
 
         if (!processedImage) {
-
           return;
-
         }
 
 
-
         const link =
-          document.createElement(
-            "a"
-          );
-
+          document.createElement("a");
 
 
         link.download =
@@ -919,10 +914,8 @@
 
         link.click();
 
-
       }
     );
-
 
 
     /* Choose Another Image */
@@ -944,9 +937,16 @@
           "";
 
 
+        originalWidth =
+          0;
+
+
+        originalHeight =
+          0;
+
+
         editor.style.display =
           "none";
-
 
       }
     );
