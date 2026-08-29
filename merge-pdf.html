@@ -69,8 +69,6 @@
       padding: 60px 20px 80px;
     }
 
-    /* Heading */
-
     .heading {
       text-align: center;
       margin-bottom: 35px;
@@ -98,7 +96,7 @@
       padding: 30px;
     }
 
-    /* Upload Area */
+    /* Upload */
 
     .upload-area {
       display: block;
@@ -174,19 +172,21 @@
       border-radius: 12px;
       padding: 14px;
       text-align: center;
+      cursor: grab;
       transition: 0.2s;
     }
 
-    .pdf-card.swap-target {
-      cursor: pointer;
-    }
-
-    .pdf-card.swap-target:hover {
-      border-color: #777;
+    .pdf-card:hover {
+      border-color: #bbb;
       transform: translateY(-2px);
     }
 
-    .pdf-card.selected-for-swap {
+    .pdf-card.dragging {
+      opacity: 0.45;
+      cursor: grabbing;
+    }
+
+    .pdf-card.drag-over {
       border: 2px solid #222;
     }
 
@@ -195,11 +195,9 @@
     .pdf-preview {
       width: 100%;
       height: 220px;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       background: #ffffff;
       border: 1px solid #e5e5e5;
       border-radius: 8px;
@@ -211,23 +209,10 @@
       max-height: 100%;
     }
 
-    /* File Details */
-
-    .file-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .file-text {
-      min-width: 0;
-      text-align: left;
-      flex: 1;
-    }
+    /* File Information */
 
     .file-name {
+      margin-top: 12px;
       font-size: 13px;
       font-weight: bold;
       white-space: nowrap;
@@ -236,38 +221,14 @@
     }
 
     .file-pages {
-      margin-top: 4px;
+      margin-top: 5px;
       color: #777;
       font-size: 12px;
     }
 
-    /* Rearrange Button */
-
-    .rearrange-button {
-      flex-shrink: 0;
-      border: none;
-      border-radius: 7px;
-      padding: 8px 10px;
-      background: #e9e9e9;
-      color: #222;
-      font-size: 13px;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .rearrange-button:hover {
-      background: #ddd;
-    }
-
-    .rearrange-button.active {
-      background: #222;
-      color: white;
-    }
-
-    /* Remove Button */
+    /* Remove */
 
     .remove-file {
-      width: 100%;
       margin-top: 10px;
       border: none;
       background: transparent;
@@ -280,17 +241,32 @@
       color: #222;
     }
 
-    /* Instructions */
+    /* Controls Outside Previews */
 
-    .rearrange-message {
-      display: none;
-      margin-bottom: 20px;
-      padding: 12px 15px;
-      background: #f6f7fb;
-      border-radius: 8px;
+    .order-controls {
       text-align: center;
-      color: #666;
+      margin-top: 25px;
+    }
+
+    .change-order-button {
+      border: none;
+      border-radius: 8px;
+      padding: 11px 18px;
+      background: #e9e9e9;
+      color: #222;
       font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .change-order-button:hover {
+      background: #ddd;
+    }
+
+    .order-hint {
+      margin-top: 12px;
+      color: #777;
+      font-size: 13px;
     }
 
     /* Add More */
@@ -402,10 +378,6 @@
         padding: 20px;
       }
 
-      .upload-area {
-        padding: 35px 15px;
-      }
-
       .pdf-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
@@ -413,19 +385,6 @@
 
       .pdf-preview {
         height: 170px;
-      }
-
-      .file-info {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .file-text {
-        text-align: center;
-      }
-
-      .rearrange-button {
-        width: 100%;
       }
 
       .buttons {
@@ -464,21 +423,19 @@
 
   <main class="container">
 
-
     <div class="heading">
 
       <h1>Merge PDF</h1>
 
       <p>
         Combine multiple PDF files into one document.
-        Your files are merged from left to right.
+        Drag the files to change their order.
       </p>
 
     </div>
 
 
     <div class="tool-box">
-
 
       <!-- Upload -->
 
@@ -517,7 +474,6 @@
         id="editor"
       >
 
-
         <div class="editor-header">
 
           <h2>
@@ -525,19 +481,13 @@
           </h2>
 
           <p>
-            Files merge from left to right.
+            Drag and drop the previews to change the merge order.
           </p>
 
         </div>
 
 
-        <div
-          class="rearrange-message"
-          id="rearrangeMessage"
-        >
-          Now click another PDF to swap its position with the selected PDF.
-        </div>
-
+        <!-- PDF Previews -->
 
         <div
           class="pdf-grid"
@@ -546,6 +496,26 @@
         </div>
 
 
+        <!-- Separate Order Controls -->
+
+        <div class="order-controls">
+
+          <button
+            class="change-order-button"
+            id="changeOrderButton"
+          >
+            ↔ Change Order
+          </button>
+
+          <div class="order-hint">
+            You can also drag any preview left or right.
+          </div>
+
+        </div>
+
+
+        <!-- Add More -->
+
         <label
           for="pdfInput"
           class="add-more"
@@ -553,6 +523,8 @@
           + Add More PDF Files
         </label>
 
+
+        <!-- Main Buttons -->
 
         <div class="buttons">
 
@@ -579,12 +551,9 @@
         >
         </div>
 
-
       </div>
 
-
     </div>
-
 
   </main>
 
@@ -634,14 +603,14 @@
     const pdfGrid =
       document.getElementById("pdfGrid");
 
-    const rearrangeMessage =
-      document.getElementById("rearrangeMessage");
-
     const mergeButton =
       document.getElementById("mergeButton");
 
     const startOverButton =
       document.getElementById("startOverButton");
+
+    const changeOrderButton =
+      document.getElementById("changeOrderButton");
 
     const status =
       document.getElementById("status");
@@ -651,7 +620,7 @@
 
     let pdfFiles = [];
 
-    let selectedFileForSwap = null;
+    let draggedIndex = null;
 
 
     /* Upload PDFs */
@@ -686,6 +655,7 @@
               await PDFLib.PDFDocument.load(
                 data.slice(0)
               );
+
 
             pdfFiles.push({
               name: file.name,
@@ -723,16 +693,20 @@
       pdfGrid.innerHTML = "";
 
 
-      if (pdfFiles.length === 0) {
+      if (
+        pdfFiles.length === 0
+      ) {
 
-        editor.style.display = "none";
+        editor.style.display =
+          "none";
 
         return;
 
       }
 
 
-      editor.style.display = "block";
+      editor.style.display =
+        "block";
 
 
       for (
@@ -748,34 +722,20 @@
         const card =
           document.createElement("div");
 
+
         card.className =
           "pdf-card";
 
 
-        if (
-          selectedFileForSwap !== null
-        ) {
-
-          card.classList.add(
-            "swap-target"
-          );
-
-        }
+        card.draggable =
+          true;
 
 
-        if (
-          selectedFileForSwap === i
-        ) {
-
-          card.classList.add(
-            "selected-for-swap"
-          );
-
-        }
+        card.dataset.index =
+          i;
 
 
-        card.innerHTML =
-          `
+        card.innerHTML = `
 
           <div
             class="pdf-preview"
@@ -784,51 +744,28 @@
             📄
           </div>
 
+          <div
+            class="file-name"
+            title="${escapeHtml(file.name)}"
+          >
+            ${escapeHtml(file.name)}
+          </div>
 
-          <div class="file-info">
+          <div class="file-pages">
 
-
-            <div class="file-text">
-
-              <div
-                class="file-name"
-                title="${escapeHtml(file.name)}"
-              >
-                ${escapeHtml(file.name)}
-              </div>
-
-
-              <div class="file-pages">
-
-                ${file.pages}
-                ${file.pages === 1 ? "page" : "pages"}
-
-              </div>
-
-            </div>
-
-
-            <button
-              class="rearrange-button"
-              title="Change this file's position"
-            >
-              ↔ Rearrange
-            </button>
-
+            ${file.pages}
+            ${file.pages === 1 ? "page" : "pages"}
 
           </div>
 
-
-          <button
-            class="remove-file"
-          >
+          <button class="remove-file">
             Remove
           </button>
 
-          `;
+        `;
 
 
-        /* Preview */
+        /* Create Preview */
 
         createPreview(
           file.data,
@@ -836,90 +773,125 @@
         );
 
 
-        /* Rearrange Button */
+        /* Drag Start */
 
-        const rearrangeButton =
-          card.querySelector(
-            ".rearrange-button"
-          );
+        card.addEventListener(
+          "dragstart",
+          function() {
 
-
-        rearrangeButton.addEventListener(
-          "click",
-          function(event) {
-
-            event.stopPropagation();
-
-
-            selectedFileForSwap =
+            draggedIndex =
               i;
 
 
-            rearrangeMessage.style.display =
-              "block";
-
-
-            renderFiles();
+            card.classList.add(
+              "dragging"
+            );
 
           }
         );
 
 
-        /* Swap Target */
+        /* Drag End */
 
         card.addEventListener(
-          "click",
+          "dragend",
           function() {
 
-            if (
-              selectedFileForSwap === null
-            ) {
-              return;
-            }
-
-
-            if (
-              selectedFileForSwap === i
-            ) {
-
-              selectedFileForSwap =
-                null;
-
-
-              rearrangeMessage.style.display =
-                "none";
-
-
-              renderFiles();
-
-
-              return;
-
-            }
-
-
-            const selectedFile =
-              pdfFiles[
-                selectedFileForSwap
-              ];
-
-
-            pdfFiles[
-              selectedFileForSwap
-            ] =
-              pdfFiles[i];
-
-
-            pdfFiles[i] =
-              selectedFile;
-
-
-            selectedFileForSwap =
+            draggedIndex =
               null;
 
 
-            rearrangeMessage.style.display =
-              "none";
+            card.classList.remove(
+              "dragging"
+            );
+
+
+            document
+              .querySelectorAll(
+                ".pdf-card"
+              )
+              .forEach(
+                function(item) {
+
+                  item.classList.remove(
+                    "drag-over"
+                  );
+
+                }
+              );
+
+          }
+        );
+
+
+        /* Drag Over */
+
+        card.addEventListener(
+          "dragover",
+          function(event) {
+
+            event.preventDefault();
+
+
+            card.classList.add(
+              "drag-over"
+            );
+
+          }
+        );
+
+
+        /* Drag Leave */
+
+        card.addEventListener(
+          "dragleave",
+          function() {
+
+            card.classList.remove(
+              "drag-over"
+            );
+
+          }
+        );
+
+
+        /* Drop */
+
+        card.addEventListener(
+          "drop",
+          function(event) {
+
+            event.preventDefault();
+
+
+            card.classList.remove(
+              "drag-over"
+            );
+
+
+            if (
+              draggedIndex === null
+              ||
+              draggedIndex === i
+            ) {
+
+              return;
+
+            }
+
+
+            const movedFile =
+              pdfFiles.splice(
+                draggedIndex,
+                1
+              )[0];
+
+
+            pdfFiles.splice(
+              i,
+              0,
+              movedFile
+            );
 
 
             renderFiles();
@@ -928,7 +900,7 @@
         );
 
 
-        /* Remove */
+        /* Remove File */
 
         const removeButton =
           card.querySelector(
@@ -949,14 +921,6 @@
             );
 
 
-            selectedFileForSwap =
-              null;
-
-
-            rearrangeMessage.style.display =
-              "none";
-
-
             renderFiles();
 
           }
@@ -970,6 +934,20 @@
       }
 
     }
+
+
+    /* Change Order Button */
+
+    changeOrderButton.addEventListener(
+      "click",
+      function() {
+
+        pdfFiles.reverse();
+
+        renderFiles();
+
+      }
+    );
 
 
     /* Create PDF Preview */
@@ -1073,7 +1051,9 @@
 
         try {
 
-          mergeButton.disabled = true;
+          mergeButton.disabled =
+            true;
+
 
           mergeButton.textContent =
             "Merging PDFs...";
@@ -1122,7 +1102,9 @@
               const page of pages
             ) {
 
-              mergedPdf.addPage(page);
+              mergedPdf.addPage(
+                page
+              );
 
             }
 
@@ -1148,11 +1130,15 @@
 
 
           const url =
-            URL.createObjectURL(blob);
+            URL.createObjectURL(
+              blob
+            );
 
 
           const link =
-            document.createElement("a");
+            document.createElement(
+              "a"
+            );
 
 
           link.href =
@@ -1179,7 +1165,9 @@
           setTimeout(
             function() {
 
-              URL.revokeObjectURL(url);
+              URL.revokeObjectURL(
+                url
+              );
 
             },
             1000
@@ -1195,9 +1183,11 @@
 
           console.error(error);
 
+
           alert(
             "Something went wrong while merging your PDFs."
           );
+
 
           status.style.display =
             "none";
@@ -1224,19 +1214,23 @@
 
         pdfFiles = [];
 
-        selectedFileForSwap = null;
+        draggedIndex =
+          null;
 
-        pdfInput.value = "";
 
-        pdfGrid.innerHTML = "";
+        pdfInput.value =
+          "";
+
+
+        pdfGrid.innerHTML =
+          "";
+
 
         editor.style.display =
           "none";
 
-        status.style.display =
-          "none";
 
-        rearrangeMessage.style.display =
+        status.style.display =
           "none";
 
       }
@@ -1248,10 +1242,14 @@
     function escapeHtml(text) {
 
       const div =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
+
 
       div.textContent =
         text;
+
 
       return div.innerHTML;
 
