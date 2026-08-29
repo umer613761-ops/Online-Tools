@@ -19,91 +19,168 @@
 
   <style>
 
+    /* =========================
+       GLOBAL
+    ========================= */
+
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f6f7fb;
-      color: #222;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #d9dee4;
+      color: #1f2937;
+      min-height: 100vh;
     }
 
 
-    /* Navigation */
+    /* =========================
+       HEADER
+    ========================= */
 
     nav {
-      background: #ffffff;
-      border-bottom: 1px solid #e5e5e5;
-      padding: 18px 30px;
+      width: 100%;
+      background: #1f2937;
+      border-bottom: 1px solid #374151;
+      padding: 16px 32px;
 
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
+
+    /* =========================
+       LOGO
+    ========================= */
+
     .logo {
-      font-size: 24px;
-      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 11px;
       text-decoration: none;
-      color: #222;
     }
 
-    .logo span {
-      color: #555;
+    .logo-icon {
+      width: 43px;
+      height: 43px;
+      border-radius: 12px;
+
+      background: linear-gradient(
+        135deg,
+        #5b9a78,
+        #3f7659
+      );
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+
+      box-shadow:
+        0 5px 14px
+        rgba(63, 118, 89, 0.25);
     }
+
+    .logo-text {
+      font-size: 29px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      line-height: 1;
+    }
+
+    .logo-tool {
+      color: #ffffff;
+    }
+
+    .logo-nest {
+      color: #a9cdb7;
+    }
+
+
+    /* =========================
+       NAV LINK
+    ========================= */
 
     .nav-links a {
+      color: #d1d5db;
       text-decoration: none;
-      color: #555;
-      font-size: 15px;
+      font-size: 14px;
     }
 
     .nav-links a:hover {
-      color: #000;
+      color: #a9cdb7;
     }
 
 
-    /* Main */
+    /* =========================
+       MAIN
+    ========================= */
 
     .container {
-      max-width: 1100px;
+      max-width: 1050px;
       margin: 0 auto;
-      padding: 60px 20px 80px;
+      padding: 55px 24px 70px;
     }
 
 
-    /* Heading */
+    /* =========================
+       HERO
+    ========================= */
 
-    .heading {
+    .hero {
       text-align: center;
       margin-bottom: 40px;
     }
 
-    .heading h1 {
-      margin: 0 0 12px;
-      font-size: 38px;
+    .hero h1 {
+      margin: 0 0 14px;
+
+      font-size: 42px;
+      font-weight: 750;
+      letter-spacing: -1px;
+
+      color: #202938;
     }
 
-    .heading p {
-      max-width: 650px;
+    .hero p {
       margin: 0 auto;
+      max-width: 700px;
 
-      color: #777;
+      font-size: 17px;
       line-height: 1.6;
-      font-size: 16px;
+
+      color: #667085;
     }
 
 
-    /* Section */
+    /* =========================
+       TOOL PANEL
+    ========================= */
 
-    .section {
-      margin-bottom: 25px;
+    .tool-panel {
+      background: #c9d0d7;
+
+      border: 1px solid #b2bbc5;
+
+      border-radius: 18px;
+
+      padding: 30px;
+
+      box-shadow:
+        0 8px 22px
+        rgba(31, 41, 55, 0.08);
     }
 
 
-    /* Editor */
+    /* =========================
+       EDITORS
+    ========================= */
 
     .editor-grid {
       display: grid;
@@ -111,60 +188,80 @@
       gap: 20px;
     }
 
-    .editor-box {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
     .editor-box label {
+      display: block;
+
+      margin-bottom: 10px;
+
       font-size: 15px;
-      font-weight: bold;
+      font-weight: 700;
+
+      color: #273246;
     }
 
     textarea {
       width: 100%;
-      height: 320px;
+      height: 300px;
 
       padding: 16px;
 
-      font-family: Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
       font-size: 15px;
       line-height: 1.6;
 
-      background: #ffffff;
-      color: #222;
+      color: #253044;
 
-      border: 1px solid #ddd;
+      background: #e9edf1;
+
+      border: 1px solid #bec7d0;
       border-radius: 12px;
 
       resize: vertical;
     }
 
+    textarea::placeholder {
+      color: #7b8490;
+    }
+
     textarea:focus {
       outline: none;
-      border-color: #888;
+
+      border-color: #8bb89c;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(139, 184, 156, 0.15);
     }
 
     #textOutput {
-      background: #fafafa;
+      background: #dfe6e1;
     }
 
 
-    /* Section Title */
+    /* =========================
+       OPTIONS
+    ========================= */
 
-    .section-title {
-      margin: 35px 0 15px;
-      font-size: 22px;
+    .options {
+      margin-top: 30px;
     }
 
+    .options-header {
+      margin-bottom: 18px;
+    }
 
-    /* Options */
+    .options-header h2 {
+      margin: 0;
+
+      font-size: 24px;
+
+      color: #253044;
+    }
 
     .options-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
     }
 
     .option {
@@ -174,93 +271,122 @@
 
       padding: 15px;
 
-      background: #ffffff;
+      background: #dce6df;
 
-      border: 1px solid #e5e5e5;
-      border-radius: 10px;
+      border: 1px solid #c2d0c7;
+      border-radius: 12px;
 
       cursor: pointer;
-      font-size: 14px;
+
+      color: #2d3a32;
 
       transition:
-        transform 0.2s,
-        border-color 0.2s;
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
     }
 
     .option:hover {
-      border-color: #aaa;
       transform: translateY(-2px);
+
+      background: #d4e0d8;
+
+      border-color: #9bb8a5;
     }
 
     .option input {
+      width: 17px;
+      height: 17px;
+
       cursor: pointer;
+
+      accent-color: #5b9a78;
     }
 
 
-    /* Buttons */
+    /* =========================
+       BUTTONS
+    ========================= */
 
     button {
       border: none;
-      border-radius: 8px;
 
-      padding: 13px 20px;
+      border-radius: 10px;
+
+      padding: 13px 22px;
 
       font-size: 15px;
+      font-weight: 600;
+
       cursor: pointer;
 
       transition:
-        opacity 0.2s,
-        transform 0.2s;
+        transform 0.2s ease,
+        opacity 0.2s ease;
     }
 
     button:hover {
+      transform: translateY(-2px);
       opacity: 0.9;
-      transform: translateY(-1px);
     }
 
     .primary-button {
-      background: #222;
+      background: #3f7659;
       color: white;
+
+      box-shadow:
+        0 5px 14px
+        rgba(63, 118, 89, 0.2);
     }
 
     .secondary-button {
-      background: #ffffff;
-      color: #222;
-      border: 1px solid #ddd;
+      background: #e9edf1;
+      color: #273246;
+
+      border: 1px solid #bec7d0;
     }
 
 
-    /* Clean Button */
+    /* =========================
+       CLEAN BUTTON
+    ========================= */
 
     .clean-section {
-      text-align: center;
+      display: flex;
+      justify-content: center;
+
       margin-top: 30px;
     }
 
     .clean-button {
-      padding: 15px 45px;
+      min-width: 220px;
+
+      padding: 15px 30px;
+
       font-size: 16px;
     }
 
 
-    /* Statistics */
+    /* =========================
+       STATISTICS
+    ========================= */
 
     .stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
 
-      gap: 15px;
+      gap: 18px;
 
-      margin-top: 40px;
+      margin-top: 35px;
     }
 
     .stat {
-      background: #ffffff;
-
       padding: 22px;
 
-      border: 1px solid #e5e5e5;
-      border-radius: 12px;
+      background: #dce6df;
+
+      border: 1px solid #c2d0c7;
+      border-radius: 14px;
 
       text-align: center;
     }
@@ -271,45 +397,52 @@
       font-size: 30px;
 
       margin-bottom: 6px;
+
+      color: #2d3a32;
     }
 
     .stat span {
-      color: #777;
+      color: #59665e;
       font-size: 14px;
     }
 
 
-    /* Actions */
+    /* =========================
+       ACTIONS
+    ========================= */
 
     .action-buttons {
       display: flex;
       justify-content: center;
+
       gap: 12px;
 
       margin-top: 25px;
     }
 
 
-    /* Information */
+    /* =========================
+       INFO
+    ========================= */
 
     .info {
-      margin-top: 50px;
+      margin-top: 35px;
 
       padding: 25px;
 
-      background: #ffffff;
+      background: #e9edf1;
 
-      border: 1px solid #e5e5e5;
-      border-radius: 12px;
+      border: 1px solid #bec7d0;
+      border-radius: 14px;
 
-      color: #666;
+      color: #596678;
+
       line-height: 1.7;
-      font-size: 15px;
     }
 
     .info strong {
-      color: #222;
-      font-size: 16px;
+      color: #273246;
+      font-size: 17px;
     }
 
     .info p {
@@ -317,59 +450,79 @@
     }
 
 
-    /* Footer */
+    /* =========================
+       FOOTER
+    ========================= */
 
     footer {
+      background: #1f2937;
+
+      border-top: 1px solid #374151;
+
       text-align: center;
 
-      padding: 35px 20px;
+      padding: 32px 20px;
 
-      background: #ffffff;
+      color: #aeb7c5;
 
-      border-top: 1px solid #e5e5e5;
-
-      color: #777;
       font-size: 14px;
     }
 
 
-    /* Tablet */
+    /* =========================
+       TABLET
+    ========================= */
 
-    @media (max-width: 800px) {
+    @media (max-width: 850px) {
 
       .editor-grid {
         grid-template-columns: 1fr;
       }
 
-      .options-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
     }
 
 
-    /* Mobile */
+    /* =========================
+       MOBILE
+    ========================= */
 
     @media (max-width: 600px) {
 
       nav {
-        padding: 15px 20px;
+        padding: 14px 16px;
       }
 
-      .nav-links {
-        display: none;
+      .logo {
+        gap: 8px;
+      }
+
+      .logo-icon {
+        width: 37px;
+        height: 37px;
+
+        border-radius: 10px;
+
+        font-size: 19px;
+      }
+
+      .logo-text {
+        font-size: 24px;
       }
 
       .container {
-        padding: 45px 15px 60px;
+        padding: 42px 16px 55px;
       }
 
-      .heading h1 {
-        font-size: 30px;
+      .hero h1 {
+        font-size: 32px;
       }
 
-      textarea {
-        height: 240px;
+      .hero p {
+        font-size: 15px;
+      }
+
+      .tool-panel {
+        padding: 20px;
       }
 
       .options-grid {
@@ -388,6 +541,10 @@
         width: 100%;
       }
 
+      textarea {
+        height: 240px;
+      }
+
     }
 
   </style>
@@ -398,13 +555,31 @@
 <body>
 
 
+  <!-- HEADER -->
+
   <nav>
 
     <a
       href="index.html"
       class="logo"
     >
-      Tool<span>Nest</span>
+
+      <div class="logo-icon">
+        T
+      </div>
+
+      <div class="logo-text">
+
+        <span class="logo-tool">
+          Tool
+        </span>
+
+        <span class="logo-nest">
+          Nest
+        </span>
+
+      </div>
+
     </a>
 
 
@@ -419,10 +594,15 @@
   </nav>
 
 
+
+  <!-- MAIN -->
+
   <main class="container">
 
 
-    <div class="heading">
+    <!-- HERO -->
+
+    <section class="hero">
 
       <h1>
         Text Cleaner
@@ -433,12 +613,16 @@
         empty lines, tabs, invisible characters and more.
       </p>
 
-    </div>
+    </section>
 
 
-    <!-- Editors -->
 
-    <section class="section">
+    <!-- TOOL -->
+
+    <section class="tool-panel">
+
+
+      <!-- EDITORS -->
 
       <div class="editor-grid">
 
@@ -474,244 +658,267 @@
 
       </div>
 
+
+
+      <!-- OPTIONS -->
+
+      <div class="options">
+
+        <div class="options-header">
+
+          <h2>
+            Cleaning Options
+          </h2>
+
+        </div>
+
+
+        <div class="options-grid">
+
+
+          <label class="option">
+
+            <input
+              type="checkbox"
+              id="extraSpaces"
+              checked
+            >
+
+            Remove extra spaces
+
+          </label>
+
+
+          <label class="option">
+
+            <input
+              type="checkbox"
+              id="emptyLines"
+              checked
+            >
+
+            Remove empty lines
+
+          </label>
+
+
+          <label class="option">
+
+            <input
+              type="checkbox"
+              id="trimLines"
+              checked
+            >
+
+            Trim spaces from each line
+
+          </label>
+
+
+          <label class="option">
+
+            <input
+              type="checkbox"
+              id="tabs"
+              checked
+            >
+
+            Replace tabs with spaces
+
+          </label>
+
+
+          <label class="option">
+
+            <input
+              type="checkbox"
+              id="normalizeBreaks"
+              checked
+            >
+
+            Normalize line breaks
+
+          </label>
+
+
+          <label class="option">
+
+            <input
+              type="checkbox"
+              id="invisibleCharacters"
+              checked
+            >
+
+            Remove invisible characters
+
+          </label>
+
+
+          <label class="option">
+
+            <input
+              type="checkbox"
+              id="smartQuotes"
+            >
+
+            Convert smart quotes
+
+          </label>
+
+
+          <label class="option">
+
+            <input
+              type="checkbox"
+              id="repeatedPunctuation"
+            >
+
+            Reduce repeated punctuation
+
+          </label>
+
+
+          <label class="option">
+
+            <input
+              type="checkbox"
+              id="duplicates"
+            >
+
+            Remove duplicate lines
+
+          </label>
+
+
+        </div>
+
+      </div>
+
+
+
+      <!-- CLEAN BUTTON -->
+
+      <div class="clean-section">
+
+        <button
+          class="primary-button clean-button"
+          onclick="cleanText()"
+        >
+          Clean Text
+        </button>
+
+      </div>
+
+
+
+      <!-- STATS -->
+
+      <div class="stats">
+
+
+        <div class="stat">
+
+          <strong id="lineCount">
+            0
+          </strong>
+
+          <span>
+            Lines
+          </span>
+
+        </div>
+
+
+        <div class="stat">
+
+          <strong id="wordCount">
+            0
+          </strong>
+
+          <span>
+            Words
+          </span>
+
+        </div>
+
+
+        <div class="stat">
+
+          <strong id="characterCount">
+            0
+          </strong>
+
+          <span>
+            Characters
+          </span>
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ACTIONS -->
+
+      <div class="action-buttons">
+
+        <button
+          class="secondary-button"
+          onclick="copyText()"
+        >
+          Copy Result
+        </button>
+
+
+        <button
+          class="secondary-button"
+          onclick="clearText()"
+        >
+          Clear
+        </button>
+
+      </div>
+
+
+
+      <!-- INFO -->
+
+      <div class="info">
+
+        <strong>
+          How to use Text Cleaner
+        </strong>
+
+        <p>
+          Paste your text into the input box, select the
+          cleaning options you want, and click Clean Text.
+          Your cleaned text will appear in the result box.
+        </p>
+
+      </div>
+
+
     </section>
-
-
-    <!-- Options -->
-
-    <h2 class="section-title">
-      Cleaning Options
-    </h2>
-
-
-    <div class="options-grid">
-
-
-      <label class="option">
-
-        <input
-          type="checkbox"
-          id="extraSpaces"
-          checked
-        >
-
-        Remove extra spaces
-
-      </label>
-
-
-      <label class="option">
-
-        <input
-          type="checkbox"
-          id="emptyLines"
-          checked
-        >
-
-        Remove empty lines
-
-      </label>
-
-
-      <label class="option">
-
-        <input
-          type="checkbox"
-          id="trimLines"
-          checked
-        >
-
-        Trim spaces from lines
-
-      </label>
-
-
-      <label class="option">
-
-        <input
-          type="checkbox"
-          id="tabs"
-          checked
-        >
-
-        Replace tabs with spaces
-
-      </label>
-
-
-      <label class="option">
-
-        <input
-          type="checkbox"
-          id="normalizeBreaks"
-          checked
-        >
-
-        Normalize line breaks
-
-      </label>
-
-
-      <label class="option">
-
-        <input
-          type="checkbox"
-          id="invisibleCharacters"
-          checked
-        >
-
-        Remove invisible characters
-
-      </label>
-
-
-      <label class="option">
-
-        <input
-          type="checkbox"
-          id="smartQuotes"
-        >
-
-        Convert smart quotes
-
-      </label>
-
-
-      <label class="option">
-
-        <input
-          type="checkbox"
-          id="repeatedPunctuation"
-        >
-
-        Reduce repeated punctuation
-
-      </label>
-
-
-      <label class="option">
-
-        <input
-          type="checkbox"
-          id="duplicates"
-        >
-
-        Remove duplicate lines
-
-      </label>
-
-
-    </div>
-
-
-    <div class="clean-section">
-
-      <button
-        class="primary-button clean-button"
-        onclick="cleanText()"
-      >
-        Clean Text
-      </button>
-
-    </div>
-
-
-    <!-- Statistics -->
-
-    <div class="stats">
-
-
-      <div class="stat">
-
-        <strong id="lineCount">
-          0
-        </strong>
-
-        <span>
-          Lines
-        </span>
-
-      </div>
-
-
-      <div class="stat">
-
-        <strong id="wordCount">
-          0
-        </strong>
-
-        <span>
-          Words
-        </span>
-
-      </div>
-
-
-      <div class="stat">
-
-        <strong id="characterCount">
-          0
-        </strong>
-
-        <span>
-          Characters
-        </span>
-
-      </div>
-
-
-    </div>
-
-
-    <!-- Actions -->
-
-    <div class="action-buttons">
-
-      <button
-        class="secondary-button"
-        onclick="copyText()"
-      >
-        Copy Result
-      </button>
-
-
-      <button
-        class="secondary-button"
-        onclick="clearText()"
-      >
-        Clear
-      </button>
-
-    </div>
-
-
-    <!-- Information -->
-
-    <div class="info">
-
-      <strong>
-        How to use Text Cleaner
-      </strong>
-
-      <p>
-        Paste your text into the input box,
-        select the cleaning options you want,
-        and click Clean Text.
-        Your cleaned text will appear in the result box.
-      </p>
-
-    </div>
 
 
   </main>
 
 
+
+  <!-- FOOTER -->
+
   <footer>
 
-    © 2026 ToolNest · Simple, Fast &amp; Free
+    © 2026 ToolNest
+    ·
+    Simple, Fast &amp; Free
 
   </footer>
 
+
+
+  <!-- SCRIPT -->
 
   <script>
 
@@ -719,6 +926,7 @@
       document.getElementById(
         "textInput"
       );
+
 
     const output =
       document.getElementById(
@@ -753,8 +961,14 @@
 
         value =
           value
-            .replace(/\r\n/g, "\n")
-            .replace(/\r/g, "\n");
+            .replace(
+              /\r\n/g,
+              "\n"
+            )
+            .replace(
+              /\r/g,
+              "\n"
+            );
 
       }
 
@@ -797,8 +1011,14 @@
 
         value =
           value
-            .replace(/[“”]/g, '"')
-            .replace(/[‘’]/g, "'");
+            .replace(
+              /[“”]/g,
+              '"'
+            )
+            .replace(
+              /[‘’]/g,
+              "'"
+            );
 
       }
 
@@ -812,11 +1032,13 @@
         value =
           value
             .split("\n")
-            .map(function(line) {
+            .map(
+              function(line) {
 
-              return line.trim();
+                return line.trim();
 
-            })
+              }
+            )
             .join("\n");
 
       }
@@ -845,9 +1067,18 @@
 
         value =
           value
-            .replace(/!{2,}/g, "!")
-            .replace(/\?{2,}/g, "?")
-            .replace(/\.{4,}/g, "...");
+            .replace(
+              /!{2,}/g,
+              "!"
+            )
+            .replace(
+              /\?{2,}/g,
+              "?"
+            )
+            .replace(
+              /\.{4,}/g,
+              "..."
+            );
 
       }
 
@@ -861,13 +1092,15 @@
         value =
           value
             .split("\n")
-            .filter(function(line) {
+            .filter(
+              function(line) {
 
-              return (
-                line.trim() !== ""
-              );
+                return (
+                  line.trim() !== ""
+                );
 
-            })
+              }
+            )
             .join("\n");
 
       }
@@ -882,11 +1115,11 @@
         const lines =
           value.split("\n");
 
-        const seen =
-          new Set();
-
         const uniqueLines =
           [];
+
+        const seen =
+          new Set();
 
 
         lines.forEach(
@@ -904,7 +1137,9 @@
 
               seen.add(key);
 
-              uniqueLines.push(line);
+              uniqueLines.push(
+                line
+              );
 
             }
 
@@ -913,7 +1148,9 @@
 
 
         value =
-          uniqueLines.join("\n");
+          uniqueLines.join(
+            "\n"
+          );
 
       }
 
@@ -927,28 +1164,31 @@
     }
 
 
+
     function updateStatistics() {
 
       const value =
         output.value;
 
 
-      const lines =
+      const lineCount =
         value.trim() === ""
           ? 0
           : value
               .split("\n")
-              .filter(function(line) {
+              .filter(
+                function(line) {
 
-                return (
-                  line.trim() !== ""
-                );
+                  return (
+                    line.trim() !== ""
+                  );
 
-              })
+                }
+              )
               .length;
 
 
-      const words =
+      const wordCount =
         value.trim() === ""
           ? 0
           : value
@@ -960,13 +1200,13 @@
       document.getElementById(
         "lineCount"
       ).textContent =
-        lines;
+        lineCount;
 
 
       document.getElementById(
         "wordCount"
       ).textContent =
-        words;
+        wordCount;
 
 
       document.getElementById(
@@ -975,6 +1215,7 @@
         value.length;
 
     }
+
 
 
     function copyText() {
@@ -996,22 +1237,27 @@
         .writeText(
           output.value
         )
-        .then(function() {
+        .then(
+          function() {
 
-          alert(
-            "Cleaned text copied!"
-          );
+            alert(
+              "Cleaned text copied!"
+            );
 
-        });
+          }
+        );
 
     }
 
 
+
     function clearText() {
 
-      input.value = "";
+      input.value =
+        "";
 
-      output.value = "";
+      output.value =
+        "";
 
       updateStatistics();
 
