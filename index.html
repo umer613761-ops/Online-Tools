@@ -67,7 +67,6 @@
     .logo-icon {
       width: 43px;
       height: 43px;
-
       border-radius: 12px;
 
       background: linear-gradient(
@@ -185,7 +184,7 @@
 
 
     /* =========================
-       PDF + TEXT AREA
+       PDF + TEXT
     ========================= */
 
     .categories-row {
@@ -202,7 +201,7 @@
 
     #pdf-tools {
       padding-right: 38px;
-      border-right: 1px solid #bfc7d4;
+      border-right: 1px solid #b4bdca;
     }
 
     #text-tools {
@@ -231,44 +230,30 @@
     .category-dot {
       width: 12px;
       height: 12px;
-
       border-radius: 50%;
       flex-shrink: 0;
     }
 
-
-    /* PDF */
-
     #pdf-tools .category-dot {
       background: #7567d8;
-
       box-shadow:
         0 0 12px
-        rgba(117, 103, 216, 0.35);
+        rgba(117, 103, 216, 0.4);
     }
-
-
-    /* TEXT */
 
     #text-tools .category-dot {
       background: #4d8fd6;
-
       box-shadow:
         0 0 12px
-        rgba(77, 143, 214, 0.28);
+        rgba(77, 143, 214, 0.35);
     }
-
-
-    /* IMAGE */
 
     #image-tools .category-dot {
       background: #39a878;
-
       box-shadow:
         0 0 12px
-        rgba(57, 168, 120, 0.28);
+        rgba(57, 168, 120, 0.35);
     }
-
 
     .category-header h2 {
       margin: 0;
@@ -280,7 +265,7 @@
     .category-header p {
       margin: 0;
       font-size: 15px;
-      color: #6d7787;
+      color: #626d7d;
       line-height: 1.5;
     }
 
@@ -291,10 +276,7 @@
 
     .tools-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(2, 1fr);
-
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
     }
 
@@ -304,20 +286,22 @@
     ========================= */
 
     .tool-card {
-      display: block;
+      display: flex;
+      flex-direction: column;
 
-      min-height: 188px;
+      height: 200px;
       padding: 25px;
 
-      border: 1px solid #c5ccd7;
       border-radius: 16px;
 
       text-decoration: none;
       color: inherit;
 
+      border: 1px solid transparent;
+
       box-shadow:
-        0 3px 10px
-        rgba(31, 41, 55, 0.05);
+        0 4px 12px
+        rgba(31, 41, 55, 0.07);
 
       transition:
         transform 0.2s ease,
@@ -327,64 +311,64 @@
     }
 
     .tool-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-5px);
     }
 
 
     /* =========================
-       PDF TOOL CARDS
+       PDF CARDS
     ========================= */
 
     #pdf-tools .tool-card {
-      background: #f4f2ff;
+      background: #e1ddf5;
+      border-color: #c7c0e8;
     }
 
     #pdf-tools .tool-card:hover {
-      background: #eeebff;
-
-      border-color: #a59aea;
+      background: #d9d3f2;
+      border-color: #9e91d9;
 
       box-shadow:
-        0 12px 28px
-        rgba(117, 103, 216, 0.16);
+        0 14px 30px
+        rgba(93, 76, 170, 0.18);
     }
 
 
     /* =========================
-       TEXT TOOL CARDS
+       TEXT CARDS
     ========================= */
 
     #text-tools .tool-card {
-      background: #f1f7ff;
+      background: #dceaf8;
+      border-color: #c1d9ef;
     }
 
     #text-tools .tool-card:hover {
-      background: #e9f3ff;
-
-      border-color: #92b9e6;
+      background: #d2e4f6;
+      border-color: #8db9df;
 
       box-shadow:
-        0 12px 28px
-        rgba(77, 143, 214, 0.16);
+        0 14px 30px
+        rgba(52, 120, 185, 0.18);
     }
 
 
     /* =========================
-       IMAGE TOOL CARDS
+       IMAGE CARDS
     ========================= */
 
     #image-tools .tool-card {
-      background: #f0faf5;
+      background: #dcefe6;
+      border-color: #c1dfd0;
     }
 
     #image-tools .tool-card:hover {
-      background: #e7f7ef;
-
-      border-color: #88cfaf;
+      background: #d1e9dc;
+      border-color: #82c3a3;
 
       box-shadow:
-        0 12px 28px
-        rgba(57, 168, 120, 0.16);
+        0 14px 30px
+        rgba(41, 133, 91, 0.18);
     }
 
 
@@ -407,28 +391,19 @@
       font-size: 25px;
     }
 
-
-    /* PDF ICON */
-
     #pdf-tools .tool-icon {
-      background: #ebe8ff;
-      border: 1px solid #d8d3f7;
+      background: #f0edff;
+      border: 1px solid #d1c9f1;
     }
-
-
-    /* TEXT ICON */
 
     #text-tools .tool-icon {
-      background: #e4f1ff;
-      border: 1px solid #d0e4f7;
+      background: #edf6ff;
+      border: 1px solid #c9e0f4;
     }
 
-
-    /* IMAGE ICON */
-
     #image-tools .tool-icon {
-      background: #e2f5eb;
-      border: 1px solid #cce9da;
+      background: #ecf8f1;
+      border: 1px solid #c7e6d6;
     }
 
 
@@ -446,12 +421,12 @@
       margin: 0;
       font-size: 15px;
       line-height: 1.55;
-      color: #697586;
+      color: #596678;
     }
 
 
     /* =========================
-       IMAGE TOOLS
+       IMAGE TOOLS SECTION
     ========================= */
 
     .image-category {
@@ -460,8 +435,7 @@
     }
 
     .image-category .tools-grid {
-      grid-template-columns:
-        repeat(2, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
 
 
@@ -470,10 +444,10 @@
     ========================= */
 
     .why-section {
-      background: #cbd2dd;
+      background: #c6ceda;
 
-      border-top: 1px solid #b9c1ce;
-      border-bottom: 1px solid #b9c1ce;
+      border-top: 1px solid #aeb8c7;
+      border-bottom: 1px solid #aeb8c7;
 
       padding: 65px 20px;
     }
@@ -496,7 +470,7 @@
 
     .why-header p {
       margin: 0;
-      color: #6d7787;
+      color: #626d7d;
       font-size: 15px;
     }
 
@@ -507,17 +481,14 @@
 
     .features {
       display: grid;
-
-      grid-template-columns:
-        repeat(3, 1fr);
-
+      grid-template-columns: repeat(3, 1fr);
       gap: 22px;
     }
 
     .feature {
-      background: #f8f9fb;
+      background: #e9edf2;
 
-      border: 1px solid #c3cad5;
+      border: 1px solid #b9c2ce;
       border-radius: 16px;
 
       padding: 27px;
@@ -525,8 +496,8 @@
       text-align: center;
 
       box-shadow:
-        0 2px 8px
-        rgba(31, 41, 55, 0.05);
+        0 3px 10px
+        rgba(31, 41, 55, 0.06);
     }
 
     .feature-icon {
@@ -537,7 +508,7 @@
 
       border-radius: 15px;
 
-      background: #efedfb;
+      background: #dedcf0;
 
       display: flex;
       align-items: center;
@@ -556,7 +527,7 @@
       margin: 0;
       font-size: 14px;
       line-height: 1.6;
-      color: #697586;
+      color: #596678;
     }
 
 
@@ -583,7 +554,7 @@
       margin: 0;
       font-size: 15px;
       line-height: 1.75;
-      color: #667085;
+      color: #596678;
     }
 
 
@@ -611,7 +582,6 @@
       margin: 0 10px;
 
       color: #d1d5db;
-
       text-decoration: none;
 
       transition: color 0.2s;
@@ -733,7 +703,7 @@
       }
 
       .tool-card {
-        min-height: auto;
+        height: 190px;
       }
 
       .features {
@@ -845,11 +815,8 @@
         <div class="tools-grid">
 
 
-          <a
-            href="merge-pdf.html"
-            class="tool-card"
-            data-name="merge pdf combine pdf files"
-          >
+          <a href="merge-pdf.html" class="tool-card"
+             data-name="merge pdf combine pdf files">
 
             <div class="tool-icon">📄</div>
 
@@ -862,11 +829,8 @@
           </a>
 
 
-          <a
-            href="split-pdf.html"
-            class="tool-card"
-            data-name="split pdf separate pages"
-          >
+          <a href="split-pdf.html" class="tool-card"
+             data-name="split pdf separate pages">
 
             <div class="tool-icon">✂️</div>
 
@@ -879,11 +843,8 @@
           </a>
 
 
-          <a
-            href="images-to-pdf.html"
-            class="tool-card"
-            data-name="images to pdf jpg png convert images"
-          >
+          <a href="images-to-pdf.html" class="tool-card"
+             data-name="images to pdf jpg png convert images">
 
             <div class="tool-icon">🖼️</div>
 
@@ -896,11 +857,8 @@
           </a>
 
 
-          <a
-            href="pdf-to-images.html"
-            class="tool-card"
-            data-name="pdf to images jpg png convert pdf"
-          >
+          <a href="pdf-to-images.html" class="tool-card"
+             data-name="pdf to images jpg png convert pdf">
 
             <div class="tool-icon">📷</div>
 
@@ -943,11 +901,8 @@
         <div class="tools-grid">
 
 
-          <a
-            href="word-counter.html"
-            class="tool-card"
-            data-name="word counter count words characters sentences paragraphs"
-          >
+          <a href="word-counter.html" class="tool-card"
+             data-name="word counter count words characters sentences paragraphs">
 
             <div class="tool-icon">📝</div>
 
@@ -960,11 +915,8 @@
           </a>
 
 
-          <a
-            href="case-converter.html"
-            class="tool-card"
-            data-name="case converter uppercase lowercase title sentence"
-          >
+          <a href="case-converter.html" class="tool-card"
+             data-name="case converter uppercase lowercase title sentence">
 
             <div class="tool-icon">🔤</div>
 
@@ -977,11 +929,8 @@
           </a>
 
 
-          <a
-            href="text-cleaner.html"
-            class="tool-card"
-            data-name="text cleaner remove spaces empty lines tabs"
-          >
+          <a href="text-cleaner.html" class="tool-card"
+             data-name="text cleaner remove spaces empty lines tabs">
 
             <div class="tool-icon">🧼</div>
 
@@ -994,11 +943,8 @@
           </a>
 
 
-          <a
-            href="text-sorter.html"
-            class="tool-card"
-            data-name="text sorter alphabetical numerical sort lines"
-          >
+          <a href="text-sorter.html" class="tool-card"
+             data-name="text sorter alphabetical numerical sort lines">
 
             <div class="tool-icon">🔡</div>
 
@@ -1022,10 +968,7 @@
 
     <!-- IMAGE TOOLS -->
 
-    <section
-      class="category image-category"
-      id="image-tools"
-    >
+    <section class="category image-category" id="image-tools">
 
       <div class="category-header">
 
@@ -1047,11 +990,8 @@
       <div class="tools-grid">
 
 
-        <a
-          href="image-resizer.html"
-          class="tool-card"
-          data-name="image resizer resize image dimensions width height"
-        >
+        <a href="image-resizer.html" class="tool-card"
+           data-name="image resizer resize image dimensions width height">
 
           <div class="tool-icon">📐</div>
 
@@ -1064,11 +1004,8 @@
         </a>
 
 
-        <a
-          href="image-compressor.html"
-          class="tool-card"
-          data-name="image compressor compress reduce image file size"
-        >
+        <a href="image-compressor.html" class="tool-card"
+           data-name="image compressor compress reduce image file size">
 
           <div class="tool-icon">🗜️</div>
 
@@ -1161,10 +1098,7 @@
 
   <!-- ABOUT -->
 
-  <section
-    class="about-section"
-    id="about"
-  >
+  <section class="about-section" id="about">
 
     <h2>About ToolNest</h2>
 
@@ -1184,21 +1118,13 @@
 
     <div class="footer-links">
 
-      <a href="#pdf-tools">
-        PDF Tools
-      </a>
+      <a href="#pdf-tools">PDF Tools</a>
 
-      <a href="#text-tools">
-        Text Tools
-      </a>
+      <a href="#text-tools">Text Tools</a>
 
-      <a href="#image-tools">
-        Image Tools
-      </a>
+      <a href="#image-tools">Image Tools</a>
 
-      <a href="#about">
-        About
-      </a>
+      <a href="#about">About</a>
 
     </div>
 
@@ -1215,19 +1141,13 @@
   <script>
 
     const toolSearch =
-      document.getElementById(
-        "toolSearch"
-      );
+      document.getElementById("toolSearch");
 
     const toolCards =
-      document.querySelectorAll(
-        ".tool-card"
-      );
+      document.querySelectorAll(".tool-card");
 
     const categories =
-      document.querySelectorAll(
-        ".category"
-      );
+      document.querySelectorAll(".category");
 
 
     toolSearch.addEventListener(
@@ -1246,33 +1166,21 @@
             const searchableText =
               (
                 card.textContent
-                +
-                " "
-                +
-                (
-                  card.dataset.name
-                  ||
-                  ""
-                )
+                + " "
+                + (card.dataset.name || "")
               )
               .toLowerCase();
 
 
             if (
-              searchableText.includes(
-                searchValue
-              )
+              searchableText.includes(searchValue)
             ) {
 
-              card.classList.remove(
-                "hidden"
-              );
+              card.classList.remove("hidden");
 
             } else {
 
-              card.classList.add(
-                "hidden"
-              );
+              card.classList.add("hidden");
 
             }
 
@@ -1295,15 +1203,11 @@
               searchValue !== ""
             ) {
 
-              category.classList.add(
-                "hidden"
-              );
+              category.classList.add("hidden");
 
             } else {
 
-              category.classList.remove(
-                "hidden"
-              );
+              category.classList.remove("hidden");
 
             }
 
