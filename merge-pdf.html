@@ -17,6 +17,7 @@
     content="Merge multiple PDF files into one PDF for free with ToolNest."
   >
 
+
   <style>
 
     * {
@@ -36,6 +37,7 @@
     nav {
       background: #ffffff;
       border-bottom: 1px solid #e5e5e5;
+
       padding: 18px 30px;
 
       display: flex;
@@ -165,7 +167,7 @@
 
       gap: 20px;
 
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
 
 
@@ -179,9 +181,7 @@
       border: 1px solid #e2e2e2;
       border-radius: 12px;
 
-      padding: 15px;
-
-      cursor: pointer;
+      padding: 12px;
 
       transition:
         transform 0.2s,
@@ -200,12 +200,12 @@
     }
 
 
-    /* Preview */
+    /* PDF Preview */
 
     .pdf-preview {
-      height: 150px;
+      height: 180px;
 
-      background: white;
+      background: #f3f4f7;
 
       border: 1px solid #e5e5e5;
       border-radius: 8px;
@@ -215,9 +215,17 @@
       align-items: center;
       justify-content: center;
 
-      font-size: 45px;
+      overflow: hidden;
 
       margin-bottom: 12px;
+    }
+
+    .pdf-preview canvas {
+      max-width: 100%;
+      max-height: 100%;
+
+      width: auto;
+      height: auto;
     }
 
 
@@ -225,7 +233,6 @@
 
     .pdf-name {
       font-size: 13px;
-
       font-weight: bold;
 
       overflow: hidden;
@@ -233,6 +240,12 @@
       white-space: nowrap;
 
       text-align: center;
+
+      padding:
+        2px
+        25px
+        2px
+        25px;
     }
 
 
@@ -241,8 +254,8 @@
     .remove-button {
       position: absolute;
 
-      top: 8px;
-      right: 8px;
+      top: 7px;
+      right: 7px;
 
       width: 28px;
       height: 28px;
@@ -250,25 +263,30 @@
       border: none;
       border-radius: 50%;
 
-      background: white;
+      background: #ffffff;
 
       box-shadow:
         0 2px 8px
         rgba(0, 0, 0, 0.15);
 
+      color: #222;
+
       cursor: pointer;
 
-      font-size: 16px;
+      font-size: 18px;
+      line-height: 1;
 
       padding: 0;
+
+      z-index: 5;
     }
 
     .remove-button:hover {
-      background: #eee;
+      background: #eeeeee;
     }
 
 
-    /* Order Mode */
+    /* Ordering Mode */
 
     .ordering .pdf-card {
       cursor: pointer;
@@ -283,7 +301,7 @@
     }
 
 
-    /* Order Badge */
+    /* Order Number Badge */
 
     .order-number {
       position: absolute;
@@ -300,14 +318,58 @@
       color: white;
 
       display: flex;
-
       align-items: center;
       justify-content: center;
 
       font-size: 17px;
       font-weight: bold;
 
-      z-index: 2;
+      z-index: 4;
+    }
+
+
+    /* Ordering Notice */
+
+    .ordering-notice {
+      display: none;
+
+      text-align: center;
+
+      padding: 18px;
+      margin-bottom: 25px;
+
+      background: #f6f7fb;
+
+      border-radius: 10px;
+
+      color: #555;
+
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .ordering-notice.active {
+      display: block;
+    }
+
+    .ordering-notice strong {
+      color: #222;
+    }
+
+
+    /* Add More */
+
+    .add-more {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .add-more label {
+      color: #555;
+      font-size: 14px;
+
+      cursor: pointer;
+      text-decoration: underline;
     }
 
 
@@ -321,6 +383,8 @@
       gap: 12px;
 
       flex-wrap: wrap;
+
+      margin-top: 30px;
     }
 
     button {
@@ -341,34 +405,14 @@
       opacity: 0.85;
     }
 
-
     .primary-button {
       background: #222;
-      color: white;
+      color: #ffffff;
     }
-
 
     .secondary-button {
       background: #e9e9e9;
       color: #222;
-    }
-
-
-    /* Add More Files */
-
-    .add-more {
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .add-more label {
-      color: #555;
-
-      font-size: 14px;
-
-      cursor: pointer;
-
-      text-decoration: underline;
     }
 
 
@@ -429,26 +473,34 @@
     }
 
     .modal-box p {
-      margin: 0 0 25px;
+      margin: 0 0 20px;
 
       color: #666;
 
       line-height: 1.6;
     }
 
+
+    /* Example Numbers */
+
     .instruction-example {
       display: flex;
 
       justify-content: center;
 
+      align-items: center;
+
       gap: 10px;
 
-      margin-bottom: 25px;
+      margin:
+        20px
+        0
+        25px;
     }
 
     .instruction-number {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
 
       border-radius: 50%;
 
@@ -460,37 +512,6 @@
       justify-content: center;
 
       font-weight: bold;
-    }
-
-
-    /* Ordering Notice */
-
-    .ordering-notice {
-      display: none;
-
-      text-align: center;
-
-      padding: 18px;
-
-      margin-bottom: 25px;
-
-      background: #f6f7fb;
-
-      border-radius: 10px;
-
-      color: #555;
-
-      font-size: 14px;
-
-      line-height: 1.6;
-    }
-
-    .ordering-notice.active {
-      display: block;
-    }
-
-    .ordering-notice strong {
-      color: #222;
     }
 
 
@@ -543,8 +564,7 @@
       }
 
       .pdf-preview {
-        height: 110px;
-        font-size: 35px;
+        height: 130px;
       }
 
       .button-row {
@@ -610,12 +630,12 @@
 
 
 
-    <!-- Tool -->
+    <!-- Tool Box -->
 
     <div class="tool-box">
 
 
-      <!-- Upload -->
+      <!-- Upload Area -->
 
       <label
         for="pdfInput"
@@ -654,7 +674,7 @@
       >
 
 
-        <!-- Order Instructions -->
+        <!-- Ordering Notice -->
 
         <div
           class="ordering-notice"
@@ -668,22 +688,17 @@
           <br>
 
           Click each PDF in the order you want
-          them to appear in the final merged file.
+          them to appear in the final merged PDF.
 
           <br>
 
-          The numbers
-          <strong>
-            1 → 2 → 3 → 4
-          </strong>
-
-          show the new order.
+          The numbers show the new order.
 
         </div>
 
 
 
-        <!-- PDF Previews -->
+        <!-- PDF Grid -->
 
         <div
           class="pdf-grid"
@@ -693,7 +708,7 @@
 
 
 
-        <!-- Add More -->
+        <!-- Add More Files -->
 
         <div class="add-more">
 
@@ -707,10 +722,7 @@
 
         <!-- Buttons -->
 
-        <div
-          class="button-row"
-          style="margin-top: 30px;"
-        >
+        <div class="button-row">
 
 
           <button
@@ -772,8 +784,8 @@
 
 
       <p>
-        Click each PDF in the order you want
-        it to appear in your final merged PDF.
+        Click each PDF in the exact order
+        you want it to appear in your final PDF.
       </p>
 
 
@@ -783,9 +795,13 @@
           1
         </div>
 
+        →
+
         <div class="instruction-number">
           2
         </div>
+
+        →
 
         <div class="instruction-number">
           3
@@ -795,8 +811,8 @@
 
 
       <p>
-        Each PDF you select will receive
-        a number showing its new position.
+        Each PDF you click will receive
+        a number showing its position.
       </p>
 
 
@@ -826,7 +842,16 @@
 
 
 
+  <!-- PDF.js -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+
   <script>
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
 
     const pdfInput =
       document.getElementById(
@@ -889,7 +914,7 @@
     let selectedOrder = [];
 
 
-    /* Add PDF Files */
+    /* Upload PDF Files */
 
     pdfInput.addEventListener(
       "change",
@@ -912,6 +937,7 @@
               pdfFiles.push(
                 {
                   file: file,
+
                   id:
                     Date.now()
                     +
@@ -938,6 +964,8 @@
         renderPDFs();
 
 
+        /* Reset input so same file can be selected again */
+
         pdfInput.value =
           "";
 
@@ -946,7 +974,7 @@
 
 
 
-    /* Render PDF Cards */
+    /* Render PDF Files */
 
     function renderPDFs() {
 
@@ -972,6 +1000,8 @@
             item.id;
 
 
+          /* Preview Container */
+
           const preview =
             document.createElement(
               "div"
@@ -982,9 +1012,20 @@
             "pdf-preview";
 
 
-          preview.innerHTML =
-            "📄";
+          /* Canvas */
 
+          const canvas =
+            document.createElement(
+              "canvas"
+            );
+
+
+          preview.appendChild(
+            canvas
+          );
+
+
+          /* File Name */
 
           const name =
             document.createElement(
@@ -999,6 +1040,8 @@
           name.textContent =
             item.file.name;
 
+
+          /* Remove Button */
 
           const removeButton =
             document.createElement(
@@ -1067,6 +1110,8 @@
           );
 
 
+          /* Add Elements */
+
           card.appendChild(
             preview
           );
@@ -1087,6 +1132,8 @@
 
           }
 
+
+          /* Click for Ordering */
 
           card.addEventListener(
             "click",
@@ -1110,11 +1157,117 @@
             card
           );
 
+
+          /* Create Real PDF Preview */
+
+          renderPDFPreview(
+            item.file,
+            canvas
+          );
+
         }
       );
 
 
       updateOrderNumbers();
+
+    }
+
+
+
+    /* Render First Page of PDF */
+
+    async function renderPDFPreview(
+      file,
+      canvas
+    ) {
+
+      try {
+
+        const arrayBuffer =
+          await file.arrayBuffer();
+
+
+        const pdf =
+          await pdfjsLib.getDocument(
+            {
+              data:
+                arrayBuffer
+            }
+          ).promise;
+
+
+        const page =
+          await pdf.getPage(
+            1
+          );
+
+
+        const viewport =
+          page.getViewport(
+            {
+              scale: 0.5
+            }
+          );
+
+
+        const context =
+          canvas.getContext(
+            "2d"
+          );
+
+
+        canvas.width =
+          viewport.width;
+
+
+        canvas.height =
+          viewport.height;
+
+
+        await page.render(
+          {
+            canvasContext:
+              context,
+
+            viewport:
+              viewport
+          }
+        ).promise;
+
+      }
+
+      catch (
+        error
+      ) {
+
+        console.error(
+          "Could not render PDF preview:",
+          error
+        );
+
+
+        const context =
+          canvas.getContext(
+            "2d"
+          );
+
+
+        context.font =
+          "20px Arial";
+
+
+        context.textAlign =
+          "center";
+
+
+        context.fillText(
+          "PDF",
+          60,
+          60
+        );
+
+      }
 
     }
 
@@ -1153,6 +1306,7 @@
     startOrderingButton.addEventListener(
       "click",
       function() {
+
 
         orderModal.classList.remove(
           "active"
@@ -1194,13 +1348,18 @@
 
     /* Select PDF Order */
 
-    function selectPDFOrder(id) {
+    function selectPDFOrder(
+      id
+    ) {
+
 
       const existingIndex =
         selectedOrder.indexOf(
           id
         );
 
+
+      /* Remove selection if clicked again */
 
       if (
         existingIndex !== -1
@@ -1212,6 +1371,9 @@
         );
 
       }
+
+
+      /* Add to order */
 
       else {
 
@@ -1228,9 +1390,10 @@
 
 
 
-    /* Update Numbers */
+    /* Update Order Numbers */
 
     function updateOrderNumbers() {
+
 
       const cards =
         document.querySelectorAll(
@@ -1272,6 +1435,7 @@
             orderingMode
           ) {
 
+
             const position =
               selectedOrder.indexOf(
                 id
@@ -1281,6 +1445,7 @@
             if (
               position !== -1
             ) {
+
 
               const badge =
                 document.createElement(
@@ -1327,19 +1492,24 @@
           selectedOrder.length > 0
         ) {
 
+
           const newlyOrdered =
             [];
 
 
+          /* Selected files first */
+
           selectedOrder.forEach(
             function(id) {
+
 
               const pdf =
                 pdfFiles.find(
                   function(item) {
 
                     return (
-                      item.id === id
+                      item.id ===
+                      id
                     );
 
                   }
@@ -1360,8 +1530,11 @@
           );
 
 
+          /* Unselected files after */
+
           pdfFiles.forEach(
             function(pdf) {
+
 
               if (
                 !selectedOrder.includes(
@@ -1418,11 +1591,12 @@
 
 
 
-    /* Merge Button */
+    /* Merge PDFs */
 
     mergeButton.addEventListener(
       "click",
       function() {
+
 
         if (
           pdfFiles.length < 2
@@ -1438,7 +1612,7 @@
 
 
         alert(
-          "Your PDFs are ready to be merged in the selected order. The PDF merging functionality can now be connected here."
+          "PDF merging functionality will be added here."
         );
 
       }
