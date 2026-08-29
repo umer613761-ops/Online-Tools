@@ -65,7 +65,7 @@
     /* Main */
 
     .container {
-      max-width: 1000px;
+      max-width: 1050px;
       margin: 0 auto;
       padding: 60px 20px 80px;
     }
@@ -149,12 +149,12 @@
 
     .editor-header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     .editor-header h2 {
       margin: 0 0 8px;
-      font-size: 20px;
+      font-size: 21px;
     }
 
     .editor-header p {
@@ -169,7 +169,7 @@
       display: grid;
 
       grid-template-columns:
-        repeat(auto-fill, minmax(180px, 1fr));
+        repeat(auto-fill, minmax(190px, 1fr));
 
       gap: 20px;
     }
@@ -183,32 +183,9 @@
       border: 1px solid #e5e5e5;
       border-radius: 12px;
 
-      padding: 15px;
+      padding: 14px;
 
       text-align: center;
-    }
-
-    /* Preview */
-
-    .pdf-preview {
-      width: 100%;
-      height: 200px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background: #ffffff;
-
-      border: 1px solid #e5e5e5;
-      border-radius: 8px;
-
-      overflow: hidden;
-    }
-
-    .pdf-preview canvas {
-      max-width: 100%;
-      max-height: 100%;
     }
 
     /* Order Number */
@@ -233,6 +210,31 @@
 
       font-size: 13px;
       font-weight: bold;
+
+      z-index: 2;
+    }
+
+    /* Preview */
+
+    .pdf-preview {
+      width: 100%;
+      height: 220px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #ffffff;
+
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+
+      overflow: hidden;
+    }
+
+    .pdf-preview canvas {
+      max-width: 100%;
+      max-height: 100%;
     }
 
     /* File Name */
@@ -250,51 +252,74 @@
 
     .file-pages {
       margin-top: 5px;
+
       color: #777;
       font-size: 12px;
     }
 
-    /* Controls */
+    /* Rearrange Controls */
 
-    .card-controls {
+    .rearrange-controls {
       display: flex;
+      align-items: center;
       justify-content: center;
       gap: 8px;
 
       margin-top: 15px;
     }
 
-    .small-button {
-      width: 38px;
+    .move-button {
+      min-width: 40px;
+      height: 36px;
+
+      border: 1px solid #dcdcdc;
+      border-radius: 7px;
+
+      background: white;
+      color: #222;
+
+      font-size: 17px;
+
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .move-button:hover {
+      background: #eeeeee;
+    }
+
+    .move-button:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .remove-button {
+      min-width: 40px;
       height: 36px;
 
       border: none;
       border-radius: 7px;
 
-      background: #e5e5e5;
+      background: #e9e9e9;
       color: #222;
 
-      font-size: 16px;
+      font-size: 18px;
+
       cursor: pointer;
-
-      transition: opacity 0.2s;
+      transition: 0.2s;
     }
 
-    .small-button:hover {
+    .remove-button:hover {
       opacity: 0.75;
-    }
-
-    .small-button:disabled {
-      opacity: 0.35;
-      cursor: not-allowed;
     }
 
     /* Add More */
 
     .add-more {
-      display: inline-block;
+      display: block;
 
-      margin-top: 25px;
+      width: fit-content;
+      margin: 25px auto 0;
 
       color: #555;
       font-size: 14px;
@@ -307,13 +332,13 @@
       color: #000;
     }
 
-    /* Action Buttons */
+    /* Buttons */
 
     .buttons {
       display: flex;
       gap: 12px;
 
-      margin-top: 25px;
+      margin-top: 30px;
     }
 
     button {
@@ -335,6 +360,7 @@
 
     .primary-button {
       flex: 1;
+
       background: #222;
       color: white;
     }
@@ -416,7 +442,7 @@
       }
 
       .pdf-preview {
-        height: 160px;
+        height: 170px;
       }
 
       .buttons {
@@ -464,6 +490,8 @@
   <main class="container">
 
 
+    <!-- Heading -->
+
     <div class="heading">
 
       <h1>
@@ -472,11 +500,13 @@
 
       <p>
         Combine multiple PDF files into one document.
-        Rearrange your files before merging.
+        Arrange them in the order you want before merging.
       </p>
 
     </div>
 
+
+    <!-- Tool Box -->
 
     <div class="tool-box">
 
@@ -524,11 +554,12 @@
         <div class="editor-header">
 
           <h2>
-            Your PDFs
+            Your PDF Files
           </h2>
 
           <p>
-            Use the arrows to arrange the order.
+            Your PDFs will be merged from left to right.
+            Use the arrows to change the order.
           </p>
 
         </div>
@@ -604,17 +635,24 @@
   </footer>
 
 
-  <!-- PDF Libraries -->
+  <!-- PDF.js -->
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+  ></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+
+  <!-- PDF-Lib -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"
+  ></script>
 
 
   <script>
 
 
-    /* Configure PDF.js Worker */
+    /* PDF.js Worker */
 
     pdfjsLib.GlobalWorkerOptions.workerSrc =
       "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
@@ -658,7 +696,7 @@
       );
 
 
-    /* Store Files */
+    /* PDF Files */
 
     let pdfFiles = [];
 
@@ -703,13 +741,13 @@
           try {
 
 
-            const arrayBuffer =
+            const data =
               await file.arrayBuffer();
 
 
             const pdf =
               await PDFLib.PDFDocument.load(
-                arrayBuffer
+                data.slice(0)
               );
 
 
@@ -719,7 +757,7 @@
                   file.name,
 
                 data:
-                  arrayBuffer,
+                  data,
 
                 pages:
                   pdf.getPageCount()
@@ -750,6 +788,8 @@
         }
 
 
+        /* Allow Same File Again */
+
         pdfInput.value =
           "";
 
@@ -761,7 +801,7 @@
     );
 
 
-    /* Render Files */
+    /* Render PDF Cards */
 
     async function renderFiles() {
 
@@ -817,12 +857,14 @@
             ${i + 1}
           </div>
 
+
           <div
             class="pdf-preview"
             id="preview-${i}"
           >
             📄
           </div>
+
 
           <div
             class="file-name"
@@ -831,6 +873,7 @@
             ${escapeHtml(file.name)}
           </div>
 
+
           <div class="file-pages">
 
             ${file.pages}
@@ -838,35 +881,38 @@
 
           </div>
 
-          <div class="card-controls">
+
+          <div class="rearrange-controls">
+
 
             <button
-              class="small-button"
+              class="move-button"
               onclick="moveLeft(${i})"
               ${i === 0 ? "disabled" : ""}
-              title="Move left"
+              title="Move Left"
             >
               ←
             </button>
 
 
             <button
-              class="small-button"
+              class="move-button"
               onclick="moveRight(${i})"
               ${i === pdfFiles.length - 1 ? "disabled" : ""}
-              title="Move right"
+              title="Move Right"
             >
               →
             </button>
 
 
             <button
-              class="small-button"
+              class="remove-button"
               onclick="removeFile(${i})"
-              title="Remove PDF"
+              title="Remove"
             >
               ×
             </button>
+
 
           </div>
 
@@ -890,7 +936,7 @@
     }
 
 
-    /* Create PDF Preview */
+    /* Create Preview */
 
     async function createPreview(
       pdfData,
@@ -901,13 +947,17 @@
       try {
 
 
-        const pdf =
-          await pdfjsLib.getDocument(
+        const loadingTask =
+          pdfjsLib.getDocument(
             {
               data:
                 pdfData.slice(0)
             }
-          ).promise;
+          );
+
+
+        const pdf =
+          await loadingTask.promise;
 
 
         const page =
@@ -994,7 +1044,7 @@
     }
 
 
-    /* Move Left */
+    /* Move PDF Left */
 
     function moveLeft(
       index
@@ -1010,7 +1060,7 @@
       }
 
 
-      const temp =
+      const current =
         pdfFiles[index];
 
 
@@ -1019,7 +1069,7 @@
 
 
       pdfFiles[index - 1] =
-        temp;
+        current;
 
 
       renderFiles();
@@ -1028,7 +1078,7 @@
     }
 
 
-    /* Move Right */
+    /* Move PDF Right */
 
     function moveRight(
       index
@@ -1045,7 +1095,7 @@
       }
 
 
-      const temp =
+      const current =
         pdfFiles[index];
 
 
@@ -1054,7 +1104,7 @@
 
 
       pdfFiles[index + 1] =
-        temp;
+        current;
 
 
       renderFiles();
@@ -1063,7 +1113,7 @@
     }
 
 
-    /* Remove File */
+    /* Remove PDF */
 
     function removeFile(
       index
@@ -1082,7 +1132,7 @@
     }
 
 
-    /* Escape File Names */
+    /* Escape HTML */
 
     function escapeHtml(
       text
@@ -1118,7 +1168,7 @@
 
 
           alert(
-            "Please select at least two PDF files."
+            "Please choose at least two PDF files."
           );
 
 
@@ -1172,28 +1222,28 @@
 
             const sourcePdf =
               await PDFLib.PDFDocument.load(
-                pdfFiles[i].data
+                pdfFiles[i].data.slice(0)
               );
 
 
-            const copiedPages =
+            const pages =
               await mergedPdf.copyPages(
                 sourcePdf,
                 sourcePdf.getPageIndices()
               );
 
 
-            copiedPages.forEach(
-              function(page) {
+            for (
+              const page of pages
+            ) {
 
 
-                mergedPdf.addPage(
-                  page
-                );
+              mergedPdf.addPage(
+                page
+              );
 
 
-              }
-            );
+            }
 
 
           }
@@ -1281,7 +1331,7 @@
 
 
           alert(
-            "Something went wrong while merging the PDFs."
+            "Something went wrong while merging your PDFs."
           );
 
 
