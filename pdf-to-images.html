@@ -14,131 +14,272 @@
 
   <meta
     name="description"
-    content="Convert PDF pages to JPG or PNG images online for free."
+    content="Convert PDF pages to high-quality JPG or PNG images online for free with ToolNest."
   >
 
+
+  <!-- PDF.js -->
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+  ></script>
+
+
   <style>
+
+    /* =========================
+       GLOBAL
+    ========================= */
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f6f7fb;
-      color: #222;
+      min-height: 100vh;
+
+      display: flex;
+      flex-direction: column;
+
+      font-family: Arial, Helvetica, sans-serif;
+
+      background: #d9dee4;
+      color: #1f2937;
     }
 
 
-    /* Navigation */
+    /* =========================
+       HEADER
+    ========================= */
 
     nav {
-      background: #ffffff;
-      border-bottom: 1px solid #e5e5e5;
-      padding: 18px 30px;
+      width: 100%;
+
+      background: #1f2937;
+      border-bottom: 1px solid #374151;
+
+      padding: 16px 32px;
 
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
+
+    /* =========================
+       LOGO
+    ========================= */
+
     .logo {
-      font-size: 24px;
-      font-weight: bold;
+      display: flex;
+      align-items: center;
+
+      gap: 11px;
+
       text-decoration: none;
-      color: #222;
     }
 
-    .logo span {
-      color: #666;
+    .logo-icon {
+      width: 43px;
+      height: 43px;
+
+      border-radius: 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #5b9a78,
+          #3f7659
+        );
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: #ffffff;
+
+      font-size: 22px;
+      font-weight: bold;
+
+      box-shadow:
+        0 5px 14px
+        rgba(63, 118, 89, 0.25);
     }
+
+    .logo-text {
+      font-size: 29px;
+      font-weight: 800;
+
+      letter-spacing: -0.8px;
+      line-height: 1;
+    }
+
+    .logo-tool {
+      color: #ffffff;
+    }
+
+    .logo-nest {
+      color: #a9cdb7;
+    }
+
+
+    /* =========================
+       BACK LINK
+    ========================= */
 
     .back-link {
-      color: #555;
+      color: #d1d5db;
+
       text-decoration: none;
-      font-size: 15px;
+
+      font-size: 14px;
+      font-weight: 500;
+
+      padding: 9px 14px;
+
+      border-radius: 9px;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease;
     }
 
     .back-link:hover {
-      color: #000;
+      background: #273244;
+      color: #ffffff;
     }
 
 
-    /* Main */
+    /* =========================
+       MAIN
+    ========================= */
 
     .container {
-      max-width: 900px;
+      width: 100%;
+      max-width: 950px;
+
       margin: 0 auto;
-      padding: 60px 20px 80px;
+
+      padding: 55px 20px 80px;
+
+      flex: 1;
     }
 
 
-    /* Heading */
+    /* =========================
+       HEADING
+    ========================= */
 
     .heading {
       text-align: center;
+
       margin-bottom: 35px;
     }
 
     .heading h1 {
       margin: 0 0 12px;
-      font-size: 38px;
+
+      font-size: 42px;
+      font-weight: 750;
+
+      letter-spacing: -1px;
+
+      color: #202938;
     }
 
     .heading p {
-      margin: 0;
-      color: #777;
+      max-width: 650px;
+
+      margin: 0 auto;
+
+      color: #667085;
+
       font-size: 16px;
       line-height: 1.6;
     }
 
 
-    /* Tool Box */
+    /* =========================
+       TOOL BOX
+    ========================= */
 
     .tool-box {
-      background: #ffffff;
-      border: 1px solid #e5e5e5;
-      border-radius: 14px;
+      background: #e9edf1;
+
+      border: 1px solid #bec7d0;
+
+      border-radius: 16px;
+
       padding: 30px;
+
+      box-shadow:
+        0 8px 24px
+        rgba(31, 41, 55, 0.07);
     }
 
 
-    /* Upload Area */
+    /* =========================
+       UPLOAD AREA
+    ========================= */
 
     .upload-area {
       display: block;
-      border: 2px dashed #ccc;
-      border-radius: 12px;
+
       padding: 55px 20px;
 
       text-align: center;
+
+      background: #eef1f4;
+
+      border:
+        2px dashed
+        #aeb9c3;
+
+      border-radius: 14px;
+
       cursor: pointer;
 
       transition:
-        border-color 0.2s,
-        background 0.2s;
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
     }
 
     .upload-area:hover {
-      border-color: #888;
-      background: #fafafa;
+      background: #e7ece9;
+
+      border-color: #8bb89c;
+
+      transform:
+        translateY(-2px);
     }
 
     .upload-icon {
       font-size: 48px;
+
       margin-bottom: 15px;
     }
 
     .upload-area h2 {
       margin: 0 0 10px;
+
       font-size: 21px;
+
+      color: #273246;
     }
 
     .upload-area p {
       margin: 0;
-      color: #777;
+
+      color: #667085;
+
       font-size: 14px;
+      line-height: 1.6;
     }
 
     input[type="file"] {
@@ -146,95 +287,200 @@
     }
 
 
-    /* Editor */
+    /* =========================
+       EDITOR
+    ========================= */
 
     .editor {
       display: none;
+
       margin-top: 30px;
     }
 
 
-    /* File Information */
+    /* =========================
+       FILE INFORMATION
+    ========================= */
 
     .file-info {
-      text-align: center;
-      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+
+      gap: 15px;
+
+      padding: 18px;
+
+      background: #dce6df;
+
+      border:
+        1px solid
+        #c2d0c7;
+
+      border-radius: 12px;
+
+      margin-bottom: 28px;
+    }
+
+    .file-icon {
+      width: 52px;
+      height: 52px;
+
+      flex-shrink: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 28px;
+
+      background: #edf2ee;
+
+      border:
+        1px solid
+        #d0dbd3;
+
+      border-radius: 14px;
+    }
+
+    .file-details {
+      flex: 1;
+      min-width: 0;
     }
 
     .file-name {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 8px;
-      word-break: break-word;
+      font-size: 15px;
+      font-weight: 700;
+
+      color: #2d3a32;
+
+      margin-bottom: 5px;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .page-count {
-      color: #777;
+      color: #59665e;
+
       font-size: 14px;
     }
 
 
-    /* Settings */
+    /* =========================
+       SETTINGS
+    ========================= */
 
     .settings {
-      border-top: 1px solid #e5e5e5;
-      padding-top: 25px;
-      margin-bottom: 30px;
+      padding-top: 5px;
+
+      margin-bottom: 28px;
     }
 
     .settings h2 {
       margin: 0 0 18px;
+
       font-size: 21px;
+
+      color: #273246;
     }
 
 
-    /* Format Options */
+    /* =========================
+       FORMAT OPTIONS
+    ========================= */
 
     .format-options {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 25px;
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap: 16px;
+
+      margin-bottom: 22px;
     }
 
     .format-option {
-      flex: 1;
-      border: 1px solid #ddd;
-      border-radius: 10px;
+      display: block;
+
       padding: 18px;
+
+      background: #eef1f4;
+
+      border:
+        1px solid
+        #c5cdd5;
+
+      border-radius: 12px;
+
       cursor: pointer;
 
       transition:
-        border-color 0.2s,
-        background 0.2s;
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
     }
 
     .format-option:hover {
-      border-color: #999;
-      background: #fafafa;
+      background: #e7ece9;
+
+      border-color: #aabfb1;
+
+      transform:
+        translateY(-2px);
     }
 
     .format-option input {
+      width: 17px;
+      height: 17px;
+
       margin-right: 8px;
+
+      accent-color: #3f7659;
+
+      cursor: pointer;
+
+      vertical-align: middle;
     }
 
     .format-option strong {
       font-size: 16px;
+
+      color: #2d3a32;
+
+      vertical-align: middle;
     }
 
     .format-option span {
       display: block;
-      color: #777;
+
+      margin-top: 9px;
+      margin-left: 25px;
+
+      color: #667085;
+
       font-size: 13px;
-      margin-top: 7px;
-      margin-left: 23px;
       line-height: 1.5;
     }
 
 
-    /* Quality */
+    /* =========================
+       QUALITY
+    ========================= */
 
     .quality-section {
       display: none;
+
+      padding: 18px;
+
+      background: #dce6df;
+
+      border:
+        1px solid
+        #c2d0c7;
+
+      border-radius: 12px;
     }
 
     .quality-header {
@@ -247,100 +493,180 @@
 
     .quality-header label {
       font-size: 15px;
-      font-weight: bold;
+      font-weight: 700;
+
+      color: #2d3a32;
     }
 
     .quality-value {
       font-size: 15px;
-      font-weight: bold;
-      color: #555;
+      font-weight: 700;
+
+      color: #3f7659;
     }
 
     .quality-slider {
+      display: block;
+
       width: 100%;
+
+      accent-color: #3f7659;
+
       cursor: pointer;
     }
 
     .quality-description {
       margin: 10px 0 0;
-      color: #777;
+
+      color: #59665e;
+
       font-size: 13px;
       line-height: 1.5;
     }
 
 
-    /* Buttons */
+    /* =========================
+       BUTTONS
+    ========================= */
 
     .convert-section {
       text-align: center;
-      margin-bottom: 30px;
+
+      margin-bottom: 28px;
     }
 
     button {
       border: none;
-      border-radius: 8px;
-      padding: 13px 22px;
+
+      border-radius: 10px;
+
+      padding: 14px 24px;
+
       font-size: 15px;
+      font-weight: 600;
+
       cursor: pointer;
-      transition: opacity 0.2s;
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
     }
 
-    button:hover {
-      opacity: 0.85;
+    button:hover:not(:disabled) {
+      transform:
+        translateY(-2px);
     }
 
     button:disabled {
-      opacity: 0.5;
+      opacity: 0.6;
       cursor: not-allowed;
     }
 
     .primary-button {
-      background: #222;
-      color: white;
+      background: #3f7659;
+
+      color: #ffffff;
+
+      box-shadow:
+        0 5px 12px
+        rgba(63, 118, 89, 0.20);
+    }
+
+    .primary-button:hover:not(:disabled) {
+      background: #35654c;
+
+      box-shadow:
+        0 8px 18px
+        rgba(63, 118, 89, 0.28);
     }
 
     .secondary-button {
-      background: #e9e9e9;
-      color: #222;
+      background: #dce6df;
+
+      color: #2d3a32;
+
+      border:
+        1px solid
+        #c2d0c7;
+    }
+
+    .secondary-button:hover:not(:disabled) {
+      background: #d2ddd6;
+
+      border-color: #9bb8a5;
     }
 
     .convert-button {
-      padding: 14px 35px;
+      padding: 15px 38px;
+
       font-size: 16px;
     }
 
 
-    /* Loading */
+    /* =========================
+       LOADING
+    ========================= */
 
     .loading {
       display: none;
+
       text-align: center;
-      color: #777;
+
       margin: 20px 0;
-    }
 
+      padding: 15px;
 
-    /* Results */
+      background: #dce6df;
 
-    .results {
-      display: none;
-      border-top: 1px solid #e5e5e5;
-      padding-top: 30px;
-    }
+      border:
+        1px solid
+        #c2d0c7;
 
-    .results h2 {
-      margin: 0 0 8px;
-      font-size: 21px;
-    }
+      border-radius: 10px;
 
-    .results-description {
-      margin: 0 0 25px;
-      color: #777;
+      color: #59665e;
+
       font-size: 14px;
     }
 
 
-    /* Image Grid */
+    /* =========================
+       RESULTS
+    ========================= */
+
+    .results {
+      display: none;
+
+      border-top:
+        1px solid
+        #bec7d0;
+
+      padding-top: 30px;
+
+      margin-top: 30px;
+    }
+
+    .results h2 {
+      margin: 0 0 8px;
+
+      font-size: 21px;
+
+      color: #273246;
+    }
+
+    .results-description {
+      margin: 0 0 25px;
+
+      color: #667085;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================
+       IMAGE GRID
+    ========================= */
 
     .image-grid {
       display: grid;
@@ -352,13 +678,33 @@
     }
 
 
-    /* Image Card */
+    /* =========================
+       IMAGE CARD
+    ========================= */
 
     .image-card {
-      border: 1px solid #e5e5e5;
-      border-radius: 12px;
       overflow: hidden;
-      background: #fafafa;
+
+      background: #dce6df;
+
+      border:
+        1px solid
+        #c2d0c7;
+
+      border-radius: 12px;
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .image-card:hover {
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 6px 14px
+        rgba(31, 41, 55, 0.10);
     }
 
     .image-preview {
@@ -369,15 +715,22 @@
       justify-content: center;
       align-items: center;
 
-      background: #f3f4f6;
-      padding: 10px;
+      background: #eef1f4;
+
+      padding: 12px;
     }
 
     .image-preview img {
       max-width: 100%;
       max-height: 100%;
+
       object-fit: contain;
-      border-radius: 4px;
+
+      border-radius: 5px;
+
+      box-shadow:
+        0 2px 8px
+        rgba(31, 41, 55, 0.08);
     }
 
     .image-details {
@@ -386,66 +739,142 @@
 
     .image-details h3 {
       margin: 0 0 12px;
+
       font-size: 15px;
+
+      color: #2d3a32;
     }
 
     .download-button {
       width: 100%;
-      background: #222;
-      color: white;
+
+      background: #3f7659;
+
+      color: #ffffff;
+    }
+
+    .download-button:hover:not(:disabled) {
+      background: #35654c;
     }
 
 
-    /* Bottom Actions */
+    /* =========================
+       BOTTOM ACTIONS
+    ========================= */
 
     .bottom-actions {
       display: flex;
       justify-content: center;
+
       gap: 12px;
+
       margin-top: 30px;
     }
 
 
-    /* Footer */
+    /* =========================
+       FOOTER
+    ========================= */
 
     footer {
+      width: 100%;
+
+      background: #1f2937;
+
+      border-top:
+        1px solid
+        #374151;
+
       text-align: center;
-      padding: 35px 20px;
 
-      background: #ffffff;
-      border-top: 1px solid #e5e5e5;
+      padding: 32px 20px;
 
-      color: #777;
+      color: #aeb7c5;
+
       font-size: 14px;
     }
 
 
-    /* Mobile */
+    /* =========================
+       MOBILE
+    ========================= */
 
     @media (max-width: 600px) {
 
       nav {
-        padding: 15px 20px;
+        padding: 14px 16px;
+        gap: 12px;
       }
 
       .logo {
-        font-size: 21px;
+        gap: 8px;
+      }
+
+      .logo-icon {
+        width: 37px;
+        height: 37px;
+
+        border-radius: 10px;
+
+        font-size: 19px;
+      }
+
+      .logo-text {
+        font-size: 24px;
+      }
+
+      .back-link {
+        padding: 8px 10px;
+
+        font-size: 13px;
       }
 
       .container {
-        padding: 45px 15px 60px;
+        padding:
+          42px
+          16px
+          60px;
+      }
+
+      .heading {
+        margin-bottom: 30px;
       }
 
       .heading h1 {
-        font-size: 30px;
+        font-size: 32px;
+
+        letter-spacing: -0.5px;
+      }
+
+      .heading p {
+        font-size: 15px;
       }
 
       .tool-box {
-        padding: 20px;
+        padding: 18px;
+
+        border-radius: 14px;
+      }
+
+      .upload-area {
+        padding:
+          42px
+          15px;
+      }
+
+      .file-info {
+        padding: 14px;
+      }
+
+      .file-icon {
+        width: 46px;
+        height: 46px;
+
+        font-size: 24px;
       }
 
       .format-options {
-        flex-direction: column;
+        grid-template-columns: 1fr;
       }
 
       .image-grid {
@@ -470,7 +899,9 @@
 <body>
 
 
-  <!-- Navigation -->
+  <!-- =========================
+       HEADER
+  ========================= -->
 
   <nav>
 
@@ -478,8 +909,25 @@
       href="index.html"
       class="logo"
     >
-      Tool<span>Nest</span>
+
+      <div class="logo-icon">
+        T
+      </div>
+
+      <div class="logo-text">
+
+        <span class="logo-tool">
+          Tool
+        </span>
+
+        <span class="logo-nest">
+          Nest
+        </span>
+
+      </div>
+
     </a>
+
 
     <a
       href="index.html"
@@ -491,7 +939,10 @@
   </nav>
 
 
-  <!-- Main -->
+
+  <!-- =========================
+       MAIN
+  ========================= -->
 
   <main class="container">
 
@@ -500,14 +951,16 @@
 
     <div class="heading">
 
-      <h1>PDF to Images</h1>
+      <h1>
+        PDF to Images
+      </h1>
 
       <p>
-        Convert every page of your PDF into
-        high-quality JPG or PNG images.
+        Convert every page of your PDF into high-quality JPG or PNG images.
       </p>
 
     </div>
+
 
 
     <!-- Tool Box -->
@@ -515,7 +968,7 @@
     <div class="tool-box">
 
 
-      <!-- Upload Area -->
+      <!-- Upload -->
 
       <label
         for="pdfInput"
@@ -544,6 +997,7 @@
       >
 
 
+
       <!-- Editor -->
 
       <div
@@ -556,25 +1010,33 @@
 
         <div class="file-info">
 
-          <div
-            class="file-name"
-            id="fileName"
-          >
+          <div class="file-icon">
+            📄
           </div>
 
-          <div
-            class="page-count"
-            id="pageCount"
-          >
+          <div class="file-details">
+
+            <div
+              class="file-name"
+              id="fileName"
+            >
+            </div>
+
+            <div
+              class="page-count"
+              id="pageCount"
+            >
+            </div>
+
           </div>
 
         </div>
 
 
+
         <!-- Settings -->
 
         <div class="settings">
-
 
           <h2>
             Image Settings
@@ -585,6 +1047,8 @@
 
           <div class="format-options">
 
+
+            <!-- PNG -->
 
             <label class="format-option">
 
@@ -605,6 +1069,9 @@
 
             </label>
 
+
+
+            <!-- JPG -->
 
             <label class="format-option">
 
@@ -628,13 +1095,13 @@
           </div>
 
 
+
           <!-- Quality Slider -->
 
           <div
             class="quality-section"
             id="qualitySection"
           >
-
 
             <div class="quality-header">
 
@@ -669,11 +1136,11 @@
 
             </p>
 
-
           </div>
 
 
         </div>
+
 
 
         <!-- Convert -->
@@ -690,6 +1157,7 @@
         </div>
 
 
+
         <!-- Loading -->
 
         <div
@@ -698,6 +1166,7 @@
         >
           Converting your PDF...
         </div>
+
 
 
         <!-- Results -->
@@ -715,6 +1184,7 @@
             Preview and download each converted page.
           </p>
 
+
           <div
             class="image-grid"
             id="imageGrid"
@@ -722,6 +1192,7 @@
           </div>
 
         </div>
+
 
 
         <!-- Bottom Actions -->
@@ -747,68 +1218,110 @@
   </main>
 
 
-  <!-- Footer -->
+
+  <!-- =========================
+       FOOTER
+  ========================= -->
 
   <footer>
 
     &copy; 2026 ToolNest
+
     &middot;
+
     Simple, Fast &amp; Free
 
   </footer>
 
 
-  <!-- PDF.js -->
 
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
-  ></script>
-
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
 
   <script>
 
 
     const pdfInput =
-      document.getElementById("pdfInput");
+      document.getElementById(
+        "pdfInput"
+      );
+
 
     const editor =
-      document.getElementById("editor");
+      document.getElementById(
+        "editor"
+      );
+
 
     const fileName =
-      document.getElementById("fileName");
+      document.getElementById(
+        "fileName"
+      );
+
 
     const pageCount =
-      document.getElementById("pageCount");
+      document.getElementById(
+        "pageCount"
+      );
+
 
     const convertButton =
-      document.getElementById("convertButton");
+      document.getElementById(
+        "convertButton"
+      );
+
 
     const loading =
-      document.getElementById("loading");
+      document.getElementById(
+        "loading"
+      );
+
 
     const results =
-      document.getElementById("results");
+      document.getElementById(
+        "results"
+      );
+
 
     const imageGrid =
-      document.getElementById("imageGrid");
+      document.getElementById(
+        "imageGrid"
+      );
+
 
     const newPdfButton =
-      document.getElementById("newPdfButton");
+      document.getElementById(
+        "newPdfButton"
+      );
+
 
     const qualitySection =
-      document.getElementById("qualitySection");
+      document.getElementById(
+        "qualitySection"
+      );
+
 
     const qualitySlider =
-      document.getElementById("qualitySlider");
+      document.getElementById(
+        "qualitySlider"
+      );
+
 
     const qualityValue =
-      document.getElementById("qualityValue");
+      document.getElementById(
+        "qualityValue"
+      );
 
 
-    let pdfDocument = null;
+    let pdfDocument =
+      null;
 
 
-    /* Format Selection */
+
+    /* =========================
+       FORMAT SELECTION
+    ========================= */
 
     const formatInputs =
       document.querySelectorAll(
@@ -852,24 +1365,33 @@
     );
 
 
-    /* Quality Slider */
+
+    /* =========================
+       QUALITY SLIDER
+    ========================= */
 
     qualitySlider.addEventListener(
       "input",
       function() {
 
         qualityValue.textContent =
-          qualitySlider.value + "%";
+          qualitySlider.value
+          +
+          "%";
 
       }
     );
 
 
-    /* Upload PDF */
+
+    /* =========================
+       UPLOAD PDF
+    ========================= */
 
     pdfInput.addEventListener(
       "change",
       async function(event) {
+
 
         const file =
           event.target.files[0];
@@ -947,7 +1469,9 @@
           );
 
 
-          console.error(error);
+          console.error(
+            error
+          );
 
         }
 
@@ -955,7 +1479,10 @@
     );
 
 
-    /* Convert PDF */
+
+    /* =========================
+       CONVERT PDF
+    ========================= */
 
     convertButton.addEventListener(
       "click",
@@ -983,6 +1510,10 @@
           "block";
 
 
+        loading.textContent =
+          "Converting your PDF...";
+
+
         results.style.display =
           "none";
 
@@ -993,6 +1524,10 @@
 
         convertButton.disabled =
           true;
+
+
+        convertButton.textContent =
+          "Converting...";
 
 
         try {
@@ -1008,6 +1543,18 @@
             pageNumber++
 
           ) {
+
+
+            loading.textContent =
+              "Converting page "
+              +
+              pageNumber
+              +
+              " of "
+              +
+              pdfDocument.numPages
+              +
+              "...";
 
 
             const page =
@@ -1114,6 +1661,10 @@
             "block";
 
 
+          loading.style.display =
+            "none";
+
+
         }
 
         catch (error) {
@@ -1123,7 +1674,9 @@
           );
 
 
-          console.error(error);
+          console.error(
+            error
+          );
 
         }
 
@@ -1136,13 +1689,20 @@
           convertButton.disabled =
             false;
 
+
+          convertButton.textContent =
+            "Convert PDF";
+
         }
 
       }
     );
 
 
-    /* Create Image Card */
+
+    /* =========================
+       CREATE IMAGE CARD
+    ========================= */
 
     function createImageCard(
       imageData,
@@ -1265,7 +1825,10 @@
       );
 
 
-      details.appendChild(title);
+      details.appendChild(
+        title
+      );
+
 
       details.appendChild(
         downloadButton
@@ -1289,7 +1852,10 @@
     }
 
 
-    /* Choose Another PDF */
+
+    /* =========================
+       CHOOSE ANOTHER PDF
+    ========================= */
 
     newPdfButton.addEventListener(
       "click",
@@ -1322,6 +1888,36 @@
 
         pageCount.textContent =
           "";
+
+
+        loading.style.display =
+          "none";
+
+
+        convertButton.textContent =
+          "Convert PDF";
+
+
+        convertButton.disabled =
+          false;
+
+
+        document.querySelector(
+          'input[value="png"]'
+        ).checked =
+          true;
+
+
+        qualitySection.style.display =
+          "none";
+
+
+        qualitySlider.value =
+          90;
+
+
+        qualityValue.textContent =
+          "90%";
 
       }
     );
