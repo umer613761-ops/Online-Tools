@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Merge PDF - Free Online Tool | ToolNest</title>
+
+  <meta
+    name="description"
+    content="Merge multiple PDF files into one PDF online for free. Combine and reorder your PDF files quickly and easily."
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f6f7fb;
+      color: #222;
+    }
+
+    /* Navigation */
+
+    nav {
+      background: #ffffff;
+      border-bottom: 1px solid #e5e5e5;
+      padding: 18px 30px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      text-decoration: none;
+      color: #222;
+    }
+
+    .logo span {
+      color: #666;
+    }
+
+    .back-link {
+      color: #555;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .back-link:hover {
+      color: #000;
+    }
+
+    /* Main */
+
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 60px 20px 80px;
+    }
+
+    /* Heading */
+
+    .heading {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .heading h1 {
+      margin: 0 0 12px;
+      font-size: 38px;
+    }
+
+    .heading p {
+      margin: 0 auto;
+      max-width: 620px;
+      color: #777;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* Tool Box */
+
+    .tool-box {
+      background: #ffffff;
+      border: 1px solid #e5e5e5;
+      border-radius: 14px;
+      padding: 30px;
+    }
+
+    /* Upload Area */
+
+    .upload-area {
+      display: block;
+      padding: 45px 20px;
+      text-align: center;
+
+      border: 2px dashed #ccc;
+      border-radius: 12px;
+
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .upload-area:hover {
+      border-color: #888;
+      background: #fafafa;
+    }
+
+    .upload-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+
+    .upload-area h2 {
+      margin: 0 0 10px;
+      font-size: 21px;
+    }
+
+    .upload-area p {
+      margin: 0;
+      color: #777;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    /* File List */
+
+    .editor {
+      display: none;
+      margin-top: 25px;
+    }
+
+    .files-title {
+      margin: 0 0 15px;
+      font-size: 18px;
+    }
+
+    .files-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+
+      padding: 15px;
+      background: #f6f7fb;
+
+      border-radius: 10px;
+    }
+
+    .file-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .file-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .file-name {
+      font-weight: bold;
+      font-size: 14px;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-pages {
+      margin-top: 4px;
+      color: #777;
+      font-size: 13px;
+    }
+
+    /* File Controls */
+
+    .file-controls {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .small-button {
+      width: 34px;
+      height: 34px;
+
+      padding: 0;
+
+      border: none;
+      border-radius: 7px;
+
+      background: #e7e7e7;
+      color: #222;
+
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .small-button:hover {
+      opacity: 0.75;
+    }
+
+    .remove-button {
+      background: #eeeeee;
+    }
+
+    /* Add More */
+
+    .add-more {
+      display: inline-block;
+      margin-top: 18px;
+
+      color: #555;
+      font-size: 14px;
+      font-weight: bold;
+
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .add-more:hover {
+      color: #000;
+    }
+
+    /* Buttons */
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+
+      padding: 14px 22px;
+
+      font-size: 15px;
+      font-weight: bold;
+
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    .primary-button {
+      flex: 1;
+      background: #222;
+      color: white;
+    }
+
+    .secondary-button {
+      background: #e9e9e9;
+      color: #222;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Status */
+
+    .status {
+      display: none;
+
+      margin-top: 20px;
+      padding: 15px;
+
+      text-align: center;
+
+      background: #f6f7fb;
+      border-radius: 8px;
+
+      color: #666;
+      font-size: 14px;
+    }
+
+    /* Footer */
+
+    footer {
+      text-align: center;
+
+      padding: 35px 20px;
+
+      background: #ffffff;
+      border-top: 1px solid #e5e5e5;
+
+      color: #777;
+      font-size: 14px;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 600px) {
+
+      nav {
+        padding: 15px 20px;
+      }
+
+      .logo {
+        font-size: 21px;
+      }
+
+      .container {
+        padding: 45px 15px 60px;
+      }
+
+      .heading h1 {
+        font-size: 30px;
+      }
+
+      .tool-box {
+        padding: 20px;
+      }
+
+      .upload-area {
+        padding: 35px 15px;
+      }
+
+      .file-item {
+        gap: 10px;
+        padding: 12px;
+      }
+
+      .buttons {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+
+  <nav>
+
+    <a href="index.html" class="logo">
+      Tool<span>Nest</span>
+    </a>
+
+    <a href="index.html" class="back-link">
+      ← All Tools
+    </a>
+
+  </nav>
+
+
+  <!-- Main -->
+
+  <main class="container">
+
+    <div class="heading">
+
+      <h1>Merge PDF</h1>
+
+      <p>
+        Combine multiple PDF files into one document.
+        Arrange your files in the order you want before merging.
+      </p>
+
+    </div>
+
+
+    <div class="tool-box">
+
+
+      <!-- Upload Area -->
+
+      <label for="pdfInput" class="upload-area">
+
+        <div class="upload-icon">
+          📄
+        </div>
+
+        <h2>
+          Choose PDF Files
+        </h2>
+
+        <p>
+          Select two or more PDF files to merge.
+        </p>
+
+      </label>
+
+
+      <input
+        type="file"
+        id="pdfInput"
+        accept="application/pdf"
+        multiple
+      >
+
+
+      <!-- Editor -->
+
+      <div class="editor" id="editor">
+
+        <h2 class="files-title">
+          Selected PDFs
+        </h2>
+
+
+        <div
+          class="files-list"
+          id="filesList"
+        >
+        </div>
+
+
+        <!-- Add More Files -->
+
+        <label
+          for="pdfInput"
+          class="add-more"
+        >
+          + Add more PDF files
+        </label>
+
+
+        <!-- Buttons -->
+
+        <div class="buttons">
+
+          <button
+            class="primary-button"
+            id="mergeButton"
+          >
+            Merge PDFs
+          </button>
+
+
+          <button
+            class="secondary-button"
+            id="newFilesButton"
+          >
+            Start Over
+          </button>
+
+        </div>
+
+
+        <!-- Status -->
+
+        <div
+          class="status"
+          id="status"
+        >
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- Footer -->
+
+  <footer>
+
+    &copy; 2026 ToolNest
+    &middot;
+    Simple, Fast &amp; Free
+
+  </footer>
+
+
+  <!-- PDF-LIB -->
+
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+
+
+  <script>
+
+    const pdfInput =
+      document.getElementById("pdfInput");
+
+    const editor =
+      document.getElementById("editor");
+
+    const filesList =
+      document.getElementById("filesList");
+
+    const mergeButton =
+      document.getElementById("mergeButton");
+
+    const newFilesButton =
+      document.getElementById("newFilesButton");
+
+    const status =
+      document.getElementById("status");
+
+
+    let pdfFiles = [];
+
+
+    /* Add PDF Files */
+
+    pdfInput.addEventListener(
+      "change",
+      async function(event) {
+
+        const files =
+          Array.from(event.target.files);
+
+
+        if (
+          files.length === 0
+        ) {
+
+          return;
+
+        }
+
+
+        for (
+          const file of files
+        ) {
+
+          if (
+            file.type !==
+            "application/pdf"
+          ) {
+
+            continue;
+
+          }
+
+
+          try {
+
+            const arrayBuffer =
+              await file.arrayBuffer();
+
+
+            const pdf =
+              await PDFLib.PDFDocument.load(
+                arrayBuffer
+              );
+
+
+            pdfFiles.push(
+              {
+                name:
+                  file.name,
+
+                data:
+                  arrayBuffer,
+
+                pages:
+                  pdf.getPageCount()
+              }
+            );
+
+          }
+
+          catch (error) {
+
+            console.error(
+              error
+            );
+
+          }
+
+        }
+
+
+        pdfInput.value =
+          "";
+
+
+        renderFiles();
+
+      }
+    );
+
+
+    /* Display Files */
+
+    function renderFiles() {
+
+      filesList.innerHTML =
+        "";
+
+
+      if (
+        pdfFiles.length === 0
+      ) {
+
+        editor.style.display =
+          "none";
+
+
+        return;
+
+      }
+
+
+      editor.style.display =
+        "block";
+
+
+      pdfFiles.forEach(
+        function(
+          file,
+          index
+        ) {
+
+          const fileItem =
+            document.createElement(
+              "div"
+            );
+
+
+          fileItem.className =
+            "file-item";
+
+
+          const pageText =
+            file.pages === 1
+              ? "1 page"
+              : file.pages + " pages";
+
+
+          fileItem.innerHTML =
+            `
+
+            <div class="file-icon">
+              📄
+            </div>
+
+            <div class="file-details">
+
+              <div class="file-name">
+                ${escapeHtml(file.name)}
+              </div>
+
+              <div class="file-pages">
+                ${pageText}
+              </div>
+
+            </div>
+
+            <div class="file-controls">
+
+              <button
+                class="small-button"
+                onclick="moveFileUp(${index})"
+                title="Move up"
+              >
+                ↑
+              </button>
+
+              <button
+                class="small-button"
+                onclick="moveFileDown(${index})"
+                title="Move down"
+              >
+                ↓
+              </button>
+
+              <button
+                class="small-button remove-button"
+                onclick="removeFile(${index})"
+                title="Remove"
+              >
+                ×
+              </button>
+
+            </div>
+
+            `;
+
+
+          filesList.appendChild(
+            fileItem
+          );
+
+        }
+      );
+
+    }
+
+
+    /* Escape HTML */
+
+    function escapeHtml(
+      text
+    ) {
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.textContent =
+        text;
+
+
+      return div.innerHTML;
+
+    }
+
+
+    /* Move File Up */
+
+    function moveFileUp(
+      index
+    ) {
+
+      if (
+        index === 0
+      ) {
+
+        return;
+
+      }
+
+
+      const temp =
+        pdfFiles[index];
+
+
+      pdfFiles[index] =
+        pdfFiles[index - 1];
+
+
+      pdfFiles[index - 1] =
+        temp;
+
+
+      renderFiles();
+
+    }
+
+
+    /* Move File Down */
+
+    function moveFileDown(
+      index
+    ) {
+
+      if (
+        index ===
+        pdfFiles.length - 1
+      ) {
+
+        return;
+
+      }
+
+
+      const temp =
+        pdfFiles[index];
+
+
+      pdfFiles[index] =
+        pdfFiles[index + 1];
+
+
+      pdfFiles[index + 1] =
+        temp;
+
+
+      renderFiles();
+
+    }
+
+
+    /* Remove File */
+
+    function removeFile(
+      index
+    ) {
+
+      pdfFiles.splice(
+        index,
+        1
+      );
+
+
+      renderFiles();
+
+    }
+
+
+    /* Merge PDFs */
+
+    mergeButton.addEventListener(
+      "click",
+      async function() {
+
+        if (
+          pdfFiles.length < 2
+        ) {
+
+          alert(
+            "Please select at least two PDF files."
+          );
+
+          return;
+
+        }
+
+
+        try {
+
+          mergeButton.disabled =
+            true;
+
+
+          mergeButton.textContent =
+            "Merging PDFs...";
+
+
+          status.style.display =
+            "block";
+
+
+          status.textContent =
+            "Preparing your PDF files...";
+
+
+          const mergedPdf =
+            await PDFLib.PDFDocument.create();
+
+
+          for (
+            let i = 0;
+            i < pdfFiles.length;
+            i++
+          ) {
+
+            status.textContent =
+              "Adding PDF "
+              +
+              (i + 1)
+              +
+              " of "
+              +
+              pdfFiles.length
+              +
+              "...";
+
+
+            const sourcePdf =
+              await PDFLib.PDFDocument.load(
+                pdfFiles[i].data
+              );
+
+
+            const pageIndices =
+              sourcePdf.getPageIndices();
+
+
+            const copiedPages =
+              await mergedPdf.copyPages(
+                sourcePdf,
+                pageIndices
+              );
+
+
+            copiedPages.forEach(
+              function(page) {
+
+                mergedPdf.addPage(
+                  page
+                );
+
+              }
+            );
+
+          }
+
+
+          status.textContent =
+            "Creating your merged PDF...";
+
+
+          const mergedPdfBytes =
+            await mergedPdf.save();
+
+
+          const blob =
+            new Blob(
+              [
+                mergedPdfBytes
+              ],
+              {
+                type:
+                  "application/pdf"
+              }
+            );
+
+
+          const url =
+            URL.createObjectURL(
+              blob
+            );
+
+
+          const link =
+            document.createElement(
+              "a"
+            );
+
+
+          link.href =
+            url;
+
+
+          link.download =
+            "merged.pdf";
+
+
+          link.click();
+
+
+          setTimeout(
+            function() {
+
+              URL.revokeObjectURL(
+                url
+              );
+
+            },
+            1000
+          );
+
+
+          status.textContent =
+            "Done! Your merged PDF has been downloaded.";
+
+
+        }
+
+        catch (error) {
+
+          console.error(
+            error
+          );
+
+
+          alert(
+            "Something went wrong while merging the PDFs."
+          );
+
+
+          status.style.display =
+            "none";
+
+        }
+
+
+        mergeButton.disabled =
+          false;
+
+
+        mergeButton.textContent =
+          "Merge PDFs";
+
+      }
+    );
+
+
+    /* Start Over */
+
+    newFilesButton.addEventListener(
+      "click",
+      function() {
+
+        pdfFiles =
+          [];
+
+
+        pdfInput.value =
+          "";
+
+
+        filesList.innerHTML =
+          "";
+
+
+        editor.style.display =
+          "none";
+
+
+        status.style.display =
+          "none";
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
