@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
 
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>ToolNest - Free Online Tools</title>
 
@@ -17,7 +13,6 @@
     name="description"
     content="Free online PDF, text and image tools. Merge PDFs, split PDFs, convert images, count words, clean text and more."
   >
-
 
   <style>
 
@@ -32,8 +27,17 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f6f7fb;
-      color: #222;
+
+      background:
+        radial-gradient(
+          circle at top center,
+          #30323a 0%,
+          #25262b 45%,
+          #1f2025 100%
+        );
+
+      color: #e8e8e8;
+      min-height: 100vh;
     }
 
 
@@ -42,10 +46,12 @@
     ========================= */
 
     nav {
-      background: #ffffff;
-      border-bottom: 1px solid #e5e5e5;
+      background: rgba(20, 21, 25, 0.96);
 
-      padding: 16px 30px;
+      border-bottom:
+        1px solid #3a3c44;
+
+      padding: 14px 30px;
 
       display: flex;
       align-items: center;
@@ -57,20 +63,20 @@
       font-size: 24px;
       font-weight: bold;
       text-decoration: none;
-      color: #222;
+      color: #f2f2f2;
       white-space: nowrap;
     }
 
 
     .logo span {
-      color: #666;
+      color: #9f8cff;
     }
 
 
-    /* Small search bar */
+    /* Search */
 
     .search-container {
-      width: 220px;
+      width: 290px;
       flex: none;
     }
 
@@ -78,22 +84,39 @@
     .search-container input {
       width: 100%;
 
-      padding: 9px 13px;
+      padding: 10px 14px;
 
-      border: 1px solid #ddd;
-      border-radius: 7px;
+      border: 1px solid #3b3d46;
+      border-radius: 8px;
 
-      background: #f8f8f8;
+      background: #24252a;
+
+      color: #e8e8e8;
 
       font-size: 13px;
 
       outline: none;
+
+      transition:
+        border-color 0.2s,
+        box-shadow 0.2s,
+        background 0.2s;
+    }
+
+
+    .search-container input::placeholder {
+      color: #92949d;
     }
 
 
     .search-container input:focus {
-      border-color: #999;
-      background: #ffffff;
+      border-color: #8b7cf6;
+
+      background: #292a30;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(139, 124, 246, 0.12);
     }
 
 
@@ -105,22 +128,27 @@
       max-width: 1150px;
       margin: 0 auto;
 
-      padding: 45px 20px 70px;
+      padding: 50px 20px 70px;
     }
 
 
-    /* Hero */
+    /* =========================
+       HERO
+    ========================= */
 
     .hero {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 45px;
     }
 
 
     .hero h1 {
       margin: 0 0 12px;
+
       font-size: 40px;
       line-height: 1.2;
+
+      color: #f3f3f3;
     }
 
 
@@ -128,14 +156,15 @@
       max-width: 680px;
       margin: 0 auto;
 
-      color: #666;
+      color: #b4b6bf;
+
       font-size: 16px;
       line-height: 1.6;
     }
 
 
     /* =========================
-       PDF + TEXT CATEGORIES
+       PDF + TEXT SECTIONS
     ========================= */
 
     .categories-row {
@@ -149,7 +178,7 @@
 
       align-items: stretch;
 
-      margin-bottom: 45px;
+      margin-bottom: 55px;
     }
 
 
@@ -158,41 +187,78 @@
     }
 
 
-    /* PDF side */
+    /* PDF Side */
 
     #pdf-tools {
-      padding-right: 30px;
+      padding-right: 35px;
 
       border-right:
-        1px solid #dedede;
+        1px solid #3a3c44;
     }
 
 
-    /* Text side */
+    /* Text Side */
 
     #text-tools {
-      padding-left: 30px;
+      padding-left: 35px;
     }
 
 
-    /* Category Header */
+    /* =========================
+       CATEGORY HEADER
+    ========================= */
 
     .category-header {
       text-align: center;
-      margin-bottom: 18px;
+      margin-bottom: 22px;
     }
 
 
     .category-header h2 {
-      margin: 0 0 7px;
+      margin: 0 0 10px;
+
       font-size: 27px;
+
+      color: #f0f0f0;
+
+      display: inline-block;
+    }
+
+
+    /* Purple underline for PDF */
+
+    #pdf-tools .category-header h2 {
+      border-bottom:
+        3px solid #8b7cf6;
+
+      padding-bottom: 7px;
+    }
+
+
+    /* Blue underline for Text */
+
+    #text-tools .category-header h2 {
+      border-bottom:
+        3px solid #5b9df9;
+
+      padding-bottom: 7px;
+    }
+
+
+    /* Green underline for Image */
+
+    #image-tools .category-header h2 {
+      border-bottom:
+        3px solid #4cc38a;
+
+      padding-bottom: 7px;
     }
 
 
     .category-header p {
       margin: 0;
 
-      color: #777;
+      color: #a9abb5;
 
       font-size: 14px;
       line-height: 1.5;
@@ -209,77 +275,160 @@
       grid-template-columns:
         repeat(2, 1fr);
 
-      gap: 15px;
+      gap: 18px;
     }
 
 
-    /* Tool Card */
+    /* =========================
+       TOOL CARD
+    ========================= */
 
     .tool-card {
       display: block;
 
-      min-height: 145px;
+      min-height: 180px;
 
-      background: #ffffff;
+      background:
+        rgba(20, 21, 25, 0.95);
 
       border:
-        1px solid #e7e7e7;
+        1px solid #3a3c44;
 
-      border-radius: 12px;
+      border-radius: 14px;
 
-      padding: 20px;
+      padding: 25px;
 
       text-decoration: none;
-      color: #222;
+      color: #e8e8e8;
 
       transition:
         transform 0.2s,
+        border-color 0.2s,
         box-shadow 0.2s,
-        border-color 0.2s;
+        background 0.2s;
     }
 
 
     .tool-card:hover {
       transform:
-        translateY(-3px);
+        translateY(-4px);
 
-      border-color:
-        #d0d0d0;
+      background:
+        #1b1c21;
+    }
+
+
+    /* PDF Hover */
+
+    #pdf-tools .tool-card:hover {
+      border-color: #7967e8;
 
       box-shadow:
-        0 10px 25px
-        rgba(0, 0, 0, 0.07);
+        0 12px 30px
+        rgba(124, 103, 232, 0.12);
+    }
+
+
+    /* Text Hover */
+
+    #text-tools .tool-card:hover {
+      border-color: #4d91ed;
+
+      box-shadow:
+        0 12px 30px
+        rgba(77, 145, 237, 0.12);
+    }
+
+
+    /* Image Hover */
+
+    #image-tools .tool-card:hover {
+      border-color: #42ad78;
+
+      box-shadow:
+        0 12px 30px
+        rgba(66, 173, 120, 0.12);
     }
 
 
     .tool-card:focus {
-      outline:
-        3px solid #b5b5b5;
-
-      outline-offset:
-        3px;
+      outline: none;
     }
 
 
+    /* =========================
+       ICON
+    ========================= */
+
     .tool-icon {
-      font-size: 28px;
-      margin-bottom: 12px;
+      width: 48px;
+      height: 48px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 12px;
+
+      font-size: 25px;
+
+      margin-bottom: 17px;
+    }
+
+
+    /* PDF Icons */
+
+    #pdf-tools .tool-icon {
+      background:
+        rgba(139, 124, 246, 0.13);
+
+      border:
+        1px solid
+        rgba(139, 124, 246, 0.18);
+    }
+
+
+    /* Text Icons */
+
+    #text-tools .tool-icon {
+      background:
+        rgba(91, 157, 249, 0.13);
+
+      border:
+        1px solid
+        rgba(91, 157, 249, 0.18);
+    }
+
+
+    /* Image Icons */
+
+    #image-tools .tool-icon {
+      background:
+        rgba(76, 195, 138, 0.13);
+
+      border:
+        1px solid
+        rgba(76, 195, 138, 0.18);
     }
 
 
     .tool-card h3 {
-      margin: 0 0 8px;
-      font-size: 17px;
+      margin: 0 0 9px;
+
+      font-size: 18px;
+
+      color: #f0f0f0;
     }
 
 
     .tool-card p {
       margin: 0;
 
-      color: #777;
+      color: #a9abb5;
 
-      font-size: 13px;
-      line-height: 1.5;
+      font-size: 14px;
+      line-height: 1.55;
     }
 
 
@@ -289,7 +438,10 @@
 
     .image-category {
       max-width: 560px;
-      margin: 0 auto 50px;
+
+      margin:
+        0 auto
+        55px;
     }
 
 
@@ -304,16 +456,17 @@
     ========================= */
 
     .why-section {
-      background: #ffffff;
+      background:
+        rgba(20, 21, 25, 0.7);
 
       border-top:
-        1px solid #e5e5e5;
+        1px solid #3a3c44;
 
       border-bottom:
-        1px solid #e5e5e5;
+        1px solid #3a3c44;
 
       padding:
-        60px
+        65px
         20px;
     }
 
@@ -326,19 +479,24 @@
 
     .why-title {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 32px;
     }
 
 
     .why-title h2 {
       margin: 0 0 10px;
+
       font-size: 28px;
+
+      color: #f0f0f0;
     }
 
 
     .why-title p {
       margin: 0;
-      color: #777;
+
+      color: #a9abb5;
+
       font-size: 15px;
     }
 
@@ -356,32 +514,55 @@
 
 
     .feature {
-      background: #f6f7fb;
+      background:
+        #202126;
 
-      padding: 24px;
+      border:
+        1px solid #363840;
 
-      border-radius: 12px;
+      padding: 25px;
+
+      border-radius: 14px;
 
       text-align: center;
     }
 
 
     .feature-icon {
-      font-size: 28px;
-      margin-bottom: 10px;
+      width: 50px;
+      height: 50px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      margin:
+        0 auto
+        14px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(139, 124, 246, 0.1);
+
+      font-size: 25px;
     }
 
 
     .feature h3 {
       margin: 0 0 8px;
+
       font-size: 17px;
+
+      color: #eeeeee;
     }
 
 
     .feature p {
       margin: 0;
 
-      color: #777;
+      color: #a9abb5;
 
       font-size: 13px;
       line-height: 1.6;
@@ -397,7 +578,7 @@
       margin: auto;
 
       padding:
-        65px
+        70px
         20px;
 
       text-align: center;
@@ -406,14 +587,17 @@
 
     .about-section h2 {
       margin: 0 0 15px;
+
       font-size: 28px;
+
+      color: #f0f0f0;
     }
 
 
     .about-section p {
       margin: 0;
 
-      color: #666;
+      color: #a9abb5;
 
       line-height: 1.7;
       font-size: 15px;
@@ -428,38 +612,41 @@
       text-align: center;
 
       padding:
-        30px
+        32px
         20px;
 
-      background: #ffffff;
+      background:
+        #17181c;
 
       border-top:
-        1px solid #e5e5e5;
+        1px solid #363840;
 
-      color: #777;
+      color: #8f929b;
 
       font-size: 14px;
     }
 
 
     .footer-links {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
 
     .footer-links a {
-      color: #555;
+      color: #b6b8c0;
 
       text-decoration: none;
 
       margin:
         0
         10px;
+
+      transition: color 0.2s;
     }
 
 
     .footer-links a:hover {
-      color: #000;
+      color: #9f8cff;
     }
 
 
@@ -485,11 +672,9 @@
 
       .categories-row {
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 45px;
       }
 
-
-      /* Remove divider when stacked */
 
       #pdf-tools {
         padding-right: 0;
@@ -532,7 +717,7 @@
 
 
       .search-container {
-        width: 160px;
+        width: 155px;
       }
 
 
@@ -544,14 +729,14 @@
 
       .container {
         padding:
-          35px
+          40px
           15px
           55px;
       }
 
 
       .hero {
-        margin-bottom: 35px;
+        margin-bottom: 40px;
       }
 
 
@@ -566,7 +751,7 @@
 
 
       .categories-row {
-        gap: 40px;
+        gap: 45px;
       }
 
 
@@ -587,7 +772,6 @@
 
       .tool-card {
         min-height: auto;
-        padding: 20px;
       }
 
 
@@ -638,12 +822,12 @@
   <main class="container">
 
 
-    <!-- Hero -->
+    <!-- HERO -->
 
     <section class="hero">
 
       <h1>
-        Simple, Fast & Free Online Tools
+        Simple, Fast &amp; Free Online Tools
       </h1>
 
 
@@ -661,7 +845,7 @@
     <div class="categories-row">
 
 
-      <!-- PDF Tools -->
+      <!-- PDF TOOLS -->
 
       <section
         class="category"
@@ -670,9 +854,7 @@
 
         <div class="category-header">
 
-          <h2>
-            PDF Tools
-          </h2>
+          <h2>PDF Tools</h2>
 
           <p>
             Convert, merge and organize your PDF files.
@@ -692,9 +874,7 @@
 
             <div class="tool-icon">📄</div>
 
-            <h3>
-              Merge PDF
-            </h3>
+            <h3>Merge PDF</h3>
 
             <p>
               Combine multiple PDF files into one document.
@@ -711,9 +891,7 @@
 
             <div class="tool-icon">✂️</div>
 
-            <h3>
-              Split PDF
-            </h3>
+            <h3>Split PDF</h3>
 
             <p>
               Split a PDF into separate pages or page ranges.
@@ -730,9 +908,7 @@
 
             <div class="tool-icon">🖼️</div>
 
-            <h3>
-              Images to PDF
-            </h3>
+            <h3>Images to PDF</h3>
 
             <p>
               Convert JPG and PNG images into a PDF document.
@@ -747,11 +923,9 @@
             data-name="pdf to images pdf jpg png convert"
           >
 
-            <div class="tool-icon">🖼️</div>
+            <div class="tool-icon">📷</div>
 
-            <h3>
-              PDF to Images
-            </h3>
+            <h3>PDF to Images</h3>
 
             <p>
               Convert PDF pages into JPG or PNG images.
@@ -766,7 +940,7 @@
 
 
 
-      <!-- Text Tools -->
+      <!-- TEXT TOOLS -->
 
       <section
         class="category"
@@ -775,9 +949,7 @@
 
         <div class="category-header">
 
-          <h2>
-            Text Tools
-          </h2>
+          <h2>Text Tools</h2>
 
           <p>
             Count, format, clean and organize your text.
@@ -797,9 +969,7 @@
 
             <div class="tool-icon">📝</div>
 
-            <h3>
-              Word Counter
-            </h3>
+            <h3>Word Counter</h3>
 
             <p>
               Count words, characters, sentences and paragraphs.
@@ -816,9 +986,7 @@
 
             <div class="tool-icon">🔤</div>
 
-            <h3>
-              Case Converter
-            </h3>
+            <h3>Case Converter</h3>
 
             <p>
               Convert text to uppercase, lowercase and more.
@@ -835,9 +1003,7 @@
 
             <div class="tool-icon">🧼</div>
 
-            <h3>
-              Text Cleaner
-            </h3>
+            <h3>Text Cleaner</h3>
 
             <p>
               Clean text by removing unwanted spaces and formatting.
@@ -854,9 +1020,7 @@
 
             <div class="tool-icon">🔡</div>
 
-            <h3>
-              Text Sorter
-            </h3>
+            <h3>Text Sorter</h3>
 
             <p>
               Sort text lines alphabetically or numerically.
@@ -883,9 +1047,7 @@
 
       <div class="category-header">
 
-        <h2>
-          Image Tools
-        </h2>
+        <h2>Image Tools</h2>
 
         <p>
           Resize and optimize your images quickly and easily.
@@ -905,9 +1067,7 @@
 
           <div class="tool-icon">🗜️</div>
 
-          <h3>
-            Image Compressor
-          </h3>
+          <h3>Image Compressor</h3>
 
           <p>
             Reduce image file size while maintaining quality.
@@ -922,11 +1082,9 @@
           data-name="image resizer resize image percentage quality"
         >
 
-          <div class="tool-icon">🖼️</div>
+          <div class="tool-icon">📐</div>
 
-          <h3>
-            Image Resizer
-          </h3>
+          <h3>Image Resizer</h3>
 
           <p>
             Resize images and adjust quality with a simple slider.
@@ -953,9 +1111,7 @@
 
       <div class="why-title">
 
-        <h2>
-          Why Use ToolNest?
-        </h2>
+        <h2>Why Use ToolNest?</h2>
 
         <p>
           Simple online tools designed to help you get things done faster.
@@ -971,9 +1127,7 @@
 
           <div class="feature-icon">⚡</div>
 
-          <h3>
-            Fast
-          </h3>
+          <h3>Fast</h3>
 
           <p>
             Get results quickly without unnecessary steps.
@@ -986,9 +1140,7 @@
 
           <div class="feature-icon">✨</div>
 
-          <h3>
-            Easy to Use
-          </h3>
+          <h3>Easy to Use</h3>
 
           <p>
             Clean and simple tools designed for everyday tasks.
@@ -1001,9 +1153,7 @@
 
           <div class="feature-icon">🆓</div>
 
-          <h3>
-            Completely Free
-          </h3>
+          <h3>Completely Free</h3>
 
           <p>
             Use all available tools without registration or payment.
@@ -1028,9 +1178,7 @@
     id="about"
   >
 
-    <h2>
-      About ToolNest
-    </h2>
+    <h2>About ToolNest</h2>
 
     <p>
       ToolNest is a growing collection of simple, fast and free online
