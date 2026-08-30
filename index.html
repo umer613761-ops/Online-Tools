@@ -283,6 +283,11 @@ header {
    TOP TOOL CARDS
 ========================= */
 
+/* =========================
+   TOP TOOL CARDS
+   Closer + Slightly Overlapping
+========================= */
+
 .tool-card {
     position: absolute;
 
@@ -295,9 +300,7 @@ header {
     border-radius: 8px;
 
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
 
@@ -307,7 +310,7 @@ header {
     font-weight: 700;
 
     box-shadow:
-        0 5px 10px rgba(40, 55, 70, 0.08);
+        0 5px 12px rgba(40, 55, 70, 0.10);
 
     z-index: 2;
 }
@@ -316,57 +319,62 @@ header {
     font-size: 26px;
 }
 
-
-/* PDF */
+/* PDF CARD */
 
 .pdf-card {
-    left: 3%;
+    left: 8%;
     top: 48px;
 
     transform: rotate(-14deg);
 
     color: #cf4938;
+
+    z-index: 2;
 }
 
-
-/* TEXT */
+/* TEXT CARD */
 
 .text-card {
-    left: 25%;
+    left: 28%;
     top: 10px;
 
     transform: rotate(2deg);
 
     color: #2d65a6;
+
+    z-index: 4;
 }
 
-
-/* CALCULATOR */
+/* CALCULATOR CARD */
 
 .calculator-card {
-    left: 47%;
+    left: 46%;
     top: 10px;
 
-    transform: rotate(-1deg);
+    transform: rotate(-2deg);
 
     color: #5a3d9d;
+
+    z-index: 3;
 }
 
-
-/* IMAGE */
+/* IMAGE CARD */
 
 .image-card {
-    right: 3%;
+    right: 8%;
     top: 45px;
 
     transform: rotate(13deg);
 
     color: #287543;
+
+    z-index: 2;
 }
 
 
 /* =========================
-   FOLDER ICONS
+   BOTTOM FOLDERS
+   Closer + Overlapping
 ========================= */
 
 .folder {
@@ -392,11 +400,113 @@ header {
     font-weight: 600;
 
     box-shadow:
-        0 6px 12px rgba(30, 50, 70, 0.18);
+        0 7px 15px rgba(30, 50, 70, 0.20);
 
     z-index: 5;
 }
 
+.folder::before {
+    content: "";
+
+    position: absolute;
+
+    width: 35px;
+    height: 11px;
+
+    top: -9px;
+    left: 8px;
+
+    border-radius: 6px 6px 0 0;
+
+    background: inherit;
+
+    border:
+        2px solid rgba(35, 52, 70, 0.55);
+
+    border-bottom: none;
+}
+
+
+/* PDF */
+
+.folder-pdf {
+    left: 12%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f63b36,
+            #df2722
+        );
+
+    z-index: 6;
+}
+
+
+/* TEXT — overlaps PDF slightly */
+
+.folder-text {
+    left: 27%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #427ab8,
+            #245995
+        );
+
+    z-index: 7;
+}
+
+
+/* CALCULATOR — overlaps Text */
+
+.folder-calculator {
+    left: 42%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7655bc,
+            #4e3290
+        );
+
+    z-index: 6;
+}
+
+
+/* IMAGE — overlaps Calculator */
+
+.folder-image {
+    left: 57%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #459a50,
+            #24783a
+        );
+
+    z-index: 7;
+}
+
+
+/* =========================
+   BOTTOM LINE
+========================= */
+
+.visual-line {
+    position: absolute;
+
+    left: 4%;
+    right: 4%;
+
+    bottom: 0;
+
+    height: 2px;
+
+    background: #4d5d6e;
+}
 
 /* Folder tab */
 
