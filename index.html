@@ -14,14 +14,14 @@
 
   <meta
     name="description"
-    content="Free online PDF, text, image and calculator tools. Fast, simple and easy to use."
+    content="Free, fast and easy-to-use online tools for PDFs, text, images and more."
   >
 
 
   <style>
 
     /* =========================
-       GLOBAL
+       RESET
     ========================= */
 
     * {
@@ -37,16 +37,9 @@
         Helvetica,
         sans-serif;
 
-      background:
-        #edf4f8;
+      background: #f5f7fa;
 
-      color:
-        #39475a;
-    }
-
-
-    a {
-      text-decoration: none;
+      color: #344154;
     }
 
 
@@ -54,17 +47,23 @@
        HEADER
     ========================= */
 
-    nav {
+    header {
       width: 100%;
 
-      background:
-        #ffffff;
+      background: #ffffff;
 
       border-bottom:
-        1px solid #dfe7ee;
+        1px solid #e2e7ee;
+    }
+
+
+    .navbar {
+      max-width: 1400px;
+
+      margin: 0 auto;
 
       padding:
-        16px 5%;
+        18px 55px;
 
       display: flex;
 
@@ -72,9 +71,7 @@
 
       justify-content: space-between;
 
-      position: relative;
-
-      z-index: 10;
+      gap: 50px;
     }
 
 
@@ -87,17 +84,18 @@
 
       align-items: center;
 
-      gap: 11px;
+      gap: 16px;
 
-      color:
-        #334155;
+      text-decoration: none;
+
+      flex-shrink: 0;
     }
 
 
     .logo-icon {
-      width: 44px;
+      width: 78px;
 
-      height: 44px;
+      height: 78px;
 
       display: flex;
 
@@ -105,108 +103,143 @@
 
       justify-content: center;
 
-      border-radius: 12px;
-
       background:
         linear-gradient(
           135deg,
-          #5b8fd1,
-          #2f5f9e
+          #547eaf,
+          #35649a
         );
 
-      color:
-        white;
+      border-radius: 22px;
 
-      font-size: 23px;
+      color: #ffffff;
 
-      font-weight: bold;
+      font-size: 36px;
+
+      font-weight: 700;
 
       box-shadow:
-        0 8px 18px
-        rgba(47, 95, 158, 0.22);
+        0 8px 22px
+        rgba(53, 100, 154, 0.20);
     }
 
 
     .logo-text {
-      font-size: 27px;
+      font-size: 48px;
 
-      font-weight: 800;
+      letter-spacing: -2px;
 
-      letter-spacing: -0.8px;
-    }
-
-
-    .logo-text span {
-      color:
-        #4676b4;
-    }
-
-
-    /* =========================
-       NAVIGATION
-    ========================= */
-
-    .nav-links {
       display: flex;
 
-      gap: 28px;
+      align-items: center;
     }
 
 
-    .nav-links a {
-      color:
-        #657182;
+    /* Tool is thinner */
 
-      font-size: 15px;
+    .logo-tool {
+      color: #344154;
 
-      transition:
-        color 0.2s ease;
+      font-weight: 400;
     }
 
 
-    .nav-links a:hover {
-      color:
-        #4778b7;
+    /* Nest is bold and blue */
+
+    .logo-nest {
+      color: #4d73a6;
+
+      font-weight: 700;
     }
 
 
     /* =========================
-       PAGE
+       SEARCH
     ========================= */
 
-    .page {
-      max-width: 1600px;
+    .search-container {
+      width: 100%;
+
+      max-width: 700px;
+
+      position: relative;
+    }
+
+
+    .search-container input {
+      width: 100%;
+
+      height: 58px;
+
+      padding:
+        0 22px
+        0 55px;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 12px;
+
+      background: #f8fafc;
+
+      color: #344154;
+
+      font-size: 17px;
+
+      outline: none;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+    }
+
+
+    .search-container input::placeholder {
+      color: #8a96a5;
+    }
+
+
+    .search-container input:focus {
+      background: #ffffff;
+
+      border-color: #4d73a6;
+
+      box-shadow:
+        0 0 0 4px
+        rgba(77, 115, 166, 0.10);
+    }
+
+
+    .search-icon {
+      position: absolute;
+
+      right: 19px;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      color: #6f7d8c;
+
+      font-size: 23px;
+
+      pointer-events: none;
+    }
+
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    main {
+      max-width: 1400px;
 
       margin: 0 auto;
 
       padding:
-        38px 5% 60px;
-    }
-
-
-    /* =========================
-       MAIN LAYOUT
-    ========================= */
-
-    .main-layout {
-      display: grid;
-
-      grid-template-columns:
-        minmax(0, 1fr)
-        300px;
-
-      gap: 34px;
-
-      align-items: start;
-    }
-
-
-    /* =========================
-       LEFT CONTENT
-    ========================= */
-
-    .content {
-      min-width: 0;
+        70px 55px;
     }
 
 
@@ -215,494 +248,82 @@
     ========================= */
 
     .hero {
-      background:
-        #ffffff;
+      text-align: center;
 
-      min-height: 280px;
+      max-width: 850px;
 
-      padding:
-        42px 50px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      overflow: hidden;
-
-      position: relative;
-
-      box-shadow:
-        0 10px 35px
-        rgba(52, 76, 101, 0.08);
-    }
-
-
-    .hero-content {
-      max-width: 470px;
-
-      position: relative;
-
-      z-index: 2;
+      margin:
+        0 auto
+        70px;
     }
 
 
     .hero h1 {
       margin:
-        0 0 22px;
+        0
+        0
+        18px;
 
-      font-size: 48px;
+      font-size: 52px;
 
-      line-height: 1.1;
+      line-height: 1.15;
 
-      letter-spacing: -1.8px;
+      letter-spacing: -2px;
 
-      color:
-        #3b4658;
+      font-weight: 700;
 
-      font-weight: 800;
+      color: #344154;
     }
 
 
     .hero h1 span {
-      color:
-        #4676b4;
+      color: #4d73a6;
     }
 
 
     .hero p {
       margin: 0;
 
-      max-width: 440px;
-
-      font-size: 16px;
-
-      line-height: 1.8;
-
-      color:
-        #687586;
-    }
-
-
-    /* =========================
-       HERO GRAPHIC
-    ========================= */
-
-    .hero-graphic {
-      position: relative;
-
-      width: 310px;
-
-      height: 220px;
-
-      flex-shrink: 0;
-    }
-
-
-    .ground-line {
-      position: absolute;
-
-      width: 270px;
-
-      height: 2px;
-
-      background:
-        #4d5d6e;
-
-      bottom: 8px;
-
-      left: 18px;
-    }
-
-
-    .paper {
-      position: absolute;
-
-      width: 95px;
-
-      height: 125px;
-
-      background:
-        #ffffff;
-
-      border:
-        3px solid #405368;
-
-      box-shadow:
-        10px 12px 0
-        rgba(80, 105, 132, 0.12);
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      font-weight: bold;
-
       font-size: 20px;
-    }
 
+      line-height: 1.7;
 
-    .paper-pdf {
-      color:
-        #e34a3e;
-
-      transform:
-        rotate(-20deg);
-
-      left: 45px;
-
-      top: 35px;
-    }
-
-
-    .paper-doc {
-      color:
-        #497ab8;
-
-      transform:
-        rotate(7deg);
-
-      left: 135px;
-
-      top: 4px;
-    }
-
-
-    .paper-xls {
-      color:
-        #48a564;
-
-      transform:
-        rotate(18deg);
-
-      left: 185px;
-
-      top: 55px;
-    }
-
-
-    .upload-box {
-      position: absolute;
-
-      width: 120px;
-
-      height: 100px;
-
-      left: 55px;
-
-      bottom: 8px;
-
-      border-radius: 15px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #5f90cf,
-          #32649f
-        );
-
-      border:
-        3px solid #354e69;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      color:
-        white;
-
-      font-size: 42px;
-
-      box-shadow:
-        0 10px 20px
-        rgba(50, 100, 159, 0.2);
-    }
-
-
-    .download-box {
-      position: absolute;
-
-      width: 120px;
-
-      height: 100px;
-
-      right: 10px;
-
-      bottom: 8px;
-
-      border-radius: 15px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #ffd26d,
-          #f5a72d
-        );
-
-      border:
-        3px solid #354e69;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      color:
-        white;
-
-      font-size: 42px;
-
-      box-shadow:
-        0 10px 20px
-        rgba(245, 167, 45, 0.2);
+      color: #6f7d8c;
     }
 
 
     /* =========================
-       TOOLS AREA
+       PLACEHOLDER SECTION
     ========================= */
 
-    .tools-section {
-      margin-top: 30px;
-    }
-
-
-    /* =========================
-       CATEGORY
-    ========================= */
-
-    .category {
-      margin-bottom: 24px;
-
-      background:
-        #ffffff;
-
-      padding:
-        22px 25px;
+    .tools-placeholder {
+      background: #ffffff;
 
       border:
-        1px solid #e1e8ef;
+        1px solid #e2e7ee;
 
-      box-shadow:
-        0 5px 20px
-        rgba(45, 67, 91, 0.04);
-    }
+      border-radius: 18px;
 
+      min-height: 300px;
 
-    .category-header {
-      display: flex;
+      padding: 40px;
 
-      align-items: center;
-
-      gap: 12px;
-
-      margin-bottom: 16px;
-    }
-
-
-    .category-icon {
-      width: 43px;
-
-      height: 43px;
+      text-align: center;
 
       display: flex;
 
       align-items: center;
 
       justify-content: center;
-
-      border-radius: 10px;
-
-      font-size: 21px;
-
-      font-weight: bold;
     }
 
 
-    .pdf-icon {
-      background:
-        #fff0ed;
-
-      color:
-        #df4b3c;
-    }
-
-
-    .text-icon {
-      background:
-        #edf4ff;
-
-      color:
-        #4b78b5;
-    }
-
-
-    .image-icon {
-      background:
-        #f3efff;
-
-      color:
-        #7a5db3;
-    }
-
-
-    .calculator-icon {
-      background:
-        #fff7e9;
-
-      color:
-        #d98d24;
-    }
-
-
-    .category h2 {
+    .tools-placeholder p {
       margin: 0;
 
-      font-size: 23px;
+      color: #8a96a5;
 
-      color:
-        #3c4859;
-
-      font-weight: 700;
-    }
-
-
-    /* =========================
-       TOOL LINKS
-    ========================= */
-
-    .tool-list {
-      display: flex;
-
-      flex-wrap: wrap;
-
-      gap: 10px;
-    }
-
-
-    .tool-link {
-      padding:
-        11px 15px;
-
-      background:
-        #f7f9fb;
-
-      border:
-        1px solid #e0e7ee;
-
-      color:
-        #526071;
-
-      font-size: 14px;
-
-      font-weight: 600;
-
-      transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease;
-    }
-
-
-    .tool-link:hover {
-      transform:
-        translateY(-2px);
-
-      background:
-        #ffffff;
-
-      color:
-        #3d6fab;
-
-      border-color:
-        #a9c1db;
-
-      box-shadow:
-        0 5px 14px
-        rgba(59, 92, 127, 0.1);
-    }
-
-
-    /* =========================
-       ADS
-    ========================= */
-
-    .ad-column {
-      min-height: 600px;
-    }
-
-
-    .ad-box {
-      width: 100%;
-
-      min-height: 280px;
-
-      background:
-        #ffffff;
-
-      border:
-        1px solid #dce5ed;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      color:
-        #9aa6b2;
-
-      font-size: 13px;
-
-      letter-spacing: 1px;
-
-      text-transform: uppercase;
-
-      margin-bottom: 24px;
-    }
-
-
-    .ad-box-large {
-      min-height: 520px;
-    }
-
-
-    /* =========================
-       BOTTOM AD
-    ========================= */
-
-    .bottom-ad {
-      margin-top: 20px;
-
-      min-height: 130px;
-
-      background:
-        #ffffff;
-
-      border:
-        1px solid #dce5ed;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      color:
-        #9aa6b2;
-
-      font-size: 13px;
-
-      letter-spacing: 1px;
-
-      text-transform: uppercase;
+      font-size: 18px;
     }
 
 
@@ -711,19 +332,17 @@
     ========================= */
 
     footer {
-      background:
-        #ffffff;
+      background: #ffffff;
 
       border-top:
-        1px solid #dfe7ee;
+        1px solid #e2e7ee;
+
+      text-align: center;
 
       padding:
         30px 20px;
 
-      text-align: center;
-
-      color:
-        #748091;
+      color: #7b8794;
 
       font-size: 14px;
     }
@@ -734,22 +353,41 @@
     ========================= */
 
     @media (
-      max-width: 1100px
+      max-width: 900px
     ) {
 
-      .main-layout {
-        grid-template-columns:
-          1fr;
+      .navbar {
+        padding:
+          18px 25px;
+
+        gap: 25px;
       }
 
 
-      .ad-column {
-        display: none;
+      .logo-icon {
+        width: 60px;
+
+        height: 60px;
+
+        font-size: 28px;
+
+        border-radius: 17px;
       }
 
 
-      .hero {
-        min-height: 270px;
+      .logo-text {
+        font-size: 38px;
+      }
+
+
+      main {
+        padding:
+          55px 25px;
+      }
+
+
+      .hero h1 {
+        font-size: 44px;
       }
 
     }
@@ -760,110 +398,81 @@
     ========================= */
 
     @media (
-      max-width: 750px
+      max-width: 650px
     ) {
 
-      nav {
+      .navbar {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 18px;
+
         padding:
-          14px 20px;
+          16px;
       }
 
 
-      .nav-links {
-        display: none;
-      }
-
-
-      .page {
-        padding:
-          20px 15px 45px;
-      }
-
-
-      .hero {
-        padding:
-          35px 25px;
-
-        min-height: auto;
-      }
-
-
-      .hero-content {
-        max-width: 100%;
-      }
-
-
-      .hero h1 {
-        font-size: 36px;
-      }
-
-
-      .hero p {
-        font-size: 15px;
-      }
-
-
-      .hero-graphic {
-        display: none;
-      }
-
-
-      .category {
-        padding:
-          20px;
-      }
-
-
-      .category h2 {
-        font-size: 21px;
-      }
-
-
-      .tool-list {
-        gap: 8px;
-      }
-
-
-      .tool-link {
-        padding:
-          10px 12px;
-
-        font-size: 13px;
-      }
-
-    }
-
-
-    @media (
-      max-width: 450px
-    ) {
-
-      .logo-text {
-        font-size: 23px;
+      .logo {
+        justify-content: center;
       }
 
 
       .logo-icon {
-        width: 39px;
+        width: 52px;
 
-        height: 39px;
+        height: 52px;
+
+        font-size: 24px;
+
+        border-radius: 15px;
+      }
+
+
+      .logo-text {
+        font-size: 34px;
+
+        letter-spacing: -1px;
+      }
+
+
+      .search-container {
+        max-width: none;
+      }
+
+
+      .search-container input {
+        height: 54px;
+
+        font-size: 16px;
+      }
+
+
+      main {
+        padding:
+          45px 16px;
+      }
+
+
+      .hero {
+        margin-bottom: 45px;
       }
 
 
       .hero h1 {
-        font-size: 31px;
+        font-size: 38px;
       }
 
 
-      .category-header {
-        gap: 9px;
+      .hero p {
+        font-size: 17px;
       }
 
 
-      .category-icon {
-        width: 38px;
+      .tools-placeholder {
+        min-height: 220px;
 
-        height: 38px;
+        padding: 25px;
       }
 
     }
@@ -878,470 +487,103 @@
 
   <!-- =========================
        HEADER
-  ========================= -->
+  ========================== -->
 
-  <nav>
+  <header>
 
-    <a
-      href="index.html"
-      class="logo"
-    >
+    <div class="navbar">
 
-      <div class="logo-icon">
-        T
+
+      <!-- LOGO -->
+
+      <a
+        href="index.html"
+        class="logo"
+      >
+
+        <div class="logo-icon">
+          T
+        </div>
+
+
+        <div class="logo-text">
+
+          <span class="logo-tool">
+            Tool
+          </span>
+
+          <span class="logo-nest">
+            Nest
+          </span>
+
+        </div>
+
+      </a>
+
+
+      <!-- SEARCH BAR -->
+
+      <div class="search-container">
+
+        <input
+          type="text"
+          id="toolSearch"
+          placeholder="Search for a tool..."
+        >
+
+        <div class="search-icon">
+          ⌕
+        </div>
+
       </div>
 
-      <div class="logo-text">
-
-        Tool<span>Nest</span>
-
-      </div>
-
-    </a>
-
-
-    <div class="nav-links">
-
-      <a href="#pdf-tools">
-        PDF Tools
-      </a>
-
-      <a href="#text-tools">
-        Text Tools
-      </a>
-
-      <a href="#image-tools">
-        Image Tools
-      </a>
-
-      <a href="#calculators">
-        Calculators
-      </a>
 
     </div>
 
-  </nav>
+  </header>
 
 
 
   <!-- =========================
-       PAGE
-  ========================= -->
+       MAIN
+  ========================== -->
 
-  <main class="page">
+  <main>
 
 
-    <div class="main-layout">
+    <!-- HERO -->
 
+    <section class="hero">
 
-      <!-- =========================
-           LEFT CONTENT
-      ========================= -->
+      <h1>
 
-      <div class="content">
+        Your All-in-One<br>
 
+        Online <span>Tools.</span>
 
-        <!-- HERO -->
+      </h1>
 
-        <section class="hero">
 
+      <p>
 
-          <div class="hero-content">
+        Fast, free and easy-to-use online tools
+        for all your daily needs.
 
-            <h1>
+      </p>
 
-              Your All-in-One<br>
+    </section>
 
-              Online <span>Tools.</span>
 
-            </h1>
 
+    <!-- TOOLS AREA -->
 
-            <p>
+    <section class="tools-placeholder">
 
-              Fast, free and easy-to-use online tools
-              for your daily needs. Work with PDFs,
-              text, images and more in just a few clicks.
+      <p>
+        Tools will go here.
+      </p>
 
-            </p>
-
-          </div>
-
-
-
-          <!-- HERO GRAPHIC -->
-
-          <div class="hero-graphic">
-
-
-            <div class="paper paper-pdf">
-              PDF
-            </div>
-
-
-            <div class="paper paper-doc">
-              DOC
-            </div>
-
-
-            <div class="paper paper-xls">
-              XLS
-            </div>
-
-
-            <div class="upload-box">
-              ⇧
-            </div>
-
-
-            <div class="download-box">
-              ⇩
-            </div>
-
-
-            <div class="ground-line">
-            </div>
-
-
-          </div>
-
-
-        </section>
-
-
-
-        <!-- =========================
-             TOOL CATEGORIES
-        ========================= -->
-
-        <section class="tools-section">
-
-
-          <!-- PDF TOOLS -->
-
-          <div
-            class="category"
-            id="pdf-tools"
-          >
-
-            <div class="category-header">
-
-              <div
-                class="category-icon pdf-icon"
-              >
-                📄
-              </div>
-
-
-              <h2>
-                PDF Tools
-              </h2>
-
-            </div>
-
-
-            <div class="tool-list">
-
-              <a
-                href="merge-pdf.html"
-                class="tool-link"
-              >
-                Merge PDF
-              </a>
-
-
-              <a
-                href="split-pdf.html"
-                class="tool-link"
-              >
-                Split PDF
-              </a>
-
-
-              <a
-                href="pdf-to-word.html"
-                class="tool-link"
-              >
-                PDF to Word
-              </a>
-
-
-              <a
-                href="pdf-to-excel.html"
-                class="tool-link"
-              >
-                PDF to Excel
-              </a>
-
-
-              <a
-                href="pdf-to-ppt.html"
-                class="tool-link"
-              >
-                PDF to PPT
-              </a>
-
-
-              <a
-                href="pdf-to-text.html"
-                class="tool-link"
-              >
-                PDF to Text
-              </a>
-
-
-              <a
-                href="word-to-pdf.html"
-                class="tool-link"
-              >
-                Word to PDF
-              </a>
-
-
-              <a
-                href="images-to-pdf.html"
-                class="tool-link"
-              >
-                Images to PDF
-              </a>
-
-            </div>
-
-          </div>
-
-
-
-          <!-- TEXT TOOLS -->
-
-          <div
-            class="category"
-            id="text-tools"
-          >
-
-            <div class="category-header">
-
-              <div
-                class="category-icon text-icon"
-              >
-                T
-              </div>
-
-
-              <h2>
-                Text Tools
-              </h2>
-
-            </div>
-
-
-            <div class="tool-list">
-
-              <a
-                href="word-counter.html"
-                class="tool-link"
-              >
-                Word Counter
-              </a>
-
-
-              <a
-                href="case-converter.html"
-                class="tool-link"
-              >
-                Case Converter
-              </a>
-
-
-              <a
-                href="text-sorter.html"
-                class="tool-link"
-              >
-                Text Sorter
-              </a>
-
-
-              <a
-                href="text-cleaner.html"
-                class="tool-link"
-              >
-                Text Cleaner
-              </a>
-
-            </div>
-
-          </div>
-
-
-
-          <!-- IMAGE TOOLS -->
-
-          <div
-            class="category"
-            id="image-tools"
-          >
-
-            <div class="category-header">
-
-              <div
-                class="category-icon image-icon"
-              >
-                🖼
-              </div>
-
-
-              <h2>
-                Image Tools
-              </h2>
-
-            </div>
-
-
-            <div class="tool-list">
-
-              <a
-                href="image-compressor.html"
-                class="tool-link"
-              >
-                Image Compressor
-              </a>
-
-
-              <a
-                href="image-resizer.html"
-                class="tool-link"
-              >
-                Image Resizer
-              </a>
-
-
-              <a
-                href="image-cropper.html"
-                class="tool-link"
-              >
-                Image Cropper
-              </a>
-
-            </div>
-
-          </div>
-
-
-
-          <!-- CALCULATORS -->
-
-          <div
-            class="category"
-            id="calculators"
-          >
-
-            <div class="category-header">
-
-              <div
-                class="category-icon calculator-icon"
-              >
-                🧮
-              </div>
-
-
-              <h2>
-                Calculators
-              </h2>
-
-            </div>
-
-
-            <div class="tool-list">
-
-              <a
-                href="loan-emi-calculator.html"
-                class="tool-link"
-              >
-                Loan EMI Calculator
-              </a>
-
-
-              <a
-                href="bmi-calculator.html"
-                class="tool-link"
-              >
-                BMI Calculator
-              </a>
-
-
-              <a
-                href="gst-vat-calculator.html"
-                class="tool-link"
-              >
-                GST / VAT Calculator
-              </a>
-
-
-              <a
-                href="discount-calculator.html"
-                class="tool-link"
-              >
-                Discount Calculator
-              </a>
-
-
-              <a
-                href="profit-margin-calculator.html"
-                class="tool-link"
-              >
-                Profit Margin Calculator
-              </a>
-
-            </div>
-
-          </div>
-
-
-        </section>
-
-
-      </div>
-
-
-
-      <!-- =========================
-           RIGHT ADS
-      ========================= -->
-
-      <aside class="ad-column">
-
-
-        <div class="ad-box">
-
-          Advertisement
-
-        </div>
-
-
-        <div
-          class="ad-box ad-box-large"
-        >
-
-          Advertisement
-
-        </div>
-
-
-      </aside>
-
-
-    </div>
-
-
-
-    <!-- =========================
-         BOTTOM AD
-    ========================= -->
-
-    <div class="bottom-ad">
-
-      Advertisement
-
-    </div>
+    </section>
 
 
   </main>
@@ -1350,14 +592,41 @@
 
   <!-- =========================
        FOOTER
-  ========================= -->
+  ========================== -->
 
   <footer>
 
-    © 2026 ToolNest ·
-    Simple, Fast &amp; Free
+    © 2026 ToolNest · Simple, Fast &amp; Free
 
   </footer>
+
+
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================== -->
+
+  <script>
+
+    const toolSearch =
+      document.getElementById(
+        "toolSearch"
+      );
+
+
+    toolSearch.addEventListener(
+      "input",
+      function() {
+
+        console.log(
+          "Searching for:",
+          toolSearch.value
+        );
+
+      }
+    );
+
+  </script>
 
 
 </body>
