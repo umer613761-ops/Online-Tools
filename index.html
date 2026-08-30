@@ -95,11 +95,12 @@ header {
 
     border-radius: 8px;
 
-    background: linear-gradient(
-        135deg,
-        #3d75b3,
-        #1e5593
-    );
+    background:
+        linear-gradient(
+            135deg,
+            #3d75b3,
+            #1e5593
+        );
 
     color: #ffffff;
 
@@ -171,7 +172,7 @@ header {
 
 
 /* =========================
-   HERO + AD LAYOUT
+   MAIN PAGE LAYOUT
 ========================= */
 
 .page-layout {
@@ -184,6 +185,12 @@ header {
         200px;
 
     gap: 10px;
+
+    align-items: start;
+}
+
+.left-content {
+    min-width: 0;
 }
 
 
@@ -598,7 +605,8 @@ header {
 ========================= */
 
 .ad-column {
-    height: 258px;
+    width: 200px;
+    min-height: 600px;
 
     background: #ffffff;
 
@@ -614,6 +622,12 @@ header {
     justify-content: center;
 
     text-align: center;
+
+    /* STAYS WITH USER WHILE SCROLLING */
+    position: sticky;
+    top: 12px;
+
+    align-self: start;
 }
 
 .ad-label {
@@ -644,7 +658,7 @@ header {
 .tools-area {
     margin-top: 14px;
 
-    width: calc(100% - 210px);
+    width: 100%;
 
     display: grid;
 
@@ -654,6 +668,8 @@ header {
         1fr;
 
     gap: 10px;
+
+    align-items: start;
 }
 
 
@@ -768,7 +784,7 @@ header {
 
 
 /* =========================
-   PDF ICONS
+   ICON BACKGROUNDS
 ========================= */
 
 .icon-merge {
@@ -787,11 +803,6 @@ header {
     background: #fff1df;
 }
 
-
-/* =========================
-   TEXT ICONS
-========================= */
-
 .icon-word {
     background: #e8f0fb;
 }
@@ -807,11 +818,6 @@ header {
 .icon-clean {
     background: #fff1df;
 }
-
-
-/* =========================
-   IMAGE ICONS
-========================= */
 
 .icon-compress {
     background: #e8f6ec;
@@ -878,6 +884,113 @@ footer {
 
 
 /* =========================
+   DARK MODE
+========================= */
+
+@media (prefers-color-scheme: dark) {
+
+    body {
+        background: #18212b;
+        color: #dce5ed;
+    }
+
+    header,
+    .main-content,
+    .tool-category,
+    .ad-column,
+    footer {
+        background: #222d38;
+
+        border-color: #3b4a58;
+
+        box-shadow:
+            0 5px 14px rgba(0, 0, 0, 0.20);
+    }
+
+    .logo-tool {
+        color: #e4ebf1;
+    }
+
+    .logo-nest {
+        color: #67a4e4;
+    }
+
+    .search-container input {
+        background: #1b2530;
+
+        border-color: #3b4a58;
+
+        color: #e4ebf1;
+    }
+
+    .search-container input::placeholder {
+        color: #8795a3;
+    }
+
+    .search-icon {
+        color: #9aabba;
+    }
+
+    .hero h1 {
+        color: #e5edf4;
+    }
+
+    .hero h1 span {
+        color: #6da9e8;
+    }
+
+    .hero p {
+        color: #aebdca;
+    }
+
+    .tool-card {
+        background: #26323d;
+
+        border-color: #71808d;
+    }
+
+    .category-heading {
+        color: #e2eaf1;
+
+        border-bottom-color: #3b4a58;
+    }
+
+    .pdf-tools-grid .tool-column:first-child {
+        border-right-color: #3b4a58;
+    }
+
+    .tool-item {
+        color: #dce5ed;
+    }
+
+    .tool-item:hover {
+        background: #2c3945;
+    }
+
+    .ad-label {
+        color: #aebdca;
+    }
+
+    .ad-size {
+        color: #dce5ed;
+    }
+
+    footer {
+        color: #aebdca;
+    }
+
+    .footer-links a {
+        color: #c8d3dd;
+    }
+
+    .footer-links a + a {
+        border-left-color: #526170;
+    }
+
+}
+
+
+/* =========================
    TABLET
 ========================= */
 
@@ -887,6 +1000,10 @@ footer {
         grid-template-columns:
             minmax(0, 1fr)
             180px;
+    }
+
+    .ad-column {
+        width: 180px;
     }
 
     .hero {
@@ -900,8 +1017,6 @@ footer {
     }
 
     .tools-area {
-        width: calc(100% - 190px);
-
         grid-template-columns:
             2fr
             1fr;
@@ -957,12 +1072,13 @@ footer {
     }
 
     .ad-column {
-        height: 120px;
+        width: 100%;
+        min-height: 180px;
+
+        position: static;
     }
 
     .tools-area {
-        width: 100%;
-
         grid-template-columns: 1fr;
     }
 
@@ -1024,6 +1140,10 @@ footer {
     .pdf-tools-grid .tool-column:first-child {
         border-right: none;
         border-bottom: 1px solid #d5dde5;
+    }
+
+    footer {
+        text-align: center;
     }
 
     .footer-links a {
@@ -1093,132 +1213,252 @@ footer {
 
 
 <!-- =========================
-     HERO + AD
+     MAIN CONTENT + AD
 ========================= -->
 
 <main class="page-layout">
 
 
-    <!-- HERO -->
+    <!-- =====================
+         LEFT CONTENT
+    ====================== -->
 
-    <section class="main-content">
-
-        <div class="hero">
-
-
-            <div class="hero-content">
-
-                <h1>
-
-                    Your All-in-one<br>
-
-                    Online <span>Tools</span>
-
-                </h1>
+    <div class="left-content">
 
 
-                <p>
+        <!-- =====================
+             HERO
+        ====================== -->
 
-                    Access powerful PDF, Text, Image and
-                    Calculator tools to simplify your daily
-                    tasks — fast, free and easy to use.
+        <section class="main-content">
 
-                </p>
-
-            </div>
+            <div class="hero">
 
 
+                <!-- HERO TEXT -->
 
-            <div class="hero-visual">
+                <div class="hero-content">
 
-                <div class="tool-group">
+                    <h1>
 
+                        Your All-in-one<br>
 
-                    <!-- CURVES -->
+                        Online <span>Tools</span>
 
-                    <div class="curve curve-1"></div>
-                    <div class="curve curve-2"></div>
-
-
-                    <!-- DOTS -->
-
-                    <span class="dot dot-blue dot-1"></span>
-                    <span class="dot dot-teal dot-2"></span>
-                    <span class="dot dot-orange dot-3"></span>
-                    <span class="dot dot-blue dot-4"></span>
-                    <span class="dot dot-teal dot-5"></span>
-                    <span class="dot dot-orange dot-6"></span>
-                    <span class="dot dot-blue dot-7"></span>
-                    <span class="dot dot-orange dot-8"></span>
+                    </h1>
 
 
-                    <!-- TOOL CARDS -->
+                    <p>
 
-                    <div class="tool-card pdf-card">
+                        Access powerful PDF, Text, Image and
+                        Calculator tools to simplify your daily
+                        tasks — fast, free and easy to use.
 
-                        <div class="card-icon">
-                            📄
+                    </p>
+
+                </div>
+
+
+
+                <!-- HERO VISUAL -->
+
+                <div class="hero-visual">
+
+                    <div class="tool-group">
+
+
+                        <!-- CURVES -->
+
+                        <div class="curve curve-1"></div>
+                        <div class="curve curve-2"></div>
+
+
+                        <!-- DOTS -->
+
+                        <span class="dot dot-blue dot-1"></span>
+                        <span class="dot dot-teal dot-2"></span>
+                        <span class="dot dot-orange dot-3"></span>
+                        <span class="dot dot-blue dot-4"></span>
+                        <span class="dot dot-teal dot-5"></span>
+                        <span class="dot dot-orange dot-6"></span>
+                        <span class="dot dot-blue dot-7"></span>
+                        <span class="dot dot-orange dot-8"></span>
+
+
+                        <!-- TOP CARDS -->
+
+                        <div class="tool-card pdf-card">
+
+                            <div class="card-icon">
+                                📄
+                            </div>
+
+                            PDF Tools
+
                         </div>
 
-                        PDF Tools
 
-                    </div>
+                        <div class="tool-card text-card">
+
+                            <div class="card-icon">
+                                T
+                            </div>
+
+                            Text Tools
+
+                        </div>
 
 
-                    <div class="tool-card text-card">
+                        <div class="tool-card calculator-card">
 
-                        <div class="card-icon">
+                            <div class="card-icon">
+                                ▦
+                            </div>
+
+                            Calculators
+
+                        </div>
+
+
+                        <div class="tool-card image-card">
+
+                            <div class="card-icon">
+                                🖼
+                            </div>
+
+                            Image Tools
+
+                        </div>
+
+
+                        <!-- FOLDERS -->
+
+                        <div class="folder folder-pdf">
+                            PDF
+                        </div>
+
+
+                        <div class="folder folder-text">
                             T
                         </div>
 
-                        Text Tools
 
-                    </div>
-
-
-                    <div class="tool-card calculator-card">
-
-                        <div class="card-icon">
+                        <div class="folder folder-calculator">
                             ▦
                         </div>
 
-                        Calculators
 
-                    </div>
-
-
-                    <div class="tool-card image-card">
-
-                        <div class="card-icon">
+                        <div class="folder folder-image">
                             🖼
                         </div>
 
-                        Image Tools
+
+                        <div class="visual-line"></div>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================
+             TOOLS AREA
+        ====================== -->
+
+        <section class="tools-area">
+
+
+            <!-- =====================
+                 PDF TOOLS
+            ====================== -->
+
+            <div class="tool-category pdf-category">
+
+
+                <!-- ONE HEADING
+                     SPANS BOTH PDF COLUMNS -->
+
+                <div class="category-heading">
+                    PDF Tools
+                </div>
+
+
+                <div class="pdf-tools-grid">
+
+
+                    <!-- PDF COLUMN 1 -->
+
+                    <div class="tool-column">
+
+
+                        <a href="merge-pdf.html" class="tool-item">
+
+                            <div class="tool-item-icon icon-merge">
+                                🔗
+                            </div>
+
+                            <div class="tool-item-text">
+                                Merge PDF
+                            </div>
+
+                        </a>
+
+
+                        <a href="split-pdf.html" class="tool-item">
+
+                            <div class="tool-item-icon icon-split">
+                                ✂
+                            </div>
+
+                            <div class="tool-item-text">
+                                Split PDF
+                            </div>
+
+                        </a>
+
 
                     </div>
 
 
 
-                    <!-- FOLDERS -->
+                    <!-- PDF COLUMN 2 -->
 
-                    <div class="folder folder-pdf">
-                        PDF
+                    <div class="tool-column">
+
+
+                        <a href="pdf-to-images.html" class="tool-item">
+
+                            <div class="tool-item-icon icon-pdf-image">
+                                🖼
+                            </div>
+
+                            <div class="tool-item-text">
+                                PDF to Images
+                            </div>
+
+                        </a>
+
+
+                        <a href="images-to-pdf.html" class="tool-item">
+
+                            <div class="tool-item-icon icon-image-pdf">
+                                📄
+                            </div>
+
+                            <div class="tool-item-text">
+                                Images to PDF
+                            </div>
+
+                        </a>
+
+
                     </div>
-
-                    <div class="folder folder-text">
-                        T
-                    </div>
-
-                    <div class="folder folder-calculator">
-                        ▦
-                    </div>
-
-                    <div class="folder folder-image">
-                        🖼
-                    </div>
-
-
-                    <div class="visual-line"></div>
 
 
                 </div>
@@ -1226,13 +1466,136 @@ footer {
             </div>
 
 
-        </div>
 
-    </section>
+            <!-- =====================
+                 TEXT TOOLS
+            ====================== -->
+
+            <div class="tool-category">
+
+
+                <div class="category-heading">
+                    Text Tools
+                </div>
+
+
+                <div class="tool-column">
+
+
+                    <a href="word-counter.html" class="tool-item">
+
+                        <div class="tool-item-icon icon-word">
+                            🔤
+                        </div>
+
+                        <div class="tool-item-text">
+                            Word Counter
+                        </div>
+
+                    </a>
+
+
+                    <a href="case-converter.html" class="tool-item">
+
+                        <div class="tool-item-icon icon-case">
+                            Aa
+                        </div>
+
+                        <div class="tool-item-text">
+                            Case Converter
+                        </div>
+
+                    </a>
+
+
+                    <a href="text-sorter.html" class="tool-item">
+
+                        <div class="tool-item-icon icon-sort">
+                            ↕
+                        </div>
+
+                        <div class="tool-item-text">
+                            Text Sorter
+                        </div>
+
+                    </a>
+
+
+                    <a href="text-cleaner.html" class="tool-item">
+
+                        <div class="tool-item-icon icon-clean">
+                            ✨
+                        </div>
+
+                        <div class="tool-item-text">
+                            Text Cleaner
+                        </div>
+
+                    </a>
+
+
+                </div>
+
+            </div>
 
 
 
-    <!-- AD -->
+            <!-- =====================
+                 IMAGE TOOLS
+            ====================== -->
+
+            <div class="tool-category image-category">
+
+
+                <div class="category-heading">
+                    Image Tools
+                </div>
+
+
+                <div class="tool-column">
+
+
+                    <a href="image-compressor.html" class="tool-item">
+
+                        <div class="tool-item-icon icon-compress">
+                            🗜
+                        </div>
+
+                        <div class="tool-item-text">
+                            Image Compressor
+                        </div>
+
+                    </a>
+
+
+                    <a href="image-converter.html" class="tool-item">
+
+                        <div class="tool-item-icon icon-convert">
+                            🔄
+                        </div>
+
+                        <div class="tool-item-text">
+                            Image Converter
+                        </div>
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </div>
+
+
+
+    <!-- =====================
+         STICKY AD
+    ====================== -->
 
     <aside class="ad-column">
 
@@ -1241,7 +1604,7 @@ footer {
             ADVERTISEMENT
 
             <span class="ad-size">
-                200 × 300
+                200 × 600
             </span>
 
         </div>
@@ -1250,222 +1613,6 @@ footer {
 
 
 </main>
-
-
-
-<!-- =========================
-     ALL TOOL CATEGORIES
-========================= -->
-
-<section class="tools-area">
-
-
-    <!-- =========================
-         PDF TOOLS
-    ========================= -->
-
-    <div class="tool-category pdf-category">
-
-
-        <div class="category-heading">
-            PDF Tools
-        </div>
-
-
-        <div class="pdf-tools-grid">
-
-
-            <!-- PDF COLUMN 1 -->
-
-            <div class="tool-column">
-
-                <a href="merge-pdf.html" class="tool-item">
-
-                    <div class="tool-item-icon icon-merge">
-                        🔗
-                    </div>
-
-                    <div class="tool-item-text">
-                        Merge PDF
-                    </div>
-
-                </a>
-
-
-                <a href="split-pdf.html" class="tool-item">
-
-                    <div class="tool-item-icon icon-split">
-                        ✂
-                    </div>
-
-                    <div class="tool-item-text">
-                        Split PDF
-                    </div>
-
-                </a>
-
-            </div>
-
-
-
-            <!-- PDF COLUMN 2 -->
-
-            <div class="tool-column">
-
-                <a href="pdf-to-images.html" class="tool-item">
-
-                    <div class="tool-item-icon icon-pdf-image">
-                        🖼
-                    </div>
-
-                    <div class="tool-item-text">
-                        PDF to Images
-                    </div>
-
-                </a>
-
-
-                <a href="images-to-pdf.html" class="tool-item">
-
-                    <div class="tool-item-icon icon-image-pdf">
-                        📄
-                    </div>
-
-                    <div class="tool-item-text">
-                        Images to PDF
-                    </div>
-
-                </a>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =========================
-         TEXT TOOLS
-    ========================= -->
-
-    <div class="tool-category text-category">
-
-
-        <div class="category-heading">
-            Text Tools
-        </div>
-
-
-        <div class="tool-column">
-
-
-            <a href="word-counter.html" class="tool-item">
-
-                <div class="tool-item-icon icon-word">
-                    🔤
-                </div>
-
-                <div class="tool-item-text">
-                    Word Counter
-                </div>
-
-            </a>
-
-
-            <a href="case-converter.html" class="tool-item">
-
-                <div class="tool-item-icon icon-case">
-                    Aa
-                </div>
-
-                <div class="tool-item-text">
-                    Case Converter
-                </div>
-
-            </a>
-
-
-            <a href="text-sorter.html" class="tool-item">
-
-                <div class="tool-item-icon icon-sort">
-                    ↕
-                </div>
-
-                <div class="tool-item-text">
-                    Text Sorter
-                </div>
-
-            </a>
-
-
-            <a href="text-cleaner.html" class="tool-item">
-
-                <div class="tool-item-icon icon-clean">
-                    ✨
-                </div>
-
-                <div class="tool-item-text">
-                    Text Cleaner
-                </div>
-
-            </a>
-
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =========================
-         IMAGE TOOLS
-    ========================= -->
-
-    <div class="tool-category image-category">
-
-
-        <div class="category-heading">
-            Image Tools
-        </div>
-
-
-        <div class="tool-column">
-
-
-            <a href="image-compressor.html" class="tool-item">
-
-                <div class="tool-item-icon icon-compress">
-                    🗜
-                </div>
-
-                <div class="tool-item-text">
-                    Image Compressor
-                </div>
-
-            </a>
-
-
-            <a href="image-converter.html" class="tool-item">
-
-                <div class="tool-item-icon icon-convert">
-                    🔄
-                </div>
-
-                <div class="tool-item-text">
-                    Image Converter
-                </div>
-
-            </a>
-
-
-        </div>
-
-    </div>
-
-
-</section>
 
 
 
