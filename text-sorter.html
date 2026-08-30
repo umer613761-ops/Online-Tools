@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -10,12 +11,18 @@
     content="width=device-width, initial-scale=1.0"
   >
 
+  <meta
+    name="theme-color"
+    content="#111827"
+  >
+
   <title>Text Sorter - Free Online Text Tool | ToolNest</title>
 
   <meta
     name="description"
     content="Sort text lines online for free. Sort alphabetically, numerically, reverse lines and remove duplicate or empty lines."
   >
+
 
   <style>
 
@@ -27,12 +34,26 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #d9dee4;
-      color: #1f2937;
+
       min-height: 100vh;
+
+      display: flex;
+      flex-direction: column;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: #111827;
+
+      color: #f3f4f6;
     }
 
 
@@ -42,13 +63,15 @@
 
     nav {
       width: 100%;
+
       background: #1f2937;
-      border-bottom: 1px solid #374151;
+
+      border-bottom:
+        1px solid #374151;
 
       padding: 16px 32px;
 
       display: flex;
-      justify-content: space-between;
       align-items: center;
     }
 
@@ -83,21 +106,32 @@
       align-items: center;
       justify-content: center;
 
-      color: white;
+      color: #ffffff;
+
+      font-family:
+        "Trebuchet MS",
+        Arial,
+        sans-serif;
 
       font-size: 22px;
       font-weight: bold;
 
       box-shadow:
         0 5px 14px
-        rgba(63, 118, 89, 0.25);
+        rgba(63, 118, 89, 0.35);
     }
 
     .logo-text {
-      font-size: 29px;
-      font-weight: 800;
+      font-family:
+        "Trebuchet MS",
+        Arial,
+        sans-serif;
 
-      letter-spacing: -0.8px;
+      font-size: 29px;
+
+      font-weight: 700;
+
+      letter-spacing: -1px;
 
       line-height: 1;
     }
@@ -112,83 +146,94 @@
 
 
     /* =========================
-       NAV LINK
-    ========================= */
-
-    .nav-links a {
-      color: #d1d5db;
-      text-decoration: none;
-
-      font-size: 14px;
-    }
-
-    .nav-links a:hover {
-      color: #a9cdb7;
-    }
-
-
-    /* =========================
        MAIN
     ========================= */
 
     .container {
-      max-width: 950px;
+      width: 100%;
+      max-width: 1250px;
 
       margin: 0 auto;
 
-      padding: 55px 24px 70px;
+      padding: 55px 24px 80px;
+
+      flex: 1;
     }
 
 
     /* =========================
-       HERO
+       CONTENT LAYOUT
     ========================= */
 
-    .hero {
-      text-align: center;
+    .content-layout {
+      display: grid;
 
-      margin-bottom: 40px;
+      grid-template-columns:
+        minmax(0, 1fr)
+        180px;
+
+      gap: 28px;
+
+      align-items: start;
     }
 
-    .hero h1 {
-      margin: 0 0 14px;
+    .tool-area {
+      min-width: 0;
+    }
+
+
+    /* =========================
+       HEADING
+    ========================= */
+
+    .heading {
+      text-align: center;
+
+      margin-bottom: 35px;
+    }
+
+    .heading h1 {
+      margin: 0 0 12px;
 
       font-size: 42px;
+
       font-weight: 750;
 
       letter-spacing: -1px;
 
-      color: #202938;
+      color: #f9fafb;
     }
 
-    .hero p {
+    .subtitle {
+      max-width: 620px;
+
       margin: 0 auto;
 
-      max-width: 650px;
+      color: #aeb7c5;
 
-      font-size: 17px;
+      font-size: 16px;
+
       line-height: 1.6;
-
-      color: #667085;
     }
 
 
     /* =========================
-       TOOL PANEL
+       TOOL BOX
     ========================= */
 
-    .tool-panel {
-      background: #c9d0d7;
+    .tool-box {
+      background: #1e2933;
 
-      border: 1px solid #b2bbc5;
+      border:
+        1px solid #374151;
 
-      border-radius: 18px;
+      border-radius: 16px;
 
       padding: 30px;
 
       box-shadow:
-        0 8px 22px
-        rgba(31, 41, 55, 0.08);
+        0 8px 24px
+        rgba(0, 0, 0, 0.30);
     }
 
 
@@ -198,36 +243,84 @@
 
     textarea {
       width: 100%;
-      height: 300px;
 
-      padding: 16px;
+      height: 250px;
 
-      font-family: Arial, Helvetica, sans-serif;
+      padding: 18px;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
       font-size: 16px;
+
       line-height: 1.6;
 
-      color: #253044;
+      color: #f3f4f6;
 
-      background: #e9edf1;
+      background: #18212b;
 
-      border: 1px solid #bec7d0;
+      border:
+        1px solid #3b4652;
+
       border-radius: 12px;
 
       resize: vertical;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
     }
 
     textarea::placeholder {
-      color: #7b8490;
+      color: #8f9aa8;
     }
 
     textarea:focus {
       outline: none;
 
-      border-color: #8bb89c;
+      background: #1c2732;
+
+      border-color: #79b68d;
 
       box-shadow:
         0 0 0 3px
-        rgba(139, 184, 156, 0.15);
+        rgba(121, 182, 141, 0.15);
+    }
+
+
+    /* =========================
+       CATEGORY
+    ========================= */
+
+    .category {
+      margin-top: 30px;
+    }
+
+    .category-title {
+      margin: 0 0 12px;
+
+      font-size: 16px;
+
+      font-weight: 700;
+
+      color: #f3f4f6;
+    }
+
+
+    /* =========================
+       BUTTON GRID
+    ========================= */
+
+    .button-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap: 10px;
     }
 
 
@@ -235,52 +328,56 @@
        SORT BUTTONS
     ========================= */
 
-    .sort-buttons {
-      display: grid;
+    .button-grid button {
+      padding: 14px;
 
-      grid-template-columns:
-        repeat(3, 1fr);
-
-      gap: 14px;
-
-      margin-top: 25px;
-    }
-
-    button {
-      border: none;
+      border:
+        1px solid #5f8f70;
 
       border-radius: 10px;
 
-      padding: 15px;
+      background: #3f7659;
 
-      font-size: 15px;
+      color: #ffffff;
+
+      font-family: inherit;
+
+      font-size: 14px;
+
       font-weight: 600;
 
       cursor: pointer;
 
-      background: #dce6df;
-
-      color: #2d3a32;
-
-      border: 1px solid #c2d0c7;
-
       transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease;
+        transform 0.18s ease,
+        background 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
     }
 
-    button:hover {
-      transform: translateY(-3px);
+    .button-grid button:hover {
+      background: #4d8a67;
 
-      background: #d4e0d8;
+      border-color: #79b68d;
 
-      border-color: #9bb8a5;
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 6px 16px
+        rgba(63, 118, 89, 0.35);
+    }
+
+    .button-grid button:active {
+      transform:
+        translateY(0);
+
+      background: #35654c;
     }
 
 
     /* =========================
-       STATS
+       STATISTICS
     ========================= */
 
     .statistics {
@@ -289,35 +386,38 @@
       grid-template-columns:
         repeat(3, 1fr);
 
-      gap: 18px;
+      gap: 15px;
 
-      margin-top: 35px;
+      margin-top: 30px;
     }
 
     .stat {
-      background: #dce6df;
-
-      border: 1px solid #c2d0c7;
-
-      padding: 22px;
+      padding: 20px;
 
       text-align: center;
 
-      border-radius: 14px;
+      background: #202b36;
+
+      border:
+        1px solid #394755;
+
+      border-radius: 12px;
     }
 
     .stat strong {
       display: block;
 
-      font-size: 30px;
+      font-size: 28px;
 
-      margin-bottom: 6px;
+      font-weight: 750;
 
-      color: #2d3a32;
+      margin-bottom: 7px;
+
+      color: #79b68d;
     }
 
     .stat span {
-      color: #59665e;
+      color: #aeb7c5;
 
       font-size: 14px;
     }
@@ -328,57 +428,156 @@
     ========================= */
 
     .action-buttons {
-      display: flex;
+      display: grid;
 
-      justify-content: center;
+      grid-template-columns:
+        repeat(2, 1fr);
 
       gap: 12px;
 
       margin-top: 25px;
     }
 
-    .action-buttons button {
-      background: #e9edf1;
+    .copy-button,
+    .clear-button {
+      padding: 14px;
 
-      color: #273246;
+      border-radius: 10px;
 
-      border: 1px solid #bec7d0;
+      font-family: inherit;
 
-      min-width: 150px;
+      font-size: 15px;
+
+      font-weight: 600;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
-    .action-buttons button:hover {
-      background: #dfe6e1;
+    .copy-button {
+      border: none;
+
+      background: #3f7659;
+
+      color: #ffffff;
+
+      box-shadow:
+        0 5px 12px
+        rgba(63, 118, 89, 0.25);
+    }
+
+    .copy-button:hover {
+      background: #35654c;
+
+      transform:
+        translateY(-2px);
+    }
+
+    .clear-button {
+      background: #27323d;
+
+      color: #e5e7eb;
+
+      border:
+        1px solid #46515d;
+    }
+
+    .clear-button:hover {
+      background: #313e4b;
+
+      border-color: #657382;
+
+      transform:
+        translateY(-2px);
     }
 
 
     /* =========================
-       INFO
+       INFORMATION
     ========================= */
 
     .info {
-      margin-top: 35px;
+      margin-top: 30px;
 
-      padding: 25px;
+      padding: 22px;
 
-      background: #e9edf1;
+      background: #202b36;
 
-      border: 1px solid #bec7d0;
-      border-radius: 14px;
+      border:
+        1px solid #394755;
 
-      color: #596678;
+      border-radius: 12px;
 
-      line-height: 1.7;
+      color: #aeb7c5;
+
+      line-height: 1.6;
     }
 
     .info strong {
-      color: #273246;
+      display: block;
 
-      font-size: 17px;
+      color: #f3f4f6;
+
+      font-size: 16px;
     }
 
     .info p {
-      margin-bottom: 0;
+      margin: 10px 0 0;
+    }
+
+
+    /* =========================
+       AD SIDEBAR
+    ========================= */
+
+    .ad-sidebar {
+      width: 100%;
+
+      min-height: 420px;
+
+      background: #18212b;
+
+      border:
+        1px solid #374151;
+
+      border-radius: 14px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      padding: 18px;
+
+      position: sticky;
+
+      top: 20px;
+    }
+
+    .ad-label {
+      color: #66717f;
+
+      font-size: 11px;
+
+      letter-spacing: 1px;
+
+      text-transform: uppercase;
+
+      margin-bottom: 12px;
+    }
+
+    .ad-placeholder {
+      color: #7d8896;
+
+      font-size: 13px;
+
+      line-height: 1.6;
     }
 
 
@@ -389,7 +588,8 @@
     footer {
       background: #1f2937;
 
-      border-top: 1px solid #374151;
+      border-top:
+        1px solid #374151;
 
       text-align: center;
 
@@ -405,11 +605,35 @@
        TABLET
     ========================= */
 
-    @media (max-width: 700px) {
+    @media (max-width: 1050px) {
 
-      .sort-buttons {
+      .content-layout {
         grid-template-columns:
-          repeat(2, 1fr);
+          minmax(0, 1fr)
+          150px;
+
+        gap: 20px;
+      }
+
+    }
+
+
+    /* =========================
+       MOBILE / SMALL TABLET
+    ========================= */
+
+    @media (max-width: 850px) {
+
+      .content-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .ad-sidebar {
+        position: static;
+
+        min-height: 140px;
+
+        order: 2;
       }
 
     }
@@ -443,22 +667,39 @@
       }
 
       .container {
-        padding: 42px 16px 55px;
+        padding:
+          42px
+          16px
+          60px;
       }
 
-      .hero h1 {
+      .heading {
+        margin-bottom: 30px;
+      }
+
+      .heading h1 {
         font-size: 32px;
+
+        letter-spacing: -0.5px;
       }
 
-      .hero p {
+      .subtitle {
         font-size: 15px;
       }
 
-      .tool-panel {
-        padding: 20px;
+      .tool-box {
+        padding: 18px;
+
+        border-radius: 14px;
       }
 
-      .sort-buttons {
+      textarea {
+        height: 220px;
+
+        padding: 15px;
+      }
+
+      .button-grid {
         grid-template-columns: 1fr;
       }
 
@@ -466,16 +707,20 @@
         grid-template-columns: 1fr;
       }
 
+      .stat {
+        padding: 16px;
+      }
+
+      .stat strong {
+        font-size: 24px;
+      }
+
       .action-buttons {
-        flex-direction: column;
+        grid-template-columns: 1fr;
       }
 
-      .action-buttons button {
-        width: 100%;
-      }
-
-      textarea {
-        height: 240px;
+      .info {
+        padding: 18px;
       }
 
     }
@@ -495,6 +740,7 @@
     <a
       href="index.html"
       class="logo"
+      aria-label="ToolNest Home"
     >
 
       <div class="logo-icon">
@@ -515,15 +761,6 @@
 
     </a>
 
-
-    <div class="nav-links">
-
-      <a href="index.html">
-        ← All Tools
-      </a>
-
-    </div>
-
   </nav>
 
 
@@ -532,160 +769,218 @@
 
   <main class="container">
 
-
-    <!-- HERO -->
-
-    <section class="hero">
-
-      <h1>
-        Text Sorter
-      </h1>
-
-      <p>
-        Sort, organize and clean your text lines
-        quickly and easily.
-      </p>
-
-    </section>
+    <div class="content-layout">
 
 
+      <!-- TOOL AREA -->
 
-    <!-- TOOL PANEL -->
-
-    <section class="tool-panel">
-
-
-      <!-- TEXT INPUT -->
-
-      <textarea
-        id="text"
-        placeholder="Enter one item per line..."
-      ></textarea>
+      <div class="tool-area">
 
 
+        <!-- HEADING -->
 
-      <!-- SORT BUTTONS -->
+        <div class="heading">
 
-      <div class="sort-buttons">
+          <h1>
+            Text Sorter
+          </h1>
 
-        <button onclick="sortAZ()">
-          Sort A → Z
-        </button>
-
-
-        <button onclick="sortZA()">
-          Sort Z → A
-        </button>
-
-
-        <button onclick="sortNumbers()">
-          Sort Numbers
-        </button>
-
-
-        <button onclick="reverseLines()">
-          Reverse Lines
-        </button>
-
-
-        <button onclick="removeDuplicates()">
-          Remove Duplicates
-        </button>
-
-
-        <button onclick="removeEmptyLines()">
-          Remove Empty Lines
-        </button>
-
-      </div>
-
-
-
-      <!-- STATISTICS -->
-
-      <div class="statistics">
-
-
-        <div class="stat">
-
-          <strong id="lineCount">
-            0
-          </strong>
-
-          <span>
-            Lines
-          </span>
+          <p class="subtitle">
+            Sort, organize and clean your text lines
+            quickly and easily.
+          </p>
 
         </div>
 
 
-        <div class="stat">
 
-          <strong id="wordCount">
-            0
-          </strong>
+        <!-- TOOL BOX -->
 
-          <span>
-            Words
-          </span>
+        <div class="tool-box">
+
+
+          <!-- TEXT INPUT -->
+
+          <textarea
+            id="text"
+            placeholder="Enter one item per line..."
+          ></textarea>
+
+
+
+          <!-- SORTING OPTIONS -->
+
+          <section class="category">
+
+            <h2 class="category-title">
+              Sort Text
+            </h2>
+
+            <div class="button-grid">
+
+              <button onclick="sortAZ()">
+                Sort A → Z
+              </button>
+
+              <button onclick="sortZA()">
+                Sort Z → A
+              </button>
+
+              <button onclick="sortNumbers()">
+                Sort Numbers
+              </button>
+
+              <button onclick="reverseLines()">
+                Reverse Lines
+              </button>
+
+            </div>
+
+          </section>
+
+
+
+          <!-- CLEANING OPTIONS -->
+
+          <section class="category">
+
+            <h2 class="category-title">
+              Clean Lines
+            </h2>
+
+            <div class="button-grid">
+
+              <button onclick="removeDuplicates()">
+                Remove Duplicates
+              </button>
+
+              <button onclick="removeEmptyLines()">
+                Remove Empty Lines
+              </button>
+
+            </div>
+
+          </section>
+
+
+
+          <!-- STATISTICS -->
+
+          <div class="statistics">
+
+
+            <div class="stat">
+
+              <strong id="lineCount">
+                0
+              </strong>
+
+              <span>
+                Lines
+              </span>
+
+            </div>
+
+
+            <div class="stat">
+
+              <strong id="wordCount">
+                0
+              </strong>
+
+              <span>
+                Words
+              </span>
+
+            </div>
+
+
+            <div class="stat">
+
+              <strong id="characterCount">
+                0
+              </strong>
+
+              <span>
+                Characters
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- ACTIONS -->
+
+          <div class="action-buttons">
+
+            <button
+              class="copy-button"
+              onclick="copyText()"
+            >
+              Copy Text
+            </button>
+
+            <button
+              class="clear-button"
+              onclick="clearText()"
+            >
+              Clear Text
+            </button>
+
+          </div>
+
+
+
+          <!-- INFORMATION -->
+
+          <div class="info">
+
+            <strong>
+              How to use Text Sorter
+            </strong>
+
+            <p>
+              Enter or paste one item per line, then choose
+              a sorting option. You can sort alphabetically,
+              sort numbers, reverse the line order, remove
+              duplicate lines or remove empty lines.
+            </p>
+
+          </div>
+
 
         </div>
 
+      </div>
 
-        <div class="stat">
 
-          <strong id="characterCount">
-            0
-          </strong>
 
-          <span>
-            Characters
-          </span>
+      <!-- ADVERTISEMENT -->
+
+      <aside class="ad-sidebar">
+
+        <div>
+
+          <div class="ad-label">
+            Advertisement
+          </div>
+
+          <div class="ad-placeholder">
+
+            Ad space<br>
+            160 × 600
+
+          </div>
 
         </div>
 
-
-      </div>
-
+      </aside>
 
 
-      <!-- ACTION BUTTONS -->
-
-      <div class="action-buttons">
-
-        <button onclick="copyText()">
-          Copy Result
-        </button>
-
-
-        <button onclick="clearText()">
-          Clear Text
-        </button>
-
-      </div>
-
-
-
-      <!-- INFORMATION -->
-
-      <div class="info">
-
-        <strong>
-          How to use Text Sorter
-        </strong>
-
-        <p>
-          Enter or paste one item per line, then choose
-          a sorting option. You can sort alphabetically,
-          sort numbers, reverse the line order, remove
-          duplicate lines or remove empty lines.
-        </p>
-
-      </div>
-
-
-    </section>
-
+    </div>
 
   </main>
 
@@ -695,15 +990,17 @@
 
   <footer>
 
-    © 2026 ToolNest
-    ·
+    &copy; 2026 ToolNest
+
+    &middot;
+
     Simple, Fast &amp; Free
 
   </footer>
 
 
 
-  <!-- SCRIPT -->
+  <!-- JAVASCRIPT -->
 
   <script>
 
@@ -1049,7 +1346,11 @@
       text.value =
         "";
 
+
       updateStatistics();
+
+
+      text.focus();
 
     }
 
