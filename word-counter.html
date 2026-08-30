@@ -51,6 +51,7 @@
         sans-serif;
 
       background: #111827;
+
       color: #f3f4f6;
     }
 
@@ -76,7 +77,6 @@
 
     /* =========================
        LOGO
-       MATCHES HOMEPAGE
     ========================= */
 
     .logo {
@@ -154,7 +154,10 @@
 
       margin: 0 auto;
 
-      padding: 55px 24px 80px;
+      padding:
+        55px
+        24px
+        80px;
 
       flex: 1;
     }
@@ -176,11 +179,6 @@
       align-items: start;
     }
 
-
-    /* =========================
-       TOOL AREA
-    ========================= */
-
     .tool-area {
       min-width: 0;
     }
@@ -188,7 +186,6 @@
 
     /* =========================
        HEADING
-       CENTERED ABOVE TOOL ONLY
     ========================= */
 
     .heading {
@@ -301,89 +298,108 @@
     ========================= */
 
     .results {
-  display: grid;
+      display: grid;
 
-  grid-template-columns:
-    repeat(4, 1fr);
+      grid-template-columns:
+        repeat(4, 1fr);
 
-  gap: 15px;
+      gap: 15px;
 
-  margin-top: 25px;
-}
-
-
-.result-card {
-  padding: 20px 12px;
-
-  text-align: center;
-
-  background: #2f6045;
-
-  border:
-    1px solid #5f9b73;
-
-  border-radius: 12px;
-
-  box-shadow:
-    0 4px 12px
-    rgba(0, 0, 0, 0.22);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease;
-}
+      margin-top: 25px;
+    }
 
 
-.result-card:hover {
-  transform:
-    translateY(-3px);
+    .result-card {
+      position: relative;
 
-  background: #376f50;
+      padding:
+        24px
+        12px;
 
-  border-color: #8fc9a1;
+      text-align: center;
 
-  box-shadow:
-    0 8px 18px
-    rgba(0, 0, 0, 0.30);
-}
+      background:
+        linear-gradient(
+          180deg,
+          #356f50,
+          #2f6045
+        );
+
+      border:
+        1px solid #5f9b73;
+
+      border-top:
+        4px solid #8fc9a1;
+
+      border-radius: 12px;
+
+      box-shadow:
+        0 4px 12px
+        rgba(0, 0, 0, 0.22);
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
 
 
-.result-card strong {
-  display: block;
+    .result-card:hover {
+      transform:
+        translateY(-3px);
 
-  margin-bottom: 7px;
+      background:
+        linear-gradient(
+          180deg,
+          #3c7c59,
+          #356b4e
+        );
 
-  font-size: 26px;
+      border-color: #8fc9a1;
 
-  font-weight: 750;
+      box-shadow:
+        0 8px 18px
+        rgba(0, 0, 0, 0.30);
+    }
 
-  color: #ffffff;
-}
+
+    .result-card strong {
+      display: block;
+
+      margin-bottom: 7px;
+
+      font-size: 26px;
+
+      font-weight: 750;
+
+      color: #ffffff;
+    }
 
 
-.result-card span {
-  color: #d7eadc;
+    .result-card span {
+      color: #d7eadc;
 
-  font-size: 13px;
-}
+      font-size: 13px;
+    }
 
 
     /* =========================
-       BUTTONS
+       ACTION BUTTONS
     ========================= */
 
     .action-buttons {
       display: grid;
 
       grid-template-columns:
-        1fr 1fr;
+        1fr
+        1fr;
 
       gap: 12px;
 
       margin-top: 25px;
     }
+
 
     button {
       padding: 14px;
@@ -391,6 +407,8 @@
       border: none;
 
       border-radius: 10px;
+
+      font-family: inherit;
 
       font-size: 15px;
 
@@ -401,45 +419,64 @@
       transition:
         transform 0.2s ease,
         background 0.2s ease,
-        box-shadow 0.2s ease;
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
     }
+
 
     button:hover {
       transform:
         translateY(-2px);
     }
 
+
     .copy-button {
       background: #3f7659;
 
       color: #ffffff;
+
+      border:
+        1px solid #5f8f70;
 
       box-shadow:
         0 5px 12px
         rgba(63, 118, 89, 0.25);
     }
 
+
     .copy-button:hover {
-      background: #35654c;
+      background: #4d8a67;
+
+      border-color: #79b68d;
 
       box-shadow:
         0 8px 18px
         rgba(63, 118, 89, 0.35);
     }
 
-    .clear-button {
-      background: #27323d;
 
-      color: #e5e7eb;
+    .clear-button {
+      background: #6faa7c;
+
+      color: #ffffff;
 
       border:
-        1px solid #46515d;
+        1px solid #8fc99d;
+
+      box-shadow:
+        0 5px 12px
+        rgba(79, 139, 95, 0.20);
     }
 
-    .clear-button:hover {
-      background: #313e4b;
 
-      border-color: #657382;
+    .clear-button:hover {
+      background: #7fbd8d;
+
+      border-color: #a4d9af;
+
+      box-shadow:
+        0 8px 18px
+        rgba(79, 139, 95, 0.28);
     }
 
 
@@ -452,29 +489,40 @@
 
       padding: 22px;
 
-      background: #202b36;
+      background: #1a2730;
 
       border:
-        1px solid #394755;
+        1px solid #4f8060;
+
+      border-top:
+        4px solid #79b68d;
 
       border-radius: 12px;
 
-      color: #aeb7c5;
+      color: #b7c4bd;
 
       line-height: 1.6;
+
+      box-shadow:
+        0 4px 14px
+        rgba(0, 0, 0, 0.18);
     }
+
 
     .info strong {
       display: block;
 
-      color: #f3f4f6;
+      color: #dcefe1;
 
       font-size: 16px;
     }
 
+
     .info p {
       margin:
-        10px 0 0;
+        10px
+        0
+        0;
     }
 
 
@@ -508,6 +556,7 @@
       top: 20px;
     }
 
+
     .ad-label {
       color: #66717f;
 
@@ -519,6 +568,7 @@
 
       margin-bottom: 12px;
     }
+
 
     .ad-placeholder {
       color: #7d8896;
@@ -563,6 +613,7 @@
         gap: 20px;
       }
 
+
       .results {
         grid-template-columns:
           repeat(2, 1fr);
@@ -582,6 +633,7 @@
           1fr;
       }
 
+
       .ad-sidebar {
         position: static;
 
@@ -598,12 +650,16 @@
     @media (max-width: 600px) {
 
       nav {
-        padding: 14px 16px;
+        padding:
+          14px
+          16px;
       }
+
 
       .logo {
         gap: 8px;
       }
+
 
       .logo-icon {
         width: 37px;
@@ -614,9 +670,11 @@
         font-size: 19px;
       }
 
+
       .logo-text {
         font-size: 24px;
       }
+
 
       .container {
         padding:
@@ -625,9 +683,11 @@
           60px;
       }
 
+
       .heading {
         margin-bottom: 22px;
       }
+
 
       .heading h1 {
         font-size: 32px;
@@ -635,9 +695,11 @@
         letter-spacing: -0.5px;
       }
 
+
       .subtitle {
         font-size: 15px;
       }
+
 
       .tool-box {
         padding: 18px;
@@ -645,11 +707,13 @@
         border-radius: 14px;
       }
 
+
       textarea {
         height: 220px;
 
         padding: 15px;
       }
+
 
       .results {
         grid-template-columns:
@@ -658,26 +722,34 @@
         gap: 10px;
       }
 
+
       .result-card {
-        padding: 16px 8px;
+        padding:
+          20px
+          8px;
       }
+
 
       .result-card strong {
         font-size: 22px;
       }
+
 
       .action-buttons {
         grid-template-columns:
           1fr;
       }
 
+
       button {
         width: 100%;
       }
 
+
       .info {
         padding: 18px;
       }
+
 
       .ad-sidebar {
         min-height: 120px;
@@ -693,9 +765,7 @@
 <body>
 
 
-  <!-- =========================
-       HEADER
-  ========================= -->
+  <!-- HEADER -->
 
   <nav>
 
@@ -708,6 +778,7 @@
       <div class="logo-icon">
         T
       </div>
+
 
       <div class="logo-text">
 
@@ -727,23 +798,14 @@
 
 
 
-  <!-- =========================
-       MAIN
-  ========================= -->
+  <!-- MAIN -->
 
   <main class="container">
-
-
-    <!-- =========================
-         TOOL + AD LAYOUT
-    ========================= -->
 
     <div class="content-layout">
 
 
-      <!-- =========================
-           TOOL AREA
-      ========================= -->
+      <!-- TOOL AREA -->
 
       <div class="tool-area">
 
@@ -764,6 +826,7 @@
           </p>
 
         </div>
+
 
 
         <!-- TOOL BOX -->
@@ -897,7 +960,6 @@
 
           <div class="action-buttons">
 
-
             <button
               class="copy-button"
               onclick="copyText()"
@@ -912,7 +974,6 @@
             >
               Clear Text
             </button>
-
 
           </div>
 
@@ -944,9 +1005,7 @@
 
 
 
-      <!-- =========================
-           ADVERTISEMENT
-      ========================= -->
+      <!-- ADVERTISEMENT -->
 
       <aside class="ad-sidebar">
 
@@ -956,18 +1015,13 @@
             Advertisement
           </div>
 
+
           <div class="ad-placeholder">
 
             Ad Space<br>
             160 × 600
 
           </div>
-
-          <!--
-            AFTER ADSENSE APPROVAL,
-            REPLACE THIS PLACEHOLDER
-            WITH YOUR ADSENSE AD CODE.
-          -->
 
         </div>
 
@@ -976,14 +1030,11 @@
 
     </div>
 
-
   </main>
 
 
 
-  <!-- =========================
-       FOOTER
-  ========================= -->
+  <!-- FOOTER -->
 
   <footer>
 
@@ -997,12 +1048,9 @@
 
 
 
-  <!-- =========================
-       JAVASCRIPT
-  ========================= -->
+  <!-- JAVASCRIPT -->
 
   <script>
-
 
     const text =
       document.getElementById(
@@ -1016,13 +1064,7 @@
     );
 
 
-
-    /* =========================
-       UPDATE COUNTS
-    ========================= */
-
     function updateCount() {
-
 
       const value =
         text.value;
@@ -1048,7 +1090,6 @@
         wordCount;
 
 
-
       /* CHARACTERS */
 
       document.getElementById(
@@ -1057,16 +1098,17 @@
         value.length;
 
 
-
       /* WITHOUT SPACES */
 
       document.getElementById(
         "noSpaces"
       ).textContent =
         value
-          .replace(/\s/g, "")
+          .replace(
+            /\s/g,
+            ""
+          )
           .length;
-
 
 
       /* SENTENCES */
@@ -1094,7 +1136,6 @@
         sentenceCount;
 
 
-
       /* PARAGRAPHS */
 
       const paragraphCount =
@@ -1120,7 +1161,6 @@
         paragraphCount;
 
 
-
       /* READING TIME */
 
       const readingMinutes =
@@ -1137,7 +1177,6 @@
           : readingMinutes + " min";
 
 
-
       /* SPEAKING TIME */
 
       const speakingMinutes =
@@ -1152,7 +1191,6 @@
         wordCount === 0
           ? "0 min"
           : speakingMinutes + " min";
-
 
 
       /* AVERAGE WORD LENGTH */
@@ -1194,12 +1232,9 @@
 
 
 
-    /* =========================
-       COPY TEXT
-    ========================= */
+    /* COPY TEXT */
 
     function copyText() {
-
 
       if (
         text.value.trim() === ""
@@ -1232,12 +1267,9 @@
 
 
 
-    /* =========================
-       CLEAR TEXT
-    ========================= */
+    /* CLEAR TEXT */
 
     function clearText() {
-
 
       text.value =
         "";
@@ -1249,7 +1281,6 @@
       text.focus();
 
     }
-
 
   </script>
 
