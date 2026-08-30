@@ -17,7 +17,6 @@
     content="Free online word counter. Count words, characters, sentences, paragraphs, reading time, speaking time and more."
   >
 
-
   <style>
 
     /* =========================
@@ -28,12 +27,6 @@
       box-sizing: border-box;
     }
 
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-
     body {
       margin: 0;
       min-height: 100vh;
@@ -41,13 +34,10 @@
       display: flex;
       flex-direction: column;
 
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
 
-      background: #111827;
-      color: #f3f4f6;
+      background: #d9dee4;
+      color: #1f2937;
     }
 
 
@@ -56,15 +46,15 @@
     ========================= */
 
     nav {
-      background: #0b1220;
+      background: #1f2937;
 
       border-bottom:
-        1px solid #334155;
+        1px solid #374151;
 
       padding: 16px 32px;
 
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
     }
 
@@ -96,25 +86,24 @@
       background:
         linear-gradient(
           135deg,
-          #65b486,
+          #5b9a78,
           #3f7659
         );
 
       color: #ffffff;
 
       font-size: 22px;
-      font-weight: 800;
+      font-weight: bold;
 
       box-shadow:
-        0 5px 16px
-        rgba(63, 118, 89, 0.35);
+        0 5px 14px
+        rgba(63, 118, 89, 0.25);
     }
 
 
     .logo-text {
       font-family:
         "Trebuchet MS",
-        "Arial Rounded MT Bold",
         Arial,
         sans-serif;
 
@@ -122,47 +111,17 @@
       font-weight: 800;
 
       letter-spacing: -1px;
-
       line-height: 1;
     }
 
 
     .logo-tool {
-      color: #f8fafc;
+      color: #ffffff;
     }
 
 
     .logo-nest {
-      color: #8fc7a4;
-    }
-
-
-    /* =========================
-       BACK LINK
-    ========================= */
-
-    .back-link {
-      color: #cbd5e1;
-
-      text-decoration: none;
-
-      font-size: 14px;
-      font-weight: 600;
-
-      padding: 9px 14px;
-
-      border-radius: 9px;
-
-      transition:
-        background 0.2s ease,
-        color 0.2s ease;
-    }
-
-
-    .back-link:hover {
-      background: #1e293b;
-
-      color: #ffffff;
+      color: #a9cdb7;
     }
 
 
@@ -189,7 +148,7 @@
     .heading {
       text-align: center;
 
-      margin-bottom: 35px;
+      margin-bottom: 30px;
     }
 
 
@@ -201,7 +160,7 @@
 
       letter-spacing: -1px;
 
-      color: #f8fafc;
+      color: #202938;
     }
 
 
@@ -210,10 +169,41 @@
 
       margin: 0 auto;
 
-      color: #aeb9c8;
+      color: #667085;
 
       font-size: 16px;
       line-height: 1.6;
+    }
+
+
+    /* =========================
+       AD SPACE
+    ========================= */
+
+    .ad-space {
+      width: 100%;
+      min-height: 100px;
+
+      margin:
+        0
+        0
+        30px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 12px;
+
+      background: rgba(255, 255, 255, 0.25);
+
+      border:
+        1px dashed
+        #aeb7c5;
+
+      color: #7a8491;
+
+      font-size: 12px;
     }
 
 
@@ -222,18 +212,18 @@
     ========================= */
 
     .tool-box {
-      background: #1b2635;
+      background: #e9edf1;
 
       border:
-        1px solid #334155;
+        1px solid #bec7d0;
 
-      border-radius: 18px;
+      border-radius: 16px;
 
       padding: 30px;
 
       box-shadow:
-        0 12px 35px
-        rgba(0, 0, 0, 0.28);
+        0 8px 24px
+        rgba(31, 41, 55, 0.07);
     }
 
 
@@ -255,12 +245,12 @@
       font-size: 16px;
       line-height: 1.6;
 
-      color: #f1f5f9;
+      color: #2d3a32;
 
-      background: #111a27;
+      background: #eef1f4;
 
       border:
-        1px solid #475569;
+        1px solid #b9c3cc;
 
       border-radius: 12px;
 
@@ -274,20 +264,20 @@
 
 
     textarea::placeholder {
-      color: #7f8b9b;
+      color: #8a949f;
     }
 
 
     textarea:focus {
       outline: none;
 
-      background: #162131;
+      background: #f4f6f7;
 
-      border-color: #70b98c;
+      border-color: #78a58a;
 
       box-shadow:
         0 0 0 3px
-        rgba(112, 185, 140, 0.16);
+        rgba(63, 118, 89, 0.12);
     }
 
 
@@ -312,29 +302,26 @@
 
       text-align: center;
 
-      background: #202d3c;
+      background: #dce6df;
 
       border:
-        1px solid #3b4b5d;
+        1px solid #c2d0c7;
 
       border-radius: 12px;
 
       transition:
         transform 0.2s ease,
-        box-shadow 0.2s ease,
-        border-color 0.2s ease;
+        box-shadow 0.2s ease;
     }
 
 
     .result-card:hover {
       transform:
-        translateY(-3px);
-
-      border-color: #5b8f70;
+        translateY(-2px);
 
       box-shadow:
-        0 8px 20px
-        rgba(0, 0, 0, 0.22);
+        0 5px 14px
+        rgba(31, 41, 55, 0.08);
     }
 
 
@@ -346,12 +333,12 @@
       font-size: 26px;
       font-weight: 750;
 
-      color: #7ac99a;
+      color: #3f7659;
     }
 
 
     .result-card span {
-      color: #b7c2cf;
+      color: #59665e;
 
       font-size: 13px;
     }
@@ -399,39 +386,38 @@
 
 
     .copy-button {
-      background: #4f8f68;
-
+      background: #3f7659;
       color: #ffffff;
 
       box-shadow:
-        0 5px 14px
-        rgba(63, 118, 89, 0.30);
+        0 5px 12px
+        rgba(63, 118, 89, 0.20);
     }
 
 
     .copy-button:hover {
-      background: #5fa77a;
+      background: #35654c;
 
       box-shadow:
-        0 8px 20px
-        rgba(63, 118, 89, 0.38);
+        0 8px 18px
+        rgba(63, 118, 89, 0.28);
     }
 
 
     .clear-button {
-      background: #263444;
+      background: #dce6df;
 
-      color: #e2e8f0;
+      color: #2d3a32;
 
       border:
-        1px solid #475569;
+        1px solid #c2d0c7;
     }
 
 
     .clear-button:hover {
-      background: #334155;
+      background: #d2ddd6;
 
-      border-color: #64748b;
+      border-color: #9bb8a5;
     }
 
 
@@ -444,23 +430,23 @@
 
       padding: 22px;
 
-      background: #202d3c;
+      background: #dce6df;
 
       border:
-        1px solid #3b4b5d;
+        1px solid #c2d0c7;
 
       border-radius: 12px;
 
-      color: #c2ccd7;
+      color: #59665e;
 
-      line-height: 1.7;
+      line-height: 1.6;
     }
 
 
     .info strong {
       display: block;
 
-      color: #f1f5f9;
+      color: #2d3a32;
 
       font-size: 16px;
     }
@@ -477,16 +463,16 @@
     ========================= */
 
     footer {
-      background: #0b1220;
+      background: #1f2937;
 
       border-top:
-        1px solid #334155;
+        1px solid #374151;
 
       text-align: center;
 
       padding: 32px 20px;
 
-      color: #94a3b8;
+      color: #aeb7c5;
 
       font-size: 14px;
     }
@@ -514,8 +500,6 @@
 
       nav {
         padding: 14px 16px;
-
-        gap: 12px;
       }
 
 
@@ -539,13 +523,6 @@
       }
 
 
-      .back-link {
-        padding: 8px 10px;
-
-        font-size: 13px;
-      }
-
-
       .container {
         padding:
           42px
@@ -555,7 +532,7 @@
 
 
       .heading {
-        margin-bottom: 30px;
+        margin-bottom: 25px;
       }
 
 
@@ -568,6 +545,12 @@
 
       .subtitle {
         font-size: 15px;
+      }
+
+
+      .ad-space {
+        min-height: 80px;
+        margin-bottom: 25px;
       }
 
 
@@ -640,7 +623,6 @@
         T
       </div>
 
-
       <div class="logo-text">
 
         <span class="logo-tool">
@@ -653,14 +635,6 @@
 
       </div>
 
-    </a>
-
-
-    <a
-      href="index.html"
-      class="back-link"
-    >
-      ← All Tools
     </a>
 
   </nav>
@@ -680,7 +654,6 @@
         Word Counter
       </h1>
 
-
       <p class="subtitle">
 
         Count and analyze your words, characters,
@@ -692,12 +665,20 @@
 
 
 
+    <!-- AD SPACE -->
+
+    <div class="ad-space">
+
+      Advertisement
+
+    </div>
+
+
+
     <!-- TOOL BOX -->
 
     <div class="tool-box">
 
-
-      <!-- TEXT INPUT -->
 
       <textarea
         id="text"
@@ -713,72 +694,104 @@
 
         <div class="result-card">
 
-          <strong id="words">0</strong>
+          <strong id="words">
+            0
+          </strong>
 
-          <span>Words</span>
-
-        </div>
-
-
-        <div class="result-card">
-
-          <strong id="characters">0</strong>
-
-          <span>Characters</span>
+          <span>
+            Words
+          </span>
 
         </div>
 
 
         <div class="result-card">
 
-          <strong id="noSpaces">0</strong>
+          <strong id="characters">
+            0
+          </strong>
 
-          <span>Without Spaces</span>
-
-        </div>
-
-
-        <div class="result-card">
-
-          <strong id="sentences">0</strong>
-
-          <span>Sentences</span>
+          <span>
+            Characters
+          </span>
 
         </div>
 
 
         <div class="result-card">
 
-          <strong id="paragraphs">0</strong>
+          <strong id="noSpaces">
+            0
+          </strong>
 
-          <span>Paragraphs</span>
-
-        </div>
-
-
-        <div class="result-card">
-
-          <strong id="readingTime">0 min</strong>
-
-          <span>Reading Time</span>
+          <span>
+            Without Spaces
+          </span>
 
         </div>
 
 
         <div class="result-card">
 
-          <strong id="speakingTime">0 min</strong>
+          <strong id="sentences">
+            0
+          </strong>
 
-          <span>Speaking Time</span>
+          <span>
+            Sentences
+          </span>
 
         </div>
 
 
         <div class="result-card">
 
-          <strong id="averageWordLength">0</strong>
+          <strong id="paragraphs">
+            0
+          </strong>
 
-          <span>Avg. Word Length</span>
+          <span>
+            Paragraphs
+          </span>
+
+        </div>
+
+
+        <div class="result-card">
+
+          <strong id="readingTime">
+            0 min
+          </strong>
+
+          <span>
+            Reading Time
+          </span>
+
+        </div>
+
+
+        <div class="result-card">
+
+          <strong id="speakingTime">
+            0 min
+          </strong>
+
+          <span>
+            Speaking Time
+          </span>
+
+        </div>
+
+
+        <div class="result-card">
+
+          <strong id="averageWordLength">
+            0
+          </strong>
+
+          <span>
+            Avg. Word Length
+          </span>
 
         </div>
 
@@ -790,7 +803,6 @@
       <!-- BUTTONS -->
 
       <div class="action-buttons">
-
 
         <button
           class="copy-button"
@@ -807,7 +819,6 @@
           Clear Text
         </button>
 
-
       </div>
 
 
@@ -819,7 +830,6 @@
         <strong>
           How to use Word Counter
         </strong>
-
 
         <p>
 
@@ -853,8 +863,6 @@
 
 
 
-  <!-- JAVASCRIPT -->
-
   <script>
 
     const text =
@@ -869,20 +877,11 @@
     );
 
 
-
-    /* =========================
-       UPDATE COUNTS
-    ========================= */
-
     function updateCount() {
-
 
       const value =
         text.value;
 
-
-
-      /* WORDS */
 
       const words =
         value.trim() === ""
@@ -902,17 +901,11 @@
         wordCount;
 
 
-
-      /* CHARACTERS */
-
       document.getElementById(
         "characters"
       ).textContent =
         value.length;
 
-
-
-      /* WITHOUT SPACES */
 
       document.getElementById(
         "noSpaces"
@@ -921,9 +914,6 @@
           .replace(/\s/g, "")
           .length;
 
-
-
-      /* SENTENCES */
 
       const sentenceCount =
         value.trim() === ""
@@ -948,9 +938,6 @@
         sentenceCount;
 
 
-
-      /* PARAGRAPHS */
-
       const paragraphCount =
         value.trim() === ""
           ? 0
@@ -974,9 +961,6 @@
         paragraphCount;
 
 
-
-      /* READING TIME */
-
       const readingMinutes =
         Math.ceil(
           wordCount / 200
@@ -991,9 +975,6 @@
           : readingMinutes + " min";
 
 
-
-      /* SPEAKING TIME */
-
       const speakingMinutes =
         Math.ceil(
           wordCount / 130
@@ -1007,9 +988,6 @@
           ? "0 min"
           : speakingMinutes + " min";
 
-
-
-      /* AVERAGE WORD LENGTH */
 
       const totalLetters =
         words.reduce(
@@ -1047,13 +1025,7 @@
     }
 
 
-
-    /* =========================
-       COPY TEXT
-    ========================= */
-
     function copyText() {
-
 
       if (
         text.value.trim() === ""
@@ -1085,25 +1057,16 @@
     }
 
 
-
-    /* =========================
-       CLEAR TEXT
-    ========================= */
-
     function clearText() {
-
 
       text.value =
         "";
 
-
       updateCount();
-
 
       text.focus();
 
     }
-
 
   </script>
 
