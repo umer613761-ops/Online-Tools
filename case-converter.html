@@ -11,6 +11,11 @@
     content="width=device-width, initial-scale=1.0"
   >
 
+  <meta
+    name="theme-color"
+    content="#111827"
+  >
+
   <title>Case Converter - Free Online Text Tool | ToolNest</title>
 
   <meta
@@ -30,8 +35,14 @@
     }
 
 
+    html {
+      scroll-behavior: smooth;
+    }
+
+
     body {
       margin: 0;
+
       min-height: 100vh;
 
       display: flex;
@@ -42,8 +53,9 @@
         Helvetica,
         sans-serif;
 
-      background: #d9dee4;
-      color: #1f2937;
+      background: #111827;
+
+      color: #f3f4f6;
     }
 
 
@@ -52,6 +64,8 @@
     ========================= */
 
     nav {
+      width: 100%;
+
       background: #1f2937;
 
       border-bottom:
@@ -60,7 +74,6 @@
       padding: 16px 32px;
 
       display: flex;
-      justify-content: space-between;
       align-items: center;
     }
 
@@ -83,10 +96,6 @@
       width: 43px;
       height: 43px;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
       border-radius: 12px;
 
       background:
@@ -96,22 +105,38 @@
           #3f7659
         );
 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
       color: #ffffff;
+
+      font-family:
+        "Trebuchet MS",
+        Arial,
+        sans-serif;
 
       font-size: 22px;
       font-weight: bold;
 
       box-shadow:
         0 5px 14px
-        rgba(63, 118, 89, 0.25);
+        rgba(63, 118, 89, 0.35);
     }
 
 
     .logo-text {
-      font-size: 29px;
-      font-weight: 800;
+      font-family:
+        "Trebuchet MS",
+        Arial,
+        sans-serif;
 
-      letter-spacing: -0.8px;
+      font-size: 29px;
+
+      font-weight: 700;
+
+      letter-spacing: -1px;
+
       line-height: 1;
     }
 
@@ -127,46 +152,44 @@
 
 
     /* =========================
-       BACK LINK
-    ========================= */
-
-    .back-link {
-      color: #d1d5db;
-
-      text-decoration: none;
-
-      font-size: 14px;
-      font-weight: 500;
-
-      padding: 9px 14px;
-
-      border-radius: 9px;
-
-      transition:
-        background 0.2s ease,
-        color 0.2s ease;
-    }
-
-
-    .back-link:hover {
-      background: #273244;
-      color: #ffffff;
-    }
-
-
-    /* =========================
        MAIN
     ========================= */
 
     .container {
       width: 100%;
-      max-width: 900px;
+      max-width: 1250px;
 
       margin: 0 auto;
 
-      padding: 55px 20px 80px;
+      padding: 55px 24px 80px;
 
       flex: 1;
+    }
+
+
+    /* =========================
+       CONTENT LAYOUT
+    ========================= */
+
+    .content-layout {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        180px;
+
+      gap: 28px;
+
+      align-items: start;
+    }
+
+
+    /* =========================
+       TOOL AREA
+    ========================= */
+
+    .tool-area {
+      min-width: 0;
     }
 
 
@@ -185,11 +208,12 @@
       margin: 0 0 12px;
 
       font-size: 42px;
+
       font-weight: 750;
 
       letter-spacing: -1px;
 
-      color: #202938;
+      color: #f9fafb;
     }
 
 
@@ -198,9 +222,10 @@
 
       margin: 0 auto;
 
-      color: #667085;
+      color: #aeb7c5;
 
       font-size: 16px;
+
       line-height: 1.6;
     }
 
@@ -210,10 +235,10 @@
     ========================= */
 
     .tool-box {
-      background: #e9edf1;
+      background: #1e2933;
 
       border:
-        1px solid #bec7d0;
+        1px solid #374151;
 
       border-radius: 16px;
 
@@ -221,7 +246,7 @@
 
       box-shadow:
         0 8px 24px
-        rgba(31, 41, 55, 0.07);
+        rgba(0, 0, 0, 0.30);
     }
 
 
@@ -231,6 +256,7 @@
 
     textarea {
       width: 100%;
+
       height: 250px;
 
       padding: 18px;
@@ -241,14 +267,15 @@
         sans-serif;
 
       font-size: 16px;
+
       line-height: 1.6;
 
-      color: #2d3a32;
+      color: #f3f4f6;
 
-      background: #eef1f4;
+      background: #18212b;
 
       border:
-        1px solid #b9c3cc;
+        1px solid #3b4652;
 
       border-radius: 12px;
 
@@ -262,20 +289,20 @@
 
 
     textarea::placeholder {
-      color: #8a949f;
+      color: #8f9aa8;
     }
 
 
     textarea:focus {
       outline: none;
 
-      background: #f4f6f7;
+      background: #1c2732;
 
-      border-color: #78a58a;
+      border-color: #79b68d;
 
       box-shadow:
         0 0 0 3px
-        rgba(63, 118, 89, 0.12);
+        rgba(121, 182, 141, 0.15);
     }
 
 
@@ -292,9 +319,10 @@
       margin: 0 0 12px;
 
       font-size: 16px;
+
       font-weight: 700;
 
-      color: #2d3a32;
+      color: #f3f4f6;
     }
 
 
@@ -316,15 +344,18 @@
       padding: 14px;
 
       border:
-        1px solid #c2d0c7;
+        1px solid #394755;
 
       border-radius: 10px;
 
-      background: #dce6df;
+      background: #202b36;
 
-      color: #2d3a32;
+      color: #e5e7eb;
+
+      font-family: inherit;
 
       font-size: 14px;
+
       font-weight: 600;
 
       cursor: pointer;
@@ -338,16 +369,16 @@
 
 
     .button-grid button:hover {
-      background: #d2ddd6;
+      background: #273b30;
 
-      border-color: #9bb8a5;
+      border-color: #52705d;
 
       transform:
         translateY(-2px);
 
       box-shadow:
-        0 4px 10px
-        rgba(31, 41, 55, 0.06);
+        0 5px 14px
+        rgba(0, 0, 0, 0.25);
     }
 
 
@@ -372,10 +403,10 @@
 
       text-align: center;
 
-      background: #dce6df;
+      background: #202b36;
 
       border:
-        1px solid #c2d0c7;
+        1px solid #394755;
 
       border-radius: 12px;
     }
@@ -385,16 +416,17 @@
       display: block;
 
       font-size: 28px;
+
       font-weight: 750;
 
       margin-bottom: 7px;
 
-      color: #3f7659;
+      color: #79b68d;
     }
 
 
     .stat span {
-      color: #59665e;
+      color: #aeb7c5;
 
       font-size: 14px;
     }
@@ -428,6 +460,7 @@
       border-radius: 10px;
 
       font-size: 15px;
+
       font-weight: 600;
 
       cursor: pointer;
@@ -448,7 +481,7 @@
 
       box-shadow:
         0 5px 12px
-        rgba(63, 118, 89, 0.20);
+        rgba(63, 118, 89, 0.25);
     }
 
 
@@ -460,24 +493,24 @@
 
       box-shadow:
         0 8px 18px
-        rgba(63, 118, 89, 0.28);
+        rgba(63, 118, 89, 0.35);
     }
 
 
     .clear-button {
-      background: #dce6df;
+      background: #27323d;
 
-      color: #2d3a32;
+      color: #e5e7eb;
 
       border:
-        1px solid #c2d0c7;
+        1px solid #46515d;
     }
 
 
     .clear-button:hover {
-      background: #d2ddd6;
+      background: #313e4b;
 
-      border-color: #9bb8a5;
+      border-color: #657382;
 
       transform:
         translateY(-2px);
@@ -493,14 +526,14 @@
 
       padding: 22px;
 
-      background: #dce6df;
+      background: #202b36;
 
       border:
-        1px solid #c2d0c7;
+        1px solid #394755;
 
       border-radius: 12px;
 
-      color: #59665e;
+      color: #aeb7c5;
 
       line-height: 1.6;
     }
@@ -509,7 +542,7 @@
     .info strong {
       display: block;
 
-      color: #2d3a32;
+      color: #f3f4f6;
 
       font-size: 16px;
     }
@@ -518,6 +551,59 @@
     .info p {
       margin:
         10px 0 0;
+    }
+
+
+    /* =========================
+       AD SIDEBAR
+    ========================= */
+
+    .ad-sidebar {
+      width: 100%;
+
+      min-height: 420px;
+
+      background: #18212b;
+
+      border:
+        1px solid #374151;
+
+      border-radius: 14px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      padding: 18px;
+
+      position: sticky;
+
+      top: 20px;
+    }
+
+
+    .ad-label {
+      color: #66717f;
+
+      font-size: 11px;
+
+      letter-spacing: 1px;
+
+      text-transform: uppercase;
+
+      margin-bottom: 12px;
+    }
+
+
+    .ad-placeholder {
+      color: #7d8896;
+
+      font-size: 13px;
+
+      line-height: 1.6;
     }
 
 
@@ -542,6 +628,46 @@
 
 
     /* =========================
+       TABLET
+    ========================= */
+
+    @media (max-width: 1050px) {
+
+      .content-layout {
+        grid-template-columns:
+          minmax(0, 1fr)
+          150px;
+
+        gap: 20px;
+      }
+
+    }
+
+
+    /* =========================
+       MOBILE / SMALL TABLET
+    ========================= */
+
+    @media (max-width: 850px) {
+
+      .content-layout {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .ad-sidebar {
+        position: static;
+
+        min-height: 140px;
+
+        order: 2;
+      }
+
+    }
+
+
+    /* =========================
        MOBILE
     ========================= */
 
@@ -549,8 +675,6 @@
 
       nav {
         padding: 14px 16px;
-
-        gap: 12px;
       }
 
 
@@ -571,13 +695,6 @@
 
       .logo-text {
         font-size: 24px;
-      }
-
-
-      .back-link {
-        padding: 8px 10px;
-
-        font-size: 13px;
       }
 
 
@@ -656,6 +773,11 @@
         padding: 18px;
       }
 
+
+      .ad-sidebar {
+        min-height: 120px;
+      }
+
     }
 
   </style>
@@ -673,6 +795,7 @@
     <a
       href="index.html"
       class="logo"
+      aria-label="ToolNest Home"
     >
 
       <div class="logo-icon">
@@ -694,14 +817,6 @@
 
     </a>
 
-
-    <a
-      href="index.html"
-      class="back-link"
-    >
-      ← All Tools
-    </a>
-
   </nav>
 
 
@@ -711,173 +826,233 @@
   <main class="container">
 
 
-    <!-- HEADING -->
-
-    <div class="heading">
-
-      <h1>
-        Case Converter
-      </h1>
+    <div class="content-layout">
 
 
-      <p class="subtitle">
-        Convert your text into different letter cases quickly and easily.
-      </p>
+      <!-- MAIN TOOL AREA -->
 
-    </div>
+      <div class="tool-area">
 
 
+        <!-- HEADING -->
 
-    <!-- TOOL BOX -->
+        <div class="heading">
 
-    <div class="tool-box">
-
-
-      <!-- TEXT INPUT -->
-
-      <textarea
-        id="text"
-        placeholder="Type or paste your text here..."
-      ></textarea>
+          <h1>
+            Case Converter
+          </h1>
 
 
+          <p class="subtitle">
 
-      <!-- BASIC CASES -->
+            Convert your text into different letter
+            cases quickly and easily.
 
-      <section class="category">
-
-        <h2 class="category-title">
-          Basic Cases
-        </h2>
-
-
-        <div class="button-grid">
-
-          <button onclick="toUpperCase()">
-            UPPERCASE
-          </button>
-
-
-          <button onclick="toLowerCase()">
-            lowercase
-          </button>
-
-
-          <button onclick="toTitleCase()">
-            Title Case
-          </button>
-
-
-          <button onclick="toSentenceCase()">
-            Sentence case
-          </button>
+          </p>
 
         </div>
 
-      </section>
+
+
+        <!-- TOOL BOX -->
+
+        <div class="tool-box">
+
+
+          <!-- TEXT INPUT -->
+
+          <textarea
+            id="text"
+            placeholder="Type or paste your text here..."
+          ></textarea>
 
 
 
-      <!-- PROGRAMMING CASES -->
+          <!-- BASIC CASES -->
 
-      <section class="category">
+          <section class="category">
 
-        <h2 class="category-title">
-          Programming Cases
-        </h2>
-
-
-        <div class="button-grid">
-
-          <button onclick="toCamelCase()">
-            camelCase
-          </button>
+            <h2 class="category-title">
+              Basic Cases
+            </h2>
 
 
-          <button onclick="toPascalCase()">
-            PascalCase
-          </button>
+            <div class="button-grid">
+
+              <button onclick="toUpperCase()">
+                UPPERCASE
+              </button>
 
 
-          <button onclick="toSnakeCase()">
-            snake_case
-          </button>
+              <button onclick="toLowerCase()">
+                lowercase
+              </button>
 
 
-          <button onclick="toKebabCase()">
-            kebab-case
-          </button>
+              <button onclick="toTitleCase()">
+                Title Case
+              </button>
 
 
-          <button onclick="toConstantCase()">
-            CONSTANT_CASE
-          </button>
+              <button onclick="toSentenceCase()">
+                Sentence case
+              </button>
 
+            </div>
 
-          <button onclick="toDotCase()">
-            dot.case
-          </button>
-
-        </div>
-
-      </section>
+          </section>
 
 
 
-      <!-- SPECIAL CASES -->
+          <!-- PROGRAMMING CASES -->
 
-      <section class="category">
+          <section class="category">
 
-        <h2 class="category-title">
-          Special Cases
-        </h2>
-
-
-        <div class="button-grid">
-
-          <button onclick="toAlternatingCase()">
-            aLtErNaTiNg
-          </button>
+            <h2 class="category-title">
+              Programming Cases
+            </h2>
 
 
-          <button onclick="toInverseCase()">
-            iNVERSE cASE
-          </button>
+            <div class="button-grid">
 
-        </div>
-
-      </section>
+              <button onclick="toCamelCase()">
+                camelCase
+              </button>
 
 
-
-      <!-- STATISTICS -->
-
-      <div class="statistics">
-
-
-        <div class="stat">
-
-          <strong id="wordCount">
-            0
-          </strong>
-
-          <span>
-            Words
-          </span>
-
-        </div>
+              <button onclick="toPascalCase()">
+                PascalCase
+              </button>
 
 
+              <button onclick="toSnakeCase()">
+                snake_case
+              </button>
 
-        <div class="stat">
 
-          <strong id="characterCount">
-            0
-          </strong>
+              <button onclick="toKebabCase()">
+                kebab-case
+              </button>
 
-          <span>
-            Characters
-          </span>
+
+              <button onclick="toConstantCase()">
+                CONSTANT_CASE
+              </button>
+
+
+              <button onclick="toDotCase()">
+                dot.case
+              </button>
+
+            </div>
+
+          </section>
+
+
+
+          <!-- SPECIAL CASES -->
+
+          <section class="category">
+
+            <h2 class="category-title">
+              Special Cases
+            </h2>
+
+
+            <div class="button-grid">
+
+              <button onclick="toAlternatingCase()">
+                aLtErNaTiNg
+              </button>
+
+
+              <button onclick="toInverseCase()">
+                iNVERSE cASE
+              </button>
+
+            </div>
+
+          </section>
+
+
+
+          <!-- STATISTICS -->
+
+          <div class="statistics">
+
+
+            <div class="stat">
+
+              <strong id="wordCount">
+                0
+              </strong>
+
+              <span>
+                Words
+              </span>
+
+            </div>
+
+
+            <div class="stat">
+
+              <strong id="characterCount">
+                0
+              </strong>
+
+              <span>
+                Characters
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- ACTION BUTTONS -->
+
+          <div class="action-buttons">
+
+            <button
+              class="copy-button"
+              onclick="copyText()"
+            >
+              Copy Text
+            </button>
+
+
+            <button
+              class="clear-button"
+              onclick="clearText()"
+            >
+              Clear Text
+            </button>
+
+          </div>
+
+
+
+          <!-- INFORMATION -->
+
+          <div class="info">
+
+            <strong>
+              How to use Case Converter
+            </strong>
+
+
+            <p>
+
+              Type or paste your text into the box above,
+              then choose a conversion option.
+              Your text will be converted instantly.
+
+            </p>
+
+          </div>
+
 
         </div>
 
@@ -886,47 +1061,33 @@
 
 
 
-      <!-- ACTIONS -->
+      <!-- ADVERTISEMENT -->
 
-      <div class="action-buttons">
+      <aside class="ad-sidebar">
 
-        <button
-          class="copy-button"
-          onclick="copyText()"
-        >
-          Copy Text
-        </button>
+        <div>
 
-
-        <button
-          class="clear-button"
-          onclick="clearText()"
-        >
-          Clear Text
-        </button>
-
-      </div>
+          <div class="ad-label">
+            Advertisement
+          </div>
 
 
+          <div class="ad-placeholder">
 
-      <!-- INFORMATION -->
+            Ad space<br>
+            160 × 600
 
-      <div class="info">
+          </div>
 
-        <strong>
-          How to use Case Converter
-        </strong>
+          <!--
+            REPLACE THIS AREA WITH
+            YOUR GOOGLE ADSENSE CODE
+            AFTER YOUR SITE IS APPROVED.
+          -->
 
+        </div>
 
-        <p>
-
-          Type or paste your text into the box above,
-          then choose a conversion option.
-          Your text will be converted instantly.
-
-        </p>
-
-      </div>
+      </aside>
 
 
     </div>
@@ -965,10 +1126,6 @@
 
 
 
-    /* =========================
-       UPDATE STATISTICS
-    ========================= */
-
     function updateStatistics() {
 
       const value =
@@ -999,10 +1156,6 @@
 
 
 
-    /* =========================
-       GET WORDS
-    ========================= */
-
     function getWords() {
 
       return text.value
@@ -1020,41 +1173,27 @@
 
 
 
-    /* =========================
-       UPPERCASE
-    ========================= */
-
     function toUpperCase() {
 
       text.value =
         text.value.toUpperCase();
-
 
       updateStatistics();
 
     }
 
 
-
-    /* =========================
-       LOWERCASE
-    ========================= */
 
     function toLowerCase() {
 
       text.value =
         text.value.toLowerCase();
 
-
       updateStatistics();
 
     }
 
 
-
-    /* =========================
-       TITLE CASE
-    ========================= */
 
     function toTitleCase() {
 
@@ -1070,16 +1209,11 @@
             }
           );
 
-
       updateStatistics();
 
     }
 
 
-
-    /* =========================
-       SENTENCE CASE
-    ========================= */
 
     function toSentenceCase() {
 
@@ -1103,10 +1237,6 @@
     }
 
 
-
-    /* =========================
-       CAMEL CASE
-    ========================= */
 
     function toCamelCase() {
 
@@ -1150,10 +1280,6 @@
 
 
 
-    /* =========================
-       PASCAL CASE
-    ========================= */
-
     function toPascalCase() {
 
       const words =
@@ -1184,10 +1310,6 @@
 
 
 
-    /* =========================
-       SNAKE CASE
-    ========================= */
-
     function toSnakeCase() {
 
       text.value =
@@ -1207,10 +1329,6 @@
     }
 
 
-
-    /* =========================
-       KEBAB CASE
-    ========================= */
 
     function toKebabCase() {
 
@@ -1232,10 +1350,6 @@
 
 
 
-    /* =========================
-       CONSTANT CASE
-    ========================= */
-
     function toConstantCase() {
 
       text.value =
@@ -1256,10 +1370,6 @@
 
 
 
-    /* =========================
-       DOT CASE
-    ========================= */
-
     function toDotCase() {
 
       text.value =
@@ -1279,10 +1389,6 @@
     }
 
 
-
-    /* =========================
-       ALTERNATING CASE
-    ========================= */
 
     function toAlternatingCase() {
 
@@ -1336,10 +1442,6 @@
     }
 
 
-
-    /* =========================
-       INVERSE CASE
-    ========================= */
 
     function toInverseCase() {
 
@@ -1398,10 +1500,6 @@
 
 
 
-    /* =========================
-       COPY TEXT
-    ========================= */
-
     function copyText() {
 
       if (
@@ -1435,17 +1533,11 @@
 
 
 
-    /* =========================
-       CLEAR TEXT
-    ========================= */
-
     function clearText() {
 
       text.value = "";
 
-
       updateStatistics();
-
 
       text.focus();
 
