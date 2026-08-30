@@ -16,15 +16,21 @@
     content="#111827"
   >
 
-  <title>Word Counter - Free Online Text Tool | ToolNest</title>
+  <title>
+    Word Counter - Free Online Text Tool | ToolNest
+  </title>
 
   <meta
     name="description"
-    content="Free online word counter. Count words, characters, sentences, paragraphs, reading time, speaking time and more."
+    content="Free online word counter. Count words, characters, sentences, paragraphs, reading time and more."
   >
 
 
   <style>
+
+    /* =========================
+       GLOBAL
+    ========================= */
 
     * {
       box-sizing: border-box;
@@ -36,7 +42,9 @@
 
     body {
       margin: 0;
+
       min-height: 100vh;
+
       display: flex;
       flex-direction: column;
 
@@ -46,16 +54,22 @@
         sans-serif;
 
       background: #111827;
+
       color: #f3f4f6;
     }
 
 
-    /* HEADER */
+    /* =========================
+       HEADER
+    ========================= */
 
     nav {
       width: 100%;
+
       background: #1f2937;
-      border-bottom: 1px solid #374151;
+
+      border-bottom:
+        1px solid #374151;
 
       padding: 16px 32px;
 
@@ -64,7 +78,9 @@
     }
 
 
-    /* LOGO */
+    /* =========================
+       LOGO
+    ========================= */
 
     .logo {
       display: flex;
@@ -114,9 +130,11 @@
         sans-serif;
 
       font-size: 29px;
+
       font-weight: 700;
 
       letter-spacing: -1px;
+
       line-height: 1;
     }
 
@@ -129,10 +147,13 @@
     }
 
 
-    /* MAIN */
+    /* =========================
+       MAIN
+    ========================= */
 
     .container {
       width: 100%;
+
       max-width: 1250px;
 
       margin: 0 auto;
@@ -143,7 +164,9 @@
     }
 
 
-    /* CONTENT LAYOUT */
+    /* =========================
+       CONTENT LAYOUT
+    ========================= */
 
     .content-layout {
       display: grid;
@@ -162,27 +185,30 @@
     }
 
 
-    /* HEADING */
+    /* =========================
+       HEADING
+    ========================= */
 
     .heading {
       text-align: center;
 
-      margin-bottom: 25px;
+      margin-bottom: 35px;
     }
 
     .heading h1 {
       margin: 0 0 12px;
 
-      font-size: 36px;
+      font-size: 42px;
+
       font-weight: 750;
 
-      letter-spacing: -0.8px;
+      letter-spacing: -1px;
 
       color: #f9fafb;
     }
 
     .subtitle {
-      max-width: 650px;
+      max-width: 620px;
 
       margin: 0 auto;
 
@@ -194,7 +220,9 @@
     }
 
 
-    /* TOOL BOX */
+    /* =========================
+       TOOL BOX
+    ========================= */
 
     .tool-box {
       background: #1e2933;
@@ -212,12 +240,14 @@
     }
 
 
-    /* TEXT AREA */
+    /* =========================
+       TEXT AREA
+    ========================= */
 
     textarea {
       width: 100%;
 
-      height: 280px;
+      height: 300px;
 
       padding: 18px;
 
@@ -264,69 +294,83 @@
     }
 
 
-    /* RESULTS */
+    /* =========================
+       RESULTS
+    ========================= */
+
+    .results {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 18px;
+
+      margin-top: 30px;
+    }
+
+
+    /* =========================
+       INDIVIDUAL RESULT BOX
+    ========================= */
 
     .result {
-  display: grid;
+      padding: 22px;
 
-  grid-template-columns:
-    repeat(3, 1fr);
+      text-align: center;
 
-  gap: 18px;
+      background: transparent;
 
-  margin-top: 30px;
-}
+      border:
+        1px solid #5f8f70;
 
-.result > div {
-  padding: 22px;
+      border-top:
+        4px solid #79b68d;
 
-  text-align: center;
+      border-radius: 12px;
+    }
 
-  background: transparent;
+    .result strong {
+      display: block;
 
-  border: 1px solid #5f8f70;
+      font-size: 30px;
 
-  border-top: 4px solid #79b68d;
+      font-weight: 750;
 
-  border-radius: 12px;
-}
+      margin-bottom: 7px;
 
-.result strong {
-  display: block;
+      color: #79b68d;
+    }
 
-  font-size: 30px;
+    .result span {
+      color: #aeb7c5;
 
-  font-weight: 750;
+      font-size: 14px;
+    }
 
-  margin-bottom: 7px;
 
-  color: #79b68d;
-}
-
-.result span {
-  color: #aeb7c5;
-
-  font-size: 14px;
-}
-    /* BUTTONS */
+    /* =========================
+       ACTION BUTTONS
+    ========================= */
 
     .action-buttons {
       display: grid;
 
       grid-template-columns:
-        1fr 1fr;
+        repeat(2, 1fr);
 
       gap: 12px;
 
       margin-top: 25px;
     }
 
-    button {
+    .copy-button,
+    .clear-button {
       padding: 14px;
 
-      border: none;
-
       border-radius: 10px;
+
+      font-family: inherit;
 
       font-size: 15px;
 
@@ -340,12 +384,9 @@
         box-shadow 0.2s ease;
     }
 
-    button:hover {
-      transform:
-        translateY(-2px);
-    }
-
     .copy-button {
+      border: none;
+
       background: #3f7659;
 
       color: #ffffff;
@@ -358,28 +399,30 @@
     .copy-button:hover {
       background: #35654c;
 
-      box-shadow:
-        0 8px 18px
-        rgba(63, 118, 89, 0.35);
+      transform:
+        translateY(-2px);
     }
 
     .clear-button {
-      background: #27323d;
+      background: #527f64;
 
-      color: #e5e7eb;
+      color: #ffffff;
 
       border:
-        1px solid #46515d;
+        1px solid #679878;
     }
 
     .clear-button:hover {
-      background: #313e4b;
+      background: #5d906f;
 
-      border-color: #657382;
+      transform:
+        translateY(-2px);
     }
 
 
-    /* INFORMATION */
+    /* =========================
+       INFORMATION
+    ========================= */
 
     .info {
       margin-top: 30px;
@@ -390,6 +433,9 @@
 
       border:
         1px solid #394755;
+
+      border-top:
+        4px solid #79b68d;
 
       border-radius: 12px;
 
@@ -407,12 +453,13 @@
     }
 
     .info p {
-      margin:
-        10px 0 0;
+      margin: 10px 0 0;
     }
 
 
-    /* AD SIDEBAR */
+    /* =========================
+       AD SIDEBAR
+    ========================= */
 
     .ad-sidebar {
       width: 100%;
@@ -461,7 +508,9 @@
     }
 
 
-    /* FOOTER */
+    /* =========================
+       FOOTER
+    ========================= */
 
     footer {
       background: #1f2937;
@@ -479,7 +528,9 @@
     }
 
 
-    /* TABLET */
+    /* =========================
+       TABLET
+    ========================= */
 
     @media (max-width: 1050px) {
 
@@ -491,33 +542,33 @@
         gap: 20px;
       }
 
-      .results {
-        grid-template-columns:
-          repeat(2, 1fr);
-      }
-
     }
 
 
-    /* SMALL TABLET */
+    /* =========================
+       SMALL TABLET
+    ========================= */
 
     @media (max-width: 850px) {
 
       .content-layout {
-        grid-template-columns:
-          1fr;
+        grid-template-columns: 1fr;
       }
 
       .ad-sidebar {
         position: static;
 
         min-height: 140px;
+
+        order: 2;
       }
 
     }
 
 
-    /* MOBILE */
+    /* =========================
+       MOBILE
+    ========================= */
 
     @media (max-width: 600px) {
 
@@ -550,7 +601,7 @@
       }
 
       .heading {
-        margin-bottom: 22px;
+        margin-bottom: 30px;
       }
 
       .heading h1 {
@@ -570,7 +621,7 @@
       }
 
       textarea {
-        height: 220px;
+        height: 240px;
 
         padding: 15px;
       }
@@ -579,32 +630,36 @@
         grid-template-columns:
           repeat(2, 1fr);
 
-        gap: 10px;
+        gap: 12px;
       }
 
-      .result-card {
-        padding: 16px 8px;
+      .result {
+        padding: 18px;
       }
 
-      .result-card strong {
-        font-size: 22px;
+      .result strong {
+        font-size: 25px;
       }
 
       .action-buttons {
-        grid-template-columns:
-          1fr;
-      }
-
-      button {
-        width: 100%;
+        grid-template-columns: 1fr;
       }
 
       .info {
         padding: 18px;
       }
 
-      .ad-sidebar {
-        min-height: 120px;
+    }
+
+
+    /* =========================
+       VERY SMALL SCREENS
+    ========================= */
+
+    @media (max-width: 420px) {
+
+      .results {
+        grid-template-columns: 1fr;
       }
 
     }
@@ -670,10 +725,8 @@
           </h1>
 
           <p class="subtitle">
-
-            Count and analyze your words, characters,
-            sentences, paragraphs and more instantly.
-
+            Count words, characters, sentences,
+            paragraphs and more instantly.
           </p>
 
         </div>
@@ -685,7 +738,7 @@
         <div class="tool-box">
 
 
-          <!-- TEXT INPUT -->
+          <!-- TEXT AREA -->
 
           <textarea
             id="text"
@@ -699,9 +752,9 @@
           <div class="results">
 
 
-            <div class="result-card">
+            <div class="result">
 
-              <strong id="words">
+              <strong id="wordCount">
                 0
               </strong>
 
@@ -712,9 +765,9 @@
             </div>
 
 
-            <div class="result-card">
+            <div class="result">
 
-              <strong id="characters">
+              <strong id="characterCount">
                 0
               </strong>
 
@@ -725,9 +778,9 @@
             </div>
 
 
-            <div class="result-card">
+            <div class="result">
 
-              <strong id="noSpaces">
+              <strong id="charactersWithoutSpaces">
                 0
               </strong>
 
@@ -738,9 +791,9 @@
             </div>
 
 
-            <div class="result-card">
+            <div class="result">
 
-              <strong id="sentences">
+              <strong id="sentenceCount">
                 0
               </strong>
 
@@ -751,9 +804,9 @@
             </div>
 
 
-            <div class="result-card">
+            <div class="result">
 
-              <strong id="paragraphs">
+              <strong id="paragraphCount">
                 0
               </strong>
 
@@ -764,7 +817,7 @@
             </div>
 
 
-            <div class="result-card">
+            <div class="result">
 
               <strong id="readingTime">
                 0 min
@@ -777,7 +830,7 @@
             </div>
 
 
-            <div class="result-card">
+            <div class="result">
 
               <strong id="speakingTime">
                 0 min
@@ -790,7 +843,7 @@
             </div>
 
 
-            <div class="result-card">
+            <div class="result">
 
               <strong id="averageWordLength">
                 0
@@ -811,7 +864,6 @@
 
           <div class="action-buttons">
 
-
             <button
               class="copy-button"
               onclick="copyText()"
@@ -827,7 +879,6 @@
               Clear Text
             </button>
 
-
           </div>
 
 
@@ -841,11 +892,10 @@
             </strong>
 
             <p>
-
               Type or paste your text into the box above.
-              The statistics update automatically as you type,
-              including words, characters, sentences and paragraphs.
-
+              The word count, character count, sentences,
+              paragraphs, reading time and other statistics
+              update automatically as you type.
             </p>
 
           </div>
@@ -869,7 +919,7 @@
 
           <div class="ad-placeholder">
 
-            Ad Space<br>
+            Ad space<br>
             160 × 600
 
           </div>
@@ -911,154 +961,163 @@
 
     text.addEventListener(
       "input",
-      updateCount
+      updateStatistics
     );
 
 
-    function updateCount() {
+    function updateStatistics() {
 
       const value =
         text.value;
 
 
       const words =
-        value.trim() === ""
-          ? []
-          : value
-              .trim()
-              .split(/\s+/);
+        value
+          .trim()
+          .match(/\S+/g)
+        ||
+        [];
 
 
       const wordCount =
         words.length;
 
 
+      const characterCount =
+        value.length;
+
+
+      const charactersWithoutSpaces =
+        value.replace(
+          /\s/g,
+          ""
+        ).length;
+
+
+      const sentences =
+        value
+          .trim()
+          .match(
+            /[.!?]+(?=\s|$)/g
+          )
+        ||
+        [];
+
+
+      const paragraphs =
+        value
+          .trim()
+          .split(/\n\s*\n/)
+          .filter(
+            function(paragraph) {
+
+              return (
+                paragraph.trim() !== ""
+              );
+
+            }
+          );
+
+
+      const averageWordLength =
+        wordCount === 0
+          ? 0
+          : Math.round(
+              words.reduce(
+                function(
+                  total,
+                  word
+                ) {
+
+                  return (
+                    total
+                    +
+                    word.replace(
+                      /[^a-zA-Z0-9]/g,
+                      ""
+                    ).length
+                  );
+
+                },
+                0
+              )
+              /
+              wordCount
+            );
+
+
+      const readingMinutes =
+        Math.ceil(
+          wordCount
+          /
+          200
+        );
+
+
+      const speakingMinutes =
+        Math.ceil(
+          wordCount
+          /
+          130
+        );
+
+
       document.getElementById(
-        "words"
+        "wordCount"
       ).textContent =
         wordCount;
 
 
       document.getElementById(
-        "characters"
+        "characterCount"
       ).textContent =
-        value.length;
+        characterCount;
 
 
       document.getElementById(
-        "noSpaces"
+        "charactersWithoutSpaces"
       ).textContent =
-        value
-          .replace(/\s/g, "")
-          .length;
+        charactersWithoutSpaces;
 
 
-      const sentenceCount =
+      document.getElementById(
+        "sentenceCount"
+      ).textContent =
+        sentences.length;
+
+
+      document.getElementById(
+        "paragraphCount"
+      ).textContent =
         value.trim() === ""
           ? 0
-          : value
-              .split(/[.!?]+/)
-              .filter(
-                function(sentence) {
-
-                  return (
-                    sentence.trim().length > 0
-                  );
-
-                }
-              )
-              .length;
-
-
-      document.getElementById(
-        "sentences"
-      ).textContent =
-        sentenceCount;
-
-
-      const paragraphCount =
-        value.trim() === ""
-          ? 0
-          : value
-              .split(/\n+/)
-              .filter(
-                function(paragraph) {
-
-                  return (
-                    paragraph.trim().length > 0
-                  );
-
-                }
-              )
-              .length;
-
-
-      document.getElementById(
-        "paragraphs"
-      ).textContent =
-        paragraphCount;
-
-
-      const readingMinutes =
-        Math.ceil(
-          wordCount / 200
-        );
+          : paragraphs.length;
 
 
       document.getElementById(
         "readingTime"
       ).textContent =
-        wordCount === 0
+        readingMinutes === 0
           ? "0 min"
-          : readingMinutes + " min";
-
-
-      const speakingMinutes =
-        Math.ceil(
-          wordCount / 130
-        );
+          : readingMinutes
+            +
+            " min";
 
 
       document.getElementById(
         "speakingTime"
       ).textContent =
-        wordCount === 0
+        speakingMinutes === 0
           ? "0 min"
-          : speakingMinutes + " min";
-
-
-      const totalLetters =
-        words.reduce(
-          function(total, word) {
-
-            return (
-              total +
-              word
-                .replace(
-                  /[^a-zA-Z0-9]/g,
-                  ""
-                )
-                .length
-            );
-
-          },
-          0
-        );
-
-
-      const averageLength =
-        wordCount === 0
-          ? 0
-          : (
-              totalLetters /
-              wordCount
-            ).toFixed(1);
+          : speakingMinutes
+            +
+            " min";
 
 
       document.getElementById(
         "averageWordLength"
       ).textContent =
-        averageLength;
+        averageWordLength;
 
     }
 
@@ -1102,11 +1161,16 @@
       text.value =
         "";
 
-      updateCount();
+
+      updateStatistics();
+
 
       text.focus();
 
     }
+
+
+    updateStatistics();
 
   </script>
 
