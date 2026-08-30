@@ -95,12 +95,11 @@ header {
 
     border-radius: 8px;
 
-    background:
-        linear-gradient(
-            135deg,
-            #3d75b3,
-            #1e5593
-        );
+    background: linear-gradient(
+        135deg,
+        #3d75b3,
+        #1e5593
+    );
 
     color: #ffffff;
 
@@ -172,7 +171,7 @@ header {
 
 
 /* =========================
-   MAIN LAYOUT
+   HERO + AD LAYOUT
 ========================= */
 
 .page-layout {
@@ -280,7 +279,7 @@ header {
 
 
 /* =========================
-   DECORATIVE CURVED LINES
+   DECORATIVE CURVES
 ========================= */
 
 .curve {
@@ -322,7 +321,7 @@ header {
 
 
 /* =========================
-   DECORATIVE FLOATING DOTS
+   DECORATIVE DOTS
 ========================= */
 
 .dot {
@@ -351,9 +350,6 @@ header {
 .dot-orange {
     background: #f3a83b;
 }
-
-
-/* DOT POSITIONS */
 
 .dot-1 {
     top: 5px;
@@ -444,9 +440,6 @@ header {
     font-size: 23px;
 }
 
-
-/* PDF */
-
 .pdf-card {
     left: 22px;
     top: 42px;
@@ -457,9 +450,6 @@ header {
 
     z-index: 1;
 }
-
-
-/* TEXT */
 
 .text-card {
     left: 102px;
@@ -472,9 +462,6 @@ header {
     z-index: 2;
 }
 
-
-/* CALCULATOR */
-
 .calculator-card {
     left: 184px;
     top: 10px;
@@ -485,9 +472,6 @@ header {
 
     z-index: 2;
 }
-
-
-/* IMAGE */
 
 .image-card {
     left: 270px;
@@ -551,9 +535,6 @@ header {
     border-bottom: none;
 }
 
-
-/* FOLDER POSITIONS */
-
 .folder-pdf {
     left: 55px;
 
@@ -597,11 +578,6 @@ header {
             #24783a
         );
 }
-
-
-/* =========================
-   BOTTOM LINE
-========================= */
 
 .visual-line {
     position: absolute;
@@ -657,21 +633,35 @@ header {
     font-size: 16px;
     font-weight: 500;
 
-    letter-spacing: 0.5px;
-
     color: #4d6073;
 }
 
 
 /* =========================
-   PDF TOOLS SECTION
+   ALL TOOLS AREA
 ========================= */
 
-.tools-section {
+.tools-area {
     margin-top: 14px;
 
     width: calc(100% - 210px);
 
+    display: grid;
+
+    grid-template-columns:
+        2fr
+        1fr
+        1fr;
+
+    gap: 10px;
+}
+
+
+/* =========================
+   TOOL CATEGORY
+========================= */
+
+.tool-category {
     background: #ffffff;
 
     border: 1px solid #c4d0dc;
@@ -680,92 +670,83 @@ header {
     box-shadow:
         0 5px 14px rgba(50, 70, 90, 0.10);
 
-    padding: 18px 20px;
+    overflow: hidden;
 }
 
-.tools-section-header {
-    display: flex;
-    align-items: center;
-
-    gap: 9px;
-
-    margin-bottom: 12px;
-}
-
-.section-icon {
-    width: 34px;
-    height: 34px;
+.category-heading {
+    min-height: 48px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background: #f7e9e7;
+    border-bottom: 1px solid #d5dde5;
 
-    border-radius: 8px;
-
-    font-size: 17px;
-}
-
-.tools-section h2 {
-    margin: 0;
-
-    font-size: 19px;
+    font-size: 16px;
+    font-weight: 700;
 
     color: #354254;
 }
 
 
 /* =========================
-   PDF TOOL CARDS
+   PDF TOOLS
 ========================= */
 
-.tools-grid {
+.pdf-tools-grid {
     display: grid;
 
     grid-template-columns:
-        repeat(4, 1fr);
-
-    gap: 10px;
+        1fr
+        1fr;
 }
 
-.tool-link {
+
+/* =========================
+   TOOL COLUMNS
+========================= */
+
+.tool-column {
+    padding: 8px;
+}
+
+.pdf-tools-grid .tool-column:first-child {
+    border-right: 1px solid #d5dde5;
+}
+
+
+/* =========================
+   INDIVIDUAL TOOL LINKS
+========================= */
+
+.tool-item {
     display: flex;
     align-items: center;
 
     gap: 9px;
 
-    min-height: 64px;
-
-    padding: 10px;
+    padding: 10px 8px;
 
     text-decoration: none;
 
-    background: #fbfcfd;
-
-    border: 1px solid #d1dae3;
     border-radius: 8px;
 
     color: #354254;
 
     transition:
-        transform 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
-.tool-link:hover {
-    transform: translateY(-2px);
+.tool-item:hover {
+    background: #f4f7fa;
 
-    border-color: #6d96bf;
-
-    box-shadow:
-        0 5px 12px rgba(50, 80, 110, 0.12);
+    transform: translateX(2px);
 }
 
-.tool-logo {
-    width: 36px;
-    height: 36px;
+.tool-item-icon {
+    width: 34px;
+    height: 34px;
 
     flex-shrink: 0;
 
@@ -773,50 +754,71 @@ header {
     align-items: center;
     justify-content: center;
 
-    border-radius: 7px;
+    border-radius: 8px;
 
-    font-size: 17px;
+    font-size: 16px;
 }
 
-.merge-logo {
-    background: #e8f0fb;
-    color: #2d65a6;
-}
-
-.split-logo {
-    background: #fce8e7;
-    color: #d9443e;
-}
-
-.images-logo {
-    background: #e8f6ec;
-    color: #287543;
-}
-
-.pdf-logo {
-    background: #fff1df;
-    color: #d77a1e;
-}
-
-.tool-info {
-    min-width: 0;
-}
-
-.tool-info h3 {
-    margin: 0 0 4px;
-
+.tool-item-text {
     font-size: 12px;
+    font-weight: 600;
 
-    color: #354254;
+    line-height: 1.3;
 }
 
-.tool-info p {
-    margin: 0;
 
-    font-size: 10px;
-    line-height: 1.35;
+/* =========================
+   PDF ICONS
+========================= */
 
-    color: #708093;
+.icon-merge {
+    background: #e8f0fb;
+}
+
+.icon-split {
+    background: #fce8e7;
+}
+
+.icon-pdf-image {
+    background: #e8f6ec;
+}
+
+.icon-image-pdf {
+    background: #fff1df;
+}
+
+
+/* =========================
+   TEXT ICONS
+========================= */
+
+.icon-word {
+    background: #e8f0fb;
+}
+
+.icon-case {
+    background: #eee8fb;
+}
+
+.icon-sort {
+    background: #e8f6ec;
+}
+
+.icon-clean {
+    background: #fff1df;
+}
+
+
+/* =========================
+   IMAGE ICONS
+========================= */
+
+.icon-compress {
+    background: #e8f6ec;
+}
+
+.icon-convert {
+    background: #e8f0fb;
 }
 
 
@@ -856,8 +858,6 @@ footer {
 .footer-links {
     display: flex;
     align-items: center;
-
-    gap: 0;
 }
 
 .footer-links a {
@@ -899,23 +899,16 @@ footer {
         font-size: 30px;
     }
 
-    .folder {
-        width: 68px;
-        height: 62px;
-    }
-
-    .tool-card {
-        width: 75px;
-        height: 88px;
-    }
-
-    .tools-section {
+    .tools-area {
         width: calc(100% - 190px);
+
+        grid-template-columns:
+            2fr
+            1fr;
     }
 
-    .tools-grid {
-        grid-template-columns:
-            repeat(2, 1fr);
+    .image-category {
+        grid-column: 1 / -1;
     }
 
 }
@@ -967,12 +960,14 @@ footer {
         height: 120px;
     }
 
-    .tools-section {
+    .tools-area {
         width: 100%;
+
+        grid-template-columns: 1fr;
     }
 
-    .tools-grid {
-        grid-template-columns: 1fr;
+    .image-category {
+        grid-column: auto;
     }
 
     footer {
@@ -991,6 +986,10 @@ footer {
 
 }
 
+
+/* =========================
+   SMALL MOBILE
+========================= */
 
 @media (max-width: 500px) {
 
@@ -1016,6 +1015,15 @@ footer {
 
     .hero-visual {
         transform: scale(0.85);
+    }
+
+    .pdf-tools-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pdf-tools-grid .tool-column:first-child {
+        border-right: none;
+        border-bottom: 1px solid #d5dde5;
     }
 
     .footer-links a {
@@ -1091,45 +1099,48 @@ footer {
 <main class="page-layout">
 
 
+    <!-- HERO -->
+
     <section class="main-content">
 
         <div class="hero">
 
 
-            <!-- HERO TEXT -->
-
             <div class="hero-content">
 
                 <h1>
+
                     Your All-in-one<br>
+
                     Online <span>Tools</span>
+
                 </h1>
 
 
                 <p>
+
                     Access powerful PDF, Text, Image and
                     Calculator tools to simplify your daily
                     tasks — fast, free and easy to use.
+
                 </p>
 
             </div>
 
 
 
-            <!-- HERO ILLUSTRATION -->
-
             <div class="hero-visual">
 
                 <div class="tool-group">
 
 
-                    <!-- DECORATIVE CURVES -->
+                    <!-- CURVES -->
 
                     <div class="curve curve-1"></div>
                     <div class="curve curve-2"></div>
 
 
-                    <!-- FLOATING DOTS -->
+                    <!-- DOTS -->
 
                     <span class="dot dot-blue dot-1"></span>
                     <span class="dot dot-teal dot-2"></span>
@@ -1188,22 +1199,19 @@ footer {
 
 
 
-                    <!-- BOTTOM FOLDERS -->
+                    <!-- FOLDERS -->
 
                     <div class="folder folder-pdf">
                         PDF
                     </div>
 
-
                     <div class="folder folder-text">
                         T
                     </div>
 
-
                     <div class="folder folder-calculator">
                         ▦
                     </div>
-
 
                     <div class="folder folder-image">
                         🖼
@@ -1246,112 +1254,213 @@ footer {
 
 
 <!-- =========================
-     PDF TOOLS SECTION
+     ALL TOOL CATEGORIES
 ========================= -->
 
-<section class="tools-section">
+<section class="tools-area">
 
 
-    <div class="tools-section-header">
+    <!-- =========================
+         PDF TOOLS
+    ========================= -->
 
-        <div class="section-icon">
-            📄
+    <div class="tool-category pdf-category">
+
+
+        <div class="category-heading">
+            PDF Tools
         </div>
 
-        <h2>PDF Tools</h2>
+
+        <div class="pdf-tools-grid">
+
+
+            <!-- PDF COLUMN 1 -->
+
+            <div class="tool-column">
+
+                <a href="merge-pdf.html" class="tool-item">
+
+                    <div class="tool-item-icon icon-merge">
+                        🔗
+                    </div>
+
+                    <div class="tool-item-text">
+                        Merge PDF
+                    </div>
+
+                </a>
+
+
+                <a href="split-pdf.html" class="tool-item">
+
+                    <div class="tool-item-icon icon-split">
+                        ✂
+                    </div>
+
+                    <div class="tool-item-text">
+                        Split PDF
+                    </div>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- PDF COLUMN 2 -->
+
+            <div class="tool-column">
+
+                <a href="pdf-to-images.html" class="tool-item">
+
+                    <div class="tool-item-icon icon-pdf-image">
+                        🖼
+                    </div>
+
+                    <div class="tool-item-text">
+                        PDF to Images
+                    </div>
+
+                </a>
+
+
+                <a href="images-to-pdf.html" class="tool-item">
+
+                    <div class="tool-item-icon icon-image-pdf">
+                        📄
+                    </div>
+
+                    <div class="tool-item-text">
+                        Images to PDF
+                    </div>
+
+                </a>
+
+            </div>
+
+
+        </div>
 
     </div>
 
 
-    <div class="tools-grid">
+
+    <!-- =========================
+         TEXT TOOLS
+    ========================= -->
+
+    <div class="tool-category text-category">
 
 
-        <!-- MERGE PDF -->
-
-        <a href="merge-pdf.html" class="tool-link">
-
-            <div class="tool-logo merge-logo">
-                🔗
-            </div>
-
-            <div class="tool-info">
-
-                <h3>Merge PDF</h3>
-
-                <p>
-                    Combine multiple PDF files.
-                </p>
-
-            </div>
-
-        </a>
+        <div class="category-heading">
+            Text Tools
+        </div>
 
 
-
-        <!-- SPLIT PDF -->
-
-        <a href="split-pdf.html" class="tool-link">
-
-            <div class="tool-logo split-logo">
-                ✂
-            </div>
-
-            <div class="tool-info">
-
-                <h3>Split PDF</h3>
-
-                <p>
-                    Split PDF pages easily.
-                </p>
-
-            </div>
-
-        </a>
+        <div class="tool-column">
 
 
+            <a href="word-counter.html" class="tool-item">
 
-        <!-- PDF TO IMAGES -->
+                <div class="tool-item-icon icon-word">
+                    🔤
+                </div>
 
-        <a href="pdf-to-images.html" class="tool-link">
+                <div class="tool-item-text">
+                    Word Counter
+                </div>
 
-            <div class="tool-logo images-logo">
-                🖼
-            </div>
-
-            <div class="tool-info">
-
-                <h3>PDF to Images</h3>
-
-                <p>
-                    Convert PDF pages to images.
-                </p>
-
-            </div>
-
-        </a>
+            </a>
 
 
+            <a href="case-converter.html" class="tool-item">
 
-        <!-- IMAGES TO PDF -->
+                <div class="tool-item-icon icon-case">
+                    Aa
+                </div>
 
-        <a href="images-to-pdf.html" class="tool-link">
+                <div class="tool-item-text">
+                    Case Converter
+                </div>
 
-            <div class="tool-logo pdf-logo">
-                📄
-            </div>
+            </a>
 
-            <div class="tool-info">
 
-                <h3>Images to PDF</h3>
+            <a href="text-sorter.html" class="tool-item">
 
-                <p>
-                    Convert images into PDF.
-                </p>
+                <div class="tool-item-icon icon-sort">
+                    ↕
+                </div>
 
-            </div>
+                <div class="tool-item-text">
+                    Text Sorter
+                </div>
 
-        </a>
+            </a>
 
+
+            <a href="text-cleaner.html" class="tool-item">
+
+                <div class="tool-item-icon icon-clean">
+                    ✨
+                </div>
+
+                <div class="tool-item-text">
+                    Text Cleaner
+                </div>
+
+            </a>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         IMAGE TOOLS
+    ========================= -->
+
+    <div class="tool-category image-category">
+
+
+        <div class="category-heading">
+            Image Tools
+        </div>
+
+
+        <div class="tool-column">
+
+
+            <a href="image-compressor.html" class="tool-item">
+
+                <div class="tool-item-icon icon-compress">
+                    🗜
+                </div>
+
+                <div class="tool-item-text">
+                    Image Compressor
+                </div>
+
+            </a>
+
+
+            <a href="image-converter.html" class="tool-item">
+
+                <div class="tool-item-icon icon-convert">
+                    🔄
+                </div>
+
+                <div class="tool-item-text">
+                    Image Converter
+                </div>
+
+            </a>
+
+
+        </div>
 
     </div>
 
