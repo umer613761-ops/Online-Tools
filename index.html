@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -63,7 +64,7 @@
       margin: 0;
 
       padding:
-        24px 30px 20px;
+        14px 30px;
 
       display: flex;
 
@@ -84,7 +85,7 @@
 
       align-items: center;
 
-      gap: 11px;
+      gap: 9px;
 
       text-decoration: none;
 
@@ -93,9 +94,9 @@
 
 
     .logo-icon {
-      width: 50px;
+      width: 42px;
 
-      height: 50px;
+      height: 42px;
 
       display: flex;
 
@@ -110,17 +111,17 @@
           #35649a
         );
 
-      border-radius: 14px;
+      border-radius: 12px;
 
       color: #ffffff;
 
-      font-size: 24px;
+      font-size: 21px;
 
       font-weight: 700;
 
       box-shadow:
-        0 5px 14px
-        rgba(53, 100, 154, 0.18);
+        0 4px 10px
+        rgba(53, 100, 154, 0.16);
     }
 
 
@@ -129,13 +130,11 @@
 
       align-items: center;
 
-      font-size: 32px;
+      font-size: 28px;
 
       letter-spacing: -1px;
     }
 
-
-    /* TOOL - THINNER */
 
     .logo-tool {
       color: #344154;
@@ -143,8 +142,6 @@
       font-weight: 400;
     }
 
-
-    /* NEST - BOLD AND BLUE */
 
     .logo-nest {
       color: #4d73a6;
@@ -158,7 +155,7 @@
     ========================= */
 
     .search-container {
-      width: 280px;
+      width: 240px;
 
       position: relative;
 
@@ -169,16 +166,16 @@
     .search-container input {
       width: 100%;
 
-      height: 44px;
+      height: 38px;
 
       padding:
-        0 45px
-        0 16px;
+        0 42px
+        0 14px;
 
       border:
         1px solid #d8e0e8;
 
-      border-radius: 9px;
+      border-radius: 8px;
 
       background: #f8fafc;
 
@@ -186,7 +183,7 @@
 
       font-family: inherit;
 
-      font-size: 14px;
+      font-size: 13px;
 
       outline: none;
 
@@ -216,7 +213,7 @@
     .search-icon {
       position: absolute;
 
-      right: 15px;
+      right: 13px;
 
       top: 50%;
 
@@ -225,23 +222,44 @@
 
       color: #6f7d8c;
 
-      font-size: 19px;
+      font-size: 17px;
 
       pointer-events: none;
     }
 
 
     /* =========================
-       MAIN
+       PAGE LAYOUT
     ========================= */
 
-    main {
+    .page-layout {
+      width: 100%;
+
       max-width: 1400px;
 
       margin: 0 auto;
 
       padding:
-        70px 55px;
+        45px 30px 70px;
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        220px;
+
+      gap: 35px;
+
+      align-items: start;
+    }
+
+
+    /* =========================
+       MAIN CONTENT
+    ========================= */
+
+    .main-content {
+      min-width: 0;
     }
 
 
@@ -256,7 +274,7 @@
 
       margin:
         0 auto
-        70px;
+        50px;
     }
 
 
@@ -264,9 +282,9 @@
       margin:
         0
         0
-        18px;
+        16px;
 
-      font-size: 52px;
+      font-size: 50px;
 
       line-height: 1.15;
 
@@ -286,7 +304,7 @@
     .hero p {
       margin: 0;
 
-      font-size: 20px;
+      font-size: 19px;
 
       line-height: 1.7;
 
@@ -295,7 +313,7 @@
 
 
     /* =========================
-       PLACEHOLDER
+       TOOLS PLACEHOLDER
     ========================= */
 
     .tools-placeholder {
@@ -306,17 +324,17 @@
 
       border-radius: 18px;
 
-      min-height: 300px;
+      min-height: 400px;
 
       padding: 40px;
-
-      text-align: center;
 
       display: flex;
 
       align-items: center;
 
       justify-content: center;
+
+      text-align: center;
     }
 
 
@@ -326,6 +344,64 @@
       color: #8a96a5;
 
       font-size: 18px;
+    }
+
+
+    /* =========================
+       RIGHT AD COLUMN
+    ========================= */
+
+    .ad-column {
+      width: 100%;
+
+      min-height: 600px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #e2e7ee;
+
+      border-radius: 12px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      text-align: center;
+
+      padding: 20px;
+
+      position: sticky;
+
+      top: 20px;
+    }
+
+
+    .ad-label {
+      color: #9aa5b1;
+
+      font-size: 10px;
+
+      font-weight: 600;
+
+      letter-spacing: 1px;
+
+      text-transform: uppercase;
+
+      margin-bottom: 15px;
+    }
+
+
+    .ad-placeholder {
+      color: #a0a9b5;
+
+      font-size: 13px;
+
+      line-height: 1.6;
     }
 
 
@@ -354,36 +430,39 @@
        TABLET
     ========================= */
 
-    @media (max-width: 900px) {
+    @media (max-width: 1000px) {
 
-      .navbar {
-        padding:
-          22px 25px 18px;
+      .page-layout {
+        grid-template-columns:
+          minmax(0, 1fr)
+          180px;
+
+        gap: 25px;
       }
 
 
-      .logo-icon {
-        width: 45px;
+      .ad-column {
+        min-height: 500px;
+      }
 
-        height: 45px;
+    }
 
-        font-size: 22px;
+
+    /* =========================
+       SMALL TABLET
+    ========================= */
+
+    @media (max-width: 800px) {
+
+      .page-layout {
+        grid-template-columns: 1fr;
       }
 
 
-      .logo-text {
-        font-size: 29px;
-      }
+      .ad-column {
+        position: static;
 
-
-      main {
-        padding:
-          55px 25px;
-      }
-
-
-      .hero h1 {
-        font-size: 44px;
+        min-height: 180px;
       }
 
     }
@@ -397,13 +476,13 @@
 
       .navbar {
         padding:
-          18px 16px;
+          12px 16px;
 
         flex-direction: column;
 
         align-items: stretch;
 
-        gap: 14px;
+        gap: 12px;
       }
 
 
@@ -417,31 +496,38 @@
       }
 
 
-      main {
+      .page-layout {
         padding:
-          45px 16px;
+          40px 16px 55px;
       }
 
 
       .hero {
-        margin-bottom: 45px;
+        margin-bottom: 40px;
       }
 
 
       .hero h1 {
         font-size: 38px;
+
+        letter-spacing: -1px;
       }
 
 
       .hero p {
-        font-size: 17px;
+        font-size: 16px;
       }
 
 
       .tools-placeholder {
-        min-height: 220px;
+        min-height: 250px;
 
         padding: 25px;
+      }
+
+
+      .ad-column {
+        min-height: 150px;
       }
 
     }
@@ -514,45 +600,74 @@
 
 
   <!-- =========================
-       MAIN
+       PAGE LAYOUT
   ========================== -->
 
-  <main>
+  <main class="page-layout">
 
 
-    <!-- HERO -->
+    <!-- LEFT MAIN CONTENT -->
 
-    <section class="hero">
-
-      <h1>
-
-        Your All-in-One<br>
-
-        Online <span>Tools.</span>
-
-      </h1>
+    <div class="main-content">
 
 
-      <p>
+      <!-- HERO -->
 
-        Fast, free and easy-to-use online tools
-        for all your daily needs.
+      <section class="hero">
 
-      </p>
+        <h1>
 
-    </section>
+          Your All-in-One<br>
+
+          Online <span>Tools.</span>
+
+        </h1>
+
+
+        <p>
+
+          Fast, free and easy-to-use online tools
+          for all your daily needs.
+
+        </p>
+
+      </section>
 
 
 
-    <!-- TOOLS AREA -->
+      <!-- TOOLS AREA -->
 
-    <section class="tools-placeholder">
+      <section class="tools-placeholder">
 
-      <p>
-        Tools will go here.
-      </p>
+        <p>
+          Tools will go here.
+        </p>
 
-    </section>
+      </section>
+
+
+    </div>
+
+
+
+    <!-- RIGHT ADVERTISEMENT COLUMN -->
+
+    <aside class="ad-column">
+
+      <div class="ad-label">
+        Advertisement
+      </div>
+
+
+      <div class="ad-placeholder">
+
+        Ad Space<br>
+
+        160 × 600
+
+      </div>
+
+    </aside>
 
 
   </main>
