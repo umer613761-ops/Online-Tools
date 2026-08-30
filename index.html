@@ -280,6 +280,138 @@ header {
 
 
 /* =========================
+   DECORATIVE CURVED LINES
+========================= */
+
+.curve {
+    position: absolute;
+
+    border: 1.5px solid rgba(73, 157, 178, 0.20);
+
+    border-left: none;
+    border-bottom: none;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+.curve-1 {
+    width: 155px;
+    height: 150px;
+
+    left: 100px;
+    top: 32px;
+
+    transform: rotate(-28deg);
+}
+
+.curve-2 {
+    width: 125px;
+    height: 125px;
+
+    left: 130px;
+    top: 50px;
+
+    transform: rotate(18deg);
+
+    border-color: rgba(73, 157, 178, 0.15);
+}
+
+
+/* =========================
+   DECORATIVE FLOATING DOTS
+========================= */
+
+.dot {
+    position: absolute;
+
+    display: block;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+.dot-blue {
+    background: #2e6aa6;
+}
+
+.dot-teal {
+    background: #3d93a8;
+}
+
+.dot-orange {
+    background: #f3a83b;
+}
+
+
+/* DOT POSITIONS */
+
+.dot-1 {
+    top: 5px;
+    left: 25px;
+}
+
+.dot-2 {
+    top: 0;
+    left: 105px;
+
+    width: 10px;
+    height: 10px;
+}
+
+.dot-3 {
+    top: 28px;
+    left: 185px;
+
+    width: 9px;
+    height: 9px;
+}
+
+.dot-4 {
+    top: 12px;
+    right: 52px;
+
+    width: 4px;
+    height: 4px;
+}
+
+.dot-5 {
+    top: 76px;
+    left: 12px;
+
+    width: 11px;
+    height: 11px;
+}
+
+.dot-6 {
+    top: 124px;
+    left: 26px;
+}
+
+.dot-7 {
+    top: 62px;
+    right: 15px;
+}
+
+.dot-8 {
+    top: 145px;
+    right: 10px;
+
+    width: 9px;
+    height: 9px;
+}
+
+
+/* =========================
    TOP TOOL CARDS
 ========================= */
 
@@ -398,21 +530,18 @@ header {
         0 6px 12px rgba(30, 50, 70, 0.18);
 }
 
-
-/* Folder tab */
-
 .folder::before {
     content: "";
 
     position: absolute;
 
-    width: 35px;
-    height: 11px;
+    width: 28px;
+    height: 9px;
 
-    top: -9px;
-    left: 8px;
+    top: -8px;
+    left: 7px;
 
-    border-radius: 6px 6px 0 0;
+    border-radius: 5px 5px 0 0;
 
     background: inherit;
 
@@ -423,10 +552,10 @@ header {
 }
 
 
-/* PDF */
+/* FOLDER POSITIONS */
 
 .folder-pdf {
-    left: 8%;
+    left: 55px;
 
     background:
         linear-gradient(
@@ -436,11 +565,8 @@ header {
         );
 }
 
-
-/* TEXT */
-
 .folder-text {
-    left: 29%;
+    left: 125px;
 
     background:
         linear-gradient(
@@ -450,11 +576,8 @@ header {
         );
 }
 
-
-/* CALCULATOR */
-
 .folder-calculator {
-    left: 50%;
+    left: 195px;
 
     background:
         linear-gradient(
@@ -464,11 +587,8 @@ header {
         );
 }
 
-
-/* IMAGE */
-
 .folder-image {
-    right: 7%;
+    left: 265px;
 
     background:
         linear-gradient(
@@ -486,8 +606,8 @@ header {
 .visual-line {
     position: absolute;
 
-    left: 3%;
-    right: 3%;
+    left: 25px;
+    right: 25px;
 
     bottom: 0;
 
@@ -550,6 +670,8 @@ header {
 .tools-section {
     margin-top: 14px;
 
+    width: calc(100% - 210px);
+
     background: #ffffff;
 
     border: 1px solid #c4d0dc;
@@ -558,21 +680,21 @@ header {
     box-shadow:
         0 5px 14px rgba(50, 70, 90, 0.10);
 
-    padding: 22px 24px;
+    padding: 18px 20px;
 }
 
 .tools-section-header {
     display: flex;
     align-items: center;
 
-    gap: 10px;
+    gap: 9px;
 
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .section-icon {
-    width: 38px;
-    height: 38px;
+    width: 34px;
+    height: 34px;
 
     display: flex;
     align-items: center;
@@ -580,15 +702,15 @@ header {
 
     background: #f7e9e7;
 
-    border-radius: 9px;
+    border-radius: 8px;
 
-    font-size: 20px;
+    font-size: 17px;
 }
 
 .tools-section h2 {
     margin: 0;
 
-    font-size: 22px;
+    font-size: 19px;
 
     color: #354254;
 }
@@ -604,25 +726,25 @@ header {
     grid-template-columns:
         repeat(4, 1fr);
 
-    gap: 12px;
+    gap: 10px;
 }
 
 .tool-link {
     display: flex;
     align-items: center;
 
-    gap: 12px;
+    gap: 9px;
 
-    min-height: 74px;
+    min-height: 64px;
 
-    padding: 12px;
+    padding: 10px;
 
     text-decoration: none;
 
     background: #fbfcfd;
 
     border: 1px solid #d1dae3;
-    border-radius: 9px;
+    border-radius: 8px;
 
     color: #354254;
 
@@ -642,8 +764,8 @@ header {
 }
 
 .tool-logo {
-    width: 42px;
-    height: 42px;
+    width: 36px;
+    height: 36px;
 
     flex-shrink: 0;
 
@@ -651,9 +773,9 @@ header {
     align-items: center;
     justify-content: center;
 
-    border-radius: 8px;
+    border-radius: 7px;
 
-    font-size: 20px;
+    font-size: 17px;
 }
 
 .merge-logo {
@@ -681,9 +803,9 @@ header {
 }
 
 .tool-info h3 {
-    margin: 0 0 5px;
+    margin: 0 0 4px;
 
-    font-size: 14px;
+    font-size: 12px;
 
     color: #354254;
 }
@@ -691,8 +813,8 @@ header {
 .tool-info p {
     margin: 0;
 
-    font-size: 11px;
-    line-height: 1.4;
+    font-size: 10px;
+    line-height: 1.35;
 
     color: #708093;
 }
@@ -787,6 +909,10 @@ footer {
         height: 88px;
     }
 
+    .tools-section {
+        width: calc(100% - 190px);
+    }
+
     .tools-grid {
         grid-template-columns:
             repeat(2, 1fr);
@@ -839,6 +965,10 @@ footer {
 
     .ad-column {
         height: 120px;
+    }
+
+    .tools-section {
+        width: 100%;
     }
 
     .tools-grid {
@@ -961,46 +1091,57 @@ footer {
 <main class="page-layout">
 
 
-    <!-- HERO -->
-
     <section class="main-content">
 
         <div class="hero">
 
 
-            <!-- TEXT -->
+            <!-- HERO TEXT -->
 
             <div class="hero-content">
 
                 <h1>
-
                     Your All-in-one<br>
-
                     Online <span>Tools</span>
-
                 </h1>
 
 
                 <p>
-
                     Access powerful PDF, Text, Image and
                     Calculator tools to simplify your daily
                     tasks — fast, free and easy to use.
-
                 </p>
 
             </div>
 
 
 
-            <!-- ILLUSTRATION -->
+            <!-- HERO ILLUSTRATION -->
 
             <div class="hero-visual">
 
                 <div class="tool-group">
 
 
-                    <!-- TOP CARDS -->
+                    <!-- DECORATIVE CURVES -->
+
+                    <div class="curve curve-1"></div>
+                    <div class="curve curve-2"></div>
+
+
+                    <!-- FLOATING DOTS -->
+
+                    <span class="dot dot-blue dot-1"></span>
+                    <span class="dot dot-teal dot-2"></span>
+                    <span class="dot dot-orange dot-3"></span>
+                    <span class="dot dot-blue dot-4"></span>
+                    <span class="dot dot-teal dot-5"></span>
+                    <span class="dot dot-orange dot-6"></span>
+                    <span class="dot dot-blue dot-7"></span>
+                    <span class="dot dot-orange dot-8"></span>
+
+
+                    <!-- TOOL CARDS -->
 
                     <div class="tool-card pdf-card">
 
@@ -1110,6 +1251,7 @@ footer {
 
 <section class="tools-section">
 
+
     <div class="tools-section-header">
 
         <div class="section-icon">
@@ -1137,7 +1279,7 @@ footer {
                 <h3>Merge PDF</h3>
 
                 <p>
-                    Combine multiple PDF files into one.
+                    Combine multiple PDF files.
                 </p>
 
             </div>
@@ -1159,7 +1301,7 @@ footer {
                 <h3>Split PDF</h3>
 
                 <p>
-                    Split PDF pages into separate files.
+                    Split PDF pages easily.
                 </p>
 
             </div>
@@ -1181,7 +1323,7 @@ footer {
                 <h3>PDF to Images</h3>
 
                 <p>
-                    Convert PDF pages into images.
+                    Convert PDF pages to images.
                 </p>
 
             </div>
@@ -1203,7 +1345,7 @@ footer {
                 <h3>Images to PDF</h3>
 
                 <p>
-                    Convert images into a PDF file.
+                    Convert images into PDF.
                 </p>
 
             </div>
@@ -1212,6 +1354,7 @@ footer {
 
 
     </div>
+
 
 </section>
 
