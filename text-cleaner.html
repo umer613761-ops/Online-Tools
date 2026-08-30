@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -10,12 +11,18 @@
     content="width=device-width, initial-scale=1.0"
   >
 
+  <meta
+    name="theme-color"
+    content="#1f2937"
+  >
+
   <title>Text Cleaner - Free Online Text Tool | ToolNest</title>
 
   <meta
     name="description"
     content="Clean messy text online for free. Remove extra spaces, empty lines, tabs, invisible characters and duplicate lines."
   >
+
 
   <style>
 
@@ -27,12 +34,26 @@
       box-sizing: border-box;
     }
 
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+
+      display: flex;
+      flex-direction: column;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
       background: #d9dee4;
       color: #1f2937;
-      min-height: 100vh;
     }
 
 
@@ -42,8 +63,12 @@
 
     nav {
       width: 100%;
+
       background: #1f2937;
-      border-bottom: 1px solid #374151;
+
+      border-bottom:
+        1px solid #374151;
+
       padding: 16px 32px;
 
       display: flex;
@@ -59,26 +84,32 @@
     .logo {
       display: flex;
       align-items: center;
+
       gap: 11px;
+
       text-decoration: none;
     }
+
 
     .logo-icon {
       width: 43px;
       height: 43px;
-      border-radius: 12px;
-
-      background: linear-gradient(
-        135deg,
-        #5b9a78,
-        #3f7659
-      );
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      color: white;
+      border-radius: 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #5b9a78,
+          #3f7659
+        );
+
+      color: #ffffff;
+
       font-size: 22px;
       font-weight: bold;
 
@@ -87,16 +118,20 @@
         rgba(63, 118, 89, 0.25);
     }
 
+
     .logo-text {
       font-size: 29px;
       font-weight: 800;
+
       letter-spacing: -0.8px;
       line-height: 1;
     }
 
+
     .logo-tool {
       color: #ffffff;
     }
+
 
     .logo-nest {
       color: #a9cdb7;
@@ -104,17 +139,30 @@
 
 
     /* =========================
-       NAV LINK
+       BACK LINK
     ========================= */
 
-    .nav-links a {
+    .back-link {
       color: #d1d5db;
+
       text-decoration: none;
+
       font-size: 14px;
+      font-weight: 500;
+
+      padding: 9px 14px;
+
+      border-radius: 9px;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease;
     }
 
-    .nav-links a:hover {
-      color: #a9cdb7;
+
+    .back-link:hover {
+      background: #273244;
+      color: #ffffff;
     }
 
 
@@ -123,70 +171,111 @@
     ========================= */
 
     .container {
-      max-width: 1050px;
+      width: 100%;
+      max-width: 1250px;
+
       margin: 0 auto;
-      padding: 55px 24px 70px;
+
+      padding: 55px 24px 80px;
+
+      flex: 1;
     }
 
 
     /* =========================
-       HERO
+       CONTENT LAYOUT
     ========================= */
 
-    .hero {
-      text-align: center;
-      margin-bottom: 40px;
+    .content-layout {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        180px;
+
+      gap: 28px;
+
+      align-items: start;
     }
 
-    .hero h1 {
-      margin: 0 0 14px;
+
+    /* =========================
+       MAIN CONTENT
+    ========================= */
+
+    .main-content {
+      min-width: 0;
+    }
+
+
+    /* =========================
+       HEADING
+    ========================= */
+
+    .heading {
+      text-align: center;
+
+      margin-bottom: 35px;
+    }
+
+
+    .heading h1 {
+      margin: 0 0 12px;
 
       font-size: 42px;
       font-weight: 750;
+
       letter-spacing: -1px;
 
       color: #202938;
     }
 
-    .hero p {
-      margin: 0 auto;
-      max-width: 700px;
 
-      font-size: 17px;
-      line-height: 1.6;
+    .subtitle {
+      max-width: 650px;
+
+      margin: 0 auto;
 
       color: #667085;
+
+      font-size: 16px;
+      line-height: 1.6;
     }
 
 
     /* =========================
-       TOOL PANEL
+       TOOL BOX
     ========================= */
 
-    .tool-panel {
-      background: #c9d0d7;
+    .tool-box {
+      background: #e9edf1;
 
-      border: 1px solid #b2bbc5;
+      border:
+        1px solid #bec7d0;
 
-      border-radius: 18px;
+      border-radius: 16px;
 
       padding: 30px;
 
       box-shadow:
-        0 8px 22px
-        rgba(31, 41, 55, 0.08);
+        0 8px 24px
+        rgba(31, 41, 55, 0.07);
     }
 
 
     /* =========================
-       EDITORS
+       EDITOR GRID
     ========================= */
 
     .editor-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
       gap: 20px;
     }
+
 
     .editor-box label {
       display: block;
@@ -196,8 +285,9 @@
       font-size: 15px;
       font-weight: 700;
 
-      color: #273246;
+      color: #2d3a32;
     }
+
 
     textarea {
       width: 100%;
@@ -205,33 +295,49 @@
 
       padding: 16px;
 
-      font-family: Arial, Helvetica, sans-serif;
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
       font-size: 15px;
       line-height: 1.6;
 
       color: #253044;
 
-      background: #e9edf1;
+      background: #eef1f4;
 
-      border: 1px solid #bec7d0;
+      border:
+        1px solid #bec7d0;
+
       border-radius: 12px;
 
       resize: vertical;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
     }
+
 
     textarea::placeholder {
       color: #7b8490;
     }
 
+
     textarea:focus {
       outline: none;
 
-      border-color: #8bb89c;
+      background: #f4f6f7;
+
+      border-color: #78a58a;
 
       box-shadow:
         0 0 0 3px
-        rgba(139, 184, 156, 0.15);
+        rgba(63, 118, 89, 0.12);
     }
+
 
     #textOutput {
       background: #dfe6e1;
@@ -246,9 +352,11 @@
       margin-top: 30px;
     }
 
+
     .options-header {
       margin-bottom: 18px;
     }
+
 
     .options-header h2 {
       margin: 0;
@@ -258,41 +366,60 @@
       color: #253044;
     }
 
+
     .options-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
       gap: 14px;
     }
+
 
     .option {
       display: flex;
       align-items: center;
+
       gap: 10px;
 
       padding: 15px;
 
       background: #dce6df;
 
-      border: 1px solid #c2d0c7;
+      border:
+        1px solid #c2d0c7;
+
       border-radius: 12px;
 
       cursor: pointer;
 
       color: #2d3a32;
 
+      font-size: 14px;
+      font-weight: 500;
+
       transition:
         transform 0.2s ease,
         background 0.2s ease,
-        border-color 0.2s ease;
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
     }
+
 
     .option:hover {
-      transform: translateY(-2px);
+      transform:
+        translateY(-2px);
 
-      background: #d4e0d8;
+      background: #d2ddd6;
 
       border-color: #9bb8a5;
+
+      box-shadow:
+        0 4px 10px
+        rgba(31, 41, 55, 0.06);
     }
+
 
     .option input {
       width: 17px;
@@ -300,7 +427,9 @@
 
       cursor: pointer;
 
-      accent-color: #5b9a78;
+      accent-color: #3f7659;
+
+      flex-shrink: 0;
     }
 
 
@@ -309,11 +438,13 @@
     ========================= */
 
     button {
+      font-family: inherit;
+
+      padding: 14px;
+
       border: none;
 
       border-radius: 10px;
-
-      padding: 13px 22px;
 
       font-size: 15px;
       font-weight: 600;
@@ -322,28 +453,51 @@
 
       transition:
         transform 0.2s ease,
-        opacity 0.2s ease;
+        background 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
+
     button:hover {
-      transform: translateY(-2px);
-      opacity: 0.9;
+      transform:
+        translateY(-2px);
     }
+
 
     .primary-button {
       background: #3f7659;
-      color: white;
+
+      color: #ffffff;
 
       box-shadow:
-        0 5px 14px
-        rgba(63, 118, 89, 0.2);
+        0 5px 12px
+        rgba(63, 118, 89, 0.20);
     }
 
-    .secondary-button {
-      background: #e9edf1;
-      color: #273246;
 
-      border: 1px solid #bec7d0;
+    .primary-button:hover {
+      background: #35654c;
+
+      box-shadow:
+        0 8px 18px
+        rgba(63, 118, 89, 0.28);
+    }
+
+
+    .secondary-button {
+      background: #dce6df;
+
+      color: #2d3a32;
+
+      border:
+        1px solid #c2d0c7;
+    }
+
+
+    .secondary-button:hover {
+      background: #d2ddd6;
+
+      border-color: #9bb8a5;
     }
 
 
@@ -357,6 +511,7 @@
 
       margin-top: 30px;
     }
+
 
     .clean-button {
       min-width: 220px;
@@ -373,47 +528,75 @@
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
 
-      gap: 18px;
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 15px;
 
       margin-top: 35px;
     }
 
+
     .stat {
-      padding: 22px;
+      padding: 20px;
+
+      text-align: center;
 
       background: #dce6df;
 
-      border: 1px solid #c2d0c7;
-      border-radius: 14px;
+      border:
+        1px solid #c2d0c7;
 
-      text-align: center;
+      border-radius: 12px;
+
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
     }
+
+
+    .stat:hover {
+      transform:
+        translateY(-2px);
+
+      border-color: #9bb8a5;
+
+      box-shadow:
+        0 4px 10px
+        rgba(31, 41, 55, 0.06);
+    }
+
 
     .stat strong {
       display: block;
 
-      font-size: 30px;
+      font-size: 28px;
+      font-weight: 750;
 
-      margin-bottom: 6px;
+      margin-bottom: 7px;
 
-      color: #2d3a32;
+      color: #3f7659;
     }
+
 
     .stat span {
       color: #59665e;
+
       font-size: 14px;
     }
 
 
     /* =========================
-       ACTIONS
+       ACTION BUTTONS
     ========================= */
 
     .action-buttons {
-      display: flex;
-      justify-content: center;
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, 1fr);
 
       gap: 12px;
 
@@ -422,31 +605,92 @@
 
 
     /* =========================
-       INFO
+       INFORMATION
     ========================= */
 
     .info {
-      margin-top: 35px;
+      margin-top: 30px;
 
-      padding: 25px;
+      padding: 22px;
+
+      background: #dce6df;
+
+      border:
+        1px solid #c2d0c7;
+
+      border-radius: 12px;
+
+      color: #59665e;
+
+      line-height: 1.6;
+    }
+
+
+    .info strong {
+      display: block;
+
+      color: #2d3a32;
+
+      font-size: 16px;
+    }
+
+
+    .info p {
+      margin:
+        10px 0 0;
+    }
+
+
+    /* =========================
+       AD SIDEBAR
+    ========================= */
+
+    .ad-sidebar {
+      width: 100%;
+
+      min-height: 420px;
 
       background: #e9edf1;
 
-      border: 1px solid #bec7d0;
+      border:
+        1px solid #bec7d0;
+
       border-radius: 14px;
 
-      color: #596678;
+      display: flex;
 
-      line-height: 1.7;
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      padding: 18px;
+
+      position: sticky;
+
+      top: 20px;
     }
 
-    .info strong {
-      color: #273246;
-      font-size: 17px;
+
+    .ad-label {
+      color: #7b8490;
+
+      font-size: 10px;
+
+      letter-spacing: 1px;
+
+      text-transform: uppercase;
+
+      margin-bottom: 12px;
     }
 
-    .info p {
-      margin-bottom: 0;
+
+    .ad-placeholder {
+      color: #667085;
+
+      font-size: 13px;
+
+      line-height: 1.6;
     }
 
 
@@ -457,7 +701,8 @@
     footer {
       background: #1f2937;
 
-      border-top: 1px solid #374151;
+      border-top:
+        1px solid #374151;
 
       text-align: center;
 
@@ -473,10 +718,43 @@
        TABLET
     ========================= */
 
-    @media (max-width: 850px) {
+    @media (max-width: 1050px) {
+
+      .content-layout {
+        grid-template-columns:
+          minmax(0, 1fr)
+          150px;
+
+        gap: 20px;
+      }
+
 
       .editor-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+          1fr;
+      }
+
+    }
+
+
+    /* =========================
+       MOBILE / SMALL TABLET
+    ========================= */
+
+    @media (max-width: 850px) {
+
+      .content-layout {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .ad-sidebar {
+        position: static;
+
+        min-height: 140px;
+
+        order: 2;
       }
 
     }
@@ -490,11 +768,15 @@
 
       nav {
         padding: 14px 16px;
+
+        gap: 12px;
       }
+
 
       .logo {
         gap: 8px;
       }
+
 
       .logo-icon {
         width: 37px;
@@ -505,44 +787,93 @@
         font-size: 19px;
       }
 
+
       .logo-text {
         font-size: 24px;
       }
 
+
+      .back-link {
+        padding: 8px 10px;
+
+        font-size: 13px;
+      }
+
+
       .container {
-        padding: 42px 16px 55px;
+        padding:
+          42px
+          16px
+          60px;
       }
 
-      .hero h1 {
+
+      .heading {
+        margin-bottom: 30px;
+      }
+
+
+      .heading h1 {
         font-size: 32px;
+
+        letter-spacing: -0.5px;
       }
 
-      .hero p {
+
+      .subtitle {
         font-size: 15px;
       }
 
-      .tool-panel {
-        padding: 20px;
+
+      .tool-box {
+        padding: 18px;
+
+        border-radius: 14px;
       }
+
+
+      textarea {
+        height: 240px;
+
+        padding: 15px;
+      }
+
 
       .options-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+          1fr;
       }
+
 
       .stats {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+          1fr;
       }
 
+
       .action-buttons {
-        flex-direction: column;
+        grid-template-columns:
+          1fr;
       }
+
 
       .action-buttons button {
         width: 100%;
       }
 
-      textarea {
-        height: 240px;
+
+      .clean-button {
+        width: 100%;
+      }
+
+
+      .info {
+        padding: 18px;
+      }
+
+
+      .ad-sidebar {
+        min-height: 120px;
       }
 
     }
@@ -555,18 +886,22 @@
 <body>
 
 
-  <!-- HEADER -->
+  <!-- =========================
+       HEADER
+  ========================= -->
 
   <nav>
 
     <a
       href="index.html"
       class="logo"
+      aria-label="ToolNest Home"
     >
 
       <div class="logo-icon">
         T
       </div>
+
 
       <div class="logo-text">
 
@@ -583,75 +918,372 @@
     </a>
 
 
-    <div class="nav-links">
-
-      <a href="index.html">
-        ← All Tools
-      </a>
-
-    </div>
+    <a
+      href="index.html"
+      class="back-link"
+    >
+      ← All Tools
+    </a>
 
   </nav>
 
 
 
-  <!-- MAIN -->
+  <!-- =========================
+       MAIN
+  ========================= -->
 
   <main class="container">
 
 
-    <!-- HERO -->
-
-    <section class="hero">
-
-      <h1>
-        Text Cleaner
-      </h1>
-
-      <p>
-        Clean messy text by removing unwanted spaces,
-        empty lines, tabs, invisible characters and more.
-      </p>
-
-    </section>
+    <div class="content-layout">
 
 
+      <!-- =========================
+           MAIN CONTENT
+      ========================= -->
 
-    <!-- TOOL -->
-
-    <section class="tool-panel">
-
-
-      <!-- EDITORS -->
-
-      <div class="editor-grid">
+      <div class="main-content">
 
 
-        <div class="editor-box">
+        <!-- HEADING -->
 
-          <label for="textInput">
-            Your Text
-          </label>
+        <div class="heading">
 
-          <textarea
-            id="textInput"
-            placeholder="Paste your text here..."
-          ></textarea>
+          <h1>
+            Text Cleaner
+          </h1>
+
+
+          <p class="subtitle">
+
+            Clean messy text by removing unwanted spaces,
+            empty lines, tabs, invisible characters and more.
+
+          </p>
 
         </div>
 
 
-        <div class="editor-box">
 
-          <label for="textOutput">
-            Cleaned Text
-          </label>
+        <!-- =========================
+             TOOL BOX
+        ========================= -->
 
-          <textarea
-            id="textOutput"
-            placeholder="Your cleaned text will appear here..."
-            readonly
-          ></textarea>
+        <div class="tool-box">
+
+
+          <!-- EDITORS -->
+
+          <div class="editor-grid">
+
+
+            <!-- INPUT -->
+
+            <div class="editor-box">
+
+              <label for="textInput">
+                Your Text
+              </label>
+
+
+              <textarea
+                id="textInput"
+                placeholder="Paste your text here..."
+              ></textarea>
+
+            </div>
+
+
+
+            <!-- OUTPUT -->
+
+            <div class="editor-box">
+
+              <label for="textOutput">
+                Cleaned Text
+              </label>
+
+
+              <textarea
+                id="textOutput"
+                placeholder="Your cleaned text will appear here..."
+                readonly
+              ></textarea>
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- =========================
+               OPTIONS
+          ========================= -->
+
+          <div class="options">
+
+
+            <div class="options-header">
+
+              <h2>
+                Cleaning Options
+              </h2>
+
+            </div>
+
+
+
+            <div class="options-grid">
+
+
+              <label class="option">
+
+                <input
+                  type="checkbox"
+                  id="extraSpaces"
+                  checked
+                >
+
+                Remove extra spaces
+
+              </label>
+
+
+
+              <label class="option">
+
+                <input
+                  type="checkbox"
+                  id="emptyLines"
+                  checked
+                >
+
+                Remove empty lines
+
+              </label>
+
+
+
+              <label class="option">
+
+                <input
+                  type="checkbox"
+                  id="trimLines"
+                  checked
+                >
+
+                Trim spaces from each line
+
+              </label>
+
+
+
+              <label class="option">
+
+                <input
+                  type="checkbox"
+                  id="tabs"
+                  checked
+                >
+
+                Replace tabs with spaces
+
+              </label>
+
+
+
+              <label class="option">
+
+                <input
+                  type="checkbox"
+                  id="normalizeBreaks"
+                  checked
+                >
+
+                Normalize line breaks
+
+              </label>
+
+
+
+              <label class="option">
+
+                <input
+                  type="checkbox"
+                  id="invisibleCharacters"
+                  checked
+                >
+
+                Remove invisible characters
+
+              </label>
+
+
+
+              <label class="option">
+
+                <input
+                  type="checkbox"
+                  id="smartQuotes"
+                >
+
+                Convert smart quotes
+
+              </label>
+
+
+
+              <label class="option">
+
+                <input
+                  type="checkbox"
+                  id="repeatedPunctuation"
+                >
+
+                Reduce repeated punctuation
+
+              </label>
+
+
+
+              <label class="option">
+
+                <input
+                  type="checkbox"
+                  id="duplicates"
+                >
+
+                Remove duplicate lines
+
+              </label>
+
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- CLEAN BUTTON -->
+
+          <div class="clean-section">
+
+            <button
+              class="primary-button clean-button"
+              onclick="cleanText()"
+            >
+              Clean Text
+            </button>
+
+          </div>
+
+
+
+          <!-- =========================
+               STATISTICS
+          ========================= -->
+
+          <div class="stats">
+
+
+            <div class="stat">
+
+              <strong id="lineCount">
+                0
+              </strong>
+
+              <span>
+                Lines
+              </span>
+
+            </div>
+
+
+
+            <div class="stat">
+
+              <strong id="wordCount">
+                0
+              </strong>
+
+              <span>
+                Words
+              </span>
+
+            </div>
+
+
+
+            <div class="stat">
+
+              <strong id="characterCount">
+                0
+              </strong>
+
+              <span>
+                Characters
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- =========================
+               ACTION BUTTONS
+          ========================= -->
+
+          <div class="action-buttons">
+
+
+            <button
+              class="primary-button"
+              onclick="copyText()"
+            >
+              Copy Result
+            </button>
+
+
+
+            <button
+              class="secondary-button"
+              onclick="clearText()"
+            >
+              Clear
+            </button>
+
+
+          </div>
+
+
+
+          <!-- =========================
+               INFORMATION
+          ========================= -->
+
+          <div class="info">
+
+            <strong>
+              How to use Text Cleaner
+            </strong>
+
+
+            <p>
+
+              Paste your text into the input box,
+              select the cleaning options you want,
+              and click Clean Text. Your cleaned text
+              will appear in the result box.
+
+            </p>
+
+          </div>
+
 
         </div>
 
@@ -660,267 +1292,68 @@
 
 
 
-      <!-- OPTIONS -->
+      <!-- =========================
+           ADVERTISEMENT SIDEBAR
+      ========================= -->
 
-      <div class="options">
+      <aside class="ad-sidebar">
 
-        <div class="options-header">
+        <div>
 
-          <h2>
-            Cleaning Options
-          </h2>
-
-        </div>
-
-
-        <div class="options-grid">
+          <div class="ad-label">
+            Advertisement
+          </div>
 
 
-          <label class="option">
+          <div class="ad-placeholder">
 
-            <input
-              type="checkbox"
-              id="extraSpaces"
-              checked
-            >
+            Ad Space<br>
+            160 × 600
 
-            Remove extra spaces
-
-          </label>
+          </div>
 
 
-          <label class="option">
-
-            <input
-              type="checkbox"
-              id="emptyLines"
-              checked
-            >
-
-            Remove empty lines
-
-          </label>
-
-
-          <label class="option">
-
-            <input
-              type="checkbox"
-              id="trimLines"
-              checked
-            >
-
-            Trim spaces from each line
-
-          </label>
-
-
-          <label class="option">
-
-            <input
-              type="checkbox"
-              id="tabs"
-              checked
-            >
-
-            Replace tabs with spaces
-
-          </label>
-
-
-          <label class="option">
-
-            <input
-              type="checkbox"
-              id="normalizeBreaks"
-              checked
-            >
-
-            Normalize line breaks
-
-          </label>
-
-
-          <label class="option">
-
-            <input
-              type="checkbox"
-              id="invisibleCharacters"
-              checked
-            >
-
-            Remove invisible characters
-
-          </label>
-
-
-          <label class="option">
-
-            <input
-              type="checkbox"
-              id="smartQuotes"
-            >
-
-            Convert smart quotes
-
-          </label>
-
-
-          <label class="option">
-
-            <input
-              type="checkbox"
-              id="repeatedPunctuation"
-            >
-
-            Reduce repeated punctuation
-
-          </label>
-
-
-          <label class="option">
-
-            <input
-              type="checkbox"
-              id="duplicates"
-            >
-
-            Remove duplicate lines
-
-          </label>
-
+          <!--
+            REPLACE THIS AREA WITH
+            GOOGLE ADSENSE CODE
+            AFTER YOUR WEBSITE
+            IS APPROVED.
+          -->
 
         </div>
 
-      </div>
+      </aside>
 
 
-
-      <!-- CLEAN BUTTON -->
-
-      <div class="clean-section">
-
-        <button
-          class="primary-button clean-button"
-          onclick="cleanText()"
-        >
-          Clean Text
-        </button>
-
-      </div>
-
-
-
-      <!-- STATS -->
-
-      <div class="stats">
-
-
-        <div class="stat">
-
-          <strong id="lineCount">
-            0
-          </strong>
-
-          <span>
-            Lines
-          </span>
-
-        </div>
-
-
-        <div class="stat">
-
-          <strong id="wordCount">
-            0
-          </strong>
-
-          <span>
-            Words
-          </span>
-
-        </div>
-
-
-        <div class="stat">
-
-          <strong id="characterCount">
-            0
-          </strong>
-
-          <span>
-            Characters
-          </span>
-
-        </div>
-
-
-      </div>
-
-
-
-      <!-- ACTIONS -->
-
-      <div class="action-buttons">
-
-        <button
-          class="secondary-button"
-          onclick="copyText()"
-        >
-          Copy Result
-        </button>
-
-
-        <button
-          class="secondary-button"
-          onclick="clearText()"
-        >
-          Clear
-        </button>
-
-      </div>
-
-
-
-      <!-- INFO -->
-
-      <div class="info">
-
-        <strong>
-          How to use Text Cleaner
-        </strong>
-
-        <p>
-          Paste your text into the input box, select the
-          cleaning options you want, and click Clean Text.
-          Your cleaned text will appear in the result box.
-        </p>
-
-      </div>
-
-
-    </section>
+    </div>
 
 
   </main>
 
 
 
-  <!-- FOOTER -->
+  <!-- =========================
+       FOOTER
+  ========================= -->
 
   <footer>
 
     © 2026 ToolNest
+
     ·
+
     Simple, Fast &amp; Free
 
   </footer>
 
 
 
-  <!-- SCRIPT -->
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
 
   <script>
+
 
     const input =
       document.getElementById(
@@ -933,6 +1366,11 @@
         "textOutput"
       );
 
+
+
+    /* =========================
+       CLEAN TEXT
+    ========================= */
 
     function cleanText() {
 
@@ -952,6 +1390,9 @@
 
       }
 
+
+
+      /* NORMALIZE LINE BREAKS */
 
       if (
         document.getElementById(
@@ -973,6 +1414,9 @@
       }
 
 
+
+      /* REMOVE INVISIBLE CHARACTERS */
+
       if (
         document.getElementById(
           "invisibleCharacters"
@@ -988,6 +1432,9 @@
       }
 
 
+
+      /* REPLACE TABS */
+
       if (
         document.getElementById(
           "tabs"
@@ -1002,6 +1449,9 @@
 
       }
 
+
+
+      /* SMART QUOTES */
 
       if (
         document.getElementById(
@@ -1022,6 +1472,9 @@
 
       }
 
+
+
+      /* TRIM LINES */
 
       if (
         document.getElementById(
@@ -1044,6 +1497,9 @@
       }
 
 
+
+      /* REMOVE EXTRA SPACES */
+
       if (
         document.getElementById(
           "extraSpaces"
@@ -1058,6 +1514,9 @@
 
       }
 
+
+
+      /* REDUCE REPEATED PUNCTUATION */
 
       if (
         document.getElementById(
@@ -1083,6 +1542,9 @@
       }
 
 
+
+      /* REMOVE EMPTY LINES */
+
       if (
         document.getElementById(
           "emptyLines"
@@ -1106,6 +1568,9 @@
       }
 
 
+
+      /* REMOVE DUPLICATE LINES */
+
       if (
         document.getElementById(
           "duplicates"
@@ -1115,8 +1580,10 @@
         const lines =
           value.split("\n");
 
+
         const uniqueLines =
           [];
+
 
         const seen =
           new Set();
@@ -1155,6 +1622,9 @@
       }
 
 
+
+      /* SHOW RESULT */
+
       output.value =
         value;
 
@@ -1164,6 +1634,10 @@
     }
 
 
+
+    /* =========================
+       UPDATE STATISTICS
+    ========================= */
 
     function updateStatistics() {
 
@@ -1218,6 +1692,10 @@
 
 
 
+    /* =========================
+       COPY RESULT
+    ========================= */
+
     function copyText() {
 
       if (
@@ -1251,17 +1729,27 @@
 
 
 
+    /* =========================
+       CLEAR
+    ========================= */
+
     function clearText() {
 
       input.value =
         "";
 
+
       output.value =
         "";
 
+
       updateStatistics();
 
+
+      input.focus();
+
     }
+
 
   </script>
 
