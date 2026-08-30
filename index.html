@@ -1,844 +1,1001 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
 
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <meta
-    name="theme-color"
-    content="#edf5fa"
-  >
+    <title>ToolNest - Free Online Tools</title>
 
-  <title>
-    ToolNest - Free Online Tools
-  </title>
+    <meta
+        name="description"
+        content="Free online PDF, text, image and calculator tools. Fast, simple and easy to use."
+    >
 
-  <meta
-    name="description"
-    content="Free online tools for PDFs, text, images and everyday calculations."
-  >
 
+    <style>
 
-  <style>
+        /* =========================
+           GLOBAL
+        ========================= */
 
-    /* =========================
-       GLOBAL
-    ========================= */
+        * {
+            box-sizing: border-box;
+        }
 
-    * {
-      box-sizing: border-box;
-    }
+        html {
+            scroll-behavior: smooth;
+        }
 
+        body {
+            margin: 0;
 
-    html {
-      scroll-behavior: smooth;
-    }
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
 
+            background:
+                linear-gradient(
+                    180deg,
+                    #eaf3f8 0%,
+                    #f7f9fb 100%
+                );
 
-    body {
-      margin: 0;
+            color: #3d4859;
+        }
 
-      min-height: 100vh;
+        a {
+            text-decoration: none;
+        }
 
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
 
-      background:
-        #e7f0f6;
+        /* =========================
+           NAVIGATION
+        ========================= */
 
-      color:
-        #3d4b5e;
-    }
+        nav {
+            width: 100%;
 
+            height: 72px;
 
-    /* =========================
-       HEADER
-    ========================= */
+            background: #ffffff;
 
-    nav {
-      width: 100%;
+            border-bottom:
+                1px solid #e5eaf0;
 
-      min-height: 82px;
+            display: flex;
 
-      padding:
-        0
-        32px;
+            align-items: center;
 
-      display: flex;
+            justify-content: space-between;
 
-      align-items: center;
-      justify-content: space-between;
+            padding:
+                0 42px;
 
-      background:
-        rgba(255, 255, 255, 0.92);
+            position: relative;
 
-      border-bottom:
-        1px solid
-        #d9e3eb;
+            z-index: 10;
+        }
 
-      box-shadow:
-        0 2px 10px
-        rgba(50, 80, 110, 0.05);
-    }
 
+        /* =========================
+           LOGO
+        ========================= */
 
-    /* =========================
-       LOGO
-    ========================= */
+        .logo {
+            display: flex;
 
-    .logo {
-      display: flex;
+            align-items: center;
 
-      align-items: center;
+            gap: 12px;
 
-      gap: 12px;
+            color: #334155;
+        }
 
-      text-decoration: none;
-    }
+        .logo-icon {
+            width: 45px;
 
+            height: 45px;
 
-    .logo-icon {
-      width: 48px;
+            display: flex;
 
-      height: 48px;
+            align-items: center;
 
-      display: flex;
+            justify-content: center;
 
-      align-items: center;
-      justify-content: center;
+            border-radius: 12px;
 
-      border-radius: 13px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f83c4,
+                    #2d5f9f
+                );
 
-      background:
-        linear-gradient(
-          135deg,
-          #5d8ed0,
-          #356aa8
-        );
+            color: white;
 
-      color:
-        #ffffff;
+            font-size: 24px;
 
-      font-size: 23px;
+            font-weight: 700;
 
-      font-weight: 700;
+            box-shadow:
+                0 8px 20px
+                rgba(
+                    48,
+                    96,
+                    160,
+                    0.22
+                );
+        }
 
-      box-shadow:
-        0 8px 18px
-        rgba(53, 106, 168, 0.25);
-    }
+        .logo-text {
+            font-size: 28px;
 
+            font-weight: 700;
 
-    .logo-text {
-      font-size: 28px;
+            letter-spacing: -1px;
+        }
 
-      font-weight: 700;
+        .logo-text span {
+            color: #4478b7;
+        }
 
-      letter-spacing:
-        -0.7px;
-    }
 
+        /* =========================
+           NAV LINKS
+        ========================= */
 
-    .logo-tool {
-      color:
-        #344255;
-    }
+        .nav-links {
+            display: flex;
 
+            align-items: center;
 
-    .logo-nest {
-      color:
-        #4775b2;
-    }
+            gap: 30px;
+        }
 
+        .nav-links a {
+            color: #586575;
 
-    /* =========================
-       NAVIGATION LINKS
-    ========================= */
+            font-size: 15px;
 
-    .nav-links {
-      display: flex;
+            transition:
+                color 0.2s ease;
+        }
 
-      align-items: center;
+        .nav-links a:hover {
+            color: #3974bb;
+        }
 
-      gap: 30px;
-    }
 
+        /* =========================
+           PAGE WRAPPER
+        ========================= */
 
-    .nav-links a {
-      text-decoration: none;
+        .page-wrapper {
+            max-width: 1500px;
 
-      color:
-        #586779;
+            margin: 0 auto;
 
-      font-size: 15px;
+            padding:
+                35px 30px
+                70px;
 
-      transition:
-        color 0.2s ease;
-    }
+            display: grid;
 
+            grid-template-columns:
+                minmax(0, 1fr)
+                260px;
 
-    .nav-links a:hover {
-      color:
-        #356fae;
-    }
+            gap: 35px;
+        }
 
 
-    /* =========================
-       PAGE LAYOUT
-    ========================= */
+        /* =========================
+           MAIN CONTENT
+        ========================= */
 
-    .page-wrapper {
-      width: 100%;
+        .main-content {
+            min-width: 0;
+        }
 
-      max-width: 1700px;
 
-      margin: 0 auto;
+        /* =========================
+           HERO
+        ========================= */
 
-      padding:
-        65px
-        40px
-        70px;
-    }
+        .hero {
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #f7f9fc
+                );
 
+            min-height: 500px;
 
-    .main-layout {
-      display: grid;
+            padding:
+                65px 75px;
 
-      grid-template-columns:
-        minmax(0, 1fr)
-        250px;
+            display: grid;
 
-      gap: 35px;
+            grid-template-columns:
+                1fr 1fr;
 
-      align-items: start;
-    }
+            align-items: center;
 
+            gap: 50px;
 
-    /* =========================
-       MAIN CONTENT
-    ========================= */
+            overflow: hidden;
 
-    .main-content {
-      min-width: 0;
-    }
+            position: relative;
 
+            box-shadow:
+                0 10px 35px
+                rgba(
+                    46,
+                    71,
+                    95,
+                    0.08
+                );
+        }
 
-    /* =========================
-       HERO
-    ========================= */
 
-    .hero {
-      background:
-        #ffffff;
+        /* =========================
+           HERO TEXT
+        ========================= */
 
-      padding:
-        75px
-        60px;
+        .hero-text {
+            position: relative;
 
-      text-align: center;
+            z-index: 2;
+        }
 
-      border:
-        1px solid
-        #d9e2ea;
+        .hero-text h1 {
+            margin:
+                0
+                0
+                28px;
 
-      box-shadow:
-        0 12px 35px
-        rgba(52, 79, 108, 0.08);
-    }
+            font-size: 58px;
 
+            line-height: 1.08;
 
-    .hero h1 {
-      margin:
-        0
-        0
-        18px;
+            font-weight: 700;
 
-      font-size: 54px;
+            letter-spacing: -2px;
 
-      line-height: 1.15;
+            color: #3e495a;
+        }
 
-      font-weight: 700;
+        .hero-text h1 span {
+            color: #3974bb;
+        }
 
-      letter-spacing:
-        -1.5px;
+        .hero-text p {
+            margin: 0;
 
-      color:
-        #3d4b5d;
-    }
+            max-width: 510px;
 
+            font-size: 17px;
 
-    .hero-highlight {
-      color:
-        #4777b7;
-    }
+            line-height: 1.75;
 
+            color: #697789;
+        }
 
-    .hero p {
-      max-width: 680px;
 
-      margin:
-        0
-        auto;
+        /* =========================
+           HERO ILLUSTRATION
+        ========================= */
 
-      color:
-        #68788a;
+        .hero-art {
+            height: 360px;
 
-      font-size: 19px;
+            position: relative;
 
-      line-height: 1.7;
-    }
+            display: flex;
 
+            align-items: center;
 
-    /* =========================
-       ALL TOOLS SECTION
-    ========================= */
+            justify-content: center;
+        }
 
-    .all-tools-section {
-      margin-top: 55px;
-    }
 
+        /* Background dots */
 
-    .all-tools-title {
-      margin:
-        0
-        0
-        42px;
+        .dot {
+            position: absolute;
 
-      text-align: center;
+            border-radius: 50%;
+        }
 
-      font-size: 34px;
+        .dot.blue {
+            width: 7px;
+            height: 7px;
+            background: #3974bb;
+        }
 
-      font-weight: 700;
+        .dot.orange {
+            width: 8px;
+            height: 8px;
+            background: #f3a32c;
+        }
 
-      color:
-        #3d4b5d;
-    }
+        .dot.cyan {
+            width: 9px;
+            height: 9px;
+            background: #54a7b9;
+        }
 
 
-    /* =========================
-       TOOL CATEGORY
-    ========================= */
+        /* Floating files */
 
-    .tool-category {
-      margin-bottom: 42px;
-    }
+        .file {
+            width: 112px;
 
+            height: 142px;
 
-    /* =========================
-       CATEGORY HEADING
-    ========================= */
+            position: absolute;
 
-    .category-heading {
-      display: flex;
+            background: #ffffff;
 
-      align-items: center;
+            border:
+                3px solid #3c5068;
 
-      gap: 13px;
+            box-shadow:
+                0 12px 22px
+                rgba(
+                    50,
+                    70,
+                    90,
+                    0.13
+                );
 
-      margin-bottom: 17px;
-    }
+            display: flex;
 
+            align-items: center;
 
-    .category-heading h2 {
-      margin: 0;
+            justify-content: center;
 
-      font-size: 23px;
+            font-weight: 700;
 
-      font-weight: 700;
+            font-size: 18px;
+        }
 
-      color:
-        #3d4b5d;
-    }
+        .file::after {
+            content: "";
 
+            position: absolute;
 
-    /* =========================
-       CATEGORY ICON
-    ========================= */
+            width: 27px;
 
-    .category-icon {
-      width: 50px;
+            height: 27px;
 
-      height: 50px;
+            top: -3px;
 
-      flex-shrink: 0;
+            right: -3px;
 
-      display: flex;
+            background: #edf2f7;
 
-      align-items: center;
-      justify-content: center;
+            border-left:
+                2px solid #9aaaba;
 
-      border-radius: 13px;
+            border-bottom:
+                2px solid #9aaaba;
+        }
 
-      font-size: 23px;
 
-      font-weight: 700;
-    }
+        .pdf-file {
+            top: 20px;
 
+            left: 90px;
 
-    /* PDF */
+            transform: rotate(-20deg);
 
-    .pdf-icon {
-      background:
-        #ffe9e7;
+            color: #d84a35;
+        }
 
-      color:
-        #d9554d;
-    }
+        .doc-file {
+            top: 0;
 
+            right: 105px;
 
-    /* TEXT */
+            transform: rotate(7deg);
 
-    .text-icon {
-      background:
-        #e5efff;
+            color: #3974bb;
+        }
 
-      color:
-        #4779ba;
-    }
+        .xls-file {
+            top: 85px;
 
+            right: 50px;
 
-    /* IMAGE */
+            transform: rotate(18deg);
 
-    .image-icon {
-      background:
-        #eee8ff;
+            color: #4b9b5f;
+        }
 
-      color:
-        #7657ad;
-    }
 
+        /* Base line */
 
-    /* CALCULATOR */
+        .hero-line {
+            position: absolute;
 
-    .calculator-icon {
-      background:
-        #fff0dc;
+            bottom: 25px;
 
-      color:
-        #dc8a29;
-    }
+            width: 310px;
 
+            height: 3px;
 
-    /* =========================
-       HORIZONTAL TOOL LINKS
-    ========================= */
+            background: #3e495a;
+        }
 
-    .tool-links {
-      display: flex;
 
-      flex-wrap: wrap;
+        /* Upload box */
 
-      gap: 12px;
-    }
+        .upload-box {
+            width: 125px;
 
+            height: 125px;
 
-    /* =========================
-       TOOL LINK
-    ========================= */
+            position: absolute;
 
-    .tool-links a {
-      display: inline-flex;
+            bottom: 28px;
 
-      align-items: center;
-      justify-content: center;
+            left: 95px;
 
-      min-height: 52px;
+            border-radius: 16px;
 
-      padding:
-        0
-        23px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f83c4,
+                    #3266a8
+                );
 
-      background:
-        #ffffff;
+            border:
+                3px solid #2f4f76;
 
-      border:
-        1px solid
-        #d6e0e9;
+            box-shadow:
+                0 10px 18px
+                rgba(
+                    46,
+                    83,
+                    130,
+                    0.22
+                );
 
-      border-radius: 9px;
+            display: flex;
 
-      color:
-        #4d5c6d;
+            align-items: center;
 
-      text-decoration: none;
+            justify-content: center;
 
-      font-size: 16px;
+            color: white;
 
-      font-weight: 600;
+            font-size: 52px;
+        }
 
-      box-shadow:
-        0 2px 6px
-        rgba(40, 60, 85, 0.04);
 
-      transition:
-        transform 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        color 0.2s ease,
-        background 0.2s ease;
-    }
+        /* Download box */
 
+        .download-box {
+            width: 125px;
 
-    .tool-links a:hover {
-      transform:
-        translateY(-3px);
+            height: 125px;
 
-      background:
-        #f8fbfe;
+            position: absolute;
 
-      border-color:
-        #6c99ce;
+            bottom: 28px;
 
-      color:
-        #356eae;
+            right: 50px;
 
-      box-shadow:
-        0 7px 18px
-        rgba(54, 100, 150, 0.13);
-    }
+            border-radius: 16px;
 
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffc965,
+                    #f2a72f
+                );
 
-    /* =========================
-       ADVERTISEMENT COLUMN
-    ========================= */
+            border:
+                3px solid #3e495a;
 
-    .ad-column {
-      position: sticky;
+            box-shadow:
+                0 10px 18px
+                rgba(
+                    150,
+                    100,
+                    20,
+                    0.18
+                );
 
-      top: 25px;
-    }
+            display: flex;
 
+            align-items: center;
 
-    .ad-box {
-      width: 100%;
+            justify-content: center;
 
-      min-height: 600px;
+            color: white;
 
-      display: flex;
+            font-size: 52px;
+        }
 
-      align-items: center;
-      justify-content: center;
 
-      text-align: center;
+        /* =========================
+           ALL TOOLS
+        ========================= */
 
-      background:
-        rgba(255, 255, 255, 0.55);
+        .tools-section {
+            background: #ffffff;
 
-      border:
-        1px solid
-        #d4e0e9;
-    }
+            padding:
+                55px 60px
+                65px;
 
+            box-shadow:
+                0 10px 35px
+                rgba(
+                    46,
+                    71,
+                    95,
+                    0.07
+                );
+        }
 
-    .ad-label {
-      color:
-        #8997a5;
+        .tools-title {
+            text-align: center;
 
-      font-size: 12px;
+            margin:
+                0
+                0
+                45px;
 
-      text-transform: uppercase;
+            font-size: 32px;
 
-      letter-spacing:
-        1.4px;
-    }
+            font-weight: 700;
 
+            color: #3d4859;
 
-    .ad-size {
-      margin-top: 12px;
+            letter-spacing: -0.5px;
+        }
 
-      color:
-        #a2adb8;
 
-      font-size: 14px;
-    }
+        /* =========================
+           CATEGORY
+        ========================= */
 
+        .category {
+            margin-bottom: 40px;
+        }
 
-    /* =========================
-       BOTTOM AD
-    ========================= */
+        .category:last-child {
+            margin-bottom: 0;
+        }
 
-    .bottom-ad {
-      max-width: 1320px;
+        .category-heading {
+            display: flex;
 
-      min-height: 150px;
+            align-items: center;
 
-      margin:
-        0
-        auto
-        60px;
+            gap: 13px;
 
-      display: flex;
+            margin-bottom: 18px;
+        }
 
-      align-items: center;
-      justify-content: center;
+        .category-icon {
+            width: 45px;
 
-      background:
-        rgba(255, 255, 255, 0.55);
+            height: 45px;
 
-      border:
-        1px solid
-        #d4e0e9;
+            display: flex;
 
-      text-align: center;
-    }
+            align-items: center;
 
+            justify-content: center;
 
-    /* =========================
-       FOOTER
-    ========================= */
+            border-radius: 12px;
 
-    footer {
-      padding:
-        35px
-        20px;
+            font-size: 22px;
 
-      text-align: center;
+            font-weight: 700;
+        }
 
-      background:
-        #ffffff;
+        .category-heading h2 {
+            margin: 0;
 
-      border-top:
-        1px solid
-        #d9e3eb;
+            font-size: 24px;
 
-      color:
-        #718091;
+            color: #3d4859;
+        }
 
-      font-size: 14px;
-    }
 
+        /* Different category colors */
 
-    /* =========================
-       TABLET
-    ========================= */
+        .pdf-icon {
+            background: #fff0ed;
+            color: #df4938;
+        }
 
-    @media (max-width: 1100px) {
+        .text-icon {
+            background: #edf4ff;
+            color: #3974bb;
+        }
 
-      .main-layout {
-        grid-template-columns:
-          minmax(0, 1fr)
-          190px;
+        .image-icon {
+            background: #f3efff;
+            color: #7958af;
+        }
 
-        gap: 25px;
-      }
+        .calc-icon {
+            background: #fff7e9;
+            color: #e39b2d;
+        }
 
 
-      .page-wrapper {
-        padding:
-          45px
-          25px
-          60px;
-      }
+        /* =========================
+           HORIZONTAL TOOL LIST
+        ========================= */
 
+        .tool-list {
+            display: flex;
 
-      .hero {
-        padding:
-          60px
-          35px;
-      }
+            flex-wrap: wrap;
 
+            gap: 12px;
+        }
 
-      .hero h1 {
-        font-size: 46px;
-      }
+        .tool-list a {
+            display: flex;
 
-    }
+            align-items: center;
 
+            gap: 9px;
 
-    /* =========================
-       SMALL TABLET
-    ========================= */
+            padding:
+                12px 17px;
 
-    @media (max-width: 850px) {
+            background: #f9fafc;
 
-      nav {
-        padding:
-          0
-          20px;
-      }
+            border:
+                1px solid #e4e9ef;
 
+            border-radius: 8px;
 
-      .nav-links {
-        gap: 18px;
-      }
+            color: #4d5a69;
 
+            font-size: 15px;
 
-      .main-layout {
-        grid-template-columns:
-          1fr;
-      }
+            font-weight: 600;
 
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                border-color 0.2s ease;
+        }
 
-      .ad-column {
-        position: static;
-      }
+        .tool-list a:hover {
+            transform:
+                translateY(-3px);
 
+            border-color: #a9c3df;
 
-      .ad-box {
-        min-height: 180px;
-      }
+            box-shadow:
+                0 8px 18px
+                rgba(
+                    47,
+                    87,
+                    130,
+                    0.10
+                );
+        }
 
 
-      .hero h1 {
-        font-size: 42px;
-      }
+        /* =========================
+           SMALL TOOL ICONS
+        ========================= */
 
-    }
+        .mini-icon {
+            width: 30px;
 
+            height: 30px;
 
-    /* =========================
-       MOBILE
-    ========================= */
+            border-radius: 7px;
 
-    @media (max-width: 650px) {
+            display: flex;
 
-      nav {
-        min-height: 70px;
+            align-items: center;
 
-        padding:
-          0
-          16px;
-      }
+            justify-content: center;
 
+            font-size: 14px;
+        }
 
-      .logo {
-        gap: 9px;
-      }
+        .red {
+            background: #fff0ed;
+            color: #df4938;
+        }
 
+        .blue {
+            background: #edf4ff;
+            color: #3974bb;
+        }
 
-      .logo-icon {
-        width: 42px;
+        .purple {
+            background: #f3efff;
+            color: #7958af;
+        }
 
-        height: 42px;
+        .orange {
+            background: #fff5e7;
+            color: #e69a2d;
+        }
 
-        border-radius: 11px;
+        .green {
+            background: #edf8f0;
+            color: #4d9b62;
+        }
 
-        font-size: 20px;
-      }
+        .pink {
+            background: #fff0f4;
+            color: #d65b80;
+        }
 
 
-      .logo-text {
-        font-size: 24px;
-      }
+        /* =========================
+           AD COLUMN
+        ========================= */
 
+        .ad-column {
+            min-width: 0;
+        }
 
-      .nav-links {
-        display: none;
-      }
+        .ad-box {
+            width: 100%;
 
+            min-height: 600px;
 
-      .page-wrapper {
-        padding:
-          35px
-          16px
-          50px;
-      }
+            background: #ffffff;
 
+            border:
+                1px solid #e1e7ee;
 
-      .hero {
-        padding:
-          50px
-          22px;
-      }
+            display: flex;
 
+            flex-direction: column;
 
-      .hero h1 {
-        font-size: 36px;
+            align-items: center;
 
-        letter-spacing:
-          -0.8px;
-      }
+            justify-content: flex-start;
 
+            padding: 20px;
 
-      .hero p {
-        font-size: 16px;
-      }
+            color: #9aa5b2;
+        }
 
+        .ad-label {
+            font-size: 10px;
 
-      .all-tools-section {
-        margin-top: 45px;
-      }
+            text-transform: uppercase;
 
+            letter-spacing: 1.5px;
 
-      .all-tools-title {
-        margin-bottom: 32px;
+            color: #aab4bf;
 
-        font-size: 29px;
-      }
+            margin-bottom: 20px;
+        }
 
+        .ad-placeholder {
+            width: 100%;
 
-      .tool-category {
-        margin-bottom: 34px;
-      }
+            height: 500px;
 
+            background: #fafbfd;
 
-      .category-heading h2 {
-        font-size: 21px;
-      }
+            border:
+                1px dashed #d5dde6;
 
+            display: flex;
 
-      .category-icon {
-        width: 45px;
+            align-items: center;
 
-        height: 45px;
+            justify-content: center;
 
-        font-size: 20px;
-      }
+            text-align: center;
 
+            font-size: 13px;
 
-      .tool-links {
-        gap: 9px;
-      }
+            color: #b0bac5;
+        }
 
 
-      .tool-links a {
-        min-height: 48px;
+        /* =========================
+           BOTTOM AD
+        ========================= */
 
-        padding:
-          0
-          17px;
+        .bottom-ad {
+            max-width: 1200px;
 
-        font-size: 15px;
-      }
+            margin:
+                0 auto
+                50px;
 
+            min-height: 100px;
 
-      .bottom-ad {
-        min-height: 120px;
+            background: #ffffff;
 
-        margin:
-          0
-          16px
-          40px;
-      }
+            border:
+                1px solid #e2e8ef;
 
-    }
+            display: flex;
 
+            align-items: center;
 
-    /* =========================
-       VERY SMALL SCREENS
-    ========================= */
+            justify-content: center;
 
-    @media (max-width: 430px) {
+            color: #a9b3bd;
 
-      .tool-links a {
-        width: 100%;
+            font-size: 13px;
+        }
 
-        justify-content:
-          flex-start;
-      }
 
-    }
+        /* =========================
+           FOOTER
+        ========================= */
 
-  </style>
+        footer {
+            background: #354457;
+
+            color: #d9e0e7;
+
+            text-align: center;
+
+            padding: 28px 20px;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           TABLET
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .page-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .ad-column {
+                display: none;
+            }
+
+            .hero {
+                padding:
+                    55px 45px;
+            }
+
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 750px) {
+
+            nav {
+                height: auto;
+
+                padding:
+                    15px 20px;
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 18px;
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+            }
+
+            .logo-text {
+                font-size: 25px;
+            }
+
+            .page-wrapper {
+                padding:
+                    20px 15px
+                    50px;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+
+                padding:
+                    45px 30px
+                    20px;
+
+                text-align: center;
+
+                min-height: auto;
+            }
+
+            .hero-text h1 {
+                font-size: 44px;
+
+                letter-spacing: -1.5px;
+            }
+
+            .hero-text p {
+                margin: 0 auto;
+            }
+
+            .hero-art {
+                height: 330px;
+
+                margin-top: 20px;
+            }
+
+            .tools-section {
+                padding:
+                    45px 25px;
+            }
+
+            .tools-title {
+                font-size: 28px;
+            }
+
+            .category-heading h2 {
+                font-size: 21px;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .hero-text h1 {
+                font-size: 37px;
+            }
+
+            .hero-text p {
+                font-size: 15px;
+            }
+
+            .tool-list {
+                gap: 9px;
+            }
+
+            .tool-list a {
+                width: 100%;
+
+                padding: 13px 15px;
+            }
+
+            .file {
+                transform: scale(0.75);
+            }
+
+            .upload-box,
+            .download-box {
+                transform: scale(0.8);
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -846,408 +1003,472 @@
 <body>
 
 
-  <!-- =========================
-       HEADER
-  ========================= -->
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
 
-  <nav>
+    <nav>
 
-    <a
-      href="index.html"
-      class="logo"
-      aria-label="ToolNest Home"
-    >
+        <a
+            href="index.html"
+            class="logo"
+        >
 
-      <div class="logo-icon">
-        T
-      </div>
+            <div class="logo-icon">
+                T
+            </div>
 
+            <div class="logo-text">
+                Tool <span>Nest</span>
+            </div>
 
-      <div class="logo-text">
-
-        <span class="logo-tool">
-          Tool
-        </span>
-
-        <span class="logo-nest">
-          Nest
-        </span>
-
-      </div>
-
-    </a>
+        </a>
 
 
-    <div class="nav-links">
+        <div class="nav-links">
 
-      <a href="#all-tools">
-        All Tools
-      </a>
+            <a href="#all-tools">
+                All Tools
+            </a>
 
-      <a href="#pdf-tools">
-        PDF Tools
-      </a>
+            <a href="#pdf-tools">
+                PDF Tools
+            </a>
 
-      <a href="#text-tools">
-        Text Tools
-      </a>
+            <a href="#text-tools">
+                Text Tools
+            </a>
 
-      <a href="#image-tools">
-        Image Tools
-      </a>
+            <a href="#image-tools">
+                Image Tools
+            </a>
 
-    </div>
+        </div>
 
-  </nav>
+    </nav>
 
 
 
-  <!-- =========================
-       PAGE
-  ========================= -->
+    <!-- =========================
+         PAGE
+    ========================= -->
 
-  <main class="page-wrapper">
-
-
-    <div class="main-layout">
+    <div class="page-wrapper">
 
 
-      <!-- =========================
-           MAIN CONTENT
-      ========================= -->
+        <!-- MAIN CONTENT -->
 
-      <div class="main-content">
+        <main class="main-content">
 
 
-        <!-- HERO -->
+            <!-- =========================
+                 HERO
+            ========================= -->
 
-        <section class="hero">
-
-          <h1>
-
-            Your All-in-One<br>
-
-            Online
-
-            <span class="hero-highlight">
-              Tools
-            </span>
-
-          </h1>
+            <section class="hero">
 
 
-          <p>
+                <!-- HERO TEXT -->
 
-            Fast, free and easy-to-use online tools
-            for your daily needs. Work with PDFs,
-            text, images and more in just a few clicks.
+                <div class="hero-text">
 
-          </p>
+                    <h1>
+                        Your All-in-One<br>
+                        Online <span>PDF Tools.</span>
+                    </h1>
 
-        </section>
+                    <p>
+                        We build PDF Tools to make your life easier.
+                        Access an easy-to-use PDF solution with all the
+                        features you need. Convert files to PDF, from PDF,
+                        merge, fill, sign and compress PDFs within a few clicks.
+                    </p>
+
+                </div>
+
+
+                <!-- HERO ART -->
+
+                <div class="hero-art">
+
+
+                    <div
+                        class="dot orange"
+                        style="
+                            top: 25px;
+                            left: 30px;
+                        "
+                    ></div>
+
+
+                    <div
+                        class="dot blue"
+                        style="
+                            top: 60px;
+                            right: 20px;
+                        "
+                    ></div>
+
+
+                    <div
+                        class="dot cyan"
+                        style="
+                            top: 15px;
+                            left: 180px;
+                        "
+                    ></div>
+
+
+                    <!-- Floating files -->
+
+                    <div class="file pdf-file">
+                        PDF
+                    </div>
+
+
+                    <div class="file doc-file">
+                        DOC
+                    </div>
+
+
+                    <div class="file xls-file">
+                        XLS
+                    </div>
+
+
+                    <!-- Bottom line -->
+
+                    <div class="hero-line">
+                    </div>
+
+
+                    <!-- Upload -->
+
+                    <div class="upload-box">
+                        ⇧
+                    </div>
+
+
+                    <!-- Download -->
+
+                    <div class="download-box">
+                        ⇩
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =========================
+                 ALL TOOLS
+            ========================= -->
+
+            <section
+                class="tools-section"
+                id="all-tools"
+            >
+
+
+                <h2 class="tools-title">
+                    All Tools
+                </h2>
+
+
+
+                <!-- =====================
+                     PDF TOOLS
+                ====================== -->
+
+                <div
+                    class="category"
+                    id="pdf-tools"
+                >
+
+                    <div class="category-heading">
+
+                        <div class="category-icon pdf-icon">
+                            ▤
+                        </div>
+
+                        <h2>
+                            PDF Tools
+                        </h2>
+
+                    </div>
+
+
+                    <div class="tool-list">
+
+                        <a href="merge-pdf.html">
+                            <span class="mini-icon red">↔</span>
+                            Merge PDF
+                        </a>
+
+
+                        <a href="split-pdf.html">
+                            <span class="mini-icon red">✂</span>
+                            Split PDF
+                        </a>
+
+
+                        <a href="pdf-to-word.html">
+                            <span class="mini-icon blue">W</span>
+                            PDF to Word
+                        </a>
+
+
+                        <a href="pdf-to-excel.html">
+                            <span class="mini-icon green">X</span>
+                            PDF to Excel
+                        </a>
+
+
+                        <a href="pdf-to-ppt.html">
+                            <span class="mini-icon orange">P</span>
+                            PDF to PPT
+                        </a>
+
+
+                        <a href="pdf-to-text.html">
+                            <span class="mini-icon blue">T</span>
+                            PDF to Text
+                        </a>
+
+
+                        <a href="word-to-pdf.html">
+                            <span class="mini-icon blue">W</span>
+                            Word to PDF
+                        </a>
+
+
+                        <a href="images-to-pdf.html">
+                            <span class="mini-icon pink">▣</span>
+                            Images to PDF
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =====================
+                     TEXT TOOLS
+                ====================== -->
+
+                <div
+                    class="category"
+                    id="text-tools"
+                >
+
+                    <div class="category-heading">
+
+                        <div class="category-icon text-icon">
+                            T
+                        </div>
+
+                        <h2>
+                            Text Tools
+                        </h2>
+
+                    </div>
+
+
+                    <div class="tool-list">
+
+                        <a href="word-counter.html">
+                            <span class="mini-icon blue">#</span>
+                            Word Counter
+                        </a>
+
+
+                        <a href="case-converter.html">
+                            <span class="mini-icon purple">Aa</span>
+                            Case Converter
+                        </a>
+
+
+                        <a href="text-sorter.html">
+                            <span class="mini-icon orange">⇅</span>
+                            Text Sorter
+                        </a>
+
+
+                        <a href="text-cleaner.html">
+                            <span class="mini-icon green">✦</span>
+                            Text Cleaner
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =====================
+                     IMAGE TOOLS
+                ====================== -->
+
+                <div
+                    class="category"
+                    id="image-tools"
+                >
+
+                    <div class="category-heading">
+
+                        <div class="category-icon image-icon">
+                            ▧
+                        </div>
+
+                        <h2>
+                            Image Tools
+                        </h2>
+
+                    </div>
+
+
+                    <div class="tool-list">
+
+                        <a href="image-compressor.html">
+                            <span class="mini-icon red">✦</span>
+                            Image Compressor
+                        </a>
+
+
+                        <a href="image-resizer.html">
+                            <span class="mini-icon blue">↔</span>
+                            Image Resizer
+                        </a>
+
+
+                        <a href="image-cropper.html">
+                            <span class="mini-icon orange">⌗</span>
+                            Image Cropper
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =====================
+                     CALCULATORS
+                ====================== -->
+
+                <div
+                    class="category"
+                    id="calculators"
+                >
+
+                    <div class="category-heading">
+
+                        <div class="category-icon calc-icon">
+                            ⌘
+                        </div>
+
+                        <h2>
+                            Calculators
+                        </h2>
+
+                    </div>
+
+
+                    <div class="tool-list">
+
+                        <a href="loan-emi-calculator.html">
+                            <span class="mini-icon blue">₹</span>
+                            Loan EMI Calculator
+                        </a>
+
+
+                        <a href="bmi-calculator.html">
+                            <span class="mini-icon green">BMI</span>
+                            BMI Calculator
+                        </a>
+
+
+                        <a href="gst-vat-calculator.html">
+                            <span class="mini-icon orange">%</span>
+                            GST / VAT Calculator
+                        </a>
+
+
+                        <a href="discount-calculator.html">
+                            <span class="mini-icon pink">%</span>
+                            Discount Calculator
+                        </a>
+
+
+                        <a href="profit-margin-calculator.html">
+                            <span class="mini-icon purple">↗</span>
+                            Profit Margin Calculator
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+        </main>
 
 
 
         <!-- =========================
-             ALL TOOLS
+             RIGHT AD COLUMN
         ========================= -->
 
-        <section
-          class="all-tools-section"
-          id="all-tools"
-        >
+        <aside class="ad-column">
 
+            <div class="ad-box">
 
-          <h2 class="all-tools-title">
+                <div class="ad-label">
+                    Advertisement
+                </div>
 
-            All Tools
-
-          </h2>
-
-
-
-          <!-- PDF TOOLS -->
-
-          <div
-            class="tool-category"
-            id="pdf-tools"
-          >
-
-            <div class="category-heading">
-
-              <div
-                class="category-icon pdf-icon"
-              >
-                📄
-              </div>
-
-
-              <h2>
-                PDF Tools
-              </h2>
+                <div class="ad-placeholder">
+                    Ad Space
+                </div>
 
             </div>
 
-
-            <div class="tool-links">
-
-              <a href="merge-pdf.html">
-                Merge PDF
-              </a>
-
-              <a href="split-pdf.html">
-                Split PDF
-              </a>
-
-              <a href="pdf-to-word.html">
-                PDF to Word
-              </a>
-
-              <a href="pdf-to-excel.html">
-                PDF to Excel
-              </a>
-
-              <a href="pdf-to-ppt.html">
-                PDF to PPT
-              </a>
-
-              <a href="pdf-to-text.html">
-                PDF to Text
-              </a>
-
-              <a href="word-to-pdf.html">
-                Word to PDF
-              </a>
-
-              <a href="images-to-pdf.html">
-                Images to PDF
-              </a>
-
-            </div>
-
-          </div>
-
-
-
-          <!-- TEXT TOOLS -->
-
-          <div
-            class="tool-category"
-            id="text-tools"
-          >
-
-            <div class="category-heading">
-
-              <div
-                class="category-icon text-icon"
-              >
-                T
-              </div>
-
-
-              <h2>
-                Text Tools
-              </h2>
-
-            </div>
-
-
-            <div class="tool-links">
-
-              <a href="word-counter.html">
-                Word Counter
-              </a>
-
-              <a href="case-converter.html">
-                Case Converter
-              </a>
-
-              <a href="text-sorter.html">
-                Text Sorter
-              </a>
-
-              <a href="text-cleaner.html">
-                Text Cleaner
-              </a>
-
-            </div>
-
-          </div>
-
-
-
-          <!-- IMAGE TOOLS -->
-
-          <div
-            class="tool-category"
-            id="image-tools"
-          >
-
-            <div class="category-heading">
-
-              <div
-                class="category-icon image-icon"
-              >
-                🖼
-              </div>
-
-
-              <h2>
-                Image Tools
-              </h2>
-
-            </div>
-
-
-            <div class="tool-links">
-
-              <a href="image-compressor.html">
-                Image Compressor
-              </a>
-
-              <a href="image-resizer.html">
-                Image Resizer
-              </a>
-
-              <a href="image-cropper.html">
-                Image Cropper
-              </a>
-
-            </div>
-
-          </div>
-
-
-
-          <!-- CALCULATORS -->
-
-          <div class="tool-category">
-
-            <div class="category-heading">
-
-              <div
-                class="category-icon calculator-icon"
-              >
-                🧮
-              </div>
-
-
-              <h2>
-                Calculators
-              </h2>
-
-            </div>
-
-
-            <div class="tool-links">
-
-              <a href="loan-emi-calculator.html">
-                Loan EMI Calculator
-              </a>
-
-              <a href="bmi-calculator.html">
-                BMI Calculator
-              </a>
-
-              <a href="gst-calculator.html">
-                GST / VAT Calculator
-              </a>
-
-              <a href="discount-calculator.html">
-                Discount Calculator
-              </a>
-
-              <a href="profit-margin-calculator.html">
-                Profit Margin Calculator
-              </a>
-
-            </div>
-
-          </div>
-
-
-        </section>
-
-
-      </div>
-
-
-
-      <!-- =========================
-           RIGHT AD COLUMN
-      ========================= -->
-
-      <aside class="ad-column">
-
-        <div class="ad-box">
-
-          <div>
-
-            <div class="ad-label">
-
-              Advertisement
-
-            </div>
-
-
-            <div class="ad-size">
-
-              160 × 600
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </aside>
+        </aside>
 
 
     </div>
 
 
-  </main>
 
+    <!-- =========================
+         BOTTOM AD
+    ========================= -->
 
-
-  <!-- =========================
-       BOTTOM ADVERTISEMENT
-  ========================= -->
-
-  <div class="bottom-ad">
-
-    <div>
-
-      <div class="ad-label">
+    <div class="bottom-ad">
 
         Advertisement
 
-      </div>
-
-
-      <div class="ad-size">
-
-        970 × 90
-
-      </div>
-
     </div>
 
-  </div>
 
 
+    <!-- =========================
+         FOOTER
+    ========================= -->
 
-  <!-- =========================
-       FOOTER
-  ========================= -->
+    <footer>
 
-  <footer>
+        © 2026 ToolNest
+        ·
+        Simple, Fast &amp; Free
 
-    © 2026 ToolNest
-    &nbsp;·&nbsp;
-    Simple, Fast &amp; Free
-
-  </footer>
+    </footer>
 
 
 </body>
