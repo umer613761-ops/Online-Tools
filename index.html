@@ -12,26 +12,32 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
-    padding: 14px;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: #f3f7fb;
-    color: #26364a;
+    padding: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #eef3f8;
+    color: #334155;
 }
 
 
-/* ================= HEADER ================= */
+/* =========================
+   HEADER
+========================= */
 
 header {
     background: #ffffff;
-    border: 1px solid #d8e1ea;
-    border-radius: 18px;
-    box-shadow: 0 4px 14px rgba(30, 50, 70, 0.06);
+    border: 1px solid #ccd8e3;
+    border-radius: 16px;
 }
 
 .navbar {
-    height: 70px;
+    height: 58px;
+
     padding: 0 28px;
 
     display: flex;
@@ -47,42 +53,46 @@ header {
 .logo {
     display: flex;
     align-items: center;
-    gap: 11px;
+    gap: 9px;
 
     text-decoration: none;
 }
 
 .logo-icon {
-    width: 46px;
-    height: 46px;
+    width: 38px;
+    height: 38px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 12px;
+    background: linear-gradient(
+        135deg,
+        #477fbd,
+        #245a9b
+    );
 
-    background: linear-gradient(135deg, #3679cc, #1e5ba5);
+    border-radius: 11px;
 
     color: white;
 
-    font-size: 24px;
+    font-size: 21px;
     font-weight: 700;
 }
 
 .logo-text {
-    font-size: 29px;
-    letter-spacing: -1.5px;
+    font-size: 25px;
+    letter-spacing: -1px;
 }
 
 .logo-tool {
-    font-weight: 400;
-    color: #26364a;
+    font-weight: 300;
+    color: #344154;
 }
 
 .logo-nest {
     font-weight: 700;
-    color: #2769b7;
+    color: #315f98;
 }
 
 
@@ -95,157 +105,177 @@ header {
 
 .search-container input {
     width: 100%;
-    height: 44px;
+    height: 38px;
 
-    padding: 0 50px 0 17px;
+    padding: 0 42px 0 14px;
 
-    border: 1px solid #c6d2de;
-    border-radius: 12px;
+    border: 1px solid #c7d2dd;
+    border-radius: 10px;
+
+    background: #fbfcfd;
 
     font-size: 15px;
+    color: #334155;
+
     outline: none;
 }
 
 .search-container input:focus {
-    border-color: #3679cc;
-    box-shadow: 0 0 0 4px rgba(54, 121, 204, 0.10);
+    border-color: #4c7fb7;
 }
 
 .search-icon {
     position: absolute;
 
-    right: 16px;
+    right: 14px;
     top: 50%;
 
     transform: translateY(-50%);
 
-    font-size: 22px;
-    color: #52667a;
+    font-size: 21px;
+
+    color: #5b6d7e;
 }
 
 
-/* ================= MAIN LAYOUT ================= */
+/* =========================
+   MAIN LAYOUT
+========================= */
 
 .page-layout {
-    margin-top: 12px;
+
+    margin-top: 10px;
 
     display: grid;
 
     grid-template-columns:
         minmax(0, 1fr)
-        280px;
+        220px;
 
-    gap: 16px;
+    gap: 12px;
 
-    align-items: stretch;
 }
 
 
-/* ================= HERO ================= */
+/* =========================
+   MAIN HERO BOX
+========================= */
 
 .main-content {
-    background: white;
 
-    border: 1px solid #d8e1ea;
-    border-radius: 20px;
+    background: #ffffff;
+
+    border: 1px solid #ccd8e3;
+
+    border-radius: 18px;
 
     overflow: hidden;
+
 }
 
 
-/*
-   IMPORTANT:
-   Smaller top padding moves everything
-   much closer to the header.
-*/
+/* MUCH SMALLER HERO */
 
 .hero {
-    min-height: 420px;
 
-    padding: 30px 40px 35px;
+    height: 300px;
+
+    padding: 20px 38px;
 
     display: grid;
 
     grid-template-columns:
-        40%
-        60%;
+        42%
+        58%;
 
     align-items: center;
+
 }
 
 
-/* HERO TEXT */
+/* =========================
+   HERO TEXT
+========================= */
 
 .hero-content {
-    padding-left: 10px;
-
-    align-self: center;
+    padding-left: 8px;
 }
 
 .hero h1 {
-    margin: 0 0 18px;
 
-    font-size: clamp(38px, 4vw, 58px);
+    margin: 0 0 12px;
+
+    font-size: 39px;
 
     line-height: 1.1;
 
-    letter-spacing: -2px;
+    letter-spacing: -1.5px;
 
-    color: #27364a;
+    font-weight: 700;
+
+    color: #344154;
 }
 
 .hero h1 span {
-    color: #286ab8;
+    color: #3569a4;
 }
 
 .hero p {
-    max-width: 470px;
 
     margin: 0;
 
-    font-size: 17px;
+    max-width: 420px;
 
-    line-height: 1.75;
+    font-size: 15px;
 
-    color: #627286;
+    line-height: 1.6;
+
+    color: #667789;
 }
 
 
-/* ================= HERO VISUAL ================= */
+/* =========================
+   HERO VISUAL
+========================= */
 
 .hero-visual {
-    height: 350px;
+
+    height: 260px;
 
     display: flex;
 
     align-items: center;
     justify-content: center;
+
 }
-
-
-/* TOOL GROUP */
 
 .tool-group {
-    width: 100%;
-    height: 310px;
 
     position: relative;
+
+    width: 100%;
+
+    height: 250px;
+
 }
 
 
-/* TOP CARDS */
+/* =========================
+   TOOL CARDS
+========================= */
 
 .tool-card {
+
     position: absolute;
 
-    width: 128px;
-    height: 138px;
+    width: 92px;
+    height: 102px;
 
-    background: white;
+    background: #ffffff;
 
-    border: 2px solid #536477;
+    border: 2px solid #586a7d;
 
-    border-radius: 8px;
+    border-radius: 7px;
 
     display: flex;
 
@@ -254,83 +284,94 @@ header {
     align-items: center;
     justify-content: center;
 
-    gap: 10px;
+    gap: 6px;
 
-    font-size: 15px;
+    font-size: 12px;
+
     font-weight: 700;
 
-    box-shadow: 0 8px 18px rgba(30, 50, 70, 0.10);
+    box-shadow:
+        0 7px 15px
+        rgba(30, 50, 70, 0.08);
 
     z-index: 2;
+
+}
+
+.card-icon {
+    font-size: 27px;
 }
 
 
-/* PDF */
+/* PDF CARD */
 
 .pdf-card {
-    left: 4%;
-    top: 55px;
+
+    left: 10%;
+    top: 62px;
 
     transform: rotate(-14deg);
 
-    color: #d9392f;
+    color: #d94a3b;
 }
 
 
-/* TEXT */
+/* TEXT CARD */
 
 .text-card {
-    left: 26%;
-    top: 20px;
+
+    left: 30%;
+    top: 25px;
 
     transform: rotate(3deg);
 
-    color: #2164b3;
+    color: #2f67a8;
 }
 
 
-/* CALCULATOR */
+/* CALCULATOR CARD */
 
 .calculator-card {
-    left: 49%;
-    top: 28px;
+
+    left: 50%;
+    top: 32px;
 
     transform: rotate(-2deg);
 
-    color: #5a3bb3;
+    color: #6244aa;
 }
 
 
-/* IMAGE */
+/* IMAGE CARD */
 
 .image-card {
-    right: 4%;
-    top: 55px;
+
+    right: 8%;
+    top: 65px;
 
     transform: rotate(14deg);
 
-    color: #248445;
+    color: #277b42;
 }
 
 
-.card-icon {
-    font-size: 38px;
-}
-
-
-/* ================= BOTTOM FOLDERS ================= */
+/* =========================
+   BOTTOM ICON BLOCKS
+========================= */
 
 .folder {
+
     position: absolute;
 
-    bottom: 8px;
+    bottom: 10px;
 
-    width: 118px;
-    height: 105px;
+    width: 82px;
+    height: 72px;
 
-    border-radius: 12px;
+    border-radius: 11px;
 
-    border: 2px solid rgba(30, 50, 70, 0.65);
+    border: 2px solid
+        rgba(35, 52, 70, 0.7);
 
     display: flex;
 
@@ -339,86 +380,110 @@ header {
 
     color: white;
 
-    font-size: 38px;
+    font-size: 27px;
 
     font-weight: 600;
 
-    z-index: 3;
+    z-index: 4;
 
-    box-shadow: 0 8px 16px rgba(30, 50, 70, 0.18);
+    box-shadow:
+        0 7px 14px
+        rgba(30, 50, 70, 0.16);
+
 }
 
 
-/* Slight overlap for slick appearance */
+/* PDF */
 
 .folder-pdf {
-    left: 9%;
 
-    background: linear-gradient(
-        135deg,
-        #ff4139,
-        #e82923
-    );
+    left: 14%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff443b,
+            #e92c26
+        );
 }
+
+
+/* TEXT */
 
 .folder-text {
-    left: 31%;
 
-    background: linear-gradient(
-        135deg,
-        #397ed0,
-        #1f5da8
-    );
+    left: 33%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4c83c4,
+            #285d9b
+        );
 }
+
+
+/* CALCULATOR */
 
 .folder-calculator {
-    left: 53%;
 
-    background: linear-gradient(
-        135deg,
-        #6949c4,
-        #4827a0
-    );
+    left: 52%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7658c6,
+            #50329b
+        );
 }
+
+
+/* IMAGE */
 
 .folder-image {
-    right: 5%;
 
-    background: linear-gradient(
-        135deg,
-        #42a34d,
-        #157e32
-    );
+    right: 10%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #45a051,
+            #287e37
+        );
 }
 
 
-/* BASE LINE */
+/* BOTTOM LINE */
 
 .visual-line {
+
     position: absolute;
 
-    left: 4%;
-    right: 4%;
+    left: 8%;
+    right: 8%;
 
     bottom: 0;
 
     height: 2px;
 
-    background: #415367;
+    background: #506174;
 
-    border-radius: 10px;
 }
 
 
-/* ================= AD ================= */
+/* =========================
+   AD SPACE
+========================= */
 
 .ad-column {
-    min-height: 420px;
 
-    background: white;
+    min-height: 300px;
 
-    border: 1px solid #d8e1ea;
-    border-radius: 20px;
+    background: #ffffff;
+
+    border: 1px solid #ccd8e3;
+
+    border-radius: 18px;
 
     display: flex;
 
@@ -426,87 +491,153 @@ header {
     justify-content: center;
 
     text-align: center;
+
 }
 
 .ad-label {
-    color: #66768a;
 
-    font-size: 11px;
+    color: #667789;
 
-    font-weight: 600;
+    font-size: 10px;
 
-    letter-spacing: 1px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
 }
 
 .ad-size {
+
     display: block;
 
-    margin-top: 12px;
+    margin-top: 10px;
 
-    font-size: 17px;
+    font-size: 15px;
 
-    letter-spacing: 0;
+    font-weight: 500;
 
-    color: #526377;
+    letter-spacing: 1px;
+
+    color: #516275;
+
 }
 
 
-/* ================= FOOTER ================= */
+/* =========================
+   FOOTER
+========================= */
 
 footer {
-    margin-top: 14px;
 
-    background: white;
+    margin-top: 10px;
 
-    border: 1px solid #d8e1ea;
-    border-radius: 18px;
+    min-height: 55px;
 
-    min-height: 74px;
+    padding: 12px 28px;
 
-    padding: 18px 32px;
+    background: #ffffff;
+
+    border: 1px solid #ccd8e3;
+
+    border-radius: 16px;
 
     display: flex;
 
     align-items: center;
     justify-content: space-between;
 
-    color: #596b7d;
+    color: #687889;
+
+    font-size: 13px;
+
 }
 
 .footer-brand strong {
-    color: #286ab8;
+    color: #3569a4;
 }
 
 .footer-links {
+
     display: flex;
-    gap: 28px;
+
+    gap: 20px;
+
 }
 
 .footer-links a {
+
     text-decoration: none;
-    color: #596b7d;
+
+    color: #687889;
+
 }
 
 .footer-links a:hover {
-    color: #286ab8;
+    color: #3569a4;
 }
 
 
-/* ================= MOBILE ================= */
+/* =========================
+   TABLET
+========================= */
 
 @media (max-width: 1050px) {
 
     .page-layout {
-        grid-template-columns: 1fr 240px;
+
+        grid-template-columns:
+            minmax(0, 1fr)
+            190px;
+
     }
 
     .hero {
+
+        grid-template-columns:
+            45%
+            55%;
+
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .folder-calculator {
+        display: none;
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 800px) {
+
+    .page-layout {
         grid-template-columns: 1fr;
+    }
+
+    .ad-column {
+        min-height: 120px;
+    }
+
+    .hero {
+
+        height: auto;
+
+        min-height: 450px;
+
+        grid-template-columns: 1fr;
+
+        padding: 30px 20px;
+
     }
 
     .hero-content {
         text-align: center;
-        padding: 0;
     }
 
     .hero p {
@@ -516,78 +647,61 @@ footer {
 }
 
 
-@media (max-width: 800px) {
-
-    body {
-        padding: 8px;
-    }
-
-    .navbar {
-        padding: 0 18px;
-    }
-
-    .page-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .ad-column {
-        min-height: 150px;
-    }
-
-}
-
-
 @media (max-width: 600px) {
 
+    body {
+        padding: 6px;
+    }
+
     .navbar {
+
         height: auto;
 
-        padding: 14px 18px;
+        padding: 12px 16px;
 
         flex-direction: column;
+
+        gap: 12px;
+
     }
 
     .search-container {
         width: 100%;
     }
 
-    .hero {
-        padding: 30px 15px;
-    }
-
     .hero h1 {
-        font-size: 40px;
+        font-size: 35px;
     }
 
     .hero-visual {
+
         transform: scale(0.82);
 
-        margin: -25px 0;
+        margin-top: -10px;
+
     }
 
     footer {
+
         flex-direction: column;
+
+        gap: 10px;
 
         text-align: center;
 
-        gap: 15px;
-    }
-
-    .footer-links {
-        flex-wrap: wrap;
-        justify-content: center;
     }
 
 }
 
 </style>
+
 </head>
 
 
 <body>
 
 
-<!-- HEADER -->
+<!-- ================= HEADER ================= -->
 
 <header>
 
@@ -633,7 +747,7 @@ footer {
 
 
 
-<!-- MAIN -->
+<!-- ================= MAIN ================= -->
 
 <main class="page-layout">
 
@@ -645,7 +759,7 @@ footer {
         <div class="hero">
 
 
-            <!-- TEXT -->
+            <!-- HERO TEXT -->
 
             <div class="hero-content">
 
@@ -670,14 +784,14 @@ footer {
 
 
 
-            <!-- VISUAL -->
+            <!-- TOOL VISUAL -->
 
             <div class="hero-visual">
 
                 <div class="tool-group">
 
 
-                    <!-- TOP TOOL CARDS -->
+                    <!-- PDF -->
 
                     <div class="tool-card pdf-card">
 
@@ -690,6 +804,8 @@ footer {
                     </div>
 
 
+                    <!-- TEXT -->
+
                     <div class="tool-card text-card">
 
                         <div class="card-icon">
@@ -701,6 +817,8 @@ footer {
                     </div>
 
 
+                    <!-- CALCULATOR -->
+
                     <div class="tool-card calculator-card">
 
                         <div class="card-icon">
@@ -711,6 +829,8 @@ footer {
 
                     </div>
 
+
+                    <!-- IMAGE -->
 
                     <div class="tool-card image-card">
 
@@ -724,7 +844,7 @@ footer {
 
 
 
-                    <!-- BOTTOM FOLDERS -->
+                    <!-- BOTTOM BLOCKS -->
 
                     <div class="folder folder-pdf">
                         PDF
@@ -760,7 +880,7 @@ footer {
 
 
 
-    <!-- AD SPACE -->
+    <!-- ================= AD ================= -->
 
     <aside class="ad-column">
 
@@ -769,7 +889,7 @@ footer {
             ADVERTISEMENT
 
             <span class="ad-size">
-                250 × 600
+                200 × 300
             </span>
 
         </div>
@@ -781,14 +901,15 @@ footer {
 
 
 
-<!-- FOOTER -->
+<!-- ================= FOOTER ================= -->
 
 <footer>
 
     <div class="footer-brand">
 
-        © 2026 <strong>ToolNest</strong>
-        • Simple, Fast &amp; Free
+        © 2026
+        <strong>ToolNest</strong>
+        · Simple, Fast & Free
 
     </div>
 
@@ -800,11 +921,11 @@ footer {
         </a>
 
         <a href="#">
-            Privacy Policy
+            Privacy
         </a>
 
         <a href="#">
-            Terms of Use
+            Terms
         </a>
 
         <a href="#">
