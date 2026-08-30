@@ -10,12 +10,18 @@
     content="width=device-width, initial-scale=1.0"
   >
 
+  <meta
+    name="theme-color"
+    content="#111827"
+  >
+
   <title>Word Counter - Free Online Text Tool | ToolNest</title>
 
   <meta
     name="description"
     content="Free online word counter. Count words, characters, sentences, paragraphs, reading time, speaking time and more."
   >
+
 
   <style>
 
@@ -27,17 +33,25 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
+
       min-height: 100vh;
 
       display: flex;
       flex-direction: column;
 
-      font-family: Arial, Helvetica, sans-serif;
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-      background: #d9dee4;
-      color: #1f2937;
+      background: #111827;
+      color: #f3f4f6;
     }
 
 
@@ -46,6 +60,8 @@
     ========================= */
 
     nav {
+      width: 100%;
+
       background: #1f2937;
 
       border-bottom:
@@ -54,13 +70,13 @@
       padding: 16px 32px;
 
       display: flex;
-      justify-content: flex-start;
       align-items: center;
     }
 
 
     /* =========================
        LOGO
+       MATCHES HOMEPAGE
     ========================= */
 
     .logo {
@@ -72,14 +88,9 @@
       text-decoration: none;
     }
 
-
     .logo-icon {
       width: 43px;
       height: 43px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
 
       border-radius: 12px;
 
@@ -90,16 +101,24 @@
           #3f7659
         );
 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
       color: #ffffff;
+
+      font-family:
+        "Trebuchet MS",
+        Arial,
+        sans-serif;
 
       font-size: 22px;
       font-weight: bold;
 
       box-shadow:
         0 5px 14px
-        rgba(63, 118, 89, 0.25);
+        rgba(63, 118, 89, 0.35);
     }
-
 
     .logo-text {
       font-family:
@@ -108,17 +127,17 @@
         sans-serif;
 
       font-size: 29px;
-      font-weight: 800;
+
+      font-weight: 700;
 
       letter-spacing: -1px;
+
       line-height: 1;
     }
-
 
     .logo-tool {
       color: #ffffff;
     }
-
 
     .logo-nest {
       color: #a9cdb7;
@@ -131,79 +150,75 @@
 
     .container {
       width: 100%;
-      max-width: 1000px;
+      max-width: 1250px;
 
       margin: 0 auto;
 
-      padding: 55px 20px 80px;
+      padding: 55px 24px 80px;
 
       flex: 1;
     }
 
 
     /* =========================
+       CONTENT LAYOUT
+    ========================= */
+
+    .content-layout {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        180px;
+
+      gap: 28px;
+
+      align-items: start;
+    }
+
+
+    /* =========================
+       TOOL AREA
+    ========================= */
+
+    .tool-area {
+      min-width: 0;
+    }
+
+
+    /* =========================
        HEADING
+       CENTERED ABOVE TOOL ONLY
     ========================= */
 
     .heading {
       text-align: center;
 
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
-
 
     .heading h1 {
       margin: 0 0 12px;
 
-      font-size: 42px;
+      font-size: 36px;
+
       font-weight: 750;
 
-      letter-spacing: -1px;
+      letter-spacing: -0.8px;
 
-      color: #202938;
+      color: #f9fafb;
     }
-
 
     .subtitle {
       max-width: 650px;
 
       margin: 0 auto;
 
-      color: #667085;
+      color: #aeb7c5;
 
       font-size: 16px;
+
       line-height: 1.6;
-    }
-
-
-    /* =========================
-       AD SPACE
-    ========================= */
-
-    .ad-space {
-      width: 100%;
-      min-height: 100px;
-
-      margin:
-        0
-        0
-        30px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 12px;
-
-      background: rgba(255, 255, 255, 0.25);
-
-      border:
-        1px dashed
-        #aeb7c5;
-
-      color: #7a8491;
-
-      font-size: 12px;
     }
 
 
@@ -212,10 +227,10 @@
     ========================= */
 
     .tool-box {
-      background: #e9edf1;
+      background: #1e2933;
 
       border:
-        1px solid #bec7d0;
+        1px solid #374151;
 
       border-radius: 16px;
 
@@ -223,7 +238,7 @@
 
       box-shadow:
         0 8px 24px
-        rgba(31, 41, 55, 0.07);
+        rgba(0, 0, 0, 0.30);
     }
 
 
@@ -233,6 +248,7 @@
 
     textarea {
       width: 100%;
+
       height: 280px;
 
       padding: 18px;
@@ -243,14 +259,15 @@
         sans-serif;
 
       font-size: 16px;
+
       line-height: 1.6;
 
-      color: #2d3a32;
+      color: #f3f4f6;
 
-      background: #eef1f4;
+      background: #18212b;
 
       border:
-        1px solid #b9c3cc;
+        1px solid #3b4652;
 
       border-radius: 12px;
 
@@ -262,22 +279,20 @@
         background 0.2s ease;
     }
 
-
     textarea::placeholder {
-      color: #8a949f;
+      color: #8f9aa8;
     }
-
 
     textarea:focus {
       outline: none;
 
-      background: #f4f6f7;
+      background: #1c2732;
 
-      border-color: #78a58a;
+      border-color: #79b68d;
 
       box-shadow:
         0 0 0 3px
-        rgba(63, 118, 89, 0.12);
+        rgba(121, 182, 141, 0.15);
     }
 
 
@@ -296,34 +311,34 @@
       margin-top: 25px;
     }
 
-
     .result-card {
       padding: 20px 12px;
 
       text-align: center;
 
-      background: #dce6df;
+      background: #202b36;
 
       border:
-        1px solid #c2d0c7;
+        1px solid #394755;
 
       border-radius: 12px;
 
       transition:
         transform 0.2s ease,
-        box-shadow 0.2s ease;
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
     }
-
 
     .result-card:hover {
       transform:
         translateY(-2px);
 
-      box-shadow:
-        0 5px 14px
-        rgba(31, 41, 55, 0.08);
-    }
+      border-color: #52705d;
 
+      box-shadow:
+        0 6px 16px
+        rgba(0, 0, 0, 0.25);
+    }
 
     .result-card strong {
       display: block;
@@ -331,14 +346,14 @@
       margin-bottom: 7px;
 
       font-size: 26px;
+
       font-weight: 750;
 
-      color: #3f7659;
+      color: #79b68d;
     }
 
-
     .result-card span {
-      color: #59665e;
+      color: #aeb7c5;
 
       font-size: 13px;
     }
@@ -359,7 +374,6 @@
       margin-top: 25px;
     }
 
-
     button {
       padding: 14px;
 
@@ -368,6 +382,7 @@
       border-radius: 10px;
 
       font-size: 15px;
+
       font-weight: 600;
 
       cursor: pointer;
@@ -378,46 +393,42 @@
         box-shadow 0.2s ease;
     }
 
-
     button:hover {
       transform:
         translateY(-2px);
     }
 
-
     .copy-button {
       background: #3f7659;
+
       color: #ffffff;
 
       box-shadow:
         0 5px 12px
-        rgba(63, 118, 89, 0.20);
+        rgba(63, 118, 89, 0.25);
     }
-
 
     .copy-button:hover {
       background: #35654c;
 
       box-shadow:
         0 8px 18px
-        rgba(63, 118, 89, 0.28);
+        rgba(63, 118, 89, 0.35);
     }
-
 
     .clear-button {
-      background: #dce6df;
+      background: #27323d;
 
-      color: #2d3a32;
+      color: #e5e7eb;
 
       border:
-        1px solid #c2d0c7;
+        1px solid #46515d;
     }
 
-
     .clear-button:hover {
-      background: #d2ddd6;
+      background: #313e4b;
 
-      border-color: #9bb8a5;
+      border-color: #657382;
     }
 
 
@@ -430,31 +441,80 @@
 
       padding: 22px;
 
-      background: #dce6df;
+      background: #202b36;
 
       border:
-        1px solid #c2d0c7;
+        1px solid #394755;
 
       border-radius: 12px;
 
-      color: #59665e;
+      color: #aeb7c5;
 
       line-height: 1.6;
     }
 
-
     .info strong {
       display: block;
 
-      color: #2d3a32;
+      color: #f3f4f6;
 
       font-size: 16px;
     }
 
-
     .info p {
       margin:
         10px 0 0;
+    }
+
+
+    /* =========================
+       AD SIDEBAR
+    ========================= */
+
+    .ad-sidebar {
+      width: 100%;
+
+      min-height: 420px;
+
+      background: #18212b;
+
+      border:
+        1px solid #374151;
+
+      border-radius: 14px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      padding: 18px;
+
+      position: sticky;
+
+      top: 20px;
+    }
+
+    .ad-label {
+      color: #66717f;
+
+      font-size: 11px;
+
+      letter-spacing: 1px;
+
+      text-transform: uppercase;
+
+      margin-bottom: 12px;
+    }
+
+    .ad-placeholder {
+      color: #7d8896;
+
+      font-size: 13px;
+
+      line-height: 1.6;
     }
 
 
@@ -482,11 +542,39 @@
        TABLET
     ========================= */
 
-    @media (max-width: 850px) {
+    @media (max-width: 1050px) {
+
+      .content-layout {
+        grid-template-columns:
+          minmax(0, 1fr)
+          150px;
+
+        gap: 20px;
+      }
 
       .results {
         grid-template-columns:
           repeat(2, 1fr);
+      }
+
+    }
+
+
+    /* =========================
+       SMALL TABLET
+    ========================= */
+
+    @media (max-width: 850px) {
+
+      .content-layout {
+        grid-template-columns:
+          1fr;
+      }
+
+      .ad-sidebar {
+        position: static;
+
+        min-height: 140px;
       }
 
     }
@@ -502,11 +590,9 @@
         padding: 14px 16px;
       }
 
-
       .logo {
         gap: 8px;
       }
-
 
       .logo-icon {
         width: 37px;
@@ -517,11 +603,9 @@
         font-size: 19px;
       }
 
-
       .logo-text {
         font-size: 24px;
       }
-
 
       .container {
         padding:
@@ -530,11 +614,9 @@
           60px;
       }
 
-
       .heading {
-        margin-bottom: 25px;
+        margin-bottom: 22px;
       }
-
 
       .heading h1 {
         font-size: 32px;
@@ -542,17 +624,9 @@
         letter-spacing: -0.5px;
       }
 
-
       .subtitle {
         font-size: 15px;
       }
-
-
-      .ad-space {
-        min-height: 80px;
-        margin-bottom: 25px;
-      }
-
 
       .tool-box {
         padding: 18px;
@@ -560,13 +634,11 @@
         border-radius: 14px;
       }
 
-
       textarea {
         height: 220px;
 
         padding: 15px;
       }
-
 
       .results {
         grid-template-columns:
@@ -575,29 +647,29 @@
         gap: 10px;
       }
 
-
       .result-card {
         padding: 16px 8px;
       }
-
 
       .result-card strong {
         font-size: 22px;
       }
 
-
       .action-buttons {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+          1fr;
       }
-
 
       button {
         width: 100%;
       }
 
-
       .info {
         padding: 18px;
+      }
+
+      .ad-sidebar {
+        min-height: 120px;
       }
 
     }
@@ -610,13 +682,16 @@
 <body>
 
 
-  <!-- HEADER -->
+  <!-- =========================
+       HEADER
+  ========================= -->
 
   <nav>
 
     <a
       href="index.html"
       class="logo"
+      aria-label="ToolNest Home"
     >
 
       <div class="logo-icon">
@@ -641,157 +716,215 @@
 
 
 
-  <!-- MAIN -->
+  <!-- =========================
+       MAIN
+  ========================= -->
 
   <main class="container">
 
 
-    <!-- HEADING -->
+    <!-- =========================
+         TOOL + AD LAYOUT
+    ========================= -->
 
-    <div class="heading">
-
-      <h1>
-        Word Counter
-      </h1>
-
-      <p class="subtitle">
-
-        Count and analyze your words, characters,
-        sentences, paragraphs and more instantly.
-
-      </p>
-
-    </div>
+    <div class="content-layout">
 
 
+      <!-- =========================
+           TOOL AREA
+      ========================= -->
 
-    <!-- AD SPACE -->
-
-    <div class="ad-space">
-
-      Advertisement
-
-    </div>
+      <div class="tool-area">
 
 
+        <!-- HEADING -->
 
-    <!-- TOOL BOX -->
+        <div class="heading">
 
-    <div class="tool-box">
+          <h1>
+            Word Counter
+          </h1>
 
+          <p class="subtitle">
 
-      <textarea
-        id="text"
-        placeholder="Type or paste your text here..."
-      ></textarea>
+            Count and analyze your words, characters,
+            sentences, paragraphs and more instantly.
 
-
-
-      <!-- RESULTS -->
-
-      <div class="results">
-
-
-        <div class="result-card">
-
-          <strong id="words">
-            0
-          </strong>
-
-          <span>
-            Words
-          </span>
+          </p>
 
         </div>
 
 
-        <div class="result-card">
+        <!-- TOOL BOX -->
 
-          <strong id="characters">
-            0
-          </strong>
-
-          <span>
-            Characters
-          </span>
-
-        </div>
+        <div class="tool-box">
 
 
-        <div class="result-card">
+          <!-- TEXT INPUT -->
 
-          <strong id="noSpaces">
-            0
-          </strong>
-
-          <span>
-            Without Spaces
-          </span>
-
-        </div>
+          <textarea
+            id="text"
+            placeholder="Type or paste your text here..."
+          ></textarea>
 
 
-        <div class="result-card">
 
-          <strong id="sentences">
-            0
-          </strong>
+          <!-- RESULTS -->
 
-          <span>
-            Sentences
-          </span>
-
-        </div>
+          <div class="results">
 
 
-        <div class="result-card">
+            <div class="result-card">
 
-          <strong id="paragraphs">
-            0
-          </strong>
+              <strong id="words">
+                0
+              </strong>
 
-          <span>
-            Paragraphs
-          </span>
+              <span>
+                Words
+              </span>
 
-        </div>
-
-
-        <div class="result-card">
-
-          <strong id="readingTime">
-            0 min
-          </strong>
-
-          <span>
-            Reading Time
-          </span>
-
-        </div>
+            </div>
 
 
-        <div class="result-card">
+            <div class="result-card">
 
-          <strong id="speakingTime">
-            0 min
-          </strong>
+              <strong id="characters">
+                0
+              </strong>
 
-          <span>
-            Speaking Time
-          </span>
+              <span>
+                Characters
+              </span>
 
-        </div>
+            </div>
 
 
-        <div class="result-card">
+            <div class="result-card">
 
-          <strong id="averageWordLength">
-            0
-          </strong>
+              <strong id="noSpaces">
+                0
+              </strong>
 
-          <span>
-            Avg. Word Length
-          </span>
+              <span>
+                Without Spaces
+              </span>
+
+            </div>
+
+
+            <div class="result-card">
+
+              <strong id="sentences">
+                0
+              </strong>
+
+              <span>
+                Sentences
+              </span>
+
+            </div>
+
+
+            <div class="result-card">
+
+              <strong id="paragraphs">
+                0
+              </strong>
+
+              <span>
+                Paragraphs
+              </span>
+
+            </div>
+
+
+            <div class="result-card">
+
+              <strong id="readingTime">
+                0 min
+              </strong>
+
+              <span>
+                Reading Time
+              </span>
+
+            </div>
+
+
+            <div class="result-card">
+
+              <strong id="speakingTime">
+                0 min
+              </strong>
+
+              <span>
+                Speaking Time
+              </span>
+
+            </div>
+
+
+            <div class="result-card">
+
+              <strong id="averageWordLength">
+                0
+              </strong>
+
+              <span>
+                Avg. Word Length
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- ACTION BUTTONS -->
+
+          <div class="action-buttons">
+
+
+            <button
+              class="copy-button"
+              onclick="copyText()"
+            >
+              Copy Text
+            </button>
+
+
+            <button
+              class="clear-button"
+              onclick="clearText()"
+            >
+              Clear Text
+            </button>
+
+
+          </div>
+
+
+
+          <!-- INFORMATION -->
+
+          <div class="info">
+
+            <strong>
+              How to use Word Counter
+            </strong>
+
+            <p>
+
+              Type or paste your text into the box above.
+              The statistics update automatically as you type,
+              including words, characters, sentences and paragraphs.
+
+            </p>
+
+          </div>
+
 
         </div>
 
@@ -800,46 +933,34 @@
 
 
 
-      <!-- BUTTONS -->
+      <!-- =========================
+           ADVERTISEMENT
+      ========================= -->
 
-      <div class="action-buttons">
+      <aside class="ad-sidebar">
 
-        <button
-          class="copy-button"
-          onclick="copyText()"
-        >
-          Copy Text
-        </button>
+        <div>
 
+          <div class="ad-label">
+            Advertisement
+          </div>
 
-        <button
-          class="clear-button"
-          onclick="clearText()"
-        >
-          Clear Text
-        </button>
+          <div class="ad-placeholder">
 
-      </div>
+            Ad Space<br>
+            160 × 600
 
+          </div>
 
+          <!--
+            AFTER ADSENSE APPROVAL,
+            REPLACE THIS PLACEHOLDER
+            WITH YOUR ADSENSE AD CODE.
+          -->
 
-      <!-- INFORMATION -->
+        </div>
 
-      <div class="info">
-
-        <strong>
-          How to use Word Counter
-        </strong>
-
-        <p>
-
-          Type or paste your text into the box above.
-          The statistics update automatically as you type,
-          including words, characters, sentences and paragraphs.
-
-        </p>
-
-      </div>
+      </aside>
 
 
     </div>
@@ -849,7 +970,9 @@
 
 
 
-  <!-- FOOTER -->
+  <!-- =========================
+       FOOTER
+  ========================= -->
 
   <footer>
 
@@ -863,7 +986,12 @@
 
 
 
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
+
   <script>
+
 
     const text =
       document.getElementById(
@@ -877,11 +1005,19 @@
     );
 
 
+
+    /* =========================
+       UPDATE COUNTS
+    ========================= */
+
     function updateCount() {
+
 
       const value =
         text.value;
 
+
+      /* WORDS */
 
       const words =
         value.trim() === ""
@@ -901,11 +1037,17 @@
         wordCount;
 
 
+
+      /* CHARACTERS */
+
       document.getElementById(
         "characters"
       ).textContent =
         value.length;
 
+
+
+      /* WITHOUT SPACES */
 
       document.getElementById(
         "noSpaces"
@@ -914,6 +1056,9 @@
           .replace(/\s/g, "")
           .length;
 
+
+
+      /* SENTENCES */
 
       const sentenceCount =
         value.trim() === ""
@@ -938,6 +1083,9 @@
         sentenceCount;
 
 
+
+      /* PARAGRAPHS */
+
       const paragraphCount =
         value.trim() === ""
           ? 0
@@ -961,6 +1109,9 @@
         paragraphCount;
 
 
+
+      /* READING TIME */
+
       const readingMinutes =
         Math.ceil(
           wordCount / 200
@@ -975,6 +1126,9 @@
           : readingMinutes + " min";
 
 
+
+      /* SPEAKING TIME */
+
       const speakingMinutes =
         Math.ceil(
           wordCount / 130
@@ -988,6 +1142,9 @@
           ? "0 min"
           : speakingMinutes + " min";
 
+
+
+      /* AVERAGE WORD LENGTH */
 
       const totalLetters =
         words.reduce(
@@ -1025,7 +1182,13 @@
     }
 
 
+
+    /* =========================
+       COPY TEXT
+    ========================= */
+
     function copyText() {
+
 
       if (
         text.value.trim() === ""
@@ -1057,16 +1220,25 @@
     }
 
 
+
+    /* =========================
+       CLEAR TEXT
+    ========================= */
+
     function clearText() {
+
 
       text.value =
         "";
 
+
       updateCount();
+
 
       text.focus();
 
     }
+
 
   </script>
 
