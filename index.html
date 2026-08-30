@@ -1,1081 +1,820 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ToolNest - Free Online Tools</title>
+<title>ToolNest - Free Online Tools</title>
 
-    <meta name="description"
-        content="Free, fast and easy-to-use online tools for PDFs, text, images and calculators.">
+<style>
 
-    <style>
+* {
+    box-sizing: border-box;
+}
 
-        /* =========================
-           RESET
-        ========================= */
+body {
+    margin: 0;
+    padding: 14px;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f3f7fb;
+    color: #26364a;
+}
 
-        * {
-            box-sizing: border-box;
-        }
 
-        body {
-            margin: 0;
-            padding: 16px;
+/* ================= HEADER ================= */
 
-            font-family:
-                Inter,
-                "Segoe UI",
-                Roboto,
-                Arial,
-                sans-serif;
+header {
+    background: #ffffff;
+    border: 1px solid #d8e1ea;
+    border-radius: 18px;
+    box-shadow: 0 4px 14px rgba(30, 50, 70, 0.06);
+}
 
-            background: #eef4f8;
+.navbar {
+    height: 70px;
+    padding: 0 28px;
 
-            color: #263445;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
+    gap: 30px;
+}
 
-        /* =========================
-           HEADER
-        ========================= */
 
-        header {
-            width: 100%;
+/* LOGO */
 
-            background: #ffffff;
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
 
-            border: 1px solid #d9e2ea;
+    text-decoration: none;
+}
 
-            border-radius: 18px;
+.logo-icon {
+    width: 46px;
+    height: 46px;
 
-            box-shadow:
-                0 4px 15px rgba(40, 60, 80, 0.06);
-        }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    border-radius: 12px;
 
-        .navbar {
-            width: 100%;
+    background: linear-gradient(135deg, #3679cc, #1e5ba5);
 
-            min-height: 78px;
+    color: white;
 
-            padding: 15px 32px;
+    font-size: 24px;
+    font-weight: 700;
+}
 
-            display: flex;
+.logo-text {
+    font-size: 29px;
+    letter-spacing: -1.5px;
+}
 
-            align-items: center;
+.logo-tool {
+    font-weight: 400;
+    color: #26364a;
+}
 
-            justify-content: space-between;
+.logo-nest {
+    font-weight: 700;
+    color: #2769b7;
+}
 
-            gap: 30px;
-        }
 
+/* SEARCH */
 
-        /* =========================
-           LOGO
-        ========================= */
+.search-container {
+    width: 360px;
+    position: relative;
+}
 
-        .logo {
-            display: flex;
+.search-container input {
+    width: 100%;
+    height: 44px;
 
-            align-items: center;
+    padding: 0 50px 0 17px;
 
-            gap: 11px;
+    border: 1px solid #c6d2de;
+    border-radius: 12px;
 
-            text-decoration: none;
+    font-size: 15px;
+    outline: none;
+}
 
-            flex-shrink: 0;
-        }
+.search-container input:focus {
+    border-color: #3679cc;
+    box-shadow: 0 0 0 4px rgba(54, 121, 204, 0.10);
+}
 
+.search-icon {
+    position: absolute;
 
-        .logo-icon {
-            width: 46px;
-            height: 46px;
+    right: 16px;
+    top: 50%;
 
-            display: flex;
+    transform: translateY(-50%);
 
-            align-items: center;
-            justify-content: center;
+    font-size: 22px;
+    color: #52667a;
+}
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #3677c8,
-                    #1f5ca5
-                );
 
-            border-radius: 12px;
+/* ================= MAIN LAYOUT ================= */
 
-            color: #ffffff;
+.page-layout {
+    margin-top: 12px;
 
-            font-size: 23px;
+    display: grid;
 
-            font-weight: 700;
+    grid-template-columns:
+        minmax(0, 1fr)
+        280px;
 
-            box-shadow:
-                0 6px 14px
-                rgba(31, 92, 165, 0.22);
-        }
+    gap: 16px;
 
+    align-items: stretch;
+}
 
-        .logo-text {
-            display: flex;
 
-            align-items: center;
+/* ================= HERO ================= */
 
-            font-family:
-                Inter,
-                "Segoe UI",
-                Roboto,
-                Arial,
-                sans-serif;
+.main-content {
+    background: white;
 
-            font-size: 29px;
+    border: 1px solid #d8e1ea;
+    border-radius: 20px;
 
-            line-height: 1;
+    overflow: hidden;
+}
 
-            letter-spacing: -1.3px;
 
-            white-space: nowrap;
-        }
+/*
+   IMPORTANT:
+   Smaller top padding moves everything
+   much closer to the header.
+*/
 
+.hero {
+    min-height: 420px;
 
-        .logo-tool {
-            color: #263445;
+    padding: 30px 40px 35px;
 
-            font-weight: 400;
-        }
+    display: grid;
 
+    grid-template-columns:
+        40%
+        60%;
 
-        .logo-nest {
-            color: #2768b5;
+    align-items: center;
+}
 
-            font-weight: 700;
-        }
 
+/* HERO TEXT */
 
-        /* =========================
-           SEARCH BAR
-        ========================= */
+.hero-content {
+    padding-left: 10px;
 
-        .search-container {
-            width: 340px;
+    align-self: center;
+}
 
-            position: relative;
-        }
+.hero h1 {
+    margin: 0 0 18px;
 
+    font-size: clamp(38px, 4vw, 58px);
 
-        .search-container input {
-            width: 100%;
+    line-height: 1.1;
 
-            height: 46px;
+    letter-spacing: -2px;
 
-            padding:
-                0 50px
-                0 18px;
+    color: #27364a;
+}
 
-            border:
-                1px solid #b9c8d8;
+.hero h1 span {
+    color: #286ab8;
+}
 
-            border-radius: 12px;
+.hero p {
+    max-width: 470px;
 
-            background: #ffffff;
+    margin: 0;
 
-            color: #263445;
+    font-size: 17px;
 
-            font-family: inherit;
+    line-height: 1.75;
 
-            font-size: 15px;
+    color: #627286;
+}
 
-            outline: none;
 
-            box-shadow:
-                0 2px 8px
-                rgba(40, 60, 80, 0.05);
+/* ================= HERO VISUAL ================= */
 
-            transition:
-                0.2s ease;
-        }
+.hero-visual {
+    height: 350px;
 
+    display: flex;
 
-        .search-container input::placeholder {
-            color: #8b98a6;
-        }
+    align-items: center;
+    justify-content: center;
+}
 
 
-        .search-container input:focus {
-            border-color: #3474bd;
+/* TOOL GROUP */
 
-            box-shadow:
-                0 0 0 4px
-                rgba(52, 116, 189, 0.10);
-        }
+.tool-group {
+    width: 100%;
+    height: 310px;
 
+    position: relative;
+}
 
-        .search-icon {
-            position: absolute;
 
-            right: 17px;
+/* TOP CARDS */
 
-            top: 50%;
+.tool-card {
+    position: absolute;
 
-            transform:
-                translateY(-50%);
+    width: 128px;
+    height: 138px;
 
-            font-size: 22px;
+    background: white;
 
-            color: #42617e;
+    border: 2px solid #536477;
 
-            pointer-events: none;
-        }
+    border-radius: 8px;
 
+    display: flex;
 
-        /* =========================
-           MAIN LAYOUT
-        ========================= */
+    flex-direction: column;
 
-        .page-layout {
-            width: 100%;
+    align-items: center;
+    justify-content: center;
 
-            margin: 20px 0;
+    gap: 10px;
 
-            display: grid;
+    font-size: 15px;
+    font-weight: 700;
 
-            grid-template-columns:
-                minmax(0, 1fr)
-                280px;
+    box-shadow: 0 8px 18px rgba(30, 50, 70, 0.10);
 
-            gap: 20px;
+    z-index: 2;
+}
 
-            align-items: stretch;
-        }
 
+/* PDF */
 
-        /* =========================
-           MAIN HERO
-        ========================= */
+.pdf-card {
+    left: 4%;
+    top: 55px;
 
-        .main-content {
-            min-width: 0;
+    transform: rotate(-14deg);
 
-            background: #ffffff;
+    color: #d9392f;
+}
 
-            border:
-                1px solid #d9e2ea;
 
-            border-radius: 20px;
+/* TEXT */
 
-            overflow: hidden;
-        }
+.text-card {
+    left: 26%;
+    top: 20px;
 
+    transform: rotate(3deg);
 
-        .hero {
-            min-height: 620px;
+    color: #2164b3;
+}
 
-            padding:
-                70px 45px;
 
-            display: grid;
+/* CALCULATOR */
 
-            grid-template-columns:
-                minmax(280px, 0.9fr)
-                minmax(400px, 1.1fr);
+.calculator-card {
+    left: 49%;
+    top: 28px;
 
-            gap: 30px;
+    transform: rotate(-2deg);
 
-            align-items: center;
-        }
+    color: #5a3bb3;
+}
 
 
-        /* =========================
-           HERO TEXT
-        ========================= */
+/* IMAGE */
 
-        .hero-content {
-            padding-left: 10px;
-        }
+.image-card {
+    right: 4%;
+    top: 55px;
 
+    transform: rotate(14deg);
 
-        .hero-label {
-            display: flex;
+    color: #248445;
+}
 
-            align-items: center;
 
-            gap: 12px;
+.card-icon {
+    font-size: 38px;
+}
 
-            margin-bottom: 20px;
 
-            color: #2768b5;
+/* ================= BOTTOM FOLDERS ================= */
 
-            font-size: 14px;
+.folder {
+    position: absolute;
 
-            font-weight: 700;
+    bottom: 8px;
 
-            letter-spacing: 1.5px;
+    width: 118px;
+    height: 105px;
 
-            text-transform: uppercase;
-        }
+    border-radius: 12px;
 
+    border: 2px solid rgba(30, 50, 70, 0.65);
 
-        .hero-label::before {
-            content: "";
+    display: flex;
 
-            width: 32px;
-            height: 3px;
+    align-items: center;
+    justify-content: center;
 
-            background: #2768b5;
+    color: white;
 
-            border-radius: 10px;
-        }
+    font-size: 38px;
 
+    font-weight: 600;
 
-        .hero h1 {
-            margin:
-                0
-                0
-                24px;
+    z-index: 3;
 
-            font-size: clamp(42px, 4vw, 64px);
+    box-shadow: 0 8px 16px rgba(30, 50, 70, 0.18);
+}
 
-            line-height: 1.12;
 
-            letter-spacing: -2.5px;
+/* Slight overlap for slick appearance */
 
-            font-weight: 700;
+.folder-pdf {
+    left: 9%;
 
-            color: #263445;
-        }
+    background: linear-gradient(
+        135deg,
+        #ff4139,
+        #e82923
+    );
+}
 
+.folder-text {
+    left: 31%;
 
-        .hero h1 span {
-            color: #2768b5;
-        }
+    background: linear-gradient(
+        135deg,
+        #397ed0,
+        #1f5da8
+    );
+}
 
+.folder-calculator {
+    left: 53%;
 
-        .hero p {
-            max-width: 500px;
+    background: linear-gradient(
+        135deg,
+        #6949c4,
+        #4827a0
+    );
+}
 
-            margin: 0;
+.folder-image {
+    right: 5%;
 
-            font-size: 18px;
+    background: linear-gradient(
+        135deg,
+        #42a34d,
+        #157e32
+    );
+}
 
-            line-height: 1.8;
 
-            color: #607184;
-        }
+/* BASE LINE */
 
+.visual-line {
+    position: absolute;
 
-        /* =========================
-           HERO ILLUSTRATION
-        ========================= */
+    left: 4%;
+    right: 4%;
 
-        .hero-visual {
-            min-height: 400px;
+    bottom: 0;
 
-            position: relative;
+    height: 2px;
 
-            display: flex;
+    background: #415367;
 
-            align-items: center;
+    border-radius: 10px;
+}
 
-            justify-content: center;
-        }
 
+/* ================= AD ================= */
 
-        .visual-line {
-            position: absolute;
+.ad-column {
+    min-height: 420px;
 
-            bottom: 55px;
+    background: white;
 
-            left: 8%;
+    border: 1px solid #d8e1ea;
+    border-radius: 20px;
 
-            width: 84%;
+    display: flex;
 
-            height: 2px;
+    align-items: center;
+    justify-content: center;
 
-            background: #35495e;
+    text-align: center;
+}
 
-            border-radius: 10px;
-        }
+.ad-label {
+    color: #66768a;
 
+    font-size: 11px;
 
-        .tool-icons {
-            position: relative;
+    font-weight: 600;
 
-            width: 100%;
+    letter-spacing: 1px;
+}
 
-            height: 390px;
-        }
+.ad-size {
+    display: block;
 
+    margin-top: 12px;
 
-        /* Floating cards */
+    font-size: 17px;
 
-        .tool-card {
-            position: absolute;
+    letter-spacing: 0;
 
-            width: 125px;
-            height: 145px;
+    color: #526377;
+}
 
-            background: #ffffff;
 
-            border: 2px solid #35495e;
+/* ================= FOOTER ================= */
 
-            border-radius: 5px;
+footer {
+    margin-top: 14px;
 
-            display: flex;
+    background: white;
 
-            flex-direction: column;
+    border: 1px solid #d8e1ea;
+    border-radius: 18px;
 
-            align-items: center;
+    min-height: 74px;
 
-            justify-content: center;
+    padding: 18px 32px;
 
-            gap: 14px;
+    display: flex;
 
-            font-weight: 700;
+    align-items: center;
+    justify-content: space-between;
 
-            font-size: 14px;
+    color: #596b7d;
+}
 
-            box-shadow:
-                0 10px 20px
-                rgba(30, 50, 70, 0.10);
-        }
+.footer-brand strong {
+    color: #286ab8;
+}
 
+.footer-links {
+    display: flex;
+    gap: 28px;
+}
 
-        .pdf-card {
-            left: 8%;
-            top: 100px;
+.footer-links a {
+    text-decoration: none;
+    color: #596b7d;
+}
 
-            transform: rotate(-18deg);
+.footer-links a:hover {
+    color: #286ab8;
+}
 
-            color: #e54435;
-        }
 
+/* ================= MOBILE ================= */
 
-        .text-card {
-            left: 34%;
-            top: 28px;
+@media (max-width: 1050px) {
 
-            transform: rotate(4deg);
+    .page-layout {
+        grid-template-columns: 1fr 240px;
+    }
 
-            color: #2768b5;
-        }
+    .hero {
+        grid-template-columns: 1fr;
+    }
 
+    .hero-content {
+        text-align: center;
+        padding: 0;
+    }
 
-        .image-card {
-            right: 6%;
-            top: 95px;
+    .hero p {
+        margin: auto;
+    }
 
-            transform: rotate(18deg);
+}
 
-            color: #29964c;
-        }
 
+@media (max-width: 800px) {
 
-        .calculator-card {
-            right: 28%;
-            top: 25px;
+    body {
+        padding: 8px;
+    }
 
-            transform: rotate(-7deg);
+    .navbar {
+        padding: 0 18px;
+    }
 
-            color: #6951bb;
-        }
+    .page-layout {
+        grid-template-columns: 1fr;
+    }
 
+    .ad-column {
+        min-height: 150px;
+    }
 
-        .card-icon {
-            font-size: 42px;
-        }
+}
 
 
-        /* Bottom folders */
+@media (max-width: 600px) {
 
-        .folder {
-            position: absolute;
+    .navbar {
+        height: auto;
 
-            bottom: 55px;
+        padding: 14px 18px;
 
-            width: 115px;
-            height: 90px;
+        flex-direction: column;
+    }
 
-            border-radius: 12px;
+    .search-container {
+        width: 100%;
+    }
 
-            border:
-                2px solid
-                rgba(35, 50, 70, 0.75);
+    .hero {
+        padding: 30px 15px;
+    }
 
-            display: flex;
+    .hero h1 {
+        font-size: 40px;
+    }
 
-            align-items: center;
+    .hero-visual {
+        transform: scale(0.82);
 
-            justify-content: center;
+        margin: -25px 0;
+    }
 
-            color: #ffffff;
+    footer {
+        flex-direction: column;
 
-            font-size: 40px;
+        text-align: center;
 
-            box-shadow:
-                0 8px 18px
-                rgba(30, 50, 70, 0.16);
-        }
+        gap: 15px;
+    }
 
+    .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 
-        .folder::before {
-            content: "";
+}
 
-            position: absolute;
-
-            top: -15px;
-
-            left: 10px;
-
-            width: 50px;
-            height: 22px;
-
-            border-radius:
-                8px 8px 0 0;
-
-            background: inherit;
-
-            border:
-                2px solid
-                rgba(35, 50, 70, 0.75);
-
-            border-bottom: none;
-        }
-
-
-        .folder-pdf {
-            left: 13%;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #ff483d,
-                    #e9332d
-                );
-        }
-
-
-        .folder-text {
-            left: 38%;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #397fd3,
-                    #2563aa
-                );
-        }
-
-
-        .folder-image {
-            right: 12%;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #5abb55,
-                    #319641
-                );
-        }
-
-
-        /* =========================
-           ADVERTISEMENT
-        ========================= */
-
-        .ad-column {
-            min-height: 620px;
-
-            background: #ffffff;
-
-            border:
-                1px solid #d9e2ea;
-
-            border-radius: 20px;
-
-            padding: 20px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            text-align: center;
-        }
-
-
-        .ad-label {
-            color: #8795a5;
-
-            font-size: 11px;
-
-            font-weight: 600;
-
-            letter-spacing: 1px;
-
-            text-transform: uppercase;
-
-            line-height: 1.8;
-        }
-
-
-        .ad-size {
-            display: block;
-
-            margin-top: 5px;
-
-            font-size: 16px;
-
-            color: #697a8c;
-
-            letter-spacing: 0;
-        }
-
-
-        /* =========================
-           FOOTER
-        ========================= */
-
-        footer {
-            width: 100%;
-
-            background: #ffffff;
-
-            border:
-                1px solid #d9e2ea;
-
-            border-radius: 18px;
-
-            box-shadow:
-                0 4px 15px
-                rgba(40, 60, 80, 0.05);
-
-            padding:
-                25px 35px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            gap: 20px;
-
-            color: #607184;
-
-            font-size: 15px;
-        }
-
-
-        .footer-links {
-            display: flex;
-
-            align-items: center;
-
-            gap: 28px;
-        }
-
-
-        .footer-links a {
-            color: #607184;
-
-            text-decoration: none;
-
-            transition: 0.2s ease;
-        }
-
-
-        .footer-links a:hover {
-            color: #2768b5;
-        }
-
-
-        /* =========================
-           RESPONSIVE
-        ========================= */
-
-        @media (max-width: 1100px) {
-
-            .page-layout {
-                grid-template-columns:
-                    minmax(0, 1fr)
-                    230px;
-            }
-
-
-            .hero {
-                grid-template-columns: 1fr;
-
-                min-height: auto;
-
-                padding: 60px 40px;
-            }
-
-
-            .hero-content {
-                text-align: center;
-
-                padding-left: 0;
-            }
-
-
-            .hero-label {
-                justify-content: center;
-            }
-
-
-            .hero p {
-                margin: auto;
-            }
-
-        }
-
-
-        @media (max-width: 850px) {
-
-            body {
-                padding: 10px;
-            }
-
-
-            .page-layout {
-                grid-template-columns: 1fr;
-            }
-
-
-            .ad-column {
-                min-height: 180px;
-            }
-
-
-            .navbar {
-                padding: 15px 20px;
-            }
-
-
-            .search-container {
-                width: 280px;
-            }
-
-        }
-
-
-        @media (max-width: 650px) {
-
-            .navbar {
-                flex-direction: column;
-
-                gap: 15px;
-            }
-
-
-            .search-container {
-                width: 100%;
-            }
-
-
-            .hero {
-                padding: 45px 20px;
-            }
-
-
-            .hero h1 {
-                font-size: 42px;
-            }
-
-
-            .hero p {
-                font-size: 16px;
-            }
-
-
-            .hero-visual {
-                transform: scale(0.85);
-
-                margin:
-                    -30px 0;
-            }
-
-
-            footer {
-                flex-direction: column;
-
-                text-align: center;
-
-                padding: 25px 20px;
-            }
-
-
-            .footer-links {
-                flex-wrap: wrap;
-
-                justify-content: center;
-
-                gap: 15px;
-            }
-
-        }
-
-    </style>
+</style>
 </head>
 
 
 <body>
 
 
-    <!-- =========================
-         HEADER
-    ========================== -->
+<!-- HEADER -->
 
-    <header>
+<header>
 
-        <div class="navbar">
+    <div class="navbar">
 
-            <a href="index.html" class="logo">
+        <a href="index.html" class="logo">
 
-                <div class="logo-icon">
-                    T
-                </div>
+            <div class="logo-icon">
+                T
+            </div>
 
-                <div class="logo-text">
+            <div class="logo-text">
 
-                    <span class="logo-tool">
-                        Tool
-                    </span>
+                <span class="logo-tool">
+                    Tool
+                </span>
 
-                    <span class="logo-nest">
-                        Nest
-                    </span>
+                <span class="logo-nest">
+                    Nest
+                </span>
 
-                </div>
+            </div>
 
-            </a>
+        </a>
 
 
-            <div class="search-container">
+        <div class="search-container">
 
-                <input
-                    type="text"
-                    id="toolSearch"
-                    placeholder="Search tools..."
-                >
+            <input
+                type="text"
+                placeholder="Search tools..."
+            >
 
-                <div class="search-icon">
-                    ⌕
-                </div>
-
+            <div class="search-icon">
+                ⌕
             </div>
 
         </div>
 
-    </header>
+    </div>
+
+</header>
 
 
 
-    <!-- =========================
-         MAIN PAGE
-    ========================== -->
+<!-- MAIN -->
 
-    <main class="page-layout">
+<main class="page-layout">
 
 
-        <!-- LEFT CONTENT -->
+    <!-- HERO -->
 
-        <section class="main-content">
+    <section class="main-content">
 
-            <div class="hero">
+        <div class="hero">
 
 
-                <!-- HERO TEXT -->
+            <!-- TEXT -->
 
-                <div class="hero-content">
+            <div class="hero-content">
 
-                    <div class="hero-label">
-                        All-in-One Tools
+                <h1>
+
+                    Your All-in-one<br>
+
+                    Online <span>Tools</span>
+
+                </h1>
+
+
+                <p>
+
+                    Access powerful PDF, Text, Image and
+                    Calculator tools to simplify your daily
+                    tasks — fast, free and easy to use.
+
+                </p>
+
+            </div>
+
+
+
+            <!-- VISUAL -->
+
+            <div class="hero-visual">
+
+                <div class="tool-group">
+
+
+                    <!-- TOP TOOL CARDS -->
+
+                    <div class="tool-card pdf-card">
+
+                        <div class="card-icon">
+                            📄
+                        </div>
+
+                        PDF Tools
+
                     </div>
 
 
-                    <h1>
+                    <div class="tool-card text-card">
 
-                        Everything You Need,<br>
-
-                        <span>All in One</span> Place.
-
-                    </h1>
-
-
-                    <p>
-
-                        Access powerful PDF, Text, Image and
-                        Calculator tools to simplify your daily
-                        tasks — fast, free and easy to use.
-
-                    </p>
-
-                </div>
-
-
-
-                <!-- HERO VISUAL -->
-
-                <div class="hero-visual">
-
-                    <div class="tool-icons">
-
-
-                        <div class="tool-card pdf-card">
-
-                            <div class="card-icon">
-                                📄
-                            </div>
-
-                            PDF Tools
-
-                        </div>
-
-
-                        <div class="tool-card text-card">
-
-                            <div class="card-icon">
-                                T
-                            </div>
-
-                            Text Tools
-
-                        </div>
-
-
-                        <div class="tool-card image-card">
-
-                            <div class="card-icon">
-                                🖼
-                            </div>
-
-                            Image Tools
-
-                        </div>
-
-
-                        <div class="tool-card calculator-card">
-
-                            <div class="card-icon">
-                                ▦
-                            </div>
-
-                            Calculators
-
-                        </div>
-
-
-                        <div class="folder folder-pdf">
-                            PDF
-                        </div>
-
-
-                        <div class="folder folder-text">
+                        <div class="card-icon">
                             T
                         </div>
 
+                        Text Tools
 
-                        <div class="folder folder-image">
+                    </div>
+
+
+                    <div class="tool-card calculator-card">
+
+                        <div class="card-icon">
+                            ▦
+                        </div>
+
+                        Calculators
+
+                    </div>
+
+
+                    <div class="tool-card image-card">
+
+                        <div class="card-icon">
                             🖼
                         </div>
 
+                        Image Tools
 
+                    </div>
+
+
+
+                    <!-- BOTTOM FOLDERS -->
+
+                    <div class="folder folder-pdf">
+                        PDF
+                    </div>
+
+
+                    <div class="folder folder-text">
+                        T
+                    </div>
+
+
+                    <div class="folder folder-calculator">
+                        ▦
+                    </div>
+
+
+                    <div class="folder folder-image">
+                        🖼
                     </div>
 
 
                     <div class="visual-line"></div>
 
+
                 </div>
 
-
             </div>
 
-        </section>
-
-
-
-        <!-- RIGHT AD SPACE -->
-
-        <aside class="ad-column">
-
-            <div class="ad-label">
-
-                Advertisement
-
-                <span class="ad-size">
-                    250 × 600
-                </span>
-
-            </div>
-
-        </aside>
-
-
-    </main>
-
-
-
-    <!-- =========================
-         FOOTER
-    ========================== -->
-
-    <footer>
-
-        <div>
-            © 2026 ToolNest · Simple, Fast &amp; Free
-        </div>
-
-
-        <div class="footer-links">
-
-            <a href="#">
-                About
-            </a>
-
-            <a href="#">
-                Privacy Policy
-            </a>
-
-            <a href="#">
-                Terms of Use
-            </a>
-
-            <a href="#">
-                Contact
-            </a>
 
         </div>
 
-    </footer>
+    </section>
 
 
 
-    <script>
+    <!-- AD SPACE -->
 
-        const toolSearch =
-            document.getElementById("toolSearch");
+    <aside class="ad-column">
+
+        <div class="ad-label">
+
+            ADVERTISEMENT
+
+            <span class="ad-size">
+                250 × 600
+            </span>
+
+        </div>
+
+    </aside>
 
 
-        toolSearch.addEventListener(
-            "input",
-            function () {
+</main>
 
-                console.log(
-                    "Searching for:",
-                    toolSearch.value
-                );
 
-            }
-        );
 
-    </script>
+<!-- FOOTER -->
+
+<footer>
+
+    <div class="footer-brand">
+
+        © 2026 <strong>ToolNest</strong>
+        • Simple, Fast &amp; Free
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <a href="#">
+            About
+        </a>
+
+        <a href="#">
+            Privacy Policy
+        </a>
+
+        <a href="#">
+            Terms of Use
+        </a>
+
+        <a href="#">
+            Contact
+        </a>
+
+    </div>
+
+</footer>
 
 
 </body>
-
 </html>
