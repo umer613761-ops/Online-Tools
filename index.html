@@ -15,12 +15,13 @@
     content="#111827"
   >
 
-  <title>ToolNest - Simple, Fast & Free Online Tools</title>
+  <title>Word Counter - Free Online Text Tool | ToolNest</title>
 
   <meta
     name="description"
-    content="Free online PDF, text and image tools. Merge PDFs, split PDFs, convert images, count words, clean text and more."
+    content="Free online word counter. Count words, characters, sentences, paragraphs, reading time, speaking time and more."
   >
+
 
   <style>
 
@@ -32,12 +33,19 @@
       box-sizing: border-box;
     }
 
+
     html {
       scroll-behavior: smooth;
     }
 
+
     body {
       margin: 0;
+
+      min-height: 100vh;
+
+      display: flex;
+      flex-direction: column;
 
       font-family:
         Arial,
@@ -46,8 +54,6 @@
 
       background: #111827;
       color: #f3f4f6;
-
-      min-height: 100vh;
     }
 
 
@@ -66,7 +72,6 @@
       padding: 16px 32px;
 
       display: flex;
-      justify-content: space-between;
       align-items: center;
     }
 
@@ -83,6 +88,7 @@
 
       text-decoration: none;
     }
+
 
     .logo-icon {
       width: 43px;
@@ -116,6 +122,7 @@
         rgba(63, 118, 89, 0.35);
     }
 
+
     .logo-text {
       font-family:
         "Trebuchet MS",
@@ -131,55 +138,14 @@
       line-height: 1;
     }
 
+
     .logo-tool {
       color: #ffffff;
     }
 
+
     .logo-nest {
       color: #a9cdb7;
-    }
-
-
-    /* =========================
-       SEARCH
-    ========================= */
-
-    .search-container {
-      width: 250px;
-    }
-
-    .search-container input {
-      width: 100%;
-
-      padding: 10px 14px;
-
-      border:
-        1px solid #4b5563;
-
-      border-radius: 10px;
-
-      background: #273244;
-      color: #ffffff;
-
-      font-size: 14px;
-
-      outline: none;
-
-      transition: 0.2s ease;
-    }
-
-    .search-container input::placeholder {
-      color: #aeb7c5;
-    }
-
-    .search-container input:focus {
-      background: #303b4d;
-
-      border-color: #8bb89c;
-
-      box-shadow:
-        0 0 0 3px
-        rgba(139, 184, 156, 0.15);
     }
 
 
@@ -188,26 +154,30 @@
     ========================= */
 
     .container {
-      max-width: 1180px;
+      width: 100%;
+      max-width: 1250px;
 
       margin: 0 auto;
 
-      padding: 55px 24px 70px;
+      padding: 55px 24px 80px;
+
+      flex: 1;
     }
 
 
     /* =========================
-       HERO
+       HEADING
     ========================= */
 
-    .hero {
+    .heading {
       text-align: center;
 
-      margin-bottom: 52px;
+      margin-bottom: 35px;
     }
 
-    .hero h1 {
-      margin: 0 0 14px;
+
+    .heading h1 {
+      margin: 0 0 12px;
 
       font-size: 42px;
 
@@ -218,200 +188,309 @@
       color: #f9fafb;
     }
 
-    .hero p {
+
+    .subtitle {
+      max-width: 650px;
+
       margin: 0 auto;
 
-      max-width: 700px;
+      color: #aeb7c5;
 
-      font-size: 17px;
+      font-size: 16px;
 
       line-height: 1.6;
-
-      color: #aeb7c5;
     }
 
 
     /* =========================
-       MAIN TWO COLUMN LAYOUT
+       CONTENT LAYOUT
     ========================= */
 
-    .categories-row {
+    .content-layout {
       display: grid;
 
       grid-template-columns:
-        1fr 1fr;
+        minmax(0, 1fr)
+        180px;
 
-      gap: 0;
+      gap: 28px;
 
-      margin-bottom: 58px;
+      align-items: start;
     }
 
 
     /* =========================
-       LEFT COLUMN - PDF
+       TOOL BOX
     ========================= */
 
-    #pdf-tools {
-      padding-right: 38px;
-
-      border-right:
-        2px solid #66717f;
-    }
-
-
-    /* =========================
-       RIGHT COLUMN
-    ========================= */
-
-    .right-column {
-      padding-left: 38px;
-    }
-
-
-    /* =========================
-       TEXT / IMAGE SPACING
-    ========================= */
-
-    #text-tools {
-      margin-bottom: 50px;
-    }
-
-
-    /* =========================
-       CATEGORY
-    ========================= */
-
-    .category {
-      min-width: 0;
-    }
-
-
-    /* =========================
-       CATEGORY HEADERS
-    ========================= */
-
-    .category-header {
-      text-align: center;
-
-      margin-bottom: 25px;
-    }
-
-    .category-title {
-      display: inline-flex;
-
-      align-items: center;
-      justify-content: center;
-
-      gap: 10px;
-
-      margin-bottom: 10px;
-    }
-
-    .category-dot {
-      width: 12px;
-      height: 12px;
-
-      border-radius: 50%;
-
-      flex-shrink: 0;
-
-      background: #79b68d;
-
-      box-shadow:
-        0 0 12px
-        rgba(121, 182, 141, 0.32);
-    }
-
-    .category-header h2 {
-      margin: 0;
-
-      font-size: 28px;
-
-      font-weight: 700;
-
-      color: #f1f5f9;
-    }
-
-    .category-header p {
-      margin: 0;
-
-      font-size: 15px;
-
-      line-height: 1.5;
-
-      color: #aeb7c5;
-    }
-
-
-    /* =========================
-       TOOL GRID
-    ========================= */
-
-    .tools-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(2, 1fr);
-
-      gap: 20px;
-    }
-
-
-    /* =========================
-       TOOL CARDS
-    ========================= */
-
-    .tool-card {
-      display: flex;
-
-      flex-direction: column;
-
-      height: 200px;
-
-      padding: 25px;
-
-      border-radius: 16px;
-
-      text-decoration: none;
-
-      color: inherit;
-
+    .tool-box {
       background: #1e2933;
 
       border:
         1px solid #374151;
 
-      box-shadow:
-        0 5px 16px
-        rgba(0, 0, 0, 0.28);
+      border-radius: 16px;
 
-      transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        border-color 0.2s ease,
-        background 0.2s ease;
-    }
-
-    .tool-card:hover {
-      transform: translateY(-5px);
-
-      background: #25352e;
-
-      border-color: #5f8f70;
+      padding: 30px;
 
       box-shadow:
-        0 14px 30px
-        rgba(0, 0, 0, 0.38);
+        0 8px 24px
+        rgba(0, 0, 0, 0.30);
     }
 
 
     /* =========================
-       TOOL ICONS
+       TEXT AREA
     ========================= */
 
-    .tool-icon {
-      width: 50px;
-      height: 50px;
+    textarea {
+      width: 100%;
+
+      height: 280px;
+
+      padding: 18px;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 16px;
+
+      line-height: 1.6;
+
+      color: #f3f4f6;
+
+      background: #18212b;
+
+      border:
+        1px solid #3b4652;
+
+      border-radius: 12px;
+
+      resize: vertical;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+    }
+
+
+    textarea::placeholder {
+      color: #8f9aa8;
+    }
+
+
+    textarea:focus {
+      outline: none;
+
+      background: #1c2732;
+
+      border-color: #79b68d;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(121, 182, 141, 0.15);
+    }
+
+
+    /* =========================
+       RESULTS
+    ========================= */
+
+    .results {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 15px;
+
+      margin-top: 25px;
+    }
+
+
+    .result-card {
+      padding: 20px 12px;
+
+      text-align: center;
+
+      background: #202b36;
+
+      border:
+        1px solid #394755;
+
+      border-radius: 12px;
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+
+    .result-card:hover {
+      transform:
+        translateY(-2px);
+
+      border-color: #52705d;
+
+      box-shadow:
+        0 6px 16px
+        rgba(0, 0, 0, 0.25);
+    }
+
+
+    .result-card strong {
+      display: block;
+
+      margin-bottom: 7px;
+
+      font-size: 26px;
+
+      font-weight: 750;
+
+      color: #79b68d;
+    }
+
+
+    .result-card span {
+      color: #aeb7c5;
+
+      font-size: 13px;
+    }
+
+
+    /* =========================
+       BUTTONS
+    ========================= */
+
+    .action-buttons {
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 12px;
+
+      margin-top: 25px;
+    }
+
+
+    button {
+      padding: 14px;
+
+      border: none;
+
+      border-radius: 10px;
+
+      font-size: 15px;
+
+      font-weight: 600;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+
+    button:hover {
+      transform:
+        translateY(-2px);
+    }
+
+
+    .copy-button {
+      background: #3f7659;
+
+      color: #ffffff;
+
+      box-shadow:
+        0 5px 12px
+        rgba(63, 118, 89, 0.25);
+    }
+
+
+    .copy-button:hover {
+      background: #35654c;
+
+      box-shadow:
+        0 8px 18px
+        rgba(63, 118, 89, 0.35);
+    }
+
+
+    .clear-button {
+      background: #27323d;
+
+      color: #e5e7eb;
+
+      border:
+        1px solid #46515d;
+    }
+
+
+    .clear-button:hover {
+      background: #313e4b;
+
+      border-color: #657382;
+    }
+
+
+    /* =========================
+       INFORMATION
+    ========================= */
+
+    .info {
+      margin-top: 30px;
+
+      padding: 22px;
+
+      background: #202b36;
+
+      border:
+        1px solid #394755;
+
+      border-radius: 12px;
+
+      color: #aeb7c5;
+
+      line-height: 1.6;
+    }
+
+
+    .info strong {
+      display: block;
+
+      color: #f3f4f6;
+
+      font-size: 16px;
+    }
+
+
+    .info p {
+      margin:
+        10px 0 0;
+    }
+
+
+    /* =========================
+       AD SIDEBAR
+    ========================= */
+
+    .ad-sidebar {
+      width: 100%;
+
+      min-height: 420px;
+
+      background: #18212b;
+
+      border:
+        1px solid #374151;
 
       border-radius: 14px;
 
@@ -420,182 +499,35 @@
       align-items: center;
       justify-content: center;
 
-      margin-bottom: 18px;
-
-      font-size: 25px;
-
-      background: #26342d;
-
-      border:
-        1px solid #42584b;
-    }
-
-
-    /* =========================
-       TOOL TEXT
-    ========================= */
-
-    .tool-card h3 {
-      margin: 0 0 10px;
-
-      font-size: 19px;
-
-      color: #f3f4f6;
-    }
-
-    .tool-card p {
-      margin: 0;
-
-      font-size: 15px;
-
-      line-height: 1.55;
-
-      color: #b7c1bb;
-    }
-
-
-    /* =========================
-       WHY TOOLNEST
-    ========================= */
-
-    .why-section {
-      background: #18212b;
-
-      border-top:
-        1px solid #34414e;
-
-      border-bottom:
-        1px solid #34414e;
-
-      padding: 65px 20px;
-    }
-
-    .why-container {
-      max-width: 1050px;
-
-      margin: 0 auto;
-    }
-
-    .why-header {
       text-align: center;
 
-      margin-bottom: 35px;
-    }
+      padding: 18px;
 
-    .why-header h2 {
-      margin: 0 0 10px;
+      position: sticky;
 
-      font-size: 29px;
-
-      color: #f3f4f6;
-    }
-
-    .why-header p {
-      margin: 0;
-
-      color: #aeb7c5;
-
-      font-size: 15px;
+      top: 20px;
     }
 
 
-    /* =========================
-       FEATURES
-    ========================= */
+    .ad-label {
+      color: #66717f;
 
-    .features {
-      display: grid;
+      font-size: 11px;
 
-      grid-template-columns:
-        repeat(3, 1fr);
+      letter-spacing: 1px;
 
-      gap: 22px;
+      text-transform: uppercase;
+
+      margin-bottom: 12px;
     }
 
-    .feature {
-      background: #202b36;
 
-      border:
-        1px solid #394755;
+    .ad-placeholder {
+      color: #7d8896;
 
-      border-radius: 16px;
-
-      padding: 27px;
-
-      text-align: center;
-
-      box-shadow:
-        0 4px 14px
-        rgba(0, 0, 0, 0.28);
-    }
-
-    .feature-icon {
-      width: 54px;
-      height: 54px;
-
-      margin: 0 auto 16px;
-
-      border-radius: 15px;
-
-      background: #293a31;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      font-size: 26px;
-    }
-
-    .feature h3 {
-      margin: 0 0 9px;
-
-      font-size: 18px;
-
-      color: #f3f4f6;
-    }
-
-    .feature p {
-      margin: 0;
-
-      font-size: 14px;
+      font-size: 13px;
 
       line-height: 1.6;
-
-      color: #aeb7c5;
-    }
-
-
-    /* =========================
-       ABOUT
-    ========================= */
-
-    .about-section {
-      max-width: 850px;
-
-      margin: 0 auto;
-
-      padding: 70px 20px;
-
-      text-align: center;
-    }
-
-    .about-section h2 {
-      margin: 0 0 15px;
-
-      font-size: 29px;
-
-      color: #f3f4f6;
-    }
-
-    .about-section p {
-      margin: 0;
-
-      font-size: 15px;
-
-      line-height: 1.75;
-
-      color: #aeb7c5;
     }
 
 
@@ -618,62 +550,48 @@
       font-size: 14px;
     }
 
-    .footer-links {
-      margin-bottom: 14px;
-    }
-
-    .footer-links a {
-      margin: 0 10px;
-
-      color: #d1d5db;
-
-      text-decoration: none;
-
-      transition: color 0.2s;
-    }
-
-    .footer-links a:hover {
-      color: #a9cdb7;
-    }
-
-
-    /* =========================
-       SEARCH RESULTS
-    ========================= */
-
-    .tool-card.hidden {
-      display: none;
-    }
-
-    .category.hidden {
-      display: none;
-    }
-
 
     /* =========================
        TABLET
     ========================= */
 
+    @media (max-width: 1050px) {
+
+      .content-layout {
+        grid-template-columns:
+          minmax(0, 1fr)
+          150px;
+
+        gap: 20px;
+      }
+
+
+      .results {
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+    }
+
+
+    /* =========================
+       MOBILE / SMALL TABLET
+    ========================= */
+
     @media (max-width: 850px) {
 
-      .categories-row {
-        grid-template-columns: 1fr;
-
-        gap: 50px;
+      .content-layout {
+        grid-template-columns:
+          1fr;
       }
 
-      #pdf-tools {
-        padding-right: 0;
 
-        border-right: none;
-      }
+      .ad-sidebar {
+        position: static;
 
-      .right-column {
-        padding-left: 0;
-      }
+        min-height: 140px;
 
-      .features {
-        grid-template-columns: 1fr;
+        order: 2;
       }
 
     }
@@ -687,13 +605,13 @@
 
       nav {
         padding: 14px 16px;
-
-        gap: 12px;
       }
+
 
       .logo {
         gap: 8px;
       }
+
 
       .logo-icon {
         width: 37px;
@@ -704,60 +622,87 @@
         font-size: 19px;
       }
 
+
       .logo-text {
         font-size: 24px;
       }
 
-      .search-container {
-        width: 145px;
-      }
-
-      .search-container input {
-        padding: 9px 11px;
-
-        font-size: 12px;
-      }
 
       .container {
-        padding: 42px 16px 55px;
+        padding:
+          42px
+          16px
+          60px;
       }
 
-      .hero {
-        margin-bottom: 45px;
+
+      .heading {
+        margin-bottom: 30px;
       }
 
-      .hero h1 {
+
+      .heading h1 {
         font-size: 32px;
 
         letter-spacing: -0.5px;
       }
 
-      .hero p {
+
+      .subtitle {
         font-size: 15px;
       }
 
-      .category-header h2 {
-        font-size: 26px;
+
+      .tool-box {
+        padding: 18px;
+
+        border-radius: 14px;
       }
 
-      .tools-grid {
-        grid-template-columns: 1fr;
+
+      textarea {
+        height: 220px;
+
+        padding: 15px;
       }
 
-      .tool-card {
-        height: 190px;
+
+      .results {
+        grid-template-columns:
+          repeat(2, 1fr);
+
+        gap: 10px;
       }
 
-      .features {
-        gap: 16px;
+
+      .result-card {
+        padding: 16px 8px;
       }
 
-      .why-section {
-        padding: 55px 16px;
+
+      .result-card strong {
+        font-size: 22px;
       }
 
-      .about-section {
-        padding: 55px 16px;
+
+      .action-buttons {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      button {
+        width: 100%;
+      }
+
+
+      .info {
+        padding: 18px;
+      }
+
+
+      .ad-sidebar {
+        min-height: 120px;
       }
 
     }
@@ -786,6 +731,7 @@
         T
       </div>
 
+
       <div class="logo-text">
 
         <span class="logo-tool">
@@ -800,18 +746,6 @@
 
     </a>
 
-
-    <div class="search-container">
-
-      <input
-        type="text"
-        id="toolSearch"
-        placeholder="Search tools..."
-        aria-label="Search tools"
-      >
-
-    </div>
-
   </nav>
 
 
@@ -823,357 +757,241 @@
   <main class="container">
 
 
-    <!-- HERO -->
+    <!-- HEADING -->
 
-    <section class="hero">
+    <div class="heading">
 
       <h1>
-        Simple, Fast &amp; Free Online Tools
+        Word Counter
       </h1>
 
-      <p>
-        Free tools for working with PDFs, text and images.
-        No registration or downloads required.
+
+      <p class="subtitle">
+
+        Count and analyze your words, characters,
+        sentences, paragraphs and more instantly.
+
       </p>
 
-    </section>
+    </div>
 
 
 
     <!-- =========================
-         TWO COLUMN LAYOUT
+         CONTENT + AD
     ========================= -->
 
-    <div class="categories-row">
+    <div class="content-layout">
 
 
       <!-- =========================
-           LEFT: PDF TOOLS
+           WORD COUNTER TOOL
       ========================= -->
 
-      <section
-        class="category"
-        id="pdf-tools"
-      >
+      <div class="tool-box">
 
-        <div class="category-header">
 
-          <div class="category-title">
+        <!-- TEXT INPUT -->
 
-            <span class="category-dot"></span>
+        <textarea
+          id="text"
+          placeholder="Type or paste your text here..."
+        ></textarea>
 
-            <h2>
-              PDF Tools
-            </h2>
+
+
+        <!-- RESULTS -->
+
+        <div class="results">
+
+
+          <div class="result-card">
+
+            <strong id="words">
+              0
+            </strong>
+
+            <span>
+              Words
+            </span>
 
           </div>
 
+
+          <div class="result-card">
+
+            <strong id="characters">
+              0
+            </strong>
+
+            <span>
+              Characters
+            </span>
+
+          </div>
+
+
+          <div class="result-card">
+
+            <strong id="noSpaces">
+              0
+            </strong>
+
+            <span>
+              Without Spaces
+            </span>
+
+          </div>
+
+
+          <div class="result-card">
+
+            <strong id="sentences">
+              0
+            </strong>
+
+            <span>
+              Sentences
+            </span>
+
+          </div>
+
+
+          <div class="result-card">
+
+            <strong id="paragraphs">
+              0
+            </strong>
+
+            <span>
+              Paragraphs
+            </span>
+
+          </div>
+
+
+          <div class="result-card">
+
+            <strong id="readingTime">
+              0 min
+            </strong>
+
+            <span>
+              Reading Time
+            </span>
+
+          </div>
+
+
+          <div class="result-card">
+
+            <strong id="speakingTime">
+              0 min
+            </strong>
+
+            <span>
+              Speaking Time
+            </span>
+
+          </div>
+
+
+          <div class="result-card">
+
+            <strong id="averageWordLength">
+              0
+            </strong>
+
+            <span>
+              Avg. Word Length
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- ACTION BUTTONS -->
+
+        <div class="action-buttons">
+
+
+          <button
+            class="copy-button"
+            onclick="copyText()"
+          >
+            Copy Text
+          </button>
+
+
+          <button
+            class="clear-button"
+            onclick="clearText()"
+          >
+            Clear Text
+          </button>
+
+
+        </div>
+
+
+
+        <!-- INFORMATION -->
+
+        <div class="info">
+
+          <strong>
+            How to use Word Counter
+          </strong>
+
+
           <p>
-            Convert, merge and organize your PDF files.
+
+            Type or paste your text into the box above.
+            The statistics update automatically as you type,
+            including words, characters, sentences and paragraphs.
+
           </p>
 
         </div>
 
 
-        <div class="tools-grid">
-
-
-          <a
-            href="merge-pdf.html"
-            class="tool-card"
-            data-name="merge pdf combine pdf files"
-          >
-
-            <div class="tool-icon">
-              📄
-            </div>
-
-            <h3>
-              Merge PDF
-            </h3>
-
-            <p>
-              Combine multiple PDF files into one document.
-            </p>
-
-          </a>
-
-
-          <a
-            href="split-pdf.html"
-            class="tool-card"
-            data-name="split pdf separate pages"
-          >
-
-            <div class="tool-icon">
-              ✂️
-            </div>
-
-            <h3>
-              Split PDF
-            </h3>
-
-            <p>
-              Split a PDF into separate pages or page ranges.
-            </p>
-
-          </a>
-
-
-          <a
-            href="images-to-pdf.html"
-            class="tool-card"
-            data-name="images to pdf jpg png convert images"
-          >
-
-            <div class="tool-icon">
-              🖼️
-            </div>
-
-            <h3>
-              Images to PDF
-            </h3>
-
-            <p>
-              Convert JPG and PNG images into a PDF document.
-            </p>
-
-          </a>
-
-
-          <a
-            href="pdf-to-images.html"
-            class="tool-card"
-            data-name="pdf to images jpg png convert pdf"
-          >
-
-            <div class="tool-icon">
-              📷
-            </div>
-
-            <h3>
-              PDF to Images
-            </h3>
-
-            <p>
-              Convert PDF pages into JPG or PNG images.
-            </p>
-
-          </a>
-
-
-          <!-- ADD MORE PDF TOOLS HERE -->
-
-
-        </div>
-
-      </section>
+      </div>
 
 
 
       <!-- =========================
-           RIGHT: TEXT + IMAGE
+           ADVERTISEMENT SPACE
       ========================= -->
 
-      <div class="right-column">
+      <aside class="ad-sidebar">
+
+        <div>
+
+          <div class="ad-label">
+            Advertisement
+          </div>
 
 
-        <!-- TEXT TOOLS -->
+          <div class="ad-placeholder">
 
-        <section
-          class="category"
-          id="text-tools"
-        >
-
-          <div class="category-header">
-
-            <div class="category-title">
-
-              <span class="category-dot"></span>
-
-              <h2>
-                Text Tools
-              </h2>
-
-            </div>
-
-            <p>
-              Count, format, clean and organize your text.
-            </p>
+            Ad space<br>
+            160 × 600
 
           </div>
 
 
-          <div class="tools-grid">
+          <!--
+            REPLACE THIS AREA WITH
+            YOUR GOOGLE ADSENSE CODE
+            AFTER YOUR SITE IS APPROVED.
+          -->
 
+        </div>
 
-            <a
-              href="word-counter.html"
-              class="tool-card"
-              data-name="word counter count words characters sentences paragraphs"
-            >
-
-              <div class="tool-icon">
-                📝
-              </div>
-
-              <h3>
-                Word Counter
-              </h3>
-
-              <p>
-                Count words, characters, sentences and paragraphs.
-              </p>
-
-            </a>
-
-
-            <a
-              href="case-converter.html"
-              class="tool-card"
-              data-name="case converter uppercase lowercase title sentence"
-            >
-
-              <div class="tool-icon">
-                🔤
-              </div>
-
-              <h3>
-                Case Converter
-              </h3>
-
-              <p>
-                Convert text to uppercase, lowercase and more.
-              </p>
-
-            </a>
-
-
-            <a
-              href="text-cleaner.html"
-              class="tool-card"
-              data-name="text cleaner remove spaces empty lines tabs"
-            >
-
-              <div class="tool-icon">
-                🧼
-              </div>
-
-              <h3>
-                Text Cleaner
-              </h3>
-
-              <p>
-                Clean text by removing unwanted spaces and formatting.
-              </p>
-
-            </a>
-
-
-            <a
-              href="text-sorter.html"
-              class="tool-card"
-              data-name="text sorter alphabetical numerical sort lines"
-            >
-
-              <div class="tool-icon">
-                🔡
-              </div>
-
-              <h3>
-                Text Sorter
-              </h3>
-
-              <p>
-                Sort text lines alphabetically or numerically.
-              </p>
-
-            </a>
-
-
-          </div>
-
-        </section>
-
-
-
-        <!-- IMAGE TOOLS -->
-
-        <section
-          class="category"
-          id="image-tools"
-        >
-
-          <div class="category-header">
-
-            <div class="category-title">
-
-              <span class="category-dot"></span>
-
-              <h2>
-                Image Tools
-              </h2>
-
-            </div>
-
-            <p>
-              Resize and work with your images quickly and easily.
-            </p>
-
-          </div>
-
-
-          <div class="tools-grid">
-
-
-            <a
-              href="image-resizer.html"
-              class="tool-card"
-              data-name="image resizer resize image dimensions width height"
-            >
-
-              <div class="tool-icon">
-                📐
-              </div>
-
-              <h3>
-                Image Resizer
-              </h3>
-
-              <p>
-                Resize your images quickly and easily.
-              </p>
-
-            </a>
-
-
-            <a
-              href="image-compressor.html"
-              class="tool-card"
-              data-name="image compressor compress reduce image file size"
-            >
-
-              <div class="tool-icon">
-                🗜️
-              </div>
-
-              <h3>
-                Image Compressor
-              </h3>
-
-              <p>
-                Reduce image file size while maintaining good quality.
-              </p>
-
-            </a>
-
-
-          </div>
-
-        </section>
-
-
-      </div>
+      </aside>
 
 
     </div>
@@ -1184,140 +1002,15 @@
 
 
   <!-- =========================
-       WHY TOOLNEST
-  ========================= -->
-
-  <section class="why-section">
-
-    <div class="why-container">
-
-      <div class="why-header">
-
-        <h2>
-          Why Use ToolNest?
-        </h2>
-
-        <p>
-          Simple online tools designed to help you get things done faster.
-        </p>
-
-      </div>
-
-
-      <div class="features">
-
-
-        <div class="feature">
-
-          <div class="feature-icon">
-            ⚡
-          </div>
-
-          <h3>
-            Fast
-          </h3>
-
-          <p>
-            Get results quickly without unnecessary steps.
-          </p>
-
-        </div>
-
-
-        <div class="feature">
-
-          <div class="feature-icon">
-            ✨
-          </div>
-
-          <h3>
-            Easy to Use
-          </h3>
-
-          <p>
-            Clean and simple tools designed for everyday tasks.
-          </p>
-
-        </div>
-
-
-        <div class="feature">
-
-          <div class="feature-icon">
-            🆓
-          </div>
-
-          <h3>
-            Completely Free
-          </h3>
-
-          <p>
-            Use the available tools without registration or payment.
-          </p>
-
-        </div>
-
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-
-  <!-- =========================
-       ABOUT
-  ========================= -->
-
-  <section
-    class="about-section"
-    id="about"
-  >
-
-    <h2>
-      About ToolNest
-    </h2>
-
-    <p>
-      ToolNest is a growing collection of simple, fast and free online
-      tools. Whether you need to work with PDFs, text or images, our goal
-      is to help you complete everyday tasks quickly and easily.
-    </p>
-
-  </section>
-
-
-
-  <!-- =========================
        FOOTER
   ========================= -->
 
   <footer>
 
-    <div class="footer-links">
-
-      <a href="#pdf-tools">
-        PDF Tools
-      </a>
-
-      <a href="#text-tools">
-        Text Tools
-      </a>
-
-      <a href="#image-tools">
-        Image Tools
-      </a>
-
-      <a href="#about">
-        About
-      </a>
-
-    </div>
-
-
     &copy; 2026 ToolNest
+
     &middot;
+
     Simple, Fast &amp; Free
 
   </footer>
@@ -1325,121 +1018,258 @@
 
 
   <!-- =========================
-       SEARCH SCRIPT
+       JAVASCRIPT
   ========================= -->
 
   <script>
 
-    const toolSearch =
+
+    const text =
       document.getElementById(
-        "toolSearch"
+        "text"
       );
 
 
-    const toolCards =
-      document.querySelectorAll(
-        ".tool-card"
-      );
-
-
-    const categories =
-      document.querySelectorAll(
-        ".category"
-      );
-
-
-    toolSearch.addEventListener(
+    text.addEventListener(
       "input",
-      function() {
+      updateCount
+    );
 
 
-        const searchValue =
-          toolSearch.value
-            .toLowerCase()
-            .trim();
+
+    /* =========================
+       UPDATE COUNTS
+    ========================= */
+
+    function updateCount() {
 
 
-        toolCards.forEach(
-          function(card) {
+      const value =
+        text.value;
 
 
-            const searchableText =
-              (
-                card.textContent
-                +
-                " "
-                +
-                (
-                  card.dataset.name
-                  ||
+      /* WORDS */
+
+      const words =
+        value.trim() === ""
+          ? []
+          : value
+              .trim()
+              .split(/\s+/);
+
+
+      const wordCount =
+        words.length;
+
+
+      document.getElementById(
+        "words"
+      ).textContent =
+        wordCount;
+
+
+
+      /* CHARACTERS */
+
+      document.getElementById(
+        "characters"
+      ).textContent =
+        value.length;
+
+
+
+      /* WITHOUT SPACES */
+
+      document.getElementById(
+        "noSpaces"
+      ).textContent =
+        value
+          .replace(/\s/g, "")
+          .length;
+
+
+
+      /* SENTENCES */
+
+      const sentenceCount =
+        value.trim() === ""
+          ? 0
+          : value
+              .split(/[.!?]+/)
+              .filter(
+                function(sentence) {
+
+                  return (
+                    sentence.trim().length > 0
+                  );
+
+                }
+              )
+              .length;
+
+
+      document.getElementById(
+        "sentences"
+      ).textContent =
+        sentenceCount;
+
+
+
+      /* PARAGRAPHS */
+
+      const paragraphCount =
+        value.trim() === ""
+          ? 0
+          : value
+              .split(/\n+/)
+              .filter(
+                function(paragraph) {
+
+                  return (
+                    paragraph.trim().length > 0
+                  );
+
+                }
+              )
+              .length;
+
+
+      document.getElementById(
+        "paragraphs"
+      ).textContent =
+        paragraphCount;
+
+
+
+      /* READING TIME */
+
+      const readingMinutes =
+        Math.ceil(
+          wordCount / 200
+        );
+
+
+      document.getElementById(
+        "readingTime"
+      ).textContent =
+        wordCount === 0
+          ? "0 min"
+          : readingMinutes + " min";
+
+
+
+      /* SPEAKING TIME */
+
+      const speakingMinutes =
+        Math.ceil(
+          wordCount / 130
+        );
+
+
+      document.getElementById(
+        "speakingTime"
+      ).textContent =
+        wordCount === 0
+          ? "0 min"
+          : speakingMinutes + " min";
+
+
+
+      /* AVERAGE WORD LENGTH */
+
+      const totalLetters =
+        words.reduce(
+          function(total, word) {
+
+            return (
+              total +
+              word
+                .replace(
+                  /[^a-zA-Z0-9]/g,
                   ""
                 )
-              )
-              .toLowerCase();
+                .length
+            );
 
-
-            if (
-              searchableText.includes(
-                searchValue
-              )
-            ) {
-
-              card.classList.remove(
-                "hidden"
-              );
-
-            }
-
-            else {
-
-              card.classList.add(
-                "hidden"
-              );
-
-            }
-
-
-          }
+          },
+          0
         );
 
 
-        categories.forEach(
-          function(category) {
+      const averageLength =
+        wordCount === 0
+          ? 0
+          : (
+              totalLetters /
+              wordCount
+            ).toFixed(1);
 
 
-            const visibleCards =
-              category.querySelectorAll(
-                ".tool-card:not(.hidden)"
-              );
+      document.getElementById(
+        "averageWordLength"
+      ).textContent =
+        averageLength;
+
+    }
 
 
-            if (
-              visibleCards.length === 0
-              &&
-              searchValue !== ""
-            ) {
 
-              category.classList.add(
-                "hidden"
-              );
+    /* =========================
+       COPY TEXT
+    ========================= */
 
-            }
-
-            else {
-
-              category.classList.remove(
-                "hidden"
-              );
-
-            }
+    function copyText() {
 
 
-          }
+      if (
+        text.value.trim() === ""
+      ) {
+
+        alert(
+          "There is no text to copy."
         );
 
+        return;
 
       }
-    );
+
+
+      navigator.clipboard
+        .writeText(
+          text.value
+        )
+        .then(
+          function() {
+
+            alert(
+              "Text copied!"
+            );
+
+          }
+        );
+
+    }
+
+
+
+    /* =========================
+       CLEAR TEXT
+    ========================= */
+
+    function clearText() {
+
+
+      text.value =
+        "";
+
+
+      updateCount();
+
+
+      text.focus();
+
+    }
+
 
   </script>
 
