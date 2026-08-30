@@ -1,744 +1,1079 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta charset="UTF-8">
+    <title>ToolNest - Free Online Tools</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+    <meta name="description"
+        content="Free, fast and easy-to-use online tools for PDFs, text, images and calculators.">
 
-  <title>ToolNest - Free Online Tools</title>
+    <style>
 
-  <meta
-    name="description"
-    content="Free, fast and easy-to-use online tools for PDFs, text, images and more."
-  >
+        /* =========================
+           RESET
+        ========================= */
 
+        * {
+            box-sizing: border-box;
+        }
 
-  <style>
+        body {
+            margin: 0;
+            padding: 16px;
 
-    /* =========================
-       RESET
-    ========================= */
+            font-family:
+                Inter,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
 
-    * {
-      box-sizing: border-box;
-    }
+            background: #eef4f8;
 
+            color: #263445;
+        }
 
-    body {
-      margin: 0;
 
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+        /* =========================
+           HEADER
+        ========================= */
 
-      background: #f5f7fa;
+        header {
+            width: 100%;
 
-      color: #344154;
-    }
+            background: #ffffff;
 
+            border: 1px solid #d9e2ea;
 
-    /* =========================
-       HEADER
-    ========================= */
+            border-radius: 18px;
 
-    header {
-      width: 100%;
+            box-shadow:
+                0 4px 15px rgba(40, 60, 80, 0.06);
+        }
 
-      background: #ffffff;
 
-      border-bottom:
-        1px solid #e2e7ee;
-    }
+        .navbar {
+            width: 100%;
 
+            min-height: 78px;
 
-    .navbar {
-      width: 100%;
+            padding: 15px 32px;
 
-      margin: 0;
+            display: flex;
 
-      padding:
-        14px 30px;
+            align-items: center;
 
-      display: flex;
+            justify-content: space-between;
 
-      align-items: center;
+            gap: 30px;
+        }
 
-      justify-content: space-between;
 
-      gap: 30px;
-    }
+        /* =========================
+           LOGO
+        ========================= */
 
+        .logo {
+            display: flex;
 
-    /* =========================
-       LOGO
-    ========================= */
+            align-items: center;
 
-    .logo {
-      display: flex;
+            gap: 11px;
 
-      align-items: center;
+            text-decoration: none;
 
-      gap: 10px;
+            flex-shrink: 0;
+        }
 
-      text-decoration: none;
 
-      flex-shrink: 0;
-    }
+        .logo-icon {
+            width: 46px;
+            height: 46px;
 
+            display: flex;
 
-    .logo-icon {
-      width: 42px;
+            align-items: center;
+            justify-content: center;
 
-      height: 42px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #3677c8,
+                    #1f5ca5
+                );
 
-      display: flex;
+            border-radius: 12px;
 
-      align-items: center;
+            color: #ffffff;
 
-      justify-content: center;
+            font-size: 23px;
 
-      background:
-        linear-gradient(
-          135deg,
-          #547eaf,
-          #35649a
-        );
+            font-weight: 700;
 
-      border-radius: 12px;
+            box-shadow:
+                0 6px 14px
+                rgba(31, 92, 165, 0.22);
+        }
 
-      color: #ffffff;
 
-      font-family:
-        "Segoe UI",
-        Arial,
-        sans-serif;
+        .logo-text {
+            display: flex;
 
-      font-size: 20px;
+            align-items: center;
 
-      font-weight: 700;
+            font-family:
+                Inter,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
 
-      box-shadow:
-        0 4px 10px
-        rgba(53, 100, 154, 0.16);
-    }
+            font-size: 29px;
 
+            line-height: 1;
 
-    /* =========================
-       PROFESSIONAL LOGO TEXT
-    ========================= */
+            letter-spacing: -1.3px;
 
-    .logo-text {
-      display: flex;
+            white-space: nowrap;
+        }
 
-      align-items: center;
 
-      font-family:
-        Inter,
-        "Segoe UI",
-        Roboto,
-        Helvetica,
-        Arial,
-        sans-serif;
+        .logo-tool {
+            color: #263445;
 
-      font-size: 28px;
+            font-weight: 400;
+        }
 
-      letter-spacing: -1.2px;
 
-      line-height: 1;
+        .logo-nest {
+            color: #2768b5;
 
-      white-space: nowrap;
-    }
+            font-weight: 700;
+        }
 
 
-    /* TOOL - CLEAN AND LIGHTER */
+        /* =========================
+           SEARCH BAR
+        ========================= */
 
-    .logo-tool {
-      color: #263445;
+        .search-container {
+            width: 340px;
 
-      font-weight: 400;
-    }
+            position: relative;
+        }
 
 
-    /* NEST - STRONG BRAND EMPHASIS */
+        .search-container input {
+            width: 100%;
 
-    .logo-nest {
-      color: #35649a;
+            height: 46px;
 
-      font-weight: 750;
+            padding:
+                0 50px
+                0 18px;
 
-      letter-spacing: -1.3px;
-    }
+            border:
+                1px solid #b9c8d8;
 
+            border-radius: 12px;
 
-    /* =========================
-       SEARCH BAR
-    ========================= */
+            background: #ffffff;
 
-    .search-container {
-      width: 300px;
+            color: #263445;
 
-      position: relative;
+            font-family: inherit;
 
-      flex-shrink: 0;
-    }
+            font-size: 15px;
 
+            outline: none;
 
-    .search-container input {
-      width: 100%;
+            box-shadow:
+                0 2px 8px
+                rgba(40, 60, 80, 0.05);
 
-      height: 44px;
+            transition:
+                0.2s ease;
+        }
 
-      padding:
-        0 48px
-        0 17px;
 
-      border:
-        1px solid #bfcbd8;
+        .search-container input::placeholder {
+            color: #8b98a6;
+        }
 
-      border-radius: 10px;
 
-      background: #ffffff;
+        .search-container input:focus {
+            border-color: #3474bd;
 
-      color: #344154;
+            box-shadow:
+                0 0 0 4px
+                rgba(52, 116, 189, 0.10);
+        }
 
-      font-family: inherit;
 
-      font-size: 14px;
+        .search-icon {
+            position: absolute;
 
-      outline: none;
+            right: 17px;
 
-      box-shadow:
-        0 2px 6px
-        rgba(52, 65, 84, 0.06);
+            top: 50%;
 
-      transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-    }
+            transform:
+                translateY(-50%);
 
+            font-size: 22px;
 
-    .search-container input::placeholder {
-      color: #8a96a5;
-    }
+            color: #42617e;
 
+            pointer-events: none;
+        }
 
-    .search-container input:focus {
-      border-color: #4d73a6;
 
-      box-shadow:
-        0 0 0 3px
-        rgba(77, 115, 166, 0.12);
-    }
+        /* =========================
+           MAIN LAYOUT
+        ========================= */
 
+        .page-layout {
+            width: 100%;
 
-    .search-icon {
-      position: absolute;
+            margin: 20px 0;
 
-      right: 15px;
+            display: grid;
 
-      top: 50%;
+            grid-template-columns:
+                minmax(0, 1fr)
+                280px;
 
-      transform:
-        translateY(-50%);
+            gap: 20px;
 
-      color: #4d73a6;
+            align-items: stretch;
+        }
 
-      font-size: 20px;
 
-      pointer-events: none;
-    }
+        /* =========================
+           MAIN HERO
+        ========================= */
 
+        .main-content {
+            min-width: 0;
 
-    /* =========================
-       PAGE LAYOUT
-    ========================= */
+            background: #ffffff;
 
-    .page-layout {
-      width: 100%;
+            border:
+                1px solid #d9e2ea;
 
-      max-width: 1400px;
+            border-radius: 20px;
 
-      margin: 0 auto;
+            overflow: hidden;
+        }
 
-      padding:
-        45px 30px 70px;
 
-      display: grid;
+        .hero {
+            min-height: 620px;
 
-      grid-template-columns:
-        minmax(0, 1fr)
-        220px;
+            padding:
+                70px 45px;
 
-      gap: 35px;
+            display: grid;
 
-      align-items: start;
-    }
+            grid-template-columns:
+                minmax(280px, 0.9fr)
+                minmax(400px, 1.1fr);
 
+            gap: 30px;
 
-    /* =========================
-       MAIN CONTENT
-    ========================= */
+            align-items: center;
+        }
 
-    .main-content {
-      min-width: 0;
-    }
 
+        /* =========================
+           HERO TEXT
+        ========================= */
 
-    /* =========================
-       HERO
-    ========================= */
+        .hero-content {
+            padding-left: 10px;
+        }
 
-    .hero {
-      text-align: center;
 
-      max-width: 850px;
+        .hero-label {
+            display: flex;
 
-      margin:
-        0 auto
-        50px;
-    }
+            align-items: center;
 
+            gap: 12px;
 
-    .hero h1 {
-      margin:
-        0
-        0
-        16px;
+            margin-bottom: 20px;
 
-      font-size: 50px;
+            color: #2768b5;
 
-      line-height: 1.15;
+            font-size: 14px;
 
-      letter-spacing: -2px;
+            font-weight: 700;
 
-      font-weight: 700;
+            letter-spacing: 1.5px;
 
-      color: #344154;
-    }
+            text-transform: uppercase;
+        }
 
 
-    .hero h1 span {
-      color: #4d73a6;
-    }
+        .hero-label::before {
+            content: "";
 
+            width: 32px;
+            height: 3px;
 
-    .hero p {
-      margin: 0;
+            background: #2768b5;
 
-      font-size: 19px;
+            border-radius: 10px;
+        }
 
-      line-height: 1.7;
 
-      color: #6f7d8c;
-    }
+        .hero h1 {
+            margin:
+                0
+                0
+                24px;
 
+            font-size: clamp(42px, 4vw, 64px);
 
-    /* =========================
-       TOOLS PLACEHOLDER
-    ========================= */
+            line-height: 1.12;
 
-    .tools-placeholder {
-      background: #ffffff;
+            letter-spacing: -2.5px;
 
-      border:
-        1px solid #e2e7ee;
+            font-weight: 700;
 
-      border-radius: 18px;
+            color: #263445;
+        }
 
-      min-height: 400px;
 
-      padding: 40px;
+        .hero h1 span {
+            color: #2768b5;
+        }
 
-      display: flex;
 
-      align-items: center;
+        .hero p {
+            max-width: 500px;
 
-      justify-content: center;
+            margin: 0;
 
-      text-align: center;
-    }
+            font-size: 18px;
 
+            line-height: 1.8;
 
-    .tools-placeholder p {
-      margin: 0;
+            color: #607184;
+        }
 
-      color: #8a96a5;
 
-      font-size: 18px;
-    }
+        /* =========================
+           HERO ILLUSTRATION
+        ========================= */
 
+        .hero-visual {
+            min-height: 400px;
 
-    /* =========================
-       RIGHT AD COLUMN
-    ========================= */
+            position: relative;
 
-    .ad-column {
-      width: 100%;
+            display: flex;
 
-      min-height: 600px;
+            align-items: center;
 
-      background: #ffffff;
+            justify-content: center;
+        }
 
-      border:
-        1px solid #e2e7ee;
 
-      border-radius: 12px;
+        .visual-line {
+            position: absolute;
 
-      display: flex;
+            bottom: 55px;
 
-      flex-direction: column;
+            left: 8%;
 
-      align-items: center;
+            width: 84%;
 
-      justify-content: center;
+            height: 2px;
 
-      text-align: center;
+            background: #35495e;
 
-      padding: 20px;
+            border-radius: 10px;
+        }
 
-      position: sticky;
 
-      top: 20px;
-    }
+        .tool-icons {
+            position: relative;
 
+            width: 100%;
 
-    .ad-label {
-      color: #9aa5b1;
+            height: 390px;
+        }
 
-      font-size: 10px;
 
-      font-weight: 600;
+        /* Floating cards */
 
-      letter-spacing: 1px;
+        .tool-card {
+            position: absolute;
 
-      text-transform: uppercase;
+            width: 125px;
+            height: 145px;
 
-      margin-bottom: 15px;
-    }
+            background: #ffffff;
 
+            border: 2px solid #35495e;
 
-    .ad-placeholder {
-      color: #a0a9b5;
+            border-radius: 5px;
 
-      font-size: 13px;
+            display: flex;
 
-      line-height: 1.6;
-    }
+            flex-direction: column;
 
+            align-items: center;
 
-    /* =========================
-       FOOTER
-    ========================= */
+            justify-content: center;
 
-    footer {
-      background: #ffffff;
+            gap: 14px;
 
-      border-top:
-        1px solid #e2e7ee;
+            font-weight: 700;
 
-      text-align: center;
+            font-size: 14px;
 
-      padding:
-        30px 20px;
+            box-shadow:
+                0 10px 20px
+                rgba(30, 50, 70, 0.10);
+        }
 
-      color: #7b8794;
 
-      font-size: 14px;
-    }
+        .pdf-card {
+            left: 8%;
+            top: 100px;
 
+            transform: rotate(-18deg);
 
-    /* =========================
-       TABLET
-    ========================= */
+            color: #e54435;
+        }
 
-    @media (max-width: 1000px) {
 
-      .page-layout {
-        grid-template-columns:
-          minmax(0, 1fr)
-          180px;
+        .text-card {
+            left: 34%;
+            top: 28px;
 
-        gap: 25px;
-      }
+            transform: rotate(4deg);
 
+            color: #2768b5;
+        }
 
-      .ad-column {
-        min-height: 500px;
-      }
 
-    }
+        .image-card {
+            right: 6%;
+            top: 95px;
 
+            transform: rotate(18deg);
 
-    /* =========================
-       SMALL TABLET
-    ========================= */
+            color: #29964c;
+        }
 
-    @media (max-width: 800px) {
 
-      .page-layout {
-        grid-template-columns: 1fr;
-      }
+        .calculator-card {
+            right: 28%;
+            top: 25px;
 
+            transform: rotate(-7deg);
 
-      .ad-column {
-        position: static;
+            color: #6951bb;
+        }
 
-        min-height: 180px;
-      }
 
-    }
+        .card-icon {
+            font-size: 42px;
+        }
 
 
-    /* =========================
-       MOBILE
-    ========================= */
+        /* Bottom folders */
 
-    @media (max-width: 650px) {
+        .folder {
+            position: absolute;
 
-      .navbar {
-        padding:
-          12px 16px;
+            bottom: 55px;
 
-        flex-direction: column;
+            width: 115px;
+            height: 90px;
 
-        align-items: stretch;
+            border-radius: 12px;
 
-        gap: 12px;
-      }
+            border:
+                2px solid
+                rgba(35, 50, 70, 0.75);
 
+            display: flex;
 
-      .logo {
-        justify-content: center;
-      }
+            align-items: center;
 
+            justify-content: center;
 
-      .search-container {
-        width: 100%;
-      }
+            color: #ffffff;
 
+            font-size: 40px;
 
-      .page-layout {
-        padding:
-          40px 16px 55px;
-      }
+            box-shadow:
+                0 8px 18px
+                rgba(30, 50, 70, 0.16);
+        }
 
 
-      .hero {
-        margin-bottom: 40px;
-      }
+        .folder::before {
+            content: "";
 
+            position: absolute;
 
-      .hero h1 {
-        font-size: 38px;
+            top: -15px;
 
-        letter-spacing: -1px;
-      }
+            left: 10px;
 
+            width: 50px;
+            height: 22px;
 
-      .hero p {
-        font-size: 16px;
-      }
+            border-radius:
+                8px 8px 0 0;
 
+            background: inherit;
 
-      .tools-placeholder {
-        min-height: 250px;
+            border:
+                2px solid
+                rgba(35, 50, 70, 0.75);
 
-        padding: 25px;
-      }
+            border-bottom: none;
+        }
 
 
-      .ad-column {
-        min-height: 150px;
-      }
+        .folder-pdf {
+            left: 13%;
 
-    }
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff483d,
+                    #e9332d
+                );
+        }
 
-  </style>
 
+        .folder-text {
+            left: 38%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #397fd3,
+                    #2563aa
+                );
+        }
+
+
+        .folder-image {
+            right: 12%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #5abb55,
+                    #319641
+                );
+        }
+
+
+        /* =========================
+           ADVERTISEMENT
+        ========================= */
+
+        .ad-column {
+            min-height: 620px;
+
+            background: #ffffff;
+
+            border:
+                1px solid #d9e2ea;
+
+            border-radius: 20px;
+
+            padding: 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+        }
+
+
+        .ad-label {
+            color: #8795a5;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+
+            line-height: 1.8;
+        }
+
+
+        .ad-size {
+            display: block;
+
+            margin-top: 5px;
+
+            font-size: 16px;
+
+            color: #697a8c;
+
+            letter-spacing: 0;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            width: 100%;
+
+            background: #ffffff;
+
+            border:
+                1px solid #d9e2ea;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 4px 15px
+                rgba(40, 60, 80, 0.05);
+
+            padding:
+                25px 35px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            color: #607184;
+
+            font-size: 15px;
+        }
+
+
+        .footer-links {
+            display: flex;
+
+            align-items: center;
+
+            gap: 28px;
+        }
+
+
+        .footer-links a {
+            color: #607184;
+
+            text-decoration: none;
+
+            transition: 0.2s ease;
+        }
+
+
+        .footer-links a:hover {
+            color: #2768b5;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .page-layout {
+                grid-template-columns:
+                    minmax(0, 1fr)
+                    230px;
+            }
+
+
+            .hero {
+                grid-template-columns: 1fr;
+
+                min-height: auto;
+
+                padding: 60px 40px;
+            }
+
+
+            .hero-content {
+                text-align: center;
+
+                padding-left: 0;
+            }
+
+
+            .hero-label {
+                justify-content: center;
+            }
+
+
+            .hero p {
+                margin: auto;
+            }
+
+        }
+
+
+        @media (max-width: 850px) {
+
+            body {
+                padding: 10px;
+            }
+
+
+            .page-layout {
+                grid-template-columns: 1fr;
+            }
+
+
+            .ad-column {
+                min-height: 180px;
+            }
+
+
+            .navbar {
+                padding: 15px 20px;
+            }
+
+
+            .search-container {
+                width: 280px;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+
+            .search-container {
+                width: 100%;
+            }
+
+
+            .hero {
+                padding: 45px 20px;
+            }
+
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+
+            .hero p {
+                font-size: 16px;
+            }
+
+
+            .hero-visual {
+                transform: scale(0.85);
+
+                margin:
+                    -30px 0;
+            }
+
+
+            footer {
+                flex-direction: column;
+
+                text-align: center;
+
+                padding: 25px 20px;
+            }
+
+
+            .footer-links {
+                flex-wrap: wrap;
+
+                justify-content: center;
+
+                gap: 15px;
+            }
+
+        }
+
+    </style>
 </head>
 
 
 <body>
 
 
-  <!-- =========================
-       HEADER
-  ========================== -->
+    <!-- =========================
+         HEADER
+    ========================== -->
 
-  <header>
+    <header>
 
-    <div class="navbar">
+        <div class="navbar">
+
+            <a href="index.html" class="logo">
+
+                <div class="logo-icon">
+                    T
+                </div>
+
+                <div class="logo-text">
+
+                    <span class="logo-tool">
+                        Tool
+                    </span>
+
+                    <span class="logo-nest">
+                        Nest
+                    </span>
+
+                </div>
+
+            </a>
 
 
-      <!-- LOGO -->
+            <div class="search-container">
 
-      <a
-        href="index.html"
-        class="logo"
-      >
+                <input
+                    type="text"
+                    id="toolSearch"
+                    placeholder="Search tools..."
+                >
 
-        <div class="logo-icon">
-          T
+                <div class="search-icon">
+                    ⌕
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================
+         MAIN PAGE
+    ========================== -->
+
+    <main class="page-layout">
+
+
+        <!-- LEFT CONTENT -->
+
+        <section class="main-content">
+
+            <div class="hero">
+
+
+                <!-- HERO TEXT -->
+
+                <div class="hero-content">
+
+                    <div class="hero-label">
+                        All-in-One Tools
+                    </div>
+
+
+                    <h1>
+
+                        Everything You Need,<br>
+
+                        <span>All in One</span> Place.
+
+                    </h1>
+
+
+                    <p>
+
+                        Access powerful PDF, Text, Image and
+                        Calculator tools to simplify your daily
+                        tasks — fast, free and easy to use.
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- HERO VISUAL -->
+
+                <div class="hero-visual">
+
+                    <div class="tool-icons">
+
+
+                        <div class="tool-card pdf-card">
+
+                            <div class="card-icon">
+                                📄
+                            </div>
+
+                            PDF Tools
+
+                        </div>
+
+
+                        <div class="tool-card text-card">
+
+                            <div class="card-icon">
+                                T
+                            </div>
+
+                            Text Tools
+
+                        </div>
+
+
+                        <div class="tool-card image-card">
+
+                            <div class="card-icon">
+                                🖼
+                            </div>
+
+                            Image Tools
+
+                        </div>
+
+
+                        <div class="tool-card calculator-card">
+
+                            <div class="card-icon">
+                                ▦
+                            </div>
+
+                            Calculators
+
+                        </div>
+
+
+                        <div class="folder folder-pdf">
+                            PDF
+                        </div>
+
+
+                        <div class="folder folder-text">
+                            T
+                        </div>
+
+
+                        <div class="folder folder-image">
+                            🖼
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="visual-line"></div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- RIGHT AD SPACE -->
+
+        <aside class="ad-column">
+
+            <div class="ad-label">
+
+                Advertisement
+
+                <span class="ad-size">
+                    250 × 600
+                </span>
+
+            </div>
+
+        </aside>
+
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <div>
+            © 2026 ToolNest · Simple, Fast &amp; Free
         </div>
 
 
-        <div class="logo-text">
+        <div class="footer-links">
 
-          <span class="logo-tool">
-            Tool
-          </span>
+            <a href="#">
+                About
+            </a>
 
-          <span class="logo-nest">
-            Nest
-          </span>
+            <a href="#">
+                Privacy Policy
+            </a>
+
+            <a href="#">
+                Terms of Use
+            </a>
+
+            <a href="#">
+                Contact
+            </a>
 
         </div>
 
-      </a>
-
-
-      <!-- SEARCH BAR -->
-
-      <div class="search-container">
-
-        <input
-          type="text"
-          id="toolSearch"
-          placeholder="Search tools..."
-        >
-
-        <div class="search-icon">
-          ⌕
-        </div>
-
-      </div>
-
-
-    </div>
-
-  </header>
+    </footer>
 
 
 
-  <!-- =========================
-       PAGE LAYOUT
-  ========================== -->
+    <script>
 
-  <main class="page-layout">
-
-
-    <!-- LEFT MAIN CONTENT -->
-
-    <div class="main-content">
+        const toolSearch =
+            document.getElementById("toolSearch");
 
 
-      <!-- HERO -->
+        toolSearch.addEventListener(
+            "input",
+            function () {
 
-      <section class="hero">
+                console.log(
+                    "Searching for:",
+                    toolSearch.value
+                );
 
-        <h1>
-
-          Your All-in-One<br>
-
-          Online <span>Tools.</span>
-
-        </h1>
-
-
-        <p>
-
-          Fast, free and easy-to-use online tools
-          for all your daily needs.
-
-        </p>
-
-      </section>
-
-
-
-      <!-- TOOLS AREA -->
-
-      <section class="tools-placeholder">
-
-        <p>
-          Tools will go here.
-        </p>
-
-      </section>
-
-
-    </div>
-
-
-
-    <!-- RIGHT ADVERTISEMENT COLUMN -->
-
-    <aside class="ad-column">
-
-      <div class="ad-label">
-        Advertisement
-      </div>
-
-
-      <div class="ad-placeholder">
-
-        Ad Space<br>
-
-        160 × 600
-
-      </div>
-
-    </aside>
-
-
-  </main>
-
-
-
-  <!-- =========================
-       FOOTER
-  ========================== -->
-
-  <footer>
-
-    © 2026 ToolNest · Simple, Fast &amp; Free
-
-  </footer>
-
-
-
-  <!-- =========================
-       JAVASCRIPT
-  ========================== -->
-
-  <script>
-
-    const toolSearch =
-      document.getElementById(
-        "toolSearch"
-      );
-
-
-    toolSearch.addEventListener(
-      "input",
-      function() {
-
-        console.log(
-          "Searching for:",
-          toolSearch.value
+            }
         );
 
-      }
-    );
-
-  </script>
+    </script>
 
 
 </body>
