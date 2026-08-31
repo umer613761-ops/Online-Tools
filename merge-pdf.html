@@ -271,7 +271,9 @@ header {
 .upload-area {
     display: block;
 
-    padding: 55px 20px;
+    min-height: 260px;
+
+    padding: 30px 20px;
 
     text-align: center;
 
@@ -299,6 +301,22 @@ header {
     transform: translateY(-2px);
 }
 
+
+/* =========================
+   INITIAL UPLOAD CONTENT
+========================= */
+
+.upload-placeholder {
+    min-height: 190px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+}
+
 .upload-icon {
     width: 62px;
     height: 62px;
@@ -316,7 +334,7 @@ header {
     font-size: 30px;
 }
 
-.upload-area h2 {
+.upload-placeholder h2 {
     margin: 0 0 9px;
 
     font-size: 21px;
@@ -324,7 +342,7 @@ header {
     color: #354254;
 }
 
-.upload-area p {
+.upload-placeholder p {
     margin: 0;
 
     color: #607184;
@@ -332,79 +350,27 @@ header {
     font-size: 14px;
 }
 
-input[type="file"] {
-    display: none;
-}
-
 
 /* =========================
-   EDITOR
+   FILE GRID INSIDE UPLOAD BOX
 ========================= */
 
-.editor {
+.uploaded-files {
     display: none;
-
-    margin-top: 22px;
 }
 
-
-/* =========================
-   ORDERING NOTICE
-========================= */
-
-.ordering-notice {
-    display: none;
-
-    text-align: center;
-
-    padding: 16px;
-
-    margin-bottom: 20px;
-
-    background: #edf4fb;
-
-    border:
-        1px solid
-        #c7d9ea;
-
-    border-radius: 10px;
-
-    color: #53677b;
-
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-.ordering-notice.active {
+.uploaded-files.active {
     display: block;
 }
 
-.ordering-notice strong {
-    color: #315f98;
-}
+.uploaded-title {
+    margin: 0 0 18px;
 
-
-/* =========================
-   DRAG HINT
-========================= */
-
-.drag-hint {
-    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
 
     color: #607184;
-
-    font-size: 13px;
-
-    margin:
-        0
-        0
-        18px;
 }
-
-
-/* =========================
-   PDF GRID
-========================= */
 
 .pdf-grid {
     display: grid;
@@ -412,12 +378,12 @@ input[type="file"] {
     grid-template-columns:
         repeat(
             auto-fill,
-            minmax(170px, 1fr)
+            minmax(150px, 1fr)
         );
 
-    gap: 16px;
+    gap: 14px;
 
-    margin-bottom: 20px;
+    text-align: left;
 }
 
 
@@ -428,15 +394,15 @@ input[type="file"] {
 .pdf-card {
     position: relative;
 
-    background: #f8fafc;
+    background: #ffffff;
 
     border:
         1px solid
         #cbd6e0;
 
-    border-radius: 12px;
+    border-radius: 10px;
 
-    padding: 10px;
+    padding: 9px;
 
     cursor: grab;
 
@@ -448,15 +414,12 @@ input[type="file"] {
         transform 0.2s ease,
         border-color 0.2s ease,
         box-shadow 0.2s ease,
-        opacity 0.2s ease,
-        background 0.2s ease;
+        opacity 0.2s ease;
 }
 
 .pdf-card:hover {
     transform:
         translateY(-3px);
-
-    background: #ffffff;
 
     border-color: #8eacc9;
 
@@ -476,9 +439,6 @@ input[type="file"] {
 
 .pdf-card.dragging {
     opacity: 0.45;
-
-    transform:
-        scale(0.97);
 }
 
 .pdf-card.drag-over {
@@ -495,7 +455,7 @@ input[type="file"] {
 ========================= */
 
 .pdf-preview {
-    height: 180px;
+    height: 145px;
 
     background: #ffffff;
 
@@ -503,7 +463,7 @@ input[type="file"] {
         1px solid
         #d7e0e8;
 
-    border-radius: 8px;
+    border-radius: 7px;
 
     display: flex;
 
@@ -512,7 +472,7 @@ input[type="file"] {
 
     overflow: hidden;
 
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .pdf-preview canvas {
@@ -529,7 +489,7 @@ input[type="file"] {
 ========================= */
 
 .pdf-name {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
 
     color: #354254;
@@ -542,7 +502,7 @@ input[type="file"] {
 
     padding:
         3px
-        25px;
+        22px;
 }
 
 
@@ -553,11 +513,11 @@ input[type="file"] {
 .remove-button {
     position: absolute;
 
-    top: 7px;
-    right: 7px;
+    top: 6px;
+    right: 6px;
 
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
 
     border: none;
 
@@ -573,12 +533,12 @@ input[type="file"] {
 
     cursor: pointer;
 
-    font-size: 19px;
+    font-size: 18px;
     line-height: 1;
 
     padding: 0;
 
-    z-index: 5;
+    z-index: 10;
 }
 
 .remove-button:hover {
@@ -589,18 +549,26 @@ input[type="file"] {
 
 
 /* =========================
+   UPLOAD MORE TEXT
+========================= */
+
+.add-more-text {
+    margin-top: 18px;
+
+    text-align: center;
+
+    color: #356aa5;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* =========================
    ORDERING MODE
 ========================= */
 
 .ordering .pdf-card {
-    cursor: pointer;
-}
-
-.ordering .pdf-card:hover {
-    border-color: #4c7fb7;
-}
-
-.ordering .pdf-card:active {
     cursor: pointer;
 }
 
@@ -618,11 +586,11 @@ input[type="file"] {
 .order-number {
     position: absolute;
 
-    top: 10px;
-    left: 10px;
+    top: 8px;
+    left: 8px;
 
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
 
     border-radius: 50%;
 
@@ -635,38 +603,74 @@ input[type="file"] {
     align-items: center;
     justify-content: center;
 
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
 
-    box-shadow:
-        0 3px 8px
-        rgba(53, 106, 165, 0.25);
-
-    z-index: 4;
+    z-index: 8;
 }
 
 
 /* =========================
-   ADD MORE
+   EDITOR CONTROLS
 ========================= */
 
-.add-more {
-    margin-top: 14px;
+.editor-controls {
+    display: none;
+
+    margin-top: 20px;
+}
+
+.editor-controls.active {
+    display: block;
+}
+
+.drag-hint {
+    text-align: center;
+
+    color: #607184;
+
+    font-size: 13px;
+
+    margin:
+        0
+        0
+        16px;
+}
+
+
+/* =========================
+   ORDERING NOTICE
+========================= */
+
+.ordering-notice {
+    display: none;
 
     text-align: center;
+
+    padding: 14px;
+
+    margin-bottom: 18px;
+
+    background: #edf4fb;
+
+    border:
+        1px solid
+        #c7d9ea;
+
+    border-radius: 10px;
+
+    color: #53677b;
+
+    font-size: 13px;
+    line-height: 1.6;
 }
 
-.add-more label {
-    color: #356aa5;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    cursor: pointer;
+.ordering-notice.active {
+    display: block;
 }
 
-.add-more label:hover {
-    color: #244f80;
+.ordering-notice strong {
+    color: #315f98;
 }
 
 
@@ -682,8 +686,6 @@ input[type="file"] {
     gap: 12px;
 
     flex-wrap: wrap;
-
-    margin-top: 25px;
 }
 
 button {
@@ -709,9 +711,6 @@ button:hover {
         translateY(-2px);
 }
 
-
-/* PRIMARY */
-
 .primary-button {
     background: #356aa5;
 
@@ -724,14 +723,7 @@ button:hover {
 
 .primary-button:hover {
     background: #2c5b90;
-
-    box-shadow:
-        0 8px 18px
-        rgba(53, 106, 165, 0.28);
 }
-
-
-/* SECONDARY */
 
 .secondary-button {
     background: #f2f5f8;
@@ -745,13 +737,11 @@ button:hover {
 
 .secondary-button:hover {
     background: #e8edf2;
-
-    border-color: #aebdca;
 }
 
 
 /* =========================
-   AD COLUMN - 200 × 400
+   AD COLUMN
 ========================= */
 
 .ad-column {
@@ -773,7 +763,6 @@ button:hover {
 
     text-align: center;
 
-    /* STAYS VISIBLE WHILE SCROLLING */
     position: sticky;
 
     top: 12px;
@@ -811,11 +800,7 @@ button:hover {
 
     position: fixed;
 
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
+    inset: 0;
 
     background:
         rgba(30, 42, 55, 0.55);
@@ -831,11 +816,6 @@ button:hover {
 .modal.active {
     display: flex;
 }
-
-
-/* =========================
-   MODAL BOX
-========================= */
 
 .modal-box {
     width: 100%;
@@ -878,49 +858,6 @@ button:hover {
     color: #607184;
 
     line-height: 1.6;
-}
-
-
-/* =========================
-   INSTRUCTION EXAMPLE
-========================= */
-
-.instruction-example {
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    gap: 10px;
-
-    margin:
-        20px
-        0
-        25px;
-
-    color: #607184;
-}
-
-.instruction-number {
-    width: 40px;
-    height: 40px;
-
-    border-radius: 50%;
-
-    background: #e8f0fb;
-
-    border:
-        1px solid
-        #c7d9ea;
-
-    color: #356aa5;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    font-weight: bold;
 }
 
 
@@ -999,11 +936,7 @@ footer {
     footer,
     .modal-box {
         background: #222d38;
-
         border-color: #3b4a58;
-
-        box-shadow:
-            0 5px 14px rgba(0, 0, 0, 0.20);
     }
 
     .logo-tool {
@@ -1016,90 +949,58 @@ footer {
 
     .search-container input {
         background: #1b2530;
-
         border-color: #3b4a58;
-
         color: #e4ebf1;
     }
 
-    .search-container input::placeholder {
-        color: #8795a3;
-    }
-
-    .search-icon {
-        color: #9aabba;
-    }
-
     .tool-heading h1,
-    .upload-area h2,
+    .upload-placeholder h2,
     .pdf-name,
     .modal-box h2 {
         color: #e4ebf1;
     }
 
     .tool-heading p,
-    .upload-area p,
+    .upload-placeholder p,
     .drag-hint,
-    .modal-box p {
+    .modal-box p,
+    .uploaded-title {
         color: #aebdca;
     }
 
     .upload-area {
         background: #1b2631;
-
         border-color: #506170;
     }
 
     .upload-area:hover {
         background: #202e3a;
-
-        border-color: #5d93c7;
     }
 
     .upload-icon {
         background: #27384a;
     }
 
-    .ordering-notice {
-        background: #20303f;
-
-        border-color: #38516a;
-
-        color: #b8c8d7;
-    }
-
-    .ordering-notice strong {
-        color: #78afe4;
-    }
-
     .pdf-card {
         background: #26323d;
-
         border-color: #455563;
-    }
-
-    .pdf-card:hover {
-        background: #2b3945;
-
-        border-color: #6c93b8;
     }
 
     .pdf-preview {
         background: #1b2530;
-
         border-color: #3b4a58;
+    }
+
+    .ordering-notice {
+        background: #20303f;
+        border-color: #38516a;
+        color: #b8c8d7;
     }
 
     .secondary-button {
         background: #2a3743;
-
         color: #dce5ed;
-
         border-color: #485967;
-    }
-
-    .secondary-button:hover {
-        background: #34434f;
     }
 
     .ad-label {
@@ -1110,35 +1011,8 @@ footer {
         color: #dce5ed;
     }
 
-    footer {
-        color: #aebdca;
-    }
-
     .footer-links a {
         color: #c8d3dd;
-    }
-
-    .footer-links a + a {
-        border-left-color: #526170;
-    }
-
-}
-
-
-/* =========================
-   TABLET
-========================= */
-
-@media (max-width: 850px) {
-
-    .page-layout {
-        grid-template-columns:
-            minmax(0, 1fr)
-            180px;
-    }
-
-    .ad-column {
-        width: 180px;
     }
 
 }
@@ -1224,16 +1098,6 @@ footer {
         width: 100%;
     }
 
-    .tool-heading h1 {
-        font-size: 28px;
-    }
-
-    .upload-area {
-        padding:
-            40px
-            15px;
-    }
-
     .pdf-grid {
         grid-template-columns:
             repeat(2, 1fr);
@@ -1242,15 +1106,11 @@ footer {
     }
 
     .pdf-preview {
-        height: 125px;
+        height: 110px;
     }
 
-    .pdf-card {
-        padding: 8px;
-    }
-
-    .pdf-name {
-        font-size: 11px;
+    .upload-area {
+        padding: 20px 12px;
     }
 
     .button-row {
@@ -1332,7 +1192,7 @@ footer {
 
 
 <!-- =========================
-     MAIN CONTENT + AD
+     MAIN CONTENT
 ========================= -->
 
 <main class="page-layout">
@@ -1364,22 +1224,64 @@ footer {
         <section class="tool-box">
 
 
+            <!-- CLICKABLE UPLOAD AREA -->
+
             <label
                 for="pdfInput"
                 class="upload-area"
             >
 
-                <div class="upload-icon">
-                    📄
+
+                <!-- BEFORE UPLOAD -->
+
+                <div
+                    class="upload-placeholder"
+                    id="uploadPlaceholder"
+                >
+
+                    <div class="upload-icon">
+                        📄
+                    </div>
+
+                    <h2>
+                        Select PDF Files
+                    </h2>
+
+                    <p>
+                        Choose two or more PDF files to merge.
+                    </p>
+
                 </div>
 
-                <h2>
-                    Select PDF Files
-                </h2>
 
-                <p>
-                    Choose two or more PDF files to merge.
-                </p>
+
+                <!-- AFTER UPLOAD -->
+
+                <div
+                    class="uploaded-files"
+                    id="uploadedFiles"
+                >
+
+                    <div
+                        class="uploaded-title"
+                    >
+                        Selected PDF Files
+                    </div>
+
+
+                    <div
+                        class="pdf-grid"
+                        id="pdfGrid"
+                    >
+                    </div>
+
+
+                    <div class="add-more-text">
+                        Click anywhere in this box to add more PDF files
+                    </div>
+
+                </div>
+
 
             </label>
 
@@ -1392,9 +1294,12 @@ footer {
             >
 
 
+
+            <!-- CONTROLS -->
+
             <div
-                class="editor"
-                id="editor"
+                class="editor-controls"
+                id="editorControls"
             >
 
 
@@ -1412,10 +1317,6 @@ footer {
                     Click each PDF in the exact order
                     you want it to appear.
 
-                    <br>
-
-                    The numbers show the final order.
-
                 </div>
 
 
@@ -1423,28 +1324,11 @@ footer {
                     class="drag-hint"
                     id="dragHint"
                 >
-                    Drag and drop PDF previews to quickly change their order.
+                    Drag and drop PDF previews to change their order.
                 </p>
 
 
-                <div
-                    class="pdf-grid"
-                    id="pdfGrid"
-                >
-                </div>
-
-
-                <div class="add-more">
-
-                    <label for="pdfInput">
-                        + Add More PDF Files
-                    </label>
-
-                </div>
-
-
                 <div class="button-row">
-
 
                     <button
                         class="secondary-button"
@@ -1470,7 +1354,6 @@ footer {
                         Merge PDFs
                     </button>
 
-
                 </div>
 
 
@@ -1484,7 +1367,7 @@ footer {
 
 
 
-    <!-- STICKY 200 × 400 AD -->
+    <!-- AD -->
 
     <aside class="ad-column">
 
@@ -1502,75 +1385,6 @@ footer {
 
 
 </main>
-
-
-
-<!-- =========================
-     CHANGE ORDER MODAL
-========================= -->
-
-<div
-    class="modal"
-    id="orderModal"
->
-
-    <div class="modal-box">
-
-
-        <div class="modal-icon">
-            🔢
-        </div>
-
-
-        <h2>
-            Choose the New Order
-        </h2>
-
-
-        <p>
-            Click each PDF in the exact order
-            you want it to appear in your final PDF.
-        </p>
-
-
-        <div class="instruction-example">
-
-            <div class="instruction-number">
-                1
-            </div>
-
-            →
-
-            <div class="instruction-number">
-                2
-            </div>
-
-            →
-
-            <div class="instruction-number">
-                3
-            </div>
-
-        </div>
-
-
-        <p>
-            Each PDF you click will receive
-            a number showing its position.
-        </p>
-
-
-        <button
-            class="primary-button"
-            id="startOrderingButton"
-        >
-            Start Choosing Order
-        </button>
-
-
-    </div>
-
-</div>
 
 
 
@@ -1620,7 +1434,9 @@ footer {
 
 
 
-<!-- PDF.JS -->
+<!-- =========================
+     PDF.JS
+========================= -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
@@ -1635,11 +1451,17 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 const pdfInput =
     document.getElementById("pdfInput");
 
-const editor =
-    document.getElementById("editor");
-
 const pdfGrid =
     document.getElementById("pdfGrid");
+
+const uploadPlaceholder =
+    document.getElementById("uploadPlaceholder");
+
+const uploadedFiles =
+    document.getElementById("uploadedFiles");
+
+const editorControls =
+    document.getElementById("editorControls");
 
 const changeOrderButton =
     document.getElementById("changeOrderButton");
@@ -1649,12 +1471,6 @@ const doneOrderingButton =
 
 const mergeButton =
     document.getElementById("mergeButton");
-
-const orderModal =
-    document.getElementById("orderModal");
-
-const startOrderingButton =
-    document.getElementById("startOrderingButton");
 
 const orderingNotice =
     document.getElementById("orderingNotice");
@@ -1691,7 +1507,9 @@ pdfInput.addEventListener(
 
                     pdfFiles.push({
                         file: file,
-                        id: Date.now() + Math.random()
+                        id:
+                            Date.now() +
+                            Math.random()
                     });
 
                 }
@@ -1700,17 +1518,60 @@ pdfInput.addEventListener(
         );
 
 
-        if (pdfFiles.length > 0) {
-            editor.style.display = "block";
-        }
-
+        updateInterface();
 
         renderPDFs();
+
+
+        /* Allows selecting same file again */
 
         pdfInput.value = "";
 
     }
 );
+
+
+/* =========================
+   UPDATE INTERFACE
+========================= */
+
+function updateInterface() {
+
+    if (pdfFiles.length > 0) {
+
+        uploadPlaceholder.style.display =
+            "none";
+
+
+        uploadedFiles.classList.add(
+            "active"
+        );
+
+
+        editorControls.classList.add(
+            "active"
+        );
+
+    }
+
+    else {
+
+        uploadPlaceholder.style.display =
+            "flex";
+
+
+        uploadedFiles.classList.remove(
+            "active"
+        );
+
+
+        editorControls.classList.remove(
+            "active"
+        );
+
+    }
+
+}
 
 
 /* =========================
@@ -1742,6 +1603,31 @@ function renderPDFs() {
                 !orderingMode;
 
 
+            /* Prevent label from opening file picker
+               when clicking a PDF card */
+
+            card.addEventListener(
+                "click",
+                function(event) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+
+                    if (orderingMode) {
+
+                        selectPDFOrder(
+                            item.id
+                        );
+
+                    }
+
+                }
+            );
+
+
+            /* DRAG START */
+
             card.addEventListener(
                 "dragstart",
                 function(event) {
@@ -1754,18 +1640,19 @@ function renderPDFs() {
                     }
 
 
-                    draggedId = item.id;
+                    draggedId =
+                        item.id;
+
 
                     card.classList.add(
                         "dragging"
                     );
 
-                    event.dataTransfer.effectAllowed =
-                        "move";
-
                 }
             );
 
+
+            /* DRAG END */
 
             card.addEventListener(
                 "dragend",
@@ -1773,13 +1660,16 @@ function renderPDFs() {
 
                     draggedId = null;
 
+
                     card.classList.remove(
                         "dragging"
                     );
 
 
                     document
-                        .querySelectorAll(".pdf-card")
+                        .querySelectorAll(
+                            ".pdf-card"
+                        )
                         .forEach(
                             function(otherCard) {
 
@@ -1794,6 +1684,8 @@ function renderPDFs() {
             );
 
 
+            /* DRAG OVER */
+
             card.addEventListener(
                 "dragover",
                 function(event) {
@@ -1802,10 +1694,14 @@ function renderPDFs() {
                         return;
                     }
 
+
                     event.preventDefault();
 
 
-                    if (draggedId !== item.id) {
+                    if (
+                        draggedId !==
+                        item.id
+                    ) {
 
                         card.classList.add(
                             "drag-over"
@@ -1816,6 +1712,8 @@ function renderPDFs() {
                 }
             );
 
+
+            /* DRAG LEAVE */
 
             card.addEventListener(
                 "dragleave",
@@ -1829,6 +1727,8 @@ function renderPDFs() {
             );
 
 
+            /* DROP */
+
             card.addEventListener(
                 "drop",
                 function(event) {
@@ -1837,7 +1737,9 @@ function renderPDFs() {
                         return;
                     }
 
+
                     event.preventDefault();
+
 
                     card.classList.remove(
                         "drag-over"
@@ -1855,7 +1757,12 @@ function renderPDFs() {
                     const draggedIndex =
                         pdfFiles.findIndex(
                             function(pdf) {
-                                return pdf.id === draggedId;
+
+                                return (
+                                    pdf.id ===
+                                    draggedId
+                                );
+
                             }
                         );
 
@@ -1863,17 +1770,14 @@ function renderPDFs() {
                     const targetIndex =
                         pdfFiles.findIndex(
                             function(pdf) {
-                                return pdf.id === item.id;
+
+                                return (
+                                    pdf.id ===
+                                    item.id
+                                );
+
                             }
                         );
-
-
-                    if (
-                        draggedIndex === -1 ||
-                        targetIndex === -1
-                    ) {
-                        return;
-                    }
 
 
                     const movedPDF =
@@ -1896,53 +1800,78 @@ function renderPDFs() {
             );
 
 
+            /* PREVIEW */
+
             const preview =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             preview.className =
                 "pdf-preview";
 
 
             const canvas =
-                document.createElement("canvas");
+                document.createElement(
+                    "canvas"
+                );
 
-            preview.appendChild(canvas);
 
+            preview.appendChild(
+                canvas
+            );
+
+
+            /* FILE NAME */
 
             const name =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             name.className =
                 "pdf-name";
+
 
             name.textContent =
                 item.file.name;
 
 
+            /* REMOVE BUTTON */
+
             const removeButton =
-                document.createElement("button");
+                document.createElement(
+                    "button"
+                );
+
 
             removeButton.className =
                 "remove-button";
 
+
             removeButton.innerHTML =
                 "×";
-
-            removeButton.title =
-                "Remove PDF";
 
 
             removeButton.addEventListener(
                 "click",
                 function(event) {
 
+                    event.preventDefault();
                     event.stopPropagation();
 
 
                     pdfFiles =
                         pdfFiles.filter(
                             function(pdf) {
-                                return pdf.id !== item.id;
+
+                                return (
+                                    pdf.id !==
+                                    item.id
+                                );
+
                             }
                         );
 
@@ -1950,45 +1879,42 @@ function renderPDFs() {
                     selectedOrder =
                         selectedOrder.filter(
                             function(id) {
-                                return id !== item.id;
+
+                                return (
+                                    id !==
+                                    item.id
+                                );
+
                             }
                         );
 
 
+                    updateInterface();
+
                     renderPDFs();
 
-
-                    if (pdfFiles.length === 0) {
-                        editor.style.display = "none";
-                    }
-
                 }
             );
 
 
-            card.appendChild(preview);
-
-            card.appendChild(name);
-
-
-            if (!orderingMode) {
-                card.appendChild(removeButton);
-            }
-
-
-            card.addEventListener(
-                "click",
-                function() {
-
-                    if (orderingMode) {
-                        selectPDFOrder(item.id);
-                    }
-
-                }
+            card.appendChild(
+                preview
             );
 
 
-            pdfGrid.appendChild(card);
+            card.appendChild(
+                name
+            );
+
+
+            card.appendChild(
+                removeButton
+            );
+
+
+            pdfGrid.appendChild(
+                card
+            );
 
 
             renderPDFPreview(
@@ -2006,7 +1932,7 @@ function renderPDFs() {
 
 
 /* =========================
-   RENDER PDF PREVIEW
+   PDF PREVIEW
 ========================= */
 
 async function renderPDFPreview(
@@ -2022,7 +1948,8 @@ async function renderPDFPreview(
 
         const pdf =
             await pdfjsLib.getDocument({
-                data: arrayBuffer
+                data:
+                    arrayBuffer
             }).promise;
 
 
@@ -2032,16 +1959,19 @@ async function renderPDFPreview(
 
         const viewport =
             page.getViewport({
-                scale: 0.5
+                scale: 0.45
             });
 
 
         const context =
-            canvas.getContext("2d");
+            canvas.getContext(
+                "2d"
+            );
 
 
         canvas.width =
             viewport.width;
+
 
         canvas.height =
             viewport.height;
@@ -2079,7 +2009,9 @@ changeOrderButton.addEventListener(
     "click",
     function() {
 
-        if (pdfFiles.length < 2) {
+        if (
+            pdfFiles.length < 2
+        ) {
 
             alert(
                 "Please add at least two PDF files."
@@ -2088,27 +2020,6 @@ changeOrderButton.addEventListener(
             return;
 
         }
-
-
-        orderModal.classList.add(
-            "active"
-        );
-
-    }
-);
-
-
-/* =========================
-   START ORDERING
-========================= */
-
-startOrderingButton.addEventListener(
-    "click",
-    function() {
-
-        orderModal.classList.remove(
-            "active"
-        );
 
 
         orderingMode = true;
@@ -2123,11 +2034,6 @@ startOrderingButton.addEventListener(
 
         dragHint.style.display =
             "none";
-
-
-        pdfGrid.classList.add(
-            "ordering"
-        );
 
 
         changeOrderButton.style.display =
@@ -2151,10 +2057,14 @@ startOrderingButton.addEventListener(
 function selectPDFOrder(id) {
 
     const existingIndex =
-        selectedOrder.indexOf(id);
+        selectedOrder.indexOf(
+            id
+        );
 
 
-    if (existingIndex !== -1) {
+    if (
+        existingIndex !== -1
+    ) {
 
         selectedOrder.splice(
             existingIndex,
@@ -2165,7 +2075,9 @@ function selectPDFOrder(id) {
 
     else {
 
-        selectedOrder.push(id);
+        selectedOrder.push(
+            id
+        );
 
     }
 
@@ -2191,7 +2103,9 @@ function updateOrderNumbers() {
         function(card) {
 
             const id =
-                Number(card.dataset.id);
+                Number(
+                    card.dataset.id
+                );
 
 
             const oldBadge =
@@ -2201,7 +2115,9 @@ function updateOrderNumbers() {
 
 
             if (oldBadge) {
+
                 oldBadge.remove();
+
             }
 
 
@@ -2210,13 +2126,19 @@ function updateOrderNumbers() {
             );
 
 
-            if (orderingMode) {
+            if (
+                orderingMode
+            ) {
 
                 const position =
-                    selectedOrder.indexOf(id);
+                    selectedOrder.indexOf(
+                        id
+                    );
 
 
-                if (position !== -1) {
+                if (
+                    position !== -1
+                ) {
 
                     const badge =
                         document.createElement(
@@ -2259,7 +2181,9 @@ doneOrderingButton.addEventListener(
     "click",
     function() {
 
-        if (selectedOrder.length > 0) {
+        if (
+            selectedOrder.length > 0
+        ) {
 
             const newlyOrdered = [];
 
@@ -2270,13 +2194,22 @@ doneOrderingButton.addEventListener(
                     const pdf =
                         pdfFiles.find(
                             function(item) {
-                                return item.id === id;
+
+                                return (
+                                    item.id ===
+                                    id
+                                );
+
                             }
                         );
 
 
                     if (pdf) {
-                        newlyOrdered.push(pdf);
+
+                        newlyOrdered.push(
+                            pdf
+                        );
+
                     }
 
                 }
@@ -2292,7 +2225,9 @@ doneOrderingButton.addEventListener(
                         )
                     ) {
 
-                        newlyOrdered.push(pdf);
+                        newlyOrdered.push(
+                            pdf
+                        );
 
                     }
 
@@ -2320,11 +2255,6 @@ doneOrderingButton.addEventListener(
             "block";
 
 
-        pdfGrid.classList.remove(
-            "ordering"
-        );
-
-
         changeOrderButton.style.display =
             "inline-block";
 
@@ -2340,14 +2270,16 @@ doneOrderingButton.addEventListener(
 
 
 /* =========================
-   MERGE PDFs
+   MERGE BUTTON
 ========================= */
 
 mergeButton.addEventListener(
     "click",
     function() {
 
-        if (pdfFiles.length < 2) {
+        if (
+            pdfFiles.length < 2
+        ) {
 
             alert(
                 "Please select at least two PDF files to merge."
@@ -2359,28 +2291,8 @@ mergeButton.addEventListener(
 
 
         alert(
-            "PDF merging functionality will be added here."
+            "PDF merging functionality will be added next."
         );
-
-    }
-);
-
-
-/* =========================
-   CLOSE MODAL
-========================= */
-
-orderModal.addEventListener(
-    "click",
-    function(event) {
-
-        if (event.target === orderModal) {
-
-            orderModal.classList.remove(
-                "active"
-            );
-
-        }
 
     }
 );
