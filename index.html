@@ -216,7 +216,7 @@ header {
     width: 100%;
     height: 100%;
 
-    padding: 14px 26px;
+    padding: 10px 24px;
 
     display: grid;
 
@@ -264,167 +264,403 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    overflow: visible;
 }
 
 
 /* =========================
-   TOOL CARD GROUP
+   TOOL GROUP
 ========================= */
 
 .tool-group {
     position: relative;
 
-    width: 100%;
-    max-width: 500px;
-    height: 100px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 390px;
+    height: 108px;
 }
 
 
 /* =========================
-   HERO TOOL CARDS
+   DECORATIVE CURVES
+========================= */
+
+.curve {
+    position: absolute;
+
+    border: 1.5px solid rgba(73, 157, 178, 0.20);
+
+    border-left: none;
+    border-bottom: none;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+.curve-1 {
+    width: 170px;
+    height: 90px;
+
+    left: 100px;
+    top: 18px;
+
+    transform: rotate(-18deg);
+}
+
+.curve-2 {
+    width: 125px;
+    height: 75px;
+
+    left: 140px;
+    top: 30px;
+
+    transform: rotate(18deg);
+
+    border-color: rgba(73, 157, 178, 0.14);
+}
+
+
+/* =========================
+   DECORATIVE DOTS
+========================= */
+
+.dot {
+    position: absolute;
+
+    display: block;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+.dot-blue {
+    background: #2e6aa6;
+}
+
+.dot-teal {
+    background: #3d93a8;
+}
+
+.dot-orange {
+    background: #f3a83b;
+}
+
+
+/* Dot positions */
+
+.dot-1 {
+    width: 5px;
+    height: 5px;
+
+    top: 5px;
+    left: 12px;
+}
+
+.dot-2 {
+    width: 9px;
+    height: 9px;
+
+    top: 2px;
+    left: 90px;
+}
+
+.dot-3 {
+    width: 7px;
+    height: 7px;
+
+    top: 12px;
+    left: 190px;
+}
+
+.dot-4 {
+    width: 5px;
+    height: 5px;
+
+    top: 4px;
+    right: 40px;
+}
+
+.dot-5 {
+    width: 9px;
+    height: 9px;
+
+    top: 42px;
+    left: 4px;
+}
+
+.dot-6 {
+    width: 5px;
+    height: 5px;
+
+    bottom: 18px;
+    left: 25px;
+}
+
+.dot-7 {
+    width: 7px;
+    height: 7px;
+
+    top: 44px;
+    right: 5px;
+}
+
+.dot-8 {
+    width: 9px;
+    height: 9px;
+
+    bottom: 8px;
+    right: 25px;
+}
+
+
+/* Extra dots for fuller visual */
+
+.dot-9 {
+    width: 4px;
+    height: 4px;
+
+    bottom: 3px;
+    left: 120px;
+}
+
+.dot-10 {
+    width: 6px;
+    height: 6px;
+
+    top: 24px;
+    right: 75px;
+}
+
+.dot-11 {
+    width: 4px;
+    height: 4px;
+
+    bottom: 12px;
+    left: 205px;
+}
+
+
+/* =========================
+   TOP TOOL CARDS
 ========================= */
 
 .tool-card {
-    position: relative;
+    position: absolute;
 
-    width: 120px;
-    height: 76px;
-
-    margin-left: -8px;
+    width: 92px;
+    height: 46px;
 
     background: #ffffff;
 
-    border-radius: 10px;
+    border-radius: 8px;
 
     display: flex;
-    flex-direction: column;
-
     align-items: center;
     justify-content: center;
 
-    gap: 5px;
+    gap: 6px;
 
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
 
-    letter-spacing: 0.1px;
-
     box-shadow:
-        0 5px 12px rgba(40, 55, 70, 0.13);
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-
-    z-index: 1;
-}
-
-.tool-card:first-child {
-    margin-left: 0;
-}
-
-.tool-card:hover {
-    transform: translateY(-3px);
-}
-
-
-/* =========================
-   CARD ICONS
-========================= */
-
-.card-icon {
-    font-size: 23px;
-    line-height: 1;
-}
-
-
-/* =========================
-   PDF CARD
-========================= */
-
-.pdf-card {
-    background:
-        linear-gradient(
-            135deg,
-            #fff5f1,
-            #ffe6dc
-        );
-
-    border: 1px solid #efb8a4;
-
-    color: #c95032;
-
-    transform: rotate(-3deg);
-}
-
-
-/* =========================
-   TEXT CARD
-========================= */
-
-.text-card {
-    background:
-        linear-gradient(
-            135deg,
-            #eef6ff,
-            #dcecff
-        );
-
-    border: 1px solid #a8c7e9;
-
-    color: #2d65a6;
-
-    transform: rotate(2deg);
-
-    z-index: 3;
-}
-
-
-/* =========================
-   CALCULATOR CARD
-========================= */
-
-.calculator-card {
-    background:
-        linear-gradient(
-            135deg,
-            #f5efff,
-            #e8dcff
-        );
-
-    border: 1px solid #c5afe8;
-
-    color: #6543a2;
-
-    transform: rotate(-2deg);
+        0 5px 10px rgba(40, 55, 70, 0.12);
 
     z-index: 2;
 }
 
+.card-icon {
+    font-size: 17px;
+}
 
-/* =========================
-   IMAGE CARD
-========================= */
+
+/* PDF */
+
+.pdf-card {
+    left: 16px;
+    top: 24px;
+
+    transform: rotate(-7deg);
+
+    background: #fff3ef;
+
+    border: 1px solid #efb7a5;
+
+    color: #cf4938;
+}
+
+
+/* TEXT */
+
+.text-card {
+    left: 100px;
+    top: 8px;
+
+    transform: rotate(2deg);
+
+    background: #edf5ff;
+
+    border: 1px solid #aec9e8;
+
+    color: #2d65a6;
+}
+
+
+/* CALCULATOR */
+
+.calculator-card {
+    left: 195px;
+    top: 8px;
+
+    transform: rotate(-2deg);
+
+    background: #f4efff;
+
+    border: 1px solid #c8b7e9;
+
+    color: #5a3d9d;
+}
+
+
+/* IMAGE */
 
 .image-card {
+    left: 282px;
+    top: 24px;
+
+    transform: rotate(7deg);
+
+    background: #eef9f0;
+
+    border: 1px solid #acd4b3;
+
+    color: #287543;
+}
+
+
+/* =========================
+   BOTTOM FOLDERS
+========================= */
+
+.folder {
+    position: absolute;
+
+    bottom: 3px;
+
+    width: 52px;
+    height: 34px;
+
+    border-radius: 6px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    box-shadow:
+        0 4px 9px rgba(30, 50, 70, 0.15);
+
+    z-index: 1;
+}
+
+.folder::before {
+    content: "";
+
+    position: absolute;
+
+    width: 22px;
+    height: 6px;
+
+    top: -5px;
+    left: 5px;
+
+    border-radius: 4px 4px 0 0;
+
+    background: inherit;
+}
+
+
+/* PDF FOLDER */
+
+.folder-pdf {
+    left: 52px;
+
     background:
         linear-gradient(
             135deg,
-            #effaf1,
-            #ddf2e2
+            #f63b36,
+            #df2722
         );
+}
 
-    border: 1px solid #a8d4b0;
 
-    color: #287543;
+/* TEXT FOLDER */
 
-    transform: rotate(3deg);
+.folder-text {
+    left: 122px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #427ab8,
+            #245995
+        );
+}
+
+
+/* CALCULATOR FOLDER */
+
+.folder-calculator {
+    left: 192px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7655bc,
+            #4e3290
+        );
+}
+
+
+/* IMAGE FOLDER */
+
+.folder-image {
+    left: 262px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #459a50,
+            #24783a
+        );
+}
+
+
+/* =========================
+   BASE LINE
+========================= */
+
+.visual-line {
+    position: absolute;
+
+    left: 35px;
+    right: 35px;
+
+    bottom: 0;
+
+    height: 1px;
+
+    background: #718091;
+
+    z-index: 0;
 }
 
 
@@ -656,7 +892,7 @@ header {
 
 
 /* =========================
-   FOOTER - SMALLER
+   FOOTER
 ========================= */
 
 footer {
@@ -766,61 +1002,41 @@ footer {
         color: #6da9e8;
     }
 
+    .tool-card {
+        box-shadow:
+            0 5px 10px rgba(0, 0, 0, 0.20);
+    }
+
     .pdf-card {
-        background:
-            linear-gradient(
-                135deg,
-                #3d2a28,
-                #49312e
-            );
-
-        border-color: #805346;
-
-        color: #f08b70;
+        background: #3a2927;
+        border-color: #6f4a42;
+        color: #ef876d;
     }
 
     .text-card {
-        background:
-            linear-gradient(
-                135deg,
-                #263a4f,
-                #2d465e
-            );
-
+        background: #25394e;
         border-color: #4d759c;
-
         color: #82b8f0;
     }
 
     .calculator-card {
-        background:
-            linear-gradient(
-                135deg,
-                #352b48,
-                #403357
-            );
-
+        background: #352b48;
         border-color: #6d5795;
-
         color: #b99aea;
     }
 
     .image-card {
-        background:
-            linear-gradient(
-                135deg,
-                #263d2d,
-                #2e4935
-            );
-
+        background: #263d2d;
         border-color: #517b5c;
-
         color: #7fc08d;
+    }
+
+    .visual-line {
+        background: #617180;
     }
 
     .category-heading {
         color: #e2eaf1;
-
         border-bottom-color: #3b4a58;
     }
 
@@ -875,25 +1091,13 @@ footer {
         width: 180px;
     }
 
-    .hero {
-        grid-template-columns:
-            38%
-            62%;
-    }
-
     .hero h1 {
         font-size: 24px;
     }
 
-    .tool-card {
-        width: 100px;
-        height: 70px;
-
-        font-size: 10px;
-    }
-
-    .card-icon {
-        font-size: 20px;
+    .tool-group {
+        transform: scale(0.88);
+        transform-origin: center;
     }
 
     .tools-area {
@@ -932,24 +1136,21 @@ footer {
     }
 
     .main-content {
-        height: 150px;
+        height: 210px;
     }
 
     .hero {
-        padding: 15px 18px;
+        grid-template-columns: 1fr;
 
-        grid-template-columns:
-            36%
-            64%;
+        padding: 15px 20px;
     }
 
-    .hero h1 {
-        font-size: 21px;
+    .hero-content {
+        text-align: center;
     }
 
-    .tool-group {
-        transform: scale(0.88);
-        transform-origin: center right;
+    .hero-visual {
+        margin-top: 4px;
     }
 
     .ad-column {
@@ -1006,30 +1207,12 @@ footer {
         width: 100%;
     }
 
-    .main-content {
-        height: 260px;
-    }
-
-    .hero {
-        grid-template-columns: 1fr;
-
-        padding: 20px;
-    }
-
-    .hero-content {
-        text-align: center;
-    }
-
     .hero h1 {
         font-size: 25px;
     }
 
-    .hero-visual {
-        justify-content: center;
-    }
-
     .tool-group {
-        transform: scale(0.92);
+        transform: scale(0.78);
         transform-origin: center;
     }
 
@@ -1064,9 +1247,7 @@ footer {
 <div class="site-wrapper">
 
 
-<!-- =========================
-     HEADER
-========================= -->
+<!-- HEADER -->
 
 <header>
 
@@ -1080,13 +1261,9 @@ footer {
 
             <div class="logo-text">
 
-                <span class="logo-tool">
-                    Tool
-                </span>
+                <span class="logo-tool">Tool</span>
 
-                <span class="logo-nest">
-                    Nest
-                </span>
+                <span class="logo-nest">Nest</span>
 
             </div>
 
@@ -1112,9 +1289,7 @@ footer {
 
 
 
-<!-- =========================
-     MAIN CONTENT + AD
-========================= -->
+<!-- MAIN CONTENT -->
 
 <main class="page-layout">
 
@@ -1151,6 +1326,29 @@ footer {
 
                     <div class="tool-group">
 
+
+                        <!-- CURVES -->
+
+                        <div class="curve curve-1"></div>
+                        <div class="curve curve-2"></div>
+
+
+                        <!-- DOTS -->
+
+                        <span class="dot dot-blue dot-1"></span>
+                        <span class="dot dot-teal dot-2"></span>
+                        <span class="dot dot-orange dot-3"></span>
+                        <span class="dot dot-blue dot-4"></span>
+                        <span class="dot dot-teal dot-5"></span>
+                        <span class="dot dot-orange dot-6"></span>
+                        <span class="dot dot-blue dot-7"></span>
+                        <span class="dot dot-orange dot-8"></span>
+                        <span class="dot dot-teal dot-9"></span>
+                        <span class="dot dot-blue dot-10"></span>
+                        <span class="dot dot-orange dot-11"></span>
+
+
+                        <!-- TOP CARDS -->
 
                         <div class="tool-card pdf-card">
 
@@ -1196,6 +1394,30 @@ footer {
                         </div>
 
 
+                        <!-- FOLDERS -->
+
+                        <div class="folder folder-pdf">
+                            PDF
+                        </div>
+
+                        <div class="folder folder-text">
+                            T
+                        </div>
+
+                        <div class="folder folder-calculator">
+                            ▦
+                        </div>
+
+                        <div class="folder folder-image">
+                            🖼
+                        </div>
+
+
+                        <!-- BASE LINE -->
+
+                        <div class="visual-line"></div>
+
+
                     </div>
 
                 </div>
@@ -1207,9 +1429,7 @@ footer {
 
 
 
-        <!-- =====================
-             TOOLS AREA
-        ====================== -->
+        <!-- TOOLS AREA -->
 
         <section class="tools-area">
 
@@ -1227,7 +1447,6 @@ footer {
 
 
                     <div class="tool-column">
-
 
                         <a href="merge-pdf.html" class="tool-item">
 
@@ -1254,12 +1473,10 @@ footer {
 
                         </a>
 
-
                     </div>
 
 
                     <div class="tool-column">
-
 
                         <a href="pdf-to-images.html" class="tool-item">
 
@@ -1286,9 +1503,7 @@ footer {
 
                         </a>
 
-
                     </div>
-
 
                 </div>
 
@@ -1306,7 +1521,6 @@ footer {
 
 
                 <div class="tool-column">
-
 
                     <a href="word-counter.html" class="tool-item">
 
@@ -1359,7 +1573,6 @@ footer {
 
                     </a>
 
-
                 </div>
 
             </div>
@@ -1376,7 +1589,6 @@ footer {
 
 
                 <div class="tool-column">
-
 
                     <a href="image-compressor.html" class="tool-item">
 
@@ -1402,7 +1614,6 @@ footer {
                         </div>
 
                     </a>
-
 
                 </div>
 
@@ -1437,12 +1648,9 @@ footer {
 
 
 
-<!-- =========================
-     FOOTER
-========================= -->
+<!-- FOOTER -->
 
 <footer>
-
 
     <div class="footer-brand">
 
@@ -1457,24 +1665,12 @@ footer {
 
     <div class="footer-links">
 
-        <a href="#">
-            About
-        </a>
-
-        <a href="#">
-            Privacy Policy
-        </a>
-
-        <a href="#">
-            Terms of Use
-        </a>
-
-        <a href="#">
-            Contact
-        </a>
+        <a href="#">About</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Contact</a>
 
     </div>
-
 
 </footer>
 
