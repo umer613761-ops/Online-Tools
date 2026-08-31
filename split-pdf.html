@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -19,7 +18,6 @@
   >
 
 
-
   <style>
 
     /* ========================================
@@ -31,11 +29,9 @@
     }
 
 
-
     html {
       scroll-behavior: smooth;
     }
-
 
 
     body {
@@ -54,7 +50,6 @@
     }
 
 
-
     /* ========================================
        HEADER
     ======================================== */
@@ -67,7 +62,6 @@
       border-bottom:
         1px solid #dfe5eb;
     }
-
 
 
     .header-inner {
@@ -91,7 +85,6 @@
     }
 
 
-
     /* ========================================
        LOGO
     ======================================== */
@@ -107,7 +100,6 @@
 
       white-space: nowrap;
     }
-
 
 
     .logo-icon {
@@ -140,13 +132,11 @@
     }
 
 
-
     .logo-text {
       font-size: 25px;
 
       letter-spacing: -0.7px;
     }
-
 
 
     .logo-tool {
@@ -156,13 +146,11 @@
     }
 
 
-
     .logo-nest {
       color: #326ba8;
 
       font-weight: 800;
     }
-
 
 
     /* ========================================
@@ -176,7 +164,6 @@
 
       position: relative;
     }
-
 
 
     .header-search input {
@@ -210,13 +197,11 @@
     }
 
 
-
     .header-search input:focus {
       background: #ffffff;
 
       border-color: #7fa6cf;
     }
-
 
 
     .search-icon {
@@ -237,7 +222,6 @@
     }
 
 
-
     /* ========================================
        CATEGORY NAVIGATION
     ======================================== */
@@ -248,7 +232,6 @@
       border-bottom:
         1px solid #dfe5eb;
     }
-
 
 
     .category-nav-inner {
@@ -270,7 +253,6 @@
 
       overflow-x: auto;
     }
-
 
 
     .category-link {
@@ -295,11 +277,9 @@
     }
 
 
-
     .category-link:hover {
       color: #2f67a3;
     }
-
 
 
     .category-link.active {
@@ -307,7 +287,6 @@
 
       font-weight: 600;
     }
-
 
 
     .category-link.active::after {
@@ -332,7 +311,6 @@
     }
 
 
-
     /* ========================================
        PAGE
     ======================================== */
@@ -351,7 +329,6 @@
     }
 
 
-
     .page-layout {
       display: grid;
 
@@ -365,7 +342,6 @@
     }
 
 
-
     /* ========================================
        MAIN CONTENT
     ======================================== */
@@ -373,7 +349,6 @@
     .content {
       min-width: 0;
     }
-
 
 
     .breadcrumb {
@@ -389,7 +364,6 @@
     }
 
 
-
     .breadcrumb a {
       color: #667588;
 
@@ -397,17 +371,14 @@
     }
 
 
-
     .breadcrumb a:hover {
       color: #326ba8;
     }
 
 
-
     .breadcrumb span {
       color: #9aa7b5;
     }
-
 
 
     .breadcrumb strong {
@@ -417,7 +388,6 @@
     }
 
 
-
     /* ========================================
        HEADING
     ======================================== */
@@ -425,7 +395,6 @@
     .heading {
       margin-bottom: 26px;
     }
-
 
 
     .heading h1 {
@@ -444,7 +413,6 @@
     }
 
 
-
     .heading p {
       max-width: 720px;
 
@@ -456,7 +424,6 @@
 
       line-height: 1.6;
     }
-
 
 
     /* ========================================
@@ -480,7 +447,6 @@
     }
 
 
-
     /* ========================================
        UPLOAD AREA
     ======================================== */
@@ -488,8 +454,10 @@
     .upload-area {
       display: block;
 
+      min-height: 240px;
+
       padding:
-        50px
+        36px
         20px;
 
       text-align: center;
@@ -510,13 +478,24 @@
     }
 
 
-
     .upload-area:hover {
       background: #f4f8fc;
 
       border-color: #6f9bc8;
     }
 
+
+    .upload-placeholder {
+      display: flex;
+
+      min-height: 165px;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+    }
 
 
     .upload-icon {
@@ -543,7 +522,6 @@
     }
 
 
-
     .upload-area h2 {
       margin:
         0
@@ -554,7 +532,6 @@
 
       font-size: 20px;
     }
-
 
 
     .upload-area p {
@@ -568,134 +545,169 @@
     }
 
 
-
     input[type="file"] {
       display: none;
     }
 
 
-
     /* ========================================
-       UPLOADED FILE PREVIEWS
+       FILE PREVIEWS
     ======================================== */
 
-    .upload-previews {
+    .file-previews {
       display: none;
 
-      margin-top: 22px;
+      grid-template-columns:
+        repeat(
+          auto-fill,
+          minmax(120px, 1fr)
+        );
+
+      gap: 14px;
+
+      width: 100%;
 
       text-align: left;
     }
 
 
+    .preview-card {
+      position: relative;
 
-    .upload-area.has-files {
-      padding:
-        24px
-        20px;
-    }
+      min-height: 150px;
 
+      padding: 16px
+        12px
+        12px;
 
-
-    .upload-area.has-files .upload-icon {
-      width: 46px;
-      height: 46px;
-
-      margin-bottom: 10px;
-
-      border-radius: 11px;
-
-      font-size: 22px;
-    }
-
-
-
-    .upload-area.has-files h2 {
-      font-size: 18px;
-    }
-
-
-
-    .upload-area.has-files > p {
-      margin-bottom: 4px;
-    }
-
-
-
-    .file-preview {
       display: flex;
+
+      flex-direction: column;
 
       align-items: center;
 
-      gap: 12px;
-
-      padding: 12px;
+      justify-content: center;
 
       background: #ffffff;
 
       border:
         1px solid
-        #dce4eb;
+        #d8e1ea;
 
       border-radius: 9px;
 
-      margin-top: 10px;
+      transition:
+        border-color 0.2s ease,
+        transform 0.2s ease;
     }
 
 
+    .preview-card:hover {
+      border-color: #7fa6cf;
 
-    .preview-file-icon {
-      width: 42px;
-      height: 42px;
+      transform:
+        translateY(-2px);
+    }
 
-      flex-shrink: 0;
+
+    .preview-icon {
+      width: 52px;
+      height: 64px;
+
+      margin-bottom: 12px;
 
       display: flex;
 
       align-items: center;
       justify-content: center;
 
-      background: #eaf1f8;
+      background: #eef3f8;
 
-      border-radius: 9px;
+      border:
+        1px solid
+        #d9e3ed;
 
-      font-size: 20px;
+      border-radius: 7px;
+
+      color: #326ba8;
+
+      font-size: 27px;
     }
 
 
+    .preview-name {
+      width: 100%;
 
-    .preview-file-details {
-      flex: 1;
+      color: #3b4a5c;
 
-      min-width: 0;
-    }
-
-
-
-    .preview-file-name {
-      color: #304052;
-
-      font-size: 14px;
+      font-size: 12px;
 
       font-weight: 700;
+
+      text-align: center;
 
       white-space: nowrap;
 
       overflow: hidden;
 
       text-overflow: ellipsis;
-
-      margin-bottom: 4px;
     }
 
 
+    .preview-pages {
+      margin-top: 5px;
 
-    .preview-file-pages {
-      color: #7b8998;
+      color: #8491a0;
 
-      font-size: 13px;
+      font-size: 11px;
+
+      text-align: center;
     }
 
+
+    .preview-remove {
+      position: absolute;
+
+      top: 7px;
+      right: 7px;
+
+      width: 24px;
+      height: 24px;
+
+      padding: 0;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border:
+        1px solid
+        #d9e1e8;
+
+      border-radius: 50%;
+
+      background: #ffffff;
+
+      color: #718096;
+
+      font-size: 16px;
+
+      line-height: 1;
+
+      cursor: pointer;
+
+      z-index: 2;
+    }
+
+
+    .preview-remove:hover {
+      background: #f5f7f9;
+
+      color: #334155;
+
+      transform: none;
+    }
 
 
     /* ========================================
@@ -707,7 +719,6 @@
 
       margin-top: 26px;
     }
-
 
 
     /* ========================================
@@ -735,7 +746,6 @@
     }
 
 
-
     .file-icon {
       width: 48px;
       height: 48px;
@@ -755,13 +765,11 @@
     }
 
 
-
     .file-details {
       flex: 1;
 
       min-width: 0;
     }
-
 
 
     .file-name {
@@ -781,13 +789,11 @@
     }
 
 
-
     .file-pages {
       color: #7b8998;
 
       font-size: 14px;
     }
-
 
 
     /* ========================================
@@ -806,7 +812,6 @@
     }
 
 
-
     .option-box {
       padding: 18px;
 
@@ -818,7 +823,6 @@
 
       border-radius: 10px;
     }
-
 
 
     .radio-option {
@@ -838,11 +842,9 @@
     }
 
 
-
     .radio-option + .radio-option {
       margin-top: 12px;
     }
-
 
 
     .radio-option:hover {
@@ -850,7 +852,6 @@
 
       background: #fbfdff;
     }
-
 
 
     .radio-option > label {
@@ -870,7 +871,6 @@
     }
 
 
-
     .radio-option input[type="radio"] {
       width: 17px;
       height: 17px;
@@ -879,7 +879,6 @@
 
       cursor: pointer;
     }
-
 
 
     .option-description {
@@ -895,7 +894,6 @@
 
       line-height: 1.5;
     }
-
 
 
     /* ========================================
@@ -919,7 +917,6 @@
     }
 
 
-
     .range-section label {
       display: block;
 
@@ -931,7 +928,6 @@
 
       font-weight: 700;
     }
-
 
 
     .range-section input {
@@ -959,7 +955,6 @@
     }
 
 
-
     .range-section input:focus {
       border-color: #5f92c5;
 
@@ -967,7 +962,6 @@
         0 0 0 3px
         rgba(50, 107, 168, 0.10);
     }
-
 
 
     .range-help {
@@ -982,7 +976,6 @@
     }
 
 
-
     /* ========================================
        BUTTONS
     ======================================== */
@@ -994,7 +987,6 @@
 
       margin-top: 24px;
     }
-
 
 
     button {
@@ -1019,12 +1011,10 @@
     }
 
 
-
     button:hover:not(:disabled) {
       transform:
         translateY(-1px);
     }
-
 
 
     button:disabled {
@@ -1032,7 +1022,6 @@
 
       cursor: not-allowed;
     }
-
 
 
     .primary-button {
@@ -1050,11 +1039,9 @@
     }
 
 
-
     .primary-button:hover:not(:disabled) {
       background: #285b91;
     }
-
 
 
     .secondary-button {
@@ -1068,11 +1055,9 @@
     }
 
 
-
     .secondary-button:hover:not(:disabled) {
       background: #f5f7f9;
     }
-
 
 
     /* ========================================
@@ -1102,7 +1087,6 @@
     }
 
 
-
     /* ========================================
        ADVERTISEMENT
     ======================================== */
@@ -1114,7 +1098,6 @@
 
       top: 20px;
     }
-
 
 
     .ad-box {
@@ -1144,11 +1127,9 @@
     }
 
 
-
     .ad-content {
       width: 100%;
     }
-
 
 
     .ad-label {
@@ -1162,7 +1143,6 @@
 
       letter-spacing: 1.5px;
     }
-
 
 
     .sample-ad {
@@ -1181,7 +1161,6 @@
 
       border-radius: 9px;
     }
-
 
 
     .sample-ad-badge {
@@ -1207,7 +1186,6 @@
     }
 
 
-
     .sample-ad h3 {
       margin:
         0
@@ -1222,7 +1200,6 @@
     }
 
 
-
     .sample-ad p {
       margin:
         0
@@ -1235,7 +1212,6 @@
 
       line-height: 1.5;
     }
-
 
 
     .sample-ad-button {
@@ -1261,7 +1237,6 @@
     }
 
 
-
     /* ========================================
        FOOTER
     ======================================== */
@@ -1273,7 +1248,6 @@
         1px solid
         #dfe5eb;
     }
-
 
 
     .footer-inner {
@@ -1300,13 +1274,11 @@
     }
 
 
-
     .footer-links {
       display: flex;
 
       gap: 20px;
     }
-
 
 
     .footer-links a {
@@ -1316,11 +1288,9 @@
     }
 
 
-
     .footer-links a:hover {
       color: #326ba8;
     }
-
 
 
     /* ========================================
@@ -1334,13 +1304,11 @@
       }
 
 
-
       .ad-column {
         width: 100%;
 
         position: static;
       }
-
 
 
       .ad-box {
@@ -1349,7 +1317,6 @@
       }
 
     }
-
 
 
     /* ========================================
@@ -1364,11 +1331,9 @@
       }
 
 
-
       .header-search {
         max-width: 260px;
       }
-
 
 
       .category-nav-inner {
@@ -1380,7 +1345,6 @@
       }
 
 
-
       .page-wrapper {
         padding:
           28px
@@ -1389,11 +1353,9 @@
       }
 
 
-
       .heading h1 {
         font-size: 31px;
       }
-
 
 
       .tool-box {
@@ -1401,13 +1363,17 @@
       }
 
 
+      .file-previews {
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
 
       .footer-inner {
         padding: 22px 16px;
       }
 
     }
-
 
 
     /* ========================================
@@ -1425,11 +1391,9 @@
       }
 
 
-
       .logo {
         align-self: flex-start;
       }
-
 
 
       .header-search {
@@ -1437,11 +1401,9 @@
       }
 
 
-
       .heading h1 {
         font-size: 29px;
       }
-
 
 
       .heading p {
@@ -1449,13 +1411,24 @@
       }
 
 
-
       .upload-area {
         padding:
-          40px
-          15px;
+          25px
+          12px;
       }
 
+
+      .file-previews {
+        grid-template-columns:
+          repeat(2, 1fr);
+
+        gap: 10px;
+      }
+
+
+      .preview-card {
+        min-height: 135px;
+      }
 
 
       .buttons {
@@ -1463,12 +1436,10 @@
       }
 
 
-
       .primary-button,
       .secondary-button {
         width: 100%;
       }
-
 
 
       .footer-inner {
@@ -1484,9 +1455,7 @@
 </head>
 
 
-
 <body>
-
 
 
   <!-- ========================================
@@ -1497,6 +1466,7 @@
 
     <div class="header-inner">
 
+
       <a
         href="index.html"
         class="logo"
@@ -1505,7 +1475,6 @@
         <div class="logo-icon">
           T
         </div>
-
 
 
         <div class="logo-text">
@@ -1523,7 +1492,6 @@
       </a>
 
 
-
       <div class="header-search">
 
         <input
@@ -1538,10 +1506,10 @@
 
       </div>
 
+
     </div>
 
   </header>
-
 
 
   <!-- ========================================
@@ -1560,14 +1528,12 @@
       </a>
 
 
-
       <a
         href="index.html"
         class="category-link active"
       >
         PDF Tools
       </a>
-
 
 
       <a
@@ -1578,14 +1544,12 @@
       </a>
 
 
-
       <a
         href="index.html"
         class="category-link"
       >
         Image Tools
       </a>
-
 
 
       <a
@@ -1600,7 +1564,6 @@
   </nav>
 
 
-
   <!-- ========================================
        PAGE
   ======================================== -->
@@ -1610,13 +1573,9 @@
     <div class="page-layout">
 
 
-
-      <!-- ========================================
-           MAIN CONTENT
-      ======================================== -->
+      <!-- MAIN CONTENT -->
 
       <section class="content">
-
 
 
         <!-- Breadcrumb -->
@@ -1646,7 +1605,6 @@
         </div>
 
 
-
         <!-- Heading -->
 
         <div class="heading">
@@ -1663,13 +1621,9 @@
         </div>
 
 
-
-        <!-- ========================================
-             TOOL BOX
-        ======================================== -->
+        <!-- TOOL BOX -->
 
         <div class="tool-box">
-
 
 
           <!-- Upload -->
@@ -1677,37 +1631,43 @@
           <label
             for="pdfInput"
             class="upload-area"
-            id="uploadArea"
           >
 
-            <div class="upload-icon">
-              📄
+
+            <!-- This disappears after files are uploaded -->
+
+            <div
+              class="upload-placeholder"
+              id="uploadPlaceholder"
+            >
+
+              <div class="upload-icon">
+                📄
+              </div>
+
+
+              <h2>
+                Upload PDF Files
+              </h2>
+
+
+              <p>
+                Click here to choose PDF files from your device.
+              </p>
+
             </div>
 
 
-
-            <h2>
-              Upload PDF Files
-            </h2>
-
-
-
-            <p>
-              Click here to choose PDF files from your device.
-            </p>
-
-
-
-            <!-- Uploaded File Previews -->
+            <!-- Uploaded file previews appear here -->
 
             <div
-              class="upload-previews"
-              id="uploadPreviews"
+              class="file-previews"
+              id="filePreviews"
             >
             </div>
 
-          </label>
 
+          </label>
 
 
           <input
@@ -1718,16 +1678,12 @@
           >
 
 
-
-          <!-- ========================================
-               EDITOR
-          ======================================== -->
+          <!-- EDITOR -->
 
           <div
             class="editor"
             id="editor"
           >
-
 
 
             <!-- File Information -->
@@ -1739,7 +1695,6 @@
               </div>
 
 
-
               <div class="file-details">
 
                 <div
@@ -1747,7 +1702,6 @@
                   id="fileName"
                 >
                 </div>
-
 
 
                 <div
@@ -1761,7 +1715,6 @@
             </div>
 
 
-
             <!-- Options -->
 
             <h2 class="options-title">
@@ -1769,9 +1722,7 @@
             </h2>
 
 
-
             <div class="option-box">
-
 
 
               <!-- Split All -->
@@ -1792,13 +1743,11 @@
                 </label>
 
 
-
                 <p class="option-description">
                   Every page will be saved as a separate PDF file.
                 </p>
 
               </div>
-
 
 
               <!-- Selected Pages -->
@@ -1818,11 +1767,9 @@
                 </label>
 
 
-
                 <p class="option-description">
                   Choose which pages you want to extract.
                 </p>
-
 
 
                 <!-- Page Range -->
@@ -1837,13 +1784,11 @@
                   </label>
 
 
-
                   <input
                     type="text"
                     id="pageRange"
                     placeholder="Example: 1-3 or 1,3,5"
                   >
-
 
 
                   <p class="range-help">
@@ -1855,7 +1800,6 @@
               </div>
 
             </div>
-
 
 
             <!-- Buttons -->
@@ -1870,7 +1814,6 @@
               </button>
 
 
-
               <button
                 class="secondary-button"
                 id="newFileButton"
@@ -1882,7 +1825,6 @@
             </div>
 
 
-
             <!-- Status -->
 
             <div
@@ -1891,17 +1833,17 @@
             >
             </div>
 
+
           </div>
 
+
         </div>
+
 
       </section>
 
 
-
-      <!-- ========================================
-           ADVERTISEMENT
-      ======================================== -->
+      <!-- ADVERTISEMENT -->
 
       <aside class="ad-column">
 
@@ -1914,13 +1856,11 @@
             </div>
 
 
-
             <div class="sample-ad">
 
               <div class="sample-ad-badge">
                 TOOLNEST
               </div>
-
 
 
               <h3>
@@ -1929,11 +1869,9 @@
               </h3>
 
 
-
               <p>
                 Fast, free and easy-to-use online tools for everyday tasks.
               </p>
-
 
 
               <div class="sample-ad-button">
@@ -1942,21 +1880,20 @@
 
             </div>
 
+
           </div>
 
         </div>
 
       </aside>
 
+
     </div>
 
   </main>
 
 
-
-  <!-- ========================================
-       FOOTER
-  ======================================== -->
+  <!-- FOOTER -->
 
   <footer>
 
@@ -1965,7 +1902,6 @@
       <div>
         © 2026 ToolNest · Simple, Fast &amp; Free
       </div>
-
 
 
       <div class="footer-links">
@@ -1993,11 +1929,9 @@
   </footer>
 
 
-
   <!-- PDF LIBRARY -->
 
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
-
 
 
   <!-- JSZIP -->
@@ -2005,78 +1939,60 @@
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
 
-
-  <!-- ========================================
-       JAVASCRIPT
-  ======================================== -->
+  <!-- JAVASCRIPT -->
 
   <script>
-
 
 
     const pdfInput =
       document.getElementById("pdfInput");
 
 
-
-    const uploadArea =
-      document.getElementById("uploadArea");
-
-
-
-    const uploadPreviews =
-      document.getElementById("uploadPreviews");
-
-
-
     const editor =
       document.getElementById("editor");
-
 
 
     const fileName =
       document.getElementById("fileName");
 
 
-
     const filePages =
       document.getElementById("filePages");
 
+
+    const filePreviews =
+      document.getElementById("filePreviews");
+
+
+    const uploadPlaceholder =
+      document.getElementById("uploadPlaceholder");
 
 
     const rangeSection =
       document.getElementById("rangeSection");
 
 
-
     const pageRange =
       document.getElementById("pageRange");
-
 
 
     const splitButton =
       document.getElementById("splitButton");
 
 
-
     const newFileButton =
       document.getElementById("newFileButton");
-
 
 
     const status =
       document.getElementById("status");
 
 
+    let uploadedFiles = [];
 
-    let uploadedFiles =
-      [];
+    let uploadedFile = null;
 
-
-
-    let totalPages =
-      0;
-
+    let totalPages = 0;
 
 
     /* ========================================
@@ -2088,28 +2004,20 @@
       async function(event) {
 
 
-
         const files =
-          Array.from(
-            event.target.files
-          );
-
+          Array.from(event.target.files);
 
 
         if (
           files.length === 0
         ) {
-
           return;
-
         }
-
 
 
         for (
           const file of files
         ) {
-
 
 
           if (
@@ -2126,36 +2034,35 @@
           }
 
 
-
           try {
 
 
-
-            const fileData =
+            const fileBuffer =
               await file.arrayBuffer();
-
 
 
             const pdf =
               await PDFLib.PDFDocument.load(
-                fileData
+                fileBuffer
               );
 
 
-
-            const pages =
+            const pageCount =
               pdf.getPageCount();
-
 
 
             uploadedFiles.push(
               {
-                name: file.name,
-                data: fileData,
-                pages: pages
+                name:
+                  file.name,
+
+                data:
+                  fileBuffer,
+
+                pages:
+                  pageCount
               }
             );
-
 
 
           }
@@ -2163,12 +2070,10 @@
           catch (error) {
 
 
-
             alert(
               file.name +
               " could not be opened."
             );
-
 
 
             console.error(
@@ -2178,18 +2083,10 @@
           }
 
 
-
         }
 
 
-
-        pdfInput.value =
-          "";
-
-
-
-        renderFilePreviews();
-
+        renderPreviews();
 
 
         if (
@@ -2197,101 +2094,92 @@
         ) {
 
 
+          /* Hide upload message */
+
+          uploadPlaceholder.style.display =
+            "none";
+
+
+          /* Show previews */
+
+          filePreviews.style.display =
+            "grid";
+
+
+          /*
+             Keep the first uploaded PDF
+             as the active file for the
+             existing split functionality.
+          */
+
+          uploadedFile =
+            uploadedFiles[0].data;
+
 
           totalPages =
             uploadedFiles[0].pages;
-
 
 
           fileName.textContent =
             uploadedFiles.length === 1
               ? uploadedFiles[0].name
               : uploadedFiles.length +
-                " PDF files selected";
-
+                " PDF files uploaded";
 
 
           filePages.textContent =
             uploadedFiles.length === 1
-              ? uploadedFiles[0].pages +
-                (
-                  uploadedFiles[0].pages === 1
-                    ? " page"
-                    : " pages"
+              ? (
+                  totalPages +
+                  (
+                    totalPages === 1
+                      ? " page"
+                      : " pages"
+                  )
                 )
-              : "First file: " +
-                uploadedFiles[0].pages +
-                " pages";
-
+              : "Click the upload area to add more files";
 
 
           editor.style.display =
             "block";
 
 
-
           status.style.display =
             "none";
 
-
-
         }
 
+
+        /*
+           Clear the input so the user
+           can select the same file again
+           if needed.
+        */
+
+        pdfInput.value =
+          "";
 
 
       }
     );
 
 
-
     /* ========================================
        RENDER FILE PREVIEWS
     ======================================== */
 
-    function renderFilePreviews() {
+    function renderPreviews() {
 
 
-
-      uploadPreviews.innerHTML =
+      filePreviews.innerHTML =
         "";
 
 
-
-      if (
-        uploadedFiles.length === 0
-      ) {
-
-        uploadPreviews.style.display =
-          "none";
-
-
-
-        uploadArea.classList.remove(
-          "has-files"
-        );
-
-
-
-        return;
-
-      }
-
-
-
-      uploadArea.classList.add(
-        "has-files"
-      );
-
-
-
-      uploadPreviews.style.display =
-        "block";
-
-
-
       uploadedFiles.forEach(
-        function(file) {
-
+        function(
+          file,
+          index
+        ) {
 
 
           const preview =
@@ -2300,10 +2188,54 @@
             );
 
 
-
           preview.className =
-            "file-preview";
+            "preview-card";
 
+
+          const removeButton =
+            document.createElement(
+              "button"
+            );
+
+
+          removeButton.type =
+            "button";
+
+
+          removeButton.className =
+            "preview-remove";
+
+
+          removeButton.innerHTML =
+            "×";
+
+
+          removeButton.title =
+            "Remove file";
+
+
+          removeButton.addEventListener(
+            "click",
+            function(event) {
+
+
+              event.preventDefault();
+
+
+              event.stopPropagation();
+
+
+              uploadedFiles.splice(
+                index,
+                1
+              );
+
+
+              updateUploadedFiles();
+
+
+            }
+          );
 
 
           const icon =
@@ -2312,27 +2244,12 @@
             );
 
 
-
           icon.className =
-            "preview-file-icon";
-
+            "preview-icon";
 
 
           icon.textContent =
             "📄";
-
-
-
-          const details =
-            document.createElement(
-              "div"
-            );
-
-
-
-          details.className =
-            "preview-file-details";
-
 
 
           const name =
@@ -2341,15 +2258,16 @@
             );
 
 
-
           name.className =
-            "preview-file-name";
-
+            "preview-name";
 
 
           name.textContent =
             file.name;
 
+
+          name.title =
+            file.name;
 
 
           const pages =
@@ -2358,10 +2276,8 @@
             );
 
 
-
           pages.className =
-            "preview-file-pages";
-
+            "preview-pages";
 
 
           pages.textContent =
@@ -2373,17 +2289,9 @@
             );
 
 
-
-          details.appendChild(
-            name
+          preview.appendChild(
+            removeButton
           );
-
-
-
-          details.appendChild(
-            pages
-          );
-
 
 
           preview.appendChild(
@@ -2391,26 +2299,97 @@
           );
 
 
+          preview.appendChild(
+            name
+          );
+
 
           preview.appendChild(
-            details
+            pages
           );
 
 
-
-          uploadPreviews.appendChild(
+          filePreviews.appendChild(
             preview
           );
-
 
 
         }
       );
 
 
-
     }
 
+
+    /* ========================================
+       UPDATE AFTER REMOVING FILE
+    ======================================== */
+
+    function updateUploadedFiles() {
+
+
+      renderPreviews();
+
+
+      if (
+        uploadedFiles.length === 0
+      ) {
+
+
+        uploadPlaceholder.style.display =
+          "flex";
+
+
+        filePreviews.style.display =
+          "none";
+
+
+        editor.style.display =
+          "none";
+
+
+        uploadedFile =
+          null;
+
+
+        totalPages =
+          0;
+
+
+        return;
+
+      }
+
+
+      uploadedFile =
+        uploadedFiles[0].data;
+
+
+      totalPages =
+        uploadedFiles[0].pages;
+
+
+      fileName.textContent =
+        uploadedFiles.length === 1
+          ? uploadedFiles[0].name
+          : uploadedFiles.length +
+            " PDF files uploaded";
+
+
+      filePages.textContent =
+        uploadedFiles.length === 1
+          ? (
+              totalPages +
+              (
+                totalPages === 1
+                  ? " page"
+                  : " pages"
+              )
+            )
+          : "Click the upload area to add more files";
+
+
+    }
 
 
     /* ========================================
@@ -2425,11 +2404,9 @@
         function(option) {
 
 
-
           option.addEventListener(
             "change",
             function() {
-
 
 
               if (
@@ -2449,15 +2426,12 @@
               }
 
 
-
             }
           );
 
 
-
         }
       );
-
 
 
     /* ========================================
@@ -2470,15 +2444,12 @@
     ) {
 
 
-
       const pages =
         new Set();
 
 
-
       const parts =
         range.split(",");
-
 
 
       for (
@@ -2486,10 +2457,8 @@
       ) {
 
 
-
         part =
           part.trim();
-
 
 
         if (
@@ -2497,10 +2466,8 @@
         ) {
 
 
-
           const numbers =
             part.split("-");
-
 
 
           const start =
@@ -2509,12 +2476,10 @@
             );
 
 
-
           const end =
             parseInt(
               numbers[1].trim()
             );
-
 
 
           if (
@@ -2530,7 +2495,6 @@
           }
 
 
-
           for (
             let i = start;
             i <= end;
@@ -2542,16 +2506,13 @@
           }
 
 
-
         }
 
         else {
 
 
-
           const page =
             parseInt(part);
-
 
 
           if (
@@ -2565,17 +2526,13 @@
           }
 
 
-
           pages.add(page);
-
 
 
         }
 
 
-
       }
-
 
 
       return Array.from(
@@ -2589,13 +2546,11 @@
       );
 
 
-
     }
 
 
-
     /* ========================================
-       SPLIT PDF FILES
+       SPLIT PDF
     ======================================== */
 
     splitButton.addEventListener(
@@ -2603,15 +2558,13 @@
       async function() {
 
 
-
         if (
-          uploadedFiles.length === 0
+          !uploadedFile
         ) {
 
           return;
 
         }
-
 
 
         const selectedOption =
@@ -2620,219 +2573,156 @@
           ).value;
 
 
+        let pagesToSplit =
+          [];
+
+
+        /* All Pages */
 
         if (
-          selectedOption === "range" &&
-          !pageRange.value.trim()
+          selectedOption === "all"
         ) {
 
-          alert(
-            "Please enter a page range."
-          );
 
-          return;
+          for (
+            let i = 1;
+            i <= totalPages;
+            i++
+          ) {
+
+            pagesToSplit.push(i);
+
+          }
+
 
         }
 
 
+        /* Selected Pages */
+
+        else {
+
+
+          if (
+            !pageRange.value.trim()
+          ) {
+
+            alert(
+              "Please enter a page range."
+            );
+
+            return;
+
+          }
+
+
+          pagesToSplit =
+            getSelectedPages(
+              pageRange.value,
+              totalPages
+            );
+
+
+          if (
+            !pagesToSplit ||
+            pagesToSplit.length === 0
+          ) {
+
+            alert(
+              "Please enter a valid page range."
+            );
+
+            return;
+
+          }
+
+
+        }
+
 
         try {
-
 
 
           splitButton.disabled =
             true;
 
 
-
           splitButton.textContent =
             "Splitting PDF...";
-
 
 
           status.style.display =
             "block";
 
 
+          status.textContent =
+            "Preparing your files...";
+
+
+          const originalPdf =
+            await PDFLib.PDFDocument.load(
+              uploadedFile
+            );
+
 
           const zip =
             new JSZip();
 
 
-
           for (
-            let fileIndex = 0;
-            fileIndex < uploadedFiles.length;
-            fileIndex++
+            let i = 0;
+            i < pagesToSplit.length;
+            i++
           ) {
 
 
-
-            const currentFile =
-              uploadedFiles[fileIndex];
-
+            const pageNumber =
+              pagesToSplit[i];
 
 
-            const originalPdf =
-              await PDFLib.PDFDocument.load(
-                currentFile.data
+            status.textContent =
+              "Splitting page " +
+              pageNumber +
+              " of " +
+              totalPages +
+              "...";
+
+
+            const newPdf =
+              await PDFLib.PDFDocument.create();
+
+
+            const copiedPages =
+              await newPdf.copyPages(
+                originalPdf,
+                [
+                  pageNumber - 1
+                ]
               );
 
 
+            newPdf.addPage(
+              copiedPages[0]
+            );
 
-            let pagesToSplit =
-              [];
 
+            const pdfBytes =
+              await newPdf.save();
 
 
-            if (
-              selectedOption === "all"
-            ) {
-
-
-
-              for (
-                let i = 1;
-                i <= currentFile.pages;
-                i++
-              ) {
-
-                pagesToSplit.push(i);
-
-              }
-
-
-
-            }
-
-            else {
-
-
-
-              pagesToSplit =
-                getSelectedPages(
-                  pageRange.value,
-                  currentFile.pages
-                );
-
-
-
-              if (
-                !pagesToSplit ||
-                pagesToSplit.length === 0
-              ) {
-
-                alert(
-                  "The page range is not valid for " +
-                  currentFile.name
-                );
-
-
-
-                status.style.display =
-                  "none";
-
-
-
-                splitButton.disabled =
-                  false;
-
-
-
-                splitButton.textContent =
-                  "Split PDF";
-
-
-
-                return;
-
-              }
-
-
-
-            }
-
-
-
-            const cleanName =
-              currentFile.name.replace(
-                /\.pdf$/i,
-                ""
-              );
-
-
-
-            for (
-              let i = 0;
-              i < pagesToSplit.length;
-              i++
-            ) {
-
-
-
-              const pageNumber =
-                pagesToSplit[i];
-
-
-
-              status.textContent =
-                "Splitting " +
-                currentFile.name +
-                " — page " +
-                pageNumber +
-                " of " +
-                currentFile.pages +
-                "...";
-
-
-
-              const newPdf =
-                await PDFLib.PDFDocument.create();
-
-
-
-              const copiedPages =
-                await newPdf.copyPages(
-                  originalPdf,
-                  [
-                    pageNumber - 1
-                  ]
-                );
-
-
-
-              newPdf.addPage(
-                copiedPages[0]
-              );
-
-
-
-              const pdfBytes =
-                await newPdf.save();
-
-
-
-              zip.file(
-                cleanName +
-                "/page-" +
-                pageNumber +
-                ".pdf",
-                pdfBytes
-              );
-
-
-
-            }
-
+            zip.file(
+              "page-" +
+              pageNumber +
+              ".pdf",
+              pdfBytes
+            );
 
 
           }
 
 
-
           status.textContent =
             "Creating ZIP file...";
-
 
 
           const zipBlob =
@@ -2843,12 +2733,10 @@
             );
 
 
-
           const url =
             URL.createObjectURL(
               zipBlob
             );
-
 
 
           const link =
@@ -2857,15 +2745,12 @@
             );
 
 
-
           link.href =
             url;
 
 
-
           link.download =
             "split-pdf-pages.zip";
-
 
 
           document.body.appendChild(
@@ -2873,13 +2758,10 @@
           );
 
 
-
           link.click();
 
 
-
           link.remove();
-
 
 
           URL.revokeObjectURL(
@@ -2887,10 +2769,8 @@
           );
 
 
-
           status.textContent =
             "Done! Your split PDF files have been downloaded.";
-
 
 
         }
@@ -2898,11 +2778,9 @@
         catch (error) {
 
 
-
           console.error(
             error
           );
-
 
 
           alert(
@@ -2910,29 +2788,23 @@
           );
 
 
-
           status.style.display =
             "none";
 
 
-
         }
-
 
 
         splitButton.disabled =
           false;
 
 
-
         splitButton.textContent =
           "Split PDF";
 
 
-
       }
     );
-
 
 
     /* ========================================
@@ -2944,51 +2816,44 @@
       function() {
 
 
+        pdfInput.value =
+          "";
+
 
         uploadedFiles =
           [];
 
+
+        uploadedFile =
+          null;
 
 
         totalPages =
           0;
 
 
-
-        pdfInput.value =
-          "";
-
-
-
         pageRange.value =
           "";
-
-
-
-        uploadPreviews.innerHTML =
-          "";
-
-
-
-        uploadPreviews.style.display =
-          "none";
-
-
-
-        uploadArea.classList.remove(
-          "has-files"
-        );
-
 
 
         editor.style.display =
           "none";
 
 
-
         status.style.display =
           "none";
 
+
+        filePreviews.innerHTML =
+          "";
+
+
+        filePreviews.style.display =
+          "none";
+
+
+        uploadPlaceholder.style.display =
+          "flex";
 
 
         document.querySelector(
@@ -2997,19 +2862,15 @@
           true;
 
 
-
         rangeSection.style.display =
           "none";
-
 
 
       }
     );
 
 
-
   </script>
-
 
 
 </body>
