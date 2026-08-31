@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ToolNest - Free Online Tools</title>
+
+<style>
+
+/* =========================
+   RESET
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: #f4f6f8;
+    color: #253244;
+}
+
+
+/* =========================
+   PAGE WRAPPER
+========================= */
+
+.site-wrapper {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 18px;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+    height: 68px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 22px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e7ec;
+    border-radius: 16px;
+
+    box-shadow:
+        0 8px 25px rgba(30, 45, 60, 0.06);
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    text-decoration: none;
+}
+
+.logo-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #2f6fae;
+
+    border-radius: 11px;
+
+    color: #ffffff;
+
+    font-size: 21px;
+    font-weight: 800;
+
+    box-shadow:
+        0 6px 14px rgba(47, 111, 174, 0.22);
+}
+
+.logo-text {
+    font-size: 24px;
+    letter-spacing: -1px;
+}
+
+.logo-tool {
+    color: #354254;
+    font-weight: 400;
+}
+
+.logo-nest {
+    color: #2f6fae;
+    font-weight: 800;
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-container {
+    width: 260px;
+    position: relative;
+}
+
+.search-container input {
+    width: 100%;
+    height: 40px;
+
+    padding: 0 42px 0 15px;
+
+    border: 1px solid #dce3ea;
+    border-radius: 10px;
+
+    background: #f8fafb;
+
+    color: #334155;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+.search-container input:focus {
+    border-color: #7ca8d2;
+    background: #ffffff;
+}
+
+.search-icon {
+    position: absolute;
+
+    right: 14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #6f8193;
+
+    font-size: 19px;
+}
+
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.dashboard-layout {
+    display: grid;
+
+    grid-template-columns:
+        220px
+        minmax(0, 1fr);
+
+    gap: 18px;
+
+    margin-top: 18px;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    background: #ffffff;
+
+    border: 1px solid #e1e7ed;
+    border-radius: 16px;
+
+    padding: 16px;
+
+    box-shadow:
+        0 8px 25px rgba(30, 45, 60, 0.05);
+
+    height: fit-content;
+}
+
+.sidebar-title {
+    margin: 2px 0 14px;
+
+    padding: 0 8px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    color: #8a98a6;
+}
+
+
+/* =========================
+   CATEGORY LINKS
+========================= */
+
+.category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.category-button {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 12px 12px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: #526273;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.category-button:hover {
+    background: #f2f6f9;
+
+    transform: translateX(2px);
+}
+
+.category-button.active {
+    background: #2f6fae;
+    color: #ffffff;
+
+    box-shadow:
+        0 5px 12px rgba(47, 111, 174, 0.18);
+}
+
+.category-icon {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #edf2f6;
+
+    font-size: 15px;
+}
+
+.category-button.active .category-icon {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.dashboard-content {
+    min-width: 0;
+}
+
+
+/* =========================
+   PAGE HEADING
+========================= */
+
+.page-heading {
+    background: #ffffff;
+
+    border: 1px solid #e1e7ed;
+    border-radius: 16px;
+
+    padding: 24px 28px;
+
+    box-shadow:
+        0 8px 25px rgba(30, 45, 60, 0.05);
+}
+
+.page-heading h1 {
+    margin: 0;
+
+    font-size: 28px;
+
+    letter-spacing: -0.8px;
+
+    color: #2b394a;
+}
+
+.page-heading p {
+    margin: 7px 0 0;
+
+    font-size: 14px;
+
+    color: #7a8998;
+}
+
+
+/* =========================
+   CONTENT PANEL
+========================= */
+
+.tools-panel {
+    margin-top: 18px;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e7ed;
+    border-radius: 16px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 8px 25px rgba(30, 45, 60, 0.05);
+}
+
+
+/* =========================
+   PANEL HEADER
+========================= */
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+.panel-header h2 {
+    margin: 0;
+
+    font-size: 19px;
+
+    color: #2f3c4d;
+}
+
+.panel-header span {
+    font-size: 12px;
+    font-weight: 600;
+
+    color: #8492a0;
+}
+
+
+/* =========================
+   TOOL GRID
+========================= */
+
+.tools-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+}
+
+
+/* =========================
+   TOOL CARD
+========================= */
+
+.tool-card {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    min-height: 84px;
+
+    padding: 15px;
+
+    text-decoration: none;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e7ed;
+    border-radius: 13px;
+
+    color: #334155;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.tool-card:hover {
+    transform: translateY(-2px);
+
+    border-color: #a8c3dc;
+
+    box-shadow:
+        0 8px 20px rgba(40, 65, 90, 0.08);
+}
+
+
+/* =========================
+   TOOL ICON
+========================= */
+
+.tool-icon {
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #edf4fa;
+
+    color: #2f6fae;
+
+    font-size: 20px;
+}
+
+.tool-info {
+    min-width: 0;
+}
+
+.tool-name {
+    font-size: 15px;
+    font-weight: 700;
+
+    color: #344254;
+}
+
+.tool-description {
+    margin-top: 5px;
+
+    font-size: 12px;
+
+    color: #8a98a6;
+}
+
+
+/* =========================
+   SECTION DIVIDER
+========================= */
+
+.section-divider {
+    height: 1px;
+
+    margin: 24px 0;
+
+    background: #edf0f3;
+}
+
+
+/* =========================
+   ALL TOOLS PREVIEW
+========================= */
+
+.all-categories {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 12px;
+}
+
+.category-preview {
+    padding: 17px;
+
+    border: 1px solid #e4e9ee;
+    border-radius: 12px;
+
+    background: #fafbfc;
+
+    text-align: center;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    color: #526273;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.category-preview:hover {
+    background: #f1f6fa;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    margin-top: 18px;
+
+    padding: 18px 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e7ed;
+    border-radius: 14px;
+
+    color: #83909e;
+
+    font-size: 12px;
+}
+
+footer strong {
+    color: #2f6fae;
+}
+
+.footer-links {
+    display: flex;
+    gap: 18px;
+}
+
+.footer-links a {
+    text-decoration: none;
+
+    color: #687787;
+}
+
+.footer-links a:hover {
+    color: #2f6fae;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 850px) {
+
+    .dashboard-layout {
+        grid-template-columns: 180px minmax(0, 1fr);
+    }
+
+    .all-categories {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .site-wrapper {
+        padding: 10px;
+    }
+
+    header {
+        height: auto;
+
+        padding: 14px;
+
+        flex-direction: column;
+
+        gap: 14px;
+    }
+
+    .search-container {
+        width: 100%;
+    }
+
+    .dashboard-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        padding: 10px;
+    }
+
+    .category-list {
+        flex-direction: row;
+
+        overflow-x: auto;
+    }
+
+    .category-button {
+        width: auto;
+        min-width: max-content;
+    }
+
+    .sidebar-title {
+        display: none;
+    }
+
+    .tools-grid {
+        grid-template-columns: 1fr;
+    }
+
+    footer {
+        flex-direction: column;
+
+        gap: 12px;
+
+        text-align: center;
+    }
+
+}
+
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 480px) {
+
+    .page-heading {
+        padding: 20px;
+    }
+
+    .page-heading h1 {
+        font-size: 24px;
+    }
+
+    .tools-panel {
+        padding: 16px;
+    }
+
+    .all-categories {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="site-wrapper">
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <a href="index.html" class="logo">
+
+        <div class="logo-icon">
+            T
+        </div>
+
+        <div class="logo-text">
+
+            <span class="logo-tool">
+                Tool
+            </span>
+
+            <span class="logo-nest">
+                Nest
+            </span>
+
+        </div>
+
+    </a>
+
+
+    <div class="search-container">
+
+        <input
+            type="text"
+            placeholder="Search tools..."
+        >
+
+        <div class="search-icon">
+            ⌕
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================
+     DASHBOARD
+========================= -->
+
+<main class="dashboard-layout">
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-title">
+            Categories
+        </div>
+
+
+        <div class="category-list">
+
+
+            <button
+                class="category-button active"
+                onclick="showCategory('pdf', this)"
+            >
+
+                <div class="category-icon">
+                    📄
+                </div>
+
+                PDF Tools
+
+            </button>
+
+
+            <button
+                class="category-button"
+                onclick="showCategory('text', this)"
+            >
+
+                <div class="category-icon">
+                    T
+                </div>
+
+                Text Tools
+
+            </button>
+
+
+            <button
+                class="category-button"
+                onclick="showCategory('image', this)"
+            >
+
+                <div class="category-icon">
+                    🖼
+                </div>
+
+                Image Tools
+
+            </button>
+
+
+            <button
+                class="category-button"
+                onclick="showCategory('calculator', this)"
+            >
+
+                <div class="category-icon">
+                    ▦
+                </div>
+
+                Calculators
+
+            </button>
+
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <section class="dashboard-content">
+
+
+        <div class="page-heading">
+
+            <h1 id="pageTitle">
+                Dashboard
+            </h1>
+
+            <p id="pageDescription">
+                Simple, fast and free online tools.
+            </p>
+
+        </div>
+
+
+
+        <div class="tools-panel">
+
+
+            <div class="panel-header">
+
+                <h2 id="toolsTitle">
+                    Popular PDF Tools
+                </h2>
+
+                <span>
+                    Free to use
+                </span>
+
+            </div>
+
+
+
+            <!-- PDF TOOLS -->
+
+            <div
+                class="tools-grid"
+                id="pdfTools"
+            >
+
+
+                <a
+                    href="merge-pdf.html"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        🔗
+                    </div>
+
+                    <div class="tool-info">
+
+                        <div class="tool-name">
+                            Merge PDF
+                        </div>
+
+                        <div class="tool-description">
+                            Combine multiple PDF files
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="split-pdf.html"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        ✂
+                    </div>
+
+                    <div class="tool-info">
+
+                        <div class="tool-name">
+                            Split PDF
+                        </div>
+
+                        <div class="tool-description">
+                            Separate pages from a PDF
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="pdf-to-images.html"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        🖼
+                    </div>
+
+                    <div class="tool-info">
+
+                        <div class="tool-name">
+                            PDF to Images
+                        </div>
+
+                        <div class="tool-description">
+                            Convert PDF pages into images
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="images-to-pdf.html"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        📄
+                    </div>
+
+                    <div class="tool-info">
+
+                        <div class="tool-name">
+                            Images to PDF
+                        </div>
+
+                        <div class="tool-description">
+                            Create a PDF from images
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+            </div>
+
+
+
+            <!-- TEXT TOOLS -->
+
+            <div
+                class="tools-grid"
+                id="textTools"
+                style="display: none;"
+            >
+
+
+                <a
+                    href="word-counter.html"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        🔤
+                    </div>
+
+                    <div class="tool-info">
+
+                        <div class="tool-name">
+                            Word Counter
+                        </div>
+
+                        <div class="tool-description">
+                            Count words and characters
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="case-converter.html"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        Aa
+                    </div>
+
+                    <div class="tool-info">
+
+                        <div class="tool-name">
+                            Case Converter
+                        </div>
+
+                        <div class="tool-description">
+                            Change text letter cases
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="text-sorter.html"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        ↕
+                    </div>
+
+                    <div class="tool-info">
+
+                        <div class="tool-name">
+                            Text Sorter
+                        </div>
+
+                        <div class="tool-description">
+                            Sort lines of text quickly
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="text-cleaner.html"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        ✨
+                    </div>
+
+                    <div class="tool-info">
+
+                        <div class="tool-name">
+                            Text Cleaner
+                        </div>
+
+                        <div class="tool-description">
+                            Clean and format text
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+            </div>
+
+
+
+            <!-- IMAGE TOOLS -->
+
+            <div
+                class="tools-grid"
+                id="imageTools"
+                style="display: none;"
+            >
+
+
+                <a
+                    href="image-compressor.html"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        🗜
+                    </div>
+
+                    <div class="tool-info">
+
+                        <div class="tool-name">
+                            Image Compressor
+                        </div>
+
+                        <div class="tool-description">
+                            Reduce image file size
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="image-converter.html"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        🔄
+                    </div>
+
+                    <div class="tool-info">
+
+                        <div class="tool-name">
+                            Image Converter
+                        </div>
+
+                        <div class="tool-description">
+                            Convert image formats
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+            </div>
+
+
+
+            <!-- CALCULATORS -->
+
+            <div
+                class="tools-grid"
+                id="calculatorTools"
+                style="display: none;"
+            >
+
+
+                <a
+                    href="bmi-calculator.html"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        ⚖
+                    </div>
+
+                    <div class="tool-info">
+
+                        <div class="tool-name">
+                            BMI Calculator
+                        </div>
+
+                        <div class="tool-description">
+                            Calculate your body mass index
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="percentage-calculator.html"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        %
+                    </div>
+
+                    <div class="tool-info">
+
+                        <div class="tool-name">
+                            Percentage Calculator
+                        </div>
+
+                        <div class="tool-description">
+                            Calculate percentages easily
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="profit-calculator.html"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        📈
+                    </div>
+
+                    <div class="tool-info">
+
+                        <div class="tool-name">
+                            Profit Calculator
+                        </div>
+
+                        <div class="tool-description">
+                            Calculate profit and margins
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="discount-calculator.html"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        🏷
+                    </div>
+
+                    <div class="tool-info">
+
+                        <div class="tool-name">
+                            Discount Calculator
+                        </div>
+
+                        <div class="tool-description">
+                            Calculate discounts and savings
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+            </div>
+
+
+
+            <div class="section-divider"></div>
+
+
+
+            <div class="panel-header">
+
+                <h2>
+                    Browse Categories
+                </h2>
+
+            </div>
+
+
+            <div class="all-categories">
+
+                <div class="category-preview">
+                    PDF Tools
+                </div>
+
+                <div class="category-preview">
+                    Text Tools
+                </div>
+
+                <div class="category-preview">
+                    Image Tools
+                </div>
+
+                <div class="category-preview">
+                    Calculators
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <div>
+
+        © 2026 <strong>ToolNest</strong>
+        · Simple, Fast & Free
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <a href="#">
+            About
+        </a>
+
+        <a href="#">
+            Privacy
+        </a>
+
+        <a href="#">
+            Terms
+        </a>
+
+        <a href="#">
+            Contact
+        </a>
+
+    </div>
+
+</footer>
+
+
+</div>
+
+
+
+<script>
+
+function showCategory(category, button) {
+
+    document.querySelectorAll(
+        ".category-button"
+    ).forEach(function(item) {
+
+        item.classList.remove("active");
+
+    });
+
+
+    button.classList.add("active");
+
+
+    document.getElementById(
+        "pdfTools"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "textTools"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "imageTools"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "calculatorTools"
+    ).style.display = "none";
+
+
+    const titles = {
+
+        pdf: "Popular PDF Tools",
+
+        text: "Popular Text Tools",
+
+        image: "Popular Image Tools",
+
+        calculator: "Popular Calculators"
+
+    };
+
+
+    const descriptions = {
+
+        pdf: "Popular tools for working with PDF files.",
+
+        text: "Useful tools for writing, editing and cleaning text.",
+
+        image: "Simple tools for converting and optimizing images.",
+
+        calculator: "Quick and useful calculators for everyday tasks."
+
+    };
+
+
+    document.getElementById(
+        category + "Tools"
+    ).style.display = "grid";
+
+
+    document.getElementById(
+        "toolsTitle"
+    ).textContent = titles[category];
+
+
+    document.getElementById(
+        "pageDescription"
+    ).textContent = descriptions[category];
+
+}
+
+</script>
+
+
+</body>
+
+</html>
