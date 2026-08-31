@@ -3,2393 +3,2048 @@
 
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<title>Merge PDF - ToolNest</title>
 
-  <title>Merge PDF - Free Online Tool | ToolNest</title>
-
-  <meta
+<meta
     name="description"
     content="Merge multiple PDF files into one PDF for free with ToolNest."
-  >
+>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+
+<style>
+
+/* =========================
+   RESET
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 12px 18px;
+    min-height: 100vh;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: #cfd9e4;
+    color: #344154;
+}
 
 
-  <style>
+/* =========================
+   PAGE WRAPPER
+========================= */
 
-    /* =========================
-       GLOBAL
-    ========================= */
+.site-wrapper {
+    max-width: 1040px;
+    margin: 0 auto;
+}
 
-    * {
-      box-sizing: border-box;
-    }
 
-    html {
-      scroll-behavior: smooth;
-    }
+/* =========================
+   HEADER
+========================= */
+
+header {
+    height: 64px;
+
+    background: #ffffff;
+
+    border: 1px solid #c4d0dc;
+    border-radius: 12px;
+
+    box-shadow:
+        0 5px 14px
+        rgba(50, 70, 90, 0.10);
+}
+
+.navbar {
+    height: 100%;
+
+    padding: 0 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.logo {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    text-decoration: none;
+}
+
+.logo-icon {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3d75b3,
+            #1e5593
+        );
+
+    color: #ffffff;
+
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.logo-text {
+    font-size: 23px;
+    letter-spacing: -0.8px;
+}
+
+.logo-tool {
+    font-weight: 400;
+    color: #354254;
+}
+
+.logo-nest {
+    font-weight: 700;
+    color: #315f98;
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-container {
+    width: 310px;
+    position: relative;
+}
+
+.search-container input {
+    width: 100%;
+    height: 38px;
+
+    padding: 0 42px 0 15px;
+
+    border: 1px solid #c5d0dc;
+    border-radius: 8px;
+
+    background: #fbfcfd;
+
+    color: #415164;
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+.search-container input:focus {
+    border-color: #4c7fb7;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(76, 127, 183, 0.10);
+}
+
+.search-icon {
+    position: absolute;
+
+    right: 13px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-size: 20px;
+
+    color: #53677b;
+}
+
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.page-layout {
+    margin-top: 14px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        200px;
+
+    gap: 10px;
+
+    align-items: start;
+}
+
+
+/* =========================
+   TOOL HEADING
+========================= */
+
+.tool-heading {
+    position: relative;
+
+    background: #ffffff;
+
+    border: 1px solid #c4d0dc;
+    border-radius: 12px;
+
+    box-shadow:
+        0 5px 14px
+        rgba(50, 70, 90, 0.10);
+
+    padding: 24px 25px;
+
+    text-align: center;
+
+    margin-bottom: 10px;
+
+    overflow: hidden;
+}
+
+
+/* =========================
+   COLOURFUL CIRCLES
+========================= */
+
+.tool-heading::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 13px;
+    height: 13px;
+
+    top: 20px;
+    left: 35px;
+
+    border-radius: 50%;
+
+    background: #f2a541;
+
+    box-shadow:
+        95px 18px 0 #64b5c6,
+        180px -5px 0 #e87c88,
+        270px 18px 0 #7f69c4,
+        390px -3px 0 #55a77b,
+        520px 22px 0 #f29b45,
+        620px -5px 0 #e77a83;
+}
+
+
+.tool-heading h1 {
+    position: relative;
+
+    margin: 0 0 8px;
+
+    font-size: 31px;
+    font-weight: 800;
+
+    color: #354254;
+
+    letter-spacing: -0.7px;
+}
+
+
+/* MERGE COLOR */
+
+.tool-heading h1 span {
+    color: #e87525;
+}
+
+
+.tool-heading p {
+    position: relative;
+
+    margin: 0;
+
+    color: #607184;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   TOOL BOX
+========================= */
+
+.tool-box {
+    background: #ffffff;
+
+    border: 1px solid #c4d0dc;
+    border-radius: 12px;
+
+    box-shadow:
+        0 5px 14px
+        rgba(50, 70, 90, 0.10);
+
+    padding: 20px;
+}
+
+
+/* =========================
+   HIDDEN FILE INPUT
+========================= */
+
+#pdfInput {
+    display: none;
+}
+
+
+/* =========================
+   UPLOAD AREA
+========================= */
+
+.upload-area {
+
+    min-height: 260px;
+
+    padding: 25px 20px;
+
+    background: #f9fbfd;
+
+    border:
+        2px dashed
+        #b8c7d5;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s,
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+.upload-area:hover {
+
+    background: #f5f9fd;
+
+    border-color: #4c7fb7;
+
+    box-shadow:
+        0 5px 15px
+        rgba(76, 127, 183, 0.08);
+}
+
+
+/* =========================
+   EMPTY UPLOAD STATE
+========================= */
+
+.upload-placeholder {
+
+    min-height: 210px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+
+/* =========================
+   UPLOAD ICON
+========================= */
+
+.upload-icon {
+
+    width: 68px;
+    height: 68px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 15px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff0e5,
+            #ffe0c5
+        );
+
+    border:
+        1px solid
+        #f2c49e;
+
+    font-size: 32px;
+
+    box-shadow:
+        0 5px 12px
+        rgba(232, 117, 37, 0.10);
+}
+
+.upload-placeholder h2 {
+
+    margin: 0 0 8px;
+
+    font-size: 21px;
+
+    color: #354254;
+}
+
+.upload-placeholder p {
+
+    margin: 0;
+
+    color: #607184;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   UPLOADED FILES
+   INSIDE UPLOAD BOX
+========================= */
+
+.uploaded-files {
+    display: none;
+}
+
+.uploaded-files.active {
+    display: block;
+}
+
+
+/* =========================
+   SELECTED FILES HEADER
+========================= */
+
+.uploaded-title {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 16px;
+
+    color: #47596b;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.add-more-text {
+
+    color: #356aa5;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-align: right;
+}
+
+
+/* =========================
+   PDF GRID
+========================= */
+
+.pdf-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(130px, 1fr)
+        );
+
+    gap: 12px;
+
+    text-align: left;
+}
+
+
+/* =========================
+   PDF CARD
+========================= */
+
+.pdf-card {
+
+    position: relative;
+
+    background: #ffffff;
+
+    border:
+        1px solid
+        #cbd6e0;
+
+    border-radius: 10px;
+
+    padding: 8px;
+
+    cursor: grab;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s,
+        border-color 0.2s;
+}
+
+.pdf-card:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-color: #f09a54;
+
+    box-shadow:
+        0 7px 16px
+        rgba(50, 70, 90, 0.12);
+}
+
+.pdf-card.dragging {
+
+    opacity: 0.45;
+
+    transform:
+        scale(0.96);
+}
+
+
+/* =========================
+   PDF PREVIEW
+========================= */
+
+.pdf-preview {
+
+    height: 130px;
+
+    background: #f7f8fa;
+
+    border:
+        1px solid
+        #d7e0e8;
+
+    border-radius: 7px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    margin-bottom: 8px;
+}
+
+.pdf-preview canvas {
+
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+/* =========================
+   PDF NAME
+========================= */
+
+.pdf-name {
+
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    color: #354254;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    padding: 3px 20px;
+}
+
+
+/* =========================
+   REMOVE BUTTON
+========================= */
+
+.remove-button {
+
+    position: absolute;
+
+    top: 5px;
+    right: 5px;
+
+    width: 25px;
+    height: 25px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 2px 7px
+        rgba(0, 0, 0, 0.15);
+
+    color: #607184;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    z-index: 10;
+
+    padding: 0;
+
+    transition:
+        background 0.2s,
+        color 0.2s;
+}
+
+.remove-button:hover {
+
+    color: #d94b3d;
+
+    background: #fff1ef;
+}
+
+
+/* =========================
+   CONTROLS
+========================= */
+
+.editor-controls {
+
+    display: none;
+
+    margin-top: 18px;
+}
+
+.editor-controls.active {
+    display: block;
+}
+
+
+/* =========================
+   DRAG MESSAGE
+========================= */
+
+.drag-hint {
+
+    margin: 0 0 16px;
+
+    padding: 14px 18px;
+
+    text-align: center;
+
+    background: #eaf3fc;
+
+    border:
+        1px solid
+        #b9d2ea;
+
+    border-radius: 10px;
+
+    color: #356aa5;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    box-shadow:
+        0 3px 8px
+        rgba(53, 106, 165, 0.08);
+}
+
+
+/* =========================
+   BUTTON ROW
+========================= */
+
+.button-row {
+
+    display: flex;
+
+    justify-content: center;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+button {
+
+    border: none;
+
+    border-radius: 8px;
+
+    padding: 12px 20px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+button:hover {
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================
+   MERGE BUTTON
+========================= */
+
+.primary-button {
+
+    min-width: 180px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f08a35,
+            #df5e24
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 6px 14px
+        rgba(223, 94, 36, 0.25);
+}
+
+.primary-button:hover {
+
+    box-shadow:
+        0 8px 18px
+        rgba(223, 94, 36, 0.32);
+}
+
+.primary-button:disabled {
+
+    opacity: 0.7;
+
+    cursor: wait;
+}
+
+
+/* =========================
+   AD COLUMN
+========================= */
+
+.ad-column {
+
+    width: 200px;
+    height: 400px;
+
+    background: #ffffff;
+
+    border: 1px solid #c4d0dc;
+    border-radius: 12px;
+
+    box-shadow:
+        0 5px 14px
+        rgba(50, 70, 90, 0.10);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    position: sticky;
+
+    top: 12px;
+}
+
+.ad-label {
+
+    color: #607184;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+.ad-size {
+
+    display: block;
+
+    margin-top: 10px;
+
+    font-size: 16px;
+    font-weight: 500;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+
+    margin-top: 12px;
+
+    height: 78px;
+
+    padding: 0 28px;
+
+    background: #ffffff;
+
+    border: 1px solid #c4d0dc;
+    border-radius: 12px;
+
+    box-shadow:
+        0 5px 14px
+        rgba(50, 70, 90, 0.10);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    color: #526275;
+
+    font-size: 12px;
+}
+
+.footer-brand strong {
+    color: #315f98;
+}
+
+.footer-links {
+    display: flex;
+}
+
+.footer-links a {
+
+    padding: 0 16px;
+
+    text-decoration: none;
+
+    color: #445466;
+}
+
+.footer-links a + a {
+
+    border-left:
+        1px solid
+        #8090a0;
+}
+
+.footer-links a:hover {
+    color: #356aa5;
+}
+
+
+/* =========================
+   DARK MODE
+========================= */
+
+@media (prefers-color-scheme: dark) {
 
     body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #d9dee4;
-      color: #1f2937;
-      min-height: 100vh;
-
-      display: flex;
-      flex-direction: column;
+        background: #18212b;
+        color: #dce5ed;
     }
 
+    header,
+    .tool-heading,
+    .tool-box,
+    .ad-column,
+    footer {
 
-    /* =========================
-       HEADER
-    ========================= */
+        background: #222d38;
 
-    nav {
-      width: 100%;
-      background: #1f2937;
-      border-bottom: 1px solid #374151;
-
-      padding: 16px 32px;
-
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+        border-color: #3b4a58;
     }
 
+    .logo-tool,
+    .tool-heading h1,
+    .upload-placeholder h2,
+    .pdf-name {
 
-    /* =========================
-       LOGO
-    ========================= */
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-
-      text-decoration: none;
+        color: #e4ebf1;
     }
 
-    .logo-icon {
-      width: 43px;
-      height: 43px;
+    .search-container input {
 
-      border-radius: 12px;
+        background: #1b2530;
 
-      background:
-        linear-gradient(
-          135deg,
-          #5b9a78,
-          #3f7659
-        );
+        color: #ffffff;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      color: #ffffff;
-
-      font-size: 22px;
-      font-weight: bold;
-
-      box-shadow:
-        0 5px 14px
-        rgba(63, 118, 89, 0.25);
+        border-color: #3b4a58;
     }
 
-    .logo-text {
-      font-size: 29px;
-      font-weight: 800;
-      letter-spacing: -0.8px;
-      line-height: 1;
+    .tool-heading p,
+    .upload-placeholder p,
+    .uploaded-title {
+
+        color: #aebdca;
     }
-
-    .logo-tool {
-      color: #ffffff;
-    }
-
-    .logo-nest {
-      color: #a9cdb7;
-    }
-
-
-    /* =========================
-       BACK LINK
-    ========================= */
-
-    .back-link {
-      color: #d1d5db;
-      text-decoration: none;
-
-      font-size: 14px;
-      font-weight: 500;
-
-      padding: 9px 14px;
-
-      border-radius: 9px;
-
-      transition:
-        background 0.2s ease,
-        color 0.2s ease;
-    }
-
-    .back-link:hover {
-      background: #273244;
-      color: #ffffff;
-    }
-
-
-    /* =========================
-       MAIN
-    ========================= */
-
-    .container {
-      width: 100%;
-      max-width: 1000px;
-
-      margin: 0 auto;
-
-      padding: 55px 20px 80px;
-
-      flex: 1;
-    }
-
-
-    /* =========================
-       HEADING
-    ========================= */
-
-    .heading {
-      margin-bottom: 24px;
-
-      padding: 22px 28px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #f8fafc 0%,
-          #eef2f5 100%
-        );
-
-      border: 1px solid #bec7d0;
-      border-radius: 16px;
-
-      box-shadow:
-        0 8px 24px
-        rgba(31, 41, 55, 0.07);
-    }
-
-    .heading-inner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      gap: 16px;
-    }
-
-    .heading-icon {
-      width: 52px;
-      height: 52px;
-
-      flex-shrink: 0;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 12px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #f59a4a,
-          #d96822
-        );
-
-      color: #ffffff;
-
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.8px;
-
-      box-shadow:
-        0 6px 14px
-        rgba(217, 104, 34, 0.22);
-    }
-
-    .heading-content {
-      text-align: left;
-    }
-
-    .heading h1 {
-      margin: 0 0 5px;
-
-      font-size: 31px;
-      font-weight: 800;
-
-      letter-spacing: -0.8px;
-
-      color: #202938;
-    }
-
-    .heading h1 span {
-      color: #dc6b24;
-    }
-
-    .heading p {
-      margin: 0;
-
-      color: #667085;
-
-      font-size: 14px;
-      line-height: 1.55;
-    }
-
-
-    /* =========================
-       TOOL BOX
-    ========================= */
-
-    .tool-box {
-      background: #e9edf1;
-
-      border: 1px solid #bec7d0;
-
-      border-radius: 16px;
-
-      padding: 30px;
-
-      box-shadow:
-        0 8px 24px
-        rgba(31, 41, 55, 0.07);
-    }
-
-
-    /* =========================
-       UPLOAD AREA
-    ========================= */
 
     .upload-area {
-      display: block;
 
-      padding: 48px 20px;
+        background: #1b2631;
 
-      text-align: center;
-
-      background: #eef1f4;
-
-      border:
-        2px dashed
-        #aeb9c3;
-
-      border-radius: 14px;
-
-      cursor: pointer;
-
-      transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.2s ease;
+        border-color: #435767;
     }
 
     .upload-area:hover {
-      background: #e7ece9;
 
-      border-color: #8bb89c;
+        background: #202d38;
 
-      transform:
-        translateY(-2px);
+        border-color: #5d8fc1;
     }
-
-    .upload-icon {
-      font-size: 46px;
-      margin-bottom: 15px;
-    }
-
-    .upload-area h2 {
-      margin: 0 0 10px;
-
-      font-size: 21px;
-
-      color: #273246;
-    }
-
-    .upload-area p {
-      margin: 0;
-
-      color: #667085;
-
-      font-size: 14px;
-    }
-
-    input[type="file"] {
-      display: none;
-    }
-
-
-    /* =========================
-       EDITOR
-    ========================= */
-
-    .editor {
-      display: none;
-      margin-top: 30px;
-    }
-
-
-    /* =========================
-       ORDERING NOTICE
-    ========================= */
-
-    .ordering-notice {
-      display: none;
-
-      text-align: center;
-
-      padding: 18px;
-
-      margin-bottom: 25px;
-
-      background: #dce6df;
-
-      border:
-        1px solid
-        #c2d0c7;
-
-      border-radius: 12px;
-
-      color: #59665e;
-
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .ordering-notice.active {
-      display: block;
-    }
-
-    .ordering-notice strong {
-      color: #2d3a32;
-    }
-
-
-    /* =========================
-       DRAG HINT
-    ========================= */
-
-    .drag-hint {
-      text-align: center;
-
-      color: #667085;
-
-      font-size: 13px;
-
-      margin:
-        0
-        0
-        20px;
-    }
-
-
-    /* =========================
-       PDF GRID
-    ========================= */
-
-    .pdf-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(
-          auto-fill,
-          minmax(170px, 1fr)
-        );
-
-      gap: 20px;
-
-      margin-bottom: 25px;
-    }
-
-
-    /* =========================
-       PDF CARD
-    ========================= */
 
     .pdf-card {
-      position: relative;
 
-      background: #dce6df;
+        background: #26323d;
 
-      border:
-        1px solid
-        #c2d0c7;
-
-      border-radius: 14px;
-
-      padding: 12px;
-
-      cursor: grab;
-
-      box-shadow:
-        0 4px 12px
-        rgba(31, 41, 55, 0.06);
-
-      transition:
-        transform 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        opacity 0.2s ease,
-        background 0.2s ease;
+        border-color: #455563;
     }
-
-    .pdf-card:hover {
-      transform:
-        translateY(-4px);
-
-      background: #d4e0d8;
-
-      border-color: #9bb8a5;
-
-      box-shadow:
-        0 12px 25px
-        rgba(48, 85, 63, 0.12);
-    }
-
-    .pdf-card:active {
-      cursor: grabbing;
-    }
-
-
-    /* =========================
-       DRAGGING
-    ========================= */
-
-    .pdf-card.dragging {
-      opacity: 0.45;
-
-      transform:
-        scale(0.97);
-    }
-
-    .pdf-card.drag-over {
-      border-color: #5b9a78;
-
-      box-shadow:
-        0 0 0 3px
-        rgba(91, 154, 120, 0.18);
-    }
-
-
-    /* =========================
-       PDF PREVIEW
-    ========================= */
 
     .pdf-preview {
-      height: 180px;
 
-      background: #edf1ee;
+        background: #1b2530;
 
-      border:
-        1px solid
-        #d0dbd3;
-
-      border-radius: 9px;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      overflow: hidden;
-
-      margin-bottom: 12px;
+        border-color: #3b4a58;
     }
 
-    .pdf-preview canvas {
-      max-width: 100%;
-      max-height: 100%;
+    .drag-hint {
 
-      width: auto;
-      height: auto;
+        background: #1d3449;
+
+        border-color: #3c668c;
+
+        color: #9fcaf2;
     }
 
+    .add-more-text {
+        color: #80b7ec;
+    }
+}
 
-    /* =========================
-       PDF NAME
-    ========================= */
 
-    .pdf-name {
-      font-size: 13px;
-      font-weight: 600;
+/* =========================
+   MOBILE
+========================= */
 
-      color: #2d3a32;
+@media (max-width: 700px) {
 
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-
-      text-align: center;
-
-      padding:
-        2px
-        25px;
+    body {
+        padding: 8px;
     }
 
-
-    /* =========================
-       REMOVE BUTTON
-    ========================= */
-
-    .remove-button {
-      position: absolute;
-
-      top: 7px;
-      right: 7px;
-
-      width: 29px;
-      height: 29px;
-
-      border: none;
-
-      border-radius: 50%;
-
-      background: #ffffff;
-
-      box-shadow:
-        0 2px 8px
-        rgba(31, 41, 55, 0.16);
-
-      color: #4b5563;
-
-      cursor: pointer;
-
-      font-size: 19px;
-      line-height: 1;
-
-      padding: 0;
-
-      z-index: 5;
-
-      transition:
-        background 0.2s ease,
-        color 0.2s ease;
+    .page-layout {
+        grid-template-columns: 1fr;
     }
 
-    .remove-button:hover {
-      background: #f1f3f5;
+    .ad-column {
 
-      color: #1f2937;
+        width: 100%;
+        height: 180px;
+
+        position: static;
     }
-
-
-    /* =========================
-       ORDERING MODE
-    ========================= */
-
-    .ordering .pdf-card {
-      cursor: pointer;
-    }
-
-    .ordering .pdf-card:hover {
-      border-color: #5b9a78;
-    }
-
-    .ordering .pdf-card:active {
-      cursor: pointer;
-    }
-
-    .order-selected {
-      border:
-        2px solid
-        #5b9a78 !important;
-    }
-
-
-    /* =========================
-       ORDER NUMBER
-    ========================= */
-
-    .order-number {
-      position: absolute;
-
-      top: 10px;
-      left: 10px;
-
-      width: 38px;
-      height: 38px;
-
-      border-radius: 50%;
-
-      background: #3f7659;
-
-      color: #ffffff;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      font-size: 17px;
-      font-weight: bold;
-
-      box-shadow:
-        0 3px 8px
-        rgba(63, 118, 89, 0.25);
-
-      z-index: 4;
-    }
-
-
-    /* =========================
-       ADD MORE
-    ========================= */
-
-    .add-more {
-      margin-top: 15px;
-      text-align: center;
-    }
-
-    .add-more label {
-      color: #3f7659;
-
-      font-size: 14px;
-      font-weight: 600;
-
-      cursor: pointer;
-
-      transition:
-        color 0.2s ease;
-    }
-
-    .add-more label:hover {
-      color: #2f5c43;
-    }
-
-
-    /* =========================
-       BUTTONS
-    ========================= */
-
-    .button-row {
-      display: flex;
-
-      justify-content: center;
-
-      gap: 12px;
-
-      flex-wrap: wrap;
-
-      margin-top: 30px;
-    }
-
-    button {
-      border: none;
-
-      border-radius: 10px;
-
-      padding: 13px 22px;
-
-      font-size: 15px;
-      font-weight: 600;
-
-      cursor: pointer;
-
-      transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
-    }
-
-    button:hover {
-      transform:
-        translateY(-2px);
-    }
-
-
-    /* Primary */
-
-    .primary-button {
-      background: #3f7659;
-
-      color: #ffffff;
-
-      box-shadow:
-        0 5px 12px
-        rgba(63, 118, 89, 0.2);
-    }
-
-    .primary-button:hover {
-      background: #35654c;
-
-      box-shadow:
-        0 8px 18px
-        rgba(63, 118, 89, 0.28);
-    }
-
-
-    /* Secondary */
-
-    .secondary-button {
-      background: #dce6df;
-
-      color: #2d3a32;
-
-      border:
-        1px solid
-        #c2d0c7;
-    }
-
-    .secondary-button:hover {
-      background: #d2ddd6;
-
-      border-color: #9bb8a5;
-    }
-
-
-    /* =========================
-       MODAL
-    ========================= */
-
-    .modal {
-      display: none;
-
-      position: fixed;
-
-      top: 0;
-      left: 0;
-
-      width: 100%;
-      height: 100%;
-
-      background:
-        rgba(20, 28, 35, 0.55);
-
-      z-index: 1000;
-
-      align-items: center;
-      justify-content: center;
-
-      padding: 20px;
-    }
-
-    .modal.active {
-      display: flex;
-    }
-
-
-    /* =========================
-       MODAL BOX
-    ========================= */
-
-    .modal-box {
-      width: 100%;
-      max-width: 460px;
-
-      background: #e9edf1;
-
-      border:
-        1px solid
-        #bec7d0;
-
-      border-radius: 16px;
-
-      padding: 32px;
-
-      text-align: center;
-
-      box-shadow:
-        0 20px 50px
-        rgba(0, 0, 0, 0.25);
-    }
-
-    .modal-icon {
-      font-size: 45px;
-      margin-bottom: 15px;
-    }
-
-    .modal-box h2 {
-      margin: 0 0 12px;
-
-      font-size: 24px;
-
-      color: #253044;
-    }
-
-    .modal-box p {
-      margin: 0 0 20px;
-
-      color: #667085;
-
-      line-height: 1.6;
-    }
-
-
-    /* =========================
-       INSTRUCTION EXAMPLE
-    ========================= */
-
-    .instruction-example {
-      display: flex;
-
-      justify-content: center;
-
-      align-items: center;
-
-      gap: 10px;
-
-      margin:
-        20px
-        0
-        25px;
-
-      color: #667085;
-    }
-
-    .instruction-number {
-      width: 42px;
-      height: 42px;
-
-      border-radius: 50%;
-
-      background: #dce6df;
-
-      border:
-        1px solid
-        #c2d0c7;
-
-      color: #3f7659;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      font-weight: bold;
-    }
-
-
-    /* =========================
-       FOOTER
-    ========================= */
 
     footer {
-      width: 100%;
 
-      background: #1f2937;
+        height: auto;
 
-      border-top:
-        1px solid
-        #374151;
-
-      text-align: center;
-
-      padding: 32px 20px;
-
-      color: #aeb7c5;
-
-      font-size: 14px;
-    }
-
-
-    /* =========================
-       TABLET
-    ========================= */
-
-    @media (
-      max-width: 850px
-    ) {
-
-      nav {
-        padding:
-          15px
-          22px;
-      }
-
-    }
-
-
-    /* =========================
-       MOBILE
-    ========================= */
-
-    @media (
-      max-width: 600px
-    ) {
-
-      nav {
-        padding:
-          14px
-          16px;
-
-        gap: 12px;
-      }
-
-      .logo {
-        gap: 8px;
-      }
-
-      .logo-icon {
-        width: 37px;
-        height: 37px;
-
-        border-radius: 10px;
-
-        font-size: 19px;
-      }
-
-      .logo-text {
-        font-size: 24px;
-      }
-
-      .back-link {
-        padding:
-          8px
-          10px;
-
-        font-size: 13px;
-      }
-
-      .container {
-        padding:
-          42px
-          16px
-          60px;
-      }
-
-      .heading {
-        margin-bottom: 30px;
-      }
-
-      .heading h1 {
-        font-size: 32px;
-        letter-spacing: -0.5px;
-      }
-
-      .heading p {
-        font-size: 15px;
-      }
-
-      .tool-box {
         padding: 18px;
 
-        border-radius: 14px;
-      }
-
-      .upload-area {
-        padding:
-          40px
-          15px;
-      }
-
-      .pdf-grid {
-        grid-template-columns:
-          repeat(2, 1fr);
-
-        gap: 12px;
-      }
-
-      .pdf-preview {
-        height: 130px;
-      }
-
-      .pdf-card {
-        padding: 9px;
-      }
-
-      .pdf-name {
-        font-size: 12px;
-      }
-
-      .button-row {
         flex-direction: column;
-      }
 
-      .button-row button {
-        width: 100%;
-      }
-
-      .modal-box {
-        padding: 25px 20px;
-      }
-
-    }
-
-
-    @media (max-width: 600px) {
-
-      .heading {
-        padding: 18px;
-      }
-
-      .heading-inner {
         gap: 12px;
-      }
+    }
+}
 
-      .heading-icon {
-        width: 46px;
-        height: 46px;
 
-        font-size: 11px;
-      }
+@media (max-width: 500px) {
 
-      .heading h1 {
-        font-size: 26px;
-      }
-
-      .heading p {
-        font-size: 13px;
-      }
-
+    header {
+        height: auto;
     }
 
-  </style>
+    .navbar {
+
+        padding: 12px;
+
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+    .search-container {
+        width: 100%;
+    }
+
+    .uploaded-title {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .add-more-text {
+        text-align: left;
+    }
+
+    .pdf-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .pdf-preview {
+        height: 110px;
+    }
+
+    .tool-heading h1 {
+        font-size: 27px;
+    }
+
+    .drag-hint {
+
+        font-size: 13px;
+
+        padding: 12px;
+    }
+}
+
+</style>
 
 </head>
 
 
 <body>
 
-
-  <!-- =========================
-       HEADER
-  ========================= -->
-
-  <nav>
-
-    <a
-      href="index.html"
-      class="logo"
-    >
-
-      <div class="logo-icon">
-        T
-      </div>
-
-      <div class="logo-text">
-
-        <span class="logo-tool">
-          Tool
-        </span>
-
-        <span class="logo-nest">
-          Nest
-        </span>
-
-      </div>
-
-    </a>
+<div class="site-wrapper">
 
 
-    <a
-      href="index.html"
-      class="back-link"
-    >
-      ← All Tools
-    </a>
+<!-- =========================
+     HEADER
+========================= -->
 
-  </nav>
+<header>
+
+    <div class="navbar">
+
+        <a href="index.html" class="logo">
+
+            <div class="logo-icon">
+                T
+            </div>
+
+            <div class="logo-text">
+
+                <span class="logo-tool">
+                    Tool
+                </span>
+
+                <span class="logo-nest">
+                    Nest
+                </span>
+
+            </div>
+
+        </a>
 
 
+        <div class="search-container">
 
-  <!-- =========================
-       MAIN
-  ========================= -->
+            <input
+                type="text"
+                placeholder="Search tools..."
+            >
 
-  <main class="container">
-
-
-    <!-- Heading -->
-
-    <div class="heading">
-
-      <div class="heading-inner">
-
-        <div class="heading-icon">
-          PDF
-        </div>
-
-        <div class="heading-content">
-
-          <h1>
-            <span>Merge</span> PDF
-          </h1>
-
-          <p>
-            Combine multiple PDF files into one PDF.
-            Drag files to rearrange them or choose a specific order.
-          </p>
+            <div class="search-icon">
+                ⌕
+            </div>
 
         </div>
 
-      </div>
+    </div>
+
+</header>
+
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="page-layout">
+
+
+    <div class="main-content">
+
+
+        <!-- =========================
+             TOOL HEADING
+        ========================= -->
+
+        <section class="tool-heading">
+
+            <h1>
+                <span>Merge</span> PDF
+            </h1>
+
+            <p>
+                Combine multiple PDF files into one PDF.
+            </p>
+
+        </section>
+
+
+
+        <!-- =========================
+             TOOL BOX
+        ========================= -->
+
+        <section class="tool-box">
+
+
+            <!-- =========================
+                 HIDDEN FILE INPUT
+            ========================= -->
+
+            <input
+                type="file"
+                id="pdfInput"
+                accept=".pdf,application/pdf"
+                multiple
+            >
+
+
+
+            <!-- =========================
+                 UPLOAD BOX
+                 PDF PREVIEWS APPEAR
+                 INSIDE THIS SAME BOX
+            ========================= -->
+
+            <div
+                class="upload-area"
+                id="uploadArea"
+            >
+
+
+                <!-- INITIAL MESSAGE -->
+
+                <div
+                    class="upload-placeholder"
+                    id="uploadPlaceholder"
+                >
+
+                    <div class="upload-icon">
+                        📄
+                    </div>
+
+                    <h2>
+                        Select PDF Files
+                    </h2>
+
+                    <p>
+                        Choose two or more PDF files to merge.
+                    </p>
+
+                </div>
+
+
+
+                <!-- UPLOADED FILES
+                     STAYS INSIDE UPLOAD BOX -->
+
+                <div
+                    class="uploaded-files"
+                    id="uploadedFiles"
+                >
+
+                    <div class="uploaded-title">
+
+                        <span>
+                            Selected PDF Files
+                        </span>
+
+                        <span class="add-more-text">
+                            Click inside this box to add more files
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="pdf-grid"
+                        id="pdfGrid"
+                    >
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =========================
+                 CONTROLS
+                 STAYS UNDER UPLOAD BOX
+            ========================= -->
+
+            <div
+                class="editor-controls"
+                id="editorControls"
+            >
+
+                <div class="drag-hint">
+                    Drag PDF files to change their order
+                </div>
+
+
+                <div class="button-row">
+
+                    <button
+                        class="primary-button"
+                        id="mergeButton"
+                    >
+                        Merge PDFs
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
 
     </div>
 
 
 
-    <!-- Tool Box -->
+    <!-- =========================
+         ADVERTISEMENT
+    ========================= -->
 
-    <div class="tool-box">
+    <aside class="ad-column">
 
+        <div class="ad-label">
 
-      <!-- Upload Area -->
+            ADVERTISEMENT
 
-      <label
-        for="pdfInput"
-        class="upload-area"
-      >
-
-        <div class="upload-icon">
-          📄
-        </div>
-
-        <h2>
-          Select PDF Files
-        </h2>
-
-        <p>
-          Choose two or more PDF files to merge.
-        </p>
-
-      </label>
-
-
-      <input
-        type="file"
-        id="pdfInput"
-        accept="application/pdf"
-        multiple
-      >
-
-
-
-      <!-- Editor -->
-
-      <div
-        class="editor"
-        id="editor"
-      >
-
-
-        <!-- Ordering Notice -->
-
-        <div
-          class="ordering-notice"
-          id="orderingNotice"
-        >
-
-          <strong>
-            Choose the new order
-          </strong>
-
-          <br>
-
-          Click each PDF in the exact order
-          you want it to appear.
-
-          <br>
-
-          The numbers show the final order.
+            <span class="ad-size">
+                200 × 400
+            </span>
 
         </div>
 
+    </aside>
 
 
-        <!-- Drag Hint -->
-
-        <p
-          class="drag-hint"
-          id="dragHint"
-        >
-          Drag and drop PDF previews to quickly change their order.
-        </p>
+</main>
 
 
 
-        <!-- PDF Grid -->
+<!-- =========================
+     FOOTER
+========================= -->
 
-        <div
-          class="pdf-grid"
-          id="pdfGrid"
-        >
-        </div>
+<footer>
 
+    <div class="footer-brand">
 
+        © 2026
 
-        <!-- Add More -->
+        <strong>ToolNest</strong>
 
-        <div class="add-more">
-
-          <label for="pdfInput">
-            + Add More PDF Files
-          </label>
-
-        </div>
-
-
-
-        <!-- Buttons -->
-
-        <div class="button-row">
-
-
-          <button
-            class="secondary-button"
-            id="changeOrderButton"
-          >
-            Change Order
-          </button>
-
-
-          <button
-            class="secondary-button"
-            id="doneOrderingButton"
-            style="display: none;"
-          >
-            Done Ordering
-          </button>
-
-
-          <button
-            class="primary-button"
-            id="mergeButton"
-          >
-            Merge PDFs
-          </button>
-
-
-        </div>
-
-
-      </div>
-
+        · Simple, Fast & Free
 
     </div>
 
 
-  </main>
+    <div class="footer-links">
 
+        <a href="#">
+            About
+        </a>
 
+        <a href="#">
+            Privacy Policy
+        </a>
 
-  <!-- =========================
-       CHANGE ORDER MODAL
-  ========================= -->
+        <a href="#">
+            Terms of Use
+        </a>
 
-  <div
-    class="modal"
-    id="orderModal"
-  >
-
-    <div class="modal-box">
-
-
-      <div class="modal-icon">
-        🔢
-      </div>
-
-
-      <h2>
-        Choose the New Order
-      </h2>
-
-
-      <p>
-        Click each PDF in the exact order
-        you want it to appear in your final PDF.
-      </p>
-
-
-      <div class="instruction-example">
-
-        <div class="instruction-number">
-          1
-        </div>
-
-        →
-
-        <div class="instruction-number">
-          2
-        </div>
-
-        →
-
-        <div class="instruction-number">
-          3
-        </div>
-
-      </div>
-
-
-      <p>
-        Each PDF you click will receive
-        a number showing its position.
-      </p>
-
-
-      <button
-        class="primary-button"
-        id="startOrderingButton"
-      >
-        Start Choosing Order
-      </button>
-
+        <a href="#">
+            Contact
+        </a>
 
     </div>
 
-  </div>
+</footer>
+
+
+</div>
 
 
 
-  <!-- =========================
-       FOOTER
-  ========================= -->
+<!-- =========================
+     JAVASCRIPT
+========================= -->
 
-  <footer>
-
-    &copy; 2026 ToolNest
-
-    &middot;
-
-    Simple, Fast &amp; Free
-
-  </footer>
+<script>
 
 
+/* =========================
+   PDF.JS WORKER
+========================= */
 
-  <!-- =========================
-       PDF.JS
-  ========================= -->
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
-
-
-  <!-- =========================
-       JAVASCRIPT
-  ========================= -->
-
-  <script>
-
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
 
-    const pdfInput =
-      document.getElementById(
-        "pdfInput"
-      );
+/* =========================
+   ELEMENTS
+========================= */
+
+const pdfInput =
+    document.getElementById("pdfInput");
+
+const uploadArea =
+    document.getElementById("uploadArea");
+
+const pdfGrid =
+    document.getElementById("pdfGrid");
+
+const uploadPlaceholder =
+    document.getElementById("uploadPlaceholder");
+
+const uploadedFiles =
+    document.getElementById("uploadedFiles");
+
+const editorControls =
+    document.getElementById("editorControls");
+
+const mergeButton =
+    document.getElementById("mergeButton");
 
 
-    const editor =
-      document.getElementById(
-        "editor"
-      );
+/* =========================
+   FILE STORAGE
+========================= */
+
+let pdfFiles = [];
+
+let draggedId = null;
 
 
-    const pdfGrid =
-      document.getElementById(
-        "pdfGrid"
-      );
+/* =========================
+   CLICK UPLOAD BOX
+========================= */
+
+uploadArea.addEventListener(
+    "click",
+    function(event) {
+
+        /* Don't open picker
+           when removing a file */
+
+        if (
+            event.target.closest(
+                ".remove-button"
+            )
+        ) {
+            return;
+        }
 
 
-    const changeOrderButton =
-      document.getElementById(
-        "changeOrderButton"
-      );
+        pdfInput.click();
+
+    }
+);
 
 
-    const doneOrderingButton =
-      document.getElementById(
-        "doneOrderingButton"
-      );
+/* =========================
+   FILE UPLOAD
+========================= */
 
-
-    const mergeButton =
-      document.getElementById(
-        "mergeButton"
-      );
-
-
-    const orderModal =
-      document.getElementById(
-        "orderModal"
-      );
-
-
-    const startOrderingButton =
-      document.getElementById(
-        "startOrderingButton"
-      );
-
-
-    const orderingNotice =
-      document.getElementById(
-        "orderingNotice"
-      );
-
-
-    const dragHint =
-      document.getElementById(
-        "dragHint"
-      );
-
-
-    let pdfFiles = [];
-
-    let orderingMode = false;
-
-    let selectedOrder = [];
-
-    let draggedId = null;
-
-
-
-    /* =========================
-       UPLOAD PDF FILES
-    ========================= */
-
-    pdfInput.addEventListener(
-      "change",
-      function(event) {
+pdfInput.addEventListener(
+    "change",
+    function(event) {
 
         const files =
-          Array.from(
-            event.target.files
-          );
+            Array.from(event.target.files);
 
 
         files.forEach(
-          function(file) {
+            function(file) {
 
-            if (
-              file.type ===
-              "application/pdf"
-            ) {
+                if (
+                    file.type ===
+                    "application/pdf"
+                ) {
 
-              pdfFiles.push(
-                {
+                    pdfFiles.push({
 
-                  file: file,
+                        file: file,
 
-                  id:
-                    Date.now()
-                    +
-                    Math.random()
+                        id:
+                            Date.now()
+                            +
+                            Math.random()
+
+                    });
 
                 }
-              );
 
             }
-
-          }
         );
 
 
-        if (
-          pdfFiles.length > 0
-        ) {
-
-          editor.style.display =
-            "block";
-
-        }
-
+        updateInterface();
 
         renderPDFs();
 
 
-        pdfInput.value =
-          "";
+        /* Reset input so
+           more files can be added */
 
-      }
-    );
+        pdfInput.value = "";
 
-
-
-    /* =========================
-       RENDER PDFs
-    ========================= */
-
-    function renderPDFs() {
-
-      pdfGrid.innerHTML =
-        "";
+    }
+);
 
 
-      pdfFiles.forEach(
+/* =========================
+   UPDATE INTERFACE
+========================= */
+
+function updateInterface() {
+
+    if (
+        pdfFiles.length > 0
+    ) {
+
+        /* Hide original
+           upload message */
+
+        uploadPlaceholder.style.display =
+            "none";
+
+
+        /* Show previews
+           inside same upload box */
+
+        uploadedFiles.classList.add(
+            "active"
+        );
+
+
+        /* Show drag message
+           and merge button */
+
+        editorControls.classList.add(
+            "active"
+        );
+
+    }
+
+    else {
+
+        /* Restore original
+           upload message */
+
+        uploadPlaceholder.style.display =
+            "flex";
+
+
+        /* Hide previews */
+
+        uploadedFiles.classList.remove(
+            "active"
+        );
+
+
+        /* Hide controls */
+
+        editorControls.classList.remove(
+            "active"
+        );
+
+    }
+
+}
+
+
+/* =========================
+   RENDER PDF FILES
+========================= */
+
+function renderPDFs() {
+
+    pdfGrid.innerHTML = "";
+
+
+    pdfFiles.forEach(
         function(item) {
 
 
-          const card =
-            document.createElement(
-              "div"
-            );
+            const card =
+                document.createElement("div");
 
 
-          card.className =
-            "pdf-card";
+            card.className =
+                "pdf-card";
 
 
-          card.dataset.id =
-            item.id;
-
-
-          /* Drag only outside ordering mode */
-
-          card.draggable =
-            !orderingMode;
-
-
-
-          /* Drag Start */
-
-          card.addEventListener(
-            "dragstart",
-            function(event) {
-
-              if (
-                orderingMode
-              ) {
-
-                event.preventDefault();
-
-                return;
-
-              }
-
-
-              draggedId =
+            card.dataset.id =
                 item.id;
 
 
-              card.classList.add(
-                "dragging"
-              );
+            card.draggable =
+                true;
 
 
-              event.dataTransfer.effectAllowed =
-                "move";
+            /* =========================
+               DRAG START
+            ========================= */
 
-            }
-          );
+            card.addEventListener(
+                "dragstart",
+                function(event) {
 
-
-
-          /* Drag End */
-
-          card.addEventListener(
-            "dragend",
-            function() {
-
-              draggedId =
-                null;
+                    draggedId =
+                        item.id;
 
 
-              card.classList.remove(
-                "dragging"
-              );
-
-
-              document
-                .querySelectorAll(
-                  ".pdf-card"
-                )
-                .forEach(
-                  function(otherCard) {
-
-                    otherCard.classList.remove(
-                      "drag-over"
+                    card.classList.add(
+                        "dragging"
                     );
 
-                  }
-                );
+                    event.stopPropagation();
 
-            }
-          );
-
-
-
-          /* Drag Over */
-
-          card.addEventListener(
-            "dragover",
-            function(event) {
-
-              if (
-                orderingMode
-              ) {
-
-                return;
-
-              }
-
-
-              event.preventDefault();
-
-
-              if (
-                draggedId !==
-                item.id
-              ) {
-
-                card.classList.add(
-                  "drag-over"
-                );
-
-              }
-
-            }
-          );
-
-
-
-          /* Drag Leave */
-
-          card.addEventListener(
-            "dragleave",
-            function() {
-
-              card.classList.remove(
-                "drag-over"
-              );
-
-            }
-          );
-
-
-
-          /* Drop */
-
-          card.addEventListener(
-            "drop",
-            function(event) {
-
-              if (
-                orderingMode
-              ) {
-
-                return;
-
-              }
-
-
-              event.preventDefault();
-
-
-              card.classList.remove(
-                "drag-over"
-              );
-
-
-              if (
-                !draggedId
-                ||
-                draggedId ===
-                item.id
-              ) {
-
-                return;
-
-              }
-
-
-              const draggedIndex =
-                pdfFiles.findIndex(
-                  function(pdf) {
-
-                    return (
-                      pdf.id ===
-                      draggedId
-                    );
-
-                  }
-                );
-
-
-              const targetIndex =
-                pdfFiles.findIndex(
-                  function(pdf) {
-
-                    return (
-                      pdf.id ===
-                      item.id
-                    );
-
-                  }
-                );
-
-
-              if (
-                draggedIndex === -1
-                ||
-                targetIndex === -1
-              ) {
-
-                return;
-
-              }
-
-
-              const movedPDF =
-                pdfFiles.splice(
-                  draggedIndex,
-                  1
-                )[0];
-
-
-              pdfFiles.splice(
-                targetIndex,
-                0,
-                movedPDF
-              );
-
-
-              renderPDFs();
-
-            }
-          );
-
-
-
-          /* Preview */
-
-          const preview =
-            document.createElement(
-              "div"
+                }
             );
 
 
-          preview.className =
-            "pdf-preview";
+            /* =========================
+               DRAG END
+            ========================= */
+
+            card.addEventListener(
+                "dragend",
+                function(event) {
+
+                    draggedId =
+                        null;
 
 
-          const canvas =
-            document.createElement(
-              "canvas"
-            );
-
-
-          preview.appendChild(
-            canvas
-          );
-
-
-
-          /* Name */
-
-          const name =
-            document.createElement(
-              "div"
-            );
-
-
-          name.className =
-            "pdf-name";
-
-
-          name.textContent =
-            item.file.name;
-
-
-
-          /* Remove Button */
-
-          const removeButton =
-            document.createElement(
-              "button"
-            );
-
-
-          removeButton.className =
-            "remove-button";
-
-
-          removeButton.innerHTML =
-            "×";
-
-
-          removeButton.title =
-            "Remove PDF";
-
-
-          removeButton.addEventListener(
-            "click",
-            function(event) {
-
-              event.stopPropagation();
-
-
-              pdfFiles =
-                pdfFiles.filter(
-                  function(pdf) {
-
-                    return (
-                      pdf.id !==
-                      item.id
+                    card.classList.remove(
+                        "dragging"
                     );
 
-                  }
-                );
+                    event.stopPropagation();
+
+                }
+            );
 
 
-              selectedOrder =
-                selectedOrder.filter(
-                  function(id) {
+            /* =========================
+               ALLOW DROP
+            ========================= */
 
-                    return (
-                      id !==
-                      item.id
+            card.addEventListener(
+                "dragover",
+                function(event) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+                }
+            );
+
+
+            /* =========================
+               DROP
+            ========================= */
+
+            card.addEventListener(
+                "drop",
+                function(event) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+
+                    if (
+                        draggedId ===
+                        item.id
+                    ) {
+                        return;
+                    }
+
+
+                    const draggedIndex =
+                        pdfFiles.findIndex(
+                            pdf =>
+                                pdf.id ===
+                                draggedId
+                        );
+
+
+                    const targetIndex =
+                        pdfFiles.findIndex(
+                            pdf =>
+                                pdf.id ===
+                                item.id
+                        );
+
+
+                    if (
+                        draggedIndex === -1 ||
+                        targetIndex === -1
+                    ) {
+                        return;
+                    }
+
+
+                    const movedFile =
+                        pdfFiles.splice(
+                            draggedIndex,
+                            1
+                        )[0];
+
+
+                    pdfFiles.splice(
+                        targetIndex,
+                        0,
+                        movedFile
                     );
 
-                  }
-                );
+
+                    renderPDFs();
+
+                }
+            );
 
 
-              renderPDFs();
+            /* =========================
+               PREVIEW
+            ========================= */
+
+            const preview =
+                document.createElement("div");
 
 
-              if (
-                pdfFiles.length === 0
-              ) {
-
-                editor.style.display =
-                  "none";
-
-              }
-
-            }
-          );
+            preview.className =
+                "pdf-preview";
 
 
-
-          /* Add Elements */
-
-          card.appendChild(
-            preview
-          );
+            const canvas =
+                document.createElement("canvas");
 
 
-          card.appendChild(
-            name
-          );
+            preview.appendChild(
+                canvas
+            );
 
 
-          if (
-            !orderingMode
-          ) {
+            /* =========================
+               FILE NAME
+            ========================= */
+
+            const name =
+                document.createElement("div");
+
+
+            name.className =
+                "pdf-name";
+
+
+            name.textContent =
+                item.file.name;
+
+
+            /* =========================
+               REMOVE BUTTON
+            ========================= */
+
+            const removeButton =
+                document.createElement("button");
+
+
+            removeButton.className =
+                "remove-button";
+
+
+            removeButton.type =
+                "button";
+
+
+            removeButton.textContent =
+                "×";
+
+
+            removeButton.addEventListener(
+                "click",
+                function(event) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+
+                    pdfFiles =
+                        pdfFiles.filter(
+                            pdf =>
+                                pdf.id !==
+                                item.id
+                        );
+
+
+                    updateInterface();
+
+                    renderPDFs();
+
+                }
+            );
+
+
+            /* =========================
+               BUILD CARD
+            ========================= */
 
             card.appendChild(
-              removeButton
+                preview
             );
 
-          }
+
+            card.appendChild(
+                name
+            );
 
 
-
-          /* Ordering Click */
-
-          card.addEventListener(
-            "click",
-            function() {
-
-              if (
-                orderingMode
-              ) {
-
-                selectPDFOrder(
-                  item.id
-                );
-
-              }
-
-            }
-          );
+            card.appendChild(
+                removeButton
+            );
 
 
-          pdfGrid.appendChild(
-            card
-          );
+            pdfGrid.appendChild(
+                card
+            );
 
 
-          renderPDFPreview(
-            item.file,
-            canvas
-          );
+            /* =========================
+               CREATE PDF PREVIEW
+            ========================= */
+
+            renderPDFPreview(
+                item.file,
+                canvas
+            );
 
         }
-      );
+    );
+
+}
 
 
-      updateOrderNumbers();
+/* =========================
+   PDF PREVIEW
+========================= */
 
-    }
+async function renderPDFPreview(
+    file,
+    canvas
+) {
 
-
-
-    /* =========================
-       RENDER PDF PREVIEW
-    ========================= */
-
-    async function renderPDFPreview(
-      file,
-      canvas
-    ) {
-
-      try {
+    try {
 
         const arrayBuffer =
-          await file.arrayBuffer();
+            await file.arrayBuffer();
 
 
         const pdf =
-          await pdfjsLib.getDocument(
-            {
-              data:
-                arrayBuffer
-            }
-          ).promise;
+            await pdfjsLib.getDocument({
+
+                data:
+                    arrayBuffer
+
+            }).promise;
 
 
         const page =
-          await pdf.getPage(
-            1
-          );
+            await pdf.getPage(1);
 
 
         const viewport =
-          page.getViewport(
-            {
-              scale: 0.5
-            }
-          );
+            page.getViewport({
+
+                scale: 0.45
+
+            });
 
 
         const context =
-          canvas.getContext(
-            "2d"
-          );
+            canvas.getContext("2d");
 
 
         canvas.width =
-          viewport.width;
+            viewport.width;
 
 
         canvas.height =
-          viewport.height;
+            viewport.height;
 
 
-        await page.render(
-          {
+        await page.render({
 
             canvasContext:
-              context,
+                context,
 
             viewport:
-              viewport
+                viewport
 
-          }
-        ).promise;
+        }).promise;
 
-      }
+    }
 
-      catch (
-        error
-      ) {
+    catch (error) {
 
         console.error(
-          "Could not render PDF preview:",
-          error
+            "PDF preview error:",
+            error
         );
-
-      }
 
     }
 
+}
 
 
-    /* =========================
-       CHANGE ORDER
-    ========================= */
+/* =========================
+   MERGE PDFs
+========================= */
 
-    changeOrderButton.addEventListener(
-      "click",
-      function() {
+mergeButton.addEventListener(
+    "click",
+    async function() {
+
 
         if (
-          pdfFiles.length < 2
+            pdfFiles.length < 2
         ) {
 
-          alert(
-            "Please add at least two PDF files."
-          );
+            alert(
+                "Please select at least two PDF files."
+            );
 
-          return;
+            return;
 
         }
 
 
-        orderModal.classList.add(
-          "active"
-        );
+        try {
 
-      }
-    );
+            mergeButton.disabled =
+                true;
 
 
+            mergeButton.textContent =
+                "Merging PDFs...";
 
-    /* =========================
-       START ORDERING
-    ========================= */
 
-    startOrderingButton.addEventListener(
-      "click",
-      function() {
+            const mergedPdf =
+                await PDFLib.PDFDocument.create();
 
 
-        orderModal.classList.remove(
-          "active"
-        );
-
-
-        orderingMode =
-          true;
-
-
-        selectedOrder =
-          [];
-
-
-        orderingNotice.classList.add(
-          "active"
-        );
-
-
-        dragHint.style.display =
-          "none";
-
-
-        pdfGrid.classList.add(
-          "ordering"
-        );
-
-
-        changeOrderButton.style.display =
-          "none";
-
-
-        doneOrderingButton.style.display =
-          "inline-block";
-
-
-        renderPDFs();
-
-      }
-    );
-
-
-
-    /* =========================
-       SELECT ORDER
-    ========================= */
-
-    function selectPDFOrder(
-      id
-    ) {
-
-
-      const existingIndex =
-        selectedOrder.indexOf(
-          id
-        );
-
-
-      if (
-        existingIndex !== -1
-      ) {
-
-        selectedOrder.splice(
-          existingIndex,
-          1
-        );
-
-      }
-
-      else {
-
-        selectedOrder.push(
-          id
-        );
-
-      }
-
-
-      updateOrderNumbers();
-
-    }
-
-
-
-    /* =========================
-       UPDATE ORDER NUMBERS
-    ========================= */
-
-    function updateOrderNumbers() {
-
-
-      const cards =
-        document.querySelectorAll(
-          ".pdf-card"
-        );
-
-
-      cards.forEach(
-        function(card) {
-
-
-          const id =
-            Number(
-              card.dataset.id
-            );
-
-
-          const oldBadge =
-            card.querySelector(
-              ".order-number"
-            );
-
-
-          if (
-            oldBadge
-          ) {
-
-            oldBadge.remove();
-
-          }
-
-
-          card.classList.remove(
-            "order-selected"
-          );
-
-
-          if (
-            orderingMode
-          ) {
-
-
-            const position =
-              selectedOrder.indexOf(
-                id
-              );
-
-
-            if (
-              position !== -1
+            for (
+                const item
+                of pdfFiles
             ) {
 
-
-              const badge =
-                document.createElement(
-                  "div"
-                );
+                const arrayBuffer =
+                    await item.file.arrayBuffer();
 
 
-              badge.className =
-                "order-number";
-
-
-              badge.textContent =
-                position + 1;
-
-
-              card.appendChild(
-                badge
-              );
-
-
-              card.classList.add(
-                "order-selected"
-              );
-
-            }
-
-          }
-
-        }
-      );
-
-    }
-
-
-
-    /* =========================
-       DONE ORDERING
-    ========================= */
-
-    doneOrderingButton.addEventListener(
-      "click",
-      function() {
-
-
-        if (
-          selectedOrder.length > 0
-        ) {
-
-
-          const newlyOrdered =
-            [];
-
-
-          selectedOrder.forEach(
-            function(id) {
-
-
-              const pdf =
-                pdfFiles.find(
-                  function(item) {
-
-                    return (
-                      item.id ===
-                      id
+                const sourcePdf =
+                    await PDFLib.PDFDocument.load(
+                        arrayBuffer
                     );
 
-                  }
+
+                const copiedPages =
+                    await mergedPdf.copyPages(
+
+                        sourcePdf,
+
+                        sourcePdf.getPageIndices()
+
+                    );
+
+
+                copiedPages.forEach(
+                    function(page) {
+
+                        mergedPdf.addPage(
+                            page
+                        );
+
+                    }
                 );
-
-
-              if (
-                pdf
-              ) {
-
-                newlyOrdered.push(
-                  pdf
-                );
-
-              }
 
             }
-          );
 
 
-          pdfFiles.forEach(
-            function(pdf) {
+            const mergedPdfBytes =
+                await mergedPdf.save();
 
 
-              if (
-                !selectedOrder.includes(
-                  pdf.id
-                )
-              ) {
+            const blob =
+                new Blob(
 
-                newlyOrdered.push(
-                  pdf
+                    [mergedPdfBytes],
+
+                    {
+
+                        type:
+                            "application/pdf"
+
+                    }
+
                 );
 
-              }
 
-            }
-          );
-
-
-          pdfFiles =
-            newlyOrdered;
-
-        }
+            const url =
+                URL.createObjectURL(
+                    blob
+                );
 
 
-        orderingMode =
-          false;
+            const link =
+                document.createElement(
+                    "a"
+                );
 
 
-        selectedOrder =
-          [];
+            link.href =
+                url;
 
 
-        orderingNotice.classList.remove(
-          "active"
-        );
+            link.download =
+                "merged-toolnest.pdf";
 
 
-        dragHint.style.display =
-          "block";
+            document.body.appendChild(
+                link
+            );
 
 
-        pdfGrid.classList.remove(
-          "ordering"
-        );
+            link.click();
 
 
-        changeOrderButton.style.display =
-          "inline-block";
+            link.remove();
 
 
-        doneOrderingButton.style.display =
-          "none";
+            setTimeout(
+                function() {
+
+                    URL.revokeObjectURL(
+                        url
+                    );
+
+                },
+                1000
+            );
 
 
-        renderPDFs();
-
-      }
-    );
+            mergeButton.disabled =
+                false;
 
 
-
-    /* =========================
-       MERGE PDFs
-    ========================= */
-
-    mergeButton.addEventListener(
-      "click",
-      function() {
-
-        if (
-          pdfFiles.length < 2
-        ) {
-
-          alert(
-            "Please select at least two PDF files to merge."
-          );
-
-          return;
+            mergeButton.textContent =
+                "Merge PDFs";
 
         }
 
+        catch (error) {
 
-        alert(
-          "PDF merging functionality will be added here."
-        );
-
-      }
-    );
-
+            console.error(
+                "Merge error:",
+                error
+            );
 
 
-    /* =========================
-       CLOSE MODAL
-    ========================= */
+            alert(
+                "Something went wrong while merging the PDFs."
+            );
 
-    orderModal.addEventListener(
-      "click",
-      function(event) {
 
-        if (
-          event.target ===
-          orderModal
-        ) {
+            mergeButton.disabled =
+                false;
 
-          orderModal.classList.remove(
-            "active"
-          );
+
+            mergeButton.textContent =
+                "Merge PDFs";
 
         }
 
-      }
-    );
+    }
+);
 
-  </script>
 
+</script>
 
 </body>
 
