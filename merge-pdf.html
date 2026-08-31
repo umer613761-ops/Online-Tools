@@ -579,12 +579,14 @@ header {
 
 .uploaded-title {
 
-    display: flex;
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto
+        1fr;
 
     align-items: center;
-    justify-content: space-between;
-
-    gap: 15px;
 
     margin-bottom: 16px;
 
@@ -594,15 +596,22 @@ header {
     font-weight: 700;
 }
 
+.uploaded-title > span:first-child {
+    grid-column: 1;
+}
+
 .add-more-text {
+    grid-column: 2;
 
     color: #356aa5;
 
     font-size: 12px;
     font-weight: 700;
 
-    text-align: right;
+    text-align: center;
 }
+
+
 
 
 /* =========================
@@ -1224,6 +1233,24 @@ footer {
 
     .heading-dot.dot-6 {
         right: 24px;
+    }
+
+}
+
+
+
+@media (max-width: 600px) {
+
+    .uploaded-title {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 7px;
+    }
+
+    .uploaded-title > span:first-child,
+    .add-more-text {
+        grid-column: 1;
+        text-align: center;
     }
 
 }
