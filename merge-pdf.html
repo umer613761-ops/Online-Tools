@@ -13,16 +13,8 @@
     content="Merge multiple PDF files into one PDF for free with ToolNest."
 >
 
-
-<!-- PDF.JS FOR PDF PREVIEWS -->
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
-
-<!-- PDF-LIB FOR ACTUAL PDF MERGING -->
-
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
-
 
 <style>
 
@@ -266,8 +258,7 @@ header {
 
 
 /* =========================
-   IMPORTANT:
-   HIDE CHOOSE FILES BUTTON
+   HIDE FILE INPUT
 ========================= */
 
 #pdfInput {
@@ -422,12 +413,15 @@ header {
 
     transition:
         transform 0.2s,
-        box-shadow 0.2s;
+        box-shadow 0.2s,
+        border-color 0.2s;
 }
 
 .pdf-card:hover {
     transform:
         translateY(-2px);
+
+    border-color: #5d8ec2;
 
     box-shadow:
         0 7px 15px
@@ -557,14 +551,46 @@ header {
     display: block;
 }
 
+
+/* =========================
+   PROMINENT DRAG MESSAGE
+========================= */
+
 .drag-hint {
-    margin: 0 0 14px;
+    margin: 0 0 16px;
+
+    padding: 14px 18px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
 
     text-align: center;
 
-    color: #607184;
+    background: #e7f1fc;
 
-    font-size: 13px;
+    border:
+        1px solid
+        #9ebfdf;
+
+    border-radius: 10px;
+
+    color: #285b91;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    box-shadow:
+        0 3px 8px
+        rgba(53, 106, 165, 0.10);
+}
+
+.drag-hint-icon {
+    font-size: 22px;
+    line-height: 1;
 }
 
 
@@ -603,6 +629,8 @@ button:hover {
 }
 
 .primary-button {
+    min-width: 170px;
+
     background: #356aa5;
 
     color: #ffffff;
@@ -758,7 +786,6 @@ footer {
 
     .tool-heading p,
     .upload-placeholder p,
-    .drag-hint,
     .uploaded-title {
         color: #aebdca;
     }
@@ -777,6 +804,14 @@ footer {
         background: #1b2530;
 
         border-color: #3b4a58;
+    }
+
+    .drag-hint {
+        background: #1d344b;
+
+        border-color: #3f6f9e;
+
+        color: #a9d1f7;
     }
 
 }
@@ -843,6 +878,12 @@ footer {
         height: 110px;
     }
 
+    .drag-hint {
+        font-size: 13px;
+
+        padding: 12px;
+    }
+
 }
 
 </style>
@@ -852,22 +893,16 @@ footer {
 
 <body>
 
-
 <div class="site-wrapper">
 
 
-<!-- =========================
-     HEADER
-========================= -->
+<!-- HEADER -->
 
 <header>
 
     <div class="navbar">
 
-        <a
-            href="index.html"
-            class="logo"
-        >
+        <a href="index.html" class="logo">
 
             <div class="logo-icon">
                 T
@@ -907,17 +942,13 @@ footer {
 
 
 
-<!-- =========================
-     MAIN CONTENT
-========================= -->
+<!-- MAIN -->
 
 <main class="page-layout">
 
 
     <div class="main-content">
 
-
-        <!-- HEADING -->
 
         <section class="tool-heading">
 
@@ -927,27 +958,21 @@ footer {
 
             <p>
                 Combine multiple PDF files into one PDF.
-                Drag the files to change their order.
             </p>
 
         </section>
 
 
 
-        <!-- TOOL -->
-
         <section class="tool-box">
 
 
-            <!-- CLICKABLE UPLOAD BOX -->
+            <!-- UPLOAD AREA -->
 
             <label
                 for="pdfInput"
                 class="upload-area"
             >
-
-
-                <!-- BEFORE UPLOAD -->
 
                 <div
                     class="upload-placeholder"
@@ -970,17 +995,13 @@ footer {
 
 
 
-                <!-- AFTER UPLOAD -->
-
                 <div
                     class="uploaded-files"
                     id="uploadedFiles"
                 >
 
                     <div class="uploaded-title">
-
                         Selected PDF Files
-
                     </div>
 
 
@@ -992,19 +1013,16 @@ footer {
 
 
                     <div class="add-more-text">
-
                         Click inside this box to add more PDF files
-
                     </div>
 
                 </div>
-
 
             </label>
 
 
 
-            <!-- HIDDEN FILE INPUT -->
+            <!-- HIDDEN INPUT -->
 
             <input
                 type="file"
@@ -1015,18 +1033,29 @@ footer {
 
 
 
-            <!-- BUTTONS -->
+            <!-- CONTROLS -->
 
             <div
                 class="editor-controls"
                 id="editorControls"
             >
 
-                <p class="drag-hint">
 
-                    Drag PDF files to change their order.
+                <!-- PROMINENT DRAG MESSAGE -->
 
-                </p>
+                <div class="drag-hint">
+
+                    <span class="drag-hint-icon">
+                        ↔
+                    </span>
+
+                    Drag PDF files to change their order
+
+                    <span class="drag-hint-icon">
+                        ↔
+                    </span>
+
+                </div>
 
 
                 <div class="button-row">
@@ -1052,9 +1081,7 @@ footer {
 
 
 
-    <!-- =========================
-         AD
-    ========================= -->
+    <!-- AD -->
 
     <aside class="ad-column">
 
@@ -1063,9 +1090,7 @@ footer {
             ADVERTISEMENT
 
             <span class="ad-size">
-
                 200 × 400
-
             </span>
 
         </div>
@@ -1077,12 +1102,9 @@ footer {
 
 
 
-<!-- =========================
-     FOOTER
-========================= -->
+<!-- FOOTER -->
 
 <footer>
-
 
     <div class="footer-brand">
 
@@ -1115,7 +1137,6 @@ footer {
 
     </div>
 
-
 </footer>
 
 
@@ -1123,24 +1144,14 @@ footer {
 
 
 
-<!-- =========================
-     JAVASCRIPT
-========================= -->
+<!-- JAVASCRIPT -->
 
 <script>
 
 
-/* =========================
-   PDF.JS SETUP
-========================= */
-
 pdfjsLib.GlobalWorkerOptions.workerSrc =
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-
-/* =========================
-   ELEMENTS
-========================= */
 
 const pdfInput =
     document.getElementById("pdfInput");
@@ -1160,10 +1171,6 @@ const editorControls =
 const mergeButton =
     document.getElementById("mergeButton");
 
-
-/* =========================
-   FILE STORAGE
-========================= */
 
 let pdfFiles = [];
 
@@ -1210,10 +1217,6 @@ pdfInput.addEventListener(
 
         renderPDFs();
 
-
-        /* Reset input so user can
-           select the same file again */
-
         pdfInput.value = "";
 
     }
@@ -1226,18 +1229,14 @@ pdfInput.addEventListener(
 
 function updateInterface() {
 
-    if (
-        pdfFiles.length > 0
-    ) {
+    if (pdfFiles.length > 0) {
 
         uploadPlaceholder.style.display =
             "none";
 
-
         uploadedFiles.classList.add(
             "active"
         );
-
 
         editorControls.classList.add(
             "active"
@@ -1250,11 +1249,9 @@ function updateInterface() {
         uploadPlaceholder.style.display =
             "flex";
 
-
         uploadedFiles.classList.remove(
             "active"
         );
-
 
         editorControls.classList.remove(
             "active"
@@ -1266,7 +1263,7 @@ function updateInterface() {
 
 
 /* =========================
-   RENDER FILES
+   RENDER PDF FILES
 ========================= */
 
 function renderPDFs() {
@@ -1277,26 +1274,18 @@ function renderPDFs() {
     pdfFiles.forEach(
         function(item) {
 
-
             const card =
                 document.createElement("div");
-
 
             card.className =
                 "pdf-card";
 
-
             card.dataset.id =
                 item.id;
-
 
             card.draggable =
                 true;
 
-
-            /* =========================
-               DRAG START
-            ========================= */
 
             card.addEventListener(
                 "dragstart",
@@ -1304,7 +1293,6 @@ function renderPDFs() {
 
                     draggedId =
                         item.id;
-
 
                     card.classList.add(
                         "dragging"
@@ -1314,17 +1302,12 @@ function renderPDFs() {
             );
 
 
-            /* =========================
-               DRAG END
-            ========================= */
-
             card.addEventListener(
                 "dragend",
                 function() {
 
                     draggedId =
                         null;
-
 
                     card.classList.remove(
                         "dragging"
@@ -1333,10 +1316,6 @@ function renderPDFs() {
                 }
             );
 
-
-            /* =========================
-               DRAG OVER
-            ========================= */
 
             card.addEventListener(
                 "dragover",
@@ -1347,10 +1326,6 @@ function renderPDFs() {
                 }
             );
 
-
-            /* =========================
-               DROP
-            ========================= */
 
             card.addEventListener(
                 "drop",
@@ -1363,35 +1338,23 @@ function renderPDFs() {
                         draggedId ===
                         item.id
                     ) {
-
                         return;
-
                     }
 
 
                     const draggedIndex =
                         pdfFiles.findIndex(
-                            function(pdf) {
-
-                                return (
-                                    pdf.id ===
-                                    draggedId
-                                );
-
-                            }
+                            pdf =>
+                                pdf.id ===
+                                draggedId
                         );
 
 
                     const targetIndex =
                         pdfFiles.findIndex(
-                            function(pdf) {
-
-                                return (
-                                    pdf.id ===
-                                    item.id
-                                );
-
-                            }
+                            pdf =>
+                                pdf.id ===
+                                item.id
                         );
 
 
@@ -1415,24 +1378,15 @@ function renderPDFs() {
             );
 
 
-            /* =========================
-               PREVIEW
-            ========================= */
-
             const preview =
-                document.createElement(
-                    "div"
-                );
-
+                document.createElement("div");
 
             preview.className =
                 "pdf-preview";
 
 
             const canvas =
-                document.createElement(
-                    "canvas"
-                );
+                document.createElement("canvas");
 
 
             preview.appendChild(
@@ -1440,37 +1394,21 @@ function renderPDFs() {
             );
 
 
-            /* =========================
-               NAME
-            ========================= */
-
             const name =
-                document.createElement(
-                    "div"
-                );
-
+                document.createElement("div");
 
             name.className =
                 "pdf-name";
-
 
             name.textContent =
                 item.file.name;
 
 
-            /* =========================
-               REMOVE BUTTON
-            ========================= */
-
             const removeButton =
-                document.createElement(
-                    "button"
-                );
-
+                document.createElement("button");
 
             removeButton.className =
                 "remove-button";
-
 
             removeButton.textContent =
                 "×";
@@ -1487,14 +1425,9 @@ function renderPDFs() {
 
                     pdfFiles =
                         pdfFiles.filter(
-                            function(pdf) {
-
-                                return (
-                                    pdf.id !==
-                                    item.id
-                                );
-
-                            }
+                            pdf =>
+                                pdf.id !==
+                                item.id
                         );
 
 
@@ -1506,19 +1439,13 @@ function renderPDFs() {
             );
 
 
-            /* =========================
-               BUILD CARD
-            ========================= */
-
             card.appendChild(
                 preview
             );
 
-
             card.appendChild(
                 name
             );
-
 
             card.appendChild(
                 removeButton
@@ -1558,8 +1485,10 @@ async function renderPDFPreview(
 
         const pdf =
             await pdfjsLib.getDocument({
+
                 data:
                     arrayBuffer
+
             }).promise;
 
 
@@ -1569,14 +1498,14 @@ async function renderPDFPreview(
 
         const viewport =
             page.getViewport({
+
                 scale: 0.45
+
             });
 
 
         const context =
-            canvas.getContext(
-                "2d"
-            );
+            canvas.getContext("2d");
 
 
         canvas.width =
@@ -1612,15 +1541,13 @@ async function renderPDFPreview(
 
 
 /* =========================
-   ACTUALLY MERGE PDFs
+   MERGE PDFs
 ========================= */
 
 mergeButton.addEventListener(
     "click",
     async function() {
 
-
-        /* Check number of files */
 
         if (
             pdfFiles.length < 2
@@ -1637,9 +1564,6 @@ mergeButton.addEventListener(
 
         try {
 
-
-            /* Change button text */
-
             mergeButton.disabled =
                 true;
 
@@ -1648,20 +1572,15 @@ mergeButton.addEventListener(
                 "Merging PDFs...";
 
 
-            /* Create new PDF */
-
             const mergedPdf =
                 await PDFLib.PDFDocument.create();
 
-
-            /* Process every PDF */
 
             for (
                 const item
                 of
                 pdfFiles
             ) {
-
 
                 const arrayBuffer =
                     await item.file.arrayBuffer();
@@ -1696,8 +1615,6 @@ mergeButton.addEventListener(
             }
 
 
-            /* Create merged file */
-
             const mergedPdfBytes =
                 await mergedPdf.save();
 
@@ -1708,14 +1625,14 @@ mergeButton.addEventListener(
                     [mergedPdfBytes],
 
                     {
+
                         type:
                             "application/pdf"
+
                     }
 
                 );
 
-
-            /* Create download */
 
             const url =
                 URL.createObjectURL(
@@ -1753,8 +1670,6 @@ mergeButton.addEventListener(
             );
 
 
-            /* Restore button */
-
             mergeButton.disabled =
                 false;
 
@@ -1762,11 +1677,9 @@ mergeButton.addEventListener(
             mergeButton.textContent =
                 "Merge PDFs";
 
-
         }
 
         catch (error) {
-
 
             console.error(
                 error
@@ -1774,7 +1687,7 @@ mergeButton.addEventListener(
 
 
             alert(
-                "Something went wrong while merging the PDFs. Please try different PDF files."
+                "Something went wrong while merging the PDFs."
             );
 
 
@@ -1792,7 +1705,6 @@ mergeButton.addEventListener(
 
 
 </script>
-
 
 </body>
 
