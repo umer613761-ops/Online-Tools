@@ -232,32 +232,98 @@ header {
 
 
 /* =========================
-   COLOURFUL CIRCLES
+   DECORATIVE DOTS
+   Inspired by the reference:
+   small, sparse and subtle
 ========================= */
 
-.tool-heading::before {
-
-    content: "";
-
+.heading-dot {
     position: absolute;
-
-    width: 13px;
-    height: 13px;
-
-    top: 20px;
-    left: 35px;
 
     border-radius: 50%;
 
-    background: #f2a541;
+    pointer-events: none;
 
-    box-shadow:
-        95px 18px 0 #64b5c6,
-        180px -5px 0 #e87c88,
-        270px 18px 0 #7f69c4,
-        390px -3px 0 #55a77b,
-        520px 22px 0 #f29b45,
-        620px -5px 0 #e77a83;
+    z-index: 1;
+}
+
+/* Top-left small blue */
+.heading-dot.dot-1 {
+    width: 8px;
+    height: 8px;
+
+    top: 18px;
+    left: 28px;
+
+    background: #426a8d;
+}
+
+/* Upper-left teal */
+.heading-dot.dot-2 {
+    width: 14px;
+    height: 14px;
+
+    top: 12px;
+    left: 145px;
+
+    background: #4f8d9d;
+}
+
+/* Upper-right small blue */
+.heading-dot.dot-3 {
+    width: 6px;
+    height: 6px;
+
+    top: 30px;
+    right: 150px;
+
+    background: #315f98;
+}
+
+/* Right-side blue */
+.heading-dot.dot-4 {
+    width: 8px;
+    height: 8px;
+
+    top: 56px;
+    right: 28px;
+
+    background: #426a8d;
+}
+
+/* Lower-left orange */
+.heading-dot.dot-5 {
+    width: 8px;
+    height: 8px;
+
+    bottom: 18px;
+    left: 46px;
+
+    background: #e79a3d;
+}
+
+/* Lower-right orange accent */
+.heading-dot.dot-6 {
+    width: 13px;
+    height: 13px;
+
+    bottom: 15px;
+    right: 52px;
+
+    background: #e79a3d;
+}
+
+/* Small teal accent */
+.heading-dot.dot-7 {
+    width: 10px;
+    height: 10px;
+
+    top: 50%;
+    left: 70px;
+
+    transform: translateY(-50%);
+
+    background: #4f8d9d;
 }
 
 
@@ -320,6 +386,55 @@ header {
 }
 
 
+
+
+/* =========================
+   PROFESSIONAL MERGE HEADING
+========================= */
+
+.merge-heading-row {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.merge-heading-badge {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f28b3c,
+            #dc6b24
+        );
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+
+    box-shadow:
+        0 5px 12px
+        rgba(220, 107, 36, 0.18);
+}
+
+.merge-heading-row > div:last-child {
+    text-align: left;
+}
+
 /* =========================
    UPLOAD AREA
 ========================= */
@@ -330,11 +445,16 @@ header {
 
     padding: 25px 20px;
 
-    background: #f9fbfd;
+    background:
+        linear-gradient(
+            135deg,
+            #fff7ef 0%,
+            #fff0e1 100%
+        );
 
     border:
         2px dashed
-        #b8c7d5;
+        #e98a42;
 
     border-radius: 12px;
 
@@ -348,9 +468,14 @@ header {
 
 .upload-area:hover {
 
-    background: #f5f9fd;
+    background:
+        linear-gradient(
+            135deg,
+            #fff3e8 0%,
+            #ffe7cf 100%
+        );
 
-    border-color: #4c7fb7;
+    border-color: #df711e;
 
     box-shadow:
         0 5px 15px
@@ -398,13 +523,15 @@ header {
     background:
         linear-gradient(
             135deg,
-            #fff0e5,
-            #ffe0c5
+            #f28b3c,
+            #dc6b24
         );
 
     border:
         1px solid
-        #f2c49e;
+        #d96822;
+
+    color: #ffffff;
 
     font-size: 32px;
 
@@ -1060,6 +1187,45 @@ footer {
     }
 }
 
+
+
+@media (max-width: 600px) {
+
+    .merge-heading-row {
+        gap: 12px;
+    }
+
+    .merge-heading-badge {
+        width: 44px;
+        height: 44px;
+        font-size: 11px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .heading-dot.dot-2,
+    .heading-dot.dot-3,
+    .heading-dot.dot-4 {
+        display: none;
+    }
+
+    .heading-dot.dot-1 {
+        left: 18px;
+    }
+
+    .heading-dot.dot-5 {
+        left: 26px;
+    }
+
+    .heading-dot.dot-6 {
+        right: 24px;
+    }
+
+}
+
 </style>
 
 </head>
@@ -1134,13 +1300,34 @@ footer {
 
         <section class="tool-heading">
 
-            <h1>
-                <span>Merge</span> PDF
-            </h1>
+            <!-- Decorative dots -->
+            <span class="heading-dot dot-1"></span>
+            <span class="heading-dot dot-2"></span>
+            <span class="heading-dot dot-3"></span>
+            <span class="heading-dot dot-4"></span>
+            <span class="heading-dot dot-5"></span>
+            <span class="heading-dot dot-6"></span>
+            <span class="heading-dot dot-7"></span>
 
-            <p>
-                Combine multiple PDF files into one PDF.
-            </p>
+            <div class="merge-heading-row">
+
+                <div class="merge-heading-badge">
+                    PDF
+                </div>
+
+                <div>
+
+                    <h1>
+                        <span>Merge</span> PDF
+                    </h1>
+
+                    <p>
+                        Combine multiple PDF files into one PDF.
+                    </p>
+
+                </div>
+
+            </div>
 
         </section>
 
