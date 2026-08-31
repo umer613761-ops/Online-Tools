@@ -751,13 +751,12 @@ button:hover {
 
 
 /* =========================
-   AD COLUMN
+   AD COLUMN - 200 × 400
 ========================= */
 
 .ad-column {
     width: 200px;
-
-    min-height: 600px;
+    height: 400px;
 
     background: #ffffff;
 
@@ -774,6 +773,7 @@ button:hover {
 
     text-align: center;
 
+    /* STAYS VISIBLE WHILE SCROLLING */
     position: sticky;
 
     top: 12px;
@@ -1168,8 +1168,7 @@ footer {
 
     .ad-column {
         width: 100%;
-
-        min-height: 180px;
+        height: 180px;
 
         position: static;
     }
@@ -1292,9 +1291,6 @@ footer {
 
     <div class="navbar">
 
-
-        <!-- LOGO -->
-
         <a href="index.html" class="logo">
 
             <div class="logo-icon">
@@ -1316,8 +1312,6 @@ footer {
         </a>
 
 
-        <!-- SEARCH -->
-
         <div class="search-container">
 
             <input
@@ -1330,7 +1324,6 @@ footer {
             </div>
 
         </div>
-
 
     </div>
 
@@ -1345,16 +1338,10 @@ footer {
 <main class="page-layout">
 
 
-    <!-- =====================
-         LEFT CONTENT
-    ====================== -->
-
     <div class="main-content">
 
 
-        <!-- =====================
-             TOOL HEADING
-        ====================== -->
+        <!-- TOOL HEADING -->
 
         <section class="tool-heading">
 
@@ -1372,14 +1359,10 @@ footer {
 
 
 
-        <!-- =====================
-             TOOL BOX
-        ====================== -->
+        <!-- TOOL BOX -->
 
         <section class="tool-box">
 
-
-            <!-- UPLOAD AREA -->
 
             <label
                 for="pdfInput"
@@ -1409,16 +1392,11 @@ footer {
             >
 
 
-
-            <!-- EDITOR -->
-
             <div
                 class="editor"
                 id="editor"
             >
 
-
-                <!-- ORDERING NOTICE -->
 
                 <div
                     class="ordering-notice"
@@ -1441,9 +1419,6 @@ footer {
                 </div>
 
 
-
-                <!-- DRAG HINT -->
-
                 <p
                     class="drag-hint"
                     id="dragHint"
@@ -1452,18 +1427,12 @@ footer {
                 </p>
 
 
-
-                <!-- PDF GRID -->
-
                 <div
                     class="pdf-grid"
                     id="pdfGrid"
                 >
                 </div>
 
-
-
-                <!-- ADD MORE -->
 
                 <div class="add-more">
 
@@ -1473,9 +1442,6 @@ footer {
 
                 </div>
 
-
-
-                <!-- BUTTONS -->
 
                 <div class="button-row">
 
@@ -1518,9 +1484,7 @@ footer {
 
 
 
-    <!-- =====================
-         STICKY AD
-    ====================== -->
+    <!-- STICKY 200 × 400 AD -->
 
     <aside class="ad-column">
 
@@ -1529,7 +1493,7 @@ footer {
             ADVERTISEMENT
 
             <span class="ad-size">
-                200 × 600
+                200 × 400
             </span>
 
         </div>
@@ -1656,17 +1620,10 @@ footer {
 
 
 
-<!-- =========================
-     PDF.JS
-========================= -->
+<!-- PDF.JS -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
-
-
-<!-- =========================
-     JAVASCRIPT
-========================= -->
 
 <script>
 
@@ -1676,73 +1633,40 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 
 const pdfInput =
-    document.getElementById(
-        "pdfInput"
-    );
-
+    document.getElementById("pdfInput");
 
 const editor =
-    document.getElementById(
-        "editor"
-    );
-
+    document.getElementById("editor");
 
 const pdfGrid =
-    document.getElementById(
-        "pdfGrid"
-    );
-
+    document.getElementById("pdfGrid");
 
 const changeOrderButton =
-    document.getElementById(
-        "changeOrderButton"
-    );
-
+    document.getElementById("changeOrderButton");
 
 const doneOrderingButton =
-    document.getElementById(
-        "doneOrderingButton"
-    );
-
+    document.getElementById("doneOrderingButton");
 
 const mergeButton =
-    document.getElementById(
-        "mergeButton"
-    );
-
+    document.getElementById("mergeButton");
 
 const orderModal =
-    document.getElementById(
-        "orderModal"
-    );
-
+    document.getElementById("orderModal");
 
 const startOrderingButton =
-    document.getElementById(
-        "startOrderingButton"
-    );
-
+    document.getElementById("startOrderingButton");
 
 const orderingNotice =
-    document.getElementById(
-        "orderingNotice"
-    );
-
+    document.getElementById("orderingNotice");
 
 const dragHint =
-    document.getElementById(
-        "dragHint"
-    );
+    document.getElementById("dragHint");
 
 
 let pdfFiles = [];
-
 let orderingMode = false;
-
 let selectedOrder = [];
-
 let draggedId = null;
-
 
 
 /* =========================
@@ -1754,9 +1678,7 @@ pdfInput.addEventListener(
     function(event) {
 
         const files =
-            Array.from(
-                event.target.files
-            );
+            Array.from(event.target.files);
 
 
         files.forEach(
@@ -1767,18 +1689,10 @@ pdfInput.addEventListener(
                     "application/pdf"
                 ) {
 
-                    pdfFiles.push(
-                        {
-
-                            file: file,
-
-                            id:
-                                Date.now()
-                                +
-                                Math.random()
-
-                        }
-                    );
+                    pdfFiles.push({
+                        file: file,
+                        id: Date.now() + Math.random()
+                    });
 
                 }
 
@@ -1786,25 +1700,17 @@ pdfInput.addEventListener(
         );
 
 
-        if (
-            pdfFiles.length > 0
-        ) {
-
-            editor.style.display =
-                "block";
-
+        if (pdfFiles.length > 0) {
+            editor.style.display = "block";
         }
 
 
         renderPDFs();
 
-
-        pdfInput.value =
-            "";
+        pdfInput.value = "";
 
     }
 );
-
 
 
 /* =========================
@@ -1813,8 +1719,7 @@ pdfInput.addEventListener(
 
 function renderPDFs() {
 
-    pdfGrid.innerHTML =
-        "";
+    pdfGrid.innerHTML = "";
 
 
     pdfFiles.forEach(
@@ -1822,9 +1727,7 @@ function renderPDFs() {
 
 
             const card =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
 
             card.className =
@@ -1839,32 +1742,23 @@ function renderPDFs() {
                 !orderingMode;
 
 
-
-            /* DRAG START */
-
             card.addEventListener(
                 "dragstart",
                 function(event) {
 
-                    if (
-                        orderingMode
-                    ) {
+                    if (orderingMode) {
 
                         event.preventDefault();
-
                         return;
 
                     }
 
 
-                    draggedId =
-                        item.id;
-
+                    draggedId = item.id;
 
                     card.classList.add(
                         "dragging"
                     );
-
 
                     event.dataTransfer.effectAllowed =
                         "move";
@@ -1873,16 +1767,11 @@ function renderPDFs() {
             );
 
 
-
-            /* DRAG END */
-
             card.addEventListener(
                 "dragend",
                 function() {
 
-                    draggedId =
-                        null;
-
+                    draggedId = null;
 
                     card.classList.remove(
                         "dragging"
@@ -1890,9 +1779,7 @@ function renderPDFs() {
 
 
                     document
-                        .querySelectorAll(
-                            ".pdf-card"
-                        )
+                        .querySelectorAll(".pdf-card")
                         .forEach(
                             function(otherCard) {
 
@@ -1907,29 +1794,18 @@ function renderPDFs() {
             );
 
 
-
-            /* DRAG OVER */
-
             card.addEventListener(
                 "dragover",
                 function(event) {
 
-                    if (
-                        orderingMode
-                    ) {
-
+                    if (orderingMode) {
                         return;
-
                     }
-
 
                     event.preventDefault();
 
 
-                    if (
-                        draggedId !==
-                        item.id
-                    ) {
+                    if (draggedId !== item.id) {
 
                         card.classList.add(
                             "drag-over"
@@ -1940,9 +1816,6 @@ function renderPDFs() {
                 }
             );
 
-
-
-            /* DRAG LEAVE */
 
             card.addEventListener(
                 "dragleave",
@@ -1956,24 +1829,15 @@ function renderPDFs() {
             );
 
 
-
-            /* DROP */
-
             card.addEventListener(
                 "drop",
                 function(event) {
 
-                    if (
-                        orderingMode
-                    ) {
-
+                    if (orderingMode) {
                         return;
-
                     }
 
-
                     event.preventDefault();
-
 
                     card.classList.remove(
                         "drag-over"
@@ -1981,26 +1845,17 @@ function renderPDFs() {
 
 
                     if (
-                        !draggedId
-                        ||
-                        draggedId ===
-                        item.id
+                        !draggedId ||
+                        draggedId === item.id
                     ) {
-
                         return;
-
                     }
 
 
                     const draggedIndex =
                         pdfFiles.findIndex(
                             function(pdf) {
-
-                                return (
-                                    pdf.id ===
-                                    draggedId
-                                );
-
+                                return pdf.id === draggedId;
                             }
                         );
 
@@ -2008,24 +1863,16 @@ function renderPDFs() {
                     const targetIndex =
                         pdfFiles.findIndex(
                             function(pdf) {
-
-                                return (
-                                    pdf.id ===
-                                    item.id
-                                );
-
+                                return pdf.id === item.id;
                             }
                         );
 
 
                     if (
-                        draggedIndex === -1
-                        ||
+                        draggedIndex === -1 ||
                         targetIndex === -1
                     ) {
-
                         return;
-
                     }
 
 
@@ -2049,63 +1896,37 @@ function renderPDFs() {
             );
 
 
-
-            /* PREVIEW */
-
             const preview =
-                document.createElement(
-                    "div"
-                );
-
+                document.createElement("div");
 
             preview.className =
                 "pdf-preview";
 
 
             const canvas =
-                document.createElement(
-                    "canvas"
-                );
+                document.createElement("canvas");
 
+            preview.appendChild(canvas);
 
-            preview.appendChild(
-                canvas
-            );
-
-
-
-            /* NAME */
 
             const name =
-                document.createElement(
-                    "div"
-                );
-
+                document.createElement("div");
 
             name.className =
                 "pdf-name";
-
 
             name.textContent =
                 item.file.name;
 
 
-
-            /* REMOVE BUTTON */
-
             const removeButton =
-                document.createElement(
-                    "button"
-                );
-
+                document.createElement("button");
 
             removeButton.className =
                 "remove-button";
 
-
             removeButton.innerHTML =
                 "×";
-
 
             removeButton.title =
                 "Remove PDF";
@@ -2121,12 +1942,7 @@ function renderPDFs() {
                     pdfFiles =
                         pdfFiles.filter(
                             function(pdf) {
-
-                                return (
-                                    pdf.id !==
-                                    item.id
-                                );
-
+                                return pdf.id !== item.id;
                             }
                         );
 
@@ -2134,12 +1950,7 @@ function renderPDFs() {
                     selectedOrder =
                         selectedOrder.filter(
                             function(id) {
-
-                                return (
-                                    id !==
-                                    item.id
-                                );
-
+                                return id !== item.id;
                             }
                         );
 
@@ -2147,67 +1958,37 @@ function renderPDFs() {
                     renderPDFs();
 
 
-                    if (
-                        pdfFiles.length === 0
-                    ) {
-
-                        editor.style.display =
-                            "none";
-
+                    if (pdfFiles.length === 0) {
+                        editor.style.display = "none";
                     }
 
                 }
             );
 
 
+            card.appendChild(preview);
 
-            /* ADD ELEMENTS */
-
-            card.appendChild(
-                preview
-            );
+            card.appendChild(name);
 
 
-            card.appendChild(
-                name
-            );
-
-
-            if (
-                !orderingMode
-            ) {
-
-                card.appendChild(
-                    removeButton
-                );
-
+            if (!orderingMode) {
+                card.appendChild(removeButton);
             }
 
-
-
-            /* ORDERING CLICK */
 
             card.addEventListener(
                 "click",
                 function() {
 
-                    if (
-                        orderingMode
-                    ) {
-
-                        selectPDFOrder(
-                            item.id
-                        );
-
+                    if (orderingMode) {
+                        selectPDFOrder(item.id);
                     }
 
                 }
             );
 
 
-            pdfGrid.appendChild(
-                card
-            );
+            pdfGrid.appendChild(card);
 
 
             renderPDFPreview(
@@ -2222,7 +2003,6 @@ function renderPDFs() {
     updateOrderNumbers();
 
 }
-
 
 
 /* =========================
@@ -2241,59 +2021,45 @@ async function renderPDFPreview(
 
 
         const pdf =
-            await pdfjsLib.getDocument(
-                {
-                    data:
-                        arrayBuffer
-                }
-            ).promise;
+            await pdfjsLib.getDocument({
+                data: arrayBuffer
+            }).promise;
 
 
         const page =
-            await pdf.getPage(
-                1
-            );
+            await pdf.getPage(1);
 
 
         const viewport =
-            page.getViewport(
-                {
-                    scale: 0.5
-                }
-            );
+            page.getViewport({
+                scale: 0.5
+            });
 
 
         const context =
-            canvas.getContext(
-                "2d"
-            );
+            canvas.getContext("2d");
 
 
         canvas.width =
             viewport.width;
 
-
         canvas.height =
             viewport.height;
 
 
-        await page.render(
-            {
+        await page.render({
 
-                canvasContext:
-                    context,
+            canvasContext:
+                context,
 
-                viewport:
-                    viewport
+            viewport:
+                viewport
 
-            }
-        ).promise;
+        }).promise;
 
     }
 
-    catch (
-        error
-    ) {
+    catch (error) {
 
         console.error(
             "Could not render PDF preview:",
@@ -2305,7 +2071,6 @@ async function renderPDFPreview(
 }
 
 
-
 /* =========================
    CHANGE ORDER
 ========================= */
@@ -2314,9 +2079,7 @@ changeOrderButton.addEventListener(
     "click",
     function() {
 
-        if (
-            pdfFiles.length < 2
-        ) {
+        if (pdfFiles.length < 2) {
 
             alert(
                 "Please add at least two PDF files."
@@ -2335,7 +2098,6 @@ changeOrderButton.addEventListener(
 );
 
 
-
 /* =========================
    START ORDERING
 ========================= */
@@ -2344,18 +2106,14 @@ startOrderingButton.addEventListener(
     "click",
     function() {
 
-
         orderModal.classList.remove(
             "active"
         );
 
 
-        orderingMode =
-            true;
+        orderingMode = true;
 
-
-        selectedOrder =
-            [];
+        selectedOrder = [];
 
 
         orderingNotice.classList.add(
@@ -2386,24 +2144,17 @@ startOrderingButton.addEventListener(
 );
 
 
-
 /* =========================
    SELECT ORDER
 ========================= */
 
-function selectPDFOrder(
-    id
-) {
+function selectPDFOrder(id) {
 
     const existingIndex =
-        selectedOrder.indexOf(
-            id
-        );
+        selectedOrder.indexOf(id);
 
 
-    if (
-        existingIndex !== -1
-    ) {
+    if (existingIndex !== -1) {
 
         selectedOrder.splice(
             existingIndex,
@@ -2414,9 +2165,7 @@ function selectPDFOrder(
 
     else {
 
-        selectedOrder.push(
-            id
-        );
+        selectedOrder.push(id);
 
     }
 
@@ -2424,7 +2173,6 @@ function selectPDFOrder(
     updateOrderNumbers();
 
 }
-
 
 
 /* =========================
@@ -2442,11 +2190,8 @@ function updateOrderNumbers() {
     cards.forEach(
         function(card) {
 
-
             const id =
-                Number(
-                    card.dataset.id
-                );
+                Number(card.dataset.id);
 
 
             const oldBadge =
@@ -2455,12 +2200,8 @@ function updateOrderNumbers() {
                 );
 
 
-            if (
-                oldBadge
-            ) {
-
+            if (oldBadge) {
                 oldBadge.remove();
-
             }
 
 
@@ -2469,19 +2210,13 @@ function updateOrderNumbers() {
             );
 
 
-            if (
-                orderingMode
-            ) {
+            if (orderingMode) {
 
                 const position =
-                    selectedOrder.indexOf(
-                        id
-                    );
+                    selectedOrder.indexOf(id);
 
 
-                if (
-                    position !== -1
-                ) {
+                if (position !== -1) {
 
                     const badge =
                         document.createElement(
@@ -2516,7 +2251,6 @@ function updateOrderNumbers() {
 }
 
 
-
 /* =========================
    DONE ORDERING
 ========================= */
@@ -2525,13 +2259,9 @@ doneOrderingButton.addEventListener(
     "click",
     function() {
 
+        if (selectedOrder.length > 0) {
 
-        if (
-            selectedOrder.length > 0
-        ) {
-
-            const newlyOrdered =
-                [];
+            const newlyOrdered = [];
 
 
             selectedOrder.forEach(
@@ -2540,24 +2270,13 @@ doneOrderingButton.addEventListener(
                     const pdf =
                         pdfFiles.find(
                             function(item) {
-
-                                return (
-                                    item.id ===
-                                    id
-                                );
-
+                                return item.id === id;
                             }
                         );
 
 
-                    if (
-                        pdf
-                    ) {
-
-                        newlyOrdered.push(
-                            pdf
-                        );
-
+                    if (pdf) {
+                        newlyOrdered.push(pdf);
                     }
 
                 }
@@ -2573,9 +2292,7 @@ doneOrderingButton.addEventListener(
                         )
                     ) {
 
-                        newlyOrdered.push(
-                            pdf
-                        );
+                        newlyOrdered.push(pdf);
 
                     }
 
@@ -2589,12 +2306,9 @@ doneOrderingButton.addEventListener(
         }
 
 
-        orderingMode =
-            false;
+        orderingMode = false;
 
-
-        selectedOrder =
-            [];
+        selectedOrder = [];
 
 
         orderingNotice.classList.remove(
@@ -2625,7 +2339,6 @@ doneOrderingButton.addEventListener(
 );
 
 
-
 /* =========================
    MERGE PDFs
 ========================= */
@@ -2634,9 +2347,7 @@ mergeButton.addEventListener(
     "click",
     function() {
 
-        if (
-            pdfFiles.length < 2
-        ) {
+        if (pdfFiles.length < 2) {
 
             alert(
                 "Please select at least two PDF files to merge."
@@ -2655,7 +2366,6 @@ mergeButton.addEventListener(
 );
 
 
-
 /* =========================
    CLOSE MODAL
 ========================= */
@@ -2664,10 +2374,7 @@ orderModal.addEventListener(
     "click",
     function(event) {
 
-        if (
-            event.target ===
-            orderModal
-        ) {
+        if (event.target === orderModal) {
 
             orderModal.classList.remove(
                 "active"
