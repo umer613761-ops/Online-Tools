@@ -24,22 +24,23 @@ html {
 
 body {
     margin: 0;
-    padding: 12px 18px;
+    padding: 14px 20px;
+
     min-height: 100vh;
 
     font-family: Arial, Helvetica, sans-serif;
 
-    background: #cfd9e4;
+    background: #f1f4f7;
     color: #344154;
 }
 
 
 /* =========================
-   PAGE WRAPPER
+   SITE WRAPPER
 ========================= */
 
 .site-wrapper {
-    max-width: 1040px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
@@ -49,27 +50,27 @@ body {
 ========================= */
 
 header {
-    height: 50px;
+    height: 82px;
 
     background: #ffffff;
 
-    border: 1px solid #c4d0dc;
-    border-radius: 12px;
+    border: 1px solid #d6e0e9;
+    border-radius: 18px;
 
     box-shadow:
-        0 5px 14px rgba(50, 70, 90, 0.10);
+        0 8px 22px rgba(30, 50, 70, 0.08);
 }
 
 .navbar {
     height: 100%;
 
-    padding: 0 14px;
+    padding: 0 28px;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    gap: 20px;
+    gap: 30px;
 }
 
 
@@ -81,40 +82,40 @@ header {
     display: flex;
     align-items: center;
 
-    gap: 8px;
+    gap: 14px;
 
     text-decoration: none;
 }
 
 .logo-icon {
-    width: 30px;
-    height: 30px;
+    width: 56px;
+    height: 56px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 8px;
+    border-radius: 16px;
 
     background:
         linear-gradient(
             135deg,
-            #4a83c2,
-            #245a98
+            #5b94d0,
+            #285d96
         );
 
     color: #ffffff;
 
-    font-size: 17px;
-    font-weight: 700;
+    font-size: 27px;
+    font-weight: 800;
 
     box-shadow:
-        0 4px 10px rgba(40, 80, 130, 0.18);
+        0 7px 16px rgba(40, 90, 150, 0.25);
 }
 
 .logo-text {
-    font-size: 20px;
-    letter-spacing: -0.8px;
+    font-size: 34px;
+    letter-spacing: -1.5px;
 }
 
 .logo-tool {
@@ -123,8 +124,8 @@ header {
 }
 
 .logo-nest {
-    font-weight: 700;
-    color: #315f98;
+    font-weight: 800;
+    color: #5c8ec8;
 }
 
 
@@ -133,60 +134,73 @@ header {
 ========================= */
 
 .search-container {
-    width: 280px;
+    width: 490px;
     position: relative;
 }
 
 .search-container input {
     width: 100%;
-    height: 32px;
+    height: 58px;
 
-    padding: 0 38px 0 13px;
+    padding: 0 55px 0 20px;
 
-    border: 1px solid #c5d0dc;
-    border-radius: 8px;
+    border: 1px solid #d2dde7;
+    border-radius: 15px;
 
-    background: #fbfcfd;
+    background: #f8fafc;
 
     color: #415164;
 
-    font-size: 13px;
+    font-size: 19px;
 
     outline: none;
+
+    transition:
+        border 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .search-container input:focus {
-    border-color: #4c7fb7;
+    border-color: #5b91c9;
+
+    box-shadow:
+        0 0 0 3px rgba(80, 140, 200, 0.10);
+}
+
+.search-container input::placeholder {
+    color: #8a98a8;
 }
 
 .search-icon {
     position: absolute;
 
-    right: 12px;
+    right: 20px;
     top: 50%;
 
     transform: translateY(-50%);
 
-    font-size: 18px;
+    font-size: 28px;
 
-    color: #53677b;
+    color: #5c7da1;
+
+    pointer-events: none;
 }
 
 
 /* =========================
-   MAIN PAGE LAYOUT
+   MAIN LAYOUT
 ========================= */
 
 .page-layout {
-    margin-top: 14px;
+    margin-top: 24px;
 
     display: grid;
 
     grid-template-columns:
         minmax(0, 1fr)
-        200px;
+        350px;
 
-    gap: 10px;
+    gap: 20px;
 
     align-items: start;
 }
@@ -197,19 +211,19 @@ header {
 
 
 /* =========================
-   HERO SECTION
+   HERO
 ========================= */
 
 .main-content {
-    height: 129px;
+    height: 320px;
 
     background: #ffffff;
 
-    border: 1px solid #c4d0dc;
-    border-radius: 12px;
+    border: 1px solid #d6e0e9;
+    border-radius: 28px;
 
     box-shadow:
-        0 5px 14px rgba(50, 70, 90, 0.10);
+        0 8px 22px rgba(30, 50, 70, 0.08);
 
     overflow: hidden;
 }
@@ -218,13 +232,13 @@ header {
     width: 100%;
     height: 100%;
 
-    padding: 10px 24px;
+    padding: 30px 70px;
 
     display: grid;
 
     grid-template-columns:
-        42%
-        58%;
+        40%
+        60%;
 
     align-items: center;
 }
@@ -234,27 +248,22 @@ header {
    HERO TEXT
 ========================= */
 
-.hero-content {
-    padding-left: 20px;
-}
-
-.hero h1 {
+.hero-content h1 {
     margin: 0;
 
-    font-size: 28px;
-    line-height: 1.12;
+    font-size: 55px;
+    line-height: 1.18;
 
-    letter-spacing: -1px;
+    letter-spacing: -3px;
 
-    font-weight: 500;
+    font-weight: 400;
 
     color: #354254;
 }
 
-.hero h1 span {
-    color: #356aa5;
-
-    font-weight: 900;
+.hero-content h1 span {
+    color: #5f91c9;
+    font-weight: 800;
 }
 
 
@@ -270,16 +279,11 @@ header {
     justify-content: center;
 }
 
-
-/* =========================
-   TOOL GROUP
-========================= */
-
 .tool-group {
     position: relative;
 
-    width: 480px;
-    height: 110px;
+    width: 700px;
+    height: 230px;
 }
 
 
@@ -290,7 +294,7 @@ header {
 .curve {
     position: absolute;
 
-    border: 1.5px solid rgba(73, 130, 178, 0.22);
+    border: 2px solid rgba(90, 130, 165, 0.28);
 
     border-left: none;
     border-bottom: none;
@@ -298,31 +302,29 @@ header {
     border-radius: 50%;
 
     pointer-events: none;
-
-    z-index: 0;
 }
 
 .curve-1 {
-    width: 240px;
-    height: 90px;
+    width: 290px;
+    height: 150px;
 
-    left: 105px;
-    top: 18px;
+    left: 150px;
+    top: 50px;
 
-    transform: rotate(-12deg);
+    transform: rotate(-14deg);
 }
 
 .curve-2 {
-    width: 170px;
-    height: 70px;
+    width: 210px;
+    height: 110px;
 
-    left: 160px;
-    top: 28px;
+    left: 230px;
+    top: 65px;
 
-    transform: rotate(16deg);
+    transform: rotate(15deg);
 
     border-color:
-        rgba(73, 130, 178, 0.15);
+        rgba(90, 130, 165, 0.18);
 }
 
 
@@ -333,184 +335,77 @@ header {
 .dot {
     position: absolute;
 
-    display: block;
-
     border-radius: 50%;
 
     pointer-events: none;
-
-    z-index: 0;
 }
 
 .dot-blue {
-    background: #3e76ad;
+    background: #4f83ba;
 }
 
 .dot-teal {
-    background: #4d93a6;
+    background: #4d9ca5;
 }
 
 .dot-orange {
-    background: #d99a4a;
+    background: #d79a4d;
 }
-
-
-/* =========================
-   DOT POSITIONS
-========================= */
 
 .dot-1 {
-    width: 6px;
-    height: 6px;
-    top: 7px;
-    left: 20px;
-}
-
-.dot-2 {
-    width: 9px;
-    height: 9px;
-    top: 2px;
-    left: 95px;
-}
-
-.dot-3 {
-    width: 6px;
-    height: 6px;
-    top: 12px;
-    left: 185px;
-}
-
-.dot-4 {
-    width: 5px;
-    height: 5px;
-    top: 7px;
-    right: 40px;
-}
-
-.dot-5 {
-    width: 9px;
-    height: 9px;
-    top: 45px;
-    left: 8px;
-}
-
-.dot-6 {
-    width: 6px;
-    height: 6px;
-    bottom: 16px;
-    left: 30px;
-}
-
-.dot-7 {
     width: 8px;
     height: 8px;
-    top: 44px;
-    right: 10px;
-}
 
-.dot-8 {
-    width: 8px;
-    height: 8px;
-    bottom: 8px;
-    right: 35px;
-}
-
-.dot-9 {
-    width: 5px;
-    height: 5px;
-    bottom: 3px;
-    left: 125px;
-}
-
-.dot-10 {
-    width: 6px;
-    height: 6px;
     top: 20px;
-    right: 95px;
-}
-
-.dot-11 {
-    width: 5px;
-    height: 5px;
-    bottom: 13px;
-    left: 215px;
-}
-
-.dot-12 {
-    width: 4px;
-    height: 4px;
-    top: 20px;
-    left: 50px;
-}
-
-.dot-13 {
-    width: 6px;
-    height: 6px;
-    bottom: 22px;
     left: 80px;
 }
 
-.dot-14 {
-    width: 4px;
-    height: 4px;
-    top: 38px;
-    left: 105px;
+.dot-2 {
+    width: 12px;
+    height: 12px;
+
+    top: 55px;
+    left: 150px;
 }
 
-.dot-15 {
-    width: 5px;
-    height: 5px;
-    bottom: 6px;
-    left: 165px;
+.dot-3 {
+    width: 8px;
+    height: 8px;
+
+    top: 30px;
+    left: 280px;
 }
 
-.dot-16 {
-    width: 4px;
-    height: 4px;
-    top: 8px;
-    left: 250px;
+.dot-4 {
+    width: 10px;
+    height: 10px;
+
+    bottom: 45px;
+    left: 100px;
 }
 
-.dot-17 {
-    width: 6px;
-    height: 6px;
-    bottom: 24px;
-    left: 290px;
+.dot-5 {
+    width: 7px;
+    height: 7px;
+
+    bottom: 25px;
+    left: 320px;
 }
 
-.dot-18 {
-    width: 4px;
-    height: 4px;
-    top: 54px;
-    left: 350px;
+.dot-6 {
+    width: 8px;
+    height: 8px;
+
+    bottom: 70px;
+    right: 110px;
 }
 
-.dot-19 {
-    width: 5px;
-    height: 5px;
-    top: 15px;
-    left: 390px;
-}
+.dot-7 {
+    width: 13px;
+    height: 13px;
 
-.dot-20 {
-    width: 4px;
-    height: 4px;
-    bottom: 12px;
-    left: 390px;
-}
-
-.dot-21 {
-    width: 6px;
-    height: 6px;
-    top: 44px;
-    left: 430px;
-}
-
-.dot-22 {
-    width: 4px;
-    height: 4px;
-    bottom: 28px;
-    left: 450px;
+    bottom: 30px;
+    right: 25px;
 }
 
 
@@ -521,88 +416,88 @@ header {
 .tool-card {
     position: absolute;
 
-    width: 130px;
-    height: 64px;
+    width: 210px;
+    height: 110px;
 
-    border-radius: 16px;
+    border-radius: 22px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    font-size: 16px;
+    font-size: 23px;
     font-weight: 800;
 
-    letter-spacing: -0.3px;
+    letter-spacing: -0.5px;
 
     box-shadow:
-        0 8px 18px rgba(30, 45, 65, 0.10);
+        0 10px 20px rgba(20, 35, 50, 0.12);
 
     z-index: 2;
 }
 
 
-/* PDF */
+/* PDF CARD */
 
 .pdf-card {
-    left: 5px;
-    top: 32px;
+    left: 45px;
+    top: 60px;
 
-    transform: rotate(-4deg);
+    transform: rotate(-5deg);
 
-    background: #fff7ef;
+    background: #fff2e8;
 
-    border: 1px solid #e9bd93;
+    border: 1px solid #efc19d;
 
-    color: #c66d2d;
+    color: #cf8150;
 }
 
 
-/* TEXT */
+/* TEXT CARD */
 
 .text-card {
-    left: 150px;
-    top: 3px;
+    left: 205px;
+    top: 10px;
 
-    transform: rotate(1deg);
+    transform: rotate(2deg);
 
-    background: #eef6ff;
+    background: #edf5ff;
 
-    border: 1px solid #a8c7e5;
+    border: 1px solid #a8c7e6;
 
-    color: #3c72aa;
+    color: #5b88b8;
 }
 
 
-/* CALCULATOR */
+/* CALCULATOR CARD */
 
 .calculator-card {
-    left: 290px;
-    top: 4px;
+    left: 420px;
+    top: 15px;
 
     transform: rotate(-1deg);
 
-    background: #f5f1ff;
+    background: #f4efff;
 
-    border: 1px solid #cbbbe8;
+    border: 1px solid #c6b5e5;
 
-    color: #6746a5;
+    color: #8b72b4;
 }
 
 
-/* IMAGE */
+/* IMAGE CARD */
 
 .image-card {
-    left: 410px;
-    top: 34px;
+    left: 545px;
+    top: 65px;
 
-    transform: rotate(4deg);
+    transform: rotate(5deg);
 
-    background: #eef9f1;
+    background: #eef8f0;
 
-    border: 1px solid #aed2b6;
+    border: 1px solid #acd3b3;
 
-    color: #397c4a;
+    color: #6a9b73;
 }
 
 
@@ -611,16 +506,15 @@ header {
 ========================= */
 
 .ad-column {
-    width: 200px;
-    min-height: 600px;
+    min-height: 660px;
 
     background: #ffffff;
 
-    border: 1px solid #c4d0dc;
-    border-radius: 12px;
+    border: 1px solid #d6e0e9;
+    border-radius: 28px;
 
     box-shadow:
-        0 5px 14px rgba(50, 70, 90, 0.10);
+        0 8px 22px rgba(30, 50, 70, 0.08);
 
     display: flex;
 
@@ -630,51 +524,47 @@ header {
     text-align: center;
 
     position: sticky;
-    top: 12px;
-
-    align-self: start;
+    top: 14px;
 }
 
 .ad-label {
-    color: #607184;
+    color: #718091;
 
-    font-size: 10px;
-    font-weight: 700;
+    font-size: 17px;
+    font-weight: 800;
 
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
 }
 
 .ad-size {
     display: block;
 
-    margin-top: 12px;
+    margin-top: 18px;
 
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 28px;
+    font-weight: 500;
 
-    letter-spacing: 1px;
+    letter-spacing: 2px;
 
-    color: #4d6073;
+    color: #526275;
 }
 
 
 /* =========================
-   ALL TOOLS AREA
+   TOOLS AREA
 ========================= */
 
 .tools-area {
-    margin-top: 14px;
-
-    width: 100%;
+    margin-top: 22px;
 
     display: grid;
 
     grid-template-columns:
-        2fr
+        1.6fr
         1fr
         1fr;
 
-    gap: 10px;
+    gap: 20px;
 
     align-items: start;
 }
@@ -687,63 +577,61 @@ header {
 .tool-category {
     background: #ffffff;
 
-    border: 1px solid #c4d0dc;
-    border-radius: 12px;
+    border: 1px solid #d6e0e9;
+    border-radius: 24px;
 
     box-shadow:
-        0 5px 14px rgba(50, 70, 90, 0.10);
+        0 8px 22px rgba(30, 50, 70, 0.08);
 
     overflow: hidden;
 }
 
-
-/* =========================
-   CATEGORY HEADING
-========================= */
-
 .category-heading {
-    min-height: 54px;
+    min-height: 92px;
 
-    padding: 0 18px;
+    padding: 0 28px;
 
     display: flex;
     align-items: center;
 
-    border-bottom: 1px solid #d5dde5;
+    border-bottom: 1px solid #dce4eb;
 
-    font-size: 16px;
+    font-size: 28px;
     font-weight: 800;
 
     color: #354254;
+
+    letter-spacing: -0.5px;
 }
 
 
 /* =========================
-   CATEGORY ACCENTS
+   PDF TOOLS
 ========================= */
+
+.pdf-category {
+    grid-row: span 2;
+}
 
 .pdf-category .category-heading {
-    color: #b95e24;
+    color: #b66e3e;
 
-    border-left: 5px solid #e78b3d;
-}
-
-.text-category .category-heading {
-    color: #356da7;
-
-    border-left: 5px solid #4f86bd;
-}
-
-.image-category .category-heading {
-    color: #397a49;
-
-    border-left: 5px solid #58a36a;
+    background:
+        linear-gradient(
+            135deg,
+            #fffaf6,
+            #fff4eb
+        );
 }
 
 
 /* =========================
-   PDF TOOLS GRID
+   TOOL GRID
 ========================= */
+
+.tool-column {
+    padding: 18px 28px;
+}
 
 .pdf-tools-grid {
     display: grid;
@@ -753,17 +641,8 @@ header {
         1fr;
 }
 
-
-/* =========================
-   TOOL COLUMNS
-========================= */
-
-.tool-column {
-    padding: 8px;
-}
-
 .pdf-tools-grid .tool-column:first-child {
-    border-right: 1px solid #d5dde5;
+    border-right: 1px solid #e0e6ec;
 }
 
 
@@ -772,18 +651,18 @@ header {
 ========================= */
 
 .tool-item {
+    min-height: 98px;
+
     display: flex;
     align-items: center;
 
-    gap: 9px;
-
-    padding: 10px 8px;
+    gap: 18px;
 
     text-decoration: none;
 
-    border-radius: 8px;
+    color: #435466;
 
-    color: #354254;
+    border-radius: 14px;
 
     transition:
         background 0.2s ease,
@@ -791,14 +670,14 @@ header {
 }
 
 .tool-item:hover {
-    background: #f4f7fa;
+    background: #f5f8fb;
 
-    transform: translateX(2px);
+    transform: translateX(4px);
 }
 
 .tool-item-icon {
-    width: 34px;
-    height: 34px;
+    width: 64px;
+    height: 64px;
 
     flex-shrink: 0;
 
@@ -806,68 +685,39 @@ header {
     align-items: center;
     justify-content: center;
 
-    border-radius: 8px;
+    border-radius: 18px;
 
-    font-size: 16px;
+    font-size: 25px;
+
+    border: 1px solid #d6e0e9;
 }
 
 .tool-item-text {
-    font-size: 12px;
+    font-size: 20px;
     font-weight: 700;
 
-    line-height: 1.3;
+    line-height: 1.25;
 }
 
 
 /* =========================
-   PDF TOOL ACCENT
-========================= */
-
-.pdf-category .tool-item:hover {
-    background: #fff7f0;
-}
-
-.pdf-category .tool-item-text {
-    color: #8a522d;
-}
-
-
-/* =========================
-   TEXT TOOL ACCENT
-========================= */
-
-.text-category .tool-item:hover {
-    background: #f1f7fd;
-}
-
-
-/* =========================
-   IMAGE TOOL ACCENT
-========================= */
-
-.image-category .tool-item:hover {
-    background: #f2f8f3;
-}
-
-
-/* =========================
-   ICON BACKGROUNDS
+   ICON COLORS
 ========================= */
 
 .icon-merge {
-    background: #f3f5f8;
+    background: #eef3f9;
 }
 
 .icon-split {
-    background: #f8f1ee;
+    background: #f8eeee;
 }
 
 .icon-pdf-image {
-    background: #f1f6f2;
+    background: #edf5ef;
 }
 
 .icon-image-pdf {
-    background: #fff5e9;
+    background: #faf3e9;
 }
 
 .icon-word {
@@ -875,19 +725,19 @@ header {
 }
 
 .icon-case {
-    background: #eee8fb;
+    background: #f0ebfb;
 }
 
 .icon-sort {
-    background: #e8f6ec;
+    background: #eaf6ed;
 }
 
 .icon-clean {
-    background: #fff1df;
+    background: #fff2e3;
 }
 
 .icon-compress {
-    background: #e8f6ec;
+    background: #edf5ef;
 }
 
 .icon-convert {
@@ -896,36 +746,106 @@ header {
 
 
 /* =========================
+   CALCULATOR CATEGORY
+========================= */
+
+.calculator-category {
+
+    grid-column: 2 / 4;
+
+}
+
+
+/* Calculator grid */
+
+.calculator-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+}
+
+
+/* Vertical divider */
+
+.calculator-grid .tool-column:first-child {
+
+    border-right:
+        1px solid #e0e6ec;
+
+}
+
+
+/* Calculator heading */
+
+.calculator-category .category-heading {
+
+    color: #66528d;
+
+}
+
+
+/* Calculator icon colors */
+
+.icon-bmi {
+
+    background: #edf4ec;
+
+}
+
+.icon-percentage {
+
+    background: #eef3fb;
+
+}
+
+.icon-profit {
+
+    background: #eef7f1;
+
+}
+
+.icon-discount {
+
+    background: #fff1e8;
+
+}
+
+
+/* =========================
    FOOTER
 ========================= */
 
 footer {
-    margin-top: 8px;
+    margin-top: 18px;
 
-    height: 48px;
+    min-height: 68px;
 
-    padding: 0 18px;
+    padding: 0 26px;
 
     background: #ffffff;
 
-    border: 1px solid #c4d0dc;
-    border-radius: 12px;
+    border: 1px solid #d6e0e9;
+    border-radius: 18px;
 
     box-shadow:
-        0 5px 14px rgba(50, 70, 90, 0.10);
+        0 8px 22px rgba(30, 50, 70, 0.08);
 
     display: flex;
 
     align-items: center;
     justify-content: space-between;
 
-    color: #526275;
+    color: #647486;
 
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .footer-brand strong {
-    color: #315f98;
+    color: #5c8ec8;
 }
 
 .footer-links {
@@ -934,19 +854,19 @@ footer {
 }
 
 .footer-links a {
-    padding: 0 10px;
+    padding: 0 14px;
 
     text-decoration: none;
 
-    color: #445466;
+    color: #536476;
 }
 
 .footer-links a + a {
-    border-left: 1px solid #8090a0;
+    border-left: 1px solid #c8d2dc;
 }
 
 .footer-links a:hover {
-    color: #3569a4;
+    color: #4e83bc;
 }
 
 
@@ -957,12 +877,10 @@ footer {
 @media (prefers-color-scheme: dark) {
 
     body {
-        background: #18212b;
-        color: #dce5ed;
+        background: #18232d;
+        color: #d9e2ea;
     }
 
-
-    /* MAIN SURFACES */
 
     header,
     .main-content,
@@ -971,51 +889,51 @@ footer {
     footer {
         background: #26323e;
 
-        border-color: #405263;
+        border-color: #3c4e60;
 
         box-shadow:
-            0 5px 16px rgba(0, 0, 0, 0.18);
+            0 8px 22px rgba(0, 0, 0, 0.18);
     }
 
 
     /* LOGO */
 
     .logo-tool {
-        color: #e2e9ef;
+        color: #dbe3eb;
     }
 
     .logo-nest {
-        color: #7ba8d6;
+        color: #83addd;
     }
 
 
     /* SEARCH */
 
     .search-container input {
-        background: #202b36;
+        background: #1d2833;
 
-        border-color: #405263;
+        border-color: #3d5062;
 
-        color: #e4ebf1;
+        color: #dbe5ed;
     }
 
     .search-container input::placeholder {
-        color: #8f9eac;
+        color: #8d99a6;
     }
 
     .search-icon {
-        color: #7f9bbb;
+        color: #7895b5;
     }
 
 
     /* HERO */
 
-    .hero h1 {
-        color: #e4ebf1;
+    .hero-content h1 {
+        color: #dbe3eb;
     }
 
-    .hero h1 span {
-        color: #82b0df;
+    .hero-content h1 span {
+        color: #85addb;
     }
 
 
@@ -1023,182 +941,171 @@ footer {
 
     .tool-card {
         box-shadow:
-            0 8px 18px rgba(0, 0, 0, 0.22);
+            0 10px 20px rgba(0, 0, 0, 0.20);
     }
 
     .pdf-card {
-        background: #3a3028;
+        background: #3b3029;
 
-        border-color: #6f523c;
+        border-color: #6d5140;
 
-        color: #e3a778;
+        color: #dfa77e;
     }
 
     .text-card {
-        background: #293b4d;
+        background: #2b3d4d;
 
-        border-color: #4d6f8d;
+        border-color: #496b86;
 
-        color: #8cb9e5;
+        color: #94b9dd;
     }
 
     .calculator-card {
         background: #362e45;
 
-        border-color: #68557f;
+        border-color: #62517c;
 
-        color: #bba3d9;
+        color: #b8a5d2;
     }
 
     .image-card {
-        background: #293b30;
+        background: #263a2d;
 
-        border-color: #4e7058;
+        border-color: #4a6e55;
 
-        color: #90c69b;
+        color: #92bd9a;
     }
 
 
-    /* CURVES */
-
-    .curve {
-        border-color:
-            rgba(126, 171, 213, 0.22);
-    }
-
-    .curve-2 {
-        border-color:
-            rgba(126, 171, 213, 0.12);
-    }
-
-
-    /* HEADINGS */
+    /* CATEGORY HEADINGS */
 
     .category-heading {
-        color: #e2eaf1;
+        color: #e0e7ee;
 
-        border-bottom-color: #405263;
+        border-bottom-color: #3d4d5d;
     }
 
     .pdf-category .category-heading {
-        color: #f0b487;
+        background:
+            linear-gradient(
+                135deg,
+                #302923,
+                #352d26
+            );
 
-        border-left-color: #e38a46;
+        color: #e3a77d;
     }
 
-    .text-category .category-heading {
-        color: #8ab8e5;
-
-        border-left-color: #568ec5;
-    }
-
-    .image-category .category-heading {
-        color: #91c99c;
-
-        border-left-color: #5ca66d;
-    }
-
-
-    /* TOOL COLUMNS */
-
-    .pdf-tools-grid .tool-column:first-child {
-        border-right-color: #405263;
+    .calculator-category .category-heading {
+        color: #bba8d4;
     }
 
 
     /* TOOL ITEMS */
 
     .tool-item {
-        color: #dce5ed;
+        color: #d6e0e9;
     }
 
     .tool-item:hover {
-        background: #303e4b;
+        background: #2e3c49;
     }
 
-    .pdf-category .tool-item:hover {
-        background: #342f2b;
-    }
 
-    .text-category .tool-item:hover {
-        background: #293b4c;
-    }
+    /* DIVIDERS */
 
-    .image-category .tool-item:hover {
-        background: #293a30;
-    }
-
-    .pdf-category .tool-item-text {
-        color: #e4d5c8;
+    .pdf-tools-grid .tool-column:first-child,
+    .calculator-grid .tool-column:first-child {
+        border-color: #3d4d5d;
     }
 
 
     /* ICONS */
 
+    .tool-item-icon {
+        border-color: #45586a;
+    }
+
     .icon-merge {
-        background: #36414c;
+        background: #313d49;
     }
 
     .icon-split {
-        background: #403835;
+        background: #413738;
     }
 
     .icon-pdf-image {
-        background: #34423a;
+        background: #2d4033;
     }
 
     .icon-image-pdf {
-        background: #42382d;
+        background: #40382d;
     }
 
     .icon-word {
-        background: #2c4055;
+        background: #2c3d4e;
     }
 
     .icon-case {
-        background: #393247;
+        background: #393347;
     }
 
     .icon-sort {
-        background: #304238;
+        background: #2d4033;
     }
 
     .icon-clean {
-        background: #443827;
+        background: #41382e;
     }
 
     .icon-compress {
-        background: #304238;
+        background: #2d4033;
     }
 
     .icon-convert {
-        background: #2c4055;
+        background: #2c3d4e;
+    }
+
+    .icon-bmi {
+        background: #2d4033;
+    }
+
+    .icon-percentage {
+        background: #2c3d4e;
+    }
+
+    .icon-profit {
+        background: #2d4033;
+    }
+
+    .icon-discount {
+        background: #41382e;
     }
 
 
     /* AD */
 
     .ad-label {
-        color: #aebdca;
+        color: #aab7c4;
     }
 
     .ad-size {
-        color: #dce5ed;
+        color: #d6dfe8;
     }
 
 
     /* FOOTER */
 
     footer {
-        color: #aebdca;
+        color: #aebbc7;
     }
 
     .footer-links a {
-        color: #c8d3dd;
+        color: #c2ccd5;
     }
 
     .footer-links a + a {
-        border-left-color: #526170;
+        border-color: #4a5b6b;
     }
 
 }
@@ -1208,35 +1115,51 @@ footer {
    TABLET
 ========================= */
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
 
     .page-layout {
+
         grid-template-columns:
             minmax(0, 1fr)
-            180px;
+            260px;
+
     }
 
     .ad-column {
-        width: 180px;
+        min-height: 600px;
     }
 
-    .hero h1 {
-        font-size: 24px;
+    .hero {
+        padding: 30px 35px;
+    }
+
+    .hero-content h1 {
+        font-size: 45px;
     }
 
     .tool-group {
-        transform: scale(0.82);
+        transform: scale(0.78);
         transform-origin: center;
     }
 
     .tools-area {
+
         grid-template-columns:
-            2fr
+            1.4fr
             1fr;
+
     }
 
     .image-category {
-        grid-column: 1 / -1;
+
+        grid-column: 2;
+
+    }
+
+    .calculator-category {
+
+        grid-column: 2;
+
     }
 
 }
@@ -1246,76 +1169,118 @@ footer {
    MOBILE
 ========================= */
 
-@media (max-width: 700px) {
+@media (max-width: 800px) {
 
     body {
-        padding: 8px;
+        padding: 10px;
+    }
+
+
+    header {
+        height: auto;
     }
 
     .navbar {
-        padding: 0 14px;
+
+        padding: 15px 18px;
+
+        flex-direction: column;
+
+        gap: 14px;
+
     }
 
     .search-container {
-        width: 220px;
+        width: 100%;
     }
+
 
     .page-layout {
-        grid-template-columns: 1fr;
-    }
 
-    .main-content {
-        height: 220px;
-    }
+        grid-template-columns:
+            1fr;
 
-    .hero {
-        grid-template-columns: 1fr;
-
-        padding: 15px 20px;
-    }
-
-    .hero-content {
-        padding-left: 0;
-
-        text-align: center;
-    }
-
-    .hero-visual {
-        margin-top: 4px;
-    }
-
-    .tool-group {
-        transform: scale(0.78);
-        transform-origin: center;
     }
 
     .ad-column {
+
         width: 100%;
         min-height: 180px;
 
         position: static;
+
     }
 
+
+    .main-content {
+        height: 380px;
+    }
+
+    .hero {
+
+        grid-template-columns:
+            1fr;
+
+        padding: 35px 20px;
+
+    }
+
+    .hero-content {
+
+        text-align: center;
+
+    }
+
+    .hero-content h1 {
+        font-size: 42px;
+    }
+
+    .hero-visual {
+
+        margin-top: 10px;
+
+    }
+
+    .tool-group {
+
+        transform: scale(0.65);
+        transform-origin: center;
+
+    }
+
+
     .tools-area {
-        grid-template-columns: 1fr;
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .pdf-category {
+        grid-row: auto;
     }
 
     .image-category {
         grid-column: auto;
     }
 
+    .calculator-category {
+        grid-column: auto;
+    }
+
+
     footer {
-        height: auto;
 
-        min-height: 48px;
-
-        padding: 10px 14px;
+        padding: 18px;
 
         flex-direction: column;
 
         justify-content: center;
 
-        gap: 8px;
+        gap: 12px;
+
+        text-align: center;
+
     }
 
 }
@@ -1325,61 +1290,121 @@ footer {
    SMALL MOBILE
 ========================= */
 
-@media (max-width: 500px) {
+@media (max-width: 550px) {
 
-    header {
-        height: auto;
+    .logo-icon {
+
+        width: 48px;
+        height: 48px;
+
+        font-size: 23px;
+
     }
 
-    .navbar {
-        padding: 12px;
-
-        flex-direction: column;
-
-        gap: 10px;
+    .logo-text {
+        font-size: 28px;
     }
 
-    .search-container {
-        width: 100%;
+
+    .search-container input {
+
+        height: 52px;
+
+        font-size: 17px;
+
     }
 
-    .hero h1 {
-        font-size: 25px;
+
+    .main-content {
+        height: 350px;
+    }
+
+    .hero-content h1 {
+        font-size: 36px;
     }
 
     .tool-group {
-        transform: scale(0.62);
-        transform-origin: center;
+
+        transform: scale(0.52);
+
     }
 
-    .pdf-tools-grid {
-        grid-template-columns: 1fr;
+
+    .category-heading {
+
+        min-height: 72px;
+
+        font-size: 24px;
+
+        padding: 0 20px;
+
     }
 
-    .pdf-tools-grid .tool-column:first-child {
+    .tool-column {
+
+        padding: 10px 18px;
+
+    }
+
+    .tool-item {
+
+        min-height: 82px;
+
+        gap: 14px;
+
+    }
+
+    .tool-item-icon {
+
+        width: 54px;
+        height: 54px;
+
+        font-size: 20px;
+
+    }
+
+    .tool-item-text {
+        font-size: 17px;
+    }
+
+
+    .pdf-tools-grid,
+    .calculator-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .pdf-tools-grid .tool-column:first-child,
+    .calculator-grid .tool-column:first-child {
+
         border-right: none;
 
         border-bottom:
-            1px solid #d5dde5;
+            1px solid #dce4eb;
+
     }
 
-    footer {
-        text-align: center;
+
+    .footer-links {
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
     }
 
     .footer-links a {
-        padding: 0 8px;
 
-        font-size: 10px;
+        padding: 5px 8px;
+
     }
 
-}
+    .footer-links a + a {
 
+        border-left: none;
 
-@media (max-width: 500px) and (prefers-color-scheme: dark) {
-
-    .pdf-tools-grid .tool-column:first-child {
-        border-bottom-color: #405263;
     }
 
 }
@@ -1428,6 +1453,7 @@ footer {
 
             <input
                 type="text"
+                id="searchInput"
                 placeholder="Search tools..."
             >
 
@@ -1475,64 +1501,62 @@ footer {
         </div>
 
 
-
         <div class="hero-visual">
 
             <div class="tool-group">
 
 
-                <!-- CURVES -->
+                <!-- Decorative curves -->
 
                 <div class="curve curve-1"></div>
+
                 <div class="curve curve-2"></div>
 
 
-                <!-- DOTS -->
+                <!-- Decorative dots -->
 
                 <span class="dot dot-blue dot-1"></span>
-                <span class="dot dot-teal dot-2"></span>
-                <span class="dot dot-orange dot-3"></span>
+
+                <span class="dot dot-orange dot-2"></span>
+
+                <span class="dot dot-blue dot-3"></span>
+
                 <span class="dot dot-blue dot-4"></span>
-                <span class="dot dot-teal dot-5"></span>
-                <span class="dot dot-orange dot-6"></span>
+
+                <span class="dot dot-orange dot-5"></span>
+
+                <span class="dot dot-blue dot-6"></span>
+
                 <span class="dot dot-blue dot-7"></span>
-                <span class="dot dot-orange dot-8"></span>
-                <span class="dot dot-teal dot-9"></span>
-                <span class="dot dot-blue dot-10"></span>
-                <span class="dot dot-orange dot-11"></span>
-
-                <span class="dot dot-blue dot-12"></span>
-                <span class="dot dot-orange dot-13"></span>
-                <span class="dot dot-teal dot-14"></span>
-                <span class="dot dot-blue dot-15"></span>
-                <span class="dot dot-orange dot-16"></span>
-                <span class="dot dot-teal dot-17"></span>
-                <span class="dot dot-blue dot-18"></span>
-                <span class="dot dot-orange dot-19"></span>
-                <span class="dot dot-teal dot-20"></span>
-                <span class="dot dot-blue dot-21"></span>
-                <span class="dot dot-orange dot-22"></span>
 
 
-                <!-- HERO TOOL CARDS -->
+                <!-- Tool cards -->
 
                 <div class="tool-card pdf-card">
+
                     PDF Tools
+
                 </div>
 
 
                 <div class="tool-card text-card">
+
                     Text Tools
+
                 </div>
 
 
                 <div class="tool-card calculator-card">
+
                     Calculators
+
                 </div>
 
 
                 <div class="tool-card image-card">
+
                     Image Tools
+
                 </div>
 
 
@@ -1554,12 +1578,16 @@ footer {
 <section class="tools-area">
 
 
-<!-- PDF TOOLS -->
+<!-- =========================
+     PDF TOOLS
+========================= -->
 
 <div class="tool-category pdf-category">
 
     <div class="category-heading">
+
         PDF Tools
+
     </div>
 
 
@@ -1568,7 +1596,10 @@ footer {
 
         <div class="tool-column">
 
-            <a href="merge-pdf.html" class="tool-item">
+
+            <a href="merge-pdf.html"
+               class="tool-item"
+               data-name="Merge PDF">
 
                 <div class="tool-item-icon icon-merge">
                     🔗
@@ -1581,7 +1612,9 @@ footer {
             </a>
 
 
-            <a href="split-pdf.html" class="tool-item">
+            <a href="split-pdf.html"
+               class="tool-item"
+               data-name="Split PDF">
 
                 <div class="tool-item-icon icon-split">
                     ✂
@@ -1593,13 +1626,16 @@ footer {
 
             </a>
 
-        </div>
 
+        </div>
 
 
         <div class="tool-column">
 
-            <a href="pdf-to-images.html" class="tool-item">
+
+            <a href="pdf-to-images.html"
+               class="tool-item"
+               data-name="PDF to Images">
 
                 <div class="tool-item-icon icon-pdf-image">
                     🖼
@@ -1612,10 +1648,12 @@ footer {
             </a>
 
 
-            <a href="images-to-pdf.html" class="tool-item">
+            <a href="images-to-pdf.html"
+               class="tool-item"
+               data-name="Images to PDF">
 
                 <div class="tool-item-icon icon-image-pdf">
-                    PDF
+                    📄
                 </div>
 
                 <div class="tool-item-text">
@@ -1623,6 +1661,7 @@ footer {
                 </div>
 
             </a>
+
 
         </div>
 
@@ -1633,19 +1672,26 @@ footer {
 
 
 
-<!-- TEXT TOOLS -->
+<!-- =========================
+     TEXT TOOLS
+========================= -->
 
 <div class="tool-category text-category">
 
+
     <div class="category-heading">
+
         Text Tools
+
     </div>
 
 
     <div class="tool-column">
 
 
-        <a href="word-counter.html" class="tool-item">
+        <a href="word-counter.html"
+           class="tool-item"
+           data-name="Word Counter">
 
             <div class="tool-item-icon icon-word">
                 🔤
@@ -1658,7 +1704,9 @@ footer {
         </a>
 
 
-        <a href="case-converter.html" class="tool-item">
+        <a href="case-converter.html"
+           class="tool-item"
+           data-name="Case Converter">
 
             <div class="tool-item-icon icon-case">
                 Aa
@@ -1671,7 +1719,9 @@ footer {
         </a>
 
 
-        <a href="text-sorter.html" class="tool-item">
+        <a href="text-sorter.html"
+           class="tool-item"
+           data-name="Text Sorter">
 
             <div class="tool-item-icon icon-sort">
                 ↕
@@ -1684,7 +1734,9 @@ footer {
         </a>
 
 
-        <a href="text-cleaner.html" class="tool-item">
+        <a href="text-cleaner.html"
+           class="tool-item"
+           data-name="Text Cleaner">
 
             <div class="tool-item-icon icon-clean">
                 ✨
@@ -1703,19 +1755,26 @@ footer {
 
 
 
-<!-- IMAGE TOOLS -->
+<!-- =========================
+     IMAGE TOOLS
+========================= -->
 
 <div class="tool-category image-category">
 
+
     <div class="category-heading">
+
         Image Tools
+
     </div>
 
 
     <div class="tool-column">
 
 
-        <a href="image-compressor.html" class="tool-item">
+        <a href="image-compressor.html"
+           class="tool-item"
+           data-name="Image Compressor">
 
             <div class="tool-item-icon icon-compress">
                 🗜
@@ -1728,10 +1787,12 @@ footer {
         </a>
 
 
-        <a href="image-converter.html" class="tool-item">
+        <a href="image-converter.html"
+           class="tool-item"
+           data-name="Image Converter">
 
             <div class="tool-item-icon icon-convert">
-                🔄
+                ↔
             </div>
 
             <div class="tool-item-text">
@@ -1739,6 +1800,105 @@ footer {
             </div>
 
         </a>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     CALCULATOR TOOLS
+========================= -->
+
+<div class="tool-category calculator-category">
+
+
+    <div class="category-heading">
+
+        Calculator Tools
+
+    </div>
+
+
+    <div class="calculator-grid">
+
+
+        <!-- LEFT COLUMN -->
+
+        <div class="tool-column">
+
+
+            <a href="bmi-calculator.html"
+               class="tool-item"
+               data-name="BMI Calculator">
+
+                <div class="tool-item-icon icon-bmi">
+                    ⚖
+                </div>
+
+                <div class="tool-item-text">
+                    BMI Calculator
+                </div>
+
+            </a>
+
+
+            <a href="percentage-calculator.html"
+               class="tool-item"
+               data-name="Percentage Calculator">
+
+                <div class="tool-item-icon icon-percentage">
+                    %
+                </div>
+
+                <div class="tool-item-text">
+                    Percentage Calculator
+                </div>
+
+            </a>
+
+
+        </div>
+
+
+        <!-- RIGHT COLUMN -->
+
+        <div class="tool-column">
+
+
+            <a href="profit-margin-calculator.html"
+               class="tool-item"
+               data-name="Profit Margin Calculator">
+
+                <div class="tool-item-icon icon-profit">
+                    ↗
+                </div>
+
+                <div class="tool-item-text">
+                    Profit Margin Calculator
+                </div>
+
+            </a>
+
+
+            <a href="discount-calculator.html"
+               class="tool-item"
+               data-name="Discount Calculator">
+
+                <div class="tool-item-icon icon-discount">
+                    %
+                </div>
+
+                <div class="tool-item-text">
+                    Discount Calculator
+                </div>
+
+            </a>
+
+
+        </div>
 
 
     </div>
@@ -1764,7 +1924,9 @@ footer {
         ADVERTISEMENT
 
         <span class="ad-size">
+
             200 × 600
+
         </span>
 
     </div>
@@ -1782,13 +1944,12 @@ footer {
 
 <footer>
 
+
     <div class="footer-brand">
 
         © 2026
 
-        <strong>
-            ToolNest
-        </strong>
+        <strong>ToolNest</strong>
 
         · Simple, Fast & Free
 
@@ -1815,10 +1976,66 @@ footer {
 
     </div>
 
+
 </footer>
 
 
 </div>
+
+
+
+<!-- =========================
+     SEARCH SCRIPT
+========================= -->
+
+<script>
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const tools =
+    document.querySelectorAll(".tool-item");
+
+
+searchInput.addEventListener(
+    "input",
+    function () {
+
+        const searchTerm =
+            this.value
+                .toLowerCase()
+                .trim();
+
+
+        tools.forEach(
+            function (tool) {
+
+                const toolName =
+                    tool.dataset.name
+                        .toLowerCase();
+
+
+                if (
+                    toolName.includes(searchTerm)
+                ) {
+
+                    tool.style.display =
+                        "flex";
+
+                } else {
+
+                    tool.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+    }
+);
+
+</script>
 
 
 </body>
