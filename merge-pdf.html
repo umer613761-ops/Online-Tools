@@ -158,10 +158,18 @@ header {
     font-size: 14px;
 
     outline: none;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
 }
 
 .search-container input:focus {
     border-color: #4c7fb7;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(76, 127, 183, 0.10);
 }
 
 .search-icon {
@@ -202,6 +210,8 @@ header {
 ========================= */
 
 .tool-heading {
+    position: relative;
+
     background: #ffffff;
 
     border: 1px solid #c4d0dc;
@@ -216,19 +226,57 @@ header {
     text-align: center;
 
     margin-bottom: 10px;
+
+    overflow: hidden;
 }
+
+
+/* Small colored accent */
+
+.tool-heading::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 110px;
+    height: 4px;
+
+    border-radius:
+        0 0 6px 6px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #e85d3f,
+            #f29d38
+        );
+}
+
 
 .tool-heading h1 {
     margin: 0 0 8px;
 
-    font-size: 30px;
+    font-size: 31px;
+    font-weight: 800;
 
     color: #354254;
+
+    letter-spacing: -0.7px;
 }
 
+
+/* PDF ACTION COLOR */
+
 .tool-heading h1 span {
-    color: #356aa5;
+    color: #e87525;
 }
+
 
 .tool-heading p {
     margin: 0;
@@ -279,11 +327,11 @@ header {
 
     text-align: center;
 
-    background: #f8fafc;
+    background: #f9fbfd;
 
     border:
         2px dashed
-        #aebdcb;
+        #b8c7d5;
 
     border-radius: 12px;
 
@@ -291,13 +339,19 @@ header {
 
     transition:
         background 0.2s,
-        border-color 0.2s;
+        border-color 0.2s,
+        box-shadow 0.2s;
 }
 
 .upload-area:hover {
-    background: #f1f6fb;
+
+    background: #f5f9fd;
 
     border-color: #4c7fb7;
+
+    box-shadow:
+        0 5px 15px
+        rgba(76, 127, 183, 0.08);
 }
 
 
@@ -316,9 +370,13 @@ header {
     justify-content: center;
 }
 
+
+/* Orange PDF icon */
+
 .upload-icon {
-    width: 62px;
-    height: 62px;
+
+    width: 68px;
+    height: 68px;
 
     display: flex;
 
@@ -327,12 +385,26 @@ header {
 
     margin-bottom: 15px;
 
-    border-radius: 14px;
+    border-radius: 18px;
 
-    background: #e8f0fb;
+    background:
+        linear-gradient(
+            135deg,
+            #fff0e5,
+            #ffe0c5
+        );
 
-    font-size: 30px;
+    border:
+        1px solid
+        #f2c49e;
+
+    font-size: 32px;
+
+    box-shadow:
+        0 5px 12px
+        rgba(232, 117, 37, 0.10);
 }
+
 
 .upload-placeholder h2 {
     margin: 0 0 8px;
@@ -364,12 +436,14 @@ header {
 }
 
 .uploaded-title {
+
     margin-bottom: 16px;
 
-    color: #607184;
+    color: #47596b;
 
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
+
 }
 
 
@@ -378,6 +452,7 @@ header {
 ========================= */
 
 .pdf-grid {
+
     display: grid;
 
     grid-template-columns:
@@ -397,6 +472,7 @@ header {
 ========================= */
 
 .pdf-card {
+
     position: relative;
 
     background: #ffffff;
@@ -418,18 +494,24 @@ header {
 }
 
 .pdf-card:hover {
+
     transform:
         translateY(-2px);
 
-    border-color: #5d8ec2;
+    border-color: #f09a54;
 
     box-shadow:
-        0 7px 15px
+        0 7px 16px
         rgba(50, 70, 90, 0.12);
 }
 
 .pdf-card.dragging {
-    opacity: 0.4;
+
+    opacity: 0.45;
+
+    transform:
+        scale(0.96);
+
 }
 
 
@@ -438,6 +520,7 @@ header {
 ========================= */
 
 .pdf-preview {
+
     height: 130px;
 
     background: #f7f8fa;
@@ -459,8 +542,10 @@ header {
 }
 
 .pdf-preview canvas {
+
     max-width: 100%;
     max-height: 100%;
+
 }
 
 
@@ -469,6 +554,7 @@ header {
 ========================= */
 
 .pdf-name {
+
     text-align: center;
 
     font-size: 11px;
@@ -491,6 +577,7 @@ header {
 ========================= */
 
 .remove-button {
+
     position: absolute;
 
     top: 5px;
@@ -516,24 +603,36 @@ header {
     cursor: pointer;
 
     z-index: 5;
+
+    padding: 0;
+
+    transition:
+        background 0.2s,
+        color 0.2s;
 }
 
 .remove-button:hover {
-    color: #c0392b;
+
+    color: #d94b3d;
+
+    background: #fff1ef;
+
 }
 
 
 /* =========================
-   ADD MORE TEXT
+   ADD MORE FILES
 ========================= */
 
 .add-more-text {
+
     margin-top: 16px;
 
     color: #356aa5;
 
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
+
 }
 
 
@@ -542,6 +641,7 @@ header {
 ========================= */
 
 .editor-controls {
+
     display: none;
 
     margin-top: 18px;
@@ -553,44 +653,34 @@ header {
 
 
 /* =========================
-   PROMINENT DRAG MESSAGE
+   DRAG MESSAGE
 ========================= */
 
 .drag-hint {
+
     margin: 0 0 16px;
 
     padding: 14px 18px;
 
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    gap: 10px;
-
     text-align: center;
 
-    background: #e7f1fc;
+    background: #eaf3fc;
 
     border:
         1px solid
-        #9ebfdf;
+        #b9d2ea;
 
     border-radius: 10px;
 
-    color: #285b91;
+    color: #356aa5;
 
     font-size: 15px;
     font-weight: 700;
 
     box-shadow:
         0 3px 8px
-        rgba(53, 106, 165, 0.10);
-}
+        rgba(53, 106, 165, 0.08);
 
-.drag-hint-icon {
-    font-size: 22px;
-    line-height: 1;
 }
 
 
@@ -599,14 +689,15 @@ header {
 ========================= */
 
 .button-row {
+
     display: flex;
 
     justify-content: center;
-
-    gap: 10px;
 }
 
+
 button {
+
     border: none;
 
     border-radius: 8px;
@@ -614,36 +705,60 @@ button {
     padding: 12px 20px;
 
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
 
     cursor: pointer;
 
     transition:
         transform 0.2s,
-        background 0.2s;
+        box-shadow 0.2s;
 }
 
 button:hover {
+
     transform:
         translateY(-1px);
+
 }
+
+
+/* Main orange action */
 
 .primary-button {
-    min-width: 170px;
 
-    background: #356aa5;
+    min-width: 180px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f08a35,
+            #df5e24
+        );
 
     color: #ffffff;
+
+    box-shadow:
+        0 6px 14px
+        rgba(223, 94, 36, 0.25);
+
 }
+
 
 .primary-button:hover {
-    background: #2b598d;
+
+    box-shadow:
+        0 8px 18px
+        rgba(223, 94, 36, 0.32);
+
 }
 
+
 .primary-button:disabled {
+
     opacity: 0.7;
 
     cursor: wait;
+
 }
 
 
@@ -652,6 +767,7 @@ button:hover {
 ========================= */
 
 .ad-column {
+
     width: 200px;
     height: 400px;
 
@@ -677,6 +793,7 @@ button:hover {
 }
 
 .ad-label {
+
     color: #607184;
 
     font-size: 10px;
@@ -686,6 +803,7 @@ button:hover {
 }
 
 .ad-size {
+
     display: block;
 
     margin-top: 10px;
@@ -700,6 +818,7 @@ button:hover {
 ========================= */
 
 footer {
+
     margin-top: 12px;
 
     height: 78px;
@@ -734,6 +853,7 @@ footer {
 }
 
 .footer-links a {
+
     padding: 0 16px;
 
     text-decoration: none;
@@ -742,9 +862,15 @@ footer {
 }
 
 .footer-links a + a {
+
     border-left:
         1px solid
         #8090a0;
+
+}
+
+.footer-links a:hover {
+    color: #356aa5;
 }
 
 
@@ -764,6 +890,7 @@ footer {
     .tool-box,
     .ad-column,
     footer {
+
         background: #222d38;
 
         border-color: #3b4a58;
@@ -773,45 +900,73 @@ footer {
     .tool-heading h1,
     .upload-placeholder h2,
     .pdf-name {
+
         color: #e4ebf1;
+
     }
 
     .search-container input {
+
         background: #1b2530;
 
         color: #ffffff;
 
         border-color: #3b4a58;
+
     }
 
     .tool-heading p,
     .upload-placeholder p,
     .uploaded-title {
+
         color: #aebdca;
+
     }
 
     .upload-area {
+
         background: #1b2631;
+
+        border-color: #435767;
+
+    }
+
+    .upload-area:hover {
+
+        background: #202d38;
+
+        border-color: #5d8fc1;
+
     }
 
     .pdf-card {
+
         background: #26323d;
 
         border-color: #455563;
+
     }
 
     .pdf-preview {
+
         background: #1b2530;
 
         border-color: #3b4a58;
+
     }
 
     .drag-hint {
-        background: #1d344b;
 
-        border-color: #3f6f9e;
+        background: #1d3449;
 
-        color: #a9d1f7;
+        border-color: #3c668c;
+
+        color: #9fcaf2;
+
+    }
+
+    .add-more-text {
+        color: #80b7ec;
     }
 
 }
@@ -832,6 +987,7 @@ footer {
     }
 
     .ad-column {
+
         width: 100%;
         height: 180px;
 
@@ -839,6 +995,7 @@ footer {
     }
 
     footer {
+
         height: auto;
 
         padding: 18px;
@@ -858,6 +1015,7 @@ footer {
     }
 
     .navbar {
+
         padding: 12px;
 
         flex-direction: column;
@@ -870,18 +1028,26 @@ footer {
     }
 
     .pdf-grid {
+
         grid-template-columns:
             repeat(2, 1fr);
+
     }
 
     .pdf-preview {
         height: 110px;
     }
 
+    .tool-heading h1 {
+        font-size: 27px;
+    }
+
     .drag-hint {
+
         font-size: 13px;
 
         padding: 12px;
+
     }
 
 }
@@ -896,7 +1062,9 @@ footer {
 <div class="site-wrapper">
 
 
-<!-- HEADER -->
+<!-- =========================
+     HEADER
+========================= -->
 
 <header>
 
@@ -942,7 +1110,9 @@ footer {
 
 
 
-<!-- MAIN -->
+<!-- =========================
+     MAIN
+========================= -->
 
 <main class="page-layout">
 
@@ -950,10 +1120,12 @@ footer {
     <div class="main-content">
 
 
+        <!-- TOOL HEADING -->
+
         <section class="tool-heading">
 
             <h1>
-                Merge <span>PDF</span>
+                <span>Merge</span> PDF
             </h1>
 
             <p>
@@ -963,6 +1135,8 @@ footer {
         </section>
 
 
+
+        <!-- TOOL BOX -->
 
         <section class="tool-box">
 
@@ -995,6 +1169,8 @@ footer {
 
 
 
+                <!-- UPLOADED FILES -->
+
                 <div
                     class="uploaded-files"
                     id="uploadedFiles"
@@ -1022,7 +1198,7 @@ footer {
 
 
 
-            <!-- HIDDEN INPUT -->
+            <!-- HIDDEN FILE INPUT -->
 
             <input
                 type="file"
@@ -1040,21 +1216,8 @@ footer {
                 id="editorControls"
             >
 
-
-                <!-- PROMINENT DRAG MESSAGE -->
-
                 <div class="drag-hint">
-
-                    <span class="drag-hint-icon">
-                        ↔
-                    </span>
-
                     Drag PDF files to change their order
-
-                    <span class="drag-hint-icon">
-                        ↔
-                    </span>
-
                 </div>
 
 
@@ -1064,9 +1227,7 @@ footer {
                         class="primary-button"
                         id="mergeButton"
                     >
-
                         Merge PDFs
-
                     </button>
 
                 </div>
@@ -1081,7 +1242,9 @@ footer {
 
 
 
-    <!-- AD -->
+    <!-- =========================
+         ADVERTISEMENT
+    ========================= -->
 
     <aside class="ad-column">
 
@@ -1102,7 +1265,9 @@ footer {
 
 
 
-<!-- FOOTER -->
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer>
 
@@ -1144,14 +1309,20 @@ footer {
 
 
 
-<!-- JAVASCRIPT -->
+<!-- =========================
+     JAVASCRIPT
+========================= -->
 
 <script>
 
 
+/* PDF.JS WORKER */
+
 pdfjsLib.GlobalWorkerOptions.workerSrc =
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
+
+/* ELEMENTS */
 
 const pdfInput =
     document.getElementById("pdfInput");
@@ -1172,13 +1343,15 @@ const mergeButton =
     document.getElementById("mergeButton");
 
 
+/* FILE STORAGE */
+
 let pdfFiles = [];
 
 let draggedId = null;
 
 
 /* =========================
-   UPLOAD FILES
+   FILE UPLOAD
 ========================= */
 
 pdfInput.addEventListener(
@@ -1202,7 +1375,8 @@ pdfInput.addEventListener(
                         file: file,
 
                         id:
-                            Date.now() +
+                            Date.now()
+                            +
                             Math.random()
 
                     });
@@ -1217,6 +1391,10 @@ pdfInput.addEventListener(
 
         renderPDFs();
 
+
+        /* Reset input so the same file
+           can be selected again */
+
         pdfInput.value = "";
 
     }
@@ -1229,7 +1407,9 @@ pdfInput.addEventListener(
 
 function updateInterface() {
 
-    if (pdfFiles.length > 0) {
+    if (
+        pdfFiles.length > 0
+    ) {
 
         uploadPlaceholder.style.display =
             "none";
@@ -1274,18 +1454,24 @@ function renderPDFs() {
     pdfFiles.forEach(
         function(item) {
 
+
             const card =
                 document.createElement("div");
+
 
             card.className =
                 "pdf-card";
 
+
             card.dataset.id =
                 item.id;
+
 
             card.draggable =
                 true;
 
+
+            /* DRAG START */
 
             card.addEventListener(
                 "dragstart",
@@ -1293,6 +1479,7 @@ function renderPDFs() {
 
                     draggedId =
                         item.id;
+
 
                     card.classList.add(
                         "dragging"
@@ -1302,12 +1489,15 @@ function renderPDFs() {
             );
 
 
+            /* DRAG END */
+
             card.addEventListener(
                 "dragend",
                 function() {
 
                     draggedId =
                         null;
+
 
                     card.classList.remove(
                         "dragging"
@@ -1316,6 +1506,8 @@ function renderPDFs() {
                 }
             );
 
+
+            /* ALLOW DROP */
 
             card.addEventListener(
                 "dragover",
@@ -1326,6 +1518,8 @@ function renderPDFs() {
                 }
             );
 
+
+            /* DROP */
 
             card.addEventListener(
                 "drop",
@@ -1358,6 +1552,14 @@ function renderPDFs() {
                         );
 
 
+                    if (
+                        draggedIndex === -1 ||
+                        targetIndex === -1
+                    ) {
+                        return;
+                    }
+
+
                     const movedFile =
                         pdfFiles.splice(
                             draggedIndex,
@@ -1378,8 +1580,11 @@ function renderPDFs() {
             );
 
 
+            /* PREVIEW */
+
             const preview =
                 document.createElement("div");
+
 
             preview.className =
                 "pdf-preview";
@@ -1394,21 +1599,33 @@ function renderPDFs() {
             );
 
 
+            /* FILE NAME */
+
             const name =
                 document.createElement("div");
 
+
             name.className =
                 "pdf-name";
+
 
             name.textContent =
                 item.file.name;
 
 
+            /* REMOVE BUTTON */
+
             const removeButton =
                 document.createElement("button");
 
+
             removeButton.className =
                 "remove-button";
+
+
+            removeButton.type =
+                "button";
+
 
             removeButton.textContent =
                 "×";
@@ -1439,13 +1656,17 @@ function renderPDFs() {
             );
 
 
+            /* BUILD CARD */
+
             card.appendChild(
                 preview
             );
 
+
             card.appendChild(
                 name
             );
+
 
             card.appendChild(
                 removeButton
@@ -1456,6 +1677,8 @@ function renderPDFs() {
                 card
             );
 
+
+            /* CREATE PREVIEW */
 
             renderPDFPreview(
                 item.file,
@@ -1531,7 +1754,7 @@ async function renderPDFPreview(
     catch (error) {
 
         console.error(
-            "Preview error:",
+            "PDF preview error:",
             error
         );
 
@@ -1578,8 +1801,7 @@ mergeButton.addEventListener(
 
             for (
                 const item
-                of
-                pdfFiles
+                of pdfFiles
             ) {
 
                 const arrayBuffer =
@@ -1665,8 +1887,15 @@ mergeButton.addEventListener(
             link.remove();
 
 
-            URL.revokeObjectURL(
-                url
+            setTimeout(
+                function() {
+
+                    URL.revokeObjectURL(
+                        url
+                    );
+
+                },
+                1000
             );
 
 
@@ -1682,6 +1911,7 @@ mergeButton.addEventListener(
         catch (error) {
 
             console.error(
+                "Merge error:",
                 error
             );
 
