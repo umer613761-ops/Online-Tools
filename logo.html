@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -16,17 +17,24 @@
 <style>
 
 /* =========================
-   PAGE
+   RESET
 ========================= */
 
 * {
     box-sizing: border-box;
 }
 
+
+/* =========================
+   PAGE
+========================= */
+
 body {
     margin: 0;
 
     min-height: 100vh;
+
+    padding: 30px;
 
     display: flex;
     align-items: center;
@@ -38,6 +46,8 @@ body {
         sans-serif;
 
     background: #ffffff;
+
+    overflow-x: hidden;
 }
 
 
@@ -46,8 +56,13 @@ body {
 ========================= */
 
 .logo {
+    width: 100%;
+
+    max-width: 1180px;
+
     display: flex;
     align-items: center;
+    justify-content: center;
 
     gap: 34px;
 }
@@ -58,8 +73,8 @@ body {
 ========================= */
 
 .logo-symbol {
-    width: 250px;
-    height: 250px;
+    width: 220px;
+    height: 220px;
 
     position: relative;
 
@@ -74,8 +89,8 @@ body {
 .symbol-ring {
     position: absolute;
 
-    width: 185px;
-    height: 185px;
+    width: 165px;
+    height: 165px;
 
     left: 50%;
     top: 50%;
@@ -84,7 +99,7 @@ body {
         translate(-50%, -50%)
         rotate(-25deg);
 
-    border: 26px solid #1f5fba;
+    border: 23px solid #1f5fba;
 
     border-radius: 50%;
 
@@ -100,10 +115,10 @@ body {
 .symbol-dot-top {
     position: absolute;
 
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
 
-    top: 10px;
+    top: 8px;
     left: 50%;
 
     transform:
@@ -127,11 +142,11 @@ body {
 .symbol-dot-left {
     position: absolute;
 
-    width: 76px;
-    height: 76px;
+    width: 66px;
+    height: 66px;
 
-    left: 8px;
-    bottom: 28px;
+    left: 7px;
+    bottom: 25px;
 
     border-radius: 50%;
 
@@ -151,11 +166,11 @@ body {
 .symbol-dot-right {
     position: absolute;
 
-    width: 76px;
-    height: 76px;
+    width: 66px;
+    height: 66px;
 
-    right: 8px;
-    bottom: 28px;
+    right: 7px;
+    bottom: 25px;
 
     border-radius: 50%;
 
@@ -173,6 +188,12 @@ body {
 ========================= */
 
 .logo-content {
+    width: 100%;
+
+    max-width: 900px;
+
+    min-width: 0;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -184,12 +205,15 @@ body {
 ========================= */
 
 .logo-name {
-    display: flex;
+    width: 100%;
 
+    display: flex;
     align-items: center;
     justify-content: center;
 
-    font-size: 132px;
+    color: #1f2b39;
+
+    font-size: 172px;
 
     font-weight: 800;
 
@@ -212,7 +236,7 @@ body {
 
 
 /* =========================
-   TAGLINE
+   TAGLINE ROW
 ========================= */
 
 .logo-tagline-row {
@@ -222,15 +246,23 @@ body {
 
     display: flex;
     align-items: center;
-
     justify-content: center;
 
     gap: 24px;
+
+    white-space: nowrap;
 }
 
 
+/* =========================
+   HORIZONTAL LINES
+========================= */
+
 .logo-line {
-    width: 120px;
+    flex: 1;
+
+    min-width: 50px;
+
     height: 3px;
 
     background: #1e5ec0;
@@ -238,6 +270,10 @@ body {
     border-radius: 5px;
 }
 
+
+/* =========================
+   TAGLINE
+========================= */
 
 .logo-tagline {
     color: #3c4a59;
@@ -253,13 +289,79 @@ body {
 
 
 /* =========================
-   MOBILE
+   MEDIUM SCREENS
 ========================= */
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
+
+    body {
+        padding: 25px;
+    }
 
     .logo {
-        gap: 22px;
+        gap: 25px;
+    }
+
+    .logo-symbol {
+        width: 170px;
+        height: 170px;
+    }
+
+    .symbol-ring {
+        width: 128px;
+        height: 128px;
+
+        border-width: 18px;
+    }
+
+    .symbol-dot-top {
+        width: 54px;
+        height: 54px;
+    }
+
+    .symbol-dot-left,
+    .symbol-dot-right {
+        width: 52px;
+        height: 52px;
+
+        bottom: 18px;
+    }
+
+    .logo-name {
+        font-size: 120px;
+
+        letter-spacing: -4px;
+    }
+
+    .logo-tagline {
+        font-size: 21px;
+
+        letter-spacing: 6px;
+    }
+
+    .logo-tagline-row {
+        margin-top: 25px;
+
+        gap: 18px;
+    }
+
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 800px) {
+
+    body {
+        padding: 25px 20px;
+    }
+
+    .logo {
+        flex-direction: column;
+
+        gap: 15px;
     }
 
     .logo-symbol {
@@ -271,38 +373,28 @@ body {
         width: 112px;
         height: 112px;
 
-        border-width: 17px;
+        border-width: 16px;
     }
 
     .symbol-dot-top {
-        width: 48px;
-        height: 48px;
+        width: 46px;
+        height: 46px;
     }
 
     .symbol-dot-left,
     .symbol-dot-right {
-        width: 46px;
-        height: 46px;
+        width: 44px;
+        height: 44px;
 
-        bottom: 17px;
+        bottom: 16px;
+    }
+
+    .logo-content {
+        max-width: 650px;
     }
 
     .logo-name {
-        font-size: 78px;
-
-        letter-spacing: -3px;
-    }
-
-    .logo-tagline-row {
-        margin-top: 20px;
-
-        gap: 14px;
-    }
-
-    .logo-line {
-        width: 70px;
-
-        height: 2px;
+        font-size: 105px;
     }
 
     .logo-tagline {
@@ -311,15 +403,21 @@ body {
         letter-spacing: 5px;
     }
 
+    .logo-line {
+        height: 2px;
+    }
+
 }
 
 
+/* =========================
+   MOBILE
+========================= */
+
 @media (max-width: 600px) {
 
-    .logo {
-        flex-direction: column;
-
-        gap: 10px;
+    body {
+        padding: 20px 15px;
     }
 
     .logo-symbol {
@@ -331,24 +429,24 @@ body {
         width: 90px;
         height: 90px;
 
-        border-width: 14px;
+        border-width: 13px;
     }
 
     .symbol-dot-top {
-        width: 38px;
-        height: 38px;
+        width: 36px;
+        height: 36px;
     }
 
     .symbol-dot-left,
     .symbol-dot-right {
-        width: 36px;
-        height: 36px;
+        width: 34px;
+        height: 34px;
 
         bottom: 13px;
     }
 
     .logo-name {
-        font-size: 60px;
+        font-size: 16vw;
 
         letter-spacing: -2px;
     }
@@ -360,13 +458,15 @@ body {
     }
 
     .logo-line {
-        width: 35px;
+        min-width: 25px;
+
+        height: 2px;
     }
 
     .logo-tagline {
-        font-size: 10px;
+        font-size: 2.5vw;
 
-        letter-spacing: 2px;
+        letter-spacing: 1.5vw;
     }
 
 }
@@ -386,7 +486,9 @@ body {
 <div class="logo">
 
 
-    <!-- SYMBOL -->
+    <!-- =========================
+         SYMBOL
+    ========================= -->
 
     <div class="logo-symbol">
 
@@ -415,7 +517,9 @@ body {
 
 
 
-    <!-- TEXT -->
+    <!-- =========================
+         TEXT
+    ========================= -->
 
     <div class="logo-content">
 
@@ -424,13 +528,20 @@ body {
 
         <div class="logo-name">
 
+
             <span class="logo-name-dark">
+
                 TOOL
+
             </span>
 
+
             <span class="logo-name-blue">
+
                 NEST
+
             </span>
+
 
         </div>
 
