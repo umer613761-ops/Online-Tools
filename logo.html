@@ -33,7 +33,7 @@ body {
 
     padding: 30px;
 
-    background: #f5f7fa;
+    background: #eef3f8;
 
     font-family:
         Arial,
@@ -50,33 +50,90 @@ body {
     width: 715px;
     max-width: 100%;
 
+    position: relative;
+
+    overflow: hidden;
+
     padding:
-        34px
+        42px
         36px
-        26px;
+        34px;
 
     display: flex;
     justify-content: center;
+    align-items: center;
 
-    background: #fbfcfd;
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #f7faff 100%
+        );
 
-    border: 1px solid #e4e9ee;
+    border:
+        1px solid
+        rgba(210, 222, 235, 0.9);
 
-    border-radius: 22px;
+    border-radius: 38px;
 
     box-shadow:
-        0 8px 24px
-        rgba(40, 55, 70, 0.04);
+        0 12px 35px
+        rgba(40, 70, 100, 0.08);
+}
+
+
+/* =========================
+   SOFT BACKGROUND SHAPES
+========================= */
+
+.logo-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 230px;
+    height: 230px;
+
+    top: -130px;
+    right: -80px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(47, 110, 168, 0.07);
+
+    pointer-events: none;
+}
+
+
+.logo-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    bottom: -110px;
+    left: -70px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(31, 93, 184, 0.05);
+
+    pointer-events: none;
 }
 
 
 /* =========================
    LOGO CONTENT
-
-   Width follows TOOLNEST
 ========================= */
 
 .logo-content {
+    position: relative;
+    z-index: 1;
+
     display: inline-flex;
     flex-direction: column;
 
@@ -104,7 +161,9 @@ body {
 }
 
 
-/* TOOL */
+/* =========================
+   TOOL
+========================= */
 
 .logo-tool {
     color: #1e2d40;
@@ -113,7 +172,9 @@ body {
 }
 
 
-/* NEST */
+/* =========================
+   NEST
+========================= */
 
 .logo-nest {
     color: #1f5db8;
@@ -124,8 +185,6 @@ body {
 
 /* =========================
    TAGLINE ROW
-
-   Same total width as TOOLNEST
 ========================= */
 
 .tagline-row {
@@ -147,11 +206,24 @@ body {
 
     height: 2px;
 
-    background: #7b8793;
+    border-radius: 20px;
 
-    border-radius: 10px;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(123, 135, 147, 0.45),
+            rgba(123, 135, 147, 0.85)
+        );
+}
 
-    opacity: 0.7;
+
+.tagline-line:last-child {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(123, 135, 147, 0.85),
+            rgba(123, 135, 147, 0.45)
+        );
 }
 
 
@@ -188,14 +260,34 @@ body {
         padding: 18px;
     }
 
+
     .logo-card {
         padding:
-            5vw
+            7vw
             3vw
-            4vw;
+            5vw;
 
-        border-radius: 18px;
+        border-radius: 30px;
     }
+
+
+    .logo-card::before {
+        width: 32vw;
+        height: 32vw;
+
+        top: -18vw;
+        right: -10vw;
+    }
+
+
+    .logo-card::after {
+        width: 28vw;
+        height: 28vw;
+
+        bottom: -18vw;
+        left: -10vw;
+    }
+
 
     .logo-name {
         font-size: 12.3vw;
@@ -203,13 +295,16 @@ body {
         letter-spacing: -0.42vw;
     }
 
+
     .tagline-row {
         margin-top: 2vw;
     }
 
+
     .tagline-line {
         height: 0.28vw;
     }
+
 
     .logo-tagline {
         margin:
@@ -255,7 +350,7 @@ body {
         </div>
 
 
-        <!-- TAGLINE + LINES -->
+        <!-- TAGLINE -->
 
         <div class="tagline-row">
 
