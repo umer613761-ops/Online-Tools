@@ -32,7 +32,7 @@
 
     /* ========================================
        RESET
-    ========================================= */
+    ======================================== */
 
     * {
       box-sizing: border-box;
@@ -56,9 +56,10 @@
     }
 
 
+
     /* ========================================
        HEADER
-    ========================================= */
+    ======================================== */
 
     .top-header {
       width: 100%;
@@ -85,9 +86,10 @@
     }
 
 
+
     /* ========================================
        LOGO
-    ========================================= */
+    ======================================== */
 
     .logo {
       display: flex;
@@ -145,9 +147,10 @@
     }
 
 
+
     /* ========================================
        SEARCH
-    ========================================= */
+    ======================================== */
 
     .header-search {
       width: 100%;
@@ -203,9 +206,10 @@
     }
 
 
+
     /* ========================================
        CATEGORY NAVIGATION
-    ========================================= */
+    ======================================== */
 
     .category-nav {
       background: #ffffff;
@@ -281,9 +285,10 @@
     }
 
 
+
     /* ========================================
        PAGE
-    ========================================= */
+    ======================================== */
 
     .page-wrapper {
       width: 100%;
@@ -314,9 +319,10 @@
     }
 
 
+
     /* ========================================
        BREADCRUMB
-    ========================================= */
+    ======================================== */
 
     .breadcrumb {
       display: flex;
@@ -349,9 +355,10 @@
     }
 
 
+
     /* ========================================
        HEADING
-    ========================================= */
+    ======================================== */
 
     .heading {
       margin-bottom: 26px;
@@ -384,9 +391,10 @@
     }
 
 
+
     /* ========================================
        TOOL BOX
-    ========================================= */
+    ======================================== */
 
     .tool-box {
       background: #ffffff;
@@ -405,9 +413,10 @@
     }
 
 
+
     /* ========================================
        UPLOAD AREA
-    ========================================= */
+    ======================================== */
 
     .upload-area {
       width: 100%;
@@ -443,9 +452,10 @@
     }
 
 
+
     /* ========================================
        EMPTY UPLOAD MESSAGE
-    ========================================= */
+    ======================================== */
 
     .upload-message {
       display: flex;
@@ -503,9 +513,10 @@
     }
 
 
+
     /* ========================================
        PDF PREVIEWS
-    ========================================= */
+    ======================================== */
 
     .preview-grid {
       display: none;
@@ -513,9 +524,10 @@
       width: 100%;
 
       grid-template-columns:
-        repeat(4, minmax(0, 1fr));
+        repeat(auto-fit, minmax(150px, 150px));
 
       justify-content: center;
+      align-content: center;
       align-items: start;
 
       gap: 22px;
@@ -526,7 +538,7 @@
     .pdf-preview-card {
       position: relative;
 
-      min-width: 0;
+      width: 150px;
 
       display: flex;
 
@@ -541,28 +553,21 @@
 
       border: none;
 
-      border-radius: 0;
-
-      box-shadow: none;
-
       cursor: default;
     }
 
-    .pdf-preview-card:hover {
-      transform: none;
-    }
 
 
     /* ========================================
        REMOVE BUTTON
        TINY RED CIRCLE
-    ========================================= */
+    ======================================== */
 
     .remove-file {
       position: absolute;
 
-      top: 2px;
-      right: 6px;
+      top: 0;
+      right: 0;
 
       width: 20px;
       height: 20px;
@@ -589,7 +594,7 @@
 
       cursor: pointer;
 
-      z-index: 2;
+      z-index: 5;
 
       box-shadow:
         0 2px 5px
@@ -600,19 +605,16 @@
       background: #c93d3d;
 
       color: #ffffff;
-
-      transform: none;
     }
+
 
 
     /* ========================================
        PDF PAGE THUMBNAIL
-    ========================================= */
+    ======================================== */
 
     .preview-thumbnail {
-      width: 100%;
-
-      max-width: 150px;
+      width: 150px;
 
       height: 190px;
 
@@ -644,9 +646,10 @@
     }
 
 
+
     /* ========================================
        FILE NAME
-    ========================================= */
+    ======================================== */
 
     .preview-name {
       width: 100%;
@@ -655,7 +658,7 @@
 
       color: #34475b;
 
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 700;
 
       white-space: nowrap;
@@ -670,22 +673,101 @@
     .preview-pages {
       color: #718096;
 
-      font-size: 15px;
+      font-size: 14px;
     }
+
 
 
     /* ========================================
        HIDDEN FILE INPUT
-    ========================================= */
+    ======================================== */
 
     input[type="file"] {
       display: none;
     }
 
 
+
+    /* ========================================
+       ACTION BUTTONS
+    ======================================== */
+
+    .buttons {
+      display: none;
+
+      gap: 12px;
+
+      margin-top: 18px;
+    }
+
+    button {
+      height: 46px;
+
+      padding:
+        0
+        20px;
+
+      border-radius: 8px;
+
+      font-size: 14px;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    button:hover:not(:disabled) {
+      transform:
+        translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+
+      cursor: not-allowed;
+    }
+
+    .primary-button {
+      flex: 1;
+
+      border: none;
+
+      background: #326ba8;
+
+      color: #ffffff;
+
+      box-shadow:
+        0 4px 10px
+        rgba(50, 107, 168, 0.18);
+    }
+
+    .primary-button:hover:not(:disabled) {
+      background: #285b91;
+    }
+
+    .secondary-button {
+      border:
+        1px solid
+        #ccd7e1;
+
+      background: #ffffff;
+
+      color: #435365;
+    }
+
+    .secondary-button:hover:not(:disabled) {
+      background: #f5f7f9;
+    }
+
+
+
     /* ========================================
        EDITOR
-    ========================================= */
+    ======================================== */
 
     .editor {
       display: none;
@@ -693,31 +775,11 @@
       margin-top: 26px;
     }
 
-    .upload-summary {
-      padding: 16px;
-
-      margin-bottom: 24px;
-
-      text-align: center;
-
-      background: #f7f9fb;
-
-      border:
-        1px solid
-        #dce4eb;
-
-      border-radius: 10px;
-
-      color: #526477;
-
-      font-size: 15px;
-      font-weight: 600;
-    }
 
 
     /* ========================================
        OPTIONS
-    ========================================= */
+    ======================================== */
 
     .options-title {
       margin:
@@ -802,9 +864,10 @@
     }
 
 
+
     /* ========================================
        RANGE
-    ========================================= */
+    ======================================== */
 
     .range-section {
       display: none;
@@ -876,85 +939,10 @@
     }
 
 
-    /* ========================================
-       BUTTONS
-    ========================================= */
-
-    .buttons {
-      display: flex;
-
-      gap: 12px;
-
-      margin-top: 24px;
-    }
-
-    button {
-      height: 46px;
-
-      padding:
-        0
-        20px;
-
-      border-radius: 8px;
-
-      font-size: 14px;
-      font-weight: 700;
-
-      cursor: pointer;
-
-      transition:
-        background 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-    }
-
-    button:hover:not(:disabled) {
-      transform:
-        translateY(-1px);
-    }
-
-    button:disabled {
-      opacity: 0.6;
-
-      cursor: not-allowed;
-    }
-
-    .primary-button {
-      flex: 1;
-
-      border: none;
-
-      background: #326ba8;
-
-      color: #ffffff;
-
-      box-shadow:
-        0 4px 10px
-        rgba(50, 107, 168, 0.18);
-    }
-
-    .primary-button:hover:not(:disabled) {
-      background: #285b91;
-    }
-
-    .secondary-button {
-      border:
-        1px solid
-        #ccd7e1;
-
-      background: #ffffff;
-
-      color: #435365;
-    }
-
-    .secondary-button:hover:not(:disabled) {
-      background: #f5f7f9;
-    }
-
 
     /* ========================================
        STATUS
-    ========================================= */
+    ======================================== */
 
     .status {
       display: none;
@@ -979,9 +967,10 @@
     }
 
 
+
     /* ========================================
        ADVERTISEMENT
-    ========================================= */
+    ======================================== */
 
     .ad-column {
       width: 200px;
@@ -1118,9 +1107,10 @@
     }
 
 
+
     /* ========================================
        FOOTER
-    ========================================= */
+    ======================================== */
 
     footer {
       background: #ffffff;
@@ -1165,9 +1155,10 @@
     }
 
 
+
     /* ========================================
        TABLET
-    ========================================= */
+    ======================================== */
 
     @media (max-width: 900px) {
 
@@ -1185,17 +1176,13 @@
         height: 180px;
       }
 
-      .preview-grid {
-        grid-template-columns:
-          repeat(3, minmax(0, 1fr));
-      }
-
     }
+
 
 
     /* ========================================
        MOBILE
-    ========================================= */
+    ======================================== */
 
     @media (max-width: 700px) {
 
@@ -1237,13 +1224,13 @@
 
       .preview-grid {
         grid-template-columns:
-          repeat(2, minmax(0, 1fr));
+          repeat(auto-fit, minmax(140px, 140px));
 
         gap: 18px;
       }
 
       .preview-thumbnail {
-        max-width: 140px;
+        width: 140px;
         height: 180px;
       }
 
@@ -1254,9 +1241,10 @@
     }
 
 
+
     /* ========================================
        SMALL MOBILE
-    ========================================= */
+    ======================================== */
 
     @media (max-width: 550px) {
 
@@ -1300,24 +1288,28 @@
 
       .preview-grid {
         grid-template-columns:
-          repeat(2, minmax(0, 1fr));
+          repeat(auto-fit, minmax(120px, 120px));
 
         gap: 14px;
 
         padding: 4px;
       }
 
+      .pdf-preview-card {
+        width: 120px;
+      }
+
       .preview-thumbnail {
-        max-width: 120px;
+        width: 120px;
         height: 155px;
       }
 
       .preview-name {
-        font-size: 14px;
+        font-size: 13px;
       }
 
       .preview-pages {
-        font-size: 14px;
+        font-size: 13px;
       }
 
     }
@@ -1327,12 +1319,13 @@
 </head>
 
 
+
 <body>
 
 
   <!-- ========================================
        HEADER
-  ========================================= -->
+  ======================================== -->
 
   <header class="top-header">
 
@@ -1381,9 +1374,10 @@
   </header>
 
 
+
   <!-- ========================================
        CATEGORY NAVIGATION
-  ========================================= -->
+  ======================================== -->
 
   <nav class="category-nav">
 
@@ -1429,9 +1423,10 @@
   </nav>
 
 
+
   <!-- ========================================
        PAGE
-  ========================================= -->
+  ======================================== -->
 
   <main class="page-wrapper">
 
@@ -1470,6 +1465,7 @@
         </div>
 
 
+
         <!-- Heading -->
 
         <div class="heading">
@@ -1484,6 +1480,7 @@
           </p>
 
         </div>
+
 
 
         <!-- TOOL BOX -->
@@ -1522,6 +1519,7 @@
             </div>
 
 
+
             <!-- Preview Grid -->
 
             <div
@@ -1532,6 +1530,7 @@
           </label>
 
 
+
           <input
             type="file"
             id="pdfInput"
@@ -1540,20 +1539,40 @@
           >
 
 
+
+          <!-- ACTION BUTTONS DIRECTLY UNDER PREVIEWS -->
+
+          <div
+            class="buttons"
+            id="actionButtons"
+          >
+
+            <button
+              class="primary-button"
+              id="splitButton"
+              type="button"
+            >
+              Split PDF and Download
+            </button>
+
+            <button
+              class="secondary-button"
+              id="newFileButton"
+              type="button"
+            >
+              + Add More PDFs
+            </button>
+
+          </div>
+
+
+
           <!-- EDITOR -->
 
           <div
             class="editor"
             id="editor"
           >
-
-
-            <!-- Summary -->
-
-            <div
-              class="upload-summary"
-              id="uploadSummary"
-            ></div>
 
 
             <!-- Options -->
@@ -1590,6 +1609,7 @@
               </div>
 
 
+
               <!-- Selected Pages -->
 
               <div class="radio-option">
@@ -1609,6 +1629,7 @@
                 <p class="option-description">
                   Choose which pages you want to extract.
                 </p>
+
 
 
                 <!-- Page Range -->
@@ -1639,28 +1660,6 @@
             </div>
 
 
-            <!-- Buttons -->
-
-            <div class="buttons">
-
-              <button
-                class="primary-button"
-                id="splitButton"
-              >
-                Split PDF and Download
-              </button>
-
-              <button
-                class="secondary-button"
-                id="newFileButton"
-                type="button"
-              >
-                Choose More PDFs
-              </button>
-
-            </div>
-
-
             <!-- Status -->
 
             <div
@@ -1676,9 +1675,10 @@
       </section>
 
 
+
       <!-- ========================================
            ADVERTISEMENT
-      ========================================= -->
+      ======================================== -->
 
       <aside class="ad-column">
 
@@ -1722,9 +1722,10 @@
   </main>
 
 
+
   <!-- ========================================
        FOOTER
-  ========================================= -->
+  ======================================== -->
 
   <footer>
 
@@ -1759,23 +1760,25 @@
   </footer>
 
 
+
   <!-- ========================================
        JAVASCRIPT
-  ========================================= -->
+  ======================================== -->
 
   <script>
 
     /* ========================================
        PDF.JS SETUP
-    ========================================= */
+    ======================================== */
 
     pdfjsLib.GlobalWorkerOptions.workerSrc =
       "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
 
+
     /* ========================================
        ELEMENTS
-    ========================================= */
+    ======================================== */
 
     const pdfInput =
       document.getElementById("pdfInput");
@@ -1788,9 +1791,6 @@
 
     const editor =
       document.getElementById("editor");
-
-    const uploadSummary =
-      document.getElementById("uploadSummary");
 
     const rangeSection =
       document.getElementById("rangeSection");
@@ -1807,17 +1807,22 @@
     const status =
       document.getElementById("status");
 
+    const actionButtons =
+      document.getElementById("actionButtons");
+
+
 
     /* ========================================
        FILE STORAGE
-    ========================================= */
+    ======================================== */
 
     let uploadedFiles = [];
 
 
+
     /* ========================================
        UPLOAD FILES
-    ========================================= */
+    ======================================== */
 
     pdfInput.addEventListener(
       "change",
@@ -1923,9 +1928,10 @@
     );
 
 
+
     /* ========================================
        RENDER PREVIEWS
-    ========================================= */
+    ======================================== */
 
     async function renderPreviews() {
 
@@ -1949,6 +1955,9 @@
         editor.style.display =
           "none";
 
+        actionButtons.style.display =
+          "none";
+
         return;
 
       }
@@ -1966,21 +1975,16 @@
         "grid";
 
 
+      /* Show buttons directly under previews */
+
+      actionButtons.style.display =
+        "flex";
+
+
       /* Show editor */
 
       editor.style.display =
         "block";
-
-
-      /* Summary */
-
-      uploadSummary.textContent =
-        uploadedFiles.length +
-        (
-          uploadedFiles.length === 1
-            ? " PDF uploaded"
-            : " PDFs uploaded"
-        );
 
 
       /* Create preview cards */
@@ -2021,7 +2025,7 @@
 
         /* ========================================
            REMOVE BUTTON
-        ========================================= */
+        ======================================== */
 
         const removeButton =
           document.createElement(
@@ -2155,9 +2159,10 @@
     }
 
 
+
     /* ========================================
        PDF THUMBNAIL
-    ========================================= */
+    ======================================== */
 
     async function renderPdfThumbnail(
       arrayBuffer,
@@ -2255,9 +2260,10 @@
     }
 
 
+
     /* ========================================
        SPLIT OPTION
-    ========================================= */
+    ======================================== */
 
     document
       .querySelectorAll(
@@ -2294,9 +2300,10 @@
       );
 
 
+
     /* ========================================
        PARSE PAGE RANGE
-    ========================================= */
+    ======================================== */
 
     function getSelectedPages(
       range,
@@ -2401,9 +2408,10 @@
     }
 
 
+
     /* ========================================
        SPLIT PDFs
-    ========================================= */
+    ======================================== */
 
     splitButton.addEventListener(
       "click",
@@ -2631,8 +2639,15 @@
           link.remove();
 
 
-          URL.revokeObjectURL(
-            url
+          setTimeout(
+            function() {
+
+              URL.revokeObjectURL(
+                url
+              );
+
+            },
+            1000
           );
 
 
@@ -2668,13 +2683,18 @@
     );
 
 
+
     /* ========================================
-       CHOOSE MORE PDFs
-    ========================================= */
+       ADD MORE PDFs
+    ======================================== */
 
     newFileButton.addEventListener(
       "click",
-      function() {
+      function(event) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
 
         pdfInput.click();
 
