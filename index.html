@@ -69,66 +69,51 @@ body {
     display: flex;
     align-items: center;
 
-    gap: 10px;
+    gap: 12px;
 
-    min-width: 180px;
+    min-width: 200px;
 
     text-decoration: none;
 }
 
-.logo-mark {
-    width: 48px;
-    height: 48px;
 
-    position: relative;
+/* NEW NEST LOGO */
+
+.logo-mark {
+    width: 56px;
+    height: 56px;
+
+    flex-shrink: 0;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 12px;
+    background: transparent;
 
-    background: #2f6ea8;
+    box-shadow: none;
 
-    color: #ffffff;
-
-    font-size: 23px;
-    font-weight: 800;
-
-    box-shadow:
-        0 5px 14px
-        rgba(47, 110, 168, 0.18);
+    border-radius: 0;
 }
 
-.logo-mark::before,
-.logo-mark::after {
-    content: "";
 
-    position: absolute;
+/* SVG LOGO */
 
-    width: 5px;
-    height: 5px;
+.logo-mark svg {
+    width: 56px;
+    height: 56px;
 
-    border-radius: 50%;
-
-    background: #ffffff;
-
-    opacity: 0.75;
+    display: block;
 }
 
-.logo-mark::before {
-    top: 8px;
-    right: 8px;
-}
 
-.logo-mark::after {
-    bottom: 8px;
-    left: 8px;
-}
+/* LOGO TEXT */
 
 .logo-text {
     font-size: 25px;
     letter-spacing: -1px;
+
+    white-space: nowrap;
 }
 
 .logo-tool {
@@ -861,9 +846,118 @@ footer {
 
         <a href="index.html" class="logo">
 
+
+            <!-- NEST LOGO WITHOUT WRENCH -->
+
             <div class="logo-mark">
-                T
+
+                <svg
+                    viewBox="0 0 100 100"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-label="ToolNest Logo"
+                >
+
+                    <!-- LEAVES -->
+
+                    <path
+                        d="M22 28
+                           C10 22 9 10 10 8
+                           C22 8 34 14 36 26
+                           C32 29 27 30 22 28Z"
+                        fill="#67a944"
+                    />
+
+                    <path
+                        d="M37 22
+                           C37 9 47 3 58 4
+                           C56 17 49 24 38 28Z"
+                        fill="#67a944"
+                    />
+
+                    <path
+                        d="M70 28
+                           C77 14 88 12 96 15
+                           C94 27 86 34 74 34Z"
+                        fill="#67a944"
+                    />
+
+
+                    <!-- NEST / BRANCHES -->
+
+                    <path
+                        d="M8 52
+                           C25 65 38 69 55 70
+                           C70 71 85 65 96 54"
+                        fill="none"
+                        stroke="#20354d"
+                        stroke-width="6"
+                        stroke-linecap="round"
+                    />
+
+                    <path
+                        d="M16 39
+                           C32 50 48 55 64 55
+                           C77 55 87 50 94 44"
+                        fill="none"
+                        stroke="#20354d"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                    />
+
+                    <path
+                        d="M22 65
+                           C38 80 60 84 79 69"
+                        fill="none"
+                        stroke="#20354d"
+                        stroke-width="6"
+                        stroke-linecap="round"
+                    />
+
+                    <path
+                        d="M30 32
+                           C45 19 66 19 82 32"
+                        fill="none"
+                        stroke="#20354d"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                    />
+
+                    <path
+                        d="M28 72
+                           C45 88 67 86 84 67"
+                        fill="none"
+                        stroke="#20354d"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                    />
+
+                    <path
+                        d="M16 28
+                           C30 43 46 49 65 48
+                           C78 47 87 40 94 31"
+                        fill="none"
+                        stroke="#20354d"
+                        stroke-width="4"
+                        stroke-linecap="round"
+                    />
+
+
+                    <!-- CENTRAL CLEAN BLUE ELEMENT
+                         NO WRENCH -->
+
+                    <path
+                        d="M46 40
+                           C52 36 59 38 62 44
+                           C65 50 61 58 55 61
+                           C49 64 42 61 39 55
+                           C36 49 39 43 46 40Z"
+                        fill="#2f6ea8"
+                    />
+
+                </svg>
+
             </div>
+
 
             <div class="logo-text">
 
@@ -969,10 +1063,6 @@ footer {
     <div class="content-layout">
 
 
-        <!-- =========================
-             TOOLS
-        ========================= -->
-
         <div class="tools-content">
 
 
@@ -989,21 +1079,12 @@ footer {
             </div>
 
 
-
-            <!-- =========================
-                 ALL TOOLS IN 2 COLUMNS
-            ========================= -->
-
             <div class="tools-grid" id="toolsGrid">
 
 
                 <!-- PDF TOOLS -->
 
-                <a
-                    href="merge-pdf.html"
-                    class="tool-card"
-                    data-category="pdf"
-                >
+                <a href="merge-pdf.html" class="tool-card" data-category="pdf">
 
                     <div class="tool-icon icon-pdf">
                         🔗
@@ -1028,12 +1109,7 @@ footer {
                 </a>
 
 
-
-                <a
-                    href="split-pdf.html"
-                    class="tool-card"
-                    data-category="pdf"
-                >
+                <a href="split-pdf.html" class="tool-card" data-category="pdf">
 
                     <div class="tool-icon icon-pdf">
                         ✂
@@ -1058,12 +1134,7 @@ footer {
                 </a>
 
 
-
-                <a
-                    href="pdf-to-images.html"
-                    class="tool-card"
-                    data-category="pdf"
-                >
+                <a href="pdf-to-images.html" class="tool-card" data-category="pdf">
 
                     <div class="tool-icon icon-pdf">
                         🖼
@@ -1088,12 +1159,7 @@ footer {
                 </a>
 
 
-
-                <a
-                    href="images-to-pdf.html"
-                    class="tool-card"
-                    data-category="pdf"
-                >
+                <a href="images-to-pdf.html" class="tool-card" data-category="pdf">
 
                     <div class="tool-icon icon-pdf">
                         📄
@@ -1118,14 +1184,9 @@ footer {
                 </a>
 
 
-
                 <!-- TEXT TOOLS -->
 
-                <a
-                    href="word-counter.html"
-                    class="tool-card"
-                    data-category="text"
-                >
+                <a href="word-counter.html" class="tool-card" data-category="text">
 
                     <div class="tool-icon icon-text">
                         🔤
@@ -1150,12 +1211,7 @@ footer {
                 </a>
 
 
-
-                <a
-                    href="case-converter.html"
-                    class="tool-card"
-                    data-category="text"
-                >
+                <a href="case-converter.html" class="tool-card" data-category="text">
 
                     <div class="tool-icon icon-text">
                         Aa
@@ -1180,12 +1236,7 @@ footer {
                 </a>
 
 
-
-                <a
-                    href="text-sorter.html"
-                    class="tool-card"
-                    data-category="text"
-                >
+                <a href="text-sorter.html" class="tool-card" data-category="text">
 
                     <div class="tool-icon icon-text">
                         ↕
@@ -1210,12 +1261,7 @@ footer {
                 </a>
 
 
-
-                <a
-                    href="text-cleaner.html"
-                    class="tool-card"
-                    data-category="text"
-                >
+                <a href="text-cleaner.html" class="tool-card" data-category="text">
 
                     <div class="tool-icon icon-text">
                         ✨
@@ -1240,14 +1286,9 @@ footer {
                 </a>
 
 
-
                 <!-- IMAGE TOOLS -->
 
-                <a
-                    href="image-compressor.html"
-                    class="tool-card"
-                    data-category="image"
-                >
+                <a href="image-compressor.html" class="tool-card" data-category="image">
 
                     <div class="tool-icon icon-image">
                         🗜
@@ -1272,12 +1313,7 @@ footer {
                 </a>
 
 
-
-                <a
-                    href="image-converter.html"
-                    class="tool-card"
-                    data-category="image"
-                >
+                <a href="image-converter.html" class="tool-card" data-category="image">
 
                     <div class="tool-icon icon-image">
                         🔄
@@ -1302,14 +1338,9 @@ footer {
                 </a>
 
 
-
                 <!-- CALCULATORS -->
 
-                <a
-                    href="bmi-calculator.html"
-                    class="tool-card"
-                    data-category="calculator"
-                >
+                <a href="bmi-calculator.html" class="tool-card" data-category="calculator">
 
                     <div class="tool-icon icon-calculator">
                         ⚖
@@ -1334,12 +1365,7 @@ footer {
                 </a>
 
 
-
-                <a
-                    href="percentage-calculator.html"
-                    class="tool-card"
-                    data-category="calculator"
-                >
+                <a href="percentage-calculator.html" class="tool-card" data-category="calculator">
 
                     <div class="tool-icon icon-calculator">
                         %
@@ -1364,12 +1390,7 @@ footer {
                 </a>
 
 
-
-                <a
-                    href="profit-calculator.html"
-                    class="tool-card"
-                    data-category="calculator"
-                >
+                <a href="profit-calculator.html" class="tool-card" data-category="calculator">
 
                     <div class="tool-icon icon-calculator">
                         📈
@@ -1394,12 +1415,7 @@ footer {
                 </a>
 
 
-
-                <a
-                    href="discount-calculator.html"
-                    class="tool-card"
-                    data-category="calculator"
-                >
+                <a href="discount-calculator.html" class="tool-card" data-category="calculator">
 
                     <div class="tool-icon icon-calculator">
                         🏷
@@ -1427,13 +1443,9 @@ footer {
             </div>
 
 
-
             <!-- NO RESULTS -->
 
-            <div
-                class="no-results"
-                id="noResults"
-            >
+            <div class="no-results" id="noResults">
 
                 No tools found.
 
@@ -1443,10 +1455,7 @@ footer {
         </div>
 
 
-
-        <!-- =========================
-             FLOATING AD
-        ========================= -->
+        <!-- AD -->
 
         <aside class="ad-column">
 
@@ -1720,8 +1729,6 @@ navButtons.forEach(
                     this.dataset.filter;
 
 
-                /* ACTIVE NAV */
-
                 navButtons.forEach(
                     function(navButton) {
 
@@ -1738,8 +1745,6 @@ navButtons.forEach(
                 );
 
 
-                /* UPDATE TEXT */
-
                 pageTitle.textContent =
                     categoryDetails[
                         category
@@ -1752,13 +1757,9 @@ navButtons.forEach(
                     ].description;
 
 
-                /* CLEAR SEARCH */
-
                 searchInput.value =
                     "";
 
-
-                /* FILTER */
 
                 filterTools(
                     category
