@@ -4,11 +4,20 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TOOLNEST Logo Preview</title>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>ToolNest Logo</title>
+
 
 <style>
+
+/* =========================
+   PAGE
+========================= */
 
 * {
     box-sizing: border-box;
@@ -16,108 +25,343 @@
 
 body {
     margin: 0;
+
     min-height: 100vh;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background: #f3f4f6;
-
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-
-/* LOGO */
-
-.logo-preview {
-    padding: 45px 60px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
     background: #ffffff;
 }
 
 
-/* MAIN NAME */
+/* =========================
+   LOGO CONTAINER
+========================= */
+
+.logo {
+    display: flex;
+    align-items: center;
+
+    gap: 34px;
+}
+
+
+/* =========================
+   SYMBOL
+========================= */
+
+.logo-symbol {
+    width: 250px;
+    height: 250px;
+
+    position: relative;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================
+   CIRCULAR ARC
+========================= */
+
+.symbol-ring {
+    position: absolute;
+
+    width: 185px;
+    height: 185px;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%)
+        rotate(-25deg);
+
+    border: 26px solid #1f5fba;
+
+    border-radius: 50%;
+
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+}
+
+
+/* =========================
+   TOP DOT
+========================= */
+
+.symbol-dot-top {
+    position: absolute;
+
+    width: 80px;
+    height: 80px;
+
+    top: 10px;
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2f75d0,
+            #0d4ca8
+        );
+}
+
+
+/* =========================
+   LEFT DOT
+========================= */
+
+.symbol-dot-left {
+    position: absolute;
+
+    width: 76px;
+    height: 76px;
+
+    left: 8px;
+    bottom: 28px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2f75d0,
+            #0d4ca8
+        );
+}
+
+
+/* =========================
+   RIGHT DOT
+========================= */
+
+.symbol-dot-right {
+    position: absolute;
+
+    width: 76px;
+    height: 76px;
+
+    right: 8px;
+    bottom: 28px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2f75d0,
+            #0d4ca8
+        );
+}
+
+
+/* =========================
+   TEXT AREA
+========================= */
+
+.logo-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* =========================
+   MAIN NAME
+========================= */
 
 .logo-name {
     display: flex;
-    align-items: baseline;
 
-    white-space: nowrap;
+    align-items: center;
+
+    font-size: 104px;
+
+    font-weight: 800;
+
+    letter-spacing: -4px;
 
     line-height: 1;
-
-    font-size: 46px;
-
-    letter-spacing: -1.5px;
-}
-
-.logo-tool {
-    color: #34465b;
-
-    font-weight: 600;
-}
-
-.logo-nest {
-    color: #426c9c;
-
-    font-weight: 700;
 }
 
 
-/* TAGLINE */
+.logo-name-dark {
+    color: #1f2b39;
+}
+
+
+.logo-name-blue {
+    color: #1e5ec0;
+}
+
+
+/* =========================
+   TAGLINE
+========================= */
 
 .logo-tagline-row {
-    margin-top: 15px;
+    width: 100%;
+
+    margin-top: 34px;
 
     display: flex;
     align-items: center;
 
-    gap: 10px;
+    justify-content: center;
+
+    gap: 24px;
+}
+
+
+.logo-line {
+    width: 120px;
+    height: 3px;
+
+    background: #1e5ec0;
+
+    border-radius: 5px;
+}
+
+
+.logo-tagline {
+    color: #3c4a59;
+
+    font-size: 30px;
+
+    font-weight: 600;
+
+    letter-spacing: 9px;
 
     white-space: nowrap;
 }
 
-.tagline-line {
-    width: 38px;
-    height: 1px;
 
-    background: #7a8794;
-}
+/* =========================
+   MOBILE
+========================= */
 
-.logo-tagline {
-    color: #536273;
+@media (max-width: 900px) {
 
-    font-size: 11px;
-    font-weight: 700;
+    .logo {
+        gap: 22px;
+    }
 
-    letter-spacing: 1.8px;
-}
+    .logo-symbol {
+        width: 150px;
+        height: 150px;
+    }
 
+    .symbol-ring {
+        width: 112px;
+        height: 112px;
 
-/* MOBILE */
+        border-width: 17px;
+    }
 
-@media (max-width: 600px) {
+    .symbol-dot-top {
+        width: 48px;
+        height: 48px;
+    }
 
-    .logo-preview {
-        padding: 35px 20px;
+    .symbol-dot-left,
+    .symbol-dot-right {
+        width: 46px;
+        height: 46px;
+
+        bottom: 17px;
     }
 
     .logo-name {
-        font-size: 36px;
+        font-size: 62px;
+    }
+
+    .logo-tagline-row {
+        margin-top: 20px;
+
+        gap: 14px;
+    }
+
+    .logo-line {
+        width: 70px;
+
+        height: 2px;
     }
 
     .logo-tagline {
-        font-size: 8px;
-        letter-spacing: 1.2px;
+        font-size: 17px;
+
+        letter-spacing: 5px;
     }
 
-    .tagline-line {
-        width: 22px;
+}
+
+
+@media (max-width: 600px) {
+
+    .logo {
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+    .logo-symbol {
+        width: 120px;
+        height: 120px;
+    }
+
+    .symbol-ring {
+        width: 90px;
+        height: 90px;
+
+        border-width: 14px;
+    }
+
+    .symbol-dot-top {
+        width: 38px;
+        height: 38px;
+    }
+
+    .symbol-dot-left,
+    .symbol-dot-right {
+        width: 36px;
+        height: 36px;
+
+        bottom: 13px;
+    }
+
+    .logo-name {
+        font-size: 52px;
+
+        letter-spacing: -2px;
+    }
+
+    .logo-tagline-row {
+        margin-top: 15px;
+
+        gap: 10px;
+    }
+
+    .logo-line {
+        width: 35px;
+    }
+
+    .logo-tagline {
+        font-size: 10px;
+
+        letter-spacing: 2px;
     }
 
 }
@@ -130,31 +374,87 @@ body {
 <body>
 
 
-<div class="logo-preview">
+<!-- =========================
+     TOOLNEST LOGO
+========================= -->
+
+<div class="logo">
 
 
-    <div class="logo-name">
+    <!-- SYMBOL -->
 
-        <span class="logo-tool">
-            TOOL
-        </span>
+    <div class="logo-symbol">
 
-        <span class="logo-nest">
-            NEST
-        </span>
+
+        <div
+            class="symbol-ring"
+        ></div>
+
+
+        <div
+            class="symbol-dot-top"
+        ></div>
+
+
+        <div
+            class="symbol-dot-left"
+        ></div>
+
+
+        <div
+            class="symbol-dot-right"
+        ></div>
+
 
     </div>
 
 
-    <div class="logo-tagline-row">
 
-        <div class="tagline-line"></div>
+    <!-- TEXT -->
 
-        <div class="logo-tagline">
-            SMART TOOLS. SIMPLE TASKS.
+    <div class="logo-content">
+
+
+        <!-- TOOLNEST -->
+
+        <div class="logo-name">
+
+            <span class="logo-name-dark">
+                TOOL
+            </span>
+
+            <span class="logo-name-blue">
+                NEST
+            </span>
+
         </div>
 
-        <div class="tagline-line"></div>
+
+
+        <!-- TAGLINE -->
+
+        <div class="logo-tagline-row">
+
+
+            <div
+                class="logo-line"
+            ></div>
+
+
+            <div class="logo-tagline">
+
+                SMART TOOLS. SIMPLE TASKS.
+
+            </div>
+
+
+            <div
+                class="logo-line"
+            ></div>
+
+
+        </div>
+
 
     </div>
 
