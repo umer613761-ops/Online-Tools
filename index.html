@@ -6,9 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Split PDF Online Free - ToolNest</title>
-<meta name="description" content="Split PDF files online for free. Extract individual pages or selected pages from your PDF and download them as separate files.">
+
+<meta name="description"
+      content="Split PDF files online for free. Extract individual pages or selected pages from your PDF and download them as separate files.">
 
 <style>
+
+/* =========================
+   GLOBAL
+========================= */
+
 * {
     box-sizing: border-box;
 }
@@ -19,6 +26,7 @@ body {
     background: #f5f7fa;
     color: #344154;
 }
+
 
 /* =========================
    HEADER
@@ -31,21 +39,26 @@ body {
 
 .header-inner {
     max-width: 1240px;
-    height: 100px;
+    height: 108px;
     margin: 0 auto;
     padding: 0 28px;
+
     display: flex;
     align-items: center;
-    gap: 60px;
+    justify-content: space-between;
 }
 
-/* LOGO */
+
+/* =========================
+   LOGO
+========================= */
 
 .logo {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     text-decoration: none;
     white-space: nowrap;
     flex-shrink: 0;
@@ -55,68 +68,104 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
 }
 
+
+/* Logo Icon */
+
 .logo-icon {
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 11px;
-    background: linear-gradient(135deg, #3d78b6, #245b96);
+
+    border-radius: 12px;
+
+    background: linear-gradient(
+        135deg,
+        #3d78b6,
+        #245b96
+    );
+
     color: #ffffff;
-    font-size: 19px;
+
+    font-size: 21px;
     font-weight: 800;
-    box-shadow: 0 4px 10px rgba(43, 92, 150, 0.20);
+
+    box-shadow:
+        0 4px 11px rgba(43, 92, 150, 0.20);
 }
+
+
+/* TOOLNEST */
 
 .logo-text {
-    font-size: 25px;
-    line-height: 1;
-    letter-spacing: -0.7px;
-}
-
-.logo-tool {
-    color: #334155;
-    font-weight: 400;
-}
-
-.logo-nest {
     color: #326ba8;
+
+    font-size: 31px;
+    line-height: 1;
+
     font-weight: 800;
+
+    letter-spacing: 1px;
 }
+
+
+/* Tagline */
 
 .logo-tagline {
-    margin-top: 5px;
+    width: 100%;
+
+    margin-top: 10px;
+
     color: #526274;
+
     font-size: 10px;
     line-height: 1;
+
     font-weight: 700;
-    letter-spacing: 1.1px;
+
+    letter-spacing: 1.25px;
+
     text-transform: uppercase;
+
     text-align: center;
 }
 
-/* SEARCH */
+
+/* =========================
+   SEARCH BAR
+========================= */
 
 .header-search {
     position: relative;
-    flex: 1;
-    max-width: 700px;
+
+    width: 300px;
+    flex: 0 0 300px;
+
+    margin-left: auto;
 }
 
 .header-search input {
     width: 100%;
-    height: 54px;
-    padding: 0 52px 0 20px;
+    height: 42px;
+
+    padding: 0 43px 0 16px;
+
     border: 1px solid #dce2e9;
-    border-radius: 10px;
+    border-radius: 8px;
+
     background: #f8fafc;
+
     color: #344154;
-    font-size: 15px;
+
+    font-size: 13px;
+
     outline: none;
+
     transition: 0.2s ease;
 }
 
@@ -126,19 +175,28 @@ body {
 
 .header-search input:focus {
     background: #ffffff;
+
     border-color: #6f9dca;
-    box-shadow: 0 0 0 3px rgba(63, 119, 177, 0.10);
+
+    box-shadow:
+        0 0 0 3px rgba(63, 119, 177, 0.10);
 }
 
 .search-icon {
     position: absolute;
-    right: 18px;
+
+    right: 14px;
     top: 50%;
+
     transform: translateY(-50%);
+
     color: #728096;
-    font-size: 24px;
+
+    font-size: 20px;
+
     pointer-events: none;
 }
+
 
 /* =========================
    NAVIGATION
@@ -152,25 +210,37 @@ body {
 .main-navigation {
     max-width: 1240px;
     height: 72px;
+
     margin: 0 auto;
+
     padding: 0 28px;
+
     display: flex;
     align-items: center;
+
     gap: 42px;
 }
 
 .nav-button {
     position: relative;
+
     height: 72px;
+
     display: flex;
     align-items: center;
+
+    padding: 0;
+
     border: 0;
+
     background: transparent;
+
     color: #718096;
+
     font-size: 14px;
     font-weight: 600;
+
     cursor: pointer;
-    padding: 0;
 }
 
 .nav-button:hover {
@@ -183,38 +253,52 @@ body {
 
 .nav-button.active::after {
     content: "";
+
     position: absolute;
+
     left: 0;
     right: 0;
+
     bottom: -1px;
+
     height: 3px;
+
     background: #326ba8;
+
     border-radius: 3px 3px 0 0;
 }
 
+
 /* =========================
-   PAGE
+   PAGE CONTENT
 ========================= */
 
 .page-content {
     max-width: 1240px;
+
     margin: 0 auto;
+
     padding: 38px 28px 60px;
 }
 
 .content-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 200px;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        200px;
+
     gap: 30px;
 }
-
-/* =========================
-   MAIN TOOL
-========================= */
 
 .tool-area {
     min-width: 0;
 }
+
+
+/* =========================
+   PAGE HEADING
+========================= */
 
 .page-heading {
     margin-bottom: 25px;
@@ -222,38 +306,53 @@ body {
 
 .page-heading h1 {
     margin: 0 0 8px;
+
     color: #27364a;
+
     font-size: 30px;
     font-weight: 700;
+
     letter-spacing: -0.5px;
 }
 
 .page-heading p {
     margin: 0;
+
     color: #718096;
+
     font-size: 15px;
+
     line-height: 1.6;
 }
 
+
 /* =========================
-   UPLOAD AREA
+   UPLOAD BOX
 ========================= */
 
 .upload-box {
-    background: #ffffff;
-    border: 2px dashed #cbd5e1;
-    border-radius: 12px;
     min-height: 220px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
+
     padding: 35px 25px;
+
+    background: #ffffff;
+
+    border: 2px dashed #cbd5e1;
+
+    border-radius: 12px;
+
+    text-align: center;
+
     transition: 0.2s ease;
 }
 
 .upload-box:hover {
     border-color: #6f9dca;
+
     background: #fbfdff;
 }
 
@@ -264,47 +363,66 @@ body {
 .upload-icon {
     width: 58px;
     height: 58px;
+
     margin: 0 auto 16px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     border-radius: 14px;
+
     background: #edf4fb;
+
     color: #326ba8;
+
     font-size: 28px;
 }
 
 .upload-box h2 {
     margin: 0 0 7px;
+
     color: #344154;
+
     font-size: 18px;
 }
 
 .upload-box p {
     margin: 0 0 18px;
+
     color: #8290a2;
+
     font-size: 13px;
 }
 
 .upload-button {
+    min-width: 150px;
+    height: 44px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 150px;
-    height: 44px;
+
     padding: 0 22px;
+
     border: 0;
     border-radius: 8px;
+
     background: #326ba8;
+
     color: #ffffff;
+
     font-size: 14px;
     font-weight: 700;
+
     cursor: pointer;
+
     transition: 0.2s ease;
 }
 
 .upload-button:hover {
     background: #285d94;
+
     transform: translateY(-1px);
 }
 
@@ -312,125 +430,180 @@ body {
     display: none;
 }
 
+
 /* =========================
    PREVIEW GRID
 ========================= */
 
 .preview-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: none;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
     gap: 16px;
+
     margin-top: 22px;
 }
 
 .preview-card {
     position: relative;
+
     min-width: 0;
+
     padding: 16px;
+
     background: #ffffff;
+
     border: 1px solid #e3e8ee;
+
     border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(30, 50, 70, 0.03);
+
+    box-shadow:
+        0 2px 6px rgba(30, 50, 70, 0.03);
 }
 
 .remove-file {
     position: absolute;
+
     top: 9px;
     right: 9px;
+
     width: 27px;
     height: 27px;
+
     border: 0;
+
     border-radius: 50%;
+
     background: #f1f4f7;
+
     color: #778597;
+
     font-size: 16px;
+
     cursor: pointer;
+
     z-index: 2;
 }
 
 .remove-file:hover {
     background: #e8edf2;
+
     color: #d14c4c;
 }
 
 .thumbnail-wrapper {
     height: 185px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     margin-bottom: 12px;
+
     overflow: hidden;
+
     border-radius: 6px;
+
     background: #f4f6f8;
 }
 
 .thumbnail-wrapper canvas {
     max-width: 145px;
     max-height: 175px;
+
     display: block;
+
     background: #ffffff;
-    box-shadow: 0 2px 8px rgba(30, 50, 70, 0.12);
+
+    box-shadow:
+        0 2px 8px rgba(30, 50, 70, 0.12);
 }
 
 .file-name {
     overflow: hidden;
+
     margin-bottom: 5px;
+
     color: #344154;
+
     font-size: 13px;
     font-weight: 700;
+
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .page-count {
     color: #8a97a7;
+
     font-size: 12px;
 }
 
+
 /* =========================
-   EDITOR / OPTIONS
+   EDITOR
 ========================= */
 
 .editor {
     display: none;
+
     margin-top: 25px;
+
     padding: 24px;
+
     background: #ffffff;
+
     border: 1px solid #e1e6ec;
+
     border-radius: 12px;
 }
 
 .editor-title {
     margin: 0 0 18px;
+
     color: #344154;
+
     font-size: 17px;
     font-weight: 700;
 }
 
 .option-list {
     display: flex;
+
     flex-direction: column;
+
     gap: 12px;
 }
 
 .option {
     display: flex;
+
     align-items: flex-start;
+
     gap: 12px;
+
     padding: 14px;
+
     border: 1px solid #e2e7ed;
+
     border-radius: 8px;
+
     cursor: pointer;
+
     transition: 0.2s ease;
 }
 
 .option:hover {
     border-color: #aac4dc;
+
     background: #fbfdff;
 }
 
 .option input {
     margin-top: 3px;
+
     accent-color: #326ba8;
 }
 
@@ -440,26 +613,39 @@ body {
 
 .option-title {
     margin-bottom: 3px;
+
     color: #344154;
+
     font-size: 14px;
     font-weight: 700;
 }
 
 .option-description {
     color: #8290a2;
+
     font-size: 12px;
+
     line-height: 1.5;
 }
 
+
+/* =========================
+   RANGE
+========================= */
+
 .range-section {
     display: none;
+
     margin-top: 14px;
 }
 
 .range-section label {
     display: block;
+
     margin-bottom: 7px;
+
     color: #526274;
+
     font-size: 13px;
     font-weight: 700;
 }
@@ -467,24 +653,35 @@ body {
 .range-section input {
     width: 100%;
     height: 42px;
+
     padding: 0 12px;
+
     border: 1px solid #d7dee7;
+
     border-radius: 7px;
+
     color: #344154;
+
     font-size: 13px;
+
     outline: none;
 }
 
 .range-section input:focus {
     border-color: #6f9dca;
-    box-shadow: 0 0 0 3px rgba(63, 119, 177, 0.08);
+
+    box-shadow:
+        0 0 0 3px rgba(63, 119, 177, 0.08);
 }
 
 .range-help {
     margin-top: 6px;
+
     color: #8a97a7;
+
     font-size: 11px;
 }
+
 
 /* =========================
    ACTIONS
@@ -492,25 +689,35 @@ body {
 
 .actions {
     display: flex;
+
     align-items: center;
+
     gap: 12px;
+
     margin-top: 22px;
 }
 
 .primary-button,
 .secondary-button {
     height: 44px;
+
     padding: 0 20px;
+
     border-radius: 8px;
+
     font-size: 14px;
     font-weight: 700;
+
     cursor: pointer;
+
     transition: 0.2s ease;
 }
 
 .primary-button {
     border: 0;
+
     background: #326ba8;
+
     color: #ffffff;
 }
 
@@ -520,26 +727,34 @@ body {
 
 .primary-button:disabled {
     opacity: 0.55;
+
     cursor: not-allowed;
 }
 
 .secondary-button {
     border: 1px solid #d7dee7;
+
     background: #ffffff;
+
     color: #526274;
 }
 
 .secondary-button:hover {
     border-color: #b8c4d0;
+
     background: #f8fafc;
 }
 
 .status {
     margin-top: 14px;
+
     color: #6f7e91;
+
     font-size: 13px;
+
     line-height: 1.5;
 }
+
 
 /* =========================
    AD COLUMN
@@ -551,30 +766,46 @@ body {
 
 .ad-box {
     position: sticky;
+
     top: 20px;
+
     width: 200px;
     height: 400px;
+
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
     justify-content: center;
+
     border: 1px solid #e1e6ec;
+
     border-radius: 8px;
+
     background: #ffffff;
+
     color: #a0a9b5;
+
     text-align: center;
 }
 
 .ad-brand {
     width: 38px;
     height: 38px;
+
     margin-bottom: 12px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     border-radius: 9px;
+
     background: #edf1f5;
+
     color: #9aa5b2;
+
     font-size: 17px;
     font-weight: 800;
 }
@@ -583,39 +814,52 @@ body {
     font-size: 12px;
 }
 
+
 /* =========================
    FOOTER
 ========================= */
 
 footer {
     border-top: 1px solid #e1e6ec;
+
     background: #ffffff;
 }
 
 .footer-content {
     max-width: 1240px;
+
     min-height: 78px;
+
     margin: 0 auto;
+
     padding: 20px 28px;
+
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
+
     gap: 20px;
 }
 
 .footer-copy {
     color: #8a97a7;
+
     font-size: 12px;
 }
 
 .footer-links {
     display: flex;
+
     gap: 22px;
 }
 
 .footer-links a {
     color: #718096;
+
     font-size: 12px;
+
     text-decoration: none;
 }
 
@@ -623,8 +867,9 @@ footer {
     color: #326ba8;
 }
 
+
 /* =========================
-   RESPONSIVE
+   TABLET
 ========================= */
 
 @media (max-width: 950px) {
@@ -646,20 +891,31 @@ footer {
     }
 
     .preview-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 }
+
+
+/* =========================
+   MOBILE HEADER
+========================= */
 
 @media (max-width: 700px) {
 
     .header-inner {
         height: auto;
-        min-height: 100px;
+
+        min-height: 108px;
+
         padding-top: 18px;
         padding-bottom: 18px;
+
         flex-direction: column;
+
         align-items: stretch;
-        gap: 18px;
+
+        gap: 20px;
     }
 
     .logo {
@@ -667,26 +923,35 @@ footer {
     }
 
     .header-search {
-        max-width: none;
         width: 100%;
+
+        flex: none;
+
+        margin-left: 0;
     }
 
     .main-navigation {
         height: auto;
+
         min-height: 60px;
+
         overflow-x: auto;
+
         padding-top: 0;
         padding-bottom: 0;
+
         gap: 28px;
     }
 
     .nav-button {
         height: 60px;
+
         flex-shrink: 0;
     }
 
     .page-content {
-        padding: 28px 20px 45px;
+        padding:
+            28px 20px 45px;
     }
 
     .page-heading h1 {
@@ -694,27 +959,38 @@ footer {
     }
 }
 
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
 @media (max-width: 550px) {
 
     .logo-main {
-        gap: 9px;
+        gap: 10px;
     }
 
     .logo-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
-        font-size: 18px;
+        width: 40px;
+        height: 40px;
+
+        border-radius: 11px;
+
+        font-size: 19px;
     }
 
     .logo-text {
-        font-size: 23px;
+        font-size: 27px;
+
+        letter-spacing: 0.7px;
     }
 
     .logo-tagline {
-        margin-top: 5px;
+        margin-top: 10px;
+
         font-size: 9px;
-        letter-spacing: 0.9px;
+
+        letter-spacing: 1px;
     }
 
     .preview-grid {
@@ -727,6 +1003,7 @@ footer {
 
     .actions {
         flex-direction: column;
+
         align-items: stretch;
     }
 
@@ -737,32 +1014,43 @@ footer {
 
     .footer-content {
         flex-direction: column;
+
         align-items: flex-start;
     }
 }
+
 </style>
 </head>
 
+
 <body>
+
 
 <!-- =========================
      HEADER
 ========================= -->
 
 <header class="top-header">
+
     <div class="header-inner">
+
+
+        <!-- LOGO -->
 
         <a href="index.html" class="logo">
 
             <div class="logo-main">
 
-                <div class="logo-icon">T</div>
+                <div class="logo-icon">
+                    T
+                </div>
 
                 <div class="logo-text">
-                    <span class="logo-tool">Tool</span><span class="logo-nest">Nest</span>
+                    TOOLNEST
                 </div>
 
             </div>
+
 
             <div class="logo-tagline">
                 Smart tools · Simple tasks
@@ -770,17 +1058,27 @@ footer {
 
         </a>
 
+
+        <!-- SEARCH -->
+
         <div class="header-search">
+
             <input
                 type="text"
                 id="toolSearch"
                 placeholder="Search tools..."
                 aria-label="Search tools"
             >
-            <span class="search-icon">⌕</span>
+
+            <span class="search-icon">
+                ⌕
+            </span>
+
         </div>
 
+
     </div>
+
 </header>
 
 
@@ -792,25 +1090,41 @@ footer {
 
     <nav class="main-navigation">
 
-        <button class="nav-button" data-filter="all">
+
+        <button
+            class="nav-button"
+            data-filter="all">
             Popular Tools
         </button>
 
-        <button class="nav-button active" data-filter="pdf">
+
+        <button
+            class="nav-button active"
+            data-filter="pdf">
             PDF Tools
         </button>
 
-        <button class="nav-button" data-filter="text">
+
+        <button
+            class="nav-button"
+            data-filter="text">
             Text Tools
         </button>
 
-        <button class="nav-button" data-filter="image">
+
+        <button
+            class="nav-button"
+            data-filter="image">
             Image Tools
         </button>
 
-        <button class="nav-button" data-filter="calculator">
+
+        <button
+            class="nav-button"
+            data-filter="calculator">
             Calculators
         </button>
+
 
     </nav>
 
@@ -818,40 +1132,66 @@ footer {
 
 
 <!-- =========================
-     MAIN CONTENT
+     MAIN
 ========================= -->
 
 <main class="page-content">
 
     <div class="content-layout">
 
+
+        <!-- TOOL AREA -->
+
         <section class="tool-area">
 
+
+            <!-- HEADING -->
+
             <div class="page-heading">
-                <h1>Split PDF</h1>
+
+                <h1>
+                    Split PDF
+                </h1>
+
                 <p>
-                    Split your PDF into separate pages or extract specific pages quickly and easily.
+                    Split your PDF into separate pages or extract
+                    specific pages quickly and easily.
                 </p>
+
             </div>
 
 
             <!-- UPLOAD -->
 
-            <div class="upload-box" id="uploadBox">
+            <div
+                class="upload-box"
+                id="uploadBox"
+            >
 
                 <div class="upload-content">
 
-                    <div class="upload-icon">📄</div>
 
-                    <h2>Select PDF files</h2>
+                    <div class="upload-icon">
+                        📄
+                    </div>
+
+
+                    <h2>
+                        Select PDF files
+                    </h2>
+
 
                     <p>
                         Upload one or more PDF files to split.
                     </p>
 
-                    <label for="pdfInput" class="upload-button">
+
+                    <label
+                        for="pdfInput"
+                        class="upload-button">
                         Choose PDF Files
                     </label>
+
 
                     <input
                         type="file"
@@ -860,6 +1200,7 @@ footer {
                         multiple
                     >
 
+
                 </div>
 
             </div>
@@ -867,18 +1208,28 @@ footer {
 
             <!-- PREVIEWS -->
 
-            <div class="preview-grid" id="previewGrid"></div>
+            <div
+                class="preview-grid"
+                id="previewGrid">
+            </div>
 
 
             <!-- EDITOR -->
 
-            <div class="editor" id="editor">
+            <div
+                class="editor"
+                id="editor">
+
 
                 <h2 class="editor-title">
                     Split options
                 </h2>
 
+
                 <div class="option-list">
+
+
+                    <!-- ALL PAGES -->
 
                     <label class="option">
 
@@ -888,6 +1239,7 @@ footer {
                             value="all"
                             checked
                         >
+
 
                         <div class="option-content">
 
@@ -904,6 +1256,8 @@ footer {
                     </label>
 
 
+                    <!-- SELECTED PAGES -->
+
                     <label class="option">
 
                         <input
@@ -911,6 +1265,7 @@ footer {
                             name="splitOption"
                             value="range"
                         >
+
 
                         <div class="option-content">
 
@@ -926,14 +1281,21 @@ footer {
 
                     </label>
 
+
                 </div>
 
 
-                <div class="range-section" id="rangeSection">
+                <!-- RANGE -->
+
+                <div
+                    class="range-section"
+                    id="rangeSection">
+
 
                     <label for="pageRange">
                         Page numbers
                     </label>
+
 
                     <input
                         type="text"
@@ -941,34 +1303,46 @@ footer {
                         placeholder="Example: 1, 3, 5-8"
                     >
 
+
                     <div class="range-help">
-                        Use commas for individual pages and hyphens for ranges.
+                        Use commas for individual pages
+                        and hyphens for ranges.
                     </div>
+
 
                 </div>
 
+
+                <!-- ACTIONS -->
 
                 <div class="actions">
 
+
                     <button
                         class="primary-button"
-                        id="splitButton"
-                    >
+                        id="splitButton">
                         Split PDF
                     </button>
 
+
                     <button
                         class="secondary-button"
-                        id="newFileButton"
-                    >
+                        id="newFileButton">
                         Choose More PDFs
                     </button>
 
+
                 </div>
 
-                <div class="status" id="status"></div>
+
+                <div
+                    class="status"
+                    id="status">
+                </div>
+
 
             </div>
+
 
         </section>
 
@@ -981,13 +1355,18 @@ footer {
 
             <div class="ad-box">
 
-                <div class="ad-brand">T</div>
+                <div class="ad-brand">
+                    T
+                </div>
 
-                <span>Your Ad Here</span>
+                <span>
+                    Your Ad Here
+                </span>
 
             </div>
 
         </aside>
+
 
     </div>
 
@@ -1002,18 +1381,32 @@ footer {
 
     <div class="footer-content">
 
+
         <div class="footer-copy">
             © 2026 ToolNest · Simple, Fast & Free
         </div>
 
+
         <div class="footer-links">
 
-            <a href="about.html">About</a>
-            <a href="privacy.html">Privacy</a>
-            <a href="terms.html">Terms</a>
-            <a href="contact.html">Contact</a>
+            <a href="about.html">
+                About
+            </a>
+
+            <a href="privacy.html">
+                Privacy
+            </a>
+
+            <a href="terms.html">
+                Terms
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
 
         </div>
+
 
     </div>
 
@@ -1026,14 +1419,26 @@ footer {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
-<!-- PDF-LIB -->
+
+<!-- =========================
+     PDF-LIB
+========================= -->
+
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
 
-<!-- JSZIP -->
+
+<!-- =========================
+     JSZIP
+========================= -->
+
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
 
 <script>
+
+/* =========================
+   PDF.JS WORKER
+========================= */
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
@@ -1043,17 +1448,38 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
    ELEMENTS
 ========================= */
 
-const pdfInput = document.getElementById("pdfInput");
-const uploadBox = document.getElementById("uploadBox");
-const previewGrid = document.getElementById("previewGrid");
-const editor = document.getElementById("editor");
-const rangeSection = document.getElementById("rangeSection");
-const pageRange = document.getElementById("pageRange");
-const splitButton = document.getElementById("splitButton");
-const newFileButton = document.getElementById("newFileButton");
-const status = document.getElementById("status");
-const searchInput = document.getElementById("toolSearch");
-const navButtons = document.querySelectorAll(".nav-button");
+const pdfInput =
+    document.getElementById("pdfInput");
+
+const uploadBox =
+    document.getElementById("uploadBox");
+
+const previewGrid =
+    document.getElementById("previewGrid");
+
+const editor =
+    document.getElementById("editor");
+
+const rangeSection =
+    document.getElementById("rangeSection");
+
+const pageRange =
+    document.getElementById("pageRange");
+
+const splitButton =
+    document.getElementById("splitButton");
+
+const newFileButton =
+    document.getElementById("newFileButton");
+
+const status =
+    document.getElementById("status");
+
+const searchInput =
+    document.getElementById("toolSearch");
+
+const navButtons =
+    document.querySelectorAll(".nav-button");
 
 
 let uploadedFiles = [];
@@ -1063,66 +1489,100 @@ let uploadedFiles = [];
    FILE UPLOAD
 ========================= */
 
-pdfInput.addEventListener("change", async function () {
+pdfInput.addEventListener(
+    "change",
+    async function () {
 
-    const files = Array.from(this.files);
 
-    if (!files.length) {
-        return;
+        const files =
+            Array.from(this.files);
+
+
+        if (!files.length) {
+            return;
+        }
+
+
+        status.textContent =
+            "Loading PDF files...";
+
+
+        for (const file of files) {
+
+
+            if (
+                file.type !== "application/pdf" &&
+                !file.name
+                    .toLowerCase()
+                    .endsWith(".pdf")
+            ) {
+                continue;
+            }
+
+
+            const alreadyExists =
+                uploadedFiles.some(
+                    item =>
+                        item.file.name === file.name
+                );
+
+
+            if (alreadyExists) {
+                continue;
+            }
+
+
+            try {
+
+
+                const arrayBuffer =
+                    await file.arrayBuffer();
+
+
+                const pdf =
+                    await pdfjsLib
+                        .getDocument({
+                            data:
+                                arrayBuffer.slice(0)
+                        })
+                        .promise;
+
+
+                uploadedFiles.push({
+
+                    file: file,
+
+                    arrayBuffer:
+                        arrayBuffer,
+
+                    pageCount:
+                        pdf.numPages
+
+                });
+
+
+            } catch (error) {
+
+                console.error(error);
+
+            }
+
+        }
+
+
+        this.value = "";
+
+
+        renderPreviews();
+
+
+        status.textContent =
+            uploadedFiles.length
+                ? `${uploadedFiles.length} PDF file${uploadedFiles.length === 1 ? "" : "s"} ready.`
+                : "";
+
     }
-
-    status.textContent = "Loading PDF files...";
-
-    for (const file of files) {
-
-        if (
-            file.type !== "application/pdf" &&
-            !file.name.toLowerCase().endsWith(".pdf")
-        ) {
-            continue;
-        }
-
-        const alreadyExists = uploadedFiles.some(
-            item => item.file.name === file.name
-        );
-
-        if (alreadyExists) {
-            continue;
-        }
-
-        try {
-
-            const arrayBuffer = await file.arrayBuffer();
-
-            const pdf = await pdfjsLib
-                .getDocument({
-                    data: arrayBuffer.slice(0)
-                })
-                .promise;
-
-            uploadedFiles.push({
-                file: file,
-                arrayBuffer: arrayBuffer,
-                pageCount: pdf.numPages
-            });
-
-        } catch (error) {
-
-            console.error(error);
-
-        }
-
-    }
-
-    this.value = "";
-
-    renderPreviews();
-
-    status.textContent = uploadedFiles.length
-        ? `${uploadedFiles.length} PDF file${uploadedFiles.length === 1 ? "" : "s"} ready.`
-        : "";
-
-});
+);
 
 
 /* =========================
@@ -1131,140 +1591,240 @@ pdfInput.addEventListener("change", async function () {
 
 function renderPreviews() {
 
+
     previewGrid.innerHTML = "";
+
 
     if (!uploadedFiles.length) {
 
-        uploadBox.style.display = "flex";
-        previewGrid.style.display = "none";
-        editor.style.display = "none";
+
+        uploadBox.style.display =
+            "flex";
+
+        previewGrid.style.display =
+            "none";
+
+        editor.style.display =
+            "none";
 
         return;
+
     }
 
-    uploadBox.style.display = "none";
-    previewGrid.style.display = "grid";
-    editor.style.display = "block";
+
+    uploadBox.style.display =
+        "none";
+
+    previewGrid.style.display =
+        "grid";
+
+    editor.style.display =
+        "block";
 
 
-    uploadedFiles.forEach((item, index) => {
-
-        const card = document.createElement("div");
-
-        card.className = "preview-card";
+    uploadedFiles.forEach(
+        (item, index) => {
 
 
-        const removeButton = document.createElement("button");
+            const card =
+                document.createElement("div");
 
-        removeButton.className = "remove-file";
-        removeButton.type = "button";
-        removeButton.innerHTML = "×";
-        removeButton.title = "Remove PDF";
-
-
-        removeButton.addEventListener("click", function () {
-
-            uploadedFiles.splice(index, 1);
-
-            renderPreviews();
-
-            status.textContent = uploadedFiles.length
-                ? `${uploadedFiles.length} PDF file${uploadedFiles.length === 1 ? "" : "s"} ready.`
-                : "";
-
-        });
+            card.className =
+                "preview-card";
 
 
-        const thumbnailWrapper = document.createElement("div");
+            const removeButton =
+                document.createElement("button");
 
-        thumbnailWrapper.className = "thumbnail-wrapper";
+            removeButton.className =
+                "remove-file";
 
+            removeButton.type =
+                "button";
 
-        const canvas = document.createElement("canvas");
+            removeButton.innerHTML =
+                "×";
 
-        thumbnailWrapper.appendChild(canvas);
-
-
-        const fileName = document.createElement("div");
-
-        fileName.className = "file-name";
-        fileName.textContent = item.file.name;
-        fileName.title = item.file.name;
-
-
-        const pageCount = document.createElement("div");
-
-        pageCount.className = "page-count";
-
-        pageCount.textContent =
-            `${item.pageCount} page${item.pageCount === 1 ? "" : "s"}`;
+            removeButton.title =
+                "Remove PDF";
 
 
-        card.appendChild(removeButton);
-        card.appendChild(thumbnailWrapper);
-        card.appendChild(fileName);
-        card.appendChild(pageCount);
-
-        previewGrid.appendChild(card);
+            removeButton.addEventListener(
+                "click",
+                function () {
 
 
-        renderPdfThumbnail(item.arrayBuffer, canvas);
+                    uploadedFiles.splice(
+                        index,
+                        1
+                    );
 
-    });
+
+                    renderPreviews();
+
+
+                    status.textContent =
+                        uploadedFiles.length
+                            ? `${uploadedFiles.length} PDF file${uploadedFiles.length === 1 ? "" : "s"} ready.`
+                            : "";
+
+                }
+            );
+
+
+            const thumbnailWrapper =
+                document.createElement("div");
+
+            thumbnailWrapper.className =
+                "thumbnail-wrapper";
+
+
+            const canvas =
+                document.createElement("canvas");
+
+
+            thumbnailWrapper.appendChild(
+                canvas
+            );
+
+
+            const fileName =
+                document.createElement("div");
+
+            fileName.className =
+                "file-name";
+
+            fileName.textContent =
+                item.file.name;
+
+            fileName.title =
+                item.file.name;
+
+
+            const pageCount =
+                document.createElement("div");
+
+            pageCount.className =
+                "page-count";
+
+
+            pageCount.textContent =
+                `${item.pageCount} page${item.pageCount === 1 ? "" : "s"}`;
+
+
+            card.appendChild(
+                removeButton
+            );
+
+            card.appendChild(
+                thumbnailWrapper
+            );
+
+            card.appendChild(
+                fileName
+            );
+
+            card.appendChild(
+                pageCount
+            );
+
+
+            previewGrid.appendChild(
+                card
+            );
+
+
+            renderPdfThumbnail(
+                item.arrayBuffer,
+                canvas
+            );
+
+        }
+    );
 
 }
 
 
 /* =========================
-   PDF THUMBNAIL
+   THUMBNAIL
 ========================= */
 
-async function renderPdfThumbnail(arrayBuffer, canvas) {
+async function renderPdfThumbnail(
+    arrayBuffer,
+    canvas
+) {
+
 
     try {
 
-        const pdf = await pdfjsLib
-            .getDocument({
-                data: arrayBuffer.slice(0)
-            })
-            .promise;
 
-        const page = await pdf.getPage(1);
-
-        const viewport = page.getViewport({
-            scale: 1
-        });
+        const pdf =
+            await pdfjsLib
+                .getDocument({
+                    data:
+                        arrayBuffer.slice(0)
+                })
+                .promise;
 
 
-        const maxWidth = 145;
-        const maxHeight = 175;
-
-        const scale = Math.min(
-            maxWidth / viewport.width,
-            maxHeight / viewport.height
-        );
+        const page =
+            await pdf.getPage(1);
 
 
-        const scaledViewport = page.getViewport({
-            scale: scale
-        });
+        const viewport =
+            page.getViewport({
+                scale: 1
+            });
 
 
-        canvas.width = scaledViewport.width;
-        canvas.height = scaledViewport.height;
+        const maxWidth =
+            145;
+
+        const maxHeight =
+            175;
 
 
-        const context = canvas.getContext("2d");
+        const scale =
+            Math.min(
+                maxWidth / viewport.width,
+                maxHeight / viewport.height
+            );
+
+
+        const scaledViewport =
+            page.getViewport({
+                scale: scale
+            });
+
+
+        canvas.width =
+            scaledViewport.width;
+
+        canvas.height =
+            scaledViewport.height;
+
+
+        const context =
+            canvas.getContext("2d");
 
 
         await page.render({
-            canvasContext: context,
-            viewport: scaledViewport
+
+            canvasContext:
+                context,
+
+            viewport:
+                scaledViewport
+
         }).promise;
+
 
     } catch (error) {
 
-        console.error("Thumbnail error:", error);
+        console.error(
+            "Thumbnail error:",
+            error
+        );
 
     }
 
@@ -1272,55 +1832,82 @@ async function renderPdfThumbnail(arrayBuffer, canvas) {
 
 
 /* =========================
-   SPLIT OPTION
+   SPLIT OPTIONS
 ========================= */
 
 document
-    .querySelectorAll('input[name="splitOption"]')
+    .querySelectorAll(
+        'input[name="splitOption"]'
+    )
     .forEach(radio => {
 
-        radio.addEventListener("change", function () {
 
-            if (this.value === "range") {
+        radio.addEventListener(
+            "change",
+            function () {
 
-                rangeSection.style.display = "block";
 
-            } else {
+                if (
+                    this.value === "range"
+                ) {
 
-                rangeSection.style.display = "none";
+                    rangeSection.style.display =
+                        "block";
+
+                } else {
+
+                    rangeSection.style.display =
+                        "none";
+
+                }
 
             }
-
-        });
+        );
 
     });
 
 
 /* =========================
-   PAGE RANGE PARSER
+   PAGE RANGE
 ========================= */
 
-function getSelectedPages(range, maxPages) {
+function getSelectedPages(
+    range,
+    maxPages
+) {
+
 
     if (!range.trim()) {
         return null;
     }
 
-    const pages = new Set();
 
-    const parts = range
-        .split(",")
-        .map(part => part.trim())
-        .filter(Boolean);
+    const pages =
+        new Set();
+
+
+    const parts =
+        range
+            .split(",")
+            .map(part => part.trim())
+            .filter(Boolean);
 
 
     for (const part of parts) {
 
+
         if (part.includes("-")) {
 
-            const rangeParts = part
-                .split("-")
-                .map(value => parseInt(value.trim(), 10));
+
+            const rangeParts =
+                part
+                    .split("-")
+                    .map(value =>
+                        parseInt(
+                            value.trim(),
+                            10
+                        )
+                    );
 
 
             if (
@@ -1328,44 +1915,67 @@ function getSelectedPages(range, maxPages) {
                 Number.isNaN(rangeParts[0]) ||
                 Number.isNaN(rangeParts[1])
             ) {
+
                 return null;
+
             }
 
 
-            const start = Math.min(
-                rangeParts[0],
-                rangeParts[1]
-            );
+            const start =
+                Math.min(
+                    rangeParts[0],
+                    rangeParts[1]
+                );
 
-            const end = Math.max(
-                rangeParts[0],
-                rangeParts[1]
-            );
+
+            const end =
+                Math.max(
+                    rangeParts[0],
+                    rangeParts[1]
+                );
 
 
             if (
                 start < 1 ||
                 end > maxPages
             ) {
+
                 return null;
+
             }
 
 
-            for (let page = start; page <= end; page++) {
+            for (
+                let page = start;
+                page <= end;
+                page++
+            ) {
+
                 pages.add(page);
+
             }
+
 
         } else {
 
-            const page = parseInt(part, 10);
+
+            const page =
+                parseInt(
+                    part,
+                    10
+                );
+
 
             if (
                 Number.isNaN(page) ||
                 page < 1 ||
                 page > maxPages
             ) {
+
                 return null;
+
             }
+
 
             pages.add(page);
 
@@ -1374,9 +1984,11 @@ function getSelectedPages(range, maxPages) {
     }
 
 
-    return Array.from(pages).sort(
-        (a, b) => a - b
-    );
+    return Array
+        .from(pages)
+        .sort(
+            (a, b) => a - b
+        );
 
 }
 
@@ -1385,193 +1997,247 @@ function getSelectedPages(range, maxPages) {
    SPLIT PDF
 ========================= */
 
-splitButton.addEventListener("click", async function () {
-
-    if (!uploadedFiles.length) {
-        return;
-    }
+splitButton.addEventListener(
+    "click",
+    async function () {
 
 
-    const selectedOption =
-        document.querySelector(
-            'input[name="splitOption"]:checked'
-        ).value;
-
-
-    let selectedPages = null;
-
-
-    if (selectedOption === "range") {
-
-        if (uploadedFiles.length !== 1) {
-
-            status.textContent =
-                "Page range extraction works with one PDF at a time.";
-
+        if (!uploadedFiles.length) {
             return;
         }
 
 
-        selectedPages = getSelectedPages(
-            pageRange.value,
-            uploadedFiles[0].pageCount
-        );
+        const selectedOption =
+            document.querySelector(
+                'input[name="splitOption"]:checked'
+            ).value;
 
 
-        if (!selectedPages || !selectedPages.length) {
-
-            status.textContent =
-                "Please enter a valid page range.";
-
-            pageRange.focus();
-
-            return;
-        }
-
-    }
+        let selectedPages = null;
 
 
-    splitButton.disabled = true;
-
-    status.textContent =
-        "Splitting PDF files. Please wait...";
-
-
-    try {
-
-        const zip = new JSZip();
-
-
-        for (
-            let fileIndex = 0;
-            fileIndex < uploadedFiles.length;
-            fileIndex++
+        if (
+            selectedOption === "range"
         ) {
-
-            const item = uploadedFiles[fileIndex];
-
-
-            const sourcePdf =
-                await PDFLib.PDFDocument.load(
-                    item.arrayBuffer
-                );
-
-
-            let pagesToSplit;
 
 
             if (
-                selectedOption === "range" &&
-                uploadedFiles.length === 1
+                uploadedFiles.length !== 1
             ) {
 
-                pagesToSplit = selectedPages;
+                status.textContent =
+                    "Page range extraction works with one PDF at a time.";
 
-            } else {
-
-                pagesToSplit = Array.from(
-                    {
-                        length: sourcePdf.getPageCount()
-                    },
-                    (_, index) => index + 1
-                );
+                return;
 
             }
 
 
-            const cleanName = item.file.name
-                .replace(/\.pdf$/i, "")
-                .replace(/[<>:"/\\|?*]+/g, "_");
+            selectedPages =
+                getSelectedPages(
+                    pageRange.value,
+                    uploadedFiles[0].pageCount
+                );
 
 
-            for (
-                let i = 0;
-                i < pagesToSplit.length;
-                i++
+            if (
+                !selectedPages ||
+                !selectedPages.length
             ) {
 
-                const pageNumber = pagesToSplit[i];
+                status.textContent =
+                    "Please enter a valid page range.";
 
-                const newPdf =
-                    await PDFLib.PDFDocument.create();
+                pageRange.focus();
 
-
-                const [copiedPage] =
-                    await newPdf.copyPages(
-                        sourcePdf,
-                        [pageNumber - 1]
-                    );
-
-
-                newPdf.addPage(copiedPage);
-
-
-                const pdfBytes =
-                    await newPdf.save();
-
-
-                zip.file(
-                    `${cleanName}/page-${pageNumber}.pdf`,
-                    pdfBytes
-                );
+                return;
 
             }
 
         }
 
 
-        status.textContent =
-            "Creating ZIP file...";
-
-
-        const zipBlob =
-            await zip.generateAsync({
-                type: "blob"
-            });
-
-
-        const url =
-            URL.createObjectURL(zipBlob);
-
-
-        const downloadLink =
-            document.createElement("a");
-
-
-        downloadLink.href = url;
-        downloadLink.download = "split-pdf-pages.zip";
-
-
-        document.body.appendChild(downloadLink);
-
-        downloadLink.click();
-
-        downloadLink.remove();
-
-
-        URL.revokeObjectURL(url);
+        splitButton.disabled =
+            true;
 
 
         status.textContent =
-            "Done! Your split PDF files have been downloaded.";
+            "Splitting PDF files. Please wait...";
 
-    } catch (error) {
 
-        console.error(error);
+        try {
 
-        status.textContent =
-            "Something went wrong while splitting the PDF.";
+
+            const zip =
+                new JSZip();
+
+
+            for (
+                let fileIndex = 0;
+                fileIndex < uploadedFiles.length;
+                fileIndex++
+            ) {
+
+
+                const item =
+                    uploadedFiles[fileIndex];
+
+
+                const sourcePdf =
+                    await PDFLib.PDFDocument.load(
+                        item.arrayBuffer
+                    );
+
+
+                let pagesToSplit;
+
+
+                if (
+                    selectedOption === "range" &&
+                    uploadedFiles.length === 1
+                ) {
+
+                    pagesToSplit =
+                        selectedPages;
+
+                } else {
+
+                    pagesToSplit =
+                        Array.from(
+                            {
+                                length:
+                                    sourcePdf.getPageCount()
+                            },
+                            (_, index) =>
+                                index + 1
+                        );
+
+                }
+
+
+                const cleanName =
+                    item.file.name
+                        .replace(
+                            /\.pdf$/i,
+                            ""
+                        )
+                        .replace(
+                            /[<>:"/\\|?*]+/g,
+                            "_"
+                        );
+
+
+                for (
+                    let i = 0;
+                    i < pagesToSplit.length;
+                    i++
+                ) {
+
+
+                    const pageNumber =
+                        pagesToSplit[i];
+
+
+                    const newPdf =
+                        await PDFLib
+                            .PDFDocument
+                            .create();
+
+
+                    const [copiedPage] =
+                        await newPdf.copyPages(
+                            sourcePdf,
+                            [pageNumber - 1]
+                        );
+
+
+                    newPdf.addPage(
+                        copiedPage
+                    );
+
+
+                    const pdfBytes =
+                        await newPdf.save();
+
+
+                    zip.file(
+                        `${cleanName}/page-${pageNumber}.pdf`,
+                        pdfBytes
+                    );
+
+                }
+
+            }
+
+
+            status.textContent =
+                "Creating ZIP file...";
+
+
+            const zipBlob =
+                await zip.generateAsync({
+                    type: "blob"
+                });
+
+
+            const url =
+                URL.createObjectURL(
+                    zipBlob
+                );
+
+
+            const downloadLink =
+                document.createElement("a");
+
+
+            downloadLink.href =
+                url;
+
+            downloadLink.download =
+                "split-pdf-pages.zip";
+
+
+            document.body.appendChild(
+                downloadLink
+            );
+
+
+            downloadLink.click();
+
+
+            downloadLink.remove();
+
+
+            URL.revokeObjectURL(
+                url
+            );
+
+
+            status.textContent =
+                "Done! Your split PDF files have been downloaded.";
+
+
+        } catch (error) {
+
+
+            console.error(error);
+
+
+            status.textContent =
+                "Something went wrong while splitting the PDF.";
+
+        }
+
+
+        splitButton.disabled =
+            false;
 
     }
-
-
-    splitButton.disabled = false;
-
-});
+);
 
 
 /* =========================
-   CHOOSE MORE FILES
+   CHOOSE MORE PDFs
 ========================= */
 
 newFileButton.addEventListener(
@@ -1592,50 +2258,83 @@ searchInput.addEventListener(
     "keydown",
     function (event) {
 
-        if (event.key === "Enter") {
 
-            const query =
-                this.value.trim().toLowerCase();
-
-
-            if (!query) {
-                return;
-            }
+        if (
+            event.key !== "Enter"
+        ) {
+            return;
+        }
 
 
-            const toolPages = {
-
-                "merge pdf": "merge-pdf.html",
-                "split pdf": "split-pdf.html",
-                "pdf to images": "pdf-to-images.html",
-                "images to pdf": "images-to-pdf.html",
-                "word counter": "word-counter.html",
-                "case converter": "case-converter.html",
-                "text sorter": "text-sorter.html",
-                "text cleaner": "text-cleaner.html",
-                "image compressor": "image-compressor.html",
-                "image converter": "image-converter.html",
-                "bmi calculator": "bmi-calculator.html",
-                "percentage calculator": "percentage-calculator.html",
-                "profit calculator": "profit-calculator.html",
-                "discount calculator": "discount-calculator.html"
-
-            };
+        const query =
+            this.value
+                .trim()
+                .toLowerCase();
 
 
-            const match =
-                Object.keys(toolPages)
-                    .find(tool =>
-                        tool.includes(query)
-                    );
+        if (!query) {
+            return;
+        }
 
 
-            if (match) {
+        const toolPages = {
 
-                window.location.href =
-                    toolPages[match];
+            "merge pdf":
+                "merge-pdf.html",
 
-            }
+            "split pdf":
+                "split-pdf.html",
+
+            "pdf to images":
+                "pdf-to-images.html",
+
+            "images to pdf":
+                "images-to-pdf.html",
+
+            "word counter":
+                "word-counter.html",
+
+            "case converter":
+                "case-converter.html",
+
+            "text sorter":
+                "text-sorter.html",
+
+            "text cleaner":
+                "text-cleaner.html",
+
+            "image compressor":
+                "image-compressor.html",
+
+            "image converter":
+                "image-converter.html",
+
+            "bmi calculator":
+                "bmi-calculator.html",
+
+            "percentage calculator":
+                "percentage-calculator.html",
+
+            "profit calculator":
+                "profit-calculator.html",
+
+            "discount calculator":
+                "discount-calculator.html"
+
+        };
+
+
+        const match =
+            Object.keys(toolPages)
+                .find(tool =>
+                    tool.includes(query)
+                );
+
+
+        if (match) {
+
+            window.location.href =
+                toolPages[match];
 
         }
 
@@ -1649,29 +2348,44 @@ searchInput.addEventListener(
 
 navButtons.forEach(button => {
 
+
     button.addEventListener(
         "click",
         function () {
+
 
             const filter =
                 this.dataset.filter;
 
 
             navButtons.forEach(btn =>
-                btn.classList.remove("active")
+                btn.classList.remove(
+                    "active"
+                )
             );
 
 
-            this.classList.add("active");
+            this.classList.add(
+                "active"
+            );
 
 
             const pages = {
 
-                all: "index.html",
-                pdf: "index.html#pdf",
-                text: "index.html#text",
-                image: "index.html#image",
-                calculator: "index.html#calculator"
+                all:
+                    "index.html",
+
+                pdf:
+                    "index.html#pdf",
+
+                text:
+                    "index.html#text",
+
+                image:
+                    "index.html#image",
+
+                calculator:
+                    "index.html#calculator"
 
             };
 
