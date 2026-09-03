@@ -1,8 +1,8 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
   <meta charset="UTF-8">
 
   <meta
@@ -10,13 +10,12 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Split PDF - ToolNest</title>
+  <title>Merge PDF - ToolNest</title>
 
   <meta
     name="description"
-    content="Split PDF pages online for free. Extract all pages or select a page range."
+    content="Merge multiple PDF files into one PDF online for free with ToolNest."
   >
-
 
   <!-- PDF.JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -24,1119 +23,702 @@
   <!-- PDF-LIB -->
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
 
-  <!-- JSZIP -->
-  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-
-
   <style>
-
-    /* ========================================
-       RESET
-    ======================================== */
-
     * {
       box-sizing: border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
+    html,
+    body {
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      min-height: 100vh;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
+      font-family: Arial, Helvetica, sans-serif;
       background: #f3f5f7;
       color: #263548;
     }
 
+    button,
+    input {
+      font: inherit;
+    }
 
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-    /* ========================================
+    /* =========================
        HEADER
-    ======================================== */
+    ========================= */
+
+    .site-header {
+      background: #ffffff;
+      border-bottom: 1px solid #e3e8ed;
+    }
 
     .top-header {
-      width: 100%;
-      background: #ffffff;
-      border-bottom: 1px solid #dfe5eb;
-    }
-
-    .header-inner {
-      width: 100%;
-      max-width: 1200px;
-
+      max-width: 1240px;
+      height: 100px;
       margin: 0 auto;
-
-      padding:
-        18px
-        24px;
-
+      padding: 0 28px;
       display: flex;
-
       align-items: center;
-      justify-content: space-between;
-
-      gap: 30px;
+      gap: 60px;
     }
-
-
-
-    /* ========================================
-       LOGO
-    ======================================== */
 
     .logo {
+      flex: 0 0 auto;
       display: flex;
-
       align-items: center;
-
-      gap: 10px;
-
-      text-decoration: none;
-
-      white-space: nowrap;
     }
 
-    .logo-icon {
-      width: 38px;
-      height: 38px;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 11px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #3d78b6,
-          #245b96
-        );
-
-      color: #ffffff;
-
-      font-size: 19px;
-      font-weight: 800;
-
-      box-shadow:
-        0 4px 10px
-        rgba(43, 92, 150, 0.20);
+    .logo img {
+      display: block;
+      width: auto;
+      max-width: 190px;
+      max-height: 62px;
+      object-fit: contain;
     }
 
-    .logo-text {
-      font-size: 25px;
-      letter-spacing: -0.7px;
-    }
-
-    .logo-tool {
-      color: #334155;
-      font-weight: 400;
-    }
-
-    .logo-nest {
-      color: #326ba8;
-      font-weight: 800;
-    }
-
-
-
-    /* ========================================
-       SEARCH
-    ======================================== */
-
-    .header-search {
-      width: 100%;
-      max-width: 520px;
-
+    .search-area {
+      flex: 1;
+      max-width: 700px;
       position: relative;
     }
 
-    .header-search input {
+    .search-area input {
       width: 100%;
-      height: 48px;
-
-      padding:
-        0
-        50px
-        0
-        18px;
-
-      border:
-        1px solid
-        #d8e0e8;
-
-      border-radius: 8px;
-
-      background: #f7f9fb;
-
-      color: #344256;
-
-      font-size: 16px;
-
+      height: 56px;
+      padding: 0 50px 0 18px;
+      border: 1px solid #d7dee6;
+      border-radius: 9px;
       outline: none;
+      background: #ffffff;
+      color: #263548;
+      font-size: 16px;
     }
 
-    .header-search input:focus {
-      background: #ffffff;
-      border-color: #7fa6cf;
+    .search-area input:focus {
+      border-color: #326ba8;
+      box-shadow: 0 0 0 3px rgba(50, 107, 168, 0.10);
     }
 
     .search-icon {
       position: absolute;
-
-      right: 17px;
+      right: 18px;
       top: 50%;
-
-      transform:
-        translateY(-50%);
-
-      color: #718096;
-
-      font-size: 21px;
-
+      transform: translateY(-50%);
+      color: #7c8997;
+      font-size: 25px;
       pointer-events: none;
     }
 
-
-
-    /* ========================================
-       CATEGORY NAVIGATION
-    ======================================== */
-
-    .category-nav {
+    .navigation-wrapper {
       background: #ffffff;
-
-      border-bottom:
-        1px solid #dfe5eb;
+      border-top: 1px solid #eef1f4;
     }
 
-    .category-nav-inner {
-      width: 100%;
-      max-width: 1200px;
-
+    .main-navigation {
+      max-width: 1240px;
+      height: 72px;
       margin: 0 auto;
-
-      padding:
-        0
-        24px;
-
+      padding: 0 28px;
       display: flex;
-
       align-items: center;
-
-      gap: 34px;
-
-      overflow-x: auto;
+      gap: 42px;
     }
 
-    .category-link {
-      position: relative;
-
-      display: flex;
-
+    .nav-button {
+      height: 72px;
+      display: inline-flex;
       align-items: center;
-
-      height: 58px;
-
-      color: #667588;
-
-      text-decoration: none;
-
-      font-size: 16px;
-
+      position: relative;
+      font-size: 15px;
+      font-weight: 600;
+      color: #667585;
       white-space: nowrap;
     }
 
-    .category-link:hover {
-      color: #2f67a3;
-    }
-
-    .category-link.active {
+    .nav-button:hover {
       color: #263548;
-      font-weight: 600;
     }
 
-    .category-link.active::after {
+    .nav-button.active {
+      color: #263548;
+    }
+
+    .nav-button.active::after {
       content: "";
-
       position: absolute;
-
       left: 0;
       right: 0;
       bottom: 0;
-
       height: 3px;
-
       background: #326ba8;
-
-      border-radius:
-        3px
-        3px
-        0
-        0;
+      border-radius: 3px 3px 0 0;
     }
 
-
-
-    /* ========================================
+    /* =========================
        PAGE
-    ======================================== */
+    ========================= */
 
-    .page-wrapper {
-      width: 100%;
-      max-width: 1200px;
-
+    .page-content {
+      max-width: 1240px;
       margin: 0 auto;
-
-      padding:
-        38px
-        24px
-        60px;
+      padding: 38px 28px 60px;
     }
 
-    .page-layout {
+    .content-layout {
       display: grid;
-
-      grid-template-columns:
-        minmax(0, 1fr)
-        200px;
-
-      gap: 28px;
-
+      grid-template-columns: minmax(0, 1fr) 200px;
+      gap: 30px;
       align-items: start;
     }
 
-    .content {
+    .main-content {
       min-width: 0;
     }
 
+    /* =========================
+       TOOL CATEGORY BAR
+    ========================= */
 
+    .tool-category-bar {
+      width: 100%;
+      margin-bottom: 28px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: thin;
+    }
 
-    /* ========================================
-       BREADCRUMB
-    ======================================== */
-
-    .breadcrumb {
+    .tool-category-list {
       display: flex;
-
       align-items: center;
+      width: max-content;
+      min-width: 100%;
+      gap: 0;
+    }
 
-      gap: 8px;
-
-      margin-bottom: 22px;
-
+    .tool-category-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 9px 15px;
+      border: 1px solid #d8e0e7;
+      border-radius: 7px;
+      background: #ffffff;
+      color: #526171;
       font-size: 14px;
-    }
-
-    .breadcrumb a {
-      color: #667588;
-      text-decoration: none;
-    }
-
-    .breadcrumb a:hover {
-      color: #326ba8;
-    }
-
-    .breadcrumb span {
-      color: #9aa7b5;
-    }
-
-    .breadcrumb strong {
-      color: #39495b;
       font-weight: 600;
+      white-space: nowrap;
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
     }
 
-
-
-    /* ========================================
-       HEADING
-    ======================================== */
-
-    .heading {
-      margin-bottom: 26px;
-    }
-
-    .heading h1 {
-      margin:
-        0
-        0
-        10px;
-
+    .tool-category-link:hover {
+      border-color: #b8c7d6;
       color: #263548;
-
-      font-size: 36px;
-      font-weight: 700;
-
-      letter-spacing: -0.8px;
+      background: #f8fafc;
     }
 
-    .heading p {
-      max-width: 720px;
+    .tool-category-link.active {
+      background: #326ba8;
+      border-color: #326ba8;
+      color: #ffffff;
+    }
 
+    .tool-category-separator {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 10px;
+      color: #8f9cab;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+
+    /* =========================
+       TOOL TITLE
+    ========================= */
+
+    .tool-title {
       margin: 0;
+      font-size: 31px;
+      line-height: 1.2;
+      color: #263548;
+      font-weight: 700;
+    }
 
-      color: #718096;
-
+    .tool-description {
+      margin: 10px 0 26px;
+      color: #6c7988;
       font-size: 16px;
-
       line-height: 1.6;
     }
 
-
-
-    /* ========================================
-       TOOL BOX
-    ======================================== */
+    /* =========================
+       MERGE TOOL BOX
+    ========================= */
 
     .tool-box {
       background: #ffffff;
-
-      border:
-        1px solid
-        #dce3ea;
-
+      border: 1px solid #e0e6ec;
       border-radius: 12px;
-
-      padding: 26px;
-
-      box-shadow:
-        0 4px 16px
-        rgba(31, 45, 61, 0.05);
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(31, 48, 65, 0.03);
     }
 
-
-
-    /* ========================================
-       UPLOAD AREA
-    ======================================== */
-
     .upload-area {
-      width: 100%;
-      min-height: 390px;
-
-      padding: 30px;
-
+      border: 2px dashed #cbd5df;
+      border-radius: 10px;
+      min-height: 170px;
       display: flex;
-
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-
+      padding: 25px;
       text-align: center;
-
-      background: #fafbfd;
-
-      border:
-        2px dashed
-        #8da9c5;
-
-      border-radius: 12px;
-
       cursor: pointer;
-
+      background: #fafcfd;
       transition:
-        background 0.2s ease,
-        border-color 0.2s ease;
+        border-color 0.15s ease,
+        background 0.15s ease;
     }
 
     .upload-area:hover {
-      background: #f4f8fc;
-      border-color: #5f8fbd;
-    }
-
-
-
-    /* ========================================
-       EMPTY UPLOAD MESSAGE
-    ======================================== */
-
-    .upload-message {
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-      justify-content: center;
-
-      width: 100%;
+      border-color: #326ba8;
+      background: #f7faff;
     }
 
     .upload-icon {
-      width: 62px;
-      height: 62px;
-
-      margin:
-        0
-        auto
-        16px;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 14px;
-
-      background: #eaf1f8;
-
-      color: #326ba8;
-
-      font-size: 29px;
-    }
-
-    .upload-message h2 {
-      margin:
-        0
-        0
-        8px;
-
-      color: #2f3d50;
-
-      font-size: 20px;
-    }
-
-    .upload-message p {
-      margin: 0;
-
-      color: #7b8998;
-
-      font-size: 14px;
-
-      line-height: 1.5;
-    }
-
-
-
-    /* ========================================
-       PDF PREVIEWS
-    ======================================== */
-
-    .preview-grid {
-      display: none;
-
-      width: 100%;
-
-      grid-template-columns:
-        repeat(auto-fit, minmax(150px, 150px));
-
-      justify-content: center;
-      align-content: center;
-      align-items: start;
-
-      gap: 22px;
-
-      padding: 10px;
-    }
-
-    .pdf-preview-card {
-      position: relative;
-
-      width: 150px;
-
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-      justify-content: flex-start;
-
-      padding: 10px;
-
-      background: transparent;
-
-      border: none;
-
-      cursor: default;
-    }
-
-
-
-    /* ========================================
-       REMOVE BUTTON
-       TINY RED CIRCLE
-    ======================================== */
-
-    .remove-file {
-      position: absolute;
-
-      top: 0;
-      right: 0;
-
-      width: 20px;
-      height: 20px;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      padding: 0;
-
-      border: none;
-
-      border-radius: 50%;
-
-      background: #dc4b4b;
-
-      color: #ffffff;
-
-      font-size: 15px;
-      font-weight: 700;
-
-      line-height: 1;
-
-      cursor: pointer;
-
-      z-index: 5;
-
-      box-shadow:
-        0 2px 5px
-        rgba(0, 0, 0, 0.12);
-    }
-
-    .remove-file:hover {
-      background: #c93d3d;
-
-      color: #ffffff;
-    }
-
-
-
-    /* ========================================
-       PDF PAGE THUMBNAIL
-    ======================================== */
-
-    .preview-thumbnail {
-      width: 150px;
-
-      height: 190px;
-
-      margin-bottom: 13px;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      overflow: hidden;
-
-      background: #edf2f6;
-
-      border:
-        1px solid
-        #cbd6e0;
-
-      border-radius: 10px;
-    }
-
-    .preview-thumbnail canvas {
-      display: block;
-
-      max-width: 100%;
-      max-height: 100%;
-
-      object-fit: contain;
-    }
-
-
-
-    /* ========================================
-       FILE NAME
-    ======================================== */
-
-    .preview-name {
-      width: 100%;
-
-      margin-bottom: 5px;
-
-      color: #34475b;
-
-      font-size: 14px;
-      font-weight: 700;
-
-      white-space: nowrap;
-
-      overflow: hidden;
-
-      text-overflow: ellipsis;
-
-      text-align: center;
-    }
-
-    .preview-pages {
-      color: #718096;
-
-      font-size: 14px;
-    }
-
-
-
-    /* ========================================
-       HIDDEN FILE INPUT
-    ======================================== */
-
-    input[type="file"] {
-      display: none;
-    }
-
-
-
-    /* ========================================
-       ACTION BUTTONS
-    ======================================== */
-
-    .buttons {
-      display: none;
-
-      gap: 12px;
-
-      margin-top: 18px;
-    }
-
-    button {
-      height: 46px;
-
-      padding:
-        0
-        20px;
-
-      border-radius: 8px;
-
-      font-size: 14px;
-      font-weight: 700;
-
-      cursor: pointer;
-
-      transition:
-        background 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-    }
-
-    button:hover:not(:disabled) {
-      transform:
-        translateY(-1px);
-    }
-
-    button:disabled {
-      opacity: 0.6;
-
-      cursor: not-allowed;
-    }
-
-    .primary-button {
-      flex: 1;
-
-      border: none;
-
-      background: #326ba8;
-
-      color: #ffffff;
-
-      box-shadow:
-        0 4px 10px
-        rgba(50, 107, 168, 0.18);
-    }
-
-    .primary-button:hover:not(:disabled) {
-      background: #285b91;
-    }
-
-    .secondary-button {
-      border:
-        1px solid
-        #ccd7e1;
-
-      background: #ffffff;
-
-      color: #435365;
-    }
-
-    .secondary-button:hover:not(:disabled) {
-      background: #f5f7f9;
-    }
-
-
-
-    /* ========================================
-       EDITOR
-    ======================================== */
-
-    .editor {
-      display: none;
-
-      margin-top: 26px;
-    }
-
-
-
-    /* ========================================
-       OPTIONS
-    ======================================== */
-
-    .options-title {
-      margin:
-        0
-        0
-        14px;
-
-      color: #304052;
-
-      font-size: 19px;
-    }
-
-    .option-box {
-      padding: 18px;
-
-      background: #fafbfd;
-
-      border:
-        1px solid
-        #e0e6ec;
-
-      border-radius: 10px;
-    }
-
-    .radio-option {
-      padding: 16px;
-
-      background: #ffffff;
-
-      border:
-        1px solid
-        #dde5ec;
-
+      width: 48px;
+      height: 48px;
+      margin-bottom: 12px;
       border-radius: 9px;
-    }
-
-    .radio-option + .radio-option {
-      margin-top: 12px;
-    }
-
-    .radio-option:hover {
-      border-color: #b8cbe0;
-      background: #fbfdff;
-    }
-
-    .radio-option > label {
+      background: #eaf2fa;
+      color: #326ba8;
       display: flex;
-
       align-items: center;
-
-      gap: 10px;
-
-      color: #344255;
-
-      font-size: 15px;
-      font-weight: 700;
-
-      cursor: pointer;
-    }
-
-    .radio-option input[type="radio"] {
-      width: 17px;
-      height: 17px;
-
-      accent-color: #326ba8;
-
-      cursor: pointer;
-    }
-
-    .option-description {
-      margin:
-        7px
-        0
-        0
-        27px;
-
-      color: #7b8998;
-
-      font-size: 14px;
-
-      line-height: 1.5;
-    }
-
-
-
-    /* ========================================
-       RANGE
-    ======================================== */
-
-    .range-section {
-      display: none;
-
-      margin-top: 16px;
-
-      padding: 16px;
-
-      background: #f6f9fc;
-
-      border:
-        1px solid
-        #dbe4ed;
-
-      border-radius: 8px;
-    }
-
-    .range-section label {
-      display: block;
-
-      margin-bottom: 8px;
-
-      color: #344255;
-
-      font-size: 14px;
+      justify-content: center;
+      font-size: 25px;
       font-weight: 700;
     }
 
-    .range-section input {
-      width: 100%;
-      height: 44px;
-
-      padding:
-        0
-        13px;
-
-      background: #ffffff;
-
-      border:
-        1px solid
-        #ccd7e1;
-
-      border-radius: 8px;
-
-      color: #344255;
-
-      font-size: 14px;
-
-      outline: none;
+    .upload-title {
+      margin: 0 0 5px;
+      color: #263548;
+      font-size: 16px;
+      font-weight: 700;
     }
 
-    .range-section input:focus {
-      border-color: #5f92c5;
-
-      box-shadow:
-        0 0 0 3px
-        rgba(50, 107, 168, 0.10);
-    }
-
-    .range-help {
-      margin:
-        8px
-        0
-        0;
-
-      color: #7b8998;
-
+    .upload-subtitle {
+      margin: 0;
+      color: #7a8795;
       font-size: 13px;
     }
 
-
-
-    /* ========================================
-       STATUS
-    ======================================== */
-
-    .status {
+    #pdfInput {
       display: none;
-
-      margin-top: 18px;
-
-      padding: 14px;
-
-      text-align: center;
-
-      background: #f2f7fb;
-
-      border:
-        1px solid
-        #d4e2ef;
-
-      border-radius: 8px;
-
-      color: #55708a;
-
-      font-size: 14px;
     }
 
+    /* =========================
+       PDF LIST
+    ========================= */
 
+    .pdf-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 20px;
+    }
 
-    /* ========================================
-       ADVERTISEMENT
-    ======================================== */
+    .pdf-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 12px;
+      background: #ffffff;
+      border: 1px solid #dce3e9;
+      border-radius: 9px;
+      cursor: grab;
+      transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        opacity 0.15s ease;
+    }
+
+    .pdf-card:active {
+      cursor: grabbing;
+    }
+
+    .pdf-card.dragging {
+      opacity: 0.55;
+      box-shadow: 0 5px 15px rgba(31, 48, 65, 0.08);
+    }
+
+    .pdf-preview {
+      position: relative;
+      width: 105px;
+      height: 135px;
+      flex: 0 0 105px;
+      background: #eef1f4;
+      border: 1px solid #d7dee5;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .pdf-preview canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #ffffff;
+    }
+
+    /* =========================
+       PREVIEW CONTROLS
+    ========================= */
+
+    .preview-control {
+      position: absolute;
+      top: 7px;
+      width: 29px;
+      height: 29px;
+      border: 1px solid rgba(214, 222, 230, 0.95);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.94);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      cursor: pointer;
+      z-index: 5;
+      box-shadow: 0 1px 3px rgba(31, 48, 65, 0.10);
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.15s ease;
+    }
+
+    .preview-control:hover {
+      background: #ffffff;
+      border-color: #b9c6d2;
+      transform: translateY(-1px);
+    }
+
+    .preview-zoom {
+      left: 7px;
+    }
+
+    .preview-remove {
+      right: 7px;
+      color: #687686;
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 400;
+    }
+
+    .preview-remove:hover {
+      color: #c34b4b;
+      border-color: #e2bebe;
+    }
+
+    /* CSS magnifying glass */
+    .magnifier-icon {
+      position: relative;
+      width: 12px;
+      height: 12px;
+      border: 2px solid #596b7c;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .magnifier-icon::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 2px;
+      background: #596b7c;
+      border-radius: 2px;
+      right: -5px;
+      bottom: -2px;
+      transform: rotate(45deg);
+      transform-origin: center;
+    }
+
+    .pdf-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .pdf-name {
+      margin: 0 0 6px;
+      color: #263548;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .pdf-meta {
+      margin: 0;
+      color: #8793a0;
+      font-size: 12px;
+    }
+
+    .drag-handle {
+      color: #9aa6b2;
+      font-size: 19px;
+      padding: 0 3px;
+      user-select: none;
+    }
+
+    /* =========================
+       ACTIONS
+    ========================= */
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-top: 22px;
+    }
+
+    .secondary-button,
+    .primary-button {
+      border: 0;
+      border-radius: 8px;
+      min-height: 44px;
+      padding: 0 18px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition:
+        background 0.15s ease,
+        opacity 0.15s ease,
+        transform 0.15s ease;
+    }
+
+    .secondary-button {
+      background: #eef2f5;
+      color: #445466;
+      border: 1px solid #d8e0e7;
+    }
+
+    .secondary-button:hover {
+      background: #e5ebf0;
+    }
+
+    .primary-button {
+      background: #326ba8;
+      color: #ffffff;
+    }
+
+    .primary-button:hover {
+      background: #2c5f96;
+    }
+
+    .primary-button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    /* =========================
+       STATUS
+    ========================= */
+
+    .status {
+      min-height: 22px;
+      margin-top: 16px;
+      color: #667585;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .status.error {
+      color: #c34b4b;
+    }
+
+    .status.success {
+      color: #357a55;
+    }
+
+    /* =========================
+       EMPTY STATE
+    ========================= */
+
+    .empty-state {
+      margin-top: 18px;
+      color: #7c8996;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    /* =========================
+       AD
+    ========================= */
 
     .ad-column {
       width: 200px;
-
       position: sticky;
-
       top: 20px;
     }
 
     .ad-box {
       width: 200px;
       height: 400px;
-
+      background: #ffffff;
+      border: 1px solid #e0e6ec;
+      border-radius: 10px;
       display: flex;
-
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-
-      padding: 18px;
-
-      background: #ffffff;
-
-      border:
-        1px solid
-        #dce3ea;
-
-      border-radius: 10px;
-
+      color: #9aa6b2;
       text-align: center;
-
-      box-shadow:
-        0 4px 16px
-        rgba(31, 45, 61, 0.04);
     }
 
-    .ad-content {
-      width: 100%;
-    }
-
-    .ad-label {
-      margin-bottom: 14px;
-
-      color: #a0acb8;
-
-      font-size: 10px;
-      font-weight: 700;
-
-      letter-spacing: 1.5px;
-    }
-
-    .sample-ad {
-      padding: 22px 12px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #f5f8fc,
-          #edf3f9
-        );
-
-      border:
-        1px solid
-        #d8e3ed;
-
-      border-radius: 9px;
-    }
-
-    .sample-ad-badge {
-      display: inline-block;
-
-      margin-bottom: 12px;
-
-      padding:
-        5px
-        9px;
-
-      background: #326ba8;
-
-      border-radius: 20px;
-
-      color: #ffffff;
-
-      font-size: 10px;
-      font-weight: 700;
-
-      letter-spacing: 0.5px;
-    }
-
-    .sample-ad h3 {
-      margin:
-        0
-        0
-        9px;
-
-      color: #344255;
-
-      font-size: 18px;
-
-      line-height: 1.3;
-    }
-
-    .sample-ad p {
-      margin:
-        0
-        0
-        16px;
-
-      color: #718096;
-
-      font-size: 12px;
-
-      line-height: 1.5;
-    }
-
-    .sample-ad-button {
-      display: inline-block;
-
-      padding:
-        9px
-        14px;
-
-      background: #ffffff;
-
-      border:
-        1px solid
-        #cbd8e4;
-
-      border-radius: 6px;
-
-      color: #326ba8;
-
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-
-
-    /* ========================================
-       FOOTER
-    ======================================== */
-
-    footer {
-      background: #ffffff;
-
-      border-top:
-        1px solid
-        #dfe5eb;
-    }
-
-    .footer-inner {
-      width: 100%;
-      max-width: 1200px;
-
-      margin: 0 auto;
-
-      padding: 24px;
-
+    .ad-brand {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      background: #f0f3f6;
       display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #7f8c99;
+      font-weight: 700;
+      font-size: 20px;
+    }
 
+    .ad-box span {
+      font-size: 12px;
+    }
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .preview-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      background: rgba(21, 31, 42, 0.72);
+    }
+
+    .preview-modal.open {
+      display: flex;
+    }
+
+    .modal-content {
+      position: relative;
+      width: min(900px, 94vw);
+      height: min(90vh, 900px);
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      min-height: 58px;
+      padding: 0 18px;
+      border-bottom: 1px solid #e3e8ed;
+      display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 15px;
+      background: #ffffff;
+    }
 
+    .modal-title {
+      margin: 0;
+      color: #263548;
+      font-size: 15px;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .modal-close {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      border: 1px solid #d7dee5;
+      border-radius: 7px;
+      background: #ffffff;
+      color: #5e6d7c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 23px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .modal-close:hover {
+      background: #f4f6f8;
+      color: #263548;
+    }
+
+    .modal-body {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      background: #eef1f4;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 25px;
+    }
+
+    #modalCanvas {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      background: #ffffff;
+      box-shadow: 0 3px 15px rgba(31, 48, 65, 0.14);
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .site-footer {
+      background: #ffffff;
+      border-top: 1px solid #e3e8ed;
+    }
+
+    .footer-content {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 20px;
-
-      color: #7b8998;
-
+      color: #7b8794;
       font-size: 13px;
     }
 
@@ -1145,573 +727,392 @@
       gap: 20px;
     }
 
-    .footer-links a {
-      color: #7b8998;
-      text-decoration: none;
-    }
-
     .footer-links a:hover {
       color: #326ba8;
     }
 
+    /* =========================
+       RESPONSIVE
+    ========================= */
 
+    @media (max-width: 950px) {
+      .top-header {
+        gap: 30px;
+      }
 
-    /* ========================================
-       TABLET
-    ======================================== */
+      .main-navigation {
+        gap: 25px;
+        overflow-x: auto;
+      }
 
-    @media (max-width: 900px) {
-
-      .page-layout {
-        grid-template-columns: 1fr;
+      .content-layout {
+        grid-template-columns: minmax(0, 1fr);
       }
 
       .ad-column {
-        width: 100%;
-        position: static;
+        display: none;
       }
-
-      .ad-box {
-        width: 100%;
-        height: 180px;
-      }
-
     }
 
-
-
-    /* ========================================
-       MOBILE
-    ======================================== */
-
-    @media (max-width: 700px) {
-
-      .header-inner {
-        padding: 16px;
-      }
-
-      .header-search {
-        max-width: 260px;
-      }
-
-      .category-nav-inner {
-        padding:
-          0
-          16px;
-
-        gap: 24px;
-      }
-
-      .page-wrapper {
-        padding:
-          28px
-          16px
-          45px;
-      }
-
-      .heading h1 {
-        font-size: 31px;
-      }
-
-      .tool-box {
-        padding: 18px;
-      }
-
-      .upload-area {
-        min-height: 350px;
-        padding: 20px;
-      }
-
-      .preview-grid {
-        grid-template-columns:
-          repeat(auto-fit, minmax(140px, 140px));
-
-        gap: 18px;
-      }
-
-      .preview-thumbnail {
-        width: 140px;
-        height: 180px;
-      }
-
-      .footer-inner {
-        padding: 22px 16px;
-      }
-
-    }
-
-
-
-    /* ========================================
-       SMALL MOBILE
-    ======================================== */
-
-    @media (max-width: 550px) {
-
-      .header-inner {
+    @media (max-width: 650px) {
+      .top-header {
+        height: auto;
+        min-height: 90px;
+        padding: 16px 18px;
         flex-direction: column;
-
         align-items: stretch;
-
-        gap: 14px;
+        gap: 15px;
       }
 
       .logo {
-        align-self: flex-start;
+        justify-content: center;
       }
 
-      .header-search {
+      .logo img {
+        max-width: 165px;
+        max-height: 50px;
+      }
+
+      .search-area {
         max-width: none;
       }
 
-      .heading h1 {
-        font-size: 29px;
+      .navigation-wrapper {
+        overflow-x: auto;
       }
 
-      .heading p {
+      .main-navigation {
+        height: 58px;
+        padding: 0 18px;
+        gap: 24px;
+        width: max-content;
+      }
+
+      .nav-button {
+        height: 58px;
+        font-size: 14px;
+      }
+
+      .page-content {
+        padding: 25px 18px 45px;
+      }
+
+      .tool-category-bar {
+        margin-bottom: 22px;
+      }
+
+      .tool-category-link {
+        min-height: 37px;
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+
+      .tool-category-separator {
+        margin: 0 8px;
         font-size: 15px;
       }
 
-      .buttons {
-        flex-direction: column;
+      .tool-title {
+        font-size: 26px;
       }
 
-      .primary-button,
-      .secondary-button {
+      .tool-description {
+        font-size: 15px;
+      }
+
+      .tool-box {
+        padding: 16px;
+      }
+
+      .pdf-card {
+        gap: 11px;
+      }
+
+      .pdf-preview {
+        width: 90px;
+        height: 116px;
+        flex-basis: 90px;
+      }
+
+      .actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .secondary-button,
+      .primary-button {
         width: 100%;
       }
 
-      .footer-inner {
+      .footer-content {
+        padding: 22px 18px;
         flex-direction: column;
         text-align: center;
       }
 
-      .preview-grid {
-        grid-template-columns:
-          repeat(auto-fit, minmax(120px, 120px));
-
-        gap: 14px;
-
-        padding: 4px;
+      .modal-content {
+        width: 96vw;
+        height: 92vh;
       }
 
-      .pdf-preview-card {
-        width: 120px;
+      .preview-modal {
+        padding: 10px;
       }
 
-      .preview-thumbnail {
-        width: 120px;
-        height: 155px;
+      .modal-body {
+        padding: 15px;
       }
-
-      .preview-name {
-        font-size: 13px;
-      }
-
-      .preview-pages {
-        font-size: 13px;
-      }
-
     }
-
   </style>
-
 </head>
-
-
 
 <body>
 
-
-  <!-- ========================================
+  <!-- =========================
        HEADER
-  ======================================== -->
+  ========================= -->
 
-  <header class="top-header">
+  <header class="site-header">
 
-    <div class="header-inner">
+    <div class="top-header">
 
-      <a
-        href="index.html"
-        class="logo"
-      >
-
-        <div class="logo-icon">
-          T
-        </div>
-
-        <div class="logo-text">
-
-          <span class="logo-tool">
-            Tool
-          </span>
-
-          <span class="logo-nest">
-            Nest
-          </span>
-
-        </div>
-
+      <a href="index.html" class="logo">
+        <img
+          src="logo.jpeg"
+          alt="ToolNest - Smart Tools, Simple Tasks"
+        >
       </a>
 
-
-      <div class="header-search">
-
+      <div class="search-area">
         <input
-          type="text"
+          type="search"
+          id="toolSearch"
           placeholder="Search tools..."
+          autocomplete="off"
           aria-label="Search tools"
         >
-
-        <span class="search-icon">
-          ⌕
-        </span>
-
+        <span class="search-icon" aria-hidden="true">⌕</span>
       </div>
+
+    </div>
+
+    <div class="navigation-wrapper">
+
+      <nav class="main-navigation" aria-label="Main navigation">
+
+        <a
+          href="index.html"
+          class="nav-button"
+        >
+          Popular Tools
+        </a>
+
+        <a
+          href="index.html?category=pdf"
+          class="nav-button active"
+        >
+          PDF Tools
+        </a>
+
+        <a
+          href="index.html?category=text"
+          class="nav-button"
+        >
+          Text Tools
+        </a>
+
+        <a
+          href="index.html?category=image"
+          class="nav-button"
+        >
+          Image Tools
+        </a>
+
+        <a
+          href="index.html?category=calculator"
+          class="nav-button"
+        >
+          Calculators
+        </a>
+
+      </nav>
 
     </div>
 
   </header>
 
 
+  <!-- =========================
+       MAIN
+  ========================= -->
 
-  <!-- ========================================
-       CATEGORY NAVIGATION
-  ======================================== -->
+  <main class="page-content">
 
-  <nav class="category-nav">
+    <div class="content-layout">
 
-    <div class="category-nav-inner">
+      <section class="main-content">
 
-      <a
-        href="index.html"
-        class="category-link"
-      >
-        Popular Tools
-      </a>
+        <!-- Same-category tool navigation -->
+        <nav
+          class="tool-category-bar"
+          aria-label="PDF tools"
+        >
 
-      <a
-        href="index.html"
-        class="category-link active"
-      >
-        PDF Tools
-      </a>
+          <div class="tool-category-list">
 
-      <a
-        href="index.html"
-        class="category-link"
-      >
-        Text Tools
-      </a>
+            <a
+              href="merge-pdf.html"
+              class="tool-category-link active"
+            >
+              Merge PDF
+            </a>
 
-      <a
-        href="index.html"
-        class="category-link"
-      >
-        Image Tools
-      </a>
+            <span
+              class="tool-category-separator"
+              aria-hidden="true"
+            >|</span>
 
-      <a
-        href="index.html"
-        class="category-link"
-      >
-        Calculators
-      </a>
+            <a
+              href="split-pdf.html"
+              class="tool-category-link"
+            >
+              Split PDF
+            </a>
 
-    </div>
+            <span
+              class="tool-category-separator"
+              aria-hidden="true"
+            >|</span>
 
-  </nav>
+            <a
+              href="pdf-to-images.html"
+              class="tool-category-link"
+            >
+              PDF to Images
+            </a>
 
+            <span
+              class="tool-category-separator"
+              aria-hidden="true"
+            >|</span>
 
+            <a
+              href="images-to-pdf.html"
+              class="tool-category-link"
+            >
+              Images to PDF
+            </a>
 
-  <!-- ========================================
-       PAGE
-  ======================================== -->
+          </div>
 
-  <main class="page-wrapper">
-
-    <div class="page-layout">
-
-
-      <!-- MAIN CONTENT -->
-
-      <section class="content">
-
-
-        <!-- Breadcrumb -->
-
-        <div class="breadcrumb">
-
-          <a href="index.html">
-            All Tools
-          </a>
-
-          <span>
-            /
-          </span>
-
-          <a href="index.html">
-            PDF Tools
-          </a>
-
-          <span>
-            /
-          </span>
-
-          <strong>
-            Split PDF
-          </strong>
-
-        </div>
+        </nav>
 
 
+        <h1 class="tool-title">
+          Merge PDF
+        </h1>
 
-        <!-- Heading -->
-
-        <div class="heading">
-
-          <h1>
-            Split PDF
-          </h1>
-
-          <p>
-            Split your PDF into separate pages quickly and easily.
-            Choose all pages or select specific pages to extract.
-          </p>
-
-        </div>
+        <p class="tool-description">
+          Combine multiple PDF files into one PDF document quickly and easily.
+        </p>
 
 
-
-        <!-- TOOL BOX -->
+        <!-- =========================
+             TOOL
+        ========================= -->
 
         <div class="tool-box">
 
-
-          <!-- UPLOAD AREA -->
-
           <label
-            for="pdfInput"
             class="upload-area"
+            for="pdfInput"
             id="uploadArea"
           >
 
-
-            <!-- Upload Message -->
-
-            <div
-              class="upload-message"
-              id="uploadMessage"
-            >
-
-              <div class="upload-icon">
-                📄
-              </div>
-
-              <h2>
-                Upload PDF Files
-              </h2>
-
-              <p>
-                Click here to choose one or more PDFs from your device.
-              </p>
-
+            <div class="upload-icon">
+              +
             </div>
 
+            <p class="upload-title">
+              Select PDF files
+            </p>
 
-
-            <!-- Preview Grid -->
-
-            <div
-              class="preview-grid"
-              id="previewGrid"
-            ></div>
+            <p class="upload-subtitle">
+              Choose two or more PDF files to merge
+            </p>
 
           </label>
-
-
 
           <input
             type="file"
             id="pdfInput"
-            accept="application/pdf"
+            accept="application/pdf,.pdf"
             multiple
           >
 
 
+          <div
+            class="pdf-list"
+            id="pdfList"
+          ></div>
 
-          <!-- ACTION BUTTONS DIRECTLY UNDER PREVIEWS -->
 
           <div
-            class="buttons"
-            id="actionButtons"
+            class="empty-state"
+            id="emptyState"
           >
+            No PDF files selected yet.
+          </div>
+
+
+          <div class="actions">
 
             <button
-              class="primary-button"
-              id="splitButton"
               type="button"
-            >
-              Split PDF and Download
-            </button>
-
-            <button
               class="secondary-button"
-              id="newFileButton"
-              type="button"
+              id="addMoreButton"
             >
-              + Add More PDFs
+              Add More PDFs
+            </button>
+
+            <button
+              type="button"
+              class="primary-button"
+              id="mergeButton"
+              disabled
+            >
+              Merge PDFs
             </button>
 
           </div>
 
 
-
-          <!-- EDITOR -->
-
           <div
-            class="editor"
-            id="editor"
-          >
-
-
-            <!-- Options -->
-
-            <h2 class="options-title">
-              Split Options
-            </h2>
-
-
-            <div class="option-box">
-
-
-              <!-- Split All -->
-
-              <div class="radio-option">
-
-                <label>
-
-                  <input
-                    type="radio"
-                    name="splitOption"
-                    value="all"
-                    checked
-                  >
-
-                  Split all pages
-
-                </label>
-
-                <p class="option-description">
-                  Every page will be saved as a separate PDF file.
-                </p>
-
-              </div>
-
-
-
-              <!-- Selected Pages -->
-
-              <div class="radio-option">
-
-                <label>
-
-                  <input
-                    type="radio"
-                    name="splitOption"
-                    value="range"
-                  >
-
-                  Split selected pages
-
-                </label>
-
-                <p class="option-description">
-                  Choose which pages you want to extract.
-                </p>
-
-
-
-                <!-- Page Range -->
-
-                <div
-                  class="range-section"
-                  id="rangeSection"
-                >
-
-                  <label for="pageRange">
-                    Page range
-                  </label>
-
-                  <input
-                    type="text"
-                    id="pageRange"
-                    placeholder="Example: 1-3 or 1,3,5"
-                  >
-
-                  <p class="range-help">
-                    The selected range will be applied to every uploaded PDF.
-                  </p>
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <!-- Status -->
-
-            <div
-              class="status"
-              id="status"
-            ></div>
-
-
-          </div>
+            class="status"
+            id="status"
+            aria-live="polite"
+          ></div>
 
         </div>
 
       </section>
 
 
-
-      <!-- ========================================
-           ADVERTISEMENT
-      ======================================== -->
+      <!-- =========================
+           AD
+      ========================= -->
 
       <aside class="ad-column">
 
         <div class="ad-box">
 
-          <div class="ad-content">
-
-            <div class="ad-label">
-              ADVERTISEMENT
-            </div>
-
-            <div class="sample-ad">
-
-              <div class="sample-ad-badge">
-                TOOLNEST
-              </div>
-
-              <h3>
-                Simple Tools.<br>
-                Better Productivity.
-              </h3>
-
-              <p>
-                Fast, free and easy-to-use online tools for everyday tasks.
-              </p>
-
-              <div class="sample-ad-button">
-                Explore Tools
-              </div>
-
-            </div>
-
+          <div class="ad-brand">
+            T
           </div>
+
+          <span>
+            Your Ad Here
+          </span>
 
         </div>
 
@@ -1722,14 +1123,58 @@
   </main>
 
 
+  <!-- =========================
+       PREVIEW MODAL
+  ========================= -->
 
-  <!-- ========================================
+  <div
+    class="preview-modal"
+    id="previewModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modalTitle"
+  >
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h2
+          class="modal-title"
+          id="modalTitle"
+        >
+          PDF Preview
+        </h2>
+
+        <button
+          type="button"
+          class="modal-close"
+          id="modalClose"
+          aria-label="Close preview"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <canvas id="modalCanvas"></canvas>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
        FOOTER
-  ======================================== -->
+  ========================= -->
 
-  <footer>
+  <footer class="site-footer">
 
-    <div class="footer-inner">
+    <div class="footer-content">
 
       <div>
         © 2026 ToolNest · Simple, Fast &amp; Free
@@ -1737,19 +1182,19 @@
 
       <div class="footer-links">
 
-        <a href="#">
+        <a href="about.html">
           About
         </a>
 
-        <a href="#">
+        <a href="privacy.html">
           Privacy
         </a>
 
-        <a href="#">
+        <a href="terms.html">
           Terms
         </a>
 
-        <a href="#">
+        <a href="contact.html">
           Contact
         </a>
 
@@ -1760,498 +1205,382 @@
   </footer>
 
 
-
-  <!-- ========================================
+  <!-- =========================
        JAVASCRIPT
-  ======================================== -->
+  ========================= -->
 
   <script>
 
-    /* ========================================
-       PDF.JS SETUP
-    ======================================== */
-
+    /* PDF.js worker */
     pdfjsLib.GlobalWorkerOptions.workerSrc =
       "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
 
+    const pdfInput = document.getElementById("pdfInput");
+    const uploadArea = document.getElementById("uploadArea");
+    const addMoreButton = document.getElementById("addMoreButton");
+    const mergeButton = document.getElementById("mergeButton");
+    const pdfList = document.getElementById("pdfList");
+    const emptyState = document.getElementById("emptyState");
+    const status = document.getElementById("status");
 
-    /* ========================================
-       ELEMENTS
-    ======================================== */
-
-    const pdfInput =
-      document.getElementById("pdfInput");
-
-    const uploadMessage =
-      document.getElementById("uploadMessage");
-
-    const previewGrid =
-      document.getElementById("previewGrid");
-
-    const editor =
-      document.getElementById("editor");
-
-    const rangeSection =
-      document.getElementById("rangeSection");
-
-    const pageRange =
-      document.getElementById("pageRange");
-
-    const splitButton =
-      document.getElementById("splitButton");
-
-    const newFileButton =
-      document.getElementById("newFileButton");
-
-    const status =
-      document.getElementById("status");
-
-    const actionButtons =
-      document.getElementById("actionButtons");
+    const previewModal = document.getElementById("previewModal");
+    const modalClose = document.getElementById("modalClose");
+    const modalCanvas = document.getElementById("modalCanvas");
+    const modalTitle = document.getElementById("modalTitle");
 
 
-
-    /* ========================================
-       FILE STORAGE
-    ======================================== */
-
-    let uploadedFiles = [];
+    let pdfFiles = [];
+    let draggedId = null;
 
 
+    /* =========================
+       FILE SELECTION
+    ========================= */
 
-    /* ========================================
-       UPLOAD FILES
-    ======================================== */
+    uploadArea.addEventListener("click", () => {
+      pdfInput.click();
+    });
 
-    pdfInput.addEventListener(
-      "change",
-      async function(event) {
 
-        const files =
-          Array.from(event.target.files);
+    addMoreButton.addEventListener("click", () => {
+      pdfInput.click();
+    });
 
-        if (!files.length) {
+
+    pdfInput.addEventListener("change", event => {
+
+      const files = Array.from(event.target.files);
+
+      addPdfFiles(files);
+
+      /*
+        Reset input so selecting the same file again
+        still triggers the change event.
+      */
+      pdfInput.value = "";
+
+    });
+
+
+    function addPdfFiles(files) {
+
+      let addedCount = 0;
+
+      files.forEach(file => {
+
+        if (
+          file.type !== "application/pdf" &&
+          !file.name.toLowerCase().endsWith(".pdf")
+        ) {
           return;
         }
 
+        const duplicate = pdfFiles.some(item =>
+          item.file.name === file.name &&
+          item.file.size === file.size
+        );
 
-        for (
-          const file of files
-        ) {
-
-          if (
-            file.type !==
-            "application/pdf"
-          ) {
-
-            alert(
-              file.name +
-              " is not a valid PDF file."
-            );
-
-            continue;
-          }
-
-
-          const alreadyExists =
-            uploadedFiles.some(
-              function(existingFile) {
-
-                return (
-                  existingFile.file.name ===
-                  file.name
-                );
-
-              }
-            );
-
-
-          if (
-            alreadyExists
-          ) {
-            continue;
-          }
-
-
-          try {
-
-            const arrayBuffer =
-              await file.arrayBuffer();
-
-
-            const pdf =
-              await pdfjsLib.getDocument(
-                {
-                  data:
-                    arrayBuffer.slice(0)
-                }
-              ).promise;
-
-
-            uploadedFiles.push(
-              {
-                file: file,
-
-                arrayBuffer:
-                  arrayBuffer,
-
-                pageCount:
-                  pdf.numPages
-              }
-            );
-
-          }
-
-          catch (error) {
-
-            console.error(error);
-
-            alert(
-              "Could not open " +
-              file.name
-            );
-
-          }
-
+        if (duplicate) {
+          return;
         }
 
+        pdfFiles.push({
+          file: file,
+          id: createId()
+        });
 
-        /* Reset input */
+        addedCount++;
 
-        pdfInput.value = "";
-
-
-        renderPreviews();
-
-      }
-    );
+      });
 
 
-
-    /* ========================================
-       RENDER PREVIEWS
-    ======================================== */
-
-    async function renderPreviews() {
+      renderPdfList();
 
 
-      previewGrid.innerHTML =
-        "";
-
-
-      /* No files */
-
-      if (
-        uploadedFiles.length === 0
-      ) {
-
-        uploadMessage.style.display =
-          "flex";
-
-        previewGrid.style.display =
-          "none";
-
-        editor.style.display =
-          "none";
-
-        actionButtons.style.display =
-          "none";
-
-        return;
-
-      }
-
-
-      /* Hide upload message */
-
-      uploadMessage.style.display =
-        "none";
-
-
-      /* Show previews */
-
-      previewGrid.style.display =
-        "grid";
-
-
-      /* Show buttons directly under previews */
-
-      actionButtons.style.display =
-        "flex";
-
-
-      /* Show editor */
-
-      editor.style.display =
-        "block";
-
-
-      /* Create preview cards */
-
-      for (
-        let index = 0;
-        index < uploadedFiles.length;
-        index++
-      ) {
-
-        const item =
-          uploadedFiles[index];
-
-
-        /* Card */
-
-        const card =
-          document.createElement(
-            "div"
-          );
-
-        card.className =
-          "pdf-preview-card";
-
-
-        /* Prevent card click */
-
-        card.addEventListener(
-          "click",
-          function(event) {
-
-            event.preventDefault();
-            event.stopPropagation();
-
-          }
+      if (addedCount > 0) {
+        setStatus(
+          `${addedCount} PDF file${addedCount === 1 ? "" : "s"} added.`,
+          "success"
         );
-
-
-        /* ========================================
-           REMOVE BUTTON
-        ======================================== */
-
-        const removeButton =
-          document.createElement(
-            "button"
-          );
-
-        removeButton.className =
-          "remove-file";
-
-        removeButton.type =
-          "button";
-
-        removeButton.textContent =
-          "×";
-
-        removeButton.setAttribute(
-          "aria-label",
-          "Remove " +
-          item.file.name
-        );
-
-
-        removeButton.addEventListener(
-          "click",
-          function(event) {
-
-            event.preventDefault();
-
-            event.stopPropagation();
-
-
-            uploadedFiles.splice(
-              index,
-              1
-            );
-
-
-            renderPreviews();
-
-          }
-        );
-
-
-        /* Thumbnail */
-
-        const thumbnail =
-          document.createElement(
-            "div"
-          );
-
-        thumbnail.className =
-          "preview-thumbnail";
-
-
-        const canvas =
-          document.createElement(
-            "canvas"
-          );
-
-        thumbnail.appendChild(
-          canvas
-        );
-
-
-        /* File Name */
-
-        const fileName =
-          document.createElement(
-            "div"
-          );
-
-        fileName.className =
-          "preview-name";
-
-        fileName.textContent =
-          item.file.name;
-
-
-        /* Page Count */
-
-        const pageCount =
-          document.createElement(
-            "div"
-          );
-
-        pageCount.className =
-          "preview-pages";
-
-        pageCount.textContent =
-          item.pageCount +
-          (
-            item.pageCount === 1
-              ? " page"
-              : " pages"
-          );
-
-
-        /* Build Card */
-
-        card.appendChild(
-          removeButton
-        );
-
-        card.appendChild(
-          thumbnail
-        );
-
-        card.appendChild(
-          fileName
-        );
-
-        card.appendChild(
-          pageCount
-        );
-
-
-        previewGrid.appendChild(
-          card
-        );
-
-
-        /* Render First Page */
-
-        renderPdfThumbnail(
-          item.arrayBuffer,
-          canvas
-        );
-
       }
 
     }
 
 
+    function createId() {
 
-    /* ========================================
-       PDF THUMBNAIL
-    ======================================== */
+      return Date.now().toString(36) +
+        Math.random().toString(36).slice(2);
 
-    async function renderPdfThumbnail(
-      arrayBuffer,
-      canvas
-    ) {
+    }
+
+
+    /* =========================
+       RENDER PDF LIST
+    ========================= */
+
+    function renderPdfList() {
+
+      pdfList.innerHTML = "";
+
+      emptyState.style.display =
+        pdfFiles.length === 0 ? "block" : "none";
+
+      mergeButton.disabled =
+        pdfFiles.length < 2;
+
+
+      pdfFiles.forEach((item, index) => {
+
+        const card = document.createElement("div");
+
+        card.className = "pdf-card";
+
+        card.draggable = true;
+
+        card.dataset.id = item.id;
+
+
+        const preview = document.createElement("div");
+
+        preview.className = "pdf-preview";
+
+
+        const canvas = document.createElement("canvas");
+
+        preview.appendChild(canvas);
+
+
+        /* Zoom button */
+        const zoomButton = document.createElement("button");
+
+        zoomButton.type = "button";
+        zoomButton.className =
+          "preview-control preview-zoom";
+
+        zoomButton.setAttribute(
+          "aria-label",
+          `Preview ${item.file.name}`
+        );
+
+        zoomButton.title = "Preview PDF";
+
+
+        const magnifier =
+          document.createElement("span");
+
+        magnifier.className = "magnifier-icon";
+
+        magnifier.setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+        zoomButton.appendChild(magnifier);
+
+
+        /*
+          Prevent clicking the zoom button from
+          starting a drag operation.
+        */
+        zoomButton.addEventListener(
+          "mousedown",
+          event => event.stopPropagation()
+        );
+
+
+        zoomButton.addEventListener(
+          "click",
+          event => {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            openPreview(item);
+
+          }
+        );
+
+
+        preview.appendChild(zoomButton);
+
+
+        /* Remove button */
+        const removeButton = document.createElement("button");
+
+        removeButton.type = "button";
+        removeButton.className =
+          "preview-control preview-remove";
+
+        removeButton.textContent = "×";
+
+        removeButton.setAttribute(
+          "aria-label",
+          `Remove ${item.file.name}`
+        );
+
+        removeButton.title = "Remove PDF";
+
+
+        removeButton.addEventListener(
+          "mousedown",
+          event => event.stopPropagation()
+        );
+
+
+        removeButton.addEventListener(
+          "click",
+          event => {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            removePdf(item.id);
+
+          }
+        );
+
+
+        preview.appendChild(removeButton);
+
+
+        const info = document.createElement("div");
+
+        info.className = "pdf-info";
+
+
+        const name = document.createElement("p");
+
+        name.className = "pdf-name";
+
+        name.textContent = item.file.name;
+
+
+        const meta = document.createElement("p");
+
+        meta.className = "pdf-meta";
+
+        meta.textContent =
+          `${formatFileSize(item.file.size)} · PDF ${index + 1}`;
+
+
+        info.appendChild(name);
+        info.appendChild(meta);
+
+
+        const dragHandle = document.createElement("div");
+
+        dragHandle.className = "drag-handle";
+
+        dragHandle.textContent = "☷";
+
+        dragHandle.setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+
+        card.appendChild(preview);
+        card.appendChild(info);
+        card.appendChild(dragHandle);
+
+
+        addDragEvents(card);
+
+
+        pdfList.appendChild(card);
+
+
+        renderFirstPage(
+          item.file,
+          canvas
+        );
+
+      });
+
+    }
+
+
+    /* =========================
+       RENDER FIRST PAGE
+    ========================= */
+
+    async function renderFirstPage(file, canvas) {
 
       try {
 
-        const pdf =
-          await pdfjsLib.getDocument(
-            {
-              data:
-                arrayBuffer.slice(0)
-            }
-          ).promise;
+        const buffer =
+          await file.arrayBuffer();
 
+        const pdf =
+          await pdfjsLib.getDocument({
+            data: buffer
+          }).promise;
 
         const page =
-          await pdf.getPage(
-            1
-          );
-
+          await pdf.getPage(1);
 
         const baseViewport =
-          page.getViewport(
-            {
-              scale: 1
-            }
-          );
+          page.getViewport({
+            scale: 1
+          });
 
 
-        const maxWidth =
-          145;
+        const containerWidth = 103;
+        const containerHeight = 133;
 
-        const maxHeight =
-          185;
-
-
-        const scale =
-          Math.min(
-            maxWidth /
-            baseViewport.width,
-
-            maxHeight /
-            baseViewport.height
-          );
-
+        const scale = Math.min(
+          containerWidth / baseViewport.width,
+          containerHeight / baseViewport.height
+        );
 
         const viewport =
-          page.getViewport(
-            {
-              scale: scale
-            }
-          );
+          page.getViewport({
+            scale: scale
+          });
+
+
+        const ratio =
+          window.devicePixelRatio || 1;
 
 
         canvas.width =
-          Math.floor(
-            viewport.width
-          );
+          Math.ceil(viewport.width * ratio);
 
         canvas.height =
-          Math.floor(
-            viewport.height
-          );
+          Math.ceil(viewport.height * ratio);
+
+        canvas.style.width =
+          `${viewport.width}px`;
+
+        canvas.style.height =
+          `${viewport.height}px`;
 
 
         const context =
-          canvas.getContext(
-            "2d"
-          );
+          canvas.getContext("2d");
 
 
-        await page.render(
-          {
-            canvasContext:
-              context,
+        context.setTransform(
+          ratio,
+          0,
+          0,
+          ratio,
+          0,
+          0
+        );
 
-            viewport:
-              viewport
-          }
-        ).promise;
 
-      }
+        await page.render({
+          canvasContext: context,
+          viewport: viewport
+        }).promise;
 
-      catch (error) {
+      } catch (error) {
 
         console.error(
-          "Thumbnail error:",
+          "Preview error:",
           error
         );
 
@@ -2260,147 +1589,269 @@
     }
 
 
+    /* =========================
+       MODAL PREVIEW
+    ========================= */
 
-    /* ========================================
-       SPLIT OPTION
-    ======================================== */
+    async function openPreview(item) {
 
-    document
-      .querySelectorAll(
-        'input[name="splitOption"]'
-      )
-      .forEach(
-        function(option) {
+      modalTitle.textContent =
+        item.file.name;
 
-          option.addEventListener(
-            "change",
-            function() {
+      previewModal.classList.add("open");
 
-              if (
-                this.value ===
-                "range"
-              ) {
+      document.body.classList.add("modal-open");
 
-                rangeSection.style.display =
-                  "block";
+      modalClose.focus();
 
-              }
 
-              else {
+      try {
 
-                rangeSection.style.display =
-                  "none";
+        const buffer =
+          await item.file.arrayBuffer();
 
-              }
+        const pdf =
+          await pdfjsLib.getDocument({
+            data: buffer
+          }).promise;
 
-            }
+        const page =
+          await pdf.getPage(1);
+
+
+        const containerWidth =
+          Math.max(
+            300,
+            previewModal.querySelector(".modal-body").clientWidth - 50
           );
+
+        const containerHeight =
+          Math.max(
+            400,
+            previewModal.querySelector(".modal-body").clientHeight - 50
+          );
+
+
+        const baseViewport =
+          page.getViewport({
+            scale: 1
+          });
+
+
+        const scale = Math.min(
+          containerWidth / baseViewport.width,
+          containerHeight / baseViewport.height
+        );
+
+
+        const viewport =
+          page.getViewport({
+            scale: scale
+          });
+
+
+        const ratio =
+          window.devicePixelRatio || 1;
+
+
+        modalCanvas.width =
+          Math.ceil(viewport.width * ratio);
+
+        modalCanvas.height =
+          Math.ceil(viewport.height * ratio);
+
+
+        modalCanvas.style.width =
+          `${viewport.width}px`;
+
+        modalCanvas.style.height =
+          `${viewport.height}px`;
+
+
+        const context =
+          modalCanvas.getContext("2d");
+
+
+        context.setTransform(
+          ratio,
+          0,
+          0,
+          ratio,
+          0,
+          0
+        );
+
+
+        await page.render({
+          canvasContext: context,
+          viewport: viewport
+        }).promise;
+
+
+      } catch (error) {
+
+        console.error(
+          "Modal preview error:",
+          error
+        );
+
+      }
+
+    }
+
+
+    function closePreview() {
+
+      previewModal.classList.remove("open");
+
+      document.body.classList.remove("modal-open");
+
+      modalCanvas.width = 0;
+      modalCanvas.height = 0;
+
+    }
+
+
+    modalClose.addEventListener(
+      "click",
+      closePreview
+    );
+
+
+    previewModal.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target === previewModal
+        ) {
+          closePreview();
+        }
+
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Escape" &&
+          previewModal.classList.contains("open")
+        ) {
+          closePreview();
+        }
+
+      }
+    );
+
+
+    /* =========================
+       REMOVE PDF
+    ========================= */
+
+    function removePdf(id) {
+
+      pdfFiles =
+        pdfFiles.filter(
+          item => item.id !== id
+        );
+
+      renderPdfList();
+
+      setStatus("");
+
+    }
+
+
+    /* =========================
+       DRAG & DROP
+    ========================= */
+
+    function addDragEvents(card) {
+
+      card.addEventListener(
+        "dragstart",
+        event => {
+
+          draggedId =
+            card.dataset.id;
+
+          card.classList.add("dragging");
+
+          event.dataTransfer.effectAllowed =
+            "move";
 
         }
       );
 
 
+      card.addEventListener(
+        "dragend",
+        () => {
 
-    /* ========================================
-       PARSE PAGE RANGE
-    ======================================== */
+          card.classList.remove(
+            "dragging"
+          );
 
-    function getSelectedPages(
-      range,
-      maxPages
-    ) {
+          draggedId = null;
 
-      const pages =
-        new Set();
-
-
-      const parts =
-        range.split(",");
+        }
+      );
 
 
-      for (
-        let part of parts
-      ) {
+      card.addEventListener(
+        "dragover",
+        event => {
 
-        part =
-          part.trim();
+          event.preventDefault();
+
+          const targetId =
+            card.dataset.id;
+
+          if (
+            !draggedId ||
+            draggedId === targetId
+          ) {
+            return;
+          }
 
 
-        if (
-          part.includes("-")
-        ) {
-
-          const numbers =
-            part.split("-");
-
-
-          const start =
-            parseInt(
-              numbers[0].trim()
+          const draggedIndex =
+            pdfFiles.findIndex(
+              item => item.id === draggedId
             );
 
-
-          const end =
-            parseInt(
-              numbers[1].trim()
+          const targetIndex =
+            pdfFiles.findIndex(
+              item => item.id === targetId
             );
 
 
           if (
-            isNaN(start) ||
-            isNaN(end) ||
-            start < 1 ||
-            end > maxPages ||
-            start > end
+            draggedIndex === -1 ||
+            targetIndex === -1
           ) {
-
-            return null;
-
+            return;
           }
 
 
-          for (
-            let i = start;
-            i <= end;
-            i++
-          ) {
-
-            pages.add(i);
-
-          }
-
-        }
-
-        else {
-
-          const page =
-            parseInt(part);
+          const draggedItem =
+            pdfFiles.splice(
+              draggedIndex,
+              1
+            )[0];
 
 
-          if (
-            isNaN(page) ||
-            page < 1 ||
-            page > maxPages
-          ) {
-
-            return null;
-
-          }
+          pdfFiles.splice(
+            targetIndex,
+            0,
+            draggedItem
+          );
 
 
-          pages.add(page);
-
-        }
-
-      }
-
-
-      return Array.from(
-        pages
-      ).sort(
-        function(a, b) {
-
-          return a - b;
+          renderPdfList();
 
         }
       );
@@ -2408,38 +1859,19 @@
     }
 
 
+    /* =========================
+       MERGE PDFs
+    ========================= */
 
-    /* ========================================
-       SPLIT PDFs
-    ======================================== */
-
-    splitButton.addEventListener(
+    mergeButton.addEventListener(
       "click",
-      async function() {
+      async () => {
 
+        if (pdfFiles.length < 2) {
 
-        if (
-          uploadedFiles.length === 0
-        ) {
-
-          return;
-
-        }
-
-
-        const selectedOption =
-          document.querySelector(
-            'input[name="splitOption"]:checked'
-          ).value;
-
-
-        if (
-          selectedOption === "range" &&
-          !pageRange.value.trim()
-        ) {
-
-          alert(
-            "Please enter a page range."
+          setStatus(
+            "Please select at least two PDF files.",
+            "error"
           );
 
           return;
@@ -2447,262 +1879,191 @@
         }
 
 
+        mergeButton.disabled = true;
+
+        addMoreButton.disabled = true;
+
+        setStatus(
+          "Merging your PDF files..."
+        );
+
+
         try {
 
-          splitButton.disabled =
-            true;
-
-          splitButton.textContent =
-            "Splitting PDFs...";
-
-
-          status.style.display =
-            "block";
-
-          status.textContent =
-            "Preparing your files...";
-
-
-          const zip =
-            new JSZip();
+          const mergedPdf =
+            await PDFLib.PDFDocument.create();
 
 
           for (
-            const uploaded of uploadedFiles
+            let i = 0;
+            i < pdfFiles.length;
+            i++
           ) {
 
-            const originalPdf =
+            const file =
+              pdfFiles[i].file;
+
+
+            const bytes =
+              await file.arrayBuffer();
+
+
+            const sourcePdf =
               await PDFLib.PDFDocument.load(
-                uploaded.arrayBuffer
+                bytes
               );
 
 
-            let pagesToSplit =
-              [];
-
-
-            /* Split all pages */
-
-            if (
-              selectedOption === "all"
-            ) {
-
-              for (
-                let i = 1;
-                i <= uploaded.pageCount;
-                i++
-              ) {
-
-                pagesToSplit.push(i);
-
-              }
-
-            }
-
-
-            /* Split selected pages */
-
-            else {
-
-              pagesToSplit =
-                getSelectedPages(
-                  pageRange.value,
-                  uploaded.pageCount
-                );
-
-
-              if (
-                !pagesToSplit ||
-                pagesToSplit.length === 0
-              ) {
-
-                alert(
-                  "The page range is not valid for " +
-                  uploaded.file.name
-                );
-
-
-                status.style.display =
-                  "none";
-
-
-                splitButton.disabled =
-                  false;
-
-
-                splitButton.textContent =
-                  "Split PDF and Download";
-
-
-                return;
-
-              }
-
-            }
-
-
-            const cleanName =
-              uploaded.file.name.replace(
-                /\.pdf$/i,
-                ""
+            const pages =
+              await mergedPdf.copyPages(
+                sourcePdf,
+                sourcePdf.getPageIndices()
               );
 
 
-            for (
-              const pageNumber of pagesToSplit
-            ) {
+            pages.forEach(page => {
 
-              status.textContent =
-                "Splitting " +
-                uploaded.file.name +
-                "...";
+              mergedPdf.addPage(page);
+
+            });
 
 
-              const newPdf =
-                await PDFLib.PDFDocument.create();
-
-
-              const copiedPages =
-                await newPdf.copyPages(
-                  originalPdf,
-                  [
-                    pageNumber - 1
-                  ]
-                );
-
-
-              newPdf.addPage(
-                copiedPages[0]
-              );
-
-
-              const pdfBytes =
-                await newPdf.save();
-
-
-              zip.file(
-                cleanName +
-                "/page-" +
-                pageNumber +
-                ".pdf",
-
-                pdfBytes
-              );
-
-            }
+            setStatus(
+              `Processing PDF ${i + 1} of ${pdfFiles.length}...`
+            );
 
           }
 
 
-          /* Create ZIP */
-
-          status.textContent =
-            "Creating ZIP file...";
+          const mergedBytes =
+            await mergedPdf.save();
 
 
-          const zipBlob =
-            await zip.generateAsync(
+          const blob =
+            new Blob(
+              [mergedBytes],
               {
-                type: "blob"
+                type: "application/pdf"
               }
             );
 
 
           const url =
-            URL.createObjectURL(
-              zipBlob
-            );
+            URL.createObjectURL(blob);
 
 
           const link =
-            document.createElement(
-              "a"
-            );
+            document.createElement("a");
 
-
-          link.href =
-            url;
-
+          link.href = url;
 
           link.download =
-            "split-pdf-pages.zip";
+            "merged-toolnest.pdf";
 
-
-          document.body.appendChild(
-            link
-          );
-
+          document.body.appendChild(link);
 
           link.click();
-
 
           link.remove();
 
 
-          setTimeout(
-            function() {
+          URL.revokeObjectURL(url);
 
-              URL.revokeObjectURL(
-                url
-              );
 
-            },
-            1000
+          setStatus(
+            "Your merged PDF has been downloaded.",
+            "success"
           );
 
 
-          status.textContent =
-            "Done! Your split PDF files have been downloaded.";
+        } catch (error) {
 
-        }
-
-        catch (error) {
-
-          console.error(error);
-
-
-          alert(
-            "Something went wrong while splitting the PDF."
+          console.error(
+            "Merge error:",
+            error
           );
 
 
-          status.style.display =
-            "none";
+          setStatus(
+            "Something went wrong while merging the PDF files. Please try again.",
+            "error"
+          );
+
+        } finally {
+
+          mergeButton.disabled =
+            pdfFiles.length < 2;
+
+          addMoreButton.disabled =
+            false;
 
         }
-
-
-        splitButton.disabled =
-          false;
-
-
-        splitButton.textContent =
-          "Split PDF and Download";
 
       }
     );
 
 
+    /* =========================
+       STATUS
+    ========================= */
 
-    /* ========================================
-       ADD MORE PDFs
-    ======================================== */
+    function setStatus(
+      message,
+      type = ""
+    ) {
 
-    newFileButton.addEventListener(
-      "click",
-      function(event) {
+      status.textContent =
+        message;
 
-        event.preventDefault();
+      status.className =
+        "status" +
+        (type ? ` ${type}` : "");
 
-        event.stopPropagation();
+    }
 
-        pdfInput.click();
 
+    /* =========================
+       FILE SIZE
+    ========================= */
+
+    function formatFileSize(bytes) {
+
+      if (bytes === 0) {
+        return "0 Bytes";
       }
-    );
+
+
+      const units = [
+        "Bytes",
+        "KB",
+        "MB",
+        "GB"
+      ];
+
+
+      const index =
+        Math.floor(
+          Math.log(bytes) /
+          Math.log(1024)
+        );
+
+
+      return (
+        parseFloat(
+          (
+            bytes /
+            Math.pow(1024, index)
+          ).toFixed(2)
+        ) +
+        " " +
+        units[index]
+      );
+
+    }
 
   </script>
 
 </body>
 
 </html>
+```
