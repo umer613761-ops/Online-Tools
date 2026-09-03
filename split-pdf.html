@@ -1,8 +1,8 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -23,7 +23,9 @@
   <!-- PDF-LIB -->
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
 
+
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -50,9 +52,10 @@
       text-decoration: none;
     }
 
-    /* =========================
+
+    /* ========================================
        HEADER
-    ========================= */
+    ======================================== */
 
     .site-header {
       background: #ffffff;
@@ -82,6 +85,11 @@
       max-height: 62px;
       object-fit: contain;
     }
+
+
+    /* ========================================
+       SEARCH
+    ======================================== */
 
     .search-area {
       flex: 1;
@@ -115,6 +123,11 @@
       font-size: 25px;
       pointer-events: none;
     }
+
+
+    /* ========================================
+       MAIN NAVIGATION
+    ======================================== */
 
     .navigation-wrapper {
       background: #ffffff;
@@ -161,9 +174,10 @@
       border-radius: 3px 3px 0 0;
     }
 
-    /* =========================
+
+    /* ========================================
        PAGE
-    ========================= */
+    ======================================== */
 
     .page-content {
       max-width: 1240px;
@@ -182,9 +196,10 @@
       min-width: 0;
     }
 
-    /* =========================
-       TOOL CATEGORY BAR
-    ========================= */
+
+    /* ========================================
+       TOOL CATEGORY NAVIGATION
+    ======================================== */
 
     .tool-category-bar {
       width: 100%;
@@ -245,9 +260,10 @@
       flex: 0 0 auto;
     }
 
-    /* =========================
+
+    /* ========================================
        TOOL TITLE
-    ========================= */
+    ======================================== */
 
     .tool-title {
       margin: 0;
@@ -264,9 +280,10 @@
       line-height: 1.6;
     }
 
-    /* =========================
-       MERGE TOOL BOX
-    ========================= */
+
+    /* ========================================
+       TOOL BOX
+    ======================================== */
 
     .tool-box {
       background: #ffffff;
@@ -275,6 +292,11 @@
       padding: 24px;
       box-shadow: 0 2px 8px rgba(31, 48, 65, 0.03);
     }
+
+
+    /* ========================================
+       UPLOAD AREA
+    ======================================== */
 
     .upload-area {
       border: 2px dashed #cbd5df;
@@ -329,9 +351,10 @@
       display: none;
     }
 
-    /* =========================
+
+    /* ========================================
        PDF LIST
-    ========================= */
+    ======================================== */
 
     .pdf-list {
       display: flex;
@@ -364,6 +387,11 @@
       box-shadow: 0 5px 15px rgba(31, 48, 65, 0.08);
     }
 
+
+    /* ========================================
+       PDF PREVIEW
+    ======================================== */
+
     .pdf-preview {
       position: relative;
       width: 105px;
@@ -383,25 +411,35 @@
       background: #ffffff;
     }
 
-    /* =========================
+
+    /* ========================================
        PREVIEW CONTROLS
-    ========================= */
+    ======================================== */
 
     .preview-control {
       position: absolute;
       top: 7px;
-      width: 29px;
-      height: 29px;
+      width: 30px;
+      height: 30px;
+
       border: 1px solid rgba(214, 222, 230, 0.95);
       border-radius: 6px;
-      background: rgba(255, 255, 255, 0.94);
+
+      background: rgba(255, 255, 255, 0.96);
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       padding: 0;
+
       cursor: pointer;
-      z-index: 5;
-      box-shadow: 0 1px 3px rgba(31, 48, 65, 0.10);
+
+      z-index: 10;
+
+      box-shadow:
+        0 1px 4px rgba(31, 48, 65, 0.12);
+
       transition:
         background 0.15s ease,
         border-color 0.15s ease,
@@ -414,16 +452,24 @@
       transform: translateY(-1px);
     }
 
+
+    /* Left magnifying-glass button */
+
     .preview-zoom {
       left: 7px;
     }
 
+
+    /* Right remove button */
+
     .preview-remove {
       right: 7px;
+
       color: #687686;
-      font-size: 20px;
-      line-height: 1;
+
+      font-size: 21px;
       font-weight: 400;
+      line-height: 1;
     }
 
     .preview-remove:hover {
@@ -431,28 +477,34 @@
       border-color: #e2bebe;
     }
 
-    /* CSS magnifying glass */
+
+    /* ========================================
+       SVG MAGNIFYING GLASS
+    ======================================== */
+
     .magnifier-icon {
-      position: relative;
-      width: 12px;
-      height: 12px;
-      border: 2px solid #596b7c;
-      border-radius: 50%;
+      width: 16px;
+      height: 16px;
       display: block;
+      overflow: visible;
     }
 
-    .magnifier-icon::after {
-      content: "";
-      position: absolute;
-      width: 6px;
-      height: 2px;
-      background: #596b7c;
-      border-radius: 2px;
-      right: -5px;
-      bottom: -2px;
-      transform: rotate(45deg);
-      transform-origin: center;
+    .magnifier-icon circle {
+      fill: none;
+      stroke: #526475;
+      stroke-width: 1.8;
     }
+
+    .magnifier-icon line {
+      stroke: #526475;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+    }
+
+
+    /* ========================================
+       PDF INFO
+    ======================================== */
 
     .pdf-info {
       min-width: 0;
@@ -481,9 +533,10 @@
       user-select: none;
     }
 
-    /* =========================
+
+    /* ========================================
        ACTIONS
-    ========================= */
+    ======================================== */
 
     .actions {
       display: flex;
@@ -502,6 +555,7 @@
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
+
       transition:
         background 0.15s ease,
         opacity 0.15s ease,
@@ -532,9 +586,10 @@
       cursor: not-allowed;
     }
 
-    /* =========================
+
+    /* ========================================
        STATUS
-    ========================= */
+    ======================================== */
 
     .status {
       min-height: 22px;
@@ -552,9 +607,10 @@
       color: #357a55;
     }
 
-    /* =========================
+
+    /* ========================================
        EMPTY STATE
-    ========================= */
+    ======================================== */
 
     .empty-state {
       margin-top: 18px;
@@ -563,9 +619,10 @@
       text-align: center;
     }
 
-    /* =========================
+
+    /* ========================================
        AD
-    ========================= */
+    ======================================== */
 
     .ad-column {
       width: 200px;
@@ -579,10 +636,12 @@
       background: #ffffff;
       border: 1px solid #e0e6ec;
       border-radius: 10px;
+
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+
       color: #9aa6b2;
       text-align: center;
     }
@@ -593,9 +652,11 @@
       margin-bottom: 10px;
       border-radius: 8px;
       background: #f0f3f6;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       color: #7f8c99;
       font-weight: 700;
       font-size: 20px;
@@ -605,18 +666,24 @@
       font-size: 12px;
     }
 
-    /* =========================
-       MODAL
-    ========================= */
+
+    /* ========================================
+       PREVIEW MODAL
+    ======================================== */
 
     .preview-modal {
       position: fixed;
       inset: 0;
+
       z-index: 1000;
+
       display: none;
+
       align-items: center;
       justify-content: center;
+
       padding: 30px;
+
       background: rgba(21, 31, 42, 0.72);
     }
 
@@ -626,50 +693,78 @@
 
     .modal-content {
       position: relative;
+
       width: min(900px, 94vw);
       height: min(90vh, 900px);
+
       background: #ffffff;
+
       border-radius: 12px;
-      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+
+      box-shadow:
+        0 15px 50px rgba(0, 0, 0, 0.25);
+
       display: flex;
       flex-direction: column;
+
       overflow: hidden;
     }
 
+
+    /* Modal header */
+
     .modal-header {
       min-height: 58px;
+
       padding: 0 18px;
+
       border-bottom: 1px solid #e3e8ed;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       gap: 15px;
+
       background: #ffffff;
     }
 
     .modal-title {
       margin: 0;
+
       color: #263548;
+
       font-size: 15px;
       font-weight: 700;
+
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
+
+    /* Modal close button */
+
     .modal-close {
       width: 34px;
       height: 34px;
+
       flex: 0 0 34px;
+
       border: 1px solid #d7dee5;
       border-radius: 7px;
+
       background: #ffffff;
+
       color: #5e6d7c;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       font-size: 23px;
       line-height: 1;
+
       cursor: pointer;
     }
 
@@ -678,32 +773,45 @@
       color: #263548;
     }
 
+
+    /* Modal body */
+
     .modal-body {
       flex: 1;
+
       min-height: 0;
+
       overflow: auto;
+
       background: #eef1f4;
+
       display: flex;
       align-items: flex-start;
       justify-content: center;
+
       padding: 25px;
     }
 
     #modalCanvas {
       display: block;
+
       max-width: 100%;
       height: auto;
+
       background: #ffffff;
-      box-shadow: 0 3px 15px rgba(31, 48, 65, 0.14);
+
+      box-shadow:
+        0 3px 15px rgba(31, 48, 65, 0.14);
     }
 
     body.modal-open {
       overflow: hidden;
     }
 
-    /* =========================
+
+    /* ========================================
        FOOTER
-    ========================= */
+    ======================================== */
 
     .site-footer {
       background: #ffffff;
@@ -713,12 +821,17 @@
     .footer-content {
       max-width: 1240px;
       margin: 0 auto;
+
       padding: 24px 28px;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       gap: 20px;
+
       color: #7b8794;
+
       font-size: 13px;
     }
 
@@ -731,11 +844,13 @@
       color: #326ba8;
     }
 
-    /* =========================
-       RESPONSIVE
-    ========================= */
+
+    /* ========================================
+       TABLET
+    ======================================== */
 
     @media (max-width: 950px) {
+
       .top-header {
         gap: 30px;
       }
@@ -752,15 +867,26 @@
       .ad-column {
         display: none;
       }
+
     }
 
+
+    /* ========================================
+       MOBILE
+    ======================================== */
+
     @media (max-width: 650px) {
+
       .top-header {
         height: auto;
         min-height: 90px;
+
         padding: 16px 18px;
+
         flex-direction: column;
+
         align-items: stretch;
+
         gap: 15px;
       }
 
@@ -773,9 +899,11 @@
         max-height: 50px;
       }
 
+
       .search-area {
         max-width: none;
       }
+
 
       .navigation-wrapper {
         overflow-x: auto;
@@ -783,19 +911,25 @@
 
       .main-navigation {
         height: 58px;
+
         padding: 0 18px;
+
         gap: 24px;
+
         width: max-content;
       }
 
       .nav-button {
         height: 58px;
+
         font-size: 14px;
       }
+
 
       .page-content {
         padding: 25px 18px 45px;
       }
+
 
       .tool-category-bar {
         margin-bottom: 22px;
@@ -803,14 +937,18 @@
 
       .tool-category-link {
         min-height: 37px;
+
         padding: 8px 12px;
+
         font-size: 13px;
       }
 
       .tool-category-separator {
         margin: 0 8px;
+
         font-size: 15px;
       }
+
 
       .tool-title {
         font-size: 26px;
@@ -820,9 +958,11 @@
         font-size: 15px;
       }
 
+
       .tool-box {
         padding: 16px;
       }
+
 
       .pdf-card {
         gap: 11px;
@@ -834,6 +974,7 @@
         flex-basis: 90px;
       }
 
+
       .actions {
         flex-direction: column;
         align-items: stretch;
@@ -844,10 +985,18 @@
         width: 100%;
       }
 
+
       .footer-content {
         padding: 22px 18px;
+
         flex-direction: column;
+
         text-align: center;
+      }
+
+
+      .preview-modal {
+        padding: 10px;
       }
 
       .modal-content {
@@ -855,35 +1004,45 @@
         height: 92vh;
       }
 
-      .preview-modal {
-        padding: 10px;
-      }
-
       .modal-body {
         padding: 15px;
       }
+
     }
+
   </style>
+
 </head>
+
 
 <body>
 
-  <!-- =========================
+
+  <!-- ========================================
        HEADER
-  ========================= -->
+  ======================================== -->
 
   <header class="site-header">
 
+
     <div class="top-header">
 
-      <a href="index.html" class="logo">
+
+      <a
+        href="index.html"
+        class="logo"
+      >
+
         <img
           src="logo.jpeg"
           alt="ToolNest - Smart Tools, Simple Tasks"
         >
+
       </a>
 
+
       <div class="search-area">
+
         <input
           type="search"
           id="toolSearch"
@@ -891,14 +1050,28 @@
           autocomplete="off"
           aria-label="Search tools"
         >
-        <span class="search-icon" aria-hidden="true">⌕</span>
+
+        <span
+          class="search-icon"
+          aria-hidden="true"
+        >
+          ⌕
+        </span>
+
       </div>
+
 
     </div>
 
+
     <div class="navigation-wrapper">
 
-      <nav class="main-navigation" aria-label="Main navigation">
+
+      <nav
+        class="main-navigation"
+        aria-label="Main navigation"
+      >
+
 
         <a
           href="index.html"
@@ -907,12 +1080,14 @@
           Popular Tools
         </a>
 
+
         <a
           href="index.html?category=pdf"
           class="nav-button active"
         >
           PDF Tools
         </a>
+
 
         <a
           href="index.html?category=text"
@@ -921,12 +1096,14 @@
           Text Tools
         </a>
 
+
         <a
           href="index.html?category=image"
           class="nav-button"
         >
           Image Tools
         </a>
+
 
         <a
           href="index.html?category=calculator"
@@ -935,30 +1112,42 @@
           Calculators
         </a>
 
+
       </nav>
 
+
     </div>
+
 
   </header>
 
 
-  <!-- =========================
-       MAIN
-  ========================= -->
+
+  <!-- ========================================
+       MAIN CONTENT
+  ======================================== -->
 
   <main class="page-content">
 
+
     <div class="content-layout">
+
 
       <section class="main-content">
 
-        <!-- Same-category tool navigation -->
+
+        <!-- ====================================
+             PDF TOOL NAVIGATION
+        ==================================== -->
+
         <nav
           class="tool-category-bar"
           aria-label="PDF tools"
         >
 
+
           <div class="tool-category-list">
+
 
             <a
               href="merge-pdf.html"
@@ -967,10 +1156,14 @@
               Merge PDF
             </a>
 
+
             <span
               class="tool-category-separator"
               aria-hidden="true"
-            >|</span>
+            >
+              |
+            </span>
+
 
             <a
               href="split-pdf.html"
@@ -979,10 +1172,14 @@
               Split PDF
             </a>
 
+
             <span
               class="tool-category-separator"
               aria-hidden="true"
-            >|</span>
+            >
+              |
+            </span>
+
 
             <a
               href="pdf-to-images.html"
@@ -991,10 +1188,14 @@
               PDF to Images
             </a>
 
+
             <span
               class="tool-category-separator"
               aria-hidden="true"
-            >|</span>
+            >
+              |
+            </span>
+
 
             <a
               href="images-to-pdf.html"
@@ -1003,25 +1204,37 @@
               Images to PDF
             </a>
 
+
           </div>
+
 
         </nav>
 
 
+
+        <!-- ====================================
+             TITLE
+        ==================================== -->
+
         <h1 class="tool-title">
           Merge PDF
         </h1>
+
 
         <p class="tool-description">
           Combine multiple PDF files into one PDF document quickly and easily.
         </p>
 
 
-        <!-- =========================
-             TOOL
-        ========================= -->
+
+        <!-- ====================================
+             TOOL BOX
+        ==================================== -->
 
         <div class="tool-box">
+
+
+          <!-- Upload -->
 
           <label
             class="upload-area"
@@ -1029,19 +1242,24 @@
             id="uploadArea"
           >
 
+
             <div class="upload-icon">
               +
             </div>
+
 
             <p class="upload-title">
               Select PDF files
             </p>
 
+
             <p class="upload-subtitle">
               Choose two or more PDF files to merge
             </p>
 
+
           </label>
+
 
           <input
             type="file"
@@ -1050,6 +1268,9 @@
             multiple
           >
 
+
+
+          <!-- PDF list -->
 
           <div
             class="pdf-list"
@@ -1065,7 +1286,11 @@
           </div>
 
 
+
+          <!-- Actions -->
+
           <div class="actions">
+
 
             <button
               type="button"
@@ -1074,6 +1299,7 @@
             >
               Add More PDFs
             </button>
+
 
             <button
               type="button"
@@ -1084,8 +1310,12 @@
               Merge PDFs
             </button>
 
+
           </div>
 
+
+
+          <!-- Status -->
 
           <div
             class="status"
@@ -1093,39 +1323,50 @@
             aria-live="polite"
           ></div>
 
+
         </div>
+
 
       </section>
 
 
-      <!-- =========================
-           AD
-      ========================= -->
+
+      <!-- ========================================
+           AD COLUMN
+      ======================================== -->
 
       <aside class="ad-column">
 
+
         <div class="ad-box">
+
 
           <div class="ad-brand">
             T
           </div>
 
+
           <span>
             Your Ad Here
           </span>
 
+
         </div>
+
 
       </aside>
 
+
     </div>
+
 
   </main>
 
 
-  <!-- =========================
+
+  <!-- ========================================
        PREVIEW MODAL
-  ========================= -->
+  ======================================== -->
 
   <div
     class="preview-modal"
@@ -1135,9 +1376,12 @@
     aria-labelledby="modalTitle"
   >
 
+
     <div class="modal-content">
 
+
       <div class="modal-header">
+
 
         <h2
           class="modal-title"
@@ -1145,6 +1389,7 @@
         >
           PDF Preview
         </h2>
+
 
         <button
           type="button"
@@ -1155,140 +1400,237 @@
           ×
         </button>
 
+
       </div>
+
 
       <div class="modal-body">
 
-        <canvas id="modalCanvas"></canvas>
+
+        <canvas
+          id="modalCanvas"
+        ></canvas>
+
 
       </div>
 
+
     </div>
+
 
   </div>
 
 
-  <!-- =========================
+
+  <!-- ========================================
        FOOTER
-  ========================= -->
+  ======================================== -->
 
   <footer class="site-footer">
 
+
     <div class="footer-content">
+
 
       <div>
         © 2026 ToolNest · Simple, Fast &amp; Free
       </div>
 
+
       <div class="footer-links">
+
 
         <a href="about.html">
           About
         </a>
 
+
         <a href="privacy.html">
           Privacy
         </a>
+
 
         <a href="terms.html">
           Terms
         </a>
 
+
         <a href="contact.html">
           Contact
         </a>
 
+
       </div>
 
+
     </div>
+
 
   </footer>
 
 
-  <!-- =========================
+
+  <!-- ========================================
        JAVASCRIPT
-  ========================= -->
+  ======================================== -->
 
   <script>
 
-    /* PDF.js worker */
+
+    /* ========================================
+       PDF.JS WORKER
+    ======================================== */
+
     pdfjsLib.GlobalWorkerOptions.workerSrc =
       "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
 
-    const pdfInput = document.getElementById("pdfInput");
-    const uploadArea = document.getElementById("uploadArea");
-    const addMoreButton = document.getElementById("addMoreButton");
-    const mergeButton = document.getElementById("mergeButton");
-    const pdfList = document.getElementById("pdfList");
-    const emptyState = document.getElementById("emptyState");
-    const status = document.getElementById("status");
 
-    const previewModal = document.getElementById("previewModal");
-    const modalClose = document.getElementById("modalClose");
-    const modalCanvas = document.getElementById("modalCanvas");
-    const modalTitle = document.getElementById("modalTitle");
+    /* ========================================
+       ELEMENTS
+    ======================================== */
 
+    const pdfInput =
+      document.getElementById("pdfInput");
+
+    const uploadArea =
+      document.getElementById("uploadArea");
+
+    const addMoreButton =
+      document.getElementById("addMoreButton");
+
+    const mergeButton =
+      document.getElementById("mergeButton");
+
+    const pdfList =
+      document.getElementById("pdfList");
+
+    const emptyState =
+      document.getElementById("emptyState");
+
+    const status =
+      document.getElementById("status");
+
+
+    /* Modal */
+
+    const previewModal =
+      document.getElementById("previewModal");
+
+    const modalClose =
+      document.getElementById("modalClose");
+
+    const modalCanvas =
+      document.getElementById("modalCanvas");
+
+    const modalTitle =
+      document.getElementById("modalTitle");
+
+
+
+    /* ========================================
+       STATE
+    ======================================== */
 
     let pdfFiles = [];
+
     let draggedId = null;
 
 
-    /* =========================
+
+    /* ========================================
        FILE SELECTION
-    ========================= */
+    ======================================== */
 
-    uploadArea.addEventListener("click", () => {
-      pdfInput.click();
-    });
+    uploadArea.addEventListener(
+      "click",
+      () => {
+
+        pdfInput.click();
+
+      }
+    );
 
 
-    addMoreButton.addEventListener("click", () => {
-      pdfInput.click();
-    });
+    addMoreButton.addEventListener(
+      "click",
+      () => {
+
+        pdfInput.click();
+
+      }
+    );
 
 
-    pdfInput.addEventListener("change", event => {
+    pdfInput.addEventListener(
+      "change",
+      event => {
 
-      const files = Array.from(event.target.files);
+        const files =
+          Array.from(event.target.files);
 
-      addPdfFiles(files);
+        addPdfFiles(files);
 
-      /*
-        Reset input so selecting the same file again
-        still triggers the change event.
-      */
-      pdfInput.value = "";
+        /*
+          Reset input so selecting the same
+          file again triggers change.
+        */
 
-    });
+        pdfInput.value = "";
 
+      }
+    );
+
+
+
+    /* ========================================
+       ADD PDF FILES
+    ======================================== */
 
     function addPdfFiles(files) {
 
       let addedCount = 0;
 
+
       files.forEach(file => {
+
 
         if (
           file.type !== "application/pdf" &&
-          !file.name.toLowerCase().endsWith(".pdf")
+          !file.name
+            .toLowerCase()
+            .endsWith(".pdf")
         ) {
+
           return;
+
         }
 
-        const duplicate = pdfFiles.some(item =>
-          item.file.name === file.name &&
-          item.file.size === file.size
-        );
+
+        const duplicate =
+          pdfFiles.some(item =>
+
+            item.file.name === file.name &&
+            item.file.size === file.size
+
+          );
+
 
         if (duplicate) {
+
           return;
+
         }
 
+
         pdfFiles.push({
+
           file: file,
+
           id: createId()
+
         });
+
 
         addedCount++;
 
@@ -1299,227 +1641,345 @@
 
 
       if (addedCount > 0) {
+
         setStatus(
           `${addedCount} PDF file${addedCount === 1 ? "" : "s"} added.`,
           "success"
         );
+
       }
 
     }
 
 
+
+    /* ========================================
+       CREATE ID
+    ======================================== */
+
     function createId() {
 
-      return Date.now().toString(36) +
-        Math.random().toString(36).slice(2);
+      return (
+        Date.now().toString(36) +
+        Math.random()
+          .toString(36)
+          .slice(2)
+      );
 
     }
 
 
-    /* =========================
+
+    /* ========================================
        RENDER PDF LIST
-    ========================= */
+    ======================================== */
 
     function renderPdfList() {
 
+
       pdfList.innerHTML = "";
 
+
       emptyState.style.display =
-        pdfFiles.length === 0 ? "block" : "none";
+        pdfFiles.length === 0
+          ? "block"
+          : "none";
+
 
       mergeButton.disabled =
         pdfFiles.length < 2;
 
 
-      pdfFiles.forEach((item, index) => {
 
-        const card = document.createElement("div");
+      pdfFiles.forEach(
+        (item, index) => {
 
-        card.className = "pdf-card";
 
-        card.draggable = true;
+          const card =
+            document.createElement("div");
 
-        card.dataset.id = item.id;
+          card.className =
+            "pdf-card";
 
+          card.draggable = true;
 
-        const preview = document.createElement("div");
+          card.dataset.id =
+            item.id;
 
-        preview.className = "pdf-preview";
 
 
-        const canvas = document.createElement("canvas");
+          /* -------------------------------
+             Preview
+          -------------------------------- */
 
-        preview.appendChild(canvas);
+          const preview =
+            document.createElement("div");
 
+          preview.className =
+            "pdf-preview";
 
-        /* Zoom button */
-        const zoomButton = document.createElement("button");
 
-        zoomButton.type = "button";
-        zoomButton.className =
-          "preview-control preview-zoom";
 
-        zoomButton.setAttribute(
-          "aria-label",
-          `Preview ${item.file.name}`
-        );
+          const canvas =
+            document.createElement("canvas");
 
-        zoomButton.title = "Preview PDF";
+          preview.appendChild(canvas);
 
 
-        const magnifier =
-          document.createElement("span");
 
-        magnifier.className = "magnifier-icon";
+          /* -------------------------------
+             Zoom button
+          -------------------------------- */
 
-        magnifier.setAttribute(
-          "aria-hidden",
-          "true"
-        );
+          const zoomButton =
+            document.createElement("button");
 
-        zoomButton.appendChild(magnifier);
+          zoomButton.type =
+            "button";
 
+          zoomButton.className =
+            "preview-control preview-zoom";
 
-        /*
-          Prevent clicking the zoom button from
-          starting a drag operation.
-        */
-        zoomButton.addEventListener(
-          "mousedown",
-          event => event.stopPropagation()
-        );
+          zoomButton.setAttribute(
+            "aria-label",
+            `Preview ${item.file.name}`
+          );
 
+          zoomButton.title =
+            "Preview PDF";
 
-        zoomButton.addEventListener(
-          "click",
-          event => {
 
-            event.preventDefault();
-            event.stopPropagation();
 
-            openPreview(item);
+          /*
+            Inline SVG magnifying glass.
+            This is deliberately embedded
+            directly into the button so it
+            cannot fail because of a font
+            or emoji rendering issue.
+          */
 
-          }
-        );
+          zoomButton.innerHTML = `
+            <svg
+              class="magnifier-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <circle
+                cx="10.5"
+                cy="10.5"
+                r="6.5"
+              ></circle>
 
+              <line
+                x1="15.5"
+                y1="15.5"
+                x2="21"
+                y2="21"
+              ></line>
+            </svg>
+          `;
 
-        preview.appendChild(zoomButton);
 
 
-        /* Remove button */
-        const removeButton = document.createElement("button");
+          zoomButton.addEventListener(
+            "mousedown",
+            event => {
 
-        removeButton.type = "button";
-        removeButton.className =
-          "preview-control preview-remove";
+              event.stopPropagation();
 
-        removeButton.textContent = "×";
+            }
+          );
 
-        removeButton.setAttribute(
-          "aria-label",
-          `Remove ${item.file.name}`
-        );
 
-        removeButton.title = "Remove PDF";
+          zoomButton.addEventListener(
+            "click",
+            event => {
 
+              event.preventDefault();
 
-        removeButton.addEventListener(
-          "mousedown",
-          event => event.stopPropagation()
-        );
+              event.stopPropagation();
 
+              openPreview(item);
 
-        removeButton.addEventListener(
-          "click",
-          event => {
+            }
+          );
 
-            event.preventDefault();
-            event.stopPropagation();
 
-            removePdf(item.id);
+          preview.appendChild(
+            zoomButton
+          );
 
-          }
-        );
 
 
-        preview.appendChild(removeButton);
+          /* -------------------------------
+             Remove button
+          -------------------------------- */
 
+          const removeButton =
+            document.createElement("button");
 
-        const info = document.createElement("div");
+          removeButton.type =
+            "button";
 
-        info.className = "pdf-info";
+          removeButton.className =
+            "preview-control preview-remove";
 
+          removeButton.textContent =
+            "×";
 
-        const name = document.createElement("p");
+          removeButton.setAttribute(
+            "aria-label",
+            `Remove ${item.file.name}`
+          );
 
-        name.className = "pdf-name";
+          removeButton.title =
+            "Remove PDF";
 
-        name.textContent = item.file.name;
 
+          removeButton.addEventListener(
+            "mousedown",
+            event => {
 
-        const meta = document.createElement("p");
+              event.stopPropagation();
 
-        meta.className = "pdf-meta";
+            }
+          );
 
-        meta.textContent =
-          `${formatFileSize(item.file.size)} · PDF ${index + 1}`;
 
+          removeButton.addEventListener(
+            "click",
+            event => {
 
-        info.appendChild(name);
-        info.appendChild(meta);
+              event.preventDefault();
 
+              event.stopPropagation();
 
-        const dragHandle = document.createElement("div");
+              removePdf(item.id);
 
-        dragHandle.className = "drag-handle";
+            }
+          );
 
-        dragHandle.textContent = "☷";
 
-        dragHandle.setAttribute(
-          "aria-hidden",
-          "true"
-        );
+          preview.appendChild(
+            removeButton
+          );
 
 
-        card.appendChild(preview);
-        card.appendChild(info);
-        card.appendChild(dragHandle);
 
+          /* -------------------------------
+             File information
+          -------------------------------- */
 
-        addDragEvents(card);
+          const info =
+            document.createElement("div");
 
+          info.className =
+            "pdf-info";
 
-        pdfList.appendChild(card);
 
+          const name =
+            document.createElement("p");
 
-        renderFirstPage(
-          item.file,
-          canvas
-        );
+          name.className =
+            "pdf-name";
 
-      });
+          name.textContent =
+            item.file.name;
+
+
+          const meta =
+            document.createElement("p");
+
+          meta.className =
+            "pdf-meta";
+
+          meta.textContent =
+            `${formatFileSize(item.file.size)} · PDF ${index + 1}`;
+
+
+          info.appendChild(name);
+
+          info.appendChild(meta);
+
+
+
+          /* -------------------------------
+             Drag handle
+          -------------------------------- */
+
+          const dragHandle =
+            document.createElement("div");
+
+          dragHandle.className =
+            "drag-handle";
+
+          dragHandle.textContent =
+            "☷";
+
+          dragHandle.setAttribute(
+            "aria-hidden",
+            "true"
+          );
+
+
+
+          /* -------------------------------
+             Card
+          -------------------------------- */
+
+          card.appendChild(preview);
+
+          card.appendChild(info);
+
+          card.appendChild(dragHandle);
+
+
+          addDragEvents(card);
+
+
+          pdfList.appendChild(card);
+
+
+          renderFirstPage(
+            item.file,
+            canvas
+          );
+
+        }
+      );
 
     }
 
 
-    /* =========================
-       RENDER FIRST PAGE
-    ========================= */
 
-    async function renderFirstPage(file, canvas) {
+    /* ========================================
+       RENDER FIRST PAGE
+    ======================================== */
+
+    async function renderFirstPage(
+      file,
+      canvas
+    ) {
 
       try {
+
 
         const buffer =
           await file.arrayBuffer();
 
+
         const pdf =
-          await pdfjsLib.getDocument({
-            data: buffer
-          }).promise;
+          await pdfjsLib
+            .getDocument({
+              data: buffer
+            })
+            .promise;
+
 
         const page =
           await pdf.getPage(1);
+
 
         const baseViewport =
           page.getViewport({
@@ -1527,13 +1987,22 @@
           });
 
 
-        const containerWidth = 103;
-        const containerHeight = 133;
+        const containerWidth =
+          103;
 
-        const scale = Math.min(
-          containerWidth / baseViewport.width,
-          containerHeight / baseViewport.height
-        );
+        const containerHeight =
+          133;
+
+
+        const scale =
+          Math.min(
+            containerWidth /
+              baseViewport.width,
+
+            containerHeight /
+              baseViewport.height
+          );
+
 
         const viewport =
           page.getViewport({
@@ -1546,10 +2015,15 @@
 
 
         canvas.width =
-          Math.ceil(viewport.width * ratio);
+          Math.ceil(
+            viewport.width * ratio
+          );
 
         canvas.height =
-          Math.ceil(viewport.height * ratio);
+          Math.ceil(
+            viewport.height * ratio
+          );
+
 
         canvas.style.width =
           `${viewport.width}px`;
@@ -1573,9 +2047,13 @@
 
 
         await page.render({
+
           canvasContext: context,
+
           viewport: viewport
+
         }).promise;
+
 
       } catch (error) {
 
@@ -1589,46 +2067,69 @@
     }
 
 
-    /* =========================
-       MODAL PREVIEW
-    ========================= */
+
+    /* ========================================
+       OPEN MODAL PREVIEW
+    ======================================== */
 
     async function openPreview(item) {
+
 
       modalTitle.textContent =
         item.file.name;
 
-      previewModal.classList.add("open");
 
-      document.body.classList.add("modal-open");
+      previewModal.classList.add(
+        "open"
+      );
+
+
+      document.body.classList.add(
+        "modal-open"
+      );
+
 
       modalClose.focus();
 
 
+
       try {
+
 
         const buffer =
           await item.file.arrayBuffer();
 
+
         const pdf =
-          await pdfjsLib.getDocument({
-            data: buffer
-          }).promise;
+          await pdfjsLib
+            .getDocument({
+              data: buffer
+            })
+            .promise;
+
 
         const page =
           await pdf.getPage(1);
 
 
+
+        const modalBody =
+          previewModal.querySelector(
+            ".modal-body"
+          );
+
+
         const containerWidth =
           Math.max(
             300,
-            previewModal.querySelector(".modal-body").clientWidth - 50
+            modalBody.clientWidth - 50
           );
+
 
         const containerHeight =
           Math.max(
             400,
-            previewModal.querySelector(".modal-body").clientHeight - 50
+            modalBody.clientHeight - 50
           );
 
 
@@ -1638,10 +2139,16 @@
           });
 
 
-        const scale = Math.min(
-          containerWidth / baseViewport.width,
-          containerHeight / baseViewport.height
-        );
+        const scale =
+          Math.min(
+
+            containerWidth /
+              baseViewport.width,
+
+            containerHeight /
+              baseViewport.height
+
+          );
 
 
         const viewport =
@@ -1655,10 +2162,14 @@
 
 
         modalCanvas.width =
-          Math.ceil(viewport.width * ratio);
+          Math.ceil(
+            viewport.width * ratio
+          );
 
         modalCanvas.height =
-          Math.ceil(viewport.height * ratio);
+          Math.ceil(
+            viewport.height * ratio
+          );
 
 
         modalCanvas.style.width =
@@ -1683,33 +2194,52 @@
 
 
         await page.render({
+
           canvasContext: context,
+
           viewport: viewport
+
         }).promise;
 
 
       } catch (error) {
+
 
         console.error(
           "Modal preview error:",
           error
         );
 
+
       }
 
     }
 
 
+
+    /* ========================================
+       CLOSE MODAL
+    ======================================== */
+
     function closePreview() {
 
-      previewModal.classList.remove("open");
 
-      document.body.classList.remove("modal-open");
+      previewModal.classList.remove(
+        "open"
+      );
+
+
+      document.body.classList.remove(
+        "modal-open"
+      );
+
 
       modalCanvas.width = 0;
+
       modalCanvas.height = 0;
 
     }
+
 
 
     modalClose.addEventListener(
@@ -1718,67 +2248,99 @@
     );
 
 
+    /*
+      Close when clicking the dark
+      background outside the modal.
+    */
+
     previewModal.addEventListener(
       "click",
       event => {
 
+
         if (
-          event.target === previewModal
+          event.target ===
+          previewModal
         ) {
+
           closePreview();
+
         }
 
       }
     );
 
+
+    /*
+      Escape closes modal.
+    */
 
     document.addEventListener(
       "keydown",
       event => {
 
+
         if (
+
           event.key === "Escape" &&
-          previewModal.classList.contains("open")
+
+          previewModal.classList.contains(
+            "open"
+          )
+
         ) {
+
           closePreview();
+
         }
 
       }
     );
 
 
-    /* =========================
+
+    /* ========================================
        REMOVE PDF
-    ========================= */
+    ======================================== */
 
     function removePdf(id) {
+
 
       pdfFiles =
         pdfFiles.filter(
           item => item.id !== id
         );
 
+
       renderPdfList();
+
 
       setStatus("");
 
     }
 
 
-    /* =========================
+
+    /* ========================================
        DRAG & DROP
-    ========================= */
+    ======================================== */
 
     function addDragEvents(card) {
+
 
       card.addEventListener(
         "dragstart",
         event => {
 
+
           draggedId =
             card.dataset.id;
 
-          card.classList.add("dragging");
+
+          card.classList.add(
+            "dragging"
+          );
+
 
           event.dataTransfer.effectAllowed =
             "move";
@@ -1791,9 +2353,11 @@
         "dragend",
         () => {
 
+
           card.classList.remove(
             "dragging"
           );
+
 
           draggedId = null;
 
@@ -1805,27 +2369,35 @@
         "dragover",
         event => {
 
+
           event.preventDefault();
+
 
           const targetId =
             card.dataset.id;
+
 
           if (
             !draggedId ||
             draggedId === targetId
           ) {
+
             return;
+
           }
 
 
           const draggedIndex =
             pdfFiles.findIndex(
-              item => item.id === draggedId
+              item =>
+                item.id === draggedId
             );
+
 
           const targetIndex =
             pdfFiles.findIndex(
-              item => item.id === targetId
+              item =>
+                item.id === targetId
             );
 
 
@@ -1833,7 +2405,9 @@
             draggedIndex === -1 ||
             targetIndex === -1
           ) {
+
             return;
+
           }
 
 
@@ -1859,29 +2433,39 @@
     }
 
 
-    /* =========================
+
+    /* ========================================
        MERGE PDFs
-    ========================= */
+    ======================================== */
 
     mergeButton.addEventListener(
       "click",
       async () => {
 
-        if (pdfFiles.length < 2) {
+
+        if (
+          pdfFiles.length < 2
+        ) {
+
 
           setStatus(
             "Please select at least two PDF files.",
             "error"
           );
 
+
           return;
 
         }
 
 
-        mergeButton.disabled = true;
+        mergeButton.disabled =
+          true;
 
-        addMoreButton.disabled = true;
+
+        addMoreButton.disabled =
+          true;
+
 
         setStatus(
           "Merging your PDF files..."
@@ -1890,8 +2474,12 @@
 
         try {
 
+
           const mergedPdf =
-            await PDFLib.PDFDocument.create();
+            await PDFLib
+              .PDFDocument
+              .create();
+
 
 
           for (
@@ -1899,6 +2487,7 @@
             i < pdfFiles.length;
             i++
           ) {
+
 
             const file =
               pdfFiles[i].file;
@@ -1909,23 +2498,28 @@
 
 
             const sourcePdf =
-              await PDFLib.PDFDocument.load(
-                bytes
-              );
+              await PDFLib
+                .PDFDocument
+                .load(bytes);
 
 
             const pages =
-              await mergedPdf.copyPages(
-                sourcePdf,
-                sourcePdf.getPageIndices()
-              );
+              await mergedPdf
+                .copyPages(
+                  sourcePdf,
+                  sourcePdf.getPageIndices()
+                );
 
 
-            pages.forEach(page => {
+            pages.forEach(
+              page => {
 
-              mergedPdf.addPage(page);
+                mergedPdf.addPage(
+                  page
+                );
 
-            });
+              }
+            );
 
 
             setStatus(
@@ -1933,6 +2527,7 @@
             );
 
           }
+
 
 
           const mergedBytes =
@@ -1949,25 +2544,36 @@
 
 
           const url =
-            URL.createObjectURL(blob);
+            URL.createObjectURL(
+              blob
+            );
 
 
           const link =
             document.createElement("a");
 
+
           link.href = url;
+
 
           link.download =
             "merged-toolnest.pdf";
 
-          document.body.appendChild(link);
+
+          document.body.appendChild(
+            link
+          );
+
 
           link.click();
+
 
           link.remove();
 
 
-          URL.revokeObjectURL(url);
+          URL.revokeObjectURL(
+            url
+          );
 
 
           setStatus(
@@ -1977,6 +2583,7 @@
 
 
         } catch (error) {
+
 
           console.error(
             "Merge error:",
@@ -1989,10 +2596,13 @@
             "error"
           );
 
+
         } finally {
+
 
           mergeButton.disabled =
             pdfFiles.length < 2;
+
 
           addMoreButton.disabled =
             false;
@@ -2003,67 +2613,95 @@
     );
 
 
-    /* =========================
+
+    /* ========================================
        STATUS
-    ========================= */
+    ======================================== */
 
     function setStatus(
       message,
       type = ""
     ) {
 
+
       status.textContent =
         message;
 
+
       status.className =
         "status" +
-        (type ? ` ${type}` : "");
+        (
+          type
+            ? ` ${type}`
+            : ""
+        );
 
     }
 
 
-    /* =========================
-       FILE SIZE
-    ========================= */
 
-    function formatFileSize(bytes) {
+    /* ========================================
+       FILE SIZE
+    ======================================== */
+
+    function formatFileSize(
+      bytes
+    ) {
+
 
       if (bytes === 0) {
+
         return "0 Bytes";
+
       }
 
 
       const units = [
+
         "Bytes",
         "KB",
         "MB",
         "GB"
+
       ];
 
 
       const index =
         Math.floor(
+
           Math.log(bytes) /
           Math.log(1024)
+
         );
 
 
       return (
+
         parseFloat(
+
           (
+
             bytes /
-            Math.pow(1024, index)
+            Math.pow(
+              1024,
+              index
+            )
+
           ).toFixed(2)
+
         ) +
+
         " " +
+
         units[index]
+
       );
 
     }
 
   </script>
 
+
 </body>
 
 </html>
-```
