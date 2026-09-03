@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -113,6 +112,7 @@
       padding: 0 50px 0 18px;
 
       border: 1px solid #d7dee6;
+
       border-radius: 9px;
 
       outline: none;
@@ -167,6 +167,7 @@
       padding: 0 28px;
 
       display: flex;
+
       align-items: center;
 
       gap: 42px;
@@ -176,6 +177,7 @@
       height: 72px;
 
       display: inline-flex;
+
       align-items: center;
 
       position: relative;
@@ -253,6 +255,7 @@
       margin-bottom: 28px;
 
       overflow-x: auto;
+
       overflow-y: hidden;
 
       scrollbar-width: thin;
@@ -274,6 +277,7 @@
       display: inline-flex;
 
       align-items: center;
+
       justify-content: center;
 
       min-height: 40px;
@@ -320,6 +324,7 @@
       display: inline-flex;
 
       align-items: center;
+
       justify-content: center;
 
       margin: 0 10px;
@@ -382,7 +387,7 @@
 
 
     /* =========================================
-       UPLOAD AREA
+       UPLOAD
     ========================================= */
 
     .upload-area {
@@ -397,6 +402,7 @@
       flex-direction: column;
 
       align-items: center;
+
       justify-content: center;
 
       padding: 25px;
@@ -433,6 +439,7 @@
       display: flex;
 
       align-items: center;
+
       justify-content: center;
 
       font-size: 25px;
@@ -559,7 +566,7 @@
 
       padding: 0;
 
-      border: 1px solid #d3dbe3;
+      border: 1px solid #cfd8e1;
 
       border-radius: 6px;
 
@@ -568,62 +575,81 @@
       display: flex;
 
       align-items: center;
+
       justify-content: center;
 
       cursor: pointer;
 
-      z-index: 20;
+      z-index: 50;
 
       box-shadow:
-        0 1px 4px rgba(31, 48, 65, 0.16);
+        0 2px 5px rgba(0, 0, 0, 0.16);
 
-      transition:
-        background 0.15s ease,
-        border-color 0.15s ease,
-        transform 0.15s ease;
+      -webkit-user-select: none;
+      user-select: none;
     }
 
     .preview-control:hover {
-      background: #f8fafc;
+      background: #f7f9fb;
 
-      border-color: #b8c5d1;
-
-      transform: translateY(-1px);
+      border-color: #aebbc8;
     }
 
 
     /* =========================================
-       MAGNIFYING GLASS BUTTON
+       ZOOM BUTTON
     ========================================= */
 
     .preview-zoom {
       left: 7px;
     }
 
+
     /*
-      The magnifying glass is a normal text
-      character. No SVG, pseudo-element or
-      external icon is required.
+      The magnifying glass consists of TWO
+      ordinary HTML spans.
+
+      No emoji.
+      No SVG.
+      No icon font.
+      No pseudo-element.
     */
 
-    .preview-zoom-icon {
+    .magnifier-circle {
+      width: 13px;
+      height: 13px;
+
+      border: 2px solid #526475;
+
+      border-radius: 50%;
+
       display: block;
 
-      color: #526475;
+      position: relative;
 
-      font-family:
-        "Segoe UI Symbol",
-        "Arial Unicode MS",
-        Arial,
-        sans-serif;
+      flex: 0 0 13px;
+    }
 
-      font-size: 22px;
+    .magnifier-handle {
+      width: 7px;
+      height: 2px;
 
-      line-height: 1;
+      background: #526475;
 
-      font-weight: 400;
+      border-radius: 2px;
 
-      transform: translateY(-1px);
+      display: block;
+
+      position: absolute;
+
+      left: 18px;
+      top: 20px;
+
+      transform:
+        rotate(45deg);
+
+      transform-origin:
+        left center;
     }
 
 
@@ -815,6 +841,7 @@
 
     .ad-box {
       width: 200px;
+
       height: 400px;
 
       background: #ffffff;
@@ -828,6 +855,7 @@
       flex-direction: column;
 
       align-items: center;
+
       justify-content: center;
 
       color: #9aa6b2;
@@ -848,6 +876,7 @@
       display: flex;
 
       align-items: center;
+
       justify-content: center;
 
       color: #7f8c99;
@@ -863,7 +892,7 @@
 
 
     /* =========================================
-       PREVIEW MODAL
+       MODAL
     ========================================= */
 
     .preview-modal {
@@ -876,6 +905,7 @@
       display: none;
 
       align-items: center;
+
       justify-content: center;
 
       padding: 30px;
@@ -908,8 +938,6 @@
       overflow: hidden;
     }
 
-
-    /* Modal header */
 
     .modal-header {
       min-height: 58px;
@@ -946,8 +974,6 @@
     }
 
 
-    /* Modal close */
-
     .modal-close {
       width: 34px;
       height: 34px;
@@ -965,6 +991,7 @@
       display: flex;
 
       align-items: center;
+
       justify-content: center;
 
       font-size: 23px;
@@ -980,8 +1007,6 @@
       color: #263548;
     }
 
-
-    /* Modal body */
 
     .modal-body {
       flex: 1;
@@ -1198,11 +1223,24 @@
 
       .preview-control {
         width: 29px;
+
         height: 29px;
       }
 
-      .preview-zoom-icon {
-        font-size: 20px;
+
+      .magnifier-circle {
+        width: 12px;
+
+        height: 12px;
+
+        flex-basis: 12px;
+      }
+
+
+      .magnifier-handle {
+        left: 17px;
+
+        top: 19px;
       }
 
 
@@ -1369,9 +1407,7 @@
       <section class="main-content">
 
 
-        <!-- =====================================
-             PDF TOOL NAVIGATION
-        ===================================== -->
+        <!-- PDF TOOL NAVIGATION -->
 
         <nav
           class="tool-category-bar"
@@ -1439,10 +1475,6 @@
 
 
 
-        <!-- =====================================
-             TITLE
-        ===================================== -->
-
         <h1 class="tool-title">
           Merge PDF
         </h1>
@@ -1454,9 +1486,7 @@
 
 
 
-        <!-- =====================================
-             TOOL
-        ===================================== -->
+        <!-- TOOL BOX -->
 
         <div class="tool-box">
 
@@ -1549,9 +1579,7 @@
 
 
 
-      <!-- =====================================
-           AD
-      ===================================== -->
+      <!-- AD -->
 
       <aside class="ad-column">
 
@@ -1730,8 +1758,6 @@
       document.getElementById("status");
 
 
-    /* Modal */
-
     const previewModal =
       document.getElementById("previewModal");
 
@@ -1794,11 +1820,6 @@
         addPdfFiles(files);
 
 
-        /*
-          Reset input so selecting
-          the same file again works.
-        */
-
         pdfInput.value = "";
 
       }
@@ -1807,7 +1828,7 @@
 
 
     /* =========================================
-       ADD PDF FILES
+       ADD FILES
     ========================================= */
 
     function addPdfFiles(files) {
@@ -1871,8 +1892,11 @@
       if (addedCount > 0) {
 
         setStatus(
+
           `${addedCount} PDF file${addedCount === 1 ? "" : "s"} added.`,
+
           "success"
+
         );
 
       }
@@ -1882,7 +1906,7 @@
 
 
     /* =========================================
-       ID
+       CREATE ID
     ========================================= */
 
     function createId() {
@@ -1902,7 +1926,7 @@
 
 
     /* =========================================
-       RENDER PDF LIST
+       RENDER LIST
     ========================================= */
 
     function renderPdfList() {
@@ -1914,14 +1938,11 @@
       emptyState.style.display =
 
         pdfFiles.length === 0
-
           ? "block"
-
           : "none";
 
 
       mergeButton.disabled =
-
         pdfFiles.length < 2;
 
 
@@ -1947,7 +1968,9 @@
 
 
 
-          /* Preview */
+          /* =================================
+             PREVIEW
+          ================================= */
 
           const preview =
             document.createElement("div");
@@ -1955,7 +1978,6 @@
 
           preview.className =
             "pdf-preview";
-
 
 
           const canvas =
@@ -1995,19 +2017,58 @@
 
 
           /*
-            Plain visible character.
-            This does NOT depend on SVG,
-            CSS pseudo-elements or external
-            icon libraries.
+            Build the magnifying glass using
+            ordinary HTML spans.
           */
 
-          zoomButton.innerHTML =
-            '<span class="preview-zoom-icon" aria-hidden="true">🔍</span>';
+          const circle =
+            document.createElement("span");
 
+
+          circle.className =
+            "magnifier-circle";
+
+
+          const handle =
+            document.createElement("span");
+
+
+          handle.className =
+            "magnifier-handle";
+
+
+          circle.appendChild(
+            handle
+          );
+
+
+          zoomButton.appendChild(
+            circle
+          );
+
+
+          /*
+            Prevent this control from
+            participating in dragging.
+          */
 
           zoomButton.addEventListener(
             "mousedown",
             event => {
+
+              event.preventDefault();
+
+              event.stopPropagation();
+
+            }
+          );
+
+
+          zoomButton.addEventListener(
+            "dragstart",
+            event => {
+
+              event.preventDefault();
 
               event.stopPropagation();
 
@@ -2069,6 +2130,20 @@
             "mousedown",
             event => {
 
+              event.preventDefault();
+
+              event.stopPropagation();
+
+            }
+          );
+
+
+          removeButton.addEventListener(
+            "dragstart",
+            event => {
+
+              event.preventDefault();
+
               event.stopPropagation();
 
             }
@@ -2095,7 +2170,9 @@
 
 
 
-          /* File info */
+          /* =================================
+             FILE INFO
+          ================================= */
 
           const info =
             document.createElement("div");
@@ -2129,13 +2206,20 @@
             `${formatFileSize(item.file.size)} · PDF ${index + 1}`;
 
 
-          info.appendChild(name);
+          info.appendChild(
+            name
+          );
 
-          info.appendChild(meta);
+
+          info.appendChild(
+            meta
+          );
 
 
 
-          /* Drag handle */
+          /* =================================
+             DRAG HANDLE
+          ================================= */
 
           const dragHandle =
             document.createElement("div");
@@ -2155,8 +2239,6 @@
           );
 
 
-
-          /* Card */
 
           card.appendChild(
             preview
@@ -2194,7 +2276,7 @@
 
 
     /* =========================================
-       FIRST PAGE PREVIEW
+       FIRST PAGE
     ========================================= */
 
     async function renderFirstPage(
@@ -2296,15 +2378,16 @@
 
         await page.render({
 
-          canvasContext: context,
+          canvasContext:
+            context,
 
-          viewport: viewport
+          viewport:
+            viewport
 
         }).promise;
 
 
       } catch (error) {
-
 
         console.error(
           "Preview error:",
@@ -2339,7 +2422,6 @@
 
 
       modalClose.focus();
-
 
 
       try {
@@ -2453,9 +2535,11 @@
 
         await page.render({
 
-          canvasContext: context,
+          canvasContext:
+            context,
 
-          viewport: viewport
+          viewport:
+            viewport
 
         }).promise;
 
@@ -2491,9 +2575,12 @@
       );
 
 
-      modalCanvas.width = 0;
+      modalCanvas.width =
+        0;
 
-      modalCanvas.height = 0;
+
+      modalCanvas.height =
+        0;
 
     }
 
@@ -2555,8 +2642,10 @@
 
       pdfFiles =
         pdfFiles.filter(
+
           item =>
             item.id !== id
+
         );
 
 
@@ -2607,7 +2696,8 @@
           );
 
 
-          draggedId = null;
+          draggedId =
+            null;
 
         }
       );
@@ -2640,15 +2730,19 @@
 
           const draggedIndex =
             pdfFiles.findIndex(
+
               item =>
                 item.id === draggedId
+
             );
 
 
           const targetIndex =
             pdfFiles.findIndex(
+
               item =>
                 item.id === targetId
+
             );
 
 
@@ -2667,8 +2761,11 @@
 
           const draggedItem =
             pdfFiles.splice(
+
               draggedIndex,
+
               1
+
             )[0];
 
 
@@ -2693,7 +2790,7 @@
 
 
     /* =========================================
-       MERGE
+       MERGE PDFs
     ========================================= */
 
     mergeButton.addEventListener(
@@ -2917,9 +3014,13 @@
         "status" +
 
         (
+
           type
+
             ? ` ${type}`
+
             : ""
+
         );
 
     }
@@ -2993,4 +3094,3 @@
 </body>
 
 </html>
-```
