@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,23 +11,12 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Split PDF - ToolNest</title>
+  <title>ToolNest - Free Online Tools</title>
 
   <meta
     name="description"
-    content="Split PDF pages online for free. Extract all pages or select a page range."
+    content="ToolNest - Free online PDF, text, image and calculator tools. Simple, fast and easy-to-use tools for everyday tasks."
   >
-
-
-  <!-- PDF.JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
-  <!-- PDF-LIB -->
-  <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
-
-  <!-- JSZIP -->
-  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-
 
   <style>
 
@@ -138,11 +128,15 @@
     }
 
     .logo-tool {
-  color: #334155;
-  font-weight: 500;
+      color: #334155;
+
+      /* Slightly bolder */
+      font-weight: 500;
     }
+
     .logo-nest {
       color: #326ba8;
+
       font-weight: 800;
     }
 
@@ -184,7 +178,12 @@
 
     .header-search input:focus {
       background: #ffffff;
+
       border-color: #7fa6cf;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.08);
     }
 
     .search-icon {
@@ -250,6 +249,8 @@
       font-size: 16px;
 
       white-space: nowrap;
+
+      cursor: pointer;
     }
 
     .category-link:hover {
@@ -258,6 +259,7 @@
 
     .category-link.active {
       color: #263548;
+
       font-weight: 600;
     }
 
@@ -333,6 +335,7 @@
 
     .breadcrumb a {
       color: #667588;
+
       text-decoration: none;
     }
 
@@ -346,6 +349,7 @@
 
     .breadcrumb strong {
       color: #39495b;
+
       font-weight: 600;
     }
 
@@ -367,6 +371,7 @@
       color: #263548;
 
       font-size: 36px;
+
       font-weight: 700;
 
       letter-spacing: -0.8px;
@@ -386,562 +391,140 @@
 
 
     /* ========================================
-       TOOL BOX
+       TOOLS GRID
     ========================================= */
 
-    .tool-box {
+    .tools-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 16px;
+    }
+
+    .tool-card {
+      min-height: 112px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 16px;
+
+      padding: 18px;
+
       background: #ffffff;
 
       border:
         1px solid #dce3ea;
 
-      border-radius: 12px;
+      border-radius: 10px;
 
-      padding: 26px;
-
-      box-shadow:
-        0 4px 16px
-        rgba(31, 45, 61, 0.05);
-    }
-
-
-    /* ========================================
-       UPLOAD AREA
-    ========================================= */
-
-    .upload-area {
-      width: 100%;
-      min-height: 390px;
-
-      padding: 30px;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      text-align: center;
-
-      background: #fafbfd;
-
-      border:
-        2px dashed #8da9c5;
-
-      border-radius: 12px;
-
-      cursor: pointer;
+      text-decoration: none;
 
       transition:
-        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
         border-color 0.2s ease;
     }
 
-    .upload-area:hover {
-      background: #f4f8fc;
-      border-color: #5f8fbd;
+    .tool-card:hover {
+      transform:
+        translateY(-2px);
+
+      border-color: #c7d6e5;
+
+      box-shadow:
+        0 7px 18px
+        rgba(31, 45, 61, 0.08);
     }
 
+    .tool-icon {
+      width: 52px;
+      height: 52px;
 
-    /* ========================================
-       EMPTY UPLOAD MESSAGE
-    ========================================= */
-
-    .upload-message {
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-      justify-content: center;
-
-      width: 100%;
-    }
-
-    .upload-icon {
-      width: 62px;
-      height: 62px;
-
-      margin:
-        0
-        auto
-        16px;
+      flex-shrink: 0;
 
       display: flex;
 
       align-items: center;
       justify-content: center;
 
-      border-radius: 14px;
+      border-radius: 12px;
 
+      font-size: 24px;
+    }
+
+    .icon-pdf {
       background: #eaf1f8;
-
       color: #326ba8;
-
-      font-size: 29px;
     }
 
-    .upload-message h2 {
+    .icon-text {
+      background: #eef4f8;
+      color: #416d91;
+    }
+
+    .icon-image {
+      background: #edf5f2;
+      color: #397765;
+    }
+
+    .icon-calculator {
+      background: #f2f0f7;
+      color: #665687;
+    }
+
+    .tool-info {
+      min-width: 0;
+    }
+
+    .tool-info h2 {
       margin:
         0
         0
-        8px;
+        6px;
 
-      color: #2f3d50;
+      color: #344255;
 
-      font-size: 20px;
+      font-size: 17px;
+
+      font-weight: 700;
     }
 
-    .upload-message p {
+    .tool-info p {
       margin: 0;
 
-      color: #7b8998;
+      color: #718096;
 
       font-size: 14px;
 
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
 
     /* ========================================
-       PDF PREVIEWS
+       NO RESULTS
     ========================================= */
 
-    .preview-grid {
+    .no-results {
       display: none;
 
-      width: 100%;
+      padding: 35px 20px;
 
-      grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
-      justify-content: center;
-      align-items: start;
-
-      gap: 22px;
-
-      padding: 10px;
-    }
-
-    .pdf-preview-card {
-      position: relative;
-
-      min-width: 0;
-
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-      justify-content: flex-start;
-
-      padding: 10px;
-
-      background: transparent;
-
-      border: none;
-
-      border-radius: 0;
-
-      box-shadow: none;
-
-      cursor: default;
-    }
-
-
-    /* ========================================
-       REMOVE FILE
-    ========================================= */
-
-    .remove-file {
-      position: absolute;
-
-      top: 0;
-      right: 4px;
-
-      width: 32px;
-      height: 32px;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      padding: 0;
-
-      border:
-        1px solid #d5dde6;
-
-      border-radius: 50%;
+      text-align: center;
 
       background: #ffffff;
 
-      color: #667588;
-
-      font-size: 21px;
-      font-weight: 600;
-
-      line-height: 1;
-
-      cursor: pointer;
-
-      z-index: 2;
-    }
-
-    .remove-file:hover {
-      background: #f6f8fa;
-
-      color: #334155;
-
-      transform: none;
-    }
-
-
-    /* ========================================
-       PDF THUMBNAIL
-    ========================================= */
-
-    .preview-thumbnail {
-      width: 100%;
-      max-width: 150px;
-
-      height: 190px;
-
-      margin-bottom: 13px;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      overflow: hidden;
-
-      background: #edf2f6;
-
       border:
-        1px solid #cbd6e0;
+        1px solid #dce3ea;
 
       border-radius: 10px;
-    }
 
-    .preview-thumbnail canvas {
-      display: block;
-
-      max-width: 100%;
-      max-height: 100%;
-    }
-
-
-    /* ========================================
-       FILE NAME
-    ========================================= */
-
-    .preview-name {
-      width: 100%;
-
-      margin-bottom: 5px;
-
-      color: #34475b;
-
-      font-size: 16px;
-      font-weight: 700;
-
-      white-space: nowrap;
-
-      overflow: hidden;
-
-      text-overflow: ellipsis;
-
-      text-align: center;
-    }
-
-    .preview-pages {
       color: #718096;
 
       font-size: 15px;
-    }
-
-
-    /* ========================================
-       HIDDEN FILE INPUT
-    ========================================= */
-
-    input[type="file"] {
-      display: none;
-    }
-
-
-    /* ========================================
-       SPLIT BUTTON DIRECTLY UNDER UPLOAD BOX
-    ========================================= */
-
-    .top-actions {
-      display: flex;
-
-      gap: 12px;
-
-      margin-top: 18px;
-    }
-
-
-    /* ========================================
-       EDITOR
-    ========================================= */
-
-    .editor {
-      display: none;
-
-      margin-top: 28px;
-    }
-
-
-    /* ========================================
-       OPTIONS
-    ========================================= */
-
-    .options-title {
-      margin:
-        0
-        0
-        14px;
-
-      color: #304052;
-
-      font-size: 19px;
-    }
-
-    .option-box {
-      padding: 18px;
-
-      background: #fafbfd;
-
-      border:
-        1px solid #e0e6ec;
-
-      border-radius: 10px;
-    }
-
-    .radio-option {
-      padding: 16px;
-
-      background: #ffffff;
-
-      border:
-        1px solid #dde5ec;
-
-      border-radius: 9px;
-    }
-
-    .radio-option + .radio-option {
-      margin-top: 12px;
-    }
-
-    .radio-option:hover {
-      border-color: #b8cbe0;
-
-      background: #fbfdff;
-    }
-
-    .radio-option > label {
-      display: flex;
-
-      align-items: center;
-
-      gap: 10px;
-
-      color: #344255;
-
-      font-size: 15px;
-      font-weight: 700;
-
-      cursor: pointer;
-    }
-
-    .radio-option input[type="radio"] {
-      width: 17px;
-      height: 17px;
-
-      accent-color: #326ba8;
-
-      cursor: pointer;
-    }
-
-    .option-description {
-      margin:
-        7px
-        0
-        0
-        27px;
-
-      color: #7b8998;
-
-      font-size: 14px;
-
-      line-height: 1.5;
-    }
-
-
-    /* ========================================
-       RANGE
-    ========================================= */
-
-    .range-section {
-      display: none;
-
-      margin-top: 16px;
-
-      padding: 16px;
-
-      background: #f6f9fc;
-
-      border:
-        1px solid #dbe4ed;
-
-      border-radius: 8px;
-    }
-
-    .range-section label {
-      display: block;
-
-      margin-bottom: 8px;
-
-      color: #344255;
-
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .range-section input {
-      width: 100%;
-      height: 44px;
-
-      padding:
-        0
-        13px;
-
-      background: #ffffff;
-
-      border:
-        1px solid #ccd7e1;
-
-      border-radius: 8px;
-
-      color: #344255;
-
-      font-size: 14px;
-
-      outline: none;
-    }
-
-    .range-section input:focus {
-      border-color: #5f92c5;
-
-      box-shadow:
-        0 0 0 3px
-        rgba(50, 107, 168, 0.10);
-    }
-
-    .range-help {
-      margin:
-        8px
-        0
-        0;
-
-      color: #7b8998;
-
-      font-size: 13px;
-    }
-
-
-    /* ========================================
-       BUTTONS
-    ========================================= */
-
-    button {
-      height: 48px;
-
-      padding:
-        0
-        20px;
-
-      border-radius: 8px;
-
-      font-size: 15px;
-      font-weight: 700;
-
-      cursor: pointer;
-
-      transition:
-        background 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-    }
-
-    button:hover:not(:disabled) {
-      transform:
-        translateY(-1px);
-    }
-
-    button:disabled {
-      opacity: 0.6;
-
-      cursor: not-allowed;
-    }
-
-    .primary-button {
-      flex: 1;
-
-      border: none;
-
-      background: #326ba8;
-
-      color: #ffffff;
-
-      box-shadow:
-        0 4px 10px
-        rgba(50, 107, 168, 0.18);
-    }
-
-    .primary-button:hover:not(:disabled) {
-      background: #285b91;
-    }
-
-    .secondary-button {
-      border:
-        1px solid #ccd7e1;
-
-      background: #ffffff;
-
-      color: #435365;
-    }
-
-    .secondary-button:hover:not(:disabled) {
-      background: #f5f7f9;
-    }
-
-
-    /* ========================================
-       STATUS
-    ========================================= */
-
-    .status {
-      display: none;
-
-      margin-top: 18px;
-
-      padding: 14px;
-
-      text-align: center;
-
-      background: #f2f7fb;
-
-      border:
-        1px solid #d4e2ef;
-
-      border-radius: 8px;
-
-      color: #55708a;
-
-      font-size: 14px;
     }
 
 
@@ -992,13 +575,16 @@
       color: #a0acb8;
 
       font-size: 10px;
+
       font-weight: 700;
 
       letter-spacing: 1.5px;
     }
 
     .sample-ad {
-      padding: 22px 12px;
+      padding:
+        22px
+        12px;
 
       background:
         linear-gradient(
@@ -1029,6 +615,7 @@
       color: #ffffff;
 
       font-size: 10px;
+
       font-weight: 700;
 
       letter-spacing: 0.5px;
@@ -1077,6 +664,7 @@
       color: #326ba8;
 
       font-size: 12px;
+
       font-weight: 700;
     }
 
@@ -1114,11 +702,13 @@
 
     .footer-links {
       display: flex;
+
       gap: 20px;
     }
 
     .footer-links a {
       color: #7b8998;
+
       text-decoration: none;
     }
 
@@ -1139,17 +729,14 @@
 
       .ad-column {
         width: 100%;
+
         position: static;
       }
 
       .ad-box {
         width: 100%;
-        height: 180px;
-      }
 
-      .preview-grid {
-        grid-template-columns:
-          repeat(3, minmax(0, 1fr));
+        height: 180px;
       }
 
     }
@@ -1188,29 +775,14 @@
         font-size: 31px;
       }
 
-      .tool-box {
-        padding: 18px;
-      }
-
-      .upload-area {
-        min-height: 350px;
-        padding: 20px;
-      }
-
-      .preview-grid {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-
-        gap: 18px;
-      }
-
-      .preview-thumbnail {
-        max-width: 140px;
-        height: 180px;
+      .tools-grid {
+        grid-template-columns: 1fr;
       }
 
       .footer-inner {
-        padding: 22px 16px;
+        padding:
+          22px
+          16px;
       }
 
     }
@@ -1246,40 +818,29 @@
         font-size: 15px;
       }
 
-      .top-actions {
-        flex-direction: column;
+      .tool-card {
+        padding: 16px;
       }
 
-      .primary-button,
-      .secondary-button {
-        width: 100%;
+      .tool-icon {
+        width: 48px;
+        height: 48px;
+
+        font-size: 22px;
+      }
+
+      .tool-info h2 {
+        font-size: 16px;
+      }
+
+      .tool-info p {
+        font-size: 13px;
       }
 
       .footer-inner {
         flex-direction: column;
+
         text-align: center;
-      }
-
-      .preview-grid {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-
-        gap: 14px;
-
-        padding: 4px;
-      }
-
-      .preview-thumbnail {
-        max-width: 120px;
-        height: 155px;
-      }
-
-      .preview-name {
-        font-size: 14px;
-      }
-
-      .preview-pages {
-        font-size: 14px;
       }
 
     }
@@ -1328,6 +889,7 @@
 
         <input
           type="text"
+          id="toolSearch"
           placeholder="Search tools..."
           aria-label="Search tools"
         >
@@ -1352,36 +914,41 @@
     <div class="category-nav-inner">
 
       <a
-        href="index.html"
+        href="#"
         class="category-link"
+        data-filter="all"
       >
         Popular Tools
       </a>
 
       <a
-        href="index.html"
+        href="#"
         class="category-link active"
+        data-filter="pdf"
       >
         PDF Tools
       </a>
 
       <a
-        href="index.html"
+        href="#"
         class="category-link"
+        data-filter="text"
       >
         Text Tools
       </a>
 
       <a
-        href="index.html"
+        href="#"
         class="category-link"
+        data-filter="image"
       >
         Image Tools
       </a>
 
       <a
-        href="index.html"
+        href="#"
         class="category-link"
+        data-filter="calculator"
       >
         Calculators
       </a>
@@ -1415,14 +982,8 @@
 
           <span>/</span>
 
-          <a href="index.html">
+          <strong id="breadcrumbCategory">
             PDF Tools
-          </a>
-
-          <span>/</span>
-
-          <strong>
-            Split PDF
           </strong>
 
         </div>
@@ -1432,205 +993,418 @@
 
         <div class="heading">
 
-          <h1>
-            Split PDF
+          <h1 id="pageTitle">
+            PDF Tools
           </h1>
 
-          <p>
-            Split your PDF into separate pages quickly and easily.
-            Choose all pages or select specific pages to extract.
+          <p id="pageDescription">
+            Simple and fast tools for working with PDF files.
+            Merge, split, convert and manage your PDF documents online.
           </p>
 
         </div>
 
 
-        <!-- TOOL BOX -->
+        <!-- TOOLS -->
 
-        <div class="tool-box">
+        <div
+          class="tools-grid"
+          id="toolsGrid"
+        >
 
 
-          <!-- UPLOAD AREA -->
+          <!-- ========================================
+               PDF TOOLS
+          ========================================= -->
 
-          <label
-            for="pdfInput"
-            class="upload-area"
-            id="uploadArea"
+          <a
+            href="merge-pdf.html"
+            class="tool-card"
+            data-category="pdf"
+            data-name="Merge PDF"
           >
 
-            <!-- Upload Message -->
+            <div class="tool-icon icon-pdf">
+              🔗
+            </div>
 
-            <div
-              class="upload-message"
-              id="uploadMessage"
-            >
-
-              <div class="upload-icon">
-                📄
-              </div>
+            <div class="tool-info">
 
               <h2>
-                Upload PDF Files
+                Merge PDF
               </h2>
 
               <p>
-                Click here to choose one or more PDFs from your device.
+                Combine multiple PDF files into one.
               </p>
 
             </div>
 
-
-            <!-- Preview Grid -->
-
-            <div
-              class="preview-grid"
-              id="previewGrid"
-            ></div>
-
-          </label>
+          </a>
 
 
-          <!-- Hidden File Input -->
-
-          <input
-            type="file"
-            id="pdfInput"
-            accept="application/pdf"
-            multiple
+          <a
+            href="split-pdf.html"
+            class="tool-card"
+            data-category="pdf"
+            data-name="Split PDF"
           >
 
+            <div class="tool-icon icon-pdf">
+              ✂
+            </div>
 
-          <!-- ========================================
-               BUTTONS DIRECTLY UNDER UPLOAD AREA
-          ========================================= -->
+            <div class="tool-info">
 
-          <div
-            class="top-actions"
-            id="topActions"
-          >
+              <h2>
+                Split PDF
+              </h2>
 
-            <button
-              class="primary-button"
-              id="splitButton"
-              type="button"
-            >
-              Split PDF
-            </button>
-
-            <button
-              class="secondary-button"
-              id="newFileButton"
-              type="button"
-            >
-              Choose More PDFs
-            </button>
-
-          </div>
-
-
-          <!-- ========================================
-               EDITOR
-          ========================================= -->
-
-          <div
-            class="editor"
-            id="editor"
-          >
-
-
-            <!-- Options -->
-
-            <h2 class="options-title">
-              Split Options
-            </h2>
-
-
-            <div class="option-box">
-
-
-              <!-- Split All -->
-
-              <div class="radio-option">
-
-                <label>
-
-                  <input
-                    type="radio"
-                    name="splitOption"
-                    value="all"
-                    checked
-                  >
-
-                  Split all pages
-
-                </label>
-
-                <p class="option-description">
-                  Every page will be saved as a separate PDF file.
-                </p>
-
-              </div>
-
-
-              <!-- Selected Pages -->
-
-              <div class="radio-option">
-
-                <label>
-
-                  <input
-                    type="radio"
-                    name="splitOption"
-                    value="range"
-                  >
-
-                  Split selected pages
-
-                </label>
-
-                <p class="option-description">
-                  Choose which pages you want to extract.
-                </p>
-
-
-                <!-- Page Range -->
-
-                <div
-                  class="range-section"
-                  id="rangeSection"
-                >
-
-                  <label for="pageRange">
-                    Page range
-                  </label>
-
-                  <input
-                    type="text"
-                    id="pageRange"
-                    placeholder="Example: 1-3 or 1,3,5"
-                  >
-
-                  <p class="range-help">
-                    The selected range will be applied to every uploaded PDF.
-                  </p>
-
-                </div>
-
-              </div>
+              <p>
+                Split pages from your PDF file.
+              </p>
 
             </div>
 
+          </a>
 
-            <!-- Status -->
 
-            <div
-              class="status"
-              id="status"
-            ></div>
+          <a
+            href="pdf-to-images.html"
+            class="tool-card"
+            data-category="pdf"
+            data-name="PDF to Images"
+          >
 
-          </div>
+            <div class="tool-icon icon-pdf">
+              🖼
+            </div>
+
+            <div class="tool-info">
+
+              <h2>
+                PDF to Images
+              </h2>
+
+              <p>
+                Convert PDF pages into image files.
+              </p>
+
+            </div>
+
+          </a>
+
+
+          <a
+            href="images-to-pdf.html"
+            class="tool-card"
+            data-category="pdf"
+            data-name="Images to PDF"
+          >
+
+            <div class="tool-icon icon-pdf">
+              📄
+            </div>
+
+            <div class="tool-info">
+
+              <h2>
+                Images to PDF
+              </h2>
+
+              <p>
+                Convert images into a PDF document.
+              </p>
+
+            </div>
+
+          </a>
+
+
+          <!-- ========================================
+               TEXT TOOLS
+          ========================================= -->
+
+          <a
+            href="word-counter.html"
+            class="tool-card"
+            data-category="text"
+            data-name="Word Counter"
+          >
+
+            <div class="tool-icon icon-text">
+              🔤
+            </div>
+
+            <div class="tool-info">
+
+              <h2>
+                Word Counter
+              </h2>
+
+              <p>
+                Count words, characters and more.
+              </p>
+
+            </div>
+
+          </a>
+
+
+          <a
+            href="case-converter.html"
+            class="tool-card"
+            data-category="text"
+            data-name="Case Converter"
+          >
+
+            <div class="tool-icon icon-text">
+              Aa
+            </div>
+
+            <div class="tool-info">
+
+              <h2>
+                Case Converter
+              </h2>
+
+              <p>
+                Convert text into different cases.
+              </p>
+
+            </div>
+
+          </a>
+
+
+          <a
+            href="text-sorter.html"
+            class="tool-card"
+            data-category="text"
+            data-name="Text Sorter"
+          >
+
+            <div class="tool-icon icon-text">
+              ↕
+            </div>
+
+            <div class="tool-info">
+
+              <h2>
+                Text Sorter
+              </h2>
+
+              <p>
+                Sort lines of text quickly and easily.
+              </p>
+
+            </div>
+
+          </a>
+
+
+          <a
+            href="text-cleaner.html"
+            class="tool-card"
+            data-category="text"
+            data-name="Text Cleaner"
+          >
+
+            <div class="tool-icon icon-text">
+              ✨
+            </div>
+
+            <div class="tool-info">
+
+              <h2>
+                Text Cleaner
+              </h2>
+
+              <p>
+                Clean and format your text.
+              </p>
+
+            </div>
+
+          </a>
+
+
+          <!-- ========================================
+               IMAGE TOOLS
+          ========================================= -->
+
+          <a
+            href="image-compressor.html"
+            class="tool-card"
+            data-category="image"
+            data-name="Image Compressor"
+          >
+
+            <div class="tool-icon icon-image">
+              🗜
+            </div>
+
+            <div class="tool-info">
+
+              <h2>
+                Image Compressor
+              </h2>
+
+              <p>
+                Reduce image file size quickly.
+              </p>
+
+            </div>
+
+          </a>
+
+
+          <a
+            href="image-converter.html"
+            class="tool-card"
+            data-category="image"
+            data-name="Image Converter"
+          >
+
+            <div class="tool-icon icon-image">
+              🔄
+            </div>
+
+            <div class="tool-info">
+
+              <h2>
+                Image Converter
+              </h2>
+
+              <p>
+                Convert images between formats.
+              </p>
+
+            </div>
+
+          </a>
+
+
+          <!-- ========================================
+               CALCULATORS
+          ========================================= -->
+
+          <a
+            href="bmi-calculator.html"
+            class="tool-card"
+            data-category="calculator"
+            data-name="BMI Calculator"
+          >
+
+            <div class="tool-icon icon-calculator">
+              ⚖
+            </div>
+
+            <div class="tool-info">
+
+              <h2>
+                BMI Calculator
+              </h2>
+
+              <p>
+                Calculate your body mass index.
+              </p>
+
+            </div>
+
+          </a>
+
+
+          <a
+            href="percentage-calculator.html"
+            class="tool-card"
+            data-category="calculator"
+            data-name="Percentage Calculator"
+          >
+
+            <div class="tool-icon icon-calculator">
+              %
+            </div>
+
+            <div class="tool-info">
+
+              <h2>
+                Percentage Calculator
+              </h2>
+
+              <p>
+                Quickly calculate percentages.
+              </p>
+
+            </div>
+
+          </a>
+
+
+          <a
+            href="profit-calculator.html"
+            class="tool-card"
+            data-category="calculator"
+            data-name="Profit Calculator"
+          >
+
+            <div class="tool-icon icon-calculator">
+              📈
+            </div>
+
+            <div class="tool-info">
+
+              <h2>
+                Profit Calculator
+              </h2>
+
+              <p>
+                Calculate profit and profit margins.
+              </p>
+
+            </div>
+
+          </a>
+
+
+          <a
+            href="discount-calculator.html"
+            class="tool-card"
+            data-category="calculator"
+            data-name="Discount Calculator"
+          >
+
+            <div class="tool-icon icon-calculator">
+              🏷
+            </div>
+
+            <div class="tool-info">
+
+              <h2>
+                Discount Calculator
+              </h2>
+
+              <p>
+                Calculate discounts and savings.
+              </p>
+
+            </div>
+
+          </a>
 
 
         </div>
+
+
+        <!-- NO RESULTS -->
+
+        <div
+          class="no-results"
+          id="noResults"
+        >
+          No tools found.
+        </div>
+
 
       </section>
 
@@ -1725,921 +1499,249 @@
 
   <script>
 
+    const navButtons =
+      document.querySelectorAll(".category-link");
 
-    /* ========================================
-       PDF.JS SETUP
-    ========================================= */
+    const toolCards =
+      document.querySelectorAll(".tool-card");
 
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    const pageTitle =
+      document.getElementById("pageTitle");
 
+    const pageDescription =
+      document.getElementById("pageDescription");
 
-    /* ========================================
-       ELEMENTS
-    ========================================= */
+    const breadcrumbCategory =
+      document.getElementById("breadcrumbCategory");
 
-    const pdfInput =
-      document.getElementById("pdfInput");
+    const searchInput =
+      document.getElementById("toolSearch");
 
-    const uploadMessage =
-      document.getElementById("uploadMessage");
-
-    const previewGrid =
-      document.getElementById("previewGrid");
-
-    const editor =
-      document.getElementById("editor");
-
-    const rangeSection =
-      document.getElementById("rangeSection");
-
-    const pageRange =
-      document.getElementById("pageRange");
-
-    const splitButton =
-      document.getElementById("splitButton");
-
-    const newFileButton =
-      document.getElementById("newFileButton");
-
-    const status =
-      document.getElementById("status");
+    const noResults =
+      document.getElementById("noResults");
 
 
     /* ========================================
-       FILE STORAGE
+       CATEGORY CONTENT
     ========================================= */
 
-    let uploadedFiles = [];
+    const categoryContent = {
 
+      all: {
+        title: "Popular Tools",
+        description:
+          "Quick access to ToolNest's most useful online tools for PDF, text, images and calculations.",
+        breadcrumb:
+          "Popular Tools"
+      },
 
-    /* ========================================
-       UPLOAD FILES
-    ========================================= */
+      pdf: {
+        title: "PDF Tools",
+        description:
+          "Simple and fast tools for working with PDF files. Merge, split, convert and manage your PDF documents.",
+        breadcrumb:
+          "PDF Tools"
+      },
 
-    pdfInput.addEventListener(
-      "change",
-      async function(event) {
+      text: {
+        title: "Text Tools",
+        description:
+          "Useful online text tools for counting, converting, sorting and cleaning your text.",
+        breadcrumb:
+          "Text Tools"
+      },
 
-        const files =
-          Array.from(event.target.files);
+      image: {
+        title: "Image Tools",
+        description:
+          "Simple image tools to compress and convert your images quickly and easily.",
+        breadcrumb:
+          "Image Tools"
+      },
 
-        if (!files.length) {
-          return;
-        }
-
-
-        for (
-          const file of files
-        ) {
-
-          if (
-            file.type !==
-            "application/pdf"
-          ) {
-
-            alert(
-              file.name +
-              " is not a valid PDF file."
-            );
-
-            continue;
-
-          }
-
-
-          const alreadyExists =
-            uploadedFiles.some(
-              function(existingFile) {
-
-                return (
-                  existingFile.file.name ===
-                  file.name
-                );
-
-              }
-            );
-
-
-          if (
-            alreadyExists
-          ) {
-            continue;
-          }
-
-
-          try {
-
-            const arrayBuffer =
-              await file.arrayBuffer();
-
-
-            const pdf =
-              await pdfjsLib.getDocument(
-                {
-                  data:
-                    arrayBuffer.slice(0)
-                }
-              ).promise;
-
-
-            uploadedFiles.push(
-              {
-                file: file,
-
-                arrayBuffer:
-                  arrayBuffer,
-
-                pageCount:
-                  pdf.numPages
-              }
-            );
-
-          }
-
-          catch (error) {
-
-            console.error(error);
-
-            alert(
-              "Could not open " +
-              file.name
-            );
-
-          }
-
-        }
-
-
-        /* Reset input */
-
-        pdfInput.value = "";
-
-
-        renderPreviews();
-
+      calculator: {
+        title: "Calculators",
+        description:
+          "Easy-to-use calculators for percentages, BMI, profit, discounts and everyday calculations.",
+        breadcrumb:
+          "Calculators"
       }
-    );
+
+    };
 
 
     /* ========================================
-       RENDER PREVIEWS
+       CURRENT FILTER
     ========================================= */
 
-    async function renderPreviews() {
+    let currentFilter = "pdf";
 
 
-      previewGrid.innerHTML =
-        "";
+    /* ========================================
+       APPLY FILTER
+    ========================================= */
+
+    function applyFilter(filter) {
+
+      currentFilter = filter;
+
+      const content =
+        categoryContent[filter];
+
+      pageTitle.textContent =
+        content.title;
+
+      pageDescription.textContent =
+        content.description;
+
+      breadcrumbCategory.textContent =
+        content.breadcrumb;
 
 
-      /* No files */
+      let visibleCount = 0;
+
+      const searchTerm =
+        searchInput.value
+          .trim()
+          .toLowerCase();
+
+
+      toolCards.forEach(
+        function(card) {
+
+          const category =
+            card.dataset.category;
+
+          const name =
+            card.dataset.name
+              .toLowerCase();
+
+          const description =
+            card
+              .querySelector("p")
+              .textContent
+              .toLowerCase();
+
+
+          const matchesCategory =
+            filter === "all" ||
+            category === filter;
+
+
+          const matchesSearch =
+            searchTerm === "" ||
+            name.includes(searchTerm) ||
+            description.includes(searchTerm);
+
+
+          if (
+            matchesCategory &&
+            matchesSearch
+          ) {
+
+            card.style.display =
+              "flex";
+
+            visibleCount++;
+
+          }
+
+          else {
+
+            card.style.display =
+              "none";
+
+          }
+
+        }
+      );
+
 
       if (
-        uploadedFiles.length === 0
+        visibleCount === 0
       ) {
 
-        uploadMessage.style.display =
-          "flex";
-
-        previewGrid.style.display =
-          "none";
-
-        editor.style.display =
-          "none";
-
-        return;
+        noResults.style.display =
+          "block";
 
       }
 
+      else {
 
-      /* Hide upload message */
+        noResults.style.display =
+          "none";
 
-      uploadMessage.style.display =
-        "none";
+      }
 
-
-      /* Show previews */
-
-      previewGrid.style.display =
-        "grid";
+    }
 
 
-      /* Show editor */
+    /* ========================================
+       NAVIGATION
+    ========================================= */
 
-      editor.style.display =
-        "block";
+    navButtons.forEach(
+      function(button) {
 
-
-      /* Create preview cards */
-
-      for (
-        let index = 0;
-        index < uploadedFiles.length;
-        index++
-      ) {
-
-
-        const item =
-          uploadedFiles[index];
-
-
-        /* Card */
-
-        const card =
-          document.createElement(
-            "div"
-          );
-
-        card.className =
-          "pdf-preview-card";
-
-
-        /* Prevent preview click opening input */
-
-        card.addEventListener(
-          "click",
-          function(event) {
-
-            event.preventDefault();
-            event.stopPropagation();
-
-          }
-        );
-
-
-        /* Remove Button */
-
-        const removeButton =
-          document.createElement(
-            "button"
-          );
-
-        removeButton.className =
-          "remove-file";
-
-        removeButton.type =
-          "button";
-
-        removeButton.textContent =
-          "×";
-
-        removeButton.setAttribute(
-          "aria-label",
-          "Remove " +
-          item.file.name
-        );
-
-
-        removeButton.addEventListener(
+        button.addEventListener(
           "click",
           function(event) {
 
             event.preventDefault();
 
-            event.stopPropagation();
-
-
-            uploadedFiles.splice(
-              index,
-              1
-            );
-
-
-            renderPreviews();
-
-          }
-        );
-
-
-        /* Thumbnail */
-
-        const thumbnail =
-          document.createElement(
-            "div"
-          );
-
-        thumbnail.className =
-          "preview-thumbnail";
-
-
-        const canvas =
-          document.createElement(
-            "canvas"
-          );
-
-        thumbnail.appendChild(
-          canvas
-        );
-
-
-        /* File Name */
-
-        const fileName =
-          document.createElement(
-            "div"
-          );
-
-        fileName.className =
-          "preview-name";
-
-        fileName.textContent =
-          item.file.name;
-
-
-        /* Page Count */
-
-        const pageCount =
-          document.createElement(
-            "div"
-          );
-
-        pageCount.className =
-          "preview-pages";
-
-        pageCount.textContent =
-          item.pageCount +
-          (
-            item.pageCount === 1
-              ? " page"
-              : " pages"
-          );
-
-
-        /* Build Card */
-
-        card.appendChild(
-          removeButton
-        );
-
-        card.appendChild(
-          thumbnail
-        );
-
-        card.appendChild(
-          fileName
-        );
-
-        card.appendChild(
-          pageCount
-        );
-
-
-        previewGrid.appendChild(
-          card
-        );
-
-
-        /* Render First Page Preview */
-
-        renderPdfThumbnail(
-          item.arrayBuffer,
-          canvas
-        );
-
-      }
-
-    }
-
-
-    /* ========================================
-       PDF THUMBNAIL
-    ========================================= */
-
-    async function renderPdfThumbnail(
-      arrayBuffer,
-      canvas
-    ) {
-
-      try {
-
-
-        const pdf =
-          await pdfjsLib.getDocument(
-            {
-              data:
-                arrayBuffer.slice(0)
-            }
-          ).promise;
-
-
-        const page =
-          await pdf.getPage(
-            1
-          );
-
-
-        const baseViewport =
-          page.getViewport(
-            {
-              scale: 1
-            }
-          );
-
-
-        const maxWidth =
-          145;
-
-        const maxHeight =
-          185;
-
-
-        const scale =
-          Math.min(
-            maxWidth /
-            baseViewport.width,
-
-            maxHeight /
-            baseViewport.height
-          );
-
-
-        const viewport =
-          page.getViewport(
-            {
-              scale: scale
-            }
-          );
-
-
-        canvas.width =
-          Math.floor(
-            viewport.width
-          );
-
-        canvas.height =
-          Math.floor(
-            viewport.height
-          );
-
-
-        const context =
-          canvas.getContext(
-            "2d"
-          );
-
-
-        await page.render(
-          {
-            canvasContext:
-              context,
-
-            viewport:
-              viewport
-          }
-        ).promise;
-
-
-      }
-
-      catch (error) {
-
-        console.error(
-          "Thumbnail error:",
-          error
-        );
-
-      }
-
-    }
-
-
-    /* ========================================
-       SPLIT OPTION
-    ========================================= */
-
-    document
-      .querySelectorAll(
-        'input[name="splitOption"]'
-      )
-      .forEach(
-        function(option) {
-
-          option.addEventListener(
-            "change",
-            function() {
-
-              if (
-                this.value ===
-                "range"
-              ) {
-
-                rangeSection.style.display =
-                  "block";
-
-              }
-
-              else {
-
-                rangeSection.style.display =
-                  "none";
-
-              }
-
-            }
-          );
-
-        }
-      );
-
-
-    /* ========================================
-       PARSE PAGE RANGE
-    ========================================= */
-
-    function getSelectedPages(
-      range,
-      maxPages
-    ) {
-
-      const pages =
-        new Set();
-
-
-      const parts =
-        range.split(",");
-
-
-      for (
-        let part of parts
-      ) {
-
-        part =
-          part.trim();
-
-
-        if (
-          part.includes("-")
-        ) {
-
-          const numbers =
-            part.split("-");
-
-
-          const start =
-            parseInt(
-              numbers[0].trim()
-            );
-
-
-          const end =
-            parseInt(
-              numbers[1].trim()
-            );
-
-
-          if (
-            isNaN(start) ||
-            isNaN(end) ||
-            start < 1 ||
-            end > maxPages ||
-            start > end
-          ) {
-
-            return null;
-
-          }
-
-
-          for (
-            let i = start;
-            i <= end;
-            i++
-          ) {
-
-            pages.add(i);
-
-          }
-
-        }
-
-        else {
-
-          const page =
-            parseInt(part);
-
-
-          if (
-            isNaN(page) ||
-            page < 1 ||
-            page > maxPages
-          ) {
-
-            return null;
-
-          }
-
-
-          pages.add(page);
-
-        }
-
-      }
-
-
-      return Array.from(
-        pages
-      ).sort(
-        function(a, b) {
-
-          return a - b;
-
-        }
-      );
-
-    }
-
-
-    /* ========================================
-       SPLIT PDFs
-    ========================================= */
-
-    splitButton.addEventListener(
-      "click",
-      async function() {
-
-
-        if (
-          uploadedFiles.length === 0
-        ) {
-
-          alert(
-            "Please upload at least one PDF."
-          );
-
-          return;
-
-        }
-
-
-        const selectedOption =
-          document.querySelector(
-            'input[name="splitOption"]:checked'
-          ).value;
-
-
-        if (
-          selectedOption === "range" &&
-          !pageRange.value.trim()
-        ) {
-
-          alert(
-            "Please enter a page range."
-          );
-
-          return;
-
-        }
-
-
-        try {
-
-
-          splitButton.disabled =
-            true;
-
-
-          splitButton.textContent =
-            "Splitting PDFs...";
-
-
-          status.style.display =
-            "block";
-
-
-          status.textContent =
-            "Preparing your files...";
-
-
-          const zip =
-            new JSZip();
-
-
-          for (
-            const uploaded of uploadedFiles
-          ) {
-
-
-            const originalPdf =
-              await PDFLib.PDFDocument.load(
-                uploaded.arrayBuffer
-              );
-
-
-            let pagesToSplit =
-              [];
-
-
-            /* Split all pages */
-
-            if (
-              selectedOption === "all"
-            ) {
-
-              for (
-                let i = 1;
-                i <= uploaded.pageCount;
-                i++
-              ) {
-
-                pagesToSplit.push(i);
-
-              }
-
-            }
-
-
-            /* Split selected pages */
-
-            else {
-
-              pagesToSplit =
-                getSelectedPages(
-                  pageRange.value,
-                  uploaded.pageCount
+            navButtons.forEach(
+              function(item) {
+
+                item.classList.remove(
+                  "active"
                 );
 
-
-              if (
-                !pagesToSplit ||
-                pagesToSplit.length === 0
-              ) {
-
-                alert(
-                  "The page range is not valid for " +
-                  uploaded.file.name
-                );
-
-
-                status.style.display =
-                  "none";
-
-
-                splitButton.disabled =
-                  false;
-
-
-                splitButton.textContent =
-                  "Split PDF";
-
-
-                return;
-
               }
-
-            }
-
-
-            const cleanName =
-              uploaded.file.name.replace(
-                /\.pdf$/i,
-                ""
-              );
+            );
 
 
-            for (
-              const pageNumber of pagesToSplit
-            ) {
+            this.classList.add(
+              "active"
+            );
 
 
-              status.textContent =
-                "Splitting " +
-                uploaded.file.name +
-                "...";
+            applyFilter(
+              this.dataset.filter
+            );
 
 
-              const newPdf =
-                await PDFLib.PDFDocument.create();
+            /* Remove search when changing category */
 
-
-              const copiedPages =
-                await newPdf.copyPages(
-                  originalPdf,
-                  [
-                    pageNumber - 1
-                  ]
-                );
-
-
-              newPdf.addPage(
-                copiedPages[0]
-              );
-
-
-              const pdfBytes =
-                await newPdf.save();
-
-
-              zip.file(
-                cleanName +
-                "/page-" +
-                pageNumber +
-                ".pdf",
-
-                pdfBytes
-              );
-
-            }
+            searchInput.value = "";
 
           }
-
-
-          /* Create ZIP */
-
-          status.textContent =
-            "Creating ZIP file...";
-
-
-          const zipBlob =
-            await zip.generateAsync(
-              {
-                type: "blob"
-              }
-            );
-
-
-          const url =
-            URL.createObjectURL(
-              zipBlob
-            );
-
-
-          const link =
-            document.createElement(
-              "a"
-            );
-
-
-          link.href =
-            url;
-
-
-          link.download =
-            "split-pdf-pages.zip";
-
-
-          document.body.appendChild(
-            link
-          );
-
-
-          link.click();
-
-
-          link.remove();
-
-
-          URL.revokeObjectURL(
-            url
-          );
-
-
-          status.textContent =
-            "Done! Your split PDF files have been downloaded.";
-
-
-        }
-
-        catch (error) {
-
-          console.error(error);
-
-
-          alert(
-            "Something went wrong while splitting the PDF."
-          );
-
-
-          status.style.display =
-            "none";
-
-        }
-
-
-        splitButton.disabled =
-          false;
-
-
-        splitButton.textContent =
-          "Split PDF";
+        );
 
       }
     );
 
 
     /* ========================================
-       CHOOSE MORE PDFs
+       SEARCH
     ========================================= */
 
-    newFileButton.addEventListener(
-      "click",
+    searchInput.addEventListener(
+      "input",
       function() {
 
-        pdfInput.click();
+        applyFilter(
+          currentFilter
+        );
 
       }
     );
 
+
+    /* ========================================
+       LOAD PDF TOOLS BY DEFAULT
+    ========================================= */
+
+    applyFilter("pdf");
 
   </script>
 
@@ -2647,3 +1749,4 @@
 </body>
 
 </html>
+```
