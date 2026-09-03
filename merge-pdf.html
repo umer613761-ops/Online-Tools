@@ -337,6 +337,8 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       width: max-content;
 
       min-width: 100%;
+
+      gap: 0;
     }
 
     .tool-category-link {
@@ -376,6 +378,11 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
         box-shadow 0.2s ease;
     }
 
+
+    /* ========================================
+       BUTTON HOVER
+    ======================================== */
+
     .tool-category-link:hover {
       color: #326ba8;
 
@@ -383,6 +390,11 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
       background: #f7fafd;
     }
+
+
+    /* ========================================
+       ACTIVE BUTTON
+    ======================================== */
 
     .tool-category-link.active {
       background: #326ba8;
@@ -409,20 +421,33 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
        SEPARATOR BETWEEN BUTTONS
     ======================================== */
 
+    .tool-category-link:not(:last-child) {
+      margin-right: 24px;
+    }
+
     .tool-category-link:not(:last-child)::after {
       content: "|";
 
       position: absolute;
 
-      right: -8px;
+      right: -17px;
 
-      color: #aeb8c3;
+      top: 50%;
 
-      font-size: 16px;
+      transform:
+        translateY(-50%);
+
+      color: #9aa7b5;
+
+      font-size: 17px;
 
       font-weight: 400;
 
-      z-index: 5;
+      line-height: 1;
+
+      pointer-events: none;
+
+      z-index: 10;
     }
 
 
@@ -1122,6 +1147,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       display: flex;
 
       align-items: center;
+
       justify-content: space-between;
 
       gap: 20px;
@@ -1212,8 +1238,12 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
         font-size: 13px;
       }
 
+      .tool-category-link:not(:last-child) {
+        margin-right: 20px;
+      }
+
       .tool-category-link:not(:last-child)::after {
-        right: -7px;
+        right: -14px;
 
         font-size: 15px;
       }
@@ -1463,7 +1493,9 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 <div class="page-layout">
 
 
-  <!-- MAIN CONTENT -->
+  <!-- ========================================
+       MAIN CONTENT
+  ======================================== -->
 
   <section class="content">
 
