@@ -12,13 +12,21 @@ content="width=device-width, initial-scale=1.0"
 
 >
 
-  <title>ToolNest - Free Online Tools</title>
+  <title>Merge PDF - ToolNest</title>
 
 <meta
 name="description"
-content="ToolNest - Free online PDF, text, image and calculator tools. Simple, fast and easy-to-use tools for everyday tasks."
+content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
 >
+
+  <!-- PDF.JS -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <!-- PDF-LIB -->
+
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
 
   <style>
 
@@ -48,17 +56,15 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
     }
 
 
+
     /* ========================================
        HEADER
     ======================================== */
 
     .top-header {
       width: 100%;
-
       background: #ffffff;
-
-      border-bottom:
-        1px solid #dfe5eb;
+      border-bottom: 1px solid #dfe5eb;
     }
 
     .header-inner {
@@ -67,17 +73,15 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
       margin: 0 auto;
 
-      padding:
-        10px
-        24px;
+      padding: 10px 24px;
 
       display: flex;
-
       align-items: center;
       justify-content: space-between;
 
       gap: 24px;
     }
+
 
 
     /* ========================================
@@ -86,13 +90,11 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
     .logo {
       display: flex;
-
       align-items: center;
 
       gap: 8px;
 
       text-decoration: none;
-
       white-space: nowrap;
     }
 
@@ -101,7 +103,6 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
       height: 32px;
 
       display: flex;
-
       align-items: center;
       justify-content: center;
 
@@ -131,15 +132,14 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
     .logo-tool {
       color: #334155;
-
       font-weight: 500;
     }
 
     .logo-nest {
       color: #326ba8;
-
       font-weight: 800;
     }
+
 
 
     /* ========================================
@@ -157,19 +157,12 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
       width: 100%;
       height: 40px;
 
-      padding:
-        0
-        44px
-        0
-        15px;
+      padding: 0 44px 0 15px;
 
-      border:
-        1px solid #d8e0e8;
-
+      border: 1px solid #d8e0e8;
       border-radius: 7px;
 
       background: #f7f9fb;
-
       color: #344256;
 
       font-size: 14px;
@@ -193,8 +186,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
       right: 14px;
       top: 50%;
 
-      transform:
-        translateY(-50%);
+      transform: translateY(-50%);
 
       color: #718096;
 
@@ -204,6 +196,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
     }
 
 
+
     /* ========================================
        CATEGORY NAVIGATION
     ======================================== */
@@ -211,8 +204,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
     .category-nav {
       background: #ffffff;
 
-      border-bottom:
-        1px solid #dfe5eb;
+      border-bottom: 1px solid #dfe5eb;
     }
 
     .category-nav-inner {
@@ -221,12 +213,9 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
       margin: 0 auto;
 
-      padding:
-        0
-        24px;
+      padding: 0 24px;
 
       display: flex;
-
       align-items: center;
 
       gap: 30px;
@@ -238,7 +227,6 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
       position: relative;
 
       display: flex;
-
       align-items: center;
 
       height: 46px;
@@ -260,7 +248,6 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
     .category-link.active {
       color: #263548;
-
       font-weight: 600;
     }
 
@@ -278,11 +265,9 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
       background: #326ba8;
 
       border-radius:
-        3px
-        3px
-        0
-        0;
+        3px 3px 0 0;
     }
+
 
 
     /* ========================================
@@ -295,10 +280,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
       margin: 0 auto;
 
-      padding:
-        28px
-        24px
-        60px;
+      padding: 28px 24px 60px;
     }
 
     .page-layout {
@@ -318,19 +300,122 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
     }
 
 
+
+    /* ========================================
+       PDF TOOL CATEGORY BAR
+       COMPACT VERSION
+    ======================================== */
+
+    .tool-category-bar {
+      width: 100%;
+
+      margin-bottom: 20px;
+
+      overflow-x: auto;
+
+      scrollbar-width: thin;
+    }
+
+    .tool-category-list {
+      display: flex;
+
+      align-items: center;
+
+      width: max-content;
+
+      min-width: 100%;
+
+      gap: 8px;
+    }
+
+
+
+    /* ========================================
+       PDF TOOL COMPACT BUTTONS
+    ======================================== */
+
+    .tool-category-link {
+      position: relative;
+
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-height: 32px;
+
+      padding: 0 12px;
+
+      background: #ffffff;
+
+      border: 1px solid #dce3ea;
+
+      border-radius: 6px;
+
+      color: #667588;
+
+      text-decoration: none;
+
+      font-size: 11px;
+
+      font-weight: 600;
+
+      white-space: nowrap;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .tool-category-link:hover {
+      color: #326ba8;
+
+      border-color: #c7d6e5;
+
+      background: #f7fafd;
+
+      transform: translateY(-1px);
+
+      box-shadow:
+        0 2px 6px
+        rgba(50, 107, 168, 0.08);
+    }
+
+    .tool-category-link.active {
+      background: #326ba8;
+
+      border-color: #326ba8;
+
+      color: #ffffff;
+
+      box-shadow:
+        0 2px 6px
+        rgba(50, 107, 168, 0.14);
+    }
+
+    .tool-category-link.active:hover {
+      background: #285b91;
+
+      border-color: #285b91;
+
+      color: #ffffff;
+    }
+
+
+
     /* ========================================
        HEADING
     ======================================== */
 
     .heading {
-      margin-bottom: 24px;
+      margin-bottom: 26px;
     }
 
     .heading h1 {
-      margin:
-        0
-        0
-        8px;
+      margin: 0 0 10px;
 
       color: #263548;
 
@@ -354,142 +439,540 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
     }
 
 
+
     /* ========================================
-       TOOLS GRID
+       TOOL BOX
     ======================================== */
 
-    .tools-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-      gap: 12px;
-    }
-
-    .tool-card {
-      min-height: 88px;
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 13px;
-
-      padding: 14px;
-
+    .tool-box {
       background: #ffffff;
 
-      border:
-        1px solid #dce3ea;
+      border: 1px solid #dce3ea;
 
-      border-radius: 9px;
+      border-radius: 12px;
 
-      text-decoration: none;
+      padding: 26px;
+
+      box-shadow:
+        0 4px 16px
+        rgba(31, 45, 61, 0.05);
+    }
+
+
+
+    /* ========================================
+       HIDDEN FILE INPUT
+    ======================================== */
+
+    #pdfInput {
+      display: none;
+    }
+
+
+
+    /* ========================================
+       UPLOAD / PREVIEW AREA
+    ======================================== */
+
+    .upload-area {
+      width: 100%;
+
+      min-height: 390px;
+
+      padding: 30px;
+
+      position: relative;
+
+      display: block;
+
+      text-align: center;
+
+      background: #fafbfd;
+
+      border: 2px dashed #8da9c5;
+
+      border-radius: 12px;
 
       transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
+        background 0.2s ease,
         border-color 0.2s ease;
     }
 
-    .tool-card:hover {
-      transform:
-        translateY(-2px);
+    .upload-area:hover {
+      background: #f4f8fc;
 
-      border-color: #c7d6e5;
-
-      box-shadow:
-        0 7px 18px
-        rgba(31, 45, 61, 0.08);
+      border-color: #5f8fbd;
     }
 
-    .tool-icon {
-      width: 42px;
-      height: 42px;
 
-      flex-shrink: 0;
+
+    /* ========================================
+       INITIAL UPLOAD STATE
+    ======================================== */
+
+    .upload-placeholder {
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: flex-start;
+
+      width: 100%;
+
+      min-height: 320px;
+
+      padding-top: 8px;
+    }
+
+
+
+    /* ========================================
+       FLOATING UPLOAD BUTTON
+    ======================================== */
+
+    .floating-upload-button {
+      position: sticky;
+
+      top: 50vh;
+
+      z-index: 20;
+
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-width: 280px;
+
+      min-height: 72px;
+
+      padding: 0 36px;
+
+      border: none;
+
+      border-radius: 36px;
+
+      background: #326ba8;
+
+      color: #ffffff;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 19px;
+
+      font-weight: 600;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 10px 26px
+        rgba(50, 107, 168, 0.30);
+
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .floating-upload-button:hover {
+      background: #285b91;
+
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 13px 30px
+        rgba(50, 107, 168, 0.36);
+    }
+
+    .floating-upload-button:active {
+      transform: translateY(0);
+    }
+
+
+
+    /* ========================================
+       UPLOADED FILES
+    ======================================== */
+
+    .uploaded-files {
+      display: none;
+
+      width: 100%;
+    }
+
+    .uploaded-files.active {
+      display: block;
+    }
+
+
+
+    /* ========================================
+       DRAG ORDER MESSAGE
+    ======================================== */
+
+    .drag-hint {
+      width: 100%;
+
+      margin: 0 0 20px;
+
+      padding: 12px 16px;
+
+      text-align: center;
+
+      color: #356aa5;
+
+      background: #f2f7fb;
+
+      border: 1px solid #d4e2ef;
+
+      border-radius: 8px;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      line-height: 1.4;
+    }
+
+
+
+    /* ========================================
+       PDF GRID
+    ======================================== */
+
+    .pdf-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          auto-fit,
+          minmax(150px, 150px)
+        );
+
+      justify-content: center;
+
+      align-items: start;
+
+      gap: 22px;
+
+      padding: 10px;
+    }
+
+
+
+    /* ========================================
+       PDF CARD
+    ======================================== */
+
+    .pdf-card {
+      position: relative;
+
+      width: 150px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      padding: 10px;
+
+      background: transparent;
+
+      border: none;
+
+      cursor: grab;
+
+      transition:
+        transform 0.2s ease;
+    }
+
+    .pdf-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .pdf-card.dragging {
+      opacity: 0.45;
+
+      transform: scale(0.96);
+    }
+
+
+
+    /* ========================================
+       PDF PREVIEW
+    ======================================== */
+
+    .pdf-preview {
+      width: 150px;
+
+      height: 190px;
+
+      margin-bottom: 13px;
 
       display: flex;
 
       align-items: center;
       justify-content: center;
 
+      overflow: hidden;
+
+      background: #edf2f6;
+
+      border: 1px solid #cbd6e0;
+
       border-radius: 10px;
-
-      font-size: 19px;
     }
 
-    .icon-pdf {
-      background: #eaf1f8;
-      color: #326ba8;
+    .pdf-preview canvas {
+      display: block;
+
+      max-width: 100%;
+      max-height: 100%;
+
+      object-fit: contain;
     }
 
-    .icon-text {
-      background: #eef4f8;
-      color: #416d91;
+
+
+    /* ========================================
+       PDF NAME
+    ======================================== */
+
+    .pdf-name {
+      width: 100%;
+
+      margin-bottom: 5px;
+
+      color: #34475b;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      text-align: center;
     }
 
-    .icon-image {
-      background: #edf5f2;
-      color: #397765;
-    }
 
-    .icon-calculator {
-      background: #f2f0f7;
-      color: #665687;
-    }
 
-    .tool-info {
-      min-width: 0;
-    }
+    /* ========================================
+       REMOVE BUTTON
+    ======================================== */
 
-    .tool-info h2 {
-      margin:
-        0
-        0
-        4px;
+    .remove-button {
+      position: absolute;
 
-      color: #344255;
+      top: 0;
+      right: 0;
+
+      width: 20px;
+      height: 20px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 0;
+
+      border: none;
+
+      border-radius: 50%;
+
+      background: #dc4b4b;
+
+      color: #ffffff;
 
       font-size: 15px;
 
       font-weight: 700;
+
+      line-height: 1;
+
+      cursor: pointer;
+
+      z-index: 5;
+
+      box-shadow:
+        0 2px 5px
+        rgba(0, 0, 0, 0.12);
     }
 
-    .tool-info p {
-      margin: 0;
-
-      color: #718096;
-
-      font-size: 13px;
-
-      line-height: 1.4;
+    .remove-button:hover {
+      background: #c93d3d;
     }
+
 
 
     /* ========================================
-       NO RESULTS
+       CONTROLS
     ======================================== */
 
-    .no-results {
+    .editor-controls {
       display: none;
 
-      padding: 35px 20px;
+      margin-top: 18px;
 
-      text-align: center;
+      width: 100%;
+    }
+
+    .editor-controls.active {
+      display: block;
+    }
+
+
+
+    /* ========================================
+       BUTTON ROW
+    ======================================== */
+
+    .button-row {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 12px;
+
+      width: 100%;
+    }
+
+
+
+    /* ========================================
+       BUTTON
+    ======================================== */
+
+    button {
+      height: 46px;
+
+      padding: 0 20px;
+
+      border-radius: 8px;
+
+      font-size: 14px;
+
+      font-weight: 400;
+
+      cursor: pointer;
+
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+
+      cursor: not-allowed;
+    }
+
+
+
+    /* ========================================
+       MAIN MERGE BUTTON
+    ======================================== */
+
+    .primary-button {
+      min-height: 52px;
+
+      min-width: 0;
+
+      flex: 1;
+
+      padding: 0 30px;
+
+      border: none;
+
+      border-radius: 9px;
+
+      background: #326ba8;
+
+      color: #ffffff;
+
+      font-size: 16px;
+
+      font-weight: 400;
+
+      box-shadow:
+        0 5px 14px
+        rgba(50, 107, 168, 0.22);
+    }
+
+    .primary-button:hover:not(:disabled) {
+      background: #285b91;
+
+      box-shadow:
+        0 7px 18px
+        rgba(50, 107, 168, 0.28);
+    }
+
+
+
+    /* ========================================
+       SECONDARY BUTTON
+    ======================================== */
+
+    .secondary-button {
+      height: 46px;
+
+      padding: 0 20px;
+
+      border: 1px solid #ccd7e1;
 
       background: #ffffff;
 
-      border:
-        1px solid #dce3ea;
+      color: #435365;
 
-      border-radius: 10px;
-
-      color: #718096;
-
-      font-size: 15px;
+      font-weight: 400;
     }
+
+    .secondary-button:hover:not(:disabled) {
+      background: #f5f7f9;
+    }
+
+
+
+    /* ========================================
+       STATUS
+    ======================================== */
+
+    .status {
+      display: none;
+
+      margin-top: 18px;
+
+      padding: 14px;
+
+      text-align: center;
+
+      background: #f2f7fb;
+
+      border: 1px solid #d4e2ef;
+
+      border-radius: 8px;
+
+      color: #55708a;
+
+      font-size: 14px;
+    }
+
 
 
     /* ========================================
@@ -517,8 +1000,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
       background: #ffffff;
 
-      border:
-        1px solid #dce3ea;
+      border: 1px solid #dce3ea;
 
       border-radius: 10px;
 
@@ -546,9 +1028,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
     }
 
     .sample-ad {
-      padding:
-        22px
-        12px;
+      padding: 22px 12px;
 
       background:
         linear-gradient(
@@ -557,8 +1037,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
           #edf3f9
         );
 
-      border:
-        1px solid #d8e3ed;
+      border: 1px solid #d8e3ed;
 
       border-radius: 9px;
     }
@@ -568,9 +1047,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
       margin-bottom: 12px;
 
-      padding:
-        5px
-        9px;
+      padding: 5px 9px;
 
       background: #326ba8;
 
@@ -586,10 +1063,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
     }
 
     .sample-ad h3 {
-      margin:
-        0
-        0
-        9px;
+      margin: 0 0 9px;
 
       color: #344255;
 
@@ -599,10 +1073,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
     }
 
     .sample-ad p {
-      margin:
-        0
-        0
-        16px;
+      margin: 0 0 16px;
 
       color: #718096;
 
@@ -614,14 +1085,11 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
     .sample-ad-button {
       display: inline-block;
 
-      padding:
-        9px
-        14px;
+      padding: 9px 14px;
 
       background: #ffffff;
 
-      border:
-        1px solid #cbd8e4;
+      border: 1px solid #cbd8e4;
 
       border-radius: 6px;
 
@@ -633,6 +1101,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
     }
 
 
+
     /* ========================================
        FOOTER
     ======================================== */
@@ -640,8 +1109,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
     footer {
       background: #ffffff;
 
-      border-top:
-        1px solid #dfe5eb;
+      border-top: 1px solid #dfe5eb;
     }
 
     .footer-inner {
@@ -681,6 +1149,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
     }
 
 
+
     /* ========================================
        TABLET
     ======================================== */
@@ -706,6 +1175,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
     }
 
 
+
     /* ========================================
        MOBILE
     ======================================== */
@@ -721,37 +1191,91 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
       }
 
       .category-nav-inner {
-        padding:
-          0
-          16px;
+        padding: 0 16px;
 
         gap: 22px;
       }
 
       .page-wrapper {
-        padding:
-          24px
-          16px
-          45px;
+        padding: 24px 16px 45px;
+      }
+
+      .tool-category-bar {
+        margin-bottom: 18px;
+      }
+
+      .tool-category-list {
+        gap: 6px;
+      }
+
+      .tool-category-link {
+        min-height: 30px;
+
+        padding: 0 10px;
+
+        font-size: 10px;
+
+        border-radius: 5px;
       }
 
       .heading h1 {
         font-size: 31px;
       }
 
-      .tools-grid {
-        grid-template-columns: 1fr;
+      .tool-box {
+        padding: 18px;
+      }
 
-        gap: 10px;
+      .upload-area {
+        min-height: 350px;
+
+        padding: 20px;
+      }
+
+      .upload-placeholder {
+        min-height: 300px;
+
+        padding-top: 6px;
+      }
+
+      .floating-upload-button {
+        min-width: 250px;
+
+        min-height: 66px;
+
+        padding: 0 30px;
+
+        font-size: 17px;
+
+        border-radius: 33px;
+      }
+
+      .pdf-grid {
+        grid-template-columns:
+          repeat(
+            auto-fit,
+            minmax(140px, 140px)
+          );
+
+        gap: 18px;
+      }
+
+      .pdf-card {
+        width: 140px;
+      }
+
+      .pdf-preview {
+        width: 140px;
+
+        height: 180px;
       }
 
       .footer-inner {
-        padding:
-          22px
-          16px;
+        padding: 22px 16px;
       }
 
     }
+
 
 
     /* ========================================
@@ -767,9 +1291,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
         gap: 10px;
 
-        padding:
-          10px
-          16px;
+        padding: 10px 16px;
       }
 
       .logo {
@@ -788,39 +1310,83 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
         font-size: 15px;
       }
 
-      .tool-card {
-        min-height: 78px;
-
-        padding: 12px;
-
-        gap: 12px;
+      .button-row {
+        flex-direction: column;
       }
 
-      .tool-icon {
-        width: 40px;
-        height: 40px;
-
-        font-size: 18px;
-
-        border-radius: 9px;
+      .primary-button,
+      .secondary-button {
+        width: 100%;
       }
 
-      .tool-info h2 {
-        font-size: 15px;
+      .primary-button {
+        min-height: 54px;
 
-        margin-bottom: 3px;
-      }
-
-      .tool-info p {
-        font-size: 12px;
-
-        line-height: 1.35;
+        font-size: 16px;
       }
 
       .footer-inner {
         flex-direction: column;
 
         text-align: center;
+      }
+
+      .pdf-grid {
+        grid-template-columns:
+          repeat(
+            auto-fit,
+            minmax(120px, 120px)
+          );
+
+        gap: 14px;
+
+        padding: 4px;
+      }
+
+      .pdf-card {
+        width: 120px;
+      }
+
+      .pdf-preview {
+        width: 120px;
+
+        height: 155px;
+      }
+
+      .pdf-name {
+        font-size: 13px;
+      }
+
+      .drag-hint {
+        font-size: 13px;
+
+        padding: 11px 10px;
+      }
+
+      .tool-category-list {
+        gap: 5px;
+      }
+
+      .tool-category-link {
+        min-height: 29px;
+
+        padding: 0 9px;
+
+        font-size: 9.5px;
+
+        border-radius: 5px;
+      }
+
+      .floating-upload-button {
+        min-width: 230px;
+
+        min-height: 62px;
+
+        padding: 0 26px;
+
+        font-size: 16px;
+
+        border-radius: 31px;
       }
 
     }
@@ -837,7 +1403,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
   <header class="top-header">
 
-
+```
 <div class="header-inner">
 
   <a
@@ -863,7 +1429,6 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
   </a>
 
-
   <div class="header-search">
 
     <input
@@ -880,7 +1445,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
   </div>
 
 </div>
-
+```
 
   </header>
 
@@ -890,51 +1455,46 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
   <nav class="category-nav">
 
-
+```
 <div class="category-nav-inner">
 
   <a
-    href="#"
+    href="index.html"
     class="category-link"
-    data-filter="all"
   >
     Popular Tools
   </a>
 
   <a
-    href="#"
+    href="index.html"
     class="category-link active"
-    data-filter="pdf"
   >
     PDF Tools
   </a>
 
   <a
-    href="#"
+    href="index.html"
     class="category-link"
-    data-filter="text"
   >
     Text Tools
   </a>
 
   <a
-    href="#"
+    href="index.html"
     class="category-link"
-    data-filter="image"
   >
     Image Tools
   </a>
 
   <a
-    href="#"
+    href="index.html"
     class="category-link"
-    data-filter="calculator"
   >
     Calculators
   </a>
 
 </div>
-
+```
 
   </nav>
 
@@ -944,433 +1504,210 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
   <main class="page-wrapper">
 
-
+```
 <div class="page-layout">
 
 
-  <!-- MAIN CONTENT -->
+
+  <!-- ========================================
+       MAIN CONTENT
+  ========================================= -->
 
   <section class="content">
 
 
-    <!-- Heading -->
+
+    <!-- ========================================
+         PDF TOOL NAVIGATION
+    ========================================= -->
+
+    <nav
+      class="tool-category-bar"
+      aria-label="PDF tools"
+    >
+
+      <div class="tool-category-list">
+
+        <a
+          href="merge-pdf.html"
+          class="tool-category-link active"
+        >
+          Merge PDF
+        </a>
+
+        <a
+          href="split-pdf.html"
+          class="tool-category-link"
+        >
+          Split PDF
+        </a>
+
+        <a
+          href="pdf-to-images.html"
+          class="tool-category-link"
+        >
+          PDF to Images
+        </a>
+
+        <a
+          href="images-to-pdf.html"
+          class="tool-category-link"
+        >
+          Images to PDF
+        </a>
+
+      </div>
+
+    </nav>
+
+
+
+    <!-- ========================================
+         TOOL HEADING
+    ========================================= -->
 
     <div class="heading">
 
-      <h1 id="pageTitle">
-        PDF Tools
+      <h1>
+        Merge PDF
       </h1>
 
-      <p id="pageDescription">
-        Simple and fast tools for working with PDF files.
-        Merge, split, convert and manage your PDF documents online.
+      <p>
+        Combine multiple PDF files into one PDF quickly and easily.
+        Arrange your files in the order you want and merge them into a single document.
       </p>
 
     </div>
 
 
-    <!-- TOOLS -->
 
-    <div
-      class="tools-grid"
-      id="toolsGrid"
-    >
+    <!-- ========================================
+         TOOL BOX
+    ========================================= -->
+
+    <div class="tool-box">
 
 
-      <!-- ========================================
-           PDF TOOLS
-      ========================================= -->
 
-      <a
-        href="merge-pdf.html"
-        class="tool-card"
-        data-category="pdf"
-        data-name="Merge PDF"
+      <!-- ======================================
+           HIDDEN FILE INPUT
+      ====================================== -->
+
+      <input
+        type="file"
+        id="pdfInput"
+        accept=".pdf,application/pdf"
+        multiple
       >
 
-        <div class="tool-icon icon-pdf">
-          🔗
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
-            Merge PDF
-          </h2>
-
-          <p>
-            Combine multiple PDF files into one.
-          </p>
-
-        </div>
-
-      </a>
 
 
-      <a
-        href="split-pdf.html"
-        class="tool-card"
-        data-category="pdf"
-        data-name="Split PDF"
+      <!-- ======================================
+           UPLOAD / PREVIEW AREA
+      ====================================== -->
+
+      <div
+        class="upload-area"
+        id="uploadArea"
       >
 
-        <div class="tool-icon icon-pdf">
-          ✂
+
+
+        <!-- ====================================
+             INITIAL UPLOAD BUTTON
+        ==================================== -->
+
+        <div
+          class="upload-placeholder"
+          id="uploadPlaceholder"
+        >
+
+          <button
+            type="button"
+            class="floating-upload-button"
+            id="uploadButton"
+          >
+            Upload PDF File
+          </button>
+
         </div>
 
-        <div class="tool-info">
 
-          <h2>
-            Split PDF
-          </h2>
 
-          <p>
-            Split pages from your PDF file.
-          </p>
+        <!-- ====================================
+             PREVIEW STATE
+        ==================================== -->
+
+        <div
+          class="uploaded-files"
+          id="uploadedFiles"
+        >
+
+          <div class="drag-hint">
+            Drag Files to Change their Order
+          </div>
+
+          <div
+            class="pdf-grid"
+            id="pdfGrid"
+          ></div>
 
         </div>
 
-      </a>
+      </div>
 
 
-      <a
-        href="pdf-to-images.html"
-        class="tool-card"
-        data-category="pdf"
-        data-name="PDF to Images"
+
+      <!-- ======================================
+           CONTROLS
+      ====================================== -->
+
+      <div
+        class="editor-controls"
+        id="editorControls"
       >
 
-        <div class="tool-icon icon-pdf">
-          🖼
-        </div>
+        <div class="button-row">
 
-        <div class="tool-info">
+          <!-- MERGE BUTTON -->
 
-          <h2>
-            PDF to Images
-          </h2>
-
-          <p>
-            Convert PDF pages into image files.
-          </p>
-
-        </div>
-
-      </a>
+          <button
+            class="primary-button"
+            id="mergeButton"
+            type="button"
+          >
+            Merge PDFs and Download
+          </button>
 
 
-      <a
-        href="images-to-pdf.html"
-        class="tool-card"
-        data-category="pdf"
-        data-name="Images to PDF"
-      >
 
-        <div class="tool-icon icon-pdf">
-          📄
-        </div>
+          <!-- ADD MORE -->
 
-        <div class="tool-info">
-
-          <h2>
-            Images to PDF
-          </h2>
-
-          <p>
-            Convert images into a PDF document.
-          </p>
+          <button
+            class="secondary-button"
+            id="newFileButton"
+            type="button"
+          >
+            + Add More PDFs
+          </button>
 
         </div>
 
-      </a>
 
 
-      <!-- ========================================
-           TEXT TOOLS
-      ========================================= -->
+        <!-- STATUS -->
 
-      <a
-        href="word-counter.html"
-        class="tool-card"
-        data-category="text"
-        data-name="Word Counter"
-      >
+        <div
+          class="status"
+          id="status"
+        ></div>
 
-        <div class="tool-icon icon-text">
-          🔤
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
-            Word Counter
-          </h2>
-
-          <p>
-            Count words, characters and more.
-          </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="case-converter.html"
-        class="tool-card"
-        data-category="text"
-        data-name="Case Converter"
-      >
-
-        <div class="tool-icon icon-text">
-          Aa
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
-            Case Converter
-          </h2>
-
-          <p>
-            Convert text into different cases.
-          </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="text-sorter.html"
-        class="tool-card"
-        data-category="text"
-        data-name="Text Sorter"
-      >
-
-        <div class="tool-icon icon-text">
-          ↕
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
-            Text Sorter
-          </h2>
-
-          <p>
-            Sort lines of text quickly and easily.
-          </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="text-cleaner.html"
-        class="tool-card"
-        data-category="text"
-        data-name="Text Cleaner"
-      >
-
-        <div class="tool-icon icon-text">
-          ✨
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
-            Text Cleaner
-          </h2>
-
-          <p>
-            Clean and format your text.
-          </p>
-
-        </div>
-
-      </a>
-
-
-      <!-- ========================================
-           IMAGE TOOLS
-      ========================================= -->
-
-      <a
-        href="image-compressor.html"
-        class="tool-card"
-        data-category="image"
-        data-name="Image Compressor"
-      >
-
-        <div class="tool-icon icon-image">
-          🗜
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
-            Image Compressor
-          </h2>
-
-          <p>
-            Reduce image file size quickly.
-          </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="image-converter.html"
-        class="tool-card"
-        data-category="image"
-        data-name="Image Converter"
-      >
-
-        <div class="tool-icon icon-image">
-          🔄
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
-            Image Converter
-          </h2>
-
-          <p>
-            Convert images between formats.
-          </p>
-
-        </div>
-
-      </a>
-
-
-      <!-- ========================================
-           CALCULATORS
-      ========================================= -->
-
-      <a
-        href="bmi-calculator.html"
-        class="tool-card"
-        data-category="calculator"
-        data-name="BMI Calculator"
-      >
-
-        <div class="tool-icon icon-calculator">
-          ⚖
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
-            BMI Calculator
-          </h2>
-
-          <p>
-            Calculate your body mass index.
-          </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="percentage-calculator.html"
-        class="tool-card"
-        data-category="calculator"
-        data-name="Percentage Calculator"
-      >
-
-        <div class="tool-icon icon-calculator">
-          %
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
-            Percentage Calculator
-          </h2>
-
-          <p>
-            Quickly calculate percentages.
-          </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="profit-calculator.html"
-        class="tool-card"
-        data-category="calculator"
-        data-name="Profit Calculator"
-      >
-
-        <div class="tool-icon icon-calculator">
-          📈
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
-            Profit Calculator
-          </h2>
-
-          <p>
-            Calculate profit and profit margins.
-          </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="discount-calculator.html"
-        class="tool-card"
-        data-category="calculator"
-        data-name="Discount Calculator"
-      >
-
-        <div class="tool-icon icon-calculator">
-          🏷
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
-            Discount Calculator
-          </h2>
-
-          <p>
-            Calculate discounts and savings.
-          </p>
-
-        </div>
-
-      </a>
-
+      </div>
 
     </div>
-
-
-    <!-- NO RESULTS -->
-
-    <div
-      class="no-results"
-      id="noResults"
-    >
-      No tools found.
-    </div>
-
 
   </section>
+
 
 
   <!-- ========================================
@@ -1414,9 +1751,8 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
   </aside>
 
-
 </div>
-
+```
 
   </main>
 
@@ -1426,7 +1762,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
   <footer>
 
-
+```
 <div class="footer-inner">
 
   <div>
@@ -1454,7 +1790,7 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
   </div>
 
 </div>
-
+```
 
   </footer>
 
@@ -1464,230 +1800,775 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
   <script>
 
-    const navButtons =
-      document.querySelectorAll(".category-link");
+    /* ========================================
+       PDF.JS WORKER
+    ========================================= */
 
-    const toolCards =
-      document.querySelectorAll(".tool-card");
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-    const pageTitle =
-      document.getElementById("pageTitle");
-
-    const pageDescription =
-      document.getElementById("pageDescription");
-
-    const searchInput =
-      document.getElementById("toolSearch");
-
-    const noResults =
-      document.getElementById("noResults");
 
 
     /* ========================================
-       CATEGORY CONTENT
-    ======================================== */
+       ELEMENTS
+    ========================================= */
 
-    const categoryContent = {
+    const pdfInput =
+      document.getElementById("pdfInput");
 
-      all: {
-        title: "Popular Tools",
-        description:
-          "Quick access to ToolNest's most useful online tools for PDF, text, images and calculations."
-      },
+    const uploadArea =
+      document.getElementById("uploadArea");
 
-      pdf: {
-        title: "PDF Tools",
-        description:
-          "Simple and fast tools for working with PDF files. Merge, split, convert and manage your PDF documents."
-      },
+    const uploadButton =
+      document.getElementById("uploadButton");
 
-      text: {
-        title: "Text Tools",
-        description:
-          "Useful online text tools for counting, converting, sorting and cleaning your text."
-      },
+    const pdfGrid =
+      document.getElementById("pdfGrid");
 
-      image: {
-        title: "Image Tools",
-        description:
-          "Simple image tools to compress and convert your images quickly and easily."
-      },
+    const uploadPlaceholder =
+      document.getElementById("uploadPlaceholder");
 
-      calculator: {
-        title: "Calculators",
-        description:
-          "Easy-to-use calculators for percentages, BMI, profit, discounts and everyday calculations."
+    const uploadedFiles =
+      document.getElementById("uploadedFiles");
+
+    const editorControls =
+      document.getElementById("editorControls");
+
+    const mergeButton =
+      document.getElementById("mergeButton");
+
+    const newFileButton =
+      document.getElementById("newFileButton");
+
+    const status =
+      document.getElementById("status");
+
+
+
+    /* ========================================
+       FILE STORAGE
+    ========================================= */
+
+    let pdfFiles = [];
+
+    let draggedId = null;
+
+
+
+    /* ========================================
+       OPEN FILE PICKER
+    ========================================= */
+
+    uploadButton.addEventListener(
+      "click",
+      function(event) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        pdfInput.click();
+
       }
+    );
 
-    };
-
-
-    /* ========================================
-       CURRENT FILTER
-    ======================================== */
-
-    let currentFilter = "pdf";
 
 
     /* ========================================
-       APPLY FILTER
-    ======================================== */
+       FILE UPLOAD
+    ========================================= */
 
-    function applyFilter(filter) {
+    pdfInput.addEventListener(
+      "change",
+      function(event) {
 
-      currentFilter = filter;
+        const files =
+          Array.from(
+            event.target.files
+          );
 
-      const content =
-        categoryContent[filter];
+        files.forEach(
+          function(file) {
 
-      pageTitle.textContent =
-        content.title;
+            if (
+              file.type !==
+              "application/pdf"
+            ) {
 
-      pageDescription.textContent =
-        content.description;
+              alert(
+                file.name +
+                " is not a valid PDF file."
+              );
 
+              return;
+            }
 
-      let visibleCount = 0;
+            const alreadyExists =
+              pdfFiles.some(
+                function(item) {
 
-      const searchTerm =
-        searchInput.value
-          .trim()
-          .toLowerCase();
+                  return (
+                    item.file.name === file.name &&
+                    item.file.size === file.size
+                  );
 
+                }
+              );
 
-      toolCards.forEach(
-        function(card) {
+            if (alreadyExists) {
+              return;
+            }
 
-          const category =
-            card.dataset.category;
+            pdfFiles.push({
 
-          const name =
-            card.dataset.name
-              .toLowerCase();
+              file: file,
 
-          const description =
-            card
-              .querySelector("p")
-              .textContent
-              .toLowerCase();
+              id:
+                Date.now() +
+                Math.random()
 
-
-          const matchesCategory =
-            filter === "all" ||
-            category === filter;
-
-
-          const matchesSearch =
-            searchTerm === "" ||
-            name.includes(searchTerm) ||
-            description.includes(searchTerm);
-
-
-          if (
-            matchesCategory &&
-            matchesSearch
-          ) {
-
-            card.style.display =
-              "flex";
-
-            visibleCount++;
+            });
 
           }
+        );
 
-          else {
+        updateInterface();
 
-            card.style.display =
-              "none";
+        renderPDFs();
 
-          }
+        /*
+          Reset input so the
+          same file can be selected again.
+        */
 
-        }
-      );
+        pdfInput.value = "";
 
+      }
+    );
+
+
+
+    /* ========================================
+       UPDATE INTERFACE
+    ========================================= */
+
+    function updateInterface() {
 
       if (
-        visibleCount === 0
+        pdfFiles.length > 0
       ) {
 
-        noResults.style.display =
-          "block";
+        /*
+          Hide the initial upload
+          button completely.
+        */
+
+        uploadPlaceholder.style.display =
+          "none";
+
+        /*
+          Show uploaded files.
+        */
+
+        uploadedFiles.classList.add(
+          "active"
+        );
+
+        /*
+          Show controls.
+        */
+
+        editorControls.classList.add(
+          "active"
+        );
 
       }
 
       else {
 
-        noResults.style.display =
-          "none";
+        /*
+          Show the initial upload button
+          again if all files are removed.
+        */
+
+        uploadPlaceholder.style.display =
+          "flex";
+
+        /*
+          Hide previews.
+        */
+
+        uploadedFiles.classList.remove(
+          "active"
+        );
+
+        /*
+          Hide merge controls.
+        */
+
+        editorControls.classList.remove(
+          "active"
+        );
 
       }
 
     }
 
 
+
     /* ========================================
-       NAVIGATION
-    ======================================== */
+       RENDER PDF FILES
+    ========================================= */
 
-    navButtons.forEach(
-      function(button) {
+    function renderPDFs() {
 
-        button.addEventListener(
-          "click",
-          function(event) {
+      pdfGrid.innerHTML = "";
 
-            event.preventDefault();
+      pdfFiles.forEach(
+        function(item) {
 
-            navButtons.forEach(
-              function(item) {
+          const card =
+            document.createElement(
+              "div"
+            );
 
-                item.classList.remove(
-                  "active"
+          card.className =
+            "pdf-card";
+
+          card.dataset.id =
+            item.id;
+
+          card.draggable =
+            true;
+
+
+
+          /* ==================================
+             DRAG START
+          ================================== */
+
+          card.addEventListener(
+            "dragstart",
+            function(event) {
+
+              draggedId =
+                item.id;
+
+              card.classList.add(
+                "dragging"
+              );
+
+              event.stopPropagation();
+
+            }
+          );
+
+
+
+          /* ==================================
+             DRAG END
+          ================================== */
+
+          card.addEventListener(
+            "dragend",
+            function(event) {
+
+              draggedId =
+                null;
+
+              card.classList.remove(
+                "dragging"
+              );
+
+              event.stopPropagation();
+
+            }
+          );
+
+
+
+          /* ==================================
+             ALLOW DROP
+          ================================== */
+
+          card.addEventListener(
+            "dragover",
+            function(event) {
+
+              event.preventDefault();
+
+              event.stopPropagation();
+
+            }
+          );
+
+
+
+          /* ==================================
+             DROP
+          ================================== */
+
+          card.addEventListener(
+            "drop",
+            function(event) {
+
+              event.preventDefault();
+
+              event.stopPropagation();
+
+              if (
+                draggedId === item.id
+              ) {
+                return;
+              }
+
+              const draggedIndex =
+                pdfFiles.findIndex(
+                  function(pdf) {
+
+                    return (
+                      pdf.id === draggedId
+                    );
+
+                  }
+                );
+
+              const targetIndex =
+                pdfFiles.findIndex(
+                  function(pdf) {
+
+                    return (
+                      pdf.id === item.id
+                    );
+
+                  }
+                );
+
+              if (
+                draggedIndex === -1 ||
+                targetIndex === -1
+              ) {
+                return;
+              }
+
+              const movedFile =
+                pdfFiles.splice(
+                  draggedIndex,
+                  1
+                )[0];
+
+              pdfFiles.splice(
+                targetIndex,
+                0,
+                movedFile
+              );
+
+              renderPDFs();
+
+            }
+          );
+
+
+
+          /* ==================================
+             PDF PREVIEW
+          ================================== */
+
+          const preview =
+            document.createElement(
+              "div"
+            );
+
+          preview.className =
+            "pdf-preview";
+
+          const canvas =
+            document.createElement(
+              "canvas"
+            );
+
+          preview.appendChild(
+            canvas
+          );
+
+
+
+          /* ==================================
+             FILE NAME
+          ================================== */
+
+          const name =
+            document.createElement(
+              "div"
+            );
+
+          name.className =
+            "pdf-name";
+
+          name.textContent =
+            item.file.name;
+
+
+
+          /* ==================================
+             REMOVE BUTTON
+          ================================== */
+
+          const removeButton =
+            document.createElement(
+              "button"
+            );
+
+          removeButton.className =
+            "remove-button";
+
+          removeButton.type =
+            "button";
+
+          removeButton.textContent =
+            "×";
+
+          removeButton.setAttribute(
+            "aria-label",
+            "Remove " +
+            item.file.name
+          );
+
+          removeButton.addEventListener(
+            "click",
+            function(event) {
+
+              event.preventDefault();
+
+              event.stopPropagation();
+
+              pdfFiles =
+                pdfFiles.filter(
+                  function(pdf) {
+
+                    return (
+                      pdf.id !== item.id
+                    );
+
+                  }
+                );
+
+              updateInterface();
+
+              renderPDFs();
+
+            }
+          );
+
+
+
+          /* ==================================
+             BUILD CARD
+          ================================== */
+
+          card.appendChild(
+            preview
+          );
+
+          card.appendChild(
+            name
+          );
+
+          card.appendChild(
+            removeButton
+          );
+
+          pdfGrid.appendChild(
+            card
+          );
+
+
+
+          /* ==================================
+             RENDER PREVIEW
+          ================================== */
+
+          renderPDFPreview(
+            item.file,
+            canvas
+          );
+
+        }
+      );
+
+    }
+
+
+
+    /* ========================================
+       PDF PREVIEW
+    ========================================= */
+
+    async function renderPDFPreview(
+      file,
+      canvas
+    ) {
+
+      try {
+
+        const arrayBuffer =
+          await file.arrayBuffer();
+
+        const pdf =
+          await pdfjsLib.getDocument(
+            {
+              data:
+                arrayBuffer.slice(0)
+            }
+          ).promise;
+
+        const page =
+          await pdf.getPage(1);
+
+        const baseViewport =
+          page.getViewport(
+            {
+              scale: 1
+            }
+          );
+
+        const maxWidth =
+          145;
+
+        const maxHeight =
+          185;
+
+        const scale =
+          Math.min(
+            maxWidth /
+              baseViewport.width,
+
+            maxHeight /
+              baseViewport.height
+          );
+
+        const viewport =
+          page.getViewport(
+            {
+              scale: scale
+            }
+          );
+
+        const context =
+          canvas.getContext(
+            "2d"
+          );
+
+        canvas.width =
+          Math.floor(
+            viewport.width
+          );
+
+        canvas.height =
+          Math.floor(
+            viewport.height
+          );
+
+        await page.render(
+          {
+            canvasContext:
+              context,
+
+            viewport:
+              viewport
+          }
+        ).promise;
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "PDF preview error:",
+          error
+        );
+
+      }
+
+    }
+
+
+
+    /* ========================================
+       ADD MORE PDFs
+    ========================================= */
+
+    newFileButton.addEventListener(
+      "click",
+      function(event) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        pdfInput.click();
+
+      }
+    );
+
+
+
+    /* ========================================
+       MERGE PDFs
+    ========================================= */
+
+    mergeButton.addEventListener(
+      "click",
+      async function() {
+
+        if (
+          pdfFiles.length < 2
+        ) {
+
+          alert(
+            "Please select at least two PDF files."
+          );
+
+          return;
+        }
+
+        try {
+
+          mergeButton.disabled =
+            true;
+
+          newFileButton.disabled =
+            true;
+
+          mergeButton.textContent =
+            "Merging PDFs...";
+
+          status.style.display =
+            "block";
+
+          status.textContent =
+            "Preparing your PDF...";
+
+          const mergedPdf =
+            await PDFLib.PDFDocument.create();
+
+          for (
+            const item of pdfFiles
+          ) {
+
+            status.textContent =
+              "Adding " +
+              item.file.name +
+              "...";
+
+            const arrayBuffer =
+              await item.file.arrayBuffer();
+
+            const sourcePdf =
+              await PDFLib.PDFDocument.load(
+                arrayBuffer
+              );
+
+            const copiedPages =
+              await mergedPdf.copyPages(
+                sourcePdf,
+                sourcePdf.getPageIndices()
+              );
+
+            copiedPages.forEach(
+              function(page) {
+
+                mergedPdf.addPage(
+                  page
                 );
 
               }
             );
 
-
-            this.classList.add(
-              "active"
-            );
-
-
-            searchInput.value = "";
-
-            applyFilter(
-              this.dataset.filter
-            );
-
           }
-        );
+
+          status.textContent =
+            "Creating merged PDF...";
+
+          const mergedPdfBytes =
+            await mergedPdf.save();
+
+          const blob =
+            new Blob(
+              [mergedPdfBytes],
+              {
+                type:
+                  "application/pdf"
+              }
+            );
+
+          const url =
+            URL.createObjectURL(
+              blob
+            );
+
+          const link =
+            document.createElement(
+              "a"
+            );
+
+          link.href =
+            url;
+
+          link.download =
+            "merged-toolnest.pdf";
+
+          document.body.appendChild(
+            link
+          );
+
+          link.click();
+
+          link.remove();
+
+          setTimeout(
+            function() {
+
+              URL.revokeObjectURL(
+                url
+              );
+
+            },
+            1000
+          );
+
+          status.textContent =
+            "Done! Your merged PDF has been downloaded.";
+
+        }
+
+        catch (error) {
+
+          console.error(
+            "Merge error:",
+            error
+          );
+
+          alert(
+            "Something went wrong while merging the PDFs."
+          );
+
+          status.style.display =
+            "none";
+
+        }
+
+        mergeButton.disabled =
+          false;
+
+        newFileButton.disabled =
+          false;
+
+        mergeButton.textContent =
+          "Merge PDFs and Download";
 
       }
     );
-
-
-    /* ========================================
-       SEARCH
-    ======================================== */
-
-    searchInput.addEventListener(
-      "input",
-      function() {
-
-        applyFilter(
-          currentFilter
-        );
-
-      }
-    );
-
-
-    /* ========================================
-       LOAD PDF TOOLS BY DEFAULT
-    ======================================== */
-
-    applyFilter("pdf");
 
   </script>
 
