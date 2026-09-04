@@ -1,31 +1,27 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
   <meta charset="UTF-8">
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
-
->
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Merge PDF - ToolNest</title>
 
-<meta
-name="description"
-content="Merge multiple PDF files into one PDF online for free with ToolNest."
-
->
+  <meta
+    name="description"
+    content="Merge multiple PDF files into one PDF online for free with ToolNest."
+  >
 
   <!-- PDF.JS -->
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
   <!-- PDF-LIB -->
-
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
 
   <!-- ========================================
@@ -34,7 +30,6 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
   ========================================= -->
 
   <script>
-
     (function () {
 
       const savedTheme =
@@ -57,8 +52,8 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       }
 
     })();
-
   </script>
+
 
   <style>
 
@@ -164,6 +159,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       color: #ffffff;
 
       font-size: 16px;
+
       font-weight: 800;
 
       box-shadow:
@@ -208,7 +204,6 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       display: flex;
 
       align-items: center;
-
       justify-content: flex-end;
 
       gap: 10px;
@@ -221,6 +216,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
     .header-search {
       width: 100%;
+
       max-width: 520px;
 
       position: relative;
@@ -272,6 +268,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       position: absolute;
 
       right: 14px;
+
       top: 50%;
 
       transform:
@@ -422,6 +419,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
       left: 0;
       right: 0;
+
       bottom: 0;
 
       height: 3px;
@@ -510,8 +508,12 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
       background: #ffffff;
 
+      /*
+        Slightly stronger outline so the
+        pill buttons are clearly visible.
+      */
       border:
-        1px solid #dce3ea;
+        1px solid #cfd8e2;
 
       border-radius: 999px;
 
@@ -519,7 +521,11 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
       text-decoration: none;
 
-      font-size: 11px;
+      /*
+        Increased slightly from 11px
+        for better readability.
+      */
+      font-size: 12px;
 
       font-weight: 600;
 
@@ -536,7 +542,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
     .tool-category-link:hover {
       color: #326ba8;
 
-      border-color: #c7d6e5;
+      border-color: #b9c9d9;
 
       background: #f7fafd;
 
@@ -1898,7 +1904,10 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
         padding:
           0 10px;
 
-        font-size: 10px;
+        /*
+          Slightly larger mobile text.
+        */
+        font-size: 11px;
 
         border-radius: 999px;
       }
@@ -2067,7 +2076,10 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
         padding:
           0 9px;
 
-        font-size: 9.5px;
+        /*
+          Slightly larger small-screen text.
+        */
+        font-size: 10.5px;
 
         border-radius: 999px;
       }
@@ -2091,7 +2103,9 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
 </head>
 
+
 <body>
+
 
   <!-- ========================================
        HEADER
@@ -2099,69 +2113,68 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
   <header class="top-header">
 
+    <div class="header-inner">
 
-<div class="header-inner">
-
-  <a
-    href="index.html"
-    class="logo"
-  >
-
-    <div class="logo-icon">
-      T
-    </div>
-
-    <div class="logo-text">
-
-      <span class="logo-tool">
-        Tool
-      </span>
-
-      <span class="logo-nest">
-        NEST
-      </span>
-
-    </div>
-
-  </a>
-
-
-  <div class="header-right">
-
-    <div class="header-search">
-
-      <input
-        type="text"
-        id="toolSearch"
-        placeholder="Search tools..."
-        aria-label="Search tools"
+      <a
+        href="index.html"
+        class="logo"
       >
 
-      <span class="search-icon">
-        ⌕
-      </span>
+        <div class="logo-icon">
+          T
+        </div>
+
+        <div class="logo-text">
+
+          <span class="logo-tool">
+            Tool
+          </span>
+
+          <span class="logo-nest">
+            NEST
+          </span>
+
+        </div>
+
+      </a>
+
+
+      <div class="header-right">
+
+        <div class="header-search">
+
+          <input
+            type="text"
+            id="toolSearch"
+            placeholder="Search tools..."
+            aria-label="Search tools"
+          >
+
+          <span class="search-icon">
+            ⌕
+          </span>
+
+        </div>
+
+
+        <!-- THEME TOGGLE -->
+
+        <button
+          type="button"
+          class="theme-toggle"
+          id="themeToggle"
+          aria-label="Switch to dark mode"
+          title="Switch to dark mode"
+        >
+          🌙
+        </button>
+
+      </div>
 
     </div>
 
-
-    <!-- THEME TOGGLE -->
-
-    <button
-      type="button"
-      class="theme-toggle"
-      id="themeToggle"
-      aria-label="Switch to dark mode"
-      title="Switch to dark mode"
-    >
-      🌙
-    </button>
-
-  </div>
-
-</div>
-
-
   </header>
+
 
   <!-- ========================================
        CATEGORY NAVIGATION
@@ -2169,48 +2182,47 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
   <nav class="category-nav">
 
+    <div class="category-nav-inner">
 
-<div class="category-nav-inner">
+      <a
+        href="index.html"
+        class="category-link"
+      >
+        Popular Tools
+      </a>
 
-  <a
-    href="index.html"
-    class="category-link"
-  >
-    Popular Tools
-  </a>
+      <a
+        href="index.html"
+        class="category-link active"
+      >
+        PDF Tools
+      </a>
 
-  <a
-    href="index.html"
-    class="category-link active"
-  >
-    PDF Tools
-  </a>
+      <a
+        href="index.html"
+        class="category-link"
+      >
+        Text Tools
+      </a>
 
-  <a
-    href="index.html"
-    class="category-link"
-  >
-    Text Tools
-  </a>
+      <a
+        href="index.html"
+        class="category-link"
+      >
+        Image Tools
+      </a>
 
-  <a
-    href="index.html"
-    class="category-link"
-  >
-    Image Tools
-  </a>
+      <a
+        href="index.html"
+        class="category-link"
+      >
+        Calculators
+      </a>
 
-  <a
-    href="index.html"
-    class="category-link"
-  >
-    Calculators
-  </a>
-
-</div>
-
+    </div>
 
   </nav>
+
 
   <!-- ========================================
        PAGE
@@ -2218,238 +2230,237 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
   <main class="page-wrapper">
 
-
-<div class="page-layout">
-
-
-  <!-- ========================================
-       MAIN CONTENT
-  ========================================= -->
-
-  <section class="content">
+    <div class="page-layout">
 
 
-    <!-- ========================================
-         PDF TOOL NAVIGATION
-    ========================================= -->
+      <!-- ========================================
+           MAIN CONTENT
+      ========================================= -->
 
-    <nav
-      class="tool-category-bar"
-      aria-label="PDF tools"
-    >
-
-      <div class="tool-category-list">
-
-        <a
-          href="merge-pdf.html"
-          class="tool-category-link active"
-        >
-          Merge PDF
-        </a>
-
-        <a
-          href="split-pdf.html"
-          class="tool-category-link"
-        >
-          Split PDF
-        </a>
-
-        <a
-          href="pdf-to-images.html"
-          class="tool-category-link"
-        >
-          PDF to Images
-        </a>
-
-        <a
-          href="images-to-pdf.html"
-          class="tool-category-link"
-        >
-          Images to PDF
-        </a>
-
-      </div>
-
-    </nav>
+      <section class="content">
 
 
-    <!-- ========================================
-         TOOL HEADING
-    ========================================= -->
+        <!-- ========================================
+             PDF TOOL NAVIGATION
+        ========================================= -->
 
-    <div class="heading">
-
-      <h1>
-        Merge PDF
-      </h1>
-
-      <p>
-        Combine multiple PDF files into one PDF quickly and easily.
-        Arrange your files in the order you want and merge them into a single document.
-      </p>
-
-    </div>
-
-
-    <!-- ========================================
-         TOOL BOX
-    ========================================= -->
-
-    <div class="tool-box">
-
-
-      <!-- HIDDEN FILE INPUT -->
-
-      <input
-        type="file"
-        id="pdfInput"
-        accept=".pdf,application/pdf"
-        multiple
-      >
-
-
-      <!-- UPLOAD / PREVIEW AREA -->
-
-      <div
-        class="upload-area"
-        id="uploadArea"
-      >
-
-
-        <!-- INITIAL UPLOAD BUTTON -->
-
-        <div
-          class="upload-placeholder"
-          id="uploadPlaceholder"
+        <nav
+          class="tool-category-bar"
+          aria-label="PDF tools"
         >
 
-          <button
-            type="button"
-            class="floating-upload-button"
-            id="uploadButton"
-          >
-            Upload PDF File
-          </button>
+          <div class="tool-category-list">
 
-        </div>
+            <a
+              href="merge-pdf.html"
+              class="tool-category-link active"
+            >
+              Merge PDF
+            </a>
 
+            <a
+              href="split-pdf.html"
+              class="tool-category-link"
+            >
+              Split PDF
+            </a>
 
-        <!-- PREVIEW STATE -->
+            <a
+              href="pdf-to-images.html"
+              class="tool-category-link"
+            >
+              PDF to Images
+            </a>
 
-        <div
-          class="uploaded-files"
-          id="uploadedFiles"
-        >
+            <a
+              href="images-to-pdf.html"
+              class="tool-category-link"
+            >
+              Images to PDF
+            </a>
 
-          <div class="drag-hint">
-            Drag Files to Change their Order
           </div>
 
-          <div
-            class="pdf-grid"
-            id="pdfGrid"
-          ></div>
-
-        </div>
-
-      </div>
+        </nav>
 
 
-      <!-- ======================================
-           CONTROLS
-      ====================================== -->
+        <!-- ========================================
+             TOOL HEADING
+        ========================================= -->
 
-      <div
-        class="editor-controls"
-        id="editorControls"
-      >
+        <div class="heading">
 
-        <div class="button-row">
-
-
-          <!-- MERGE BUTTON -->
-
-          <button
-            class="primary-button"
-            id="mergeButton"
-            type="button"
-          >
-            Merge PDFs and Download
-          </button>
-
-
-          <!-- ADD MORE -->
-
-          <button
-            class="secondary-button"
-            id="newFileButton"
-            type="button"
-          >
-            + Add More PDFs
-          </button>
-
-        </div>
-
-
-        <!-- STATUS -->
-
-        <div
-          class="status"
-          id="status"
-        ></div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ========================================
-       ADVERTISEMENT
-  ========================================= -->
-
-  <aside class="ad-column">
-
-    <div class="ad-box">
-
-      <div class="ad-content">
-
-        <div class="ad-label">
-          ADVERTISEMENT
-        </div>
-
-        <div class="sample-ad">
-
-          <div class="sample-ad-badge">
-            TOOLNEST
-          </div>
-
-          <h3>
-            Simple Tools.<br>
-            Better Productivity.
-          </h3>
+          <h1>
+            Merge PDF
+          </h1>
 
           <p>
-            Fast, free and easy-to-use online tools for everyday tasks.
+            Combine multiple PDF files into one PDF quickly and easily.
+            Arrange your files in the order you want and merge them into a single document.
           </p>
 
-          <div class="sample-ad-button">
-            Explore Tools
+        </div>
+
+
+        <!-- ========================================
+             TOOL BOX
+        ========================================= -->
+
+        <div class="tool-box">
+
+
+          <!-- HIDDEN FILE INPUT -->
+
+          <input
+            type="file"
+            id="pdfInput"
+            accept=".pdf,application/pdf"
+            multiple
+          >
+
+
+          <!-- UPLOAD / PREVIEW AREA -->
+
+          <div
+            class="upload-area"
+            id="uploadArea"
+          >
+
+
+            <!-- INITIAL UPLOAD BUTTON -->
+
+            <div
+              class="upload-placeholder"
+              id="uploadPlaceholder"
+            >
+
+              <button
+                type="button"
+                class="floating-upload-button"
+                id="uploadButton"
+              >
+                Upload PDF File
+              </button>
+
+            </div>
+
+
+            <!-- PREVIEW STATE -->
+
+            <div
+              class="uploaded-files"
+              id="uploadedFiles"
+            >
+
+              <div class="drag-hint">
+                Drag Files to Change their Order
+              </div>
+
+              <div
+                class="pdf-grid"
+                id="pdfGrid"
+              ></div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ======================================
+               CONTROLS
+          ====================================== -->
+
+          <div
+            class="editor-controls"
+            id="editorControls"
+          >
+
+            <div class="button-row">
+
+
+              <!-- MERGE BUTTON -->
+
+              <button
+                class="primary-button"
+                id="mergeButton"
+                type="button"
+              >
+                Merge PDFs and Download
+              </button>
+
+
+              <!-- ADD MORE -->
+
+              <button
+                class="secondary-button"
+                id="newFileButton"
+                type="button"
+              >
+                + Add More PDFs
+              </button>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div
+              class="status"
+              id="status"
+            ></div>
+
           </div>
 
         </div>
 
-      </div>
+      </section>
+
+
+      <!-- ========================================
+           ADVERTISEMENT
+      ========================================= -->
+
+      <aside class="ad-column">
+
+        <div class="ad-box">
+
+          <div class="ad-content">
+
+            <div class="ad-label">
+              ADVERTISEMENT
+            </div>
+
+            <div class="sample-ad">
+
+              <div class="sample-ad-badge">
+                TOOLNEST
+              </div>
+
+              <h3>
+                Simple Tools.<br>
+                Better Productivity.
+              </h3>
+
+              <p>
+                Fast, free and easy-to-use online tools for everyday tasks.
+              </p>
+
+              <div class="sample-ad-button">
+                Explore Tools
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </aside>
 
     </div>
 
-  </aside>
-
-</div>
-
-
   </main>
+
 
   <!-- ========================================
        FOOTER
@@ -2457,37 +2468,36 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
   <footer>
 
+    <div class="footer-inner">
 
-<div class="footer-inner">
+      <div>
+        © 2026 ToolNest · Simple, Fast &amp; Free
+      </div>
 
-  <div>
-    © 2026 ToolNest · Simple, Fast &amp; Free
-  </div>
+      <div class="footer-links">
 
-  <div class="footer-links">
+        <a href="#">
+          About
+        </a>
 
-    <a href="#">
-      About
-    </a>
+        <a href="#">
+          Privacy
+        </a>
 
-    <a href="#">
-      Privacy
-    </a>
+        <a href="#">
+          Terms
+        </a>
 
-    <a href="#">
-      Terms
-    </a>
+        <a href="#">
+          Contact
+        </a>
 
-    <a href="#">
-      Contact
-    </a>
+      </div>
 
-  </div>
-
-</div>
-
+    </div>
 
   </footer>
+
 
   <!-- ========================================
        JAVASCRIPT
@@ -2703,9 +2713,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
         if (
           event.target.closest("button")
         ) {
-
           return;
-
         }
 
 
@@ -2907,9 +2915,11 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
               draggedId =
                 item.id;
 
+
               card.classList.add(
                 "dragging"
               );
+
 
               event.stopPropagation();
 
@@ -2925,6 +2935,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
               draggedId =
                 null;
+
 
               card.classList.remove(
                 "dragging"
@@ -3213,7 +3224,6 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
         const maxWidth =
           145;
 
-
         const maxHeight =
           185;
 
@@ -3321,7 +3331,6 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
           mergeButton.disabled =
             true;
-
 
           newFileButton.disabled =
             true;
@@ -3487,3 +3496,4 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 </body>
 
 </html>
+
