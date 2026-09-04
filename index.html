@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -7,17 +6,19 @@
 
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
+>
 
   <title>ToolNest - Free Online Tools</title>
 
-  <meta
-    name="description"
-    content="ToolNest - Free online PDF, text, image and calculator tools. Simple, fast and easy-to-use tools for everyday tasks."
-  >
+<meta
+name="description"
+content="ToolNest - Free online PDF, text, image and calculator tools. Simple, fast and easy-to-use tools for everyday tasks."
+
+>
 
   <style>
 
@@ -153,6 +154,25 @@
 
 
     /* ========================================
+       HEADER RIGHT SIDE
+    ======================================== */
+
+    .header-right {
+      width: 100%;
+
+      max-width: 570px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: flex-end;
+
+      gap: 10px;
+    }
+
+
+    /* ========================================
        SEARCH
     ======================================== */
 
@@ -224,6 +244,66 @@
 
       transition:
         color 0.2s ease;
+    }
+
+
+    /* ========================================
+       DARK MODE TOGGLE
+    ======================================== */
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 0;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #526273;
+
+      cursor: pointer;
+
+      font-size: 18px;
+
+      line-height: 1;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      background: #edf2f7;
+
+      border-color: #c7d3df;
+
+      color: #326ba8;
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.94);
+    }
+
+    .theme-toggle:focus-visible {
+      outline: none;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.15);
     }
 
 
@@ -767,227 +847,321 @@
 
 
     /* ========================================
-       DARK MODE
-       Automatically follows system/browser theme
+       MANUAL DARK MODE
+    ======================================== */
+
+    html.dark-mode body {
+      background: #11161d;
+      color: #e7edf4;
+    }
+
+    html.dark-mode .top-header {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .logo-tool {
+      color: #d7dee7;
+    }
+
+    html.dark-mode .logo-nest {
+      color: #5b95c9;
+    }
+
+    html.dark-mode .header-search input {
+      background: #202731;
+      border-color: #343f4c;
+      color: #edf2f7;
+    }
+
+    html.dark-mode .header-search input::placeholder {
+      color: #8996a5;
+    }
+
+    html.dark-mode .header-search input:focus {
+      background: #252d38;
+      border-color: #5f8fbd;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(77, 138, 196, 0.14);
+    }
+
+    html.dark-mode .search-icon {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .theme-toggle {
+      background: #202731;
+      border-color: #343f4c;
+      color: #d7e1eb;
+    }
+
+    html.dark-mode .theme-toggle:hover {
+      background: #29323d;
+      border-color: #465463;
+      color: #7eb0df;
+    }
+
+    html.dark-mode .category-nav {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .category-link {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .category-link:hover {
+      color: #6fa2d2;
+    }
+
+    html.dark-mode .category-link.active {
+      color: #e8eef5;
+    }
+
+    html.dark-mode .heading h1 {
+      color: #edf2f7;
+    }
+
+    html.dark-mode .heading p {
+      color: #9ca9b8;
+    }
+
+    html.dark-mode .tool-card {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 3px 12px
+        rgba(0, 0, 0, 0.12);
+    }
+
+    html.dark-mode .tool-card:hover {
+      background: #1b232d;
+      border-color: #415365;
+
+      box-shadow:
+        0 7px 20px
+        rgba(0, 0, 0, 0.24);
+    }
+
+    html.dark-mode .icon-pdf {
+      background: #1d3143;
+      color: #6fa2d2;
+    }
+
+    html.dark-mode .icon-text {
+      background: #20313e;
+      color: #76a2c1;
+    }
+
+    html.dark-mode .icon-image {
+      background: #1d332f;
+      color: #72a997;
+    }
+
+    html.dark-mode .icon-calculator {
+      background: #2b2639;
+      color: #9a8bc0;
+    }
+
+    html.dark-mode .tool-info h2 {
+      color: #dce4ec;
+    }
+
+    html.dark-mode .tool-info p {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .no-results {
+      background: #171d25;
+      border-color: #2e3946;
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .ad-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 18px
+        rgba(0, 0, 0, 0.18);
+    }
+
+    html.dark-mode .ad-label {
+      color: #778493;
+    }
+
+    html.dark-mode .sample-ad {
+      background:
+        linear-gradient(
+          135deg,
+          #202934,
+          #18212b
+        );
+
+      border-color: #354352;
+    }
+
+    html.dark-mode .sample-ad h3 {
+      color: #dce4ec;
+    }
+
+    html.dark-mode .sample-ad p {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .sample-ad-button {
+      background: #202731;
+      border-color: #455361;
+      color: #6fa2d2;
+    }
+
+    html.dark-mode footer {
+      background: #171d25;
+      border-top-color: #293340;
+    }
+
+    html.dark-mode .footer-inner {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a:hover {
+      color: #6fa2d2;
+    }
+
+
+    /* ========================================
+       SYSTEM DARK MODE
+       Used only when user has not selected
+       a manual theme preference.
     ======================================== */
 
     @media (prefers-color-scheme: dark) {
 
-      body {
+      html:not(.light-mode) body {
         background: #11161d;
         color: #e7edf4;
       }
 
-
-      /* ======================================
-         HEADER
-      ====================================== */
-
-      .top-header {
+      html:not(.light-mode) .top-header {
         background: #171d25;
-
-        border-bottom-color:
-          #293340;
+        border-bottom-color: #293340;
       }
 
-
-      /* ======================================
-         LOGO
-      ====================================== */
-
-      .logo-tool {
+      html:not(.light-mode) .logo-tool {
         color: #d7dee7;
       }
 
-      .logo-nest {
+      html:not(.light-mode) .logo-nest {
         color: #5b95c9;
       }
 
-
-      /* ======================================
-         SEARCH
-      ====================================== */
-
-      .header-search input {
+      html:not(.light-mode) .header-search input {
         background: #202731;
-
-        border-color:
-          #343f4c;
-
+        border-color: #343f4c;
         color: #edf2f7;
       }
 
-      .header-search input::placeholder {
-        color: #8996a5;
-      }
-
-      .header-search input:focus {
+      html:not(.light-mode) .header-search input:focus {
         background: #252d38;
-
-        border-color:
-          #5f8fbd;
-
-        box-shadow:
-          0 0 0 3px
-          rgba(77, 138, 196, 0.14);
+        border-color: #5f8fbd;
       }
 
-      .search-icon {
+      html:not(.light-mode) .search-icon {
         color: #9aa8b7;
       }
 
-
-      /* ======================================
-         CATEGORY NAVIGATION
-      ====================================== */
-
-      .category-nav {
-        background: #171d25;
-
-        border-bottom-color:
-          #293340;
+      html:not(.light-mode) .theme-toggle {
+        background: #202731;
+        border-color: #343f4c;
+        color: #d7e1eb;
       }
 
-      .category-link {
+      html:not(.light-mode) .category-nav {
+        background: #171d25;
+        border-bottom-color: #293340;
+      }
+
+      html:not(.light-mode) .category-link {
         color: #9ba8b7;
       }
 
-      .category-link:hover {
+      html:not(.light-mode) .category-link:hover {
         color: #6fa2d2;
       }
 
-      .category-link.active {
+      html:not(.light-mode) .category-link.active {
         color: #e8eef5;
       }
 
-
-      /* ======================================
-         HEADING
-      ====================================== */
-
-      .heading h1 {
+      html:not(.light-mode) .heading h1 {
         color: #edf2f7;
       }
 
-      .heading p {
+      html:not(.light-mode) .heading p {
         color: #9ca9b8;
       }
 
-
-      /* ======================================
-         TOOL CARDS
-      ====================================== */
-
-      .tool-card {
+      html:not(.light-mode) .tool-card {
         background: #171d25;
-
-        border-color:
-          #2e3946;
-
-        box-shadow:
-          0 3px 12px
-          rgba(0, 0, 0, 0.12);
+        border-color: #2e3946;
       }
 
-      .tool-card:hover {
+      html:not(.light-mode) .tool-card:hover {
         background: #1b232d;
-
-        border-color:
-          #415365;
-
-        box-shadow:
-          0 7px 20px
-          rgba(0, 0, 0, 0.24);
+        border-color: #415365;
       }
 
-
-      /* ======================================
-         PDF ICON
-      ====================================== */
-
-      .icon-pdf {
+      html:not(.light-mode) .icon-pdf {
         background: #1d3143;
         color: #6fa2d2;
       }
 
-
-      /* ======================================
-         TEXT ICON
-      ====================================== */
-
-      .icon-text {
+      html:not(.light-mode) .icon-text {
         background: #20313e;
         color: #76a2c1;
       }
 
-
-      /* ======================================
-         IMAGE ICON
-      ====================================== */
-
-      .icon-image {
+      html:not(.light-mode) .icon-image {
         background: #1d332f;
         color: #72a997;
       }
 
-
-      /* ======================================
-         CALCULATOR ICON
-      ====================================== */
-
-      .icon-calculator {
+      html:not(.light-mode) .icon-calculator {
         background: #2b2639;
         color: #9a8bc0;
       }
 
-
-      /* ======================================
-         TOOL TEXT
-      ====================================== */
-
-      .tool-info h2 {
+      html:not(.light-mode) .tool-info h2 {
         color: #dce4ec;
       }
 
-      .tool-info p {
+      html:not(.light-mode) .tool-info p {
         color: #9ba8b7;
       }
 
-
-      /* ======================================
-         NO RESULTS
-      ====================================== */
-
-      .no-results {
+      html:not(.light-mode) .no-results {
         background: #171d25;
-
-        border-color:
-          #2e3946;
-
+        border-color: #2e3946;
         color: #9ba8b7;
       }
 
-
-      /* ======================================
-         ADVERTISEMENT
-      ====================================== */
-
-      .ad-box {
+      html:not(.light-mode) .ad-box {
         background: #171d25;
-
-        border-color:
-          #2e3946;
-
-        box-shadow:
-          0 4px 18px
-          rgba(0, 0, 0, 0.18);
+        border-color: #2e3946;
       }
 
-      .ad-label {
+      html:not(.light-mode) .ad-label {
         color: #778493;
       }
 
-      .sample-ad {
+      html:not(.light-mode) .sample-ad {
         background:
           linear-gradient(
             135deg,
@@ -995,49 +1169,34 @@
             #18212b
           );
 
-        border-color:
-          #354352;
+        border-color: #354352;
       }
 
-      .sample-ad h3 {
+      html:not(.light-mode) .sample-ad h3 {
         color: #dce4ec;
       }
 
-      .sample-ad p {
+      html:not(.light-mode) .sample-ad p {
         color: #9ba8b7;
       }
 
-      .sample-ad-button {
+      html:not(.light-mode) .sample-ad-button {
         background: #202731;
-
-        border-color:
-          #455361;
-
+        border-color: #455361;
         color: #6fa2d2;
       }
 
-
-      /* ======================================
-         FOOTER
-      ====================================== */
-
-      footer {
+      html:not(.light-mode) footer {
         background: #171d25;
-
-        border-top-color:
-          #293340;
+        border-top-color: #293340;
       }
 
-      .footer-inner {
+      html:not(.light-mode) .footer-inner {
         color: #8d9aaa;
       }
 
-      .footer-links a {
+      html:not(.light-mode) .footer-links a {
         color: #8d9aaa;
-      }
-
-      .footer-links a:hover {
-        color: #6fa2d2;
       }
 
     }
@@ -1078,8 +1237,12 @@
         padding: 9px 16px;
       }
 
-      .header-search {
+      .header-right {
         max-width: 260px;
+      }
+
+      .header-search {
+        max-width: none;
       }
 
       .category-nav-inner {
@@ -1138,6 +1301,12 @@
         align-self: flex-start;
       }
 
+      .header-right {
+        max-width: none;
+
+        width: 100%;
+      }
+
       .header-search {
         max-width: none;
       }
@@ -1189,11 +1358,41 @@
 
   </style>
 
+  <!-- ========================================
+       THEME INITIALIZATION
+       Prevents light-mode flash on page load
+  ========================================= -->
+
+  <script>
+
+    (function () {
+
+      const savedTheme =
+        localStorage.getItem("toolnest-theme");
+
+      if (savedTheme === "dark") {
+
+        document.documentElement.classList.add(
+          "dark-mode"
+        );
+
+      }
+
+      else if (savedTheme === "light") {
+
+        document.documentElement.classList.add(
+          "light-mode"
+        );
+
+      }
+
+    })();
+
+  </script>
+
 </head>
 
-
 <body>
-
 
   <!-- ========================================
        HEADER
@@ -1201,51 +1400,67 @@
 
   <header class="top-header">
 
-    <div class="header-inner">
 
-      <a
-        href="index.html"
-        class="logo"
-      >
+<div class="header-inner">
 
-        <div class="logo-icon">
-          T
-        </div>
+  <a
+    href="index.html"
+    class="logo"
+  >
 
-        <div class="logo-text">
+    <div class="logo-icon">
+      T
+    </div>
 
-          <span class="logo-tool">
-            Tool
-          </span>
+    <div class="logo-text">
 
-          <span class="logo-nest">
-            NEST
-          </span>
+      <span class="logo-tool">
+        Tool
+      </span>
 
-        </div>
-
-      </a>
-
-
-      <div class="header-search">
-
-        <input
-          type="text"
-          id="toolSearch"
-          placeholder="Search tools..."
-          aria-label="Search tools"
-        >
-
-        <span class="search-icon">
-          ⌕
-        </span>
-
-      </div>
+      <span class="logo-nest">
+        NEST
+      </span>
 
     </div>
 
-  </header>
+  </a>
 
+
+  <div class="header-right">
+
+    <div class="header-search">
+
+      <input
+        type="text"
+        id="toolSearch"
+        placeholder="Search tools..."
+        aria-label="Search tools"
+      >
+
+      <span class="search-icon">
+        ⌕
+      </span>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="theme-toggle"
+      id="themeToggle"
+      aria-label="Switch to dark mode"
+      title="Switch to dark mode"
+    >
+      🌙
+    </button>
+
+  </div>
+
+</div>
+
+
+  </header>
 
   <!-- ========================================
        CATEGORY NAVIGATION
@@ -1253,52 +1468,53 @@
 
   <nav class="category-nav">
 
-    <div class="category-nav-inner">
 
-      <a
-        href="#"
-        class="category-link"
-        data-filter="all"
-      >
-        Popular Tools
-      </a>
+<div class="category-nav-inner">
 
-      <a
-        href="#"
-        class="category-link active"
-        data-filter="pdf"
-      >
-        PDF Tools
-      </a>
+  <a
+    href="#"
+    class="category-link"
+    data-filter="all"
+  >
+    Popular Tools
+  </a>
 
-      <a
-        href="#"
-        class="category-link"
-        data-filter="text"
-      >
-        Text Tools
-      </a>
+  <a
+    href="#"
+    class="category-link active"
+    data-filter="pdf"
+  >
+    PDF Tools
+  </a>
 
-      <a
-        href="#"
-        class="category-link"
-        data-filter="image"
-      >
-        Image Tools
-      </a>
+  <a
+    href="#"
+    class="category-link"
+    data-filter="text"
+  >
+    Text Tools
+  </a>
 
-      <a
-        href="#"
-        class="category-link"
-        data-filter="calculator"
-      >
-        Calculators
-      </a>
+  <a
+    href="#"
+    class="category-link"
+    data-filter="image"
+  >
+    Image Tools
+  </a>
 
-    </div>
+  <a
+    href="#"
+    class="category-link"
+    data-filter="calculator"
+  >
+    Calculators
+  </a>
+
+</div>
+
 
   </nav>
-
 
   <!-- ========================================
        PAGE
@@ -1306,480 +1522,473 @@
 
   <main class="page-wrapper">
 
-    <div class="page-layout">
+
+<div class="page-layout">
 
 
-      <!-- MAIN CONTENT -->
+  <!-- MAIN CONTENT -->
 
-      <section class="content">
+  <section class="content">
 
 
-        <!-- Heading -->
+    <!-- Heading -->
 
-        <div class="heading">
+    <div class="heading">
 
-          <h1 id="pageTitle">
-            PDF Tools
-          </h1>
+      <h1 id="pageTitle">
+        PDF Tools
+      </h1>
 
-          <p id="pageDescription">
-            Simple and fast tools for working with PDF files.
-            Merge, split, convert and manage your PDF documents online.
+      <p id="pageDescription">
+        Simple and fast tools for working with PDF files.
+        Merge, split, convert and manage your PDF documents online.
+      </p>
+
+    </div>
+
+
+    <!-- TOOLS -->
+
+    <div
+      class="tools-grid"
+      id="toolsGrid"
+    >
+
+
+      <!-- PDF TOOLS -->
+
+      <a
+        href="merge-pdf.html"
+        class="tool-card"
+        data-category="pdf"
+        data-name="Merge PDF"
+      >
+
+        <div class="tool-icon icon-pdf">
+          🔗
+        </div>
+
+        <div class="tool-info">
+
+          <h2>
+            Merge PDF
+          </h2>
+
+          <p>
+            Combine multiple PDF files into one.
           </p>
 
         </div>
 
+      </a>
 
-        <!-- TOOLS -->
 
-        <div
-          class="tools-grid"
-          id="toolsGrid"
-        >
+      <a
+        href="split-pdf.html"
+        class="tool-card"
+        data-category="pdf"
+        data-name="Split PDF"
+      >
 
+        <div class="tool-icon icon-pdf">
+          ✂
+        </div>
 
-          <!-- ========================================
-               PDF TOOLS
-          ========================================= -->
+        <div class="tool-info">
 
-          <a
-            href="merge-pdf.html"
-            class="tool-card"
-            data-category="pdf"
-            data-name="Merge PDF"
-          >
+          <h2>
+            Split PDF
+          </h2>
 
-            <div class="tool-icon icon-pdf">
-              🔗
-            </div>
-
-            <div class="tool-info">
-
-              <h2>
-                Merge PDF
-              </h2>
-
-              <p>
-                Combine multiple PDF files into one.
-              </p>
-
-            </div>
-
-          </a>
-
-
-          <a
-            href="split-pdf.html"
-            class="tool-card"
-            data-category="pdf"
-            data-name="Split PDF"
-          >
-
-            <div class="tool-icon icon-pdf">
-              ✂
-            </div>
-
-            <div class="tool-info">
-
-              <h2>
-                Split PDF
-              </h2>
-
-              <p>
-                Split pages from your PDF file.
-              </p>
-
-            </div>
-
-          </a>
-
-
-          <a
-            href="pdf-to-images.html"
-            class="tool-card"
-            data-category="pdf"
-            data-name="PDF to Images"
-          >
-
-            <div class="tool-icon icon-pdf">
-              🖼
-            </div>
-
-            <div class="tool-info">
-
-              <h2>
-                PDF to Images
-              </h2>
-
-              <p>
-                Convert PDF pages into image files.
-              </p>
-
-            </div>
-
-          </a>
-
-
-          <a
-            href="images-to-pdf.html"
-            class="tool-card"
-            data-category="pdf"
-            data-name="Images to PDF"
-          >
-
-            <div class="tool-icon icon-pdf">
-              📄
-            </div>
-
-            <div class="tool-info">
-
-              <h2>
-                Images to PDF
-              </h2>
-
-              <p>
-                Convert images into a PDF document.
-              </p>
-
-            </div>
-
-          </a>
-
-
-          <!-- ========================================
-               TEXT TOOLS
-          ========================================= -->
-
-          <a
-            href="word-counter.html"
-            class="tool-card"
-            data-category="text"
-            data-name="Word Counter"
-          >
-
-            <div class="tool-icon icon-text">
-              🔤
-            </div>
-
-            <div class="tool-info">
-
-              <h2>
-                Word Counter
-              </h2>
-
-              <p>
-                Count words, characters and more.
-              </p>
-
-            </div>
-
-          </a>
-
-
-          <a
-            href="case-converter.html"
-            class="tool-card"
-            data-category="text"
-            data-name="Case Converter"
-          >
-
-            <div class="tool-icon icon-text">
-              Aa
-            </div>
-
-            <div class="tool-info">
-
-              <h2>
-                Case Converter
-              </h2>
-
-              <p>
-                Convert text into different cases.
-              </p>
-
-            </div>
-
-          </a>
-
-
-          <a
-            href="text-sorter.html"
-            class="tool-card"
-            data-category="text"
-            data-name="Text Sorter"
-          >
-
-            <div class="tool-icon icon-text">
-              ↕
-            </div>
-
-            <div class="tool-info">
-
-              <h2>
-                Text Sorter
-              </h2>
-
-              <p>
-                Sort lines of text quickly and easily.
-              </p>
-
-            </div>
-
-          </a>
-
-
-          <a
-            href="text-cleaner.html"
-            class="tool-card"
-            data-category="text"
-            data-name="Text Cleaner"
-          >
-
-            <div class="tool-icon icon-text">
-              ✨
-            </div>
-
-            <div class="tool-info">
-
-              <h2>
-                Text Cleaner
-              </h2>
-
-              <p>
-                Clean and format your text.
-              </p>
-
-            </div>
-
-          </a>
-
-
-          <!-- ========================================
-               IMAGE TOOLS
-          ========================================= -->
-
-          <a
-            href="image-compressor.html"
-            class="tool-card"
-            data-category="image"
-            data-name="Image Compressor"
-          >
-
-            <div class="tool-icon icon-image">
-              🗜
-            </div>
-
-            <div class="tool-info">
-
-              <h2>
-                Image Compressor
-              </h2>
-
-              <p>
-                Reduce image file size quickly.
-              </p>
-
-            </div>
-
-          </a>
-
-
-          <a
-            href="image-converter.html"
-            class="tool-card"
-            data-category="image"
-            data-name="Image Converter"
-          >
-
-            <div class="tool-icon icon-image">
-              🔄
-            </div>
-
-            <div class="tool-info">
-
-              <h2>
-                Image Converter
-              </h2>
-
-              <p>
-                Convert images between formats.
-              </p>
-
-            </div>
-
-          </a>
-
-
-          <!-- ========================================
-               CALCULATORS
-          ========================================= -->
-
-          <a
-            href="bmi-calculator.html"
-            class="tool-card"
-            data-category="calculator"
-            data-name="BMI Calculator"
-          >
-
-            <div class="tool-icon icon-calculator">
-              ⚖
-            </div>
-
-            <div class="tool-info">
-
-              <h2>
-                BMI Calculator
-              </h2>
-
-              <p>
-                Calculate your body mass index.
-              </p>
-
-            </div>
-
-          </a>
-
-
-          <a
-            href="percentage-calculator.html"
-            class="tool-card"
-            data-category="calculator"
-            data-name="Percentage Calculator"
-          >
-
-            <div class="tool-icon icon-calculator">
-              %
-            </div>
-
-            <div class="tool-info">
-
-              <h2>
-                Percentage Calculator
-              </h2>
-
-              <p>
-                Quickly calculate percentages.
-              </p>
-
-            </div>
-
-          </a>
-
-
-          <a
-            href="profit-calculator.html"
-            class="tool-card"
-            data-category="calculator"
-            data-name="Profit Calculator"
-          >
-
-            <div class="tool-icon icon-calculator">
-              📈
-            </div>
-
-            <div class="tool-info">
-
-              <h2>
-                Profit Calculator
-              </h2>
-
-              <p>
-                Calculate profit and profit margins.
-              </p>
-
-            </div>
-
-          </a>
-
-
-          <a
-            href="discount-calculator.html"
-            class="tool-card"
-            data-category="calculator"
-            data-name="Discount Calculator"
-          >
-
-            <div class="tool-icon icon-calculator">
-              🏷
-            </div>
-
-            <div class="tool-info">
-
-              <h2>
-                Discount Calculator
-              </h2>
-
-              <p>
-                Calculate discounts and savings.
-              </p>
-
-            </div>
-
-          </a>
-
+          <p>
+            Split pages from your PDF file.
+          </p>
 
         </div>
 
+      </a>
 
-        <!-- NO RESULTS -->
 
-        <div
-          class="no-results"
-          id="noResults"
-        >
-          No tools found.
+      <a
+        href="pdf-to-images.html"
+        class="tool-card"
+        data-category="pdf"
+        data-name="PDF to Images"
+      >
+
+        <div class="tool-icon icon-pdf">
+          🖼
         </div>
 
+        <div class="tool-info">
 
-      </section>
+          <h2>
+            PDF to Images
+          </h2>
 
-
-      <!-- ========================================
-           ADVERTISEMENT
-      ========================================= -->
-
-      <aside class="ad-column">
-
-        <div class="ad-box">
-
-          <div class="ad-content">
-
-            <div class="ad-label">
-              ADVERTISEMENT
-            </div>
-
-            <div class="sample-ad">
-
-              <div class="sample-ad-badge">
-                TOOLNEST
-              </div>
-
-              <h3>
-                Simple Tools.<br>
-                Better Productivity.
-              </h3>
-
-              <p>
-                Fast, free and easy-to-use online tools for everyday tasks.
-              </p>
-
-              <div class="sample-ad-button">
-                Explore Tools
-              </div>
-
-            </div>
-
-          </div>
+          <p>
+            Convert PDF pages into image files.
+          </p>
 
         </div>
 
-      </aside>
+      </a>
+
+
+      <a
+        href="images-to-pdf.html"
+        class="tool-card"
+        data-category="pdf"
+        data-name="Images to PDF"
+      >
+
+        <div class="tool-icon icon-pdf">
+          📄
+        </div>
+
+        <div class="tool-info">
+
+          <h2>
+            Images to PDF
+          </h2>
+
+          <p>
+            Convert images into a PDF document.
+          </p>
+
+        </div>
+
+      </a>
+
+
+      <!-- TEXT TOOLS -->
+
+      <a
+        href="word-counter.html"
+        class="tool-card"
+        data-category="text"
+        data-name="Word Counter"
+      >
+
+        <div class="tool-icon icon-text">
+          🔤
+        </div>
+
+        <div class="tool-info">
+
+          <h2>
+            Word Counter
+          </h2>
+
+          <p>
+            Count words, characters and more.
+          </p>
+
+        </div>
+
+      </a>
+
+
+      <a
+        href="case-converter.html"
+        class="tool-card"
+        data-category="text"
+        data-name="Case Converter"
+      >
+
+        <div class="tool-icon icon-text">
+          Aa
+        </div>
+
+        <div class="tool-info">
+
+          <h2>
+            Case Converter
+          </h2>
+
+          <p>
+            Convert text into different cases.
+          </p>
+
+        </div>
+
+      </a>
+
+
+      <a
+        href="text-sorter.html"
+        class="tool-card"
+        data-category="text"
+        data-name="Text Sorter"
+      >
+
+        <div class="tool-icon icon-text">
+          ↕
+        </div>
+
+        <div class="tool-info">
+
+          <h2>
+            Text Sorter
+          </h2>
+
+          <p>
+            Sort lines of text quickly and easily.
+          </p>
+
+        </div>
+
+      </a>
+
+
+      <a
+        href="text-cleaner.html"
+        class="tool-card"
+        data-category="text"
+        data-name="Text Cleaner"
+      >
+
+        <div class="tool-icon icon-text">
+          ✨
+        </div>
+
+        <div class="tool-info">
+
+          <h2>
+            Text Cleaner
+          </h2>
+
+          <p>
+            Clean and format your text.
+          </p>
+
+        </div>
+
+      </a>
+
+
+      <!-- IMAGE TOOLS -->
+
+      <a
+        href="image-compressor.html"
+        class="tool-card"
+        data-category="image"
+        data-name="Image Compressor"
+      >
+
+        <div class="tool-icon icon-image">
+          🗜
+        </div>
+
+        <div class="tool-info">
+
+          <h2>
+            Image Compressor
+          </h2>
+
+          <p>
+            Reduce image file size quickly.
+          </p>
+
+        </div>
+
+      </a>
+
+
+      <a
+        href="image-converter.html"
+        class="tool-card"
+        data-category="image"
+        data-name="Image Converter"
+      >
+
+        <div class="tool-icon icon-image">
+          🔄
+        </div>
+
+        <div class="tool-info">
+
+          <h2>
+            Image Converter
+          </h2>
+
+          <p>
+            Convert images between formats.
+          </p>
+
+        </div>
+
+      </a>
+
+
+      <!-- CALCULATORS -->
+
+      <a
+        href="bmi-calculator.html"
+        class="tool-card"
+        data-category="calculator"
+        data-name="BMI Calculator"
+      >
+
+        <div class="tool-icon icon-calculator">
+          ⚖
+        </div>
+
+        <div class="tool-info">
+
+          <h2>
+            BMI Calculator
+          </h2>
+
+          <p>
+            Calculate your body mass index.
+          </p>
+
+        </div>
+
+      </a>
+
+
+      <a
+        href="percentage-calculator.html"
+        class="tool-card"
+        data-category="calculator"
+        data-name="Percentage Calculator"
+      >
+
+        <div class="tool-icon icon-calculator">
+          %
+        </div>
+
+        <div class="tool-info">
+
+          <h2>
+            Percentage Calculator
+          </h2>
+
+          <p>
+            Quickly calculate percentages.
+          </p>
+
+        </div>
+
+      </a>
+
+
+      <a
+        href="profit-calculator.html"
+        class="tool-card"
+        data-category="calculator"
+        data-name="Profit Calculator"
+      >
+
+        <div class="tool-icon icon-calculator">
+          📈
+        </div>
+
+        <div class="tool-info">
+
+          <h2>
+            Profit Calculator
+          </h2>
+
+          <p>
+            Calculate profit and profit margins.
+          </p>
+
+        </div>
+
+      </a>
+
+
+      <a
+        href="discount-calculator.html"
+        class="tool-card"
+        data-category="calculator"
+        data-name="Discount Calculator"
+      >
+
+        <div class="tool-icon icon-calculator">
+          🏷
+        </div>
+
+        <div class="tool-info">
+
+          <h2>
+            Discount Calculator
+          </h2>
+
+          <p>
+            Calculate discounts and savings.
+          </p>
+
+        </div>
+
+      </a>
 
 
     </div>
 
-  </main>
 
+    <!-- NO RESULTS -->
+
+    <div
+      class="no-results"
+      id="noResults"
+    >
+      No tools found.
+    </div>
+
+
+  </section>
+
+
+  <!-- ========================================
+       ADVERTISEMENT
+  ========================================= -->
+
+  <aside class="ad-column">
+
+    <div class="ad-box">
+
+      <div class="ad-content">
+
+        <div class="ad-label">
+          ADVERTISEMENT
+        </div>
+
+        <div class="sample-ad">
+
+          <div class="sample-ad-badge">
+            TOOLNEST
+          </div>
+
+          <h3>
+            Simple Tools.<br>
+            Better Productivity.
+          </h3>
+
+          <p>
+            Fast, free and easy-to-use online tools for everyday tasks.
+          </p>
+
+          <div class="sample-ad-button">
+            Explore Tools
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </aside>
+
+
+</div>
+
+
+  </main>
 
   <!-- ========================================
        FOOTER
@@ -1787,42 +1996,166 @@
 
   <footer>
 
-    <div class="footer-inner">
 
-      <div>
-        © 2026 ToolNest · Simple, Fast &amp; Free
-      </div>
+<div class="footer-inner">
 
-      <div class="footer-links">
+  <div>
+    © 2026 ToolNest · Simple, Fast &amp; Free
+  </div>
 
-        <a href="#">
-          About
-        </a>
+  <div class="footer-links">
 
-        <a href="#">
-          Privacy
-        </a>
+    <a href="#">
+      About
+    </a>
 
-        <a href="#">
-          Terms
-        </a>
+    <a href="#">
+      Privacy
+    </a>
 
-        <a href="#">
-          Contact
-        </a>
+    <a href="#">
+      Terms
+    </a>
 
-      </div>
+    <a href="#">
+      Contact
+    </a>
 
-    </div>
+  </div>
+
+</div>
+
 
   </footer>
-
 
   <!-- ========================================
        JAVASCRIPT
   ========================================= -->
 
   <script>
+
+    /* ========================================
+       THEME TOGGLE
+    ======================================== */
+
+    const themeToggle =
+      document.getElementById("themeToggle");
+
+
+    function updateThemeButton() {
+
+      const isDark =
+        document.documentElement.classList.contains(
+          "dark-mode"
+        );
+
+      if (isDark) {
+
+        themeToggle.textContent = "☀";
+
+        themeToggle.setAttribute(
+          "aria-label",
+          "Switch to light mode"
+        );
+
+        themeToggle.setAttribute(
+          "title",
+          "Switch to light mode"
+        );
+
+      }
+
+      else {
+
+        themeToggle.textContent = "🌙";
+
+        themeToggle.setAttribute(
+          "aria-label",
+          "Switch to dark mode"
+        );
+
+        themeToggle.setAttribute(
+          "title",
+          "Switch to dark mode"
+        );
+
+      }
+
+    }
+
+
+    function setTheme(theme) {
+
+      if (theme === "dark") {
+
+        document.documentElement.classList.add(
+          "dark-mode"
+        );
+
+        document.documentElement.classList.remove(
+          "light-mode"
+        );
+
+        localStorage.setItem(
+          "toolnest-theme",
+          "dark"
+        );
+
+      }
+
+      else {
+
+        document.documentElement.classList.remove(
+          "dark-mode"
+        );
+
+        document.documentElement.classList.add(
+          "light-mode"
+        );
+
+        localStorage.setItem(
+          "toolnest-theme",
+          "light"
+        );
+
+      }
+
+      updateThemeButton();
+
+    }
+
+
+    themeToggle.addEventListener(
+      "click",
+      function () {
+
+        const isDark =
+          document.documentElement.classList.contains(
+            "dark-mode"
+          );
+
+        if (isDark) {
+
+          setTheme("light");
+
+        }
+
+        else {
+
+          setTheme("dark");
+
+        }
+
+      }
+    );
+
+
+    updateThemeButton();
+
+
+    /* ========================================
+       CATEGORY / SEARCH
+    ======================================== */
 
     const navButtons =
       document.querySelectorAll(".category-link");
@@ -1851,30 +2184,35 @@
 
       all: {
         title: "Popular Tools",
+
         description:
           "Quick access to ToolNest's most useful online tools for PDF, text, images and calculations."
       },
 
       pdf: {
         title: "PDF Tools",
+
         description:
           "Simple and fast tools for working with PDF files. Merge, split, convert and manage your PDF documents."
       },
 
       text: {
         title: "Text Tools",
+
         description:
           "Useful online text tools for counting, converting, sorting and cleaning your text."
       },
 
       image: {
         title: "Image Tools",
+
         description:
           "Simple image tools to compress and convert your images quickly and easily."
       },
 
       calculator: {
         title: "Calculators",
+
         description:
           "Easy-to-use calculators for percentages, BMI, profit, discounts and everyday calculations."
       }
@@ -2054,4 +2392,3 @@
 </body>
 
 </html>
-
