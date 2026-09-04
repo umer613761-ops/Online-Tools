@@ -28,6 +28,38 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
 
+  <!-- ========================================
+       THEME INITIALIZATION
+       Prevents light-mode flash on page load
+  ========================================= -->
+
+  <script>
+
+    (function () {
+
+      const savedTheme =
+        localStorage.getItem("toolnest-theme");
+
+      if (savedTheme === "dark") {
+
+        document.documentElement.classList.add(
+          "dark-mode"
+        );
+
+      }
+
+      else if (savedTheme === "light") {
+
+        document.documentElement.classList.add(
+          "light-mode"
+        );
+
+      }
+
+    })();
+
+  </script>
+
   <style>
 
     /* ========================================
@@ -53,6 +85,10 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
       background: #f3f5f7;
       color: #263548;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease;
     }
 
 
@@ -67,6 +103,10 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
       border-bottom:
         1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
     }
 
     .header-inner {
@@ -75,7 +115,8 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
       margin: 0 auto;
 
-      padding: 10px 24px;
+      padding:
+        10px 24px;
 
       display: flex;
 
@@ -140,12 +181,37 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       color: #334155;
 
       font-weight: 500;
+
+      transition:
+        color 0.2s ease;
     }
 
     .logo-nest {
       color: #326ba8;
 
       font-weight: 800;
+
+      transition:
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       HEADER RIGHT SIDE
+    ======================================== */
+
+    .header-right {
+      width: 100%;
+
+      max-width: 570px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: flex-end;
+
+      gap: 10px;
     }
 
 
@@ -180,6 +246,16 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       font-size: 14px;
 
       outline: none;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .header-search input::placeholder {
+      color: #8996a5;
     }
 
     .header-search input:focus {
@@ -206,6 +282,70 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       font-size: 19px;
 
       pointer-events: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       DARK MODE TOGGLE
+    ======================================== */
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 0;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #526273;
+
+      cursor: pointer;
+
+      font-size: 18px;
+
+      line-height: 1;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      background: #edf2f7;
+
+      border-color: #c7d3df;
+
+      color: #326ba8;
+    }
+
+    .theme-toggle:active {
+      transform:
+        scale(0.94);
+    }
+
+    .theme-toggle:focus-visible {
+      outline: none;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.15);
     }
 
 
@@ -218,6 +358,10 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
       border-bottom:
         1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
     }
 
     .category-nav-inner {
@@ -256,6 +400,9 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       white-space: nowrap;
 
       cursor: pointer;
+
+      transition:
+        color 0.2s ease;
     }
 
     .category-link:hover {
@@ -345,7 +492,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
 
     /* ========================================
-       COMPACT PILL-SHAPED PDF TOOL BUTTONS
+       COMPACT PDF TOOL BUTTONS
     ======================================== */
 
     .tool-category-link {
@@ -441,6 +588,9 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       font-weight: 700;
 
       letter-spacing: -0.8px;
+
+      transition:
+        color 0.2s ease;
     }
 
     .heading p {
@@ -453,6 +603,9 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       font-size: 16px;
 
       line-height: 1.6;
+
+      transition:
+        color 0.2s ease;
     }
 
 
@@ -473,6 +626,11 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       box-shadow:
         0 4px 16px
         rgba(31, 45, 61, 0.05);
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
 
@@ -657,6 +815,11 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       font-weight: 700;
 
       line-height: 1.4;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
     }
 
 
@@ -747,6 +910,10 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
         1px solid #cbd6e0;
 
       border-radius: 10px;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
     }
 
     .pdf-preview canvas {
@@ -782,6 +949,9 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       text-overflow: ellipsis;
 
       text-align: center;
+
+      transition:
+        color 0.2s ease;
     }
 
 
@@ -887,6 +1057,8 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
       transition:
         background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
         transform 0.2s ease,
         box-shadow 0.2s ease;
     }
@@ -991,6 +1163,11 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       color: #55708a;
 
       font-size: 14px;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
     }
 
 
@@ -1029,6 +1206,11 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       box-shadow:
         0 4px 16px
         rgba(31, 45, 61, 0.04);
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
     .ad-content {
@@ -1045,6 +1227,9 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       font-weight: 700;
 
       letter-spacing: 1.5px;
+
+      transition:
+        color 0.2s ease;
     }
 
     .sample-ad {
@@ -1062,6 +1247,10 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
         1px solid #d8e3ed;
 
       border-radius: 9px;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
     }
 
     .sample-ad-badge {
@@ -1094,6 +1283,9 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       font-size: 18px;
 
       line-height: 1.3;
+
+      transition:
+        color 0.2s ease;
     }
 
     .sample-ad p {
@@ -1105,6 +1297,9 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       font-size: 12px;
 
       line-height: 1.5;
+
+      transition:
+        color 0.2s ease;
     }
 
     .sample-ad-button {
@@ -1125,6 +1320,11 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       font-size: 12px;
 
       font-weight: 700;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
     }
 
 
@@ -1137,6 +1337,10 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
       border-top:
         1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
     }
 
     .footer-inner {
@@ -1157,6 +1361,9 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       color: #7b8998;
 
       font-size: 13px;
+
+      transition:
+        color 0.2s ease;
     }
 
     .footer-links {
@@ -1169,6 +1376,9 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       color: #7b8998;
 
       text-decoration: none;
+
+      transition:
+        color 0.2s ease;
     }
 
     .footer-links a:hover {
@@ -1177,263 +1387,442 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
 
     /* ========================================
-       DARK MODE
-       Automatically follows system/browser
-       dark-mode preference.
+       MANUAL DARK MODE
+    ======================================== */
+
+    html.dark-mode body {
+      background: #11161d;
+      color: #e7edf4;
+    }
+
+    html.dark-mode .top-header {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .logo-tool {
+      color: #d7dee7;
+    }
+
+    html.dark-mode .logo-nest {
+      color: #5b95c9;
+    }
+
+    html.dark-mode .header-search input {
+      background: #202731;
+      border-color: #343f4c;
+      color: #edf2f7;
+    }
+
+    html.dark-mode .header-search input::placeholder {
+      color: #8996a5;
+    }
+
+    html.dark-mode .header-search input:focus {
+      background: #252d38;
+      border-color: #5f8fbd;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(77, 138, 196, 0.14);
+    }
+
+    html.dark-mode .search-icon {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .theme-toggle {
+      background: #202731;
+      border-color: #343f4c;
+      color: #d7e1eb;
+    }
+
+    html.dark-mode .theme-toggle:hover {
+      background: #29323d;
+      border-color: #465463;
+      color: #7eb0df;
+    }
+
+    html.dark-mode .category-nav {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .category-link {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .category-link:hover {
+      color: #6fa2d2;
+    }
+
+    html.dark-mode .category-link.active {
+      color: #e8eef5;
+    }
+
+    html.dark-mode .tool-category-link {
+      background: #1b2735;
+      border-color: #354457;
+      color: #9aa7b6;
+    }
+
+    html.dark-mode .tool-category-link:hover {
+      color: #78a9d8;
+      border-color: #46627d;
+      background: #202f40;
+
+      box-shadow:
+        0 2px 6px
+        rgba(0, 0, 0, 0.20);
+    }
+
+    html.dark-mode .tool-category-link.active {
+      background: #326ba8;
+      border-color: #326ba8;
+      color: #ffffff;
+
+      box-shadow:
+        0 2px 6px
+        rgba(0, 0, 0, 0.28);
+    }
+
+    html.dark-mode .tool-category-link.active:hover {
+      background: #3a78b8;
+      border-color: #3a78b8;
+      color: #ffffff;
+    }
+
+    html.dark-mode .heading h1 {
+      color: #edf2f7;
+    }
+
+    html.dark-mode .heading p {
+      color: #9ca9b8;
+    }
+
+    html.dark-mode .tool-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 16px
+        rgba(0, 0, 0, 0.22);
+    }
+
+    html.dark-mode .upload-area {
+      background: #131e2b;
+      border-color: #52789c;
+    }
+
+    html.dark-mode .upload-area:hover {
+      background: #18283a;
+      border-color: #6b9bc6;
+    }
+
+    html.dark-mode .floating-upload-button {
+      background: #326ba8;
+      color: #ffffff;
+
+      box-shadow:
+        0 10px 26px
+        rgba(0, 0, 0, 0.32);
+    }
+
+    html.dark-mode .floating-upload-button:hover {
+      background: #3a78b8;
+
+      box-shadow:
+        0 13px 30px
+        rgba(0, 0, 0, 0.38);
+    }
+
+    html.dark-mode .drag-hint {
+      color: #8eb6dc;
+      background: #172b3d;
+      border-color: #31516e;
+    }
+
+    html.dark-mode .pdf-preview {
+      background: #263444;
+      border-color: #435366;
+    }
+
+    html.dark-mode .pdf-name {
+      color: #dbe4ee;
+    }
+
+    html.dark-mode .secondary-button {
+      background: #202c3b;
+      border-color: #3b4b5f;
+      color: #d6dee8;
+    }
+
+    html.dark-mode .secondary-button:hover:not(:disabled) {
+      background: #293849;
+    }
+
+    html.dark-mode .status {
+      background: #172b3d;
+      border-color: #31516e;
+      color: #9fc0dd;
+    }
+
+    html.dark-mode .ad-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 18px
+        rgba(0, 0, 0, 0.18);
+    }
+
+    html.dark-mode .ad-label {
+      color: #778493;
+    }
+
+    html.dark-mode .sample-ad {
+      background:
+        linear-gradient(
+          135deg,
+          #202934,
+          #18212b
+        );
+
+      border-color: #354352;
+    }
+
+    html.dark-mode .sample-ad h3 {
+      color: #dce4ec;
+    }
+
+    html.dark-mode .sample-ad p {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .sample-ad-button {
+      background: #202731;
+      border-color: #455361;
+      color: #6fa2d2;
+    }
+
+    html.dark-mode footer {
+      background: #171d25;
+      border-top-color: #293340;
+    }
+
+    html.dark-mode .footer-inner {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a:hover {
+      color: #6fa2d2;
+    }
+
+
+    /* ========================================
+       SYSTEM DARK MODE
+       Used only when there is no manual
+       theme preference.
     ======================================== */
 
     @media (prefers-color-scheme: dark) {
 
-      body {
-        background: #111827;
-        color: #e5e7eb;
+      html:not(.light-mode) body {
+        background: #11161d;
+        color: #e7edf4;
       }
 
-      /* HEADER */
-
-      .top-header {
-        background: #182230;
-        border-bottom-color: #2b3949;
+      html:not(.light-mode) .top-header {
+        background: #171d25;
+        border-bottom-color: #293340;
       }
 
-      .logo-tool {
-        color: #e5e7eb;
+      html:not(.light-mode) .logo-tool {
+        color: #d7dee7;
       }
 
-      .logo-nest {
-        color: #6ea1d3;
+      html:not(.light-mode) .logo-nest {
+        color: #5b95c9;
       }
 
-      /* SEARCH */
-
-      .header-search input {
-        background: #202c3b;
-        border-color: #354457;
-        color: #e5e7eb;
+      html:not(.light-mode) .header-search input {
+        background: #202731;
+        border-color: #343f4c;
+        color: #edf2f7;
       }
 
-      .header-search input::placeholder {
-        color: #8b98a8;
-      }
-
-      .header-search input:focus {
-        background: #202c3b;
-        border-color: #6f9dcc;
+      html:not(.light-mode) .header-search input:focus {
+        background: #252d38;
+        border-color: #5f8fbd;
 
         box-shadow:
           0 0 0 3px
-          rgba(110, 161, 211, 0.12);
+          rgba(77, 138, 196, 0.14);
       }
 
-      .search-icon {
-        color: #9aa7b6;
+      html:not(.light-mode) .search-icon {
+        color: #9aa8b7;
       }
 
-      /* CATEGORY NAVIGATION */
-
-      .category-nav {
-        background: #182230;
-        border-bottom-color: #2b3949;
+      html:not(.light-mode) .theme-toggle {
+        background: #202731;
+        border-color: #343f4c;
+        color: #d7e1eb;
       }
 
-      .category-link {
-        color: #9aa7b6;
+      html:not(.light-mode) .theme-toggle:hover {
+        background: #29323d;
+        border-color: #465463;
+        color: #7eb0df;
       }
 
-      .category-link:hover {
-        color: #78a9d8;
+      html:not(.light-mode) .category-nav {
+        background: #171d25;
+        border-bottom-color: #293340;
       }
 
-      .category-link.active {
-        color: #e5e7eb;
+      html:not(.light-mode) .category-link {
+        color: #9ba8b7;
       }
 
-      .category-link.active::after {
-        background: #5f95c9;
+      html:not(.light-mode) .category-link:hover {
+        color: #6fa2d2;
       }
 
-      /* PDF TOOL PILLS */
+      html:not(.light-mode) .category-link.active {
+        color: #e8eef5;
+      }
 
-      .tool-category-link {
+      html:not(.light-mode) .tool-category-link {
         background: #1b2735;
         border-color: #354457;
         color: #9aa7b6;
       }
 
-      .tool-category-link:hover {
+      html:not(.light-mode) .tool-category-link:hover {
         color: #78a9d8;
         border-color: #46627d;
         background: #202f40;
-
-        box-shadow:
-          0 2px 6px
-          rgba(0, 0, 0, 0.20);
       }
 
-      .tool-category-link.active {
+      html:not(.light-mode) .tool-category-link.active {
         background: #326ba8;
         border-color: #326ba8;
         color: #ffffff;
-
-        box-shadow:
-          0 2px 6px
-          rgba(0, 0, 0, 0.28);
       }
 
-      .tool-category-link.active:hover {
-        background: #3a78b8;
-        border-color: #3a78b8;
-        color: #ffffff;
+      html:not(.light-mode) .heading h1 {
+        color: #edf2f7;
       }
 
-      /* HEADING */
-
-      .heading h1 {
-        color: #f1f5f9;
+      html:not(.light-mode) .heading p {
+        color: #9ca9b8;
       }
 
-      .heading p {
-        color: #9aa7b6;
-      }
-
-      /* TOOL BOX */
-
-      .tool-box {
-        background: #182230;
-        border-color: #2f3e50;
+      html:not(.light-mode) .tool-box {
+        background: #171d25;
+        border-color: #2e3946;
 
         box-shadow:
           0 4px 16px
           rgba(0, 0, 0, 0.22);
       }
 
-      /* UPLOAD AREA */
-
-      .upload-area {
+      html:not(.light-mode) .upload-area {
         background: #131e2b;
         border-color: #52789c;
       }
 
-      .upload-area:hover {
+      html:not(.light-mode) .upload-area:hover {
         background: #18283a;
         border-color: #6b9bc6;
       }
 
-      /* UPLOAD BUTTON */
-
-      .floating-upload-button {
+      html:not(.light-mode) .floating-upload-button {
         background: #326ba8;
         color: #ffffff;
-
-        box-shadow:
-          0 10px 26px
-          rgba(0, 0, 0, 0.32);
       }
 
-      .floating-upload-button:hover {
-        background: #3a78b8;
-
-        box-shadow:
-          0 13px 30px
-          rgba(0, 0, 0, 0.38);
-      }
-
-      /* DRAG HINT */
-
-      .drag-hint {
+      html:not(.light-mode) .drag-hint {
         color: #8eb6dc;
         background: #172b3d;
         border-color: #31516e;
       }
 
-      /* PDF PREVIEW */
-
-      .pdf-preview {
+      html:not(.light-mode) .pdf-preview {
         background: #263444;
         border-color: #435366;
       }
 
-      .pdf-name {
+      html:not(.light-mode) .pdf-name {
         color: #dbe4ee;
       }
 
-      /* SECONDARY BUTTON */
-
-      .secondary-button {
+      html:not(.light-mode) .secondary-button {
         background: #202c3b;
         border-color: #3b4b5f;
         color: #d6dee8;
       }
 
-      .secondary-button:hover:not(:disabled) {
+      html:not(.light-mode) .secondary-button:hover:not(:disabled) {
         background: #293849;
       }
 
-      /* STATUS */
-
-      .status {
+      html:not(.light-mode) .status {
         background: #172b3d;
         border-color: #31516e;
         color: #9fc0dd;
       }
 
-      /* ADVERTISEMENT */
-
-      .ad-box {
-        background: #182230;
-        border-color: #2f3e50;
-
-        box-shadow:
-          0 4px 16px
-          rgba(0, 0, 0, 0.20);
+      html:not(.light-mode) .ad-box {
+        background: #171d25;
+        border-color: #2e3946;
       }
 
-      .ad-label {
-        color: #778698;
+      html:not(.light-mode) .ad-label {
+        color: #778493;
       }
 
-      .sample-ad {
+      html:not(.light-mode) .sample-ad {
         background:
           linear-gradient(
             135deg,
-            #202e3e,
-            #1b2735
+            #202934,
+            #18212b
           );
 
-        border-color: #34475c;
+        border-color: #354352;
       }
 
-      .sample-ad h3 {
-        color: #e2e8f0;
+      html:not(.light-mode) .sample-ad h3 {
+        color: #dce4ec;
       }
 
-      .sample-ad p {
-        color: #9aa7b6;
+      html:not(.light-mode) .sample-ad p {
+        color: #9ba8b7;
       }
 
-      .sample-ad-button {
-        background: #202c3b;
-        border-color: #42556b;
-        color: #78a9d8;
+      html:not(.light-mode) .sample-ad-button {
+        background: #202731;
+        border-color: #455361;
+        color: #6fa2d2;
       }
 
-      /* FOOTER */
-
-      footer {
-        background: #182230;
-        border-top-color: #2b3949;
+      html:not(.light-mode) footer {
+        background: #171d25;
+        border-top-color: #293340;
       }
 
-      .footer-inner {
-        color: #8b98a8;
+      html:not(.light-mode) .footer-inner {
+        color: #8d9aaa;
       }
 
-      .footer-links a {
-        color: #8b98a8;
-      }
-
-      .footer-links a:hover {
-        color: #78a9d8;
+      html:not(.light-mode) .footer-links a {
+        color: #8d9aaa;
       }
 
     }
@@ -1475,8 +1864,12 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
           9px 16px;
       }
 
+      .header-right {
+        max-width: 300px;
+      }
+
       .header-search {
-        max-width: 260px;
+        max-width: none;
       }
 
       .category-nav-inner {
@@ -1590,6 +1983,12 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
       .logo {
         align-self: flex-start;
+      }
+
+      .header-right {
+        max-width: none;
+
+        width: 100%;
       }
 
       .header-search {
@@ -1726,18 +2125,36 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
   </a>
 
-  <div class="header-search">
 
-    <input
-      type="text"
-      id="toolSearch"
-      placeholder="Search tools..."
-      aria-label="Search tools"
+  <div class="header-right">
+
+    <div class="header-search">
+
+      <input
+        type="text"
+        id="toolSearch"
+        placeholder="Search tools..."
+        aria-label="Search tools"
+      >
+
+      <span class="search-icon">
+        ⌕
+      </span>
+
+    </div>
+
+
+    <!-- THEME TOGGLE -->
+
+    <button
+      type="button"
+      class="theme-toggle"
+      id="themeToggle"
+      aria-label="Switch to dark mode"
+      title="Switch to dark mode"
     >
-
-    <span class="search-icon">
-      ⌕
-    </span>
+      🌙
+    </button>
 
   </div>
 
@@ -1881,9 +2298,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
     <div class="tool-box">
 
 
-      <!-- ======================================
-           HIDDEN FILE INPUT
-      ====================================== -->
+      <!-- HIDDEN FILE INPUT -->
 
       <input
         type="file"
@@ -1893,9 +2308,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       >
 
 
-      <!-- ======================================
-           UPLOAD / PREVIEW AREA
-      ====================================== -->
+      <!-- UPLOAD / PREVIEW AREA -->
 
       <div
         class="upload-area"
@@ -1903,9 +2316,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
       >
 
 
-        <!-- ====================================
-             INITIAL UPLOAD BUTTON
-        ==================================== -->
+        <!-- INITIAL UPLOAD BUTTON -->
 
         <div
           class="upload-placeholder"
@@ -1923,9 +2334,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
         </div>
 
 
-        <!-- ====================================
-             PREVIEW STATE
-        ==================================== -->
+        <!-- PREVIEW STATE -->
 
         <div
           class="uploaded-files"
@@ -2086,6 +2495,126 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
   <script>
 
+
+    /* ========================================
+       THEME TOGGLE
+    ======================================== */
+
+    const themeToggle =
+      document.getElementById("themeToggle");
+
+
+    function updateThemeButton() {
+
+      const isDark =
+        document.documentElement.classList.contains(
+          "dark-mode"
+        );
+
+      if (isDark) {
+
+        themeToggle.textContent = "☀";
+
+        themeToggle.setAttribute(
+          "aria-label",
+          "Switch to light mode"
+        );
+
+        themeToggle.setAttribute(
+          "title",
+          "Switch to light mode"
+        );
+
+      }
+
+      else {
+
+        themeToggle.textContent = "🌙";
+
+        themeToggle.setAttribute(
+          "aria-label",
+          "Switch to dark mode"
+        );
+
+        themeToggle.setAttribute(
+          "title",
+          "Switch to dark mode"
+        );
+
+      }
+
+    }
+
+
+    function setTheme(theme) {
+
+      if (theme === "dark") {
+
+        document.documentElement.classList.add(
+          "dark-mode"
+        );
+
+        document.documentElement.classList.remove(
+          "light-mode"
+        );
+
+        localStorage.setItem(
+          "toolnest-theme",
+          "dark"
+        );
+
+      }
+
+      else {
+
+        document.documentElement.classList.remove(
+          "dark-mode"
+        );
+
+        document.documentElement.classList.add(
+          "light-mode"
+        );
+
+        localStorage.setItem(
+          "toolnest-theme",
+          "light"
+        );
+
+      }
+
+      updateThemeButton();
+
+    }
+
+
+    themeToggle.addEventListener(
+      "click",
+      function () {
+
+        const isDark =
+          document.documentElement.classList.contains(
+            "dark-mode"
+          );
+
+        if (isDark) {
+
+          setTheme("light");
+
+        }
+
+        else {
+
+          setTheme("dark");
+
+        }
+
+      }
+    );
+
+
+    updateThemeButton();
+
+
     /* ========================================
        PDF.JS WORKER
     ======================================== */
@@ -2199,12 +2728,6 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
         /*
           Clicking anywhere else inside the
           dashed box opens the PDF picker.
-
-          This includes:
-          - Empty upload area
-          - Upload area after files load
-          - PDF preview area
-          - PDF file name area
         */
 
         pdfInput.click();
@@ -2310,28 +2833,14 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
         pdfFiles.length > 0
       ) {
 
-        /*
-          Hide the initial blue
-          upload button after files
-          have been selected.
-        */
-
         uploadPlaceholder.style.display =
           "none";
 
-
-        /*
-          Show uploaded files.
-        */
 
         uploadedFiles.classList.add(
           "active"
         );
 
-
-        /*
-          Show controls.
-        */
 
         editorControls.classList.add(
           "active"
@@ -2341,27 +2850,14 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
 
       else {
 
-        /*
-          Show the blue upload button
-          again if all files are removed.
-        */
-
         uploadPlaceholder.style.display =
           "flex";
 
-
-        /*
-          Hide previews.
-        */
 
         uploadedFiles.classList.remove(
           "active"
         );
 
-
-        /*
-          Hide merge controls.
-        */
 
         editorControls.classList.remove(
           "active"
@@ -2402,9 +2898,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
             true;
 
 
-          /* ==================================
-             DRAG START
-          ================================== */
+          /* DRAG START */
 
           card.addEventListener(
             "dragstart",
@@ -2423,9 +2917,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
           );
 
 
-          /* ==================================
-             DRAG END
-          ================================== */
+          /* DRAG END */
 
           card.addEventListener(
             "dragend",
@@ -2438,12 +2930,6 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
                 "dragging"
               );
 
-
-              /*
-                Prevent the click event that
-                browsers fire after dragging from
-                opening the file picker.
-              */
 
               suppressUploadClick =
                 true;
@@ -2466,9 +2952,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
           );
 
 
-          /* ==================================
-             ALLOW DROP
-          ================================== */
+          /* ALLOW DROP */
 
           card.addEventListener(
             "dragover",
@@ -2482,9 +2966,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
           );
 
 
-          /* ==================================
-             DROP
-          ================================== */
+          /* DROP */
 
           card.addEventListener(
             "drop",
@@ -2561,9 +3043,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
           );
 
 
-          /* ==================================
-             PDF PREVIEW
-          ================================== */
+          /* PDF PREVIEW */
 
           const preview =
             document.createElement(
@@ -2586,9 +3066,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
           );
 
 
-          /* ==================================
-             FILE NAME
-          ================================== */
+          /* FILE NAME */
 
           const name =
             document.createElement(
@@ -2604,9 +3082,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
             item.file.name;
 
 
-          /* ==================================
-             REMOVE BUTTON
-          ================================== */
+          /* REMOVE BUTTON */
 
           const removeButton =
             document.createElement(
@@ -2663,9 +3139,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
           );
 
 
-          /* ==================================
-             BUILD CARD
-          ================================== */
+          /* BUILD CARD */
 
           card.appendChild(
             preview
@@ -2687,9 +3161,7 @@ content="Merge multiple PDF files into one PDF online for free with ToolNest."
           );
 
 
-          /* ==================================
-             RENDER PREVIEW
-          ================================== */
+          /* RENDER PREVIEW */
 
           renderPDFPreview(
             item.file,
