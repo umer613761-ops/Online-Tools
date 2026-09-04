@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -11,10 +12,24 @@
 
   <title>Merge PDF - ToolNest</title>
 
+  <meta
+    name="description"
+    content="Merge multiple PDF files into one PDF online for free with ToolNest."
+  >
+
+  <!-- PDF.JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <!-- PDF-LIB -->
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
 
+
   <style>
+
+    /* ========================================
+       RESET
+    ======================================== */
+
     * {
       box-sizing: border-box;
     }
@@ -25,260 +40,373 @@
 
     body {
       margin: 0;
-      padding: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
       background: #f3f5f7;
       color: #263548;
     }
 
-    /* =========================
-       HEADER
-       ========================= */
 
-    .site-header {
-      background: #fff;
-      border-bottom: 1px solid #dfe5eb;
+    /* ========================================
+       HEADER
+    ======================================== */
+
+    .top-header {
+      width: 100%;
+
+      background: #ffffff;
+
+      border-bottom:
+        1px solid #dfe5eb;
     }
 
     .header-inner {
+      width: 100%;
       max-width: 1200px;
-      height: 66px;
+
       margin: 0 auto;
-      padding: 10px 24px;
+
+      padding:
+        10px 24px;
+
       display: flex;
+
       align-items: center;
+      justify-content: space-between;
+
       gap: 24px;
     }
 
+
+    /* ========================================
+       LOGO
+    ======================================== */
+
     .logo {
       display: flex;
+
       align-items: center;
-      gap: 9px;
+
+      gap: 8px;
+
       text-decoration: none;
-      flex-shrink: 0;
+
+      white-space: nowrap;
     }
 
     .logo-icon {
       width: 32px;
       height: 32px;
-      border-radius: 9px;
-      background: linear-gradient(
-        135deg,
-        #3d78b6,
-        #245b96
-      );
-      color: #fff;
+
       display: flex;
+
       align-items: center;
       justify-content: center;
+
+      border-radius: 9px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #3d78b6,
+          #245b96
+        );
+
+      color: #ffffff;
+
       font-size: 16px;
       font-weight: 800;
-      box-shadow: 0 2px 5px rgba(38, 91, 150, 0.18);
+
+      box-shadow:
+        0 3px 8px
+        rgba(43, 92, 150, 0.18);
     }
 
     .logo-text {
       font-size: 22px;
-      line-height: 1;
-      white-space: nowrap;
+
+      letter-spacing: -0.6px;
     }
 
     .logo-tool {
       color: #334155;
+
       font-weight: 500;
     }
 
     .logo-nest {
       color: #326ba8;
+
       font-weight: 800;
     }
 
-    /* =========================
+
+    /* ========================================
        SEARCH
-       ========================= */
+    ======================================== */
 
     .header-search {
-      flex: 1;
-      max-width: 700px;
-      margin-left: auto;
+      width: 100%;
+      max-width: 520px;
+
+      position: relative;
     }
 
     .header-search input {
       width: 100%;
       height: 40px;
-      padding: 0 15px;
-      border: 1px solid #d8e0e8;
+
+      padding:
+        0 44px 0 15px;
+
+      border:
+        1px solid #d8e0e8;
+
       border-radius: 7px;
+
       background: #f7f9fb;
-      color: #263548;
-      font-family: Arial, Helvetica, sans-serif;
+
+      color: #344256;
+
       font-size: 14px;
+
       outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     .header-search input:focus {
+      background: #ffffff;
+
       border-color: #7fa6cf;
-      box-shadow: 0 0 0 3px rgba(50, 107, 168, 0.08);
-      background: #fff;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.08);
     }
 
-    /* =========================
+    .search-icon {
+      position: absolute;
+
+      right: 14px;
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      color: #718096;
+
+      font-size: 19px;
+
+      pointer-events: none;
+    }
+
+
+    /* ========================================
        CATEGORY NAVIGATION
-       ========================= */
+    ======================================== */
 
-    .navigation-wrapper {
-      background: #fff;
-      border-top: 1px solid #f0f2f4;
-      border-bottom: 1px solid #dfe5eb;
+    .category-nav {
+      background: #ffffff;
+
+      border-bottom:
+        1px solid #dfe5eb;
     }
 
-    .main-navigation {
+    .category-nav-inner {
+      width: 100%;
       max-width: 1200px;
-      height: 46px;
+
       margin: 0 auto;
-      padding: 0 24px;
+
+      padding:
+        0 24px;
+
       display: flex;
+
       align-items: center;
+
       gap: 30px;
+
+      overflow-x: auto;
     }
 
-    .nav-button {
+    .category-link {
       position: relative;
-      height: 46px;
+
       display: flex;
+
       align-items: center;
-      border: 0;
-      padding: 0;
-      background: transparent;
+
+      height: 46px;
+
       color: #667588;
+
       text-decoration: none;
+
       font-size: 14px;
-      font-weight: 500;
+
       white-space: nowrap;
+
+      cursor: pointer;
     }
 
-    .nav-button:hover {
-      color: #326ba8;
+    .category-link:hover {
+      color: #2f67a3;
     }
 
-    .nav-button.active {
+    .category-link.active {
       color: #263548;
+
       font-weight: 600;
     }
 
-    .nav-button.active::after {
+    .category-link.active::after {
       content: "";
+
       position: absolute;
+
       left: 0;
       right: 0;
-      bottom: -1px;
+      bottom: 0;
+
       height: 3px;
+
       background: #326ba8;
-      border-radius: 3px 3px 0 0;
+
+      border-radius:
+        3px 3px 0 0;
     }
 
-    /* =========================
+
+    /* ========================================
        PAGE
-       ========================= */
+    ======================================== */
 
-    .page-content {
+    .page-wrapper {
+      width: 100%;
       max-width: 1200px;
+
       margin: 0 auto;
-      padding: 28px 24px 60px;
+
+      padding:
+        28px 24px 60px;
     }
 
-    .content-layout {
+    .page-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 200px;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        200px;
+
       gap: 28px;
+
       align-items: start;
     }
 
-    .main-content {
+    .content {
       min-width: 0;
     }
 
-    .page-heading {
-      margin-bottom: 20px;
-    }
 
-    .page-heading h1 {
-      margin: 0 0 8px;
-      font-size: 36px;
-      line-height: 1.15;
-      color: #263548;
-      font-weight: 700;
-    }
-
-    .page-heading p {
-      margin: 0;
-      max-width: 780px;
-      color: #667588;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    /* =========================
-       SMALL PDF TOOL NAV
-       ========================= */
+    /* ========================================
+       PDF TOOL CATEGORY BAR
+    ======================================== */
 
     .tool-category-bar {
       width: 100%;
+
       margin-bottom: 24px;
+
       overflow-x: auto;
+
       scrollbar-width: thin;
     }
 
     .tool-category-list {
       display: flex;
+
       align-items: center;
+
       width: max-content;
+
       min-width: 100%;
+
       gap: 0;
     }
 
+
+    /* ========================================
+       SMALL PDF TOOL BUTTONS
+    ======================================== */
+
     .tool-category-link {
       position: relative;
+
       display: inline-flex;
+
       align-items: center;
       justify-content: center;
-      min-height: 32px;
-      padding: 0 10px;
 
-      background: #fff;
-      border: 1px solid #dce3ea;
+      min-height: 32px;
+
+      padding:
+        0 10px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #dce3ea;
+
       border-radius: 6px;
 
       color: #667588;
+
       text-decoration: none;
 
       font-size: 11px;
+
       font-weight: 600;
+
       white-space: nowrap;
 
       transition:
-        color 0.2s,
-        background 0.2s,
-        border-color 0.2s;
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
     .tool-category-link:hover {
       color: #326ba8;
+
       border-color: #c7d6e5;
+
       background: #f7fafd;
     }
 
     .tool-category-link.active {
       background: #326ba8;
+
       border-color: #326ba8;
-      color: #fff;
-      box-shadow: 0 2px 5px rgba(50, 107, 168, 0.13);
+
+      color: #ffffff;
+
+      box-shadow:
+        0 2px 5px
+        rgba(50, 107, 168, 0.13);
     }
 
     .tool-category-link.active:hover {
       background: #285b91;
+
       border-color: #285b91;
-      color: #fff;
+
+      color: #ffffff;
     }
 
     .tool-category-link:not(:last-child) {
@@ -287,345 +415,614 @@
 
     .tool-category-link:not(:last-child)::after {
       content: "|";
+
       position: absolute;
+
       right: -11px;
+
       top: 50%;
-      transform: translateY(-50%);
+
+      transform:
+        translateY(-50%);
 
       color: #9aa7b5;
+
       font-size: 12px;
+
       font-weight: 400;
+
       line-height: 1;
 
       pointer-events: none;
+
       z-index: 10;
     }
 
-    /* =========================
+
+    /* ========================================
+       HEADING
+    ======================================== */
+
+    .heading {
+      margin-bottom: 26px;
+    }
+
+    .heading h1 {
+      margin:
+        0 0 10px;
+
+      color: #263548;
+
+      font-size: 36px;
+
+      font-weight: 700;
+
+      letter-spacing: -0.8px;
+    }
+
+    .heading p {
+      max-width: 720px;
+
+      margin: 0;
+
+      color: #718096;
+
+      font-size: 16px;
+
+      line-height: 1.6;
+    }
+
+
+    /* ========================================
        TOOL BOX
-       ========================= */
+    ======================================== */
 
     .tool-box {
-      position: relative;
-      background: #fff;
-      border: 1px solid #dfe5eb;
+      background: #ffffff;
+
+      border:
+        1px solid #dce3ea;
+
       border-radius: 12px;
-      box-shadow: 0 3px 12px rgba(32, 52, 72, 0.05);
-      overflow: hidden;
+
+      padding: 26px;
+
+      box-shadow:
+        0 4px 16px
+        rgba(31, 45, 61, 0.05);
     }
 
-    .tool-box-header {
-      padding: 18px 20px;
-      border-bottom: 1px solid #e8edf1;
+
+    /* ========================================
+       HIDDEN FILE INPUT
+    ======================================== */
+
+    #pdfInput {
+      display: none;
     }
 
-    .tool-box-header h2 {
-      margin: 0 0 5px;
-      font-size: 19px;
-      color: #263548;
-    }
 
-    .tool-box-header p {
-      margin: 0;
-      font-size: 13px;
-      color: #7a8795;
-    }
-
-    /* =========================
+    /* ========================================
        UPLOAD AREA
-       ========================= */
+    ======================================== */
 
     .upload-area {
-      position: relative;
+      width: 100%;
+
       min-height: 390px;
-      padding: 24px 20px 26px;
+
+      padding: 30px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      background: #fafbfd;
+
+      border:
+        2px dashed #8da9c5;
+
+      border-radius: 12px;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
     }
+
+    .upload-area:hover {
+      background: #f4f8fc;
+
+      border-color: #5f8fbd;
+    }
+
+
+    /* ========================================
+       INITIAL UPLOAD STATE
+    ======================================== */
 
     .upload-placeholder {
-      position: relative;
-      min-height: 330px;
       display: flex;
-      align-items: flex-start;
+
+      flex-direction: column;
+
+      align-items: center;
       justify-content: center;
-      padding-top: 28px;
+
+      width: 100%;
+
+      min-height: 320px;
     }
 
-    /*
-      The button starts near the top of the viewport
-      and is moved downward by JavaScript as the
-      user scrolls.
-    */
+
+    /* ========================================
+       FLOATING UPLOAD BUTTON
+    ======================================== */
 
     .floating-upload-button {
-      position: fixed;
+      position: sticky;
 
-      top: 145px;
-      left: 50%;
+      top: 45vh;
 
-      transform: translateX(-50%);
+      z-index: 20;
 
-      z-index: 1000;
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 10px;
 
       min-width: 230px;
+
       min-height: 62px;
 
-      padding: 0 28px;
+      padding:
+        0 28px;
 
       border: none;
+
       border-radius: 11px;
 
       background: #326ba8;
-      color: #fff;
 
-      font-family: Arial, Helvetica, sans-serif;
+      color: #ffffff;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
       font-size: 17px;
+
       font-weight: 600;
 
       cursor: pointer;
 
       box-shadow:
-        0 6px 18px rgba(38, 69, 102, 0.20);
+        0 8px 22px
+        rgba(50, 107, 168, 0.28);
 
       transition:
-        top 0.25s ease,
         background 0.2s ease,
-        box-shadow 0.2s ease,
-        transform 0.2s ease;
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
     .floating-upload-button:hover {
       background: #285b91;
 
+      transform:
+        translateY(-2px);
+
       box-shadow:
-        0 8px 22px rgba(38, 69, 102, 0.26);
+        0 10px 25px
+        rgba(50, 107, 168, 0.34);
     }
 
     .floating-upload-button:active {
-      transform: translateX(-50%) scale(0.98);
+      transform:
+        translateY(0);
     }
 
-    /* =========================
+    .floating-upload-icon {
+      font-size: 22px;
+
+      line-height: 1;
+    }
+
+
+    /* ========================================
        UPLOADED FILES
-       ========================= */
+    ======================================== */
 
     .uploaded-files {
       display: none;
-      flex-wrap: wrap;
-      gap: 16px;
-      align-items: flex-start;
+
+      width: 100%;
     }
 
     .uploaded-files.active {
-      display: flex;
+      display: block;
     }
 
-    .file-card {
-      position: relative;
-      width: 150px;
-      background: #f8fafc;
-      border: 1px solid #dfe5eb;
-      border-radius: 9px;
-      padding: 8px;
-      cursor: grab;
-      transition:
-        border-color 0.2s,
-        box-shadow 0.2s,
-        transform 0.2s;
-    }
 
-    .file-card:hover {
-      border-color: #b9c9d9;
-      box-shadow: 0 3px 10px rgba(32, 52, 72, 0.08);
-    }
+    /* ========================================
+       DRAG ORDER MESSAGE
+    ======================================== */
 
-    .file-card.dragging {
-      opacity: 0.5;
-      transform: scale(0.97);
-    }
-
-    .file-preview {
+    .drag-hint {
       width: 100%;
-      height: 190px;
+
+      margin:
+        0 0 20px;
+
+      padding:
+        12px 16px;
+
+      text-align: center;
+
+      color: #356aa5;
+
+      background: #f2f7fb;
+
+      border:
+        1px solid #d4e2ef;
+
+      border-radius: 8px;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      line-height: 1.4;
+    }
+
+
+    /* ========================================
+       PDF GRID
+    ======================================== */
+
+    .pdf-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          auto-fit,
+          minmax(150px, 150px)
+        );
+
+      justify-content: center;
+
+      align-items: start;
+
+      gap: 22px;
+
+      padding: 10px;
+    }
+
+
+    /* ========================================
+       PDF CARD
+    ======================================== */
+
+    .pdf-card {
+      position: relative;
+
+      width: 150px;
+
       display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      padding: 10px;
+
+      background: transparent;
+
+      border: none;
+
+      cursor: grab;
+
+      transition:
+        transform 0.2s ease;
+    }
+
+    .pdf-card:hover {
+      transform:
+        translateY(-2px);
+    }
+
+    .pdf-card.dragging {
+      opacity: 0.45;
+
+      transform:
+        scale(0.96);
+    }
+
+
+    /* ========================================
+       PDF PREVIEW
+    ======================================== */
+
+    .pdf-preview {
+      width: 150px;
+
+      height: 190px;
+
+      margin-bottom: 13px;
+
+      display: flex;
+
       align-items: center;
       justify-content: center;
-      background: #eef2f6;
-      border-radius: 6px;
+
       overflow: hidden;
+
+      background: #edf2f6;
+
+      border:
+        1px solid #cbd6e0;
+
+      border-radius: 10px;
     }
 
-    .file-preview canvas {
+    .pdf-preview canvas {
       display: block;
-      max-width: 145px;
-      max-height: 185px;
-      width: auto;
-      height: auto;
-      background: #fff;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+      max-width: 100%;
+      max-height: 100%;
+
+      object-fit: contain;
     }
 
-    .file-name {
-      margin-top: 8px;
-      padding: 0 2px;
 
-      color: #526173;
-      font-size: 11px;
-      font-weight: 600;
+    /* ========================================
+       PDF NAME
+    ======================================== */
 
-      line-height: 1.35;
+    .pdf-name {
+      width: 100%;
+
+      margin-bottom: 5px;
+
+      color: #34475b;
+
+      font-size: 14px;
+
+      font-weight: 700;
 
       white-space: nowrap;
+
       overflow: hidden;
+
       text-overflow: ellipsis;
+
+      text-align: center;
     }
 
-    .remove-file {
+
+    /* ========================================
+       REMOVE BUTTON
+    ======================================== */
+
+    .remove-button {
       position: absolute;
-      top: -7px;
-      right: -7px;
 
-      width: 22px;
-      height: 22px;
+      top: 0;
+      right: 0;
 
-      border: 2px solid #fff;
+      width: 20px;
+      height: 20px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 0;
+
+      border: none;
+
       border-radius: 50%;
 
       background: #dc4b4b;
-      color: #fff;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      color: #ffffff;
 
-      font-size: 13px;
+      font-size: 15px;
+
+      font-weight: 700;
+
       line-height: 1;
 
       cursor: pointer;
 
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-
       z-index: 5;
+
+      box-shadow:
+        0 2px 5px
+        rgba(0, 0, 0, 0.12);
     }
 
-    .remove-file:hover {
-      background: #c83d3d;
+    .remove-button:hover {
+      background: #c93d3d;
     }
 
-    /* =========================
+
+    /* ========================================
        CONTROLS
-       ========================= */
+    ======================================== */
 
     .editor-controls {
       display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
 
-      margin-top: 22px;
-      padding-top: 18px;
+      margin-top: 18px;
 
-      border-top: 1px solid #e8edf1;
+      width: 100%;
     }
 
     .editor-controls.active {
-      display: flex;
-    }
-
-    .add-more-button,
-    .merge-button {
-      min-height: 42px;
-      padding: 0 18px;
-
-      border-radius: 7px;
-
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-
-      cursor: pointer;
-      transition:
-        background 0.2s,
-        border-color 0.2s,
-        color 0.2s,
-        box-shadow 0.2s;
-    }
-
-    .add-more-button {
-      border: 1px solid #cfd9e2;
-      background: #fff;
-      color: #526173;
-    }
-
-    .add-more-button:hover {
-      background: #f6f9fb;
-      border-color: #b8c7d5;
-      color: #326ba8;
-    }
-
-    .merge-button {
-      border: 1px solid #326ba8;
-      background: #326ba8;
-      color: #fff;
-      min-width: 130px;
-    }
-
-    .merge-button:hover {
-      background: #285b91;
-      border-color: #285b91;
-      box-shadow: 0 3px 8px rgba(50, 107, 168, 0.18);
-    }
-
-    .merge-button:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-
-    /* =========================
-       STATUS
-       ========================= */
-
-    .status-message {
-      margin-top: 14px;
-      padding: 11px 13px;
-
-      display: none;
-
-      border-radius: 7px;
-
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    .status-message.show {
       display: block;
     }
 
-    .status-message.info {
-      background: #edf5fc;
-      color: #326ba8;
-      border: 1px solid #d5e5f3;
+
+    /* ========================================
+       BUTTON ROW
+    ======================================== */
+
+    .button-row {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 12px;
+
+      width: 100%;
     }
 
-    .status-message.success {
-      background: #eef8f1;
-      color: #32714a;
-      border: 1px solid #d4eadb;
+
+    /* ========================================
+       BUTTON
+    ======================================== */
+
+    button {
+      height: 46px;
+
+      padding:
+        0 20px;
+
+      border-radius: 8px;
+
+      font-size: 14px;
+
+      font-weight: 400;
+
+      cursor: pointer;
+
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
-    .status-message.error {
-      background: #fff1f1;
-      color: #b23c3c;
-      border: 1px solid #f0d1d1;
+    button:hover:not(:disabled) {
+      transform:
+        translateY(-1px);
     }
 
-    /* =========================
-       AD
-       ========================= */
+    button:disabled {
+      opacity: 0.6;
+
+      cursor: not-allowed;
+    }
+
+
+    /* ========================================
+       MAIN MERGE BUTTON
+    ======================================== */
+
+    .primary-button {
+      min-height: 52px;
+
+      min-width: 0;
+
+      flex: 1;
+
+      padding:
+        0 30px;
+
+      border: none;
+
+      border-radius: 9px;
+
+      background: #326ba8;
+
+      color: #ffffff;
+
+      font-size: 16px;
+
+      font-weight: 400;
+
+      box-shadow:
+        0 5px 14px
+        rgba(50, 107, 168, 0.22);
+    }
+
+    .primary-button:hover:not(:disabled) {
+      background: #285b91;
+
+      box-shadow:
+        0 7px 18px
+        rgba(50, 107, 168, 0.28);
+    }
+
+
+    /* ========================================
+       SECONDARY BUTTON
+    ======================================== */
+
+    .secondary-button {
+      height: 46px;
+
+      padding:
+        0 20px;
+
+      border:
+        1px solid #ccd7e1;
+
+      background: #ffffff;
+
+      color: #435365;
+
+      font-weight: 400;
+    }
+
+    .secondary-button:hover:not(:disabled) {
+      background: #f5f7f9;
+    }
+
+
+    /* ========================================
+       STATUS
+    ======================================== */
+
+    .status {
+      display: none;
+
+      margin-top: 18px;
+
+      padding: 14px;
+
+      text-align: center;
+
+      background: #f2f7fb;
+
+      border:
+        1px solid #d4e2ef;
+
+      border-radius: 8px;
+
+      color: #55708a;
+
+      font-size: 14px;
+    }
+
+
+    /* ========================================
+       ADVERTISEMENT
+    ======================================== */
 
     .ad-column {
       width: 200px;
+
       position: sticky;
+
       top: 20px;
     }
 
@@ -633,72 +1030,164 @@
       width: 200px;
       height: 400px;
 
-      background: #fff;
-      border: 1px solid #dfe5eb;
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 18px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #dce3ea;
+
       border-radius: 10px;
 
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      color: #a1acb8;
       text-align: center;
+
+      box-shadow:
+        0 4px 16px
+        rgba(31, 45, 61, 0.04);
     }
 
-    .ad-brand {
-      width: 40px;
-      height: 40px;
+    .ad-content {
+      width: 100%;
+    }
 
-      margin-bottom: 10px;
+    .ad-label {
+      margin-bottom: 14px;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      color: #a0acb8;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      letter-spacing: 1.5px;
+    }
+
+    .sample-ad {
+      padding:
+        22px 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #f5f8fc,
+          #edf3f9
+        );
+
+      border:
+        1px solid #d8e3ed;
 
       border-radius: 9px;
+    }
 
-      background: #e9eef3;
-      color: #8e9aa7;
+    .sample-ad-badge {
+      display: inline-block;
+
+      margin-bottom: 12px;
+
+      padding:
+        5px 9px;
+
+      background: #326ba8;
+
+      border-radius: 20px;
+
+      color: #ffffff;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.5px;
+    }
+
+    .sample-ad h3 {
+      margin:
+        0 0 9px;
+
+      color: #344255;
 
       font-size: 18px;
-      font-weight: 800;
+
+      line-height: 1.3;
     }
 
-    .ad-text {
+    .sample-ad p {
+      margin:
+        0 0 16px;
+
+      color: #718096;
+
       font-size: 12px;
+
+      line-height: 1.5;
     }
 
-    /* =========================
+    .sample-ad-button {
+      display: inline-block;
+
+      padding:
+        9px 14px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #cbd8e4;
+
+      border-radius: 6px;
+
+      color: #326ba8;
+
+      font-size: 12px;
+
+      font-weight: 700;
+    }
+
+
+    /* ========================================
        FOOTER
-       ========================= */
+    ======================================== */
 
-    .site-footer {
-      background: #fff;
-      border-top: 1px solid #dfe5eb;
+    footer {
+      background: #ffffff;
+
+      border-top:
+        1px solid #dfe5eb;
     }
 
-    .footer-content {
+    .footer-inner {
+      width: 100%;
       max-width: 1200px;
+
       margin: 0 auto;
-      padding: 22px 24px;
+
+      padding: 24px;
 
       display: flex;
+
       align-items: center;
       justify-content: space-between;
+
       gap: 20px;
 
-      color: #7a8795;
+      color: #7b8998;
+
       font-size: 13px;
     }
 
     .footer-links {
       display: flex;
-      gap: 18px;
+
+      gap: 20px;
     }
 
     .footer-links a {
-      color: #667588;
+      color: #7b8998;
+
       text-decoration: none;
     }
 
@@ -706,66 +1195,69 @@
       color: #326ba8;
     }
 
-    /* =========================
-       RESPONSIVE
-       ========================= */
+
+    /* ========================================
+       TABLET
+    ======================================== */
 
     @media (max-width: 900px) {
 
-      .content-layout {
-        grid-template-columns: minmax(0, 1fr);
+      .page-layout {
+        grid-template-columns: 1fr;
       }
 
       .ad-column {
-        display: none;
+        width: 100%;
+
+        position: static;
       }
 
-      .header-inner {
-        gap: 18px;
+      .ad-box {
+        width: 100%;
+
+        height: 180px;
       }
 
-      .main-navigation {
-        gap: 24px;
-        overflow-x: auto;
-      }
     }
+
+
+    /* ========================================
+       MOBILE
+    ======================================== */
 
     @media (max-width: 700px) {
 
       .header-inner {
-        height: auto;
-        min-height: 66px;
-        flex-wrap: wrap;
-        padding: 10px 18px;
+        padding:
+          9px 16px;
       }
 
       .header-search {
-        order: 3;
-        width: 100%;
-        max-width: none;
-        margin: 0;
+        max-width: 260px;
       }
 
-      .main-navigation {
-        padding: 0 18px;
+      .category-nav-inner {
+        padding:
+          0 16px;
+
         gap: 22px;
       }
 
-      .page-content {
-        padding: 24px 18px 50px;
+      .page-wrapper {
+        padding:
+          24px 16px 45px;
       }
 
-      .page-heading h1 {
-        font-size: 30px;
-      }
-
-      .page-heading p {
-        font-size: 14px;
+      .tool-category-bar {
+        margin-bottom: 22px;
       }
 
       .tool-category-link {
         min-height: 31px;
-        padding: 0 9px;
+
+        padding:
+          0 9px;
+
         font-size: 10.5px;
       }
 
@@ -775,57 +1267,160 @@
 
       .tool-category-link:not(:last-child)::after {
         right: -9px;
+
         font-size: 11px;
       }
 
+      .heading h1 {
+        font-size: 31px;
+      }
+
+      .tool-box {
+        padding: 18px;
+      }
+
       .upload-area {
-        padding-left: 14px;
-        padding-right: 14px;
+        min-height: 350px;
+
+        padding: 20px;
+      }
+
+      .upload-placeholder {
+        min-height: 300px;
       }
 
       .floating-upload-button {
         min-width: 210px;
+
         min-height: 58px;
+
+        padding:
+          0 24px;
+
         font-size: 16px;
       }
 
-      .uploaded-files {
-        justify-content: center;
-      }
+      .pdf-grid {
+        grid-template-columns:
+          repeat(
+            auto-fit,
+            minmax(140px, 140px)
+          );
 
-      .editor-controls {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .add-more-button,
-      .merge-button {
-        width: 100%;
-      }
-
-      .footer-content {
-        flex-direction: column;
-        text-align: center;
-      }
-    }
-
-    @media (max-width: 550px) {
-
-      .logo-text {
-        font-size: 20px;
-      }
-
-      .main-navigation {
         gap: 18px;
       }
 
-      .nav-button {
+      .pdf-card {
+        width: 140px;
+      }
+
+      .pdf-preview {
+        width: 140px;
+
+        height: 180px;
+      }
+
+      .footer-inner {
+        padding:
+          22px 16px;
+      }
+
+    }
+
+
+    /* ========================================
+       SMALL MOBILE
+    ======================================== */
+
+    @media (max-width: 550px) {
+
+      .header-inner {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 10px;
+
+        padding:
+          10px 16px;
+      }
+
+      .logo {
+        align-self: flex-start;
+      }
+
+      .header-search {
+        max-width: none;
+      }
+
+      .heading h1 {
+        font-size: 29px;
+      }
+
+      .heading p {
+        font-size: 15px;
+      }
+
+      .button-row {
+        flex-direction: column;
+      }
+
+      .primary-button,
+      .secondary-button {
+        width: 100%;
+      }
+
+      .primary-button {
+        min-height: 54px;
+
+        font-size: 16px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+
+        text-align: center;
+      }
+
+      .pdf-grid {
+        grid-template-columns:
+          repeat(
+            auto-fit,
+            minmax(120px, 120px)
+          );
+
+        gap: 14px;
+
+        padding: 4px;
+      }
+
+      .pdf-card {
+        width: 120px;
+      }
+
+      .pdf-preview {
+        width: 120px;
+
+        height: 155px;
+      }
+
+      .pdf-name {
         font-size: 13px;
+      }
+
+      .drag-hint {
+        font-size: 13px;
+
+        padding:
+          11px 10px;
       }
 
       .tool-category-link {
         min-height: 30px;
-        padding: 0 8px;
+
+        padding:
+          0 8px;
+
         font-size: 10px;
       }
 
@@ -835,131 +1430,159 @@
 
       .tool-category-link:not(:last-child)::after {
         right: -8px;
+
         font-size: 10px;
       }
 
       .floating-upload-button {
-        min-width: 195px;
-        min-height: 55px;
-        padding: 0 20px;
+        min-width: 190px;
+
+        min-height: 54px;
+
+        padding:
+          0 20px;
+
         font-size: 15px;
       }
 
-      .file-card {
-        width: 145px;
+      .floating-upload-icon {
+        font-size: 19px;
       }
 
-      .footer-links {
-        flex-wrap: wrap;
-        justify-content: center;
-      }
     }
+
   </style>
+
 </head>
+
 
 <body>
 
-  <!-- =========================
-       HEADER
-       ========================= -->
 
-  <header class="site-header">
+  <!-- ========================================
+       HEADER
+  ========================================= -->
+
+  <header class="top-header">
 
     <div class="header-inner">
 
-      <a href="index.html" class="logo">
+      <a
+        href="index.html"
+        class="logo"
+      >
 
-        <span class="logo-icon">T</span>
+        <div class="logo-icon">
+          T
+        </div>
 
-        <span class="logo-text">
-          <span class="logo-tool">Tool</span><span class="logo-nest">NEST</span>
-        </span>
+        <div class="logo-text">
+
+          <span class="logo-tool">
+            Tool
+          </span>
+
+          <span class="logo-nest">
+            NEST
+          </span>
+
+        </div>
 
       </a>
 
+
       <div class="header-search">
+
         <input
           type="text"
           id="toolSearch"
           placeholder="Search tools..."
-          autocomplete="off"
+          aria-label="Search tools"
         >
+
+        <span class="search-icon">
+          ⌕
+        </span>
+
       </div>
-
-    </div>
-
-    <div class="navigation-wrapper">
-
-      <nav class="main-navigation">
-
-        <a
-          href="index.html"
-          class="nav-button"
-        >
-          Popular Tools
-        </a>
-
-        <a
-          href="index.html"
-          class="nav-button active"
-        >
-          PDF Tools
-        </a>
-
-        <a
-          href="index.html"
-          class="nav-button"
-        >
-          Text Tools
-        </a>
-
-        <a
-          href="index.html"
-          class="nav-button"
-        >
-          Image Tools
-        </a>
-
-        <a
-          href="index.html"
-          class="nav-button"
-        >
-          Calculators
-        </a>
-
-      </nav>
 
     </div>
 
   </header>
 
 
-  <!-- =========================
-       MAIN CONTENT
-       ========================= -->
+  <!-- ========================================
+       CATEGORY NAVIGATION
+  ========================================= -->
 
-  <main class="page-content">
+  <nav class="category-nav">
 
-    <div class="content-layout">
+    <div class="category-nav-inner">
 
-      <section class="main-content">
+      <a
+        href="index.html"
+        class="category-link"
+      >
+        Popular Tools
+      </a>
 
-        <div class="page-heading">
+      <a
+        href="index.html"
+        class="category-link active"
+      >
+        PDF Tools
+      </a>
 
-          <h1>Merge PDF</h1>
+      <a
+        href="index.html"
+        class="category-link"
+      >
+        Text Tools
+      </a>
 
-          <p>
-            Combine multiple PDF files into one PDF quickly and easily.
-            Arrange your files in the order you want and merge them into
-            a single document.
-          </p>
+      <a
+        href="index.html"
+        class="category-link"
+      >
+        Image Tools
+      </a>
 
-        </div>
+      <a
+        href="index.html"
+        class="category-link"
+      >
+        Calculators
+      </a>
+
+    </div>
+
+  </nav>
 
 
-        <!-- Small PDF navigation -->
+  <!-- ========================================
+       PAGE
+  ========================================= -->
 
-        <div class="tool-category-bar">
+  <main class="page-wrapper">
+
+    <div class="page-layout">
+
+
+      <!-- ========================================
+           MAIN CONTENT
+      ========================================= -->
+
+      <section class="content">
+
+
+        <!-- ========================================
+             PDF TOOL NAVIGATION
+        ========================================= -->
+
+        <nav
+          class="tool-category-bar"
+          aria-label="PDF tools"
+        >
 
           <div class="tool-category-list">
 
@@ -993,38 +1616,59 @@
 
           </div>
 
+        </nav>
+
+
+        <!-- ========================================
+             TOOL HEADING
+        ========================================= -->
+
+        <div class="heading">
+
+          <h1>
+            Merge PDF
+          </h1>
+
+          <p>
+            Combine multiple PDF files into one PDF quickly and easily.
+            Arrange your files in the order you want and merge them into a single document.
+          </p>
+
         </div>
 
 
-        <!-- Tool -->
+        <!-- ========================================
+             TOOL BOX
+        ======================================== -->
 
         <div class="tool-box">
 
-          <div class="tool-box-header">
 
-            <h2>Select PDF Files</h2>
+          <!-- ======================================
+               HIDDEN FILE INPUT
+          ====================================== -->
 
-            <p>
-              Upload two or more PDF files and arrange them before merging.
-            </p>
-
-          </div>
-
-
-          <div class="upload-area">
-
-            <!-- Hidden file input -->
-
-            <input
-              type="file"
-              id="pdfInput"
-              accept="application/pdf,.pdf"
-              multiple
-              hidden
-            >
+          <input
+            type="file"
+            id="pdfInput"
+            accept=".pdf,application/pdf"
+            multiple
+          >
 
 
-            <!-- Initial upload state -->
+          <!-- ======================================
+               UPLOAD / PREVIEW AREA
+          ====================================== -->
+
+          <div
+            class="upload-area"
+            id="uploadArea"
+          >
+
+
+            <!-- ====================================
+                 INITIAL UPLOAD BUTTON
+            ==================================== -->
 
             <div
               class="upload-placeholder"
@@ -1033,55 +1677,88 @@
 
               <button
                 type="button"
-                id="uploadButton"
                 class="floating-upload-button"
+                id="uploadButton"
               >
-                Upload PDF File
+
+                <span class="floating-upload-icon">
+                  ↑
+                </span>
+
+                <span>
+                  Upload PDF File
+                </span>
+
               </button>
 
             </div>
 
 
-            <!-- Uploaded file previews -->
+            <!-- ====================================
+                 PREVIEW STATE
+            ==================================== -->
 
             <div
               class="uploaded-files"
               id="uploadedFiles"
-            ></div>
-
-
-            <!-- Controls -->
-
-            <div
-              class="editor-controls"
-              id="editorControls"
             >
 
-              <button
-                type="button"
-                class="add-more-button"
-                id="addMoreButton"
-              >
-                + Add More PDFs
-              </button>
+              <div class="drag-hint">
+                Drag Files to Change their Order
+              </div>
+
+
+              <div
+                class="pdf-grid"
+                id="pdfGrid"
+              ></div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ======================================
+               CONTROLS
+          ====================================== -->
+
+          <div
+            class="editor-controls"
+            id="editorControls"
+          >
+
+            <div class="button-row">
+
+
+              <!-- MERGE BUTTON -->
 
               <button
-                type="button"
-                class="merge-button"
+                class="primary-button"
                 id="mergeButton"
-                disabled
+                type="button"
               >
-                Merge PDF
+                Merge PDFs and Download
+              </button>
+
+
+              <!-- ADD MORE -->
+
+              <button
+                class="secondary-button"
+                id="newFileButton"
+                type="button"
+              >
+                + Add More PDFs
               </button>
 
             </div>
 
 
-            <!-- Status -->
+            <!-- STATUS -->
 
             <div
-              class="status-message"
-              id="statusMessage"
+              class="status"
+              id="status"
             ></div>
 
           </div>
@@ -1091,18 +1768,41 @@
       </section>
 
 
-      <!-- =========================
-           AD COLUMN
-           ========================= -->
+      <!-- ========================================
+           ADVERTISEMENT
+      ========================================= -->
 
       <aside class="ad-column">
 
         <div class="ad-box">
 
-          <div class="ad-brand">T</div>
+          <div class="ad-content">
 
-          <div class="ad-text">
-            Your Ad Here
+            <div class="ad-label">
+              ADVERTISEMENT
+            </div>
+
+            <div class="sample-ad">
+
+              <div class="sample-ad-badge">
+                TOOLNEST
+              </div>
+
+              <h3>
+                Simple Tools.<br>
+                Better Productivity.
+              </h3>
+
+              <p>
+                Fast, free and easy-to-use online tools for everyday tasks.
+              </p>
+
+              <div class="sample-ad-button">
+                Explore Tools
+              </div>
+
+            </div>
+
           </div>
 
         </div>
@@ -1114,13 +1814,13 @@
   </main>
 
 
-  <!-- =========================
+  <!-- ========================================
        FOOTER
-       ========================= -->
+  ========================================= -->
 
-  <footer class="site-footer">
+  <footer>
 
-    <div class="footer-content">
+    <div class="footer-inner">
 
       <div>
         © 2026 ToolNest · Simple, Fast &amp; Free
@@ -1128,13 +1828,21 @@
 
       <div class="footer-links">
 
-        <a href="about.html">About</a>
+        <a href="#">
+          About
+        </a>
 
-        <a href="privacy.html">Privacy</a>
+        <a href="#">
+          Privacy
+        </a>
 
-        <a href="terms.html">Terms</a>
+        <a href="#">
+          Terms
+        </a>
 
-        <a href="contact.html">Contact</a>
+        <a href="#">
+          Contact
+        </a>
 
       </div>
 
@@ -1143,25 +1851,36 @@
   </footer>
 
 
+  <!-- ========================================
+       JAVASCRIPT
+  ========================================= -->
+
   <script>
 
-    /* =========================
-       PDF.JS SETUP
-       ========================= */
+
+    /* ========================================
+       PDF.JS WORKER
+    ======================================== */
 
     pdfjsLib.GlobalWorkerOptions.workerSrc =
       "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
 
-    /* =========================
+    /* ========================================
        ELEMENTS
-       ========================= */
+    ======================================== */
 
     const pdfInput =
       document.getElementById("pdfInput");
 
+    const uploadArea =
+      document.getElementById("uploadArea");
+
     const uploadButton =
       document.getElementById("uploadButton");
+
+    const pdfGrid =
+      document.getElementById("pdfGrid");
 
     const uploadPlaceholder =
       document.getElementById("uploadPlaceholder");
@@ -1172,209 +1891,488 @@
     const editorControls =
       document.getElementById("editorControls");
 
-    const addMoreButton =
-      document.getElementById("addMoreButton");
-
     const mergeButton =
       document.getElementById("mergeButton");
 
-    const statusMessage =
-      document.getElementById("statusMessage");
+    const newFileButton =
+      document.getElementById("newFileButton");
+
+    const status =
+      document.getElementById("status");
 
 
-    /* =========================
-       DATA
-       ========================= */
+    /* ========================================
+       FILE STORAGE
+    ======================================== */
 
     let pdfFiles = [];
 
-
-    /* =========================
-       OPEN FILE SELECTOR
-       ========================= */
-
-    uploadButton.addEventListener("click", function () {
-      pdfInput.click();
-    });
-
-    addMoreButton.addEventListener("click", function () {
-      pdfInput.click();
-    });
+    let draggedId = null;
 
 
-    /* =========================
-       FILE SELECTION
-       ========================= */
+    /* ========================================
+       OPEN FILE PICKER
+    ======================================== */
 
-    pdfInput.addEventListener("change", function (event) {
+    uploadButton.addEventListener(
+      "click",
+      function(event) {
 
-      const selectedFiles =
-        Array.from(event.target.files);
+        event.preventDefault();
 
-      if (selectedFiles.length === 0) {
-        return;
+        event.stopPropagation();
+
+        pdfInput.click();
+
       }
+    );
 
-      const validFiles =
-        selectedFiles.filter(function (file) {
-          return (
-            file.type === "application/pdf" ||
-            file.name.toLowerCase().endsWith(".pdf")
+
+    /* ========================================
+       FILE UPLOAD
+    ======================================== */
+
+    pdfInput.addEventListener(
+      "change",
+      function(event) {
+
+        const files =
+          Array.from(
+            event.target.files
           );
-        });
-
-      if (validFiles.length !== selectedFiles.length) {
-
-        showStatus(
-          "Only PDF files can be uploaded.",
-          "error"
-        );
-
-      }
-
-      pdfFiles = pdfFiles.concat(validFiles);
-
-      updateInterface();
-
-      /*
-        Reset input so the same file can be
-        selected again if necessary.
-      */
-
-      pdfInput.value = "";
-
-    });
 
 
-    /* =========================
-       UPDATE INTERFACE
-       ========================= */
+        files.forEach(
+          function(file) {
 
-    function updateInterface() {
+            if (
+              file.type !==
+              "application/pdf"
+            ) {
 
-      if (pdfFiles.length > 0) {
+              alert(
+                file.name +
+                " is not a valid PDF file."
+              );
 
-        uploadPlaceholder.style.display = "none";
-
-        uploadedFiles.classList.add("active");
-
-        editorControls.classList.add("active");
-
-      } else {
-
-        uploadPlaceholder.style.display = "flex";
-
-        uploadedFiles.classList.remove("active");
-
-        editorControls.classList.remove("active");
-
-        /*
-          Return the button to its initial
-          top position when no files exist.
-        */
-
-        uploadButton.style.top = "145px";
-      }
-
-      renderFiles();
-
-      mergeButton.disabled =
-        pdfFiles.length < 2;
-
-    }
+              return;
+            }
 
 
-    /* =========================
-       RENDER FILES
-       ========================= */
+            const alreadyExists =
+              pdfFiles.some(
+                function(item) {
 
-    function renderFiles() {
+                  return (
+                    item.file.name === file.name &&
+                    item.file.size === file.size
+                  );
 
-      uploadedFiles.innerHTML = "";
-
-      pdfFiles.forEach(function (file, index) {
-
-        const card =
-          document.createElement("div");
-
-        card.className = "file-card";
-
-        card.draggable = true;
-
-        card.dataset.index = index;
+                }
+              );
 
 
-        const preview =
-          document.createElement("div");
-
-        preview.className = "file-preview";
-
-
-        const fileName =
-          document.createElement("div");
-
-        fileName.className = "file-name";
-
-        fileName.textContent = file.name;
+            if (alreadyExists) {
+              return;
+            }
 
 
-        const removeButton =
-          document.createElement("button");
+            pdfFiles.push({
 
-        removeButton.type = "button";
+              file: file,
 
-        removeButton.className =
-          "remove-file";
+              id:
+                Date.now() +
+                Math.random()
 
-        removeButton.innerHTML = "×";
-
-        removeButton.title =
-          "Remove PDF";
-
-
-        removeButton.addEventListener(
-          "click",
-          function (event) {
-
-            event.stopPropagation();
-
-            pdfFiles.splice(index, 1);
-
-            updateInterface();
+            });
 
           }
         );
 
 
-        card.appendChild(preview);
+        updateInterface();
 
-        card.appendChild(fileName);
-
-        card.appendChild(removeButton);
-
-        uploadedFiles.appendChild(card);
+        renderPDFs();
 
 
-        renderPDFPreview(
-          file,
-          preview
+        /*
+          Reset input so the
+          same file can be selected again.
+        */
+
+        pdfInput.value = "";
+
+      }
+    );
+
+
+    /* ========================================
+       UPDATE INTERFACE
+    ======================================== */
+
+    function updateInterface() {
+
+      if (
+        pdfFiles.length > 0
+      ) {
+
+        /*
+          Hide the initial floating
+          upload button completely.
+        */
+
+        uploadPlaceholder.style.display =
+          "none";
+
+
+        /*
+          Show uploaded files.
+        */
+
+        uploadedFiles.classList.add(
+          "active"
         );
 
 
-        setupDragEvents(card);
+        /*
+          Show controls.
+        */
 
-      });
+        editorControls.classList.add(
+          "active"
+        );
+
+      }
+
+      else {
+
+        /*
+          Show the initial upload button
+          again if all files are removed.
+        */
+
+        uploadPlaceholder.style.display =
+          "flex";
+
+
+        /*
+          Hide previews.
+        */
+
+        uploadedFiles.classList.remove(
+          "active"
+        );
+
+
+        /*
+          Hide merge controls.
+        */
+
+        editorControls.classList.remove(
+          "active"
+        );
+
+      }
 
     }
 
 
-    /* =========================
+    /* ========================================
+       RENDER PDF FILES
+    ======================================== */
+
+    function renderPDFs() {
+
+      pdfGrid.innerHTML = "";
+
+
+      pdfFiles.forEach(
+        function(item) {
+
+          const card =
+            document.createElement(
+              "div"
+            );
+
+          card.className =
+            "pdf-card";
+
+          card.dataset.id =
+            item.id;
+
+          card.draggable =
+            true;
+
+
+          /* ==================================
+             DRAG START
+          ================================== */
+
+          card.addEventListener(
+            "dragstart",
+            function(event) {
+
+              draggedId =
+                item.id;
+
+              card.classList.add(
+                "dragging"
+              );
+
+              event.stopPropagation();
+
+            }
+          );
+
+
+          /* ==================================
+             DRAG END
+          ================================== */
+
+          card.addEventListener(
+            "dragend",
+            function(event) {
+
+              draggedId =
+                null;
+
+              card.classList.remove(
+                "dragging"
+              );
+
+              event.stopPropagation();
+
+            }
+          );
+
+
+          /* ==================================
+             ALLOW DROP
+          ================================== */
+
+          card.addEventListener(
+            "dragover",
+            function(event) {
+
+              event.preventDefault();
+
+              event.stopPropagation();
+
+            }
+          );
+
+
+          /* ==================================
+             DROP
+          ================================== */
+
+          card.addEventListener(
+            "drop",
+            function(event) {
+
+              event.preventDefault();
+
+              event.stopPropagation();
+
+
+              if (
+                draggedId === item.id
+              ) {
+                return;
+              }
+
+
+              const draggedIndex =
+                pdfFiles.findIndex(
+                  function(pdf) {
+
+                    return (
+                      pdf.id === draggedId
+                    );
+
+                  }
+                );
+
+
+              const targetIndex =
+                pdfFiles.findIndex(
+                  function(pdf) {
+
+                    return (
+                      pdf.id === item.id
+                    );
+
+                  }
+                );
+
+
+              if (
+                draggedIndex === -1 ||
+                targetIndex === -1
+              ) {
+                return;
+              }
+
+
+              const movedFile =
+                pdfFiles.splice(
+                  draggedIndex,
+                  1
+                )[0];
+
+
+              pdfFiles.splice(
+                targetIndex,
+                0,
+                movedFile
+              );
+
+
+              renderPDFs();
+
+            }
+          );
+
+
+          /* ==================================
+             PDF PREVIEW
+          ================================== */
+
+          const preview =
+            document.createElement(
+              "div"
+            );
+
+          preview.className =
+            "pdf-preview";
+
+
+          const canvas =
+            document.createElement(
+              "canvas"
+            );
+
+
+          preview.appendChild(
+            canvas
+          );
+
+
+          /* ==================================
+             FILE NAME
+          ================================== */
+
+          const name =
+            document.createElement(
+              "div"
+            );
+
+          name.className =
+            "pdf-name";
+
+          name.textContent =
+            item.file.name;
+
+
+          /* ==================================
+             REMOVE BUTTON
+          ================================== */
+
+          const removeButton =
+            document.createElement(
+              "button"
+            );
+
+          removeButton.className =
+            "remove-button";
+
+          removeButton.type =
+            "button";
+
+          removeButton.textContent =
+            "×";
+
+          removeButton.setAttribute(
+            "aria-label",
+            "Remove " +
+            item.file.name
+          );
+
+
+          removeButton.addEventListener(
+            "click",
+            function(event) {
+
+              event.preventDefault();
+
+              event.stopPropagation();
+
+
+              pdfFiles =
+                pdfFiles.filter(
+                  function(pdf) {
+
+                    return (
+                      pdf.id !== item.id
+                    );
+
+                  }
+                );
+
+
+              updateInterface();
+
+              renderPDFs();
+
+            }
+          );
+
+
+          /* ==================================
+             BUILD CARD
+          ================================== */
+
+          card.appendChild(
+            preview
+          );
+
+          card.appendChild(
+            name
+          );
+
+          card.appendChild(
+            removeButton
+          );
+
+
+          pdfGrid.appendChild(
+            card
+          );
+
+
+          /* ==================================
+             RENDER PREVIEW
+          ================================== */
+
+          renderPDFPreview(
+            item.file,
+            canvas
+          );
+
+        }
+      );
+
+    }
+
+
+    /* ========================================
        PDF PREVIEW
-       ========================= */
+    ======================================== */
 
     async function renderPDFPreview(
       file,
-      container
+      canvas
     ) {
 
       try {
@@ -1382,423 +2380,297 @@
         const arrayBuffer =
           await file.arrayBuffer();
 
+
         const pdf =
-          await pdfjsLib.getDocument({
-            data: arrayBuffer
-          }).promise;
+          await pdfjsLib.getDocument(
+            {
+              data:
+                arrayBuffer.slice(0)
+            }
+          ).promise;
+
 
         const page =
           await pdf.getPage(1);
 
-        const viewport =
-          page.getViewport({
-            scale: 1
-          });
 
-
-        const maxWidth = 145;
-        const maxHeight = 185;
-
-        const scale =
-          Math.min(
-            maxWidth / viewport.width,
-            maxHeight / viewport.height
+        const baseViewport =
+          page.getViewport(
+            {
+              scale: 1
+            }
           );
 
 
-        const scaledViewport =
-          page.getViewport({
-            scale: scale
-          });
+        const maxWidth =
+          145;
 
 
-        const canvas =
-          document.createElement("canvas");
+        const maxHeight =
+          185;
 
-        canvas.width =
-          scaledViewport.width;
 
-        canvas.height =
-          scaledViewport.height;
+        const scale =
+          Math.min(
+            maxWidth /
+              baseViewport.width,
+
+            maxHeight /
+              baseViewport.height
+          );
+
+
+        const viewport =
+          page.getViewport(
+            {
+              scale: scale
+            }
+          );
 
 
         const context =
-          canvas.getContext("2d");
+          canvas.getContext(
+            "2d"
+          );
 
 
-        await page.render({
-          canvasContext: context,
-          viewport: scaledViewport
-        }).promise;
+        canvas.width =
+          Math.floor(
+            viewport.width
+          );
 
 
-        container.appendChild(canvas);
+        canvas.height =
+          Math.floor(
+            viewport.height
+          );
 
-      } catch (error) {
 
-        const errorText =
-          document.createElement("span");
+        await page.render(
+          {
+            canvasContext:
+              context,
 
-        errorText.textContent =
-          "Preview unavailable";
+            viewport:
+              viewport
+          }
+        ).promise;
 
-        errorText.style.fontSize =
-          "11px";
+      }
 
-        errorText.style.color =
-          "#8a96a3";
+      catch (error) {
 
-        container.appendChild(errorText);
+        console.error(
+          "PDF preview error:",
+          error
+        );
 
       }
 
     }
 
 
-    /* =========================
-       DRAG & DROP REORDERING
-       ========================= */
+    /* ========================================
+       ADD MORE PDFs
+    ======================================== */
 
-    let draggedIndex = null;
+    newFileButton.addEventListener(
+      "click",
+      function(event) {
 
+        event.preventDefault();
 
-    function setupDragEvents(card) {
+        event.stopPropagation();
 
-      card.addEventListener(
-        "dragstart",
-        function () {
+        pdfInput.click();
 
-          draggedIndex =
-            Number(card.dataset.index);
-
-          card.classList.add("dragging");
-
-        }
-      );
+      }
+    );
 
 
-      card.addEventListener(
-        "dragend",
-        function () {
-
-          card.classList.remove("dragging");
-
-          draggedIndex = null;
-
-        }
-      );
-
-
-      card.addEventListener(
-        "dragover",
-        function (event) {
-
-          event.preventDefault();
-
-        }
-      );
-
-
-      card.addEventListener(
-        "drop",
-        function (event) {
-
-          event.preventDefault();
-
-          const targetIndex =
-            Number(card.dataset.index);
-
-
-          if (
-            draggedIndex === null ||
-            draggedIndex === targetIndex
-          ) {
-            return;
-          }
-
-
-          const movedFile =
-            pdfFiles.splice(
-              draggedIndex,
-              1
-            )[0];
-
-
-          pdfFiles.splice(
-            targetIndex,
-            0,
-            movedFile
-          );
-
-
-          renderFiles();
-
-        }
-      );
-
-    }
-
-
-    /* =========================
-       STATUS
-       ========================= */
-
-    function showStatus(
-      message,
-      type
-    ) {
-
-      statusMessage.textContent =
-        message;
-
-      statusMessage.className =
-        "status-message show " + type;
-
-    }
-
-
-    /* =========================
-       MERGE PDF
-       ========================= */
+    /* ========================================
+       MERGE PDFs
+    ======================================== */
 
     mergeButton.addEventListener(
       "click",
-      async function () {
+      async function() {
 
-        if (pdfFiles.length < 2) {
+        if (
+          pdfFiles.length < 2
+        ) {
 
-          showStatus(
-            "Please select at least two PDF files.",
-            "error"
+          alert(
+            "Please select at least two PDF files."
           );
 
           return;
-
         }
 
 
-        mergeButton.disabled = true;
-
-        mergeButton.textContent =
-          "Merging...";
-
-
-        showStatus(
-          "Merging your PDF files...",
-          "info"
-        );
-
-
         try {
+
+          mergeButton.disabled =
+            true;
+
+          newFileButton.disabled =
+            true;
+
+
+          mergeButton.textContent =
+            "Merging PDFs...";
+
+
+          status.style.display =
+            "block";
+
+
+          status.textContent =
+            "Preparing your PDF...";
+
 
           const mergedPdf =
             await PDFLib.PDFDocument.create();
 
 
           for (
-            const file of pdfFiles
+            const item of pdfFiles
           ) {
 
-            const bytes =
-              await file.arrayBuffer();
+            status.textContent =
+              "Adding " +
+              item.file.name +
+              "...";
+
+
+            const arrayBuffer =
+              await item.file.arrayBuffer();
+
 
             const sourcePdf =
               await PDFLib.PDFDocument.load(
-                bytes
+                arrayBuffer
               );
 
 
-            const pages =
+            const copiedPages =
               await mergedPdf.copyPages(
                 sourcePdf,
                 sourcePdf.getPageIndices()
               );
 
 
-            pages.forEach(function (page) {
+            copiedPages.forEach(
+              function(page) {
 
-              mergedPdf.addPage(page);
+                mergedPdf.addPage(
+                  page
+                );
 
-            });
+              }
+            );
 
           }
 
 
-          const mergedBytes =
+          status.textContent =
+            "Creating merged PDF...";
+
+
+          const mergedPdfBytes =
             await mergedPdf.save();
 
 
           const blob =
             new Blob(
-              [mergedBytes],
+              [mergedPdfBytes],
               {
-                type: "application/pdf"
+                type:
+                  "application/pdf"
               }
             );
 
 
           const url =
-            URL.createObjectURL(blob);
+            URL.createObjectURL(
+              blob
+            );
 
 
-          const downloadLink =
-            document.createElement("a");
+          const link =
+            document.createElement(
+              "a"
+            );
 
-          downloadLink.href = url;
 
-          downloadLink.download =
+          link.href =
+            url;
+
+
+          link.download =
             "merged-toolnest.pdf";
 
 
           document.body.appendChild(
-            downloadLink
-          );
-
-          downloadLink.click();
-
-          downloadLink.remove();
-
-
-          URL.revokeObjectURL(url);
-
-
-          showStatus(
-            "Your PDFs have been merged successfully. The merged PDF has been downloaded.",
-            "success"
+            link
           );
 
 
-        } catch (error) {
+          link.click();
 
-          console.error(error);
 
-          showStatus(
-            "Something went wrong while merging the PDFs. Please try again.",
-            "error"
+          link.remove();
+
+
+          setTimeout(
+            function() {
+
+              URL.revokeObjectURL(
+                url
+              );
+
+            },
+            1000
           );
 
-        } finally {
 
-          mergeButton.disabled =
-            pdfFiles.length < 2;
-
-          mergeButton.textContent =
-            "Merge PDF";
+          status.textContent =
+            "Done! Your merged PDF has been downloaded.";
 
         }
 
+        catch (error) {
+
+          console.error(
+            "Merge error:",
+            error
+          );
+
+
+          alert(
+            "Something went wrong while merging the PDFs."
+          );
+
+
+          status.style.display =
+            "none";
+
+        }
+
+
+        mergeButton.disabled =
+          false;
+
+        newFileButton.disabled =
+          false;
+
+
+        mergeButton.textContent =
+          "Merge PDFs and Download";
+
       }
     );
 
-
-    /* =========================
-       FLOATING UPLOAD BUTTON
-       =========================
-
-       Starts near the top.
-
-       As the page scrolls, it moves
-       progressively toward the middle
-       of the viewport.
-
-       It disappears automatically
-       once a PDF is uploaded.
-       ========================= */
-
-    function updateFloatingButton() {
-
-      if (pdfFiles.length > 0) {
-        return;
-      }
-
-
-      const button =
-        document.getElementById(
-          "uploadButton"
-        );
-
-
-      if (!button) {
-        return;
-      }
-
-
-      const scrollY =
-        window.scrollY || window.pageYOffset;
-
-
-      const startTop = 145;
-
-
-      /*
-        Target position is approximately
-        the vertical middle of the screen.
-      */
-
-      const targetTop =
-        Math.max(
-          170,
-          (window.innerHeight / 2) - 31
-        );
-
-
-      /*
-        The button takes 500px of scrolling
-        to travel from the top position
-        to the middle position.
-      */
-
-      const scrollDistance = 500;
-
-
-      const progress =
-        Math.min(
-          scrollY / scrollDistance,
-          1
-        );
-
-
-      const currentTop =
-        startTop +
-        (
-          targetTop - startTop
-        ) *
-        progress;
-
-
-      button.style.top =
-        currentTop + "px";
-
-    }
-
-
-    window.addEventListener(
-      "scroll",
-      updateFloatingButton,
-      {
-        passive: true
-      }
-    );
-
-
-    window.addEventListener(
-      "resize",
-      updateFloatingButton
-    );
-
-
-    /*
-      Set correct initial position.
-    */
-
-    updateFloatingButton();
-
-
-    /* =========================
-       INITIAL STATE
-       ========================= */
-
-    updateInterface();
 
   </script>
 
