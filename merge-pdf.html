@@ -1,28 +1,32 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
+>
 
   <title>Merge PDF - ToolNest</title>
 
-  <meta
-    name="description"
-    content="Merge multiple PDF files into one PDF online for free with ToolNest."
-  >
+<meta
+name="description"
+content="Merge multiple PDF files into one PDF online for free with ToolNest."
+
+>
 
   <!-- PDF.JS -->
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
   <!-- PDF-LIB -->
-  <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
 
   <style>
 
@@ -503,7 +507,7 @@
 
 
     /* ========================================
-       UPLOAD AREA
+       UPLOAD / PREVIEW AREA
     ======================================== */
 
     .upload-area {
@@ -513,10 +517,9 @@
 
       padding: 30px;
 
-      display: flex;
+      position: relative;
 
-      align-items: center;
-      justify-content: center;
+      display: block;
 
       text-align: center;
 
@@ -549,22 +552,29 @@
       flex-direction: column;
 
       align-items: center;
-      justify-content: center;
+
+      justify-content: flex-start;
 
       width: 100%;
 
       min-height: 320px;
+
+      padding-top: 8px;
     }
 
 
     /* ========================================
        FLOATING UPLOAD BUTTON
+       
+       Starts near the top of the preview
+       area and becomes sticky around the
+       middle of the viewport while scrolling.
     ======================================== */
 
     .floating-upload-button {
       position: sticky;
 
-      top: 45vh;
+      top: 50vh;
 
       z-index: 20;
 
@@ -572,8 +582,6 @@
 
       align-items: center;
       justify-content: center;
-
-      gap: 10px;
 
       min-width: 230px;
 
@@ -625,12 +633,6 @@
     .floating-upload-button:active {
       transform:
         translateY(0);
-    }
-
-    .floating-upload-icon {
-      font-size: 22px;
-
-      line-height: 1;
     }
 
 
@@ -1287,6 +1289,8 @@
 
       .upload-placeholder {
         min-height: 300px;
+
+        padding-top: 6px;
       }
 
       .floating-upload-button {
@@ -1445,19 +1449,13 @@
         font-size: 15px;
       }
 
-      .floating-upload-icon {
-        font-size: 19px;
-      }
-
     }
 
   </style>
 
 </head>
 
-
 <body>
-
 
   <!-- ========================================
        HEADER
@@ -1465,51 +1463,52 @@
 
   <header class="top-header">
 
-    <div class="header-inner">
+```
+<div class="header-inner">
 
-      <a
-        href="index.html"
-        class="logo"
-      >
+  <a
+    href="index.html"
+    class="logo"
+  >
 
-        <div class="logo-icon">
-          T
-        </div>
+    <div class="logo-icon">
+      T
+    </div>
 
-        <div class="logo-text">
+    <div class="logo-text">
 
-          <span class="logo-tool">
-            Tool
-          </span>
+      <span class="logo-tool">
+        Tool
+      </span>
 
-          <span class="logo-nest">
-            NEST
-          </span>
-
-        </div>
-
-      </a>
-
-
-      <div class="header-search">
-
-        <input
-          type="text"
-          id="toolSearch"
-          placeholder="Search tools..."
-          aria-label="Search tools"
-        >
-
-        <span class="search-icon">
-          ⌕
-        </span>
-
-      </div>
+      <span class="logo-nest">
+        NEST
+      </span>
 
     </div>
 
-  </header>
+  </a>
 
+
+  <div class="header-search">
+
+    <input
+      type="text"
+      id="toolSearch"
+      placeholder="Search tools..."
+      aria-label="Search tools"
+    >
+
+    <span class="search-icon">
+      ⌕
+    </span>
+
+  </div>
+
+</div>
+```
+
+  </header>
 
   <!-- ========================================
        CATEGORY NAVIGATION
@@ -1517,47 +1516,48 @@
 
   <nav class="category-nav">
 
-    <div class="category-nav-inner">
+```
+<div class="category-nav-inner">
 
-      <a
-        href="index.html"
-        class="category-link"
-      >
-        Popular Tools
-      </a>
+  <a
+    href="index.html"
+    class="category-link"
+  >
+    Popular Tools
+  </a>
 
-      <a
-        href="index.html"
-        class="category-link active"
-      >
-        PDF Tools
-      </a>
+  <a
+    href="index.html"
+    class="category-link active"
+  >
+    PDF Tools
+  </a>
 
-      <a
-        href="index.html"
-        class="category-link"
-      >
-        Text Tools
-      </a>
+  <a
+    href="index.html"
+    class="category-link"
+  >
+    Text Tools
+  </a>
 
-      <a
-        href="index.html"
-        class="category-link"
-      >
-        Image Tools
-      </a>
+  <a
+    href="index.html"
+    class="category-link"
+  >
+    Image Tools
+  </a>
 
-      <a
-        href="index.html"
-        class="category-link"
-      >
-        Calculators
-      </a>
+  <a
+    href="index.html"
+    class="category-link"
+  >
+    Calculators
+  </a>
 
-    </div>
+</div>
+```
 
   </nav>
-
 
   <!-- ========================================
        PAGE
@@ -1565,254 +1565,247 @@
 
   <main class="page-wrapper">
 
-    <div class="page-layout">
+```
+<div class="page-layout">
 
 
-      <!-- ========================================
-           MAIN CONTENT
-      ========================================= -->
+  <!-- ========================================
+       MAIN CONTENT
+  ========================================= -->
 
-      <section class="content">
+  <section class="content">
 
 
-        <!-- ========================================
-             PDF TOOL NAVIGATION
-        ========================================= -->
+    <!-- ========================================
+         PDF TOOL NAVIGATION
+    ========================================= -->
 
-        <nav
-          class="tool-category-bar"
-          aria-label="PDF tools"
+    <nav
+      class="tool-category-bar"
+      aria-label="PDF tools"
+    >
+
+      <div class="tool-category-list">
+
+        <a
+          href="merge-pdf.html"
+          class="tool-category-link active"
         >
-
-          <div class="tool-category-list">
-
-            <a
-              href="merge-pdf.html"
-              class="tool-category-link active"
-            >
-              Merge PDF
-            </a>
-
-            <a
-              href="split-pdf.html"
-              class="tool-category-link"
-            >
-              Split PDF
-            </a>
-
-            <a
-              href="pdf-to-images.html"
-              class="tool-category-link"
-            >
-              PDF to Images
-            </a>
-
-            <a
-              href="images-to-pdf.html"
-              class="tool-category-link"
-            >
-              Images to PDF
-            </a>
-
-          </div>
-
-        </nav>
-
-
-        <!-- ========================================
-             TOOL HEADING
-        ========================================= -->
-
-        <div class="heading">
-
-          <h1>
-            Merge PDF
-          </h1>
-
-          <p>
-            Combine multiple PDF files into one PDF quickly and easily.
-            Arrange your files in the order you want and merge them into a single document.
-          </p>
-
-        </div>
-
-
-        <!-- ========================================
-             TOOL BOX
-        ======================================== -->
-
-        <div class="tool-box">
-
-
-          <!-- ======================================
-               HIDDEN FILE INPUT
-          ====================================== -->
-
-          <input
-            type="file"
-            id="pdfInput"
-            accept=".pdf,application/pdf"
-            multiple
-          >
-
-
-          <!-- ======================================
-               UPLOAD / PREVIEW AREA
-          ====================================== -->
-
-          <div
-            class="upload-area"
-            id="uploadArea"
-          >
-
-
-            <!-- ====================================
-                 INITIAL UPLOAD BUTTON
-            ==================================== -->
-
-            <div
-              class="upload-placeholder"
-              id="uploadPlaceholder"
-            >
-
-              <button
-                type="button"
-                class="floating-upload-button"
-                id="uploadButton"
-              >
-
-                <span class="floating-upload-icon">
-                  ↑
-                </span>
-
-                <span>
-                  Upload PDF File
-                </span>
-
-              </button>
-
-            </div>
-
-
-            <!-- ====================================
-                 PREVIEW STATE
-            ==================================== -->
-
-            <div
-              class="uploaded-files"
-              id="uploadedFiles"
-            >
-
-              <div class="drag-hint">
-                Drag Files to Change their Order
-              </div>
-
-
-              <div
-                class="pdf-grid"
-                id="pdfGrid"
-              ></div>
-
-            </div>
-
-          </div>
-
-
-          <!-- ======================================
-               CONTROLS
-          ====================================== -->
-
-          <div
-            class="editor-controls"
-            id="editorControls"
-          >
-
-            <div class="button-row">
-
-
-              <!-- MERGE BUTTON -->
-
-              <button
-                class="primary-button"
-                id="mergeButton"
-                type="button"
-              >
-                Merge PDFs and Download
-              </button>
-
-
-              <!-- ADD MORE -->
-
-              <button
-                class="secondary-button"
-                id="newFileButton"
-                type="button"
-              >
-                + Add More PDFs
-              </button>
-
-            </div>
-
-
-            <!-- STATUS -->
-
-            <div
-              class="status"
-              id="status"
-            ></div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- ========================================
-           ADVERTISEMENT
-      ========================================= -->
-
-      <aside class="ad-column">
-
-        <div class="ad-box">
-
-          <div class="ad-content">
-
-            <div class="ad-label">
-              ADVERTISEMENT
-            </div>
-
-            <div class="sample-ad">
-
-              <div class="sample-ad-badge">
-                TOOLNEST
-              </div>
-
-              <h3>
-                Simple Tools.<br>
-                Better Productivity.
-              </h3>
-
-              <p>
-                Fast, free and easy-to-use online tools for everyday tasks.
-              </p>
-
-              <div class="sample-ad-button">
-                Explore Tools
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </aside>
+          Merge PDF
+        </a>
+
+        <a
+          href="split-pdf.html"
+          class="tool-category-link"
+        >
+          Split PDF
+        </a>
+
+        <a
+          href="pdf-to-images.html"
+          class="tool-category-link"
+        >
+          PDF to Images
+        </a>
+
+        <a
+          href="images-to-pdf.html"
+          class="tool-category-link"
+        >
+          Images to PDF
+        </a>
+
+      </div>
+
+    </nav>
+
+
+    <!-- ========================================
+         TOOL HEADING
+    ========================================= -->
+
+    <div class="heading">
+
+      <h1>
+        Merge PDF
+      </h1>
+
+      <p>
+        Combine multiple PDF files into one PDF quickly and easily.
+        Arrange your files in the order you want and merge them into a single document.
+      </p>
 
     </div>
 
-  </main>
 
+    <!-- ========================================
+         TOOL BOX
+    ========================================= -->
+
+    <div class="tool-box">
+
+
+      <!-- ======================================
+           HIDDEN FILE INPUT
+      ====================================== -->
+
+      <input
+        type="file"
+        id="pdfInput"
+        accept=".pdf,application/pdf"
+        multiple
+      >
+
+
+      <!-- ======================================
+           UPLOAD / PREVIEW AREA
+      ====================================== -->
+
+      <div
+        class="upload-area"
+        id="uploadArea"
+      >
+
+
+        <!-- ====================================
+             INITIAL UPLOAD BUTTON
+        ==================================== -->
+
+        <div
+          class="upload-placeholder"
+          id="uploadPlaceholder"
+        >
+
+          <button
+            type="button"
+            class="floating-upload-button"
+            id="uploadButton"
+          >
+            Upload PDF File
+          </button>
+
+        </div>
+
+
+        <!-- ====================================
+             PREVIEW STATE
+        ==================================== -->
+
+        <div
+          class="uploaded-files"
+          id="uploadedFiles"
+        >
+
+          <div class="drag-hint">
+            Drag Files to Change their Order
+          </div>
+
+
+          <div
+            class="pdf-grid"
+            id="pdfGrid"
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================
+           CONTROLS
+      ====================================== -->
+
+      <div
+        class="editor-controls"
+        id="editorControls"
+      >
+
+        <div class="button-row">
+
+
+          <!-- MERGE BUTTON -->
+
+          <button
+            class="primary-button"
+            id="mergeButton"
+            type="button"
+          >
+            Merge PDFs and Download
+          </button>
+
+
+          <!-- ADD MORE -->
+
+          <button
+            class="secondary-button"
+            id="newFileButton"
+            type="button"
+          >
+            + Add More PDFs
+          </button>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div
+          class="status"
+          id="status"
+        ></div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ========================================
+       ADVERTISEMENT
+  ========================================= -->
+
+  <aside class="ad-column">
+
+    <div class="ad-box">
+
+      <div class="ad-content">
+
+        <div class="ad-label">
+          ADVERTISEMENT
+        </div>
+
+        <div class="sample-ad">
+
+          <div class="sample-ad-badge">
+            TOOLNEST
+          </div>
+
+          <h3>
+            Simple Tools.<br>
+            Better Productivity.
+          </h3>
+
+          <p>
+            Fast, free and easy-to-use online tools for everyday tasks.
+          </p>
+
+          <div class="sample-ad-button">
+            Explore Tools
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </aside>
+
+</div>
+```
+
+  </main>
 
   <!-- ========================================
        FOOTER
@@ -1820,36 +1813,37 @@
 
   <footer>
 
-    <div class="footer-inner">
+```
+<div class="footer-inner">
 
-      <div>
-        © 2026 ToolNest · Simple, Fast &amp; Free
-      </div>
+  <div>
+    © 2026 ToolNest · Simple, Fast &amp; Free
+  </div>
 
-      <div class="footer-links">
+  <div class="footer-links">
 
-        <a href="#">
-          About
-        </a>
+    <a href="#">
+      About
+    </a>
 
-        <a href="#">
-          Privacy
-        </a>
+    <a href="#">
+      Privacy
+    </a>
 
-        <a href="#">
-          Terms
-        </a>
+    <a href="#">
+      Terms
+    </a>
 
-        <a href="#">
-          Contact
-        </a>
+    <a href="#">
+      Contact
+    </a>
 
-      </div>
+  </div>
 
-    </div>
+</div>
+```
 
   </footer>
-
 
   <!-- ========================================
        JAVASCRIPT
@@ -2018,8 +2012,8 @@
       ) {
 
         /*
-          Hide the initial floating
-          upload button completely.
+          Hide the initial upload
+          button completely.
         */
 
         uploadPlaceholder.style.display =
@@ -2670,7 +2664,6 @@
 
       }
     );
-
 
   </script>
 
