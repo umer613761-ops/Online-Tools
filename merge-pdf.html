@@ -54,7 +54,6 @@
 
     /* ========================================
        HEADER
-       MATCHES HOMEPAGE
     ======================================== */
 
     .top-header {
@@ -86,7 +85,6 @@
 
     /* ========================================
        LOGO
-       MATCHES HOMEPAGE
     ======================================== */
 
     .logo {
@@ -150,7 +148,6 @@
 
     /* ========================================
        SEARCH
-       MATCHES HOMEPAGE
     ======================================== */
 
     .header-search {
@@ -210,7 +207,6 @@
 
     /* ========================================
        CATEGORY NAVIGATION
-       MATCHES HOMEPAGE
     ======================================== */
 
     .category-nav {
@@ -324,7 +320,7 @@
     .tool-category-bar {
       width: 100%;
 
-      margin-bottom: 28px;
+      margin-bottom: 24px;
 
       overflow-x: auto;
 
@@ -345,7 +341,7 @@
 
 
     /* ========================================
-       SMALL TOOL CATEGORY BUTTONS
+       SMALL PDF TOOL BUTTONS
     ======================================== */
 
     .tool-category-link {
@@ -356,23 +352,23 @@
       align-items: center;
       justify-content: center;
 
-      min-height: 36px;
+      min-height: 32px;
 
       padding:
-        0 12px;
+        0 10px;
 
       background: #ffffff;
 
       border:
         1px solid #dce3ea;
 
-      border-radius: 7px;
+      border-radius: 6px;
 
       color: #667588;
 
       text-decoration: none;
 
-      font-size: 12px;
+      font-size: 11px;
 
       font-weight: 600;
 
@@ -385,11 +381,6 @@
         box-shadow 0.2s ease;
     }
 
-
-    /* ========================================
-       BUTTON HOVER
-    ======================================== */
-
     .tool-category-link:hover {
       color: #326ba8;
 
@@ -397,11 +388,6 @@
 
       background: #f7fafd;
     }
-
-
-    /* ========================================
-       ACTIVE BUTTON
-    ======================================== */
 
     .tool-category-link.active {
       background: #326ba8;
@@ -411,8 +397,8 @@
       color: #ffffff;
 
       box-shadow:
-        0 2px 6px
-        rgba(50, 107, 168, 0.14);
+        0 2px 5px
+        rgba(50, 107, 168, 0.13);
     }
 
     .tool-category-link.active:hover {
@@ -423,13 +409,8 @@
       color: #ffffff;
     }
 
-
-    /* ========================================
-       SEPARATOR BETWEEN BUTTONS
-    ======================================== */
-
     .tool-category-link:not(:last-child) {
-      margin-right: 18px;
+      margin-right: 15px;
     }
 
     .tool-category-link:not(:last-child)::after {
@@ -437,7 +418,7 @@
 
       position: absolute;
 
-      right: -13px;
+      right: -11px;
 
       top: 50%;
 
@@ -446,7 +427,7 @@
 
       color: #9aa7b5;
 
-      font-size: 14px;
+      font-size: 12px;
 
       font-weight: 400;
 
@@ -546,8 +527,6 @@
 
       border-radius: 12px;
 
-      cursor: pointer;
-
       transition:
         background 0.2s ease,
         border-color 0.2s ease;
@@ -561,7 +540,7 @@
 
 
     /* ========================================
-       UPLOAD PLACEHOLDER
+       INITIAL UPLOAD STATE
     ======================================== */
 
     .upload-placeholder {
@@ -573,46 +552,85 @@
       justify-content: center;
 
       width: 100%;
+
+      min-height: 320px;
     }
 
-    .upload-icon {
-      width: 62px;
-      height: 62px;
 
-      margin:
-        0 auto 16px;
+    /* ========================================
+       FLOATING UPLOAD BUTTON
+    ======================================== */
 
-      display: flex;
+    .floating-upload-button {
+      position: sticky;
+
+      top: 45vh;
+
+      z-index: 20;
+
+      display: inline-flex;
 
       align-items: center;
       justify-content: center;
 
-      border-radius: 14px;
+      gap: 10px;
 
-      background: #eaf1f8;
+      min-width: 230px;
 
-      color: #326ba8;
+      min-height: 62px;
 
-      font-size: 29px;
+      padding:
+        0 28px;
+
+      border: none;
+
+      border-radius: 11px;
+
+      background: #326ba8;
+
+      color: #ffffff;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 17px;
+
+      font-weight: 600;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 8px 22px
+        rgba(50, 107, 168, 0.28);
+
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
-    .upload-placeholder h2 {
-      margin:
-        0 0 8px;
+    .floating-upload-button:hover {
+      background: #285b91;
 
-      color: #2f3d50;
+      transform:
+        translateY(-2px);
 
-      font-size: 20px;
+      box-shadow:
+        0 10px 25px
+        rgba(50, 107, 168, 0.34);
     }
 
-    .upload-placeholder p {
-      margin: 0;
+    .floating-upload-button:active {
+      transform:
+        translateY(0);
+    }
 
-      color: #7b8998;
+    .floating-upload-icon {
+      font-size: 22px;
 
-      font-size: 14px;
-
-      line-height: 1.5;
+      line-height: 1;
     }
 
 
@@ -1231,26 +1249,26 @@
       }
 
       .tool-category-bar {
-        margin-bottom: 24px;
+        margin-bottom: 22px;
       }
 
       .tool-category-link {
-        min-height: 34px;
+        min-height: 31px;
 
         padding:
-          0 11px;
+          0 9px;
 
-        font-size: 12px;
+        font-size: 10.5px;
       }
 
       .tool-category-link:not(:last-child) {
-        margin-right: 16px;
+        margin-right: 13px;
       }
 
       .tool-category-link:not(:last-child)::after {
-        right: -11px;
+        right: -9px;
 
-        font-size: 13px;
+        font-size: 11px;
       }
 
       .heading h1 {
@@ -1265,6 +1283,21 @@
         min-height: 350px;
 
         padding: 20px;
+      }
+
+      .upload-placeholder {
+        min-height: 300px;
+      }
+
+      .floating-upload-button {
+        min-width: 210px;
+
+        min-height: 58px;
+
+        padding:
+          0 24px;
+
+        font-size: 16px;
       }
 
       .pdf-grid {
@@ -1383,22 +1416,37 @@
       }
 
       .tool-category-link {
-        min-height: 33px;
+        min-height: 30px;
 
         padding:
-          0 10px;
+          0 8px;
 
-        font-size: 11px;
+        font-size: 10px;
       }
 
       .tool-category-link:not(:last-child) {
-        margin-right: 15px;
+        margin-right: 12px;
       }
 
       .tool-category-link:not(:last-child)::after {
-        right: -10px;
+        right: -8px;
 
-        font-size: 12px;
+        font-size: 10px;
+      }
+
+      .floating-upload-button {
+        min-width: 190px;
+
+        min-height: 54px;
+
+        padding:
+          0 20px;
+
+        font-size: 15px;
+      }
+
+      .floating-upload-icon {
+        font-size: 19px;
       }
 
     }
@@ -1465,7 +1513,6 @@
 
   <!-- ========================================
        CATEGORY NAVIGATION
-       MATCHES HOMEPAGE
   ========================================= -->
 
   <nav class="category-nav">
@@ -1592,12 +1639,14 @@
 
         <!-- ========================================
              TOOL BOX
-        ========================================= -->
+        ======================================== -->
 
         <div class="tool-box">
 
 
-          <!-- FILE INPUT -->
+          <!-- ======================================
+               HIDDEN FILE INPUT
+          ====================================== -->
 
           <input
             type="file"
@@ -1607,7 +1656,9 @@
           >
 
 
-          <!-- UPLOAD / PREVIEW AREA -->
+          <!-- ======================================
+               UPLOAD / PREVIEW AREA
+          ====================================== -->
 
           <div
             class="upload-area"
@@ -1615,44 +1666,47 @@
           >
 
 
-            <!-- INITIAL STATE -->
+            <!-- ====================================
+                 INITIAL UPLOAD BUTTON
+            ==================================== -->
 
             <div
               class="upload-placeholder"
               id="uploadPlaceholder"
             >
 
-              <div class="upload-icon">
-                📄
-              </div>
+              <button
+                type="button"
+                class="floating-upload-button"
+                id="uploadButton"
+              >
 
-              <h2>
-                Upload PDF Files
-              </h2>
+                <span class="floating-upload-icon">
+                  ↑
+                </span>
 
-              <p>
-                Click here to choose two or more PDFs from your device.
-              </p>
+                <span>
+                  Upload PDF File
+                </span>
+
+              </button>
 
             </div>
 
 
-            <!-- PREVIEW STATE -->
+            <!-- ====================================
+                 PREVIEW STATE
+            ==================================== -->
 
             <div
               class="uploaded-files"
               id="uploadedFiles"
             >
 
-
-              <!-- DRAG MESSAGE -->
-
               <div class="drag-hint">
                 Drag Files to Change their Order
               </div>
 
-
-              <!-- PDF PREVIEWS -->
 
               <div
                 class="pdf-grid"
@@ -1664,7 +1718,9 @@
           </div>
 
 
-          <!-- CONTROLS -->
+          <!-- ======================================
+               CONTROLS
+          ====================================== -->
 
           <div
             class="editor-controls"
@@ -1674,7 +1730,7 @@
             <div class="button-row">
 
 
-              <!-- MAIN BUTTON -->
+              <!-- MERGE BUTTON -->
 
               <button
                 class="primary-button"
@@ -1685,7 +1741,7 @@
               </button>
 
 
-              <!-- SECONDARY BUTTON -->
+              <!-- ADD MORE -->
 
               <button
                 class="secondary-button"
@@ -1804,7 +1860,7 @@
 
     /* ========================================
        PDF.JS WORKER
-    ========================================= */
+    ======================================== */
 
     pdfjsLib.GlobalWorkerOptions.workerSrc =
       "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
@@ -1819,6 +1875,9 @@
 
     const uploadArea =
       document.getElementById("uploadArea");
+
+    const uploadButton =
+      document.getElementById("uploadButton");
 
     const pdfGrid =
       document.getElementById("pdfGrid");
@@ -1844,7 +1903,7 @@
 
     /* ========================================
        FILE STORAGE
-    ========================================= */
+    ======================================== */
 
     let pdfFiles = [];
 
@@ -1853,18 +1912,15 @@
 
     /* ========================================
        OPEN FILE PICKER
-    ========================================= */
+    ======================================== */
 
-    uploadArea.addEventListener(
+    uploadButton.addEventListener(
       "click",
       function(event) {
 
-        if (
-          event.target.closest(".remove-button") ||
-          event.target.closest("button")
-        ) {
-          return;
-        }
+        event.preventDefault();
+
+        event.stopPropagation();
 
         pdfInput.click();
 
@@ -1874,7 +1930,7 @@
 
     /* ========================================
        FILE UPLOAD
-    ========================================= */
+    ======================================== */
 
     pdfInput.addEventListener(
       "change",
@@ -1940,8 +1996,10 @@
         renderPDFs();
 
 
-        /* Reset input so
-           same file can be selected again */
+        /*
+          Reset input so the
+          same file can be selected again.
+        */
 
         pdfInput.value = "";
 
@@ -1951,7 +2009,7 @@
 
     /* ========================================
        UPDATE INTERFACE
-    ========================================= */
+    ======================================== */
 
     function updateInterface() {
 
@@ -1959,12 +2017,27 @@
         pdfFiles.length > 0
       ) {
 
+        /*
+          Hide the initial floating
+          upload button completely.
+        */
+
         uploadPlaceholder.style.display =
           "none";
+
+
+        /*
+          Show uploaded files.
+        */
 
         uploadedFiles.classList.add(
           "active"
         );
+
+
+        /*
+          Show controls.
+        */
 
         editorControls.classList.add(
           "active"
@@ -1974,12 +2047,27 @@
 
       else {
 
+        /*
+          Show the initial upload button
+          again if all files are removed.
+        */
+
         uploadPlaceholder.style.display =
           "flex";
+
+
+        /*
+          Hide previews.
+        */
 
         uploadedFiles.classList.remove(
           "active"
         );
+
+
+        /*
+          Hide merge controls.
+        */
 
         editorControls.classList.remove(
           "active"
@@ -1992,7 +2080,7 @@
 
     /* ========================================
        RENDER PDF FILES
-    ========================================= */
+    ======================================== */
 
     function renderPDFs() {
 
@@ -2280,7 +2368,7 @@
 
     /* ========================================
        PDF PREVIEW
-    ========================================= */
+    ======================================== */
 
     async function renderPDFPreview(
       file,
@@ -2384,7 +2472,7 @@
 
     /* ========================================
        ADD MORE PDFs
-    ========================================= */
+    ======================================== */
 
     newFileButton.addEventListener(
       "click",
@@ -2402,7 +2490,7 @@
 
     /* ========================================
        MERGE PDFs
-    ========================================= */
+    ======================================== */
 
     mergeButton.addEventListener(
       "click",
@@ -2582,6 +2670,7 @@
 
       }
     );
+
 
   </script>
 
