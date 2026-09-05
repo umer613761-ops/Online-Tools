@@ -2534,6 +2534,53 @@
 .drag-hint {
   display: none !important;
 }
+
+/* Loading/status message intentionally removed */
+.status {
+  display: none !important;
+}
+
+
+/* Conversion dropdown + Convert PDF button on one row */
+.conversion-controls.active {
+  display: block !important;
+}
+
+.conversion-controls.active .button-row {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  flex-wrap: nowrap;
+}
+
+.conversion-controls.active select,
+.conversion-controls.active .conversion-select,
+.conversion-controls.active .format-select {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.conversion-controls.active .primary-button {
+  flex: 0 0 auto;
+  min-width: 170px;
+}
+
+@media (max-width: 550px) {
+  .conversion-controls.active .button-row {
+    flex-wrap: wrap;
+  }
+
+  .conversion-controls.active select,
+  .conversion-controls.active .conversion-select,
+  .conversion-controls.active .format-select,
+  .conversion-controls.active .primary-button {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+}
+
 </style>
 
 
@@ -3217,10 +3264,7 @@ html.dark-mode .theme-toggle .theme-icon {
 
             <!-- STATUS -->
 
-            <div
-              class="status"
-              id="status"
-            ></div>
+            
 
           </div>
 
