@@ -2583,86 +2583,6 @@
   }
 }
 
-
-    /* =========================================================
-       SINGLE PDF FILE PREVIEW
-       One uploaded PDF = one preview card.
-       Filename + total page count appear underneath.
-    ========================================================= */
-
-    .pdf-grid {
-      grid-template-columns: 1fr !important;
-      justify-content: center !important;
-      justify-items: center !important;
-      width: 100%;
-    }
-
-    .pdf-card {
-      width: 180px !important;
-      cursor: default;
-    }
-
-    .pdf-preview {
-      width: 180px !important;
-      height: 230px !important;
-      margin-bottom: 10px !important;
-    }
-
-    .pdf-card:hover {
-      transform: none;
-    }
-
-    .pdf-name {
-      width: 180px !important;
-      margin-bottom: 3px !important;
-      font-size: 14px;
-      line-height: 1.35;
-    }
-
-    .pdf-page-count {
-      width: 180px;
-      color: #718096;
-      font-size: 13px;
-      line-height: 1.3;
-      text-align: center;
-    }
-
-    html.dark-mode .pdf-page-count {
-      color: #9ca9b8;
-    }
-
-    @media (max-width: 700px) {
-      .pdf-card {
-        width: 160px !important;
-      }
-
-      .pdf-preview {
-        width: 160px !important;
-        height: 205px !important;
-      }
-
-      .pdf-name,
-      .pdf-page-count {
-        width: 160px !important;
-      }
-    }
-
-    @media (max-width: 550px) {
-      .pdf-card {
-        width: 150px !important;
-      }
-
-      .pdf-preview {
-        width: 150px !important;
-        height: 195px !important;
-      }
-
-      .pdf-name,
-      .pdf-page-count {
-        width: 150px !important;
-      }
-    }
-
 </style>
 
 
@@ -3585,90 +3505,54 @@ html.dark-mode .theme-toggle .theme-icon {
   }
 
   async function renderPreviews() {
-    if (!pdfGrid || !pdfDocument || !selectedFile) return;
+    if (!pdfGrid || !pdfDocument) return;
 
     pdfGrid.innerHTML = "";
 
-    /*
-      Show ONE preview card for the entire uploaded PDF.
-      Only the first page is rendered as the thumbnail.
-      The filename and total page count are shown underneath.
-    */
-    const card = document.createElement("div");
-    card.className = "pdf-card";
+    for (let i = 1; i <= pdfDocument.numPages; i++) {
+      const page = await pdfDocument.getPage(i);
+      const viewport = page.getViewport({ scale: 0.55 });
 
-    const preview = document.createElement("div");
-    preview.className = "pdf-preview";
+      const card = document.createElement("div");
+      card.className = "pdf-card";
 
-    const removeButton = document.createElement("button");
-    removeButton.type = "button";
-    removeButton.className = "remove-button";
-    removeButton.setAttribute("aria-label", "Remove PDF");
-    removeButton.setAttribute("title", "Remove PDF");
-    removeButton.textContent = "×";
+      const preview = document.createElement("div");
+      preview.className = "pdf-preview";
 
-    removeButton.addEventListener("click", function (event) {
-      event.preventDefault();
-      event.stopPropagation();
+      const removeButton = document.createElement("button");
+      removeButton.type = "button";
+      removeButton.className = "remove-button";
+      removeButton.setAttribute("aria-label", "Remove page " + i);
+      removeButton.setAttribute("title", "Remove");
+      removeButton.textContent = "×";
 
-      selectedFile = null;
-      pdfDocument = null;
+      removeButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        card.remove();
+      });
 
-      pdfGrid.innerHTML = "";
+      preview.appendChild(removeButton);
 
-      if (uploadedState) {
-        uploadedState.classList.remove("active");
-      }
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.ceil(viewport.width);
+      canvas.height = Math.ceil(viewport.height);
 
-      if (editorControls) {
-        editorControls.classList.remove("active");
-      }
+      preview.appendChild(canvas);
+      card.appendChild(preview);
 
-      if (uploadPlaceholder) {
-        uploadPlaceholder.style.display = "";
-      }
+      const name = document.createElement("div");
+      name.className = "pdf-name";
+      name.textContent = "Page " + i;
+      card.appendChild(name);
 
-      if (pdfInput) {
-        try {
-          pdfInput.value = "";
-        } catch (e) {}
-      }
+      pdfGrid.appendChild(card);
 
-      setStatus("", false);
-    });
-
-    preview.appendChild(removeButton);
-
-    const page = await pdfDocument.getPage(1);
-    const viewport = page.getViewport({ scale: 0.55 });
-
-    const canvas = document.createElement("canvas");
-    canvas.width = Math.ceil(viewport.width);
-    canvas.height = Math.ceil(viewport.height);
-
-    preview.appendChild(canvas);
-    card.appendChild(preview);
-
-    const name = document.createElement("div");
-    name.className = "pdf-name";
-    name.textContent = selectedFile.name;
-    name.title = selectedFile.name;
-    card.appendChild(name);
-
-    const pageCount = document.createElement("div");
-    pageCount.className = "pdf-page-count";
-    pageCount.textContent =
-      pdfDocument.numPages +
-      " " +
-      (pdfDocument.numPages === 1 ? "page" : "pages");
-    card.appendChild(pageCount);
-
-    pdfGrid.appendChild(card);
-
-    await page.render({
-      canvasContext: canvas.getContext("2d"),
-      viewport: viewport
-    }).promise;
+      await page.render({
+        canvasContext: canvas.getContext("2d"),
+        viewport: viewport
+      }).promise;
+    }
   }
 
   // Upload button
