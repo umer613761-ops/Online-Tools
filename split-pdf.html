@@ -29,6 +29,7 @@
 
   <!-- PDF-LIB -->
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
   <!-- ========================================
        THEME INITIALIZATION
@@ -3508,6 +3509,14 @@
             return;
           }
 
+          if (!window.JSZip) {
+            setStatus(
+              "ZIP processing library could not be loaded. Please refresh the page.",
+              true
+            );
+            return;
+          }
+
           splitButton.disabled = true;
           splitButton.textContent = "Splitting PDF...";
           setStatus("Preparing your PDF...", true);
@@ -3525,14 +3534,38 @@
               throw new Error("The PDF has no pages.");
             }
 
+            /*
+              Use the original PDF filename without ".pdf" as the
+              folder name and ZIP filename.
+
+              Example:
+                MyDocument.pdf
+                  -> MyDocument.zip
+                  -> MyDocument/
+                       MyDocument-page-1.pdf
+                       MyDocument-page-2.pdf
+                       ...
+            */
             const baseName =
               pdfFile.name.replace(/\.pdf$/i, "");
 
             /*
-              Browsers may block a large series of automatic downloads.
-              We therefore create every page and trigger each download
-              from this user-initiated operation, with a short delay.
+              Remove characters that are not suitable for a
+              Windows folder/file name while preserving the
+              original name as much as possible.
             */
+            const safeBaseName =
+              baseName
+                .replace(/[<>:"/\\|?*]/g, "_")
+                .replace(/[. ]+$/g, "")
+                .trim() || "split-pdf";
+
+            const zip =
+              new JSZip();
+
+            const outputFolder =
+              zip.folder(safeBaseName);
+
             for (let i = 0; i < pageCount; i++) {
               setStatus(
                 "Creating page " +
@@ -3557,49 +3590,61 @@
               const outputBytes =
                 await outputPdf.save();
 
-              const blob =
-                new Blob(
-                  [outputBytes],
-                  { type: "application/pdf" }
-                );
-
-              const url =
-                URL.createObjectURL(blob);
-
-              const link =
-                document.createElement("a");
-
-              link.href = url;
-              link.download =
-                baseName +
+              outputFolder.file(
+                safeBaseName +
                 "-page-" +
                 (i + 1) +
-                ".pdf";
-
-              link.style.display = "none";
-
-              document.body.appendChild(link);
-              link.click();
-              link.remove();
-
-              setTimeout(function () {
-                URL.revokeObjectURL(url);
-              }, 2000);
-
-              /*
-                Small pause helps Chromium process each download.
-              */
-              await new Promise(function (resolve) {
-                setTimeout(resolve, 250);
-              });
+                ".pdf",
+                outputBytes
+              );
             }
 
             setStatus(
+              "Creating ZIP file...",
+              true
+            );
+
+            /*
+              Generate one ZIP download instead of triggering
+              one browser download for every PDF page.
+            */
+            const zipBlob =
+              await zip.generateAsync({
+                type: "blob",
+                compression: "DEFLATE",
+                compressionOptions: {
+                  level: 6
+                }
+              });
+
+            const url =
+              URL.createObjectURL(zipBlob);
+
+            const link =
+              document.createElement("a");
+
+            link.href = url;
+
+            link.download =
+              safeBaseName +
+              ".zip";
+
+            link.style.display = "none";
+
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            setTimeout(function () {
+              URL.revokeObjectURL(url);
+            }, 5000);
+
+            setStatus(
               pageCount === 1
-                ? "Done! Your PDF page has been downloaded."
+                ? "Done! Your PDF page has been downloaded as a ZIP folder."
                 : "Done! " +
                   pageCount +
-                  " PDF pages have been split and downloaded.",
+                  " PDF pages have been split and downloaded in a ZIP folder.",
               true
             );
           } catch (error) {
@@ -3615,6 +3660,7 @@
           }
         });
       }
+
       /* Initial state */
       resetInterface();
     })();
