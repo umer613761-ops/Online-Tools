@@ -979,12 +979,19 @@ html.dark-mode .pdf-zoom-canvas-wrap{background:#263444;border-color:#435366}
     ======================================== */
 
     .upload-placeholder {
-      position: relative;
-      display: block;
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: flex-start;
+
       width: 100%;
-      height: 320px;
+
       min-height: 320px;
-      padding: 0;
+
+      padding-top: 8px;
     }
 
 
@@ -993,38 +1000,68 @@ html.dark-mode .pdf-zoom-canvas-wrap{background:#263444;border-color:#435366}
     ======================================== */
 
     .floating-upload-button {
-  position: absolute;
-  left: 50%;
-  top: 14px;
-  transform: translateX(-50%);
-  z-index: 20;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 280px;
-  min-height: 72px;
-  padding: 0 36px;
-  border: none;
-  border-radius: 36px;
-  background: #326ba8;
-  color: #ffffff;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 19px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 10px 26px rgba(50, 107, 168, 0.30);
-  transition: background 0.2s ease, box-shadow 0.2s ease;
-  will-change: top;
-}
+      position: sticky;
 
-.floating-upload-button:hover {
-  background: #285b91;
-  box-shadow: 0 13px 30px rgba(50, 107, 168, 0.36);
-}
+      top: 50vh;
 
-.floating-upload-button:active {
-  transform: translateX(-50%);
-}
+      z-index: 20;
+
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-width: 280px;
+
+      min-height: 72px;
+
+      padding:
+        0 36px;
+
+      border: none;
+
+      border-radius: 36px;
+
+      background: #326ba8;
+
+      color: #ffffff;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 19px;
+
+      font-weight: 600;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 10px 26px
+        rgba(50, 107, 168, 0.30);
+
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .floating-upload-button:hover {
+      background: #285b91;
+
+      transform:
+        translateY(-3px);
+
+      box-shadow:
+        0 13px 30px
+        rgba(50, 107, 168, 0.36);
+    }
+
+    .floating-upload-button:active {
+      transform:
+        translateY(0);
+    }
 
 
     /* ========================================
@@ -3189,49 +3226,6 @@ footer {
 }
 </style>
 
-
-<style id="floating-upload-authoritative">
-/* Upload button floats only inside the preview/upload box. */
-.upload-area {
-  position: relative !important;
-  overflow: hidden;
-}
-.upload-placeholder {
-  position: relative !important;
-  width: 100% !important;
-  height: 320px !important;
-  min-height: 320px !important;
-  padding: 0 !important;
-  display: block !important;
-}
-.floating-upload-button {
-  position: absolute !important;
-  left: 50% !important;
-  top: 14px;
-  transform: translateX(-50%) !important;
-  z-index: 50 !important;
-  pointer-events: auto !important;
-}
-.floating-upload-button:hover {
-  transform: translateX(-50%) !important;
-}
-.floating-upload-button:active {
-  transform: translateX(-50%) !important;
-}
-@media (max-width:700px) {
-  .upload-placeholder {
-    height: 290px !important;
-    min-height: 290px !important;
-  }
-  .floating-upload-button {
-    min-width: min(280px, calc(100% - 24px));
-    min-height: 64px;
-    padding: 0 24px;
-    font-size: 17px;
-  }
-}
-</style>
-
 </head><body>
 
 
@@ -3400,17 +3394,42 @@ footer {
 
     </section>
 
-    <aside class="ad-column" aria-label="Advertisement">
-      <div class="ad-box">
-        <div class="ad-label">ADVERTISEMENT</div>
-        <div class="sample-ad">
-          <div class="sample-ad-badge">TOOLNEST</div>
-          <h3>Simple Tools.<br>Better Productivity.</h3>
-          <p>Fast, free and easy-to-use online tools for everyday tasks.</p>
-          <a class="sample-ad-button" href="index.html">Explore Tools</a>
+      <aside class="ad-column">
+
+        <div class="ad-box">
+
+          <div class="ad-content">
+
+            <div class="ad-label">
+              ADVERTISEMENT
+            </div>
+
+            <div class="sample-ad">
+
+              <div class="sample-ad-badge">
+                TOOLNEST
+              </div>
+
+              <h3>
+                Simple Tools.<br>
+                Better Productivity.
+              </h3>
+
+              <p>
+                Fast, free and easy-to-use online tools for everyday tasks.
+              </p>
+
+              <div class="sample-ad-button">
+                Explore Tools
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
-      </div>
-    </aside>
+
+      </aside>
   </div>
 </main>
 
@@ -3863,7 +3882,118 @@ footer {
         }else if(selectedFormat==="pptx"){
           // PowerPoint-compatible HTML file with one page section per slide.
           const slides=pages.map((p,i)=>'<section style="width:960px;height:540px;padding:55px;background:white;box-sizing:border-box;page-break-after:always"><h1>Page '+(i+1)+'</h1><p>'+escapeHtml(p).replace(/\n/g,"<br>")+'</p></section>').join("");
-          blob=textBlob('<html><head><meta charset="utf-8"></head><body>'+slides+'</body></html>','text/html;charset=utf-8');
+          blob=textBlob('<html><head><meta charset="utf-8">
+<style id="merge-pdf-upload-button-match">
+  /* =========================================================
+     PDF CONVERTER — MATCH MERGE PDF UPLOAD BUTTON EXACTLY
+     ========================================================= */
+
+  .upload-area {
+    position: relative !important;
+    overflow: visible !important;
+    cursor: pointer !important;
+  }
+
+  .upload-placeholder {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    min-height: 320px !important;
+    padding-top: 8px !important;
+  }
+
+  .floating-upload-button {
+    position: sticky !important;
+    top: 50vh !important;
+    z-index: 20 !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    min-width: 280px !important;
+    min-height: 72px !important;
+    height: 72px !important;
+    padding: 0 36px !important;
+
+    border: none !important;
+    border-radius: 36px !important;
+
+    background: #326ba8 !important;
+    color: #ffffff !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 19px !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+
+    cursor: pointer !important;
+
+    box-shadow: 0 10px 26px rgba(50, 107, 168, 0.30) !important;
+
+    transition:
+      background 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease !important;
+  }
+
+  .floating-upload-button:hover {
+    background: #285b91 !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 13px 30px rgba(50, 107, 168, 0.36) !important;
+  }
+
+  .floating-upload-button:active {
+    transform: translateY(0) !important;
+  }
+
+  /* Keep the upload button visible only before a PDF is loaded. */
+  .upload-area:has(.uploaded-state.active) .upload-placeholder {
+    display: none !important;
+  }
+
+  html.dark-mode .floating-upload-button,
+  html:not(.light-mode) .floating-upload-button {
+    background: #326ba8 !important;
+    color: #ffffff !important;
+  }
+
+  html.dark-mode .floating-upload-button:hover,
+  html:not(.light-mode) .floating-upload-button:hover {
+    background: #3a78b8 !important;
+  }
+
+  @media (max-width: 700px) {
+    .upload-placeholder {
+      min-height: 290px !important;
+      padding-top: 6px !important;
+    }
+
+    .floating-upload-button {
+      min-width: 250px !important;
+      min-height: 66px !important;
+      height: 66px !important;
+      padding: 0 30px !important;
+      font-size: 17px !important;
+      border-radius: 33px !important;
+    }
+  }
+
+  @media (max-width: 550px) {
+    .floating-upload-button {
+      min-width: 230px !important;
+      min-height: 62px !important;
+      height: 62px !important;
+      padding: 0 26px !important;
+      font-size: 16px !important;
+      border-radius: 31px !important;
+    }
+  }
+</style>
+
+</head><body>'+slides+'</body></html>','text/html;charset=utf-8');
           name=safeBaseName()+"-slides.html"; preview=pages.join("\n\n");
         }
 
@@ -3996,12 +4126,7 @@ footer {
     }
   }
 
-  uploadButton.addEventListener("click", e => {
-    e.preventDefault();
-    e.stopPropagation();
-    pdfInput.value = "";
-    openPicker();
-  });
+  uploadButton.addEventListener("click",e=>{e.stopPropagation();openPicker()});
   uploadArea.addEventListener("click",e=>{
     if(e.target.closest("button") || uploadedState.classList.contains("active"))return;
     openPicker();
@@ -4064,43 +4189,7 @@ themeToggle.addEventListener("click",()=>{
   const initialDark=document.documentElement.classList.contains("dark-mode");
   themeToggle.textContent=initialDark?"☀️":"🌙";
 
-  // Keep the upload button floating inside the upload/preview box.
-  // It starts near the top and follows page scrolling, but never leaves the box.
-  let floatingUploadFrame = null;
-
-  function updateFloatingUploadButton() {
-    if (!uploadButton || !uploadPlaceholder || !uploadArea) return;
-    if (uploadedState.classList.contains("active")) return;
-
-    const areaRect = uploadArea.getBoundingClientRect();
-    const buttonHeight = uploadButton.offsetHeight || 72;
-    const sidePadding = 14;
-
-    // Desired position: around the middle of the visible viewport.
-    const desiredViewportTop = (window.innerHeight / 2) - (buttonHeight / 2);
-    let newTop = desiredViewportTop - areaRect.top;
-
-    // Keep the button completely inside the upload/preview box.
-    const minTop = sidePadding;
-    const maxTop = Math.max(minTop, areaRect.height - buttonHeight - sidePadding);
-    newTop = Math.max(minTop, Math.min(newTop, maxTop));
-
-    uploadButton.style.top = newTop + "px";
-  }
-
-  function scheduleFloatingUploadUpdate() {
-    if (floatingUploadFrame) return;
-    floatingUploadFrame = requestAnimationFrame(() => {
-      floatingUploadFrame = null;
-      updateFloatingUploadButton();
-    });
-  }
-
-  window.addEventListener("scroll", scheduleFloatingUploadUpdate, { passive: true });
-  window.addEventListener("resize", scheduleFloatingUploadUpdate);
-
   resetInterface();
-  requestAnimationFrame(updateFloatingUploadButton);
 })();
 
 </script>
