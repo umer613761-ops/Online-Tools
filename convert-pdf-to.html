@@ -2651,7 +2651,13 @@
 .drag-hint {
   display: none !important;
 }
+
+/* Final cleanup: hide the preview status/page-loaded message. */
+.status {
+  display: none !important;
+}
 </style>
+
 
 
 
@@ -3191,11 +3197,6 @@ html.dark-mode .upload-area #formatSelect {
 
             <!-- STATUS -->
 
-            <div
-              class="status"
-              id="status"
-            ></div>
-
           </div>
 
 </div>
@@ -3532,7 +3533,32 @@ html.dark-mode .upload-area #formatSelect {
     const doc='<!doctype html><html><head><meta charset="utf-8">'+
       "<title>"+escapeHtml(baseName())+"</title></head>"+
       '<body style="font-family:Arial,sans-serif;line-height:1.55">'+
-      body+"</body></html>";
+      body+"
+<script>
+  (function () {
+    const status = document.getElementById("status");
+    if (status) {
+      status.style.display = "none";
+      status.setAttribute("aria-hidden", "true");
+    }
+
+    const observer = new MutationObserver(function () {
+      if (status) {
+        status.style.display = "none";
+        status.setAttribute("aria-hidden", "true");
+      }
+    });
+
+    if (status) {
+      observer.observe(status, {
+        attributes: true,
+        attributeFilter: ["style", "class"]
+      });
+    }
+  })();
+</script>
+</body>
+</html>";
 
     // Word opens HTML documents saved with the .doc extension.
     download(
