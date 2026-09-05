@@ -2651,13 +2651,7 @@
 .drag-hint {
   display: none !important;
 }
-
-/* Final cleanup: hide the preview status/page-loaded message. */
-.status {
-  display: none !important;
-}
 </style>
-
 
 
 
@@ -2870,6 +2864,176 @@ html.dark-mode .upload-area #formatSelect {
 }
 </style>
 
+
+<style id="toolnest-dark-mode-fix">
+/* =========================================================
+   TOOLNEST DARK MODE — AUTHORITATIVE THEME
+   ========================================================= */
+
+html.dark-mode body {
+  background: #121820 !important;
+  color: #e7edf5 !important;
+}
+
+html.dark-mode .top-header,
+html.dark-mode .category-nav,
+html.dark-mode footer {
+  background: #18212b !important;
+  border-color: #2c3947 !important;
+}
+
+html.dark-mode .logo-tool {
+  color: #e7edf5 !important;
+}
+
+html.dark-mode .logo-nest {
+  color: #63a0dc !important;
+}
+
+html.dark-mode .header-search input {
+  background: #111923 !important;
+  border-color: #354454 !important;
+  color: #e7edf5 !important;
+}
+
+html.dark-mode .header-search input::placeholder {
+  color: #8998a9 !important;
+}
+
+html.dark-mode .search-icon {
+  color: #9aaabd !important;
+}
+
+html.dark-mode .theme-toggle {
+  background: #111923 !important;
+  border-color: #3a4a5b !important;
+  color: #f2c94c !important;
+}
+
+html.dark-mode .theme-toggle:hover {
+  background: #202c39 !important;
+  border-color: #4d6175 !important;
+  color: #ffd866 !important;
+}
+
+html.dark-mode .category-link {
+  color: #aab7c6 !important;
+}
+
+html.dark-mode .category-link.active {
+  color: #e7edf5 !important;
+}
+
+html.dark-mode .page-wrapper,
+html.dark-mode .content {
+  color: #e7edf5 !important;
+}
+
+html.dark-mode .heading h1 {
+  color: #f0f4f8 !important;
+}
+
+html.dark-mode .heading p {
+  color: #aab7c6 !important;
+}
+
+html.dark-mode .tool-category-link {
+  background: #1b2631 !important;
+  border-color: #394958 !important;
+  color: #aebdcb !important;
+}
+
+html.dark-mode .tool-category-link:hover {
+  background: #243341 !important;
+  border-color: #506579 !important;
+  color: #73a9df !important;
+}
+
+html.dark-mode .tool-category-link.active {
+  background: #326ba8 !important;
+  border-color: #326ba8 !important;
+  color: #ffffff !important;
+}
+
+html.dark-mode .tool-box {
+  background: #18212b !important;
+  border-color: #2f3d4b !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,.22) !important;
+}
+
+html.dark-mode .upload-area {
+  background: #111923 !important;
+  border-color: #4e6f8e !important;
+}
+
+html.dark-mode .upload-area:hover {
+  background: #172330 !important;
+  border-color: #6795be !important;
+}
+
+html.dark-mode .uploaded-files,
+html.dark-mode .pdf-card,
+html.dark-mode .pdf-preview,
+html.dark-mode .conversion-format-panel,
+html.dark-mode .results,
+html.dark-mode .settings {
+  color: #e7edf5 !important;
+}
+
+html.dark-mode .drag-hint,
+html.dark-mode .status,
+html.dark-mode .uploaded-files-header {
+  color: #aab7c6 !important;
+}
+
+html.dark-mode select,
+html.dark-mode input,
+html.dark-mode textarea {
+  background: #111923 !important;
+  color: #e7edf5 !important;
+  border-color: #3a4a5b !important;
+}
+
+html.dark-mode footer {
+  color: #9eacbb !important;
+}
+
+html.dark-mode .footer-links a {
+  color: #aebdcb !important;
+}
+
+html.dark-mode .footer-links a:hover {
+  color: #70a7dc !important;
+}
+
+/* Keep the PDF preview readable in dark mode. */
+html.dark-mode canvas {
+  background: #ffffff;
+}
+
+/* Theme icon states */
+.theme-toggle .theme-icon {
+  display: inline-block;
+  line-height: 1;
+}
+
+html:not(.dark-mode) .theme-toggle .theme-icon::before {
+  content: "☾";
+}
+
+html.dark-mode .theme-toggle .theme-icon::before {
+  content: "☀";
+}
+
+html:not(.dark-mode) .theme-toggle .theme-icon {
+  font-size: 19px;
+}
+
+html.dark-mode .theme-toggle .theme-icon {
+  font-size: 18px;
+}
+</style>
+
 </head>
 
 
@@ -2934,9 +3098,7 @@ html.dark-mode .upload-area #formatSelect {
           id="themeToggle"
           aria-label="Switch to dark mode"
           title="Switch to dark mode"
-        >
-          🌙
-        </button>
+        ><span class="theme-icon" aria-hidden="true"></span></button>
 
       </div>
 
@@ -3197,6 +3359,11 @@ html.dark-mode .upload-area #formatSelect {
 
             <!-- STATUS -->
 
+            <div
+              class="status"
+              id="status"
+            ></div>
+
           </div>
 
 </div>
@@ -3308,37 +3475,8 @@ html.dark-mode .upload-area #formatSelect {
   <!-- ========================================
        FOOTER
   ========================================= -->
-<footer>
 
-    <div class="footer-inner">
 
-      <div>
-        © 2026 ToolNest · Simple, Fast &amp; Free
-      </div>
-
-      <div class="footer-links">
-
-        <a href="#">
-          About
-        </a>
-
-        <a href="#">
-          Privacy
-        </a>
-
-        <a href="#">
-          Terms
-        </a>
-
-        <a href="#">
-          Contact
-        </a>
-
-      </div>
-
-    </div>
-
-  </footer>
 
 
   <!-- ========================================
@@ -3534,31 +3672,62 @@ html.dark-mode .upload-area #formatSelect {
       "<title>"+escapeHtml(baseName())+"</title></head>"+
       '<body style="font-family:Arial,sans-serif;line-height:1.55">'+
       body+"
-<script>
-  (function () {
-    const status = document.getElementById("status");
-    if (status) {
-      status.style.display = "none";
-      status.setAttribute("aria-hidden", "true");
-    }
+<script id="toolnest-theme-controller">
+(function () {
+  "use strict";
 
-    const observer = new MutationObserver(function () {
-      if (status) {
-        status.style.display = "none";
-        status.setAttribute("aria-hidden", "true");
-      }
-    });
+  const toggle = document.getElementById("themeToggle");
+  const root = document.documentElement;
+  const storageKey = "toolnest-theme";
 
-    if (status) {
-      observer.observe(status, {
-        attributes: true,
-        attributeFilter: ["style", "class"]
-      });
-    }
-  })();
+  if (!toggle) return;
+
+  function applyTheme(theme) {
+    const dark = theme === "dark";
+
+    root.classList.toggle("dark-mode", dark);
+    root.classList.toggle("light-mode", !dark);
+
+    toggle.setAttribute("aria-pressed", dark ? "true" : "false");
+    toggle.setAttribute(
+      "aria-label",
+      dark ? "Switch to light mode" : "Switch to dark mode"
+    );
+    toggle.setAttribute(
+      "title",
+      dark ? "Switch to light mode" : "Switch to dark mode"
+    );
+  }
+
+  function getSavedTheme() {
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved === "dark" || saved === "light") return saved;
+    } catch (error) {}
+
+    return root.classList.contains("dark-mode") ? "dark" : "light";
+  }
+
+  applyTheme(getSavedTheme());
+
+  toggle.addEventListener("click", function (event) {
+    event.preventDefault();
+
+    const nextTheme = root.classList.contains("dark-mode")
+      ? "light"
+      : "dark";
+
+    applyTheme(nextTheme);
+
+    try {
+      localStorage.setItem(storageKey, nextTheme);
+    } catch (error) {}
+  });
+})();
 </script>
-</body>
-</html>";
+
+
+</body></html>";
 
     // Word opens HTML documents saved with the .doc extension.
     download(
@@ -3709,6 +3878,39 @@ html.dark-mode .upload-area #formatSelect {
 
 })();
 </script>
+
+
+<footer>
+
+    <div class="footer-inner">
+
+      <div>
+        © 2026 ToolNest · Simple, Fast &amp; Free
+      </div>
+
+      <div class="footer-links">
+
+        <a href="#">
+          About
+        </a>
+
+        <a href="#">
+          Privacy
+        </a>
+
+        <a href="#">
+          Terms
+        </a>
+
+        <a href="#">
+          Contact
+        </a>
+
+      </div>
+
+    </div>
+
+  </footer>
 
 </body>
 
