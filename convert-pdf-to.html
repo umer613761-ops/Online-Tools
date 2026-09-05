@@ -1,0 +1,3689 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Convert PDF - ToolNest</title>
+
+  <meta
+    name="description"
+    content="Convert PDF files to Word, Excel, TXT, PowerPoint, JPG and PNG online for free with ToolNest."
+  >
+
+  <!-- PDF.JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <!-- PDF-LIB -->
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+
+  <!-- ========================================
+       THEME INITIALIZATION
+       Prevents light-mode flash on page load
+  ========================================= -->
+
+  <script>
+    (function () {
+
+      const savedTheme =
+        localStorage.getItem("toolnest-theme");
+
+      if (savedTheme === "dark") {
+
+        document.documentElement.classList.add(
+          "dark-mode"
+        );
+
+      }
+
+      else if (savedTheme === "light") {
+
+        document.documentElement.classList.add(
+          "light-mode"
+        );
+
+      }
+
+    })();
+  </script>
+
+
+  <style>
+
+    /* ========================================
+       RESET
+    ======================================== */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: #f3f5f7;
+      color: #263548;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       HEADER
+    ======================================== */
+
+    .top-header {
+      width: 100%;
+
+      background: #ffffff;
+
+      border-bottom:
+        1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .header-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        10px 24px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 24px;
+    }
+
+
+    /* ========================================
+       LOGO
+    ======================================== */
+
+    .logo {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      text-decoration: none;
+
+      white-space: nowrap;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 9px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #3d78b6,
+          #245b96
+        );
+
+      color: #ffffff;
+
+      font-size: 16px;
+
+      font-weight: 800;
+
+      box-shadow:
+        0 3px 8px
+        rgba(43, 92, 150, 0.18);
+    }
+
+    .logo-text {
+      font-size: 22px;
+
+      letter-spacing: -0.6px;
+    }
+
+    .logo-tool {
+      color: #334155;
+
+      font-family:
+        "Brush Script MT",
+        "Brush Script Std",
+        cursive;
+
+      font-size: 32px;
+
+      font-weight: 400;
+
+      letter-spacing: 0;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .logo-nest {
+      color: #326ba8;
+
+      font-weight: 800;
+
+      transition:
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       HEADER RIGHT SIDE
+    ======================================== */
+
+    .header-right {
+      width: 100%;
+
+      max-width: 570px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: flex-end;
+
+      gap: 10px;
+    }
+
+
+    /* ========================================
+       SEARCH
+    ======================================== */
+
+    .header-search {
+      width: 100%;
+
+      max-width: 312px;
+
+      position: relative;
+    }
+
+    .header-search input {
+      width: 100%;
+
+      height: 40px;
+
+      padding:
+        0 44px 0 15px;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #344256;
+
+      font-size: 14px;
+
+      outline: none;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .header-search input::placeholder {
+      color: #8996a5;
+    }
+
+    .header-search input:focus {
+      background: #ffffff;
+
+      border-color: #7fa6cf;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.08);
+    }
+
+    .search-icon {
+      position: absolute;
+
+      right: 14px;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      color: #718096;
+
+      font-size: 19px;
+
+      pointer-events: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       DARK MODE TOGGLE
+    ======================================== */
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 0;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #526273;
+
+      cursor: pointer;
+
+      font-size: 18px;
+
+      line-height: 1;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      background: #edf2f7;
+
+      border-color: #c7d3df;
+
+      color: #326ba8;
+    }
+
+    .theme-toggle:active {
+      transform:
+        scale(0.94);
+    }
+
+    .theme-toggle:focus-visible {
+      outline: none;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.15);
+    }
+
+
+    /* ========================================
+       CATEGORY NAVIGATION
+    ======================================== */
+
+    .category-nav {
+      background: #ffffff;
+
+      border-bottom:
+        1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .category-nav-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        0 24px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 30px;
+
+      overflow-x: auto;
+    }
+
+    .category-link {
+      position: relative;
+
+      display: flex;
+
+      align-items: center;
+
+      height: 46px;
+
+      color: #667588;
+
+      text-decoration: none;
+
+      font-size: 14px;
+
+      white-space: nowrap;
+
+      cursor: pointer;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .category-link:hover {
+      color: #2f67a3;
+    }
+
+    .category-link.active {
+      color: #263548;
+
+      font-weight: 600;
+    }
+
+    .category-link.active::after {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      right: 0;
+
+      bottom: 0;
+
+      height: 3px;
+
+      background: #326ba8;
+
+      border-radius:
+        3px 3px 0 0;
+    }
+
+
+    /* ========================================
+       PAGE
+    ======================================== */
+
+    .page-wrapper {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        28px 24px 60px;
+    }
+
+    .page-layout {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        200px;
+
+      gap: 28px;
+
+      align-items: start;
+    }
+
+    .content {
+      min-width: 0;
+    }
+
+
+    /* ========================================
+       PDF TOOL CATEGORY BAR
+    ======================================== */
+
+    .tool-category-bar {
+      width: 100%;
+
+      margin-bottom: 20px;
+
+      overflow-x: auto;
+      overflow-y: hidden;
+
+      padding:
+        2px 0;
+
+      scrollbar-width: thin;
+    }
+
+    .tool-category-list {
+      display: flex;
+
+      align-items: center;
+
+      width: max-content;
+
+      min-width: 100%;
+
+      gap: 8px;
+    }
+
+
+    /* ========================================
+       COMPACT PDF TOOL BUTTONS
+    ======================================== */
+
+    .tool-category-link {
+      position: relative;
+
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-height: 32px;
+
+      padding:
+        0 13px;
+
+      background: #ffffff;
+
+      /*
+        Slightly stronger outline so the
+        pill buttons are clearly visible.
+      */
+      border:
+        1px solid #cfd8e2;
+
+      border-radius: 7px;
+
+      color: #667588;
+
+      text-decoration: none;
+
+      /*
+        Increased slightly from 11px
+        for better readability.
+      */
+      font-size: 12px;
+
+      font-weight: 600;
+
+      white-space: nowrap;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .tool-category-link:hover {
+      color: #326ba8;
+
+      border-color: #b9c9d9;
+
+      background: #f7fafd;
+
+      transform:
+        translateY(-1px);
+
+      box-shadow:
+        0 2px 6px
+        rgba(50, 107, 168, 0.08);
+    }
+
+    .tool-category-link.active {
+      background: #326ba8;
+
+      border-color: #326ba8;
+
+      color: #ffffff;
+
+      box-shadow:
+        0 2px 6px
+        rgba(50, 107, 168, 0.14);
+    }
+
+    .tool-category-link.active:hover {
+      background: #285b91;
+
+      border-color: #285b91;
+
+      color: #ffffff;
+    }
+
+
+    /* ========================================
+       HEADING
+    ======================================== */
+
+    .heading {
+      margin-bottom: 26px;
+    }
+
+    .heading h1 {
+      margin:
+        0 0 10px;
+
+      color: #263548;
+
+      font-size: 36px;
+
+      font-weight: 700;
+
+      letter-spacing: -0.8px;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .heading p {
+      max-width: 720px;
+
+      margin: 0;
+
+      color: #718096;
+
+      font-size: 16px;
+
+      line-height: 1.6;
+
+      transition:
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       TOOL BOX
+    ======================================== */
+
+    .tool-box {
+      background: #ffffff;
+
+      border:
+        1px solid #dce3ea;
+
+      border-radius: 12px;
+
+      padding: 26px;
+
+      box-shadow:
+        0 4px 16px
+        rgba(31, 45, 61, 0.05);
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+
+    /* ========================================
+       HIDDEN FILE INPUT
+    ======================================== */
+
+    #pdfInput {
+      display: none;
+    }
+
+
+    /* ========================================
+       UPLOAD / PREVIEW AREA
+    ======================================== */
+
+    .upload-area {
+      width: 100%;
+
+      min-height: 390px;
+
+      padding: 30px;
+
+      position: relative;
+
+      display: block;
+
+      text-align: center;
+
+      background: #fafbfd;
+
+      border:
+        2px dashed #8da9c5;
+
+      border-radius: 12px;
+
+      cursor: pointer;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .upload-area:hover {
+      background: #f4f8fc;
+
+      border-color: #5f8fbd;
+    }
+
+
+    /* ========================================
+       INITIAL UPLOAD STATE
+    ======================================== */
+
+    .upload-placeholder {
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: flex-start;
+
+      width: 100%;
+
+      min-height: 320px;
+
+      padding-top: 8px;
+    }
+
+
+    /* ========================================
+       FLOATING UPLOAD BUTTON
+    ======================================== */
+
+    .floating-upload-button {
+      position: sticky;
+
+      top: 50vh;
+
+      z-index: 20;
+
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-width: 280px;
+
+      min-height: 72px;
+
+      padding:
+        0 36px;
+
+      border: none;
+
+      border-radius: 36px;
+
+      background: #326ba8;
+
+      color: #ffffff;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 19px;
+
+      font-weight: 600;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 10px 26px
+        rgba(50, 107, 168, 0.30);
+
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .floating-upload-button:hover {
+      background: #285b91;
+
+      transform:
+        translateY(-3px);
+
+      box-shadow:
+        0 13px 30px
+        rgba(50, 107, 168, 0.36);
+    }
+
+    .floating-upload-button:active {
+      transform:
+        translateY(0);
+    }
+
+
+    /* ========================================
+       UPLOADED FILES
+    ======================================== */
+
+    .uploaded-files {
+      display: none;
+
+      width: 100%;
+    }
+
+    .uploaded-files.active {
+      display: block;
+    }
+
+
+    /* ========================================
+       DRAG ORDER MESSAGE
+    ======================================== */
+
+    .drag-hint {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      color: #667588;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 32px;
+      transition:
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       SORT CONTROLS
+    ======================================== */
+
+    .uploaded-files-header {
+      width: 100%;
+      min-height: 32px;
+      margin: 0 0 16px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 120px;
+    }
+
+    .sort-controls {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sort-button {
+      height: 32px;
+      min-width: 52px;
+      padding: 0 12px;
+      border: 1px solid #326ba8;
+      border-radius: 7px;
+      background: #326ba8;
+      color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .sort-button:hover {
+      background: #285b91;
+      border-color: #285b91;
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow:
+        0 3px 8px
+        rgba(50, 107, 168, 0.20);
+    }
+
+    .sort-button:active {
+      transform: translateY(0);
+    }
+
+    .sort-button:focus-visible {
+      outline: none;
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.14);
+    }
+
+    html.dark-mode .sort-button {
+      background: #326ba8;
+      border-color: #326ba8;
+      color: #ffffff;
+    }
+
+    html.dark-mode .sort-button:hover {
+      background: #3a78b8;
+      border-color: #3a78b8;
+      color: #ffffff;
+    }
+
+    @media (max-width: 550px) {
+      .uploaded-files-header {
+        min-height: 30px;
+        padding: 0 92px;
+      }
+
+      .sort-controls {
+        gap: 4px;
+      }
+
+      .sort-button {
+        height: 30px;
+        min-width: 45px;
+        padding: 0 8px;
+        font-size: 11px;
+      }
+
+      .drag-hint {
+        font-size: 12px;
+        line-height: 1.35;
+      }
+    }
+
+
+    /* ========================================
+       PDF GRID
+    ======================================== */
+
+    .pdf-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          auto-fit,
+          minmax(150px, 150px)
+        );
+
+      justify-content: center;
+
+      align-items: start;
+
+      gap: 22px;
+
+      padding: 10px;
+    }
+
+
+    /* ========================================
+       PDF CARD
+    ======================================== */
+
+    .pdf-card {
+      position: relative;
+
+      width: 150px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      padding: 10px;
+
+      background: transparent;
+
+      border: none;
+
+      cursor: grab;
+
+      transition:
+        transform 0.2s ease;
+    }
+
+    .pdf-card:hover {
+      transform:
+        translateY(-2px);
+    }
+
+    .pdf-card.dragging {
+      opacity: 0.45;
+
+      transform:
+        scale(0.96);
+    }
+
+
+    /* ========================================
+       PDF PREVIEW
+    ======================================== */
+
+    .pdf-preview {
+      width: 150px;
+
+      height: 190px;
+
+      margin-bottom: 13px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      overflow: hidden;
+
+      background: #edf2f6;
+
+      border:
+        1px solid #cbd6e0;
+
+      border-radius: 10px;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .pdf-preview canvas {
+      display: block;
+
+      max-width: 100%;
+
+      max-height: 100%;
+
+      object-fit: contain;
+    }
+
+
+    /* ========================================
+       PDF NAME
+    ======================================== */
+
+    .pdf-name {
+      width: 100%;
+
+      margin-bottom: 5px;
+
+      color: #34475b;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      text-align: center;
+
+      transition:
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       ZOOM BUTTON
+    ======================================== */
+
+    .zoom-button {
+      position: absolute;
+
+      top: 0;
+      left: 0;
+
+      width: 20px;
+      height: 20px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 0;
+
+      border: none;
+
+      border-radius: 50%;
+
+      background: #326ba8;
+
+      color: #ffffff;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      line-height: 1;
+
+      cursor: pointer;
+
+      z-index: 5;
+
+      box-shadow:
+        0 2px 5px
+        rgba(0, 0, 0, 0.12);
+
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .zoom-button:hover {
+      background: #285b91;
+
+      transform:
+        scale(1.08);
+    }
+
+
+    /* ========================================
+       PDF ZOOM MODAL
+    ======================================== */
+
+    .pdf-zoom-modal {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 1000;
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 30px;
+
+      background:
+        rgba(12, 18, 26, 0.78);
+
+      backdrop-filter: blur(3px);
+    }
+
+    .pdf-zoom-modal.active {
+      display: flex;
+    }
+
+    .pdf-zoom-dialog {
+      position: relative;
+
+      width: min(900px, 92vw);
+
+      height: min(900px, 90vh);
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 48px 28px 28px;
+
+      background: #ffffff;
+
+      border-radius: 12px;
+
+      box-shadow:
+        0 18px 50px
+        rgba(0, 0, 0, 0.30);
+
+      overflow: hidden;
+    }
+
+    .pdf-zoom-title {
+      position: absolute;
+
+      top: 16px;
+      left: 24px;
+      right: 60px;
+
+      color: #34475b;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      text-align: left;
+    }
+
+    .pdf-zoom-close {
+      position: absolute;
+
+      top: 12px;
+      right: 14px;
+
+      width: 32px;
+      height: 32px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 0;
+
+      border: none;
+
+      border-radius: 50%;
+
+      background: #dc4b4b;
+
+      color: #ffffff;
+
+      font-size: 20px;
+
+      line-height: 1;
+
+      cursor: pointer;
+
+      z-index: 2;
+    }
+
+    .pdf-zoom-close:hover {
+      background: #c93d3d;
+    }
+
+    .pdf-zoom-canvas-wrap {
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      overflow: auto;
+
+      background: #edf2f6;
+
+      border:
+        1px solid #d3dce5;
+
+      border-radius: 8px;
+
+      padding: 18px;
+    }
+
+    .pdf-zoom-canvas {
+      display: block;
+
+      max-width: 100%;
+      max-height: 100%;
+
+      width: auto;
+      height: auto;
+
+      box-shadow:
+        0 3px 14px
+        rgba(0, 0, 0, 0.16);
+    }
+
+    html.dark-mode .pdf-zoom-dialog {
+      background: #171d25;
+    }
+
+    html.dark-mode .pdf-zoom-title {
+      color: #dbe4ee;
+    }
+
+    html.dark-mode .pdf-zoom-canvas-wrap {
+      background: #263444;
+      border-color: #435366;
+    }
+
+    @media (max-width: 550px) {
+      .pdf-zoom-modal {
+        padding: 12px;
+      }
+
+      .pdf-zoom-dialog {
+        width: 96vw;
+        height: 92vh;
+
+        padding:
+          46px 12px 12px;
+      }
+
+      .pdf-zoom-title {
+        left: 14px;
+        right: 54px;
+      }
+
+      .pdf-zoom-canvas-wrap {
+        padding: 10px;
+      }
+    }
+
+
+    /* ========================================
+       REMOVE BUTTON
+    ======================================== */
+
+    .remove-button {
+      position: absolute;
+
+      top: 0;
+      right: 0;
+
+      width: 20px;
+      height: 20px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 0;
+
+      border: none;
+
+      border-radius: 50%;
+
+      background: #dc4b4b;
+
+      color: #ffffff;
+
+      font-size: 15px;
+
+      font-weight: 700;
+
+      line-height: 1;
+
+      cursor: pointer;
+
+      z-index: 5;
+
+      box-shadow:
+        0 2px 5px
+        rgba(0, 0, 0, 0.12);
+    }
+
+    .remove-button:hover {
+      background: #c93d3d;
+    }
+
+
+    /* ========================================
+       CONTROLS
+    ======================================== */
+
+    .editor-controls {
+      display: none;
+
+      margin-top: 18px;
+
+      width: 100%;
+    }
+
+    .editor-controls.active {
+      display: block;
+    }
+
+
+    /* ========================================
+       BUTTON ROW
+    ======================================== */
+
+    .button-row {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 10px;
+
+      width: 100%;
+    }
+
+
+    /* ========================================
+       BUTTON
+    ======================================== */
+
+    button {
+      height: 46px;
+
+      padding:
+        0 20px;
+
+      border-radius: 8px;
+
+      font-size: 14px;
+
+      font-weight: 400;
+
+      cursor: pointer;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    button:hover:not(:disabled) {
+      transform:
+        translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+
+      cursor: not-allowed;
+    }
+
+
+    /* ========================================
+       MAIN MERGE BUTTON
+    ======================================== */
+
+    .primary-button {
+      min-height: 52px;
+
+      min-width: 0;
+
+      flex: 1;
+
+      padding:
+        0 30px;
+
+      border: none;
+
+      border-radius: 9px;
+
+      background: #326ba8;
+
+      color: #ffffff;
+
+      font-size: 16px;
+
+      font-weight: 400;
+
+      box-shadow:
+        0 5px 14px
+        rgba(50, 107, 168, 0.22);
+    }
+
+    .primary-button:hover:not(:disabled) {
+      background: #285b91;
+
+      box-shadow:
+        0 7px 18px
+        rgba(50, 107, 168, 0.28);
+    }
+
+
+    /* ========================================
+       SECONDARY BUTTON
+    ======================================== */
+
+    .secondary-button {
+      height: 46px;
+
+      padding:
+        0 20px;
+
+      border:
+        1px solid #ccd7e1;
+
+      background: #ffffff;
+
+      color: #435365;
+
+      font-weight: 400;
+    }
+
+    .secondary-button:hover:not(:disabled) {
+      background: #f5f7f9;
+    }
+
+
+    /* ========================================
+       STATUS
+    ======================================== */
+
+    .status {
+      display: none;
+
+      margin-top: 18px;
+
+      padding: 14px;
+
+      text-align: center;
+
+      background: #f2f7fb;
+
+      border:
+        1px solid #d4e2ef;
+
+      border-radius: 8px;
+
+      color: #55708a;
+
+      font-size: 14px;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       ADVERTISEMENT
+    ======================================== */
+
+    .ad-column {
+      width: 200px;
+
+      position: sticky;
+
+      top: 20px;
+    }
+
+    .ad-box {
+      width: 200px;
+      height: 400px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 18px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #dce3ea;
+
+      border-radius: 10px;
+
+      text-align: center;
+
+      box-shadow:
+        0 4px 16px
+        rgba(31, 45, 61, 0.04);
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .ad-content {
+      width: 100%;
+    }
+
+    .ad-label {
+      margin-bottom: 14px;
+
+      color: #a0acb8;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      letter-spacing: 1.5px;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .sample-ad {
+      padding:
+        22px 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #f5f8fc,
+          #edf3f9
+        );
+
+      border:
+        1px solid #d8e3ed;
+
+      border-radius: 9px;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .sample-ad-badge {
+      display: inline-block;
+
+      margin-bottom: 12px;
+
+      padding:
+        5px 9px;
+
+      background: #326ba8;
+
+      border-radius: 20px;
+
+      color: #ffffff;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.5px;
+    }
+
+    .sample-ad h3 {
+      margin:
+        0 0 9px;
+
+      color: #344255;
+
+      font-size: 18px;
+
+      line-height: 1.3;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .sample-ad p {
+      margin:
+        0 0 16px;
+
+      color: #718096;
+
+      font-size: 12px;
+
+      line-height: 1.5;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .sample-ad-button {
+      display: inline-block;
+
+      padding:
+        9px 14px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #cbd8e4;
+
+      border-radius: 6px;
+
+      color: #326ba8;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       FOOTER
+    ======================================== */
+
+    footer {
+      background: #ffffff;
+
+      border-top:
+        1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .footer-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 24px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+
+      color: #7b8998;
+
+      font-size: 13px;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .footer-links {
+      display: flex;
+
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: #7b8998;
+
+      text-decoration: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: #326ba8;
+    }
+
+
+    /* ========================================
+       MANUAL DARK MODE
+    ======================================== */
+
+    html.dark-mode body {
+      background: #11161d;
+      color: #e7edf4;
+    }
+
+    html.dark-mode .top-header {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .logo-tool {
+      color: #d7dee7;
+    }
+
+    html.dark-mode .logo-nest {
+      color: #5b95c9;
+    }
+
+    html.dark-mode .header-search input {
+      background: #202731;
+      border-color: #343f4c;
+      color: #edf2f7;
+    }
+
+    html.dark-mode .header-search input::placeholder {
+      color: #8996a5;
+    }
+
+    html.dark-mode .header-search input:focus {
+      background: #252d38;
+      border-color: #5f8fbd;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(77, 138, 196, 0.14);
+    }
+
+    html.dark-mode .search-icon {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .theme-toggle {
+      background: #202731;
+      border-color: #343f4c;
+      color: #d7e1eb;
+    }
+
+    html.dark-mode .theme-toggle:hover {
+      background: #29323d;
+      border-color: #465463;
+      color: #7eb0df;
+    }
+
+    html.dark-mode .category-nav {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .category-link {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .category-link:hover {
+      color: #6fa2d2;
+    }
+
+    html.dark-mode .category-link.active {
+      color: #e8eef5;
+    }
+
+    html.dark-mode .tool-category-link {
+      background: #1b2735;
+      border-color: #354457;
+      color: #9aa7b6;
+    }
+
+    html.dark-mode .tool-category-link:hover {
+      color: #78a9d8;
+      border-color: #46627d;
+      background: #202f40;
+
+      box-shadow:
+        0 2px 6px
+        rgba(0, 0, 0, 0.20);
+    }
+
+    html.dark-mode .tool-category-link.active {
+      background: #326ba8;
+      border-color: #326ba8;
+      color: #ffffff;
+
+      box-shadow:
+        0 2px 6px
+        rgba(0, 0, 0, 0.28);
+    }
+
+    html.dark-mode .tool-category-link.active:hover {
+      background: #3a78b8;
+      border-color: #3a78b8;
+      color: #ffffff;
+    }
+
+    html.dark-mode .heading h1 {
+      color: #edf2f7;
+    }
+
+    html.dark-mode .heading p {
+      color: #9ca9b8;
+    }
+
+    html.dark-mode .tool-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 16px
+        rgba(0, 0, 0, 0.22);
+    }
+
+    html.dark-mode .upload-area {
+      background: #131e2b;
+      border-color: #52789c;
+    }
+
+    html.dark-mode .upload-area:hover {
+      background: #18283a;
+      border-color: #6b9bc6;
+    }
+
+    html.dark-mode .floating-upload-button {
+      background: #326ba8;
+      color: #ffffff;
+
+      box-shadow:
+        0 10px 26px
+        rgba(0, 0, 0, 0.32);
+    }
+
+    html.dark-mode .floating-upload-button:hover {
+      background: #3a78b8;
+
+      box-shadow:
+        0 13px 30px
+        rgba(0, 0, 0, 0.38);
+    }
+
+    html.dark-mode .drag-hint {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .pdf-preview {
+      background: #263444;
+      border-color: #435366;
+    }
+
+    html.dark-mode .pdf-name {
+      color: #dbe4ee;
+    }
+
+    html.dark-mode .secondary-button {
+      background: #202c3b;
+      border-color: #3b4b5f;
+      color: #d6dee8;
+    }
+
+    html.dark-mode .secondary-button:hover:not(:disabled) {
+      background: #293849;
+    }
+
+    html.dark-mode .status {
+      background: #172b3d;
+      border-color: #31516e;
+      color: #9fc0dd;
+    }
+
+    html.dark-mode .ad-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 18px
+        rgba(0, 0, 0, 0.18);
+    }
+
+    html.dark-mode .ad-label {
+      color: #778493;
+    }
+
+    html.dark-mode .sample-ad {
+      background:
+        linear-gradient(
+          135deg,
+          #202934,
+          #18212b
+        );
+
+      border-color: #354352;
+    }
+
+    html.dark-mode .sample-ad h3 {
+      color: #dce4ec;
+    }
+
+    html.dark-mode .sample-ad p {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .sample-ad-button {
+      background: #202731;
+      border-color: #455361;
+      color: #6fa2d2;
+    }
+
+    html.dark-mode footer {
+      background: #171d25;
+      border-top-color: #293340;
+    }
+
+    html.dark-mode .footer-inner {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a:hover {
+      color: #6fa2d2;
+    }
+
+
+    /* ========================================
+       SYSTEM DARK MODE
+       Used only when there is no manual
+       theme preference.
+    ======================================== */
+
+    @media (prefers-color-scheme: dark) {
+
+      html:not(.light-mode) body {
+        background: #11161d;
+        color: #e7edf4;
+      }
+
+      html:not(.light-mode) .top-header {
+        background: #171d25;
+        border-bottom-color: #293340;
+      }
+
+      html:not(.light-mode) .logo-tool {
+        color: #d7dee7;
+      }
+
+      html:not(.light-mode) .logo-nest {
+        color: #5b95c9;
+      }
+
+      html:not(.light-mode) .header-search input {
+        background: #202731;
+        border-color: #343f4c;
+        color: #edf2f7;
+      }
+
+      html:not(.light-mode) .header-search input:focus {
+        background: #252d38;
+        border-color: #5f8fbd;
+
+        box-shadow:
+          0 0 0 3px
+          rgba(77, 138, 196, 0.14);
+      }
+
+      html:not(.light-mode) .search-icon {
+        color: #9aa8b7;
+      }
+
+      html:not(.light-mode) .theme-toggle {
+        background: #202731;
+        border-color: #343f4c;
+        color: #d7e1eb;
+      }
+
+      html:not(.light-mode) .theme-toggle:hover {
+        background: #29323d;
+        border-color: #465463;
+        color: #7eb0df;
+      }
+
+      html:not(.light-mode) .category-nav {
+        background: #171d25;
+        border-bottom-color: #293340;
+      }
+
+      html:not(.light-mode) .category-link {
+        color: #9ba8b7;
+      }
+
+      html:not(.light-mode) .category-link:hover {
+        color: #6fa2d2;
+      }
+
+      html:not(.light-mode) .category-link.active {
+        color: #e8eef5;
+      }
+
+      html:not(.light-mode) .tool-category-link {
+        background: #1b2735;
+        border-color: #354457;
+        color: #9aa7b6;
+      }
+
+      html:not(.light-mode) .tool-category-link:hover {
+        color: #78a9d8;
+        border-color: #46627d;
+        background: #202f40;
+      }
+
+      html:not(.light-mode) .tool-category-link.active {
+        background: #326ba8;
+        border-color: #326ba8;
+        color: #ffffff;
+      }
+
+      html:not(.light-mode) .heading h1 {
+        color: #edf2f7;
+      }
+
+      html:not(.light-mode) .heading p {
+        color: #9ca9b8;
+      }
+
+      html:not(.light-mode) .tool-box {
+        background: #171d25;
+        border-color: #2e3946;
+
+        box-shadow:
+          0 4px 16px
+          rgba(0, 0, 0, 0.22);
+      }
+
+      html:not(.light-mode) .upload-area {
+        background: #131e2b;
+        border-color: #52789c;
+      }
+
+      html:not(.light-mode) .upload-area:hover {
+        background: #18283a;
+        border-color: #6b9bc6;
+      }
+
+      html:not(.light-mode) .floating-upload-button {
+        background: #326ba8;
+        color: #ffffff;
+      }
+
+      html:not(.light-mode) .drag-hint {
+        color: #9aa8b7;
+      }
+
+      html:not(.light-mode) .pdf-preview {
+        background: #263444;
+        border-color: #435366;
+      }
+
+      html:not(.light-mode) .pdf-name {
+        color: #dbe4ee;
+      }
+
+      html:not(.light-mode) .secondary-button {
+        background: #202c3b;
+        border-color: #3b4b5f;
+        color: #d6dee8;
+      }
+
+      html:not(.light-mode) .secondary-button:hover:not(:disabled) {
+        background: #293849;
+      }
+
+      html:not(.light-mode) .status {
+        background: #172b3d;
+        border-color: #31516e;
+        color: #9fc0dd;
+      }
+
+      html:not(.light-mode) .ad-box {
+        background: #171d25;
+        border-color: #2e3946;
+      }
+
+      html:not(.light-mode) .ad-label {
+        color: #778493;
+      }
+
+      html:not(.light-mode) .sample-ad {
+        background:
+          linear-gradient(
+            135deg,
+            #202934,
+            #18212b
+          );
+
+        border-color: #354352;
+      }
+
+      html:not(.light-mode) .sample-ad h3 {
+        color: #dce4ec;
+      }
+
+      html:not(.light-mode) .sample-ad p {
+        color: #9ba8b7;
+      }
+
+      html:not(.light-mode) .sample-ad-button {
+        background: #202731;
+        border-color: #455361;
+        color: #6fa2d2;
+      }
+
+      html:not(.light-mode) footer {
+        background: #171d25;
+        border-top-color: #293340;
+      }
+
+      html:not(.light-mode) .footer-inner {
+        color: #8d9aaa;
+      }
+
+      html:not(.light-mode) .footer-links a {
+        color: #8d9aaa;
+      }
+
+    }
+
+
+    /* ========================================
+       TABLET
+    ======================================== */
+
+    @media (max-width: 900px) {
+
+      .page-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .ad-column {
+        width: 100%;
+
+        position: static;
+      }
+
+      .ad-box {
+        width: 100%;
+
+        height: 180px;
+      }
+
+    }
+
+
+    /* ========================================
+       MOBILE
+    ======================================== */
+
+    @media (max-width: 700px) {
+
+      /* Mobile header cleanup */
+      .header-search,
+      .theme-toggle {
+        display: none;
+      }
+
+      .header-right {
+        max-width: none;
+        width: auto;
+        gap: 0;
+      }
+
+      .header-inner {
+        padding:
+          9px 16px;
+      }
+
+      .header-right {
+        max-width: 260px;
+      }
+
+      .header-search {
+        max-width: none;
+      }
+
+      .category-nav-inner {
+        padding:
+          0 16px;
+
+        gap: 22px;
+      }
+
+      .page-wrapper {
+        padding:
+          24px 16px 45px;
+      }
+
+      .tool-category-bar {
+        margin-bottom: 18px;
+      }
+
+      .tool-category-list {
+        gap: 6px;
+      }
+
+      .tool-category-link {
+        min-height: 30px;
+
+        padding:
+          0 10px;
+
+        /*
+          Slightly larger mobile text.
+        */
+        font-size: 11px;
+
+        border-radius: 7px;
+      }
+
+      .heading h1 {
+        font-size: 31px;
+      }
+
+      .tool-box {
+        padding: 18px;
+      }
+
+      .upload-area {
+        min-height: 350px;
+
+        padding: 20px;
+      }
+
+      .upload-placeholder {
+        min-height: 300px;
+
+        padding-top: 6px;
+      }
+
+      .floating-upload-button {
+        min-width: 250px;
+
+        min-height: 66px;
+
+        padding:
+          0 30px;
+
+        font-size: 17px;
+
+        border-radius: 33px;
+      }
+
+      .pdf-grid {
+        grid-template-columns:
+          repeat(
+            auto-fit,
+            minmax(140px, 140px)
+          );
+
+        gap: 18px;
+      }
+
+      .pdf-card {
+        width: 140px;
+      }
+
+      .pdf-preview {
+        width: 140px;
+
+        height: 180px;
+      }
+
+      .footer-inner {
+        padding:
+          22px 16px;
+      }
+
+    }
+
+
+    /* ========================================
+       SMALL MOBILE
+    ======================================== */
+
+    @media (max-width: 550px) {
+
+      .header-inner {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 10px;
+
+        padding:
+          10px 16px;
+      }
+
+      .logo {
+        align-self: flex-start;
+      }
+
+      .header-right {
+        max-width: none;
+
+        width: 100%;
+      }
+
+      .header-search {
+        max-width: none;
+      }
+
+      .heading h1 {
+        font-size: 29px;
+      }
+
+      .heading p {
+        font-size: 15px;
+      }
+
+      .button-row {
+        flex-direction: column;
+      }
+
+      .primary-button,
+      .secondary-button {
+        width: 100%;
+      }
+
+      .primary-button {
+        min-height: 54px;
+
+        font-size: 16px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+
+        text-align: center;
+      }
+
+      .pdf-grid {
+        grid-template-columns:
+          repeat(
+            auto-fit,
+            minmax(120px, 120px)
+          );
+
+        gap: 14px;
+
+        padding: 4px;
+      }
+
+      .pdf-card {
+        width: 120px;
+      }
+
+      .pdf-preview {
+        width: 120px;
+
+        height: 155px;
+      }
+
+      .pdf-name {
+        font-size: 13px;
+      }
+
+      .drag-hint {
+        font-size: 13px;
+
+        padding: 0;
+      }
+
+      .tool-category-list {
+        gap: 5px;
+      }
+
+      .tool-category-link {
+        min-height: 29px;
+
+        padding:
+          0 9px;
+
+        /*
+          Slightly larger small-screen text.
+        */
+        font-size: 10.5px;
+
+        border-radius: 7px;
+      }
+
+      .floating-upload-button {
+        min-width: 230px;
+
+        min-height: 62px;
+
+        padding:
+          0 26px;
+
+        font-size: 16px;
+
+        border-radius: 31px;
+      }
+
+    }
+
+
+    /* ========================================
+       TOOL CATEGORY BUTTONS — BLUE STYLE
+       All PDF tool pills use the same blue
+       as the active tool. The active tool is
+       slightly larger to make it distinct.
+    ========================================= */
+
+    .tool-category-link {
+      background: #326ba8;
+      border-color: #326ba8;
+      color: #ffffff;
+      border-radius: 999px;
+    }
+
+    .tool-category-link:hover {
+      background: #285b91;
+      border-color: #285b91;
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow:
+        0 3px 8px
+        rgba(50, 107, 168, 0.20);
+    }
+
+    .tool-category-link.active {
+      min-height: 38px;
+      padding: 0 16px;
+      background: #326ba8;
+      border-color: #326ba8;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow:
+        0 4px 10px
+        rgba(50, 107, 168, 0.24);
+      transform: none;
+    }
+
+    .tool-category-link.active:hover {
+      background: #285b91;
+      border-color: #285b91;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    html.dark-mode .tool-category-link,
+    html:not(.light-mode) .tool-category-link {
+      background: #326ba8;
+      border-color: #326ba8;
+      color: #ffffff;
+    }
+
+    html.dark-mode .tool-category-link:hover,
+    html:not(.light-mode) .tool-category-link:hover {
+      background: #3a78b8;
+      border-color: #3a78b8;
+      color: #ffffff;
+      box-shadow:
+        0 3px 8px
+        rgba(0, 0, 0, 0.28);
+    }
+
+    html.dark-mode .tool-category-link.active,
+    html:not(.light-mode) .tool-category-link.active {
+      min-height: 38px;
+      padding: 0 16px;
+      background: #326ba8;
+      border-color: #326ba8;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow:
+        0 4px 10px
+        rgba(0, 0, 0, 0.30);
+      transform: none;
+    }
+
+    html.dark-mode .tool-category-link.active:hover,
+    html:not(.light-mode) .tool-category-link.active:hover {
+      background: #3a78b8;
+      border-color: #3a78b8;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+
+    /* Final mobile header cleanup */
+    @media (max-width: 700px) {
+      .header-search,
+      .theme-toggle {
+        display: none !important;
+      }
+
+      .header-right {
+        max-width: none !important;
+        width: auto !important;
+        gap: 0 !important;
+      }
+    }
+
+
+    @media (max-width: 700px) {
+      .tool-category-bar {
+        display: none !important;
+      }
+    }
+
+
+    
+
+/* =========================================================
+   FINAL MOBILE PREVIEW LAYOUT
+   - Controls are invisible before the first PDF is uploaded
+   - After upload: A-Z / Z-A above the PDF preview
+   - Drag message below the PDF preview
+   - Sort buttons sit slightly lower
+   ========================================================= */
+@media (max-width: 700px) {
+
+  /* The preview container only exists visually after .active */
+  .uploaded-files:not(.active) {
+    display: none !important;
+  }
+
+  .uploaded-files.active {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    gap: 0 !important;
+  }
+
+  /* Flatten the old header so its two children can be
+     positioned independently around the preview grid. */
+  .uploaded-files.active .uploaded-files-header {
+    display: contents !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* A-Z / Z-A: above preview, slightly lower */
+  .uploaded-files.active .sort-controls {
+    position: relative !important;
+    top: 8px !important;
+    right: auto !important;
+    left: auto !important;
+    order: 1 !important;
+    display: flex !important;
+    justify-self: end !important;
+    align-self: start !important;
+    margin: 0 0 14px 0 !important;
+    gap: 5px !important;
+    z-index: 2 !important;
+  }
+
+  .uploaded-files.active .sort-button {
+    position: relative !important;
+    height: 30px !important;
+    min-width: 45px !important;
+    padding: 0 8px !important;
+    font-size: 11px !important;
+  }
+
+  /* PDF preview comes next */
+  .uploaded-files.active .pdf-grid {
+    order: 2 !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* Drag message is definitely BELOW the preview */
+  .uploaded-files.active .drag-hint {
+    order: 3 !important;
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    margin: 10px 0 0 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    line-height: 1.35 !important;
+  }
+}
+
+@media (max-width: 550px) {
+  .uploaded-files.active .sort-controls {
+    top: 8px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .uploaded-files.active .drag-hint {
+    margin-top: 9px !important;
+    font-size: 12px !important;
+  }
+}
+
+
+/* Final cleanup: the preview contains no Add More PDFs button
+   and no page-count/drag-hint message. */
+#newFileButton,
+.drag-hint {
+  display: none !important;
+}
+</style>
+
+
+
+<style id="convert-bottom-controls-final">
+/* =========================================================
+   CONVERT PDF CONTROLS — BOTTOM OF PREVIEW AREA
+   ========================================================= */
+
+.upload-area {
+  position: relative !important;
+  padding-bottom: 86px !important;
+  overflow: visible !important;
+}
+
+.upload-area > .editor-controls {
+  position: absolute !important;
+  left: 20px !important;
+  right: 20px !important;
+  bottom: 18px !important;
+  width: auto !important;
+  margin: 0 !important;
+  z-index: 60 !important;
+}
+
+.upload-area > .editor-controls.active {
+  display: block !important;
+}
+
+.upload-area > .editor-controls .button-row {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  flex-wrap: nowrap !important;
+}
+
+/* Format dropdown */
+.bottom-convert-format {
+  display: flex !important;
+  align-items: center !important;
+  flex: 0 0 auto !important;
+  gap: 6px !important;
+}
+
+.bottom-convert-format label {
+  margin: 0 !important;
+  color: #667588 !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+}
+
+.bottom-convert-format select,
+.upload-area #formatSelect {
+  width: 125px !important;
+  min-width: 125px !important;
+  height: 40px !important;
+  padding: 0 25px 0 10px !important;
+  border: 1px solid #ccd7e1 !important;
+  border-radius: 7px !important;
+  background: #ffffff !important;
+  color: #435365 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  outline: none !important;
+}
+
+/* Convert PDFs and Download */
+.upload-area > .editor-controls .primary-button {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 175px !important;
+  max-width: 205px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 0 15px !important;
+  border-radius: 7px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+}
+
+/* Keep Add More button fitted alongside them. */
+.upload-area > .editor-controls .secondary-button {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 105px !important;
+  height: 40px !important;
+  padding: 0 10px !important;
+  border-radius: 7px !important;
+  font-size: 11px !important;
+  white-space: nowrap !important;
+}
+
+/* Status remains above the bottom controls. */
+.upload-area > .editor-controls .status {
+  margin-top: 8px !important;
+}
+
+/* Dark mode */
+html.dark-mode .bottom-convert-format label {
+  color: #9aa8b7 !important;
+}
+
+html.dark-mode .bottom-convert-format select,
+html.dark-mode .upload-area #formatSelect {
+  background: #202c3b !important;
+  border-color: #3b4b5f !important;
+  color: #d6dee8 !important;
+}
+
+/* Tablet / smaller desktop: keep controls side-by-side, make them smaller. */
+@media (max-width: 900px) {
+  .upload-area > .editor-controls {
+    left: 14px !important;
+    right: 14px !important;
+    bottom: 14px !important;
+  }
+
+  .upload-area > .editor-controls .button-row {
+    gap: 6px !important;
+  }
+
+  .bottom-convert-format label {
+    display: none !important;
+  }
+
+  .bottom-convert-format select,
+  .upload-area #formatSelect {
+    width: 120px !important;
+    min-width: 120px !important;
+    height: 38px !important;
+  }
+
+  .upload-area > .editor-controls .primary-button {
+    min-width: 160px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    font-size: 11.5px !important;
+  }
+
+  .upload-area > .editor-controls .secondary-button {
+    min-width: 96px !important;
+    height: 38px !important;
+  }
+}
+
+/* Mobile: still side-by-side, with compact sizing. */
+@media (max-width: 550px) {
+  .upload-area {
+    padding-bottom: 82px !important;
+  }
+
+  .upload-area > .editor-controls {
+    left: 10px !important;
+    right: 10px !important;
+    bottom: 10px !important;
+  }
+
+  .upload-area > .editor-controls .button-row {
+    gap: 5px !important;
+  }
+
+  .bottom-convert-format select,
+  .upload-area #formatSelect {
+    width: 92px !important;
+    min-width: 92px !important;
+    height: 36px !important;
+    padding-left: 7px !important;
+    padding-right: 20px !important;
+    font-size: 11px !important;
+  }
+
+  .upload-area > .editor-controls .primary-button {
+    min-width: 145px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 8px !important;
+    font-size: 10.5px !important;
+  }
+
+  .upload-area > .editor-controls .secondary-button {
+    min-width: 78px !important;
+    height: 36px !important;
+    padding: 0 6px !important;
+    font-size: 10px !important;
+  }
+}
+
+/* Very narrow phones: hide Add More to preserve the requested
+   dropdown + Convert button side-by-side. */
+@media (max-width: 400px) {
+  .upload-area > .editor-controls .secondary-button {
+    display: none !important;
+  }
+
+  .bottom-convert-format select,
+  .upload-area #formatSelect {
+    width: 105px !important;
+    min-width: 105px !important;
+  }
+
+  .upload-area > .editor-controls .primary-button {
+    min-width: 170px !important;
+  }
+}
+</style>
+
+</head>
+
+
+<body>
+
+
+  <!-- ========================================
+       HEADER
+  ========================================= -->
+
+  <header class="top-header">
+
+    <div class="header-inner">
+
+      <a
+        href="index.html"
+        class="logo"
+      >
+
+        <div class="logo-icon">
+          T
+        </div>
+
+        <div class="logo-text">
+
+          <span class="logo-tool">
+            Tool
+          </span>
+
+          <span class="logo-nest">
+            NEST
+          </span>
+
+        </div>
+
+      </a>
+
+
+      <div class="header-right">
+
+        <div class="header-search">
+
+          <input
+            type="text"
+            id="toolSearch"
+            placeholder="Search tools..."
+            aria-label="Search tools"
+          >
+
+          <span class="search-icon">
+            ⌕
+          </span>
+
+        </div>
+
+
+        <!-- THEME TOGGLE -->
+
+        <button
+          type="button"
+          class="theme-toggle"
+          id="themeToggle"
+          aria-label="Switch to dark mode"
+          title="Switch to dark mode"
+        >
+          🌙
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ========================================
+       CATEGORY NAVIGATION
+  ========================================= -->
+
+  <nav class="category-nav">
+
+    <div class="category-nav-inner">
+
+      <a
+        href="index.html"
+        class="category-link"
+      >
+        Popular Tools
+      </a>
+
+      <a
+        href="index.html"
+        class="category-link active"
+      >
+        PDF Tools
+      </a>
+
+      <a
+        href="index.html"
+        class="category-link"
+      >
+        Text Tools
+      </a>
+
+      <a
+        href="index.html"
+        class="category-link"
+      >
+        Image Tools
+      </a>
+
+      <a
+        href="index.html"
+        class="category-link"
+      >
+        Calculators
+      </a>
+
+    </div>
+
+  </nav>
+
+
+  <!-- ========================================
+       PAGE
+  ========================================= -->
+
+  <main class="page-wrapper">
+
+    <div class="page-layout">
+
+
+      <!-- ========================================
+           MAIN CONTENT
+      ========================================= -->
+
+      <section class="content">
+
+
+        <!-- ========================================
+             PDF TOOL NAVIGATION
+        ========================================= -->
+
+        <nav
+          class="tool-category-bar"
+          aria-label="PDF tools"
+        >
+
+          <div class="tool-category-list">
+
+            <a
+              href="merge-pdf.html"
+              class="tool-category-link active"
+            >
+              Convert PDF
+            </a>
+
+            <a
+              href="split-pdf.html"
+              class="tool-category-link"
+            >
+              Split PDF
+            </a>
+
+            <a
+              href="pdf-to-images.html"
+              class="tool-category-link"
+            >
+              PDF to Images
+            </a>
+
+            <a
+              href="images-to-pdf.html"
+              class="tool-category-link"
+            >
+              Images to PDF
+            </a>
+
+          </div>
+
+        </nav>
+
+
+        <!-- ========================================
+             TOOL HEADING
+        ========================================= -->
+
+        <div class="heading">
+
+          <h1>
+            Convert PDF
+          </h1>
+
+          <p>
+            Combine multiple PDF files into one PDF quickly and easily.
+            Arrange your files in the order you want and merge them into a single document.
+          </p>
+
+        </div>
+
+
+        <!-- ========================================
+             TOOL BOX
+        ========================================= -->
+
+        <div class="tool-box">
+
+
+          <!-- HIDDEN FILE INPUT -->
+
+          <input
+            type="file"
+            id="pdfInput"
+            accept=".pdf,application/pdf"
+            multiple
+          >
+
+
+          <!-- UPLOAD / PREVIEW AREA -->
+
+          <div
+            class="upload-area"
+            id="uploadArea"
+          >
+
+
+            <!-- INITIAL UPLOAD BUTTON -->
+
+            <div
+              class="upload-placeholder"
+              id="uploadPlaceholder"
+            >
+
+              <button
+                type="button"
+                class="floating-upload-button"
+                id="uploadButton"
+              >
+                Upload PDF File
+              </button>
+
+            </div>
+
+
+            <!-- PREVIEW STATE -->
+
+            <div
+              class="uploaded-files"
+              id="uploadedFiles"
+            >
+
+              <div class="uploaded-files-header">
+
+                <div class="sort-controls" aria-label="Sort uploaded PDFs">
+
+                  <button
+                    type="button"
+                    class="sort-button"
+                    id="sortAZ"
+                    title="Sort files A-Z"
+                    aria-label="Sort files A-Z"
+                  >
+                    A-Z
+                  </button>
+
+                  <button
+                    type="button"
+                    class="sort-button"
+                    id="sortZA"
+                    title="Sort files Z-A"
+                    aria-label="Sort files Z-A"
+                  >
+                    Z-A
+                  </button>
+
+                </div>
+
+              </div>
+
+              <div
+                class="pdf-grid"
+                id="pdfGrid"
+              ></div>
+
+            </div>
+
+          
+
+<div
+            class="editor-controls"
+            id="editorControls"
+          >
+
+            <div class="button-row">
+
+
+              <!-- MERGE BUTTON -->
+
+              
+              <div class="bottom-convert-format">
+                <label for="formatSelect">Convert PDF to</label>
+                <select id="formatSelect" aria-label="Convert PDF to">
+                  <option value="word">Word</option>
+                  <option value="excel">Excel</option>
+                  <option value="txt">TXT</option>
+                  <option value="powerpoint">PowerPoint</option>
+                  <option value="jpg">JPG</option>
+                  <option value="png">PNG</option>
+                </select>
+              </div>
+
+<button
+                class="primary-button"
+                id="mergeButton"
+                type="button"
+              >
+                Convert PDFs and Download
+              </button>
+
+
+              <!-- ADD MORE -->
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div
+              class="status"
+              id="status"
+            ></div>
+
+          </div>
+
+</div>
+
+
+          <!-- ======================================
+               CONTROLS
+          ====================================== -->
+
+          
+
+        </div>
+
+      </section>
+
+
+      <!-- ========================================
+           ADVERTISEMENT
+      ========================================= -->
+
+      <aside class="ad-column">
+
+        <div class="ad-box">
+
+          <div class="ad-content">
+
+            <div class="ad-label">
+              ADVERTISEMENT
+            </div>
+
+            <div class="sample-ad">
+
+              <div class="sample-ad-badge">
+                TOOLNEST
+              </div>
+
+              <h3>
+                Simple Tools.<br>
+                Better Productivity.
+              </h3>
+
+              <p>
+                Fast, free and easy-to-use online tools for everyday tasks.
+              </p>
+
+              <div class="sample-ad-button">
+                Explore Tools
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+
+  <!-- ========================================
+       PDF ZOOM MODAL
+  ========================================= -->
+
+  <div
+    class="pdf-zoom-modal"
+    id="pdfZoomModal"
+    aria-hidden="true"
+  >
+
+    <div
+      class="pdf-zoom-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-label="PDF preview"
+    >
+
+      <div
+        class="pdf-zoom-title"
+        id="pdfZoomTitle"
+      ></div>
+
+      <button
+        type="button"
+        class="pdf-zoom-close"
+        id="pdfZoomClose"
+        aria-label="Close PDF preview"
+        title="Close"
+      >
+        ×
+      </button>
+
+      <div class="pdf-zoom-canvas-wrap">
+
+        <canvas
+          class="pdf-zoom-canvas"
+          id="pdfZoomCanvas"
+        ></canvas>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================================
+       FOOTER
+  ========================================= -->
+<footer>
+
+    <div class="footer-inner">
+
+      <div>
+        © 2026 ToolNest · Simple, Fast &amp; Free
+      </div>
+
+      <div class="footer-links">
+
+        <a href="#">
+          About
+        </a>
+
+        <a href="#">
+          Privacy
+        </a>
+
+        <a href="#">
+          Terms
+        </a>
+
+        <a href="#">
+          Contact
+        </a>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- ========================================
+       JAVASCRIPT
+  ========================================= -->
+
+  <script>
+(function(){
+  "use strict";
+
+  const pdfInput=document.getElementById("pdfInput");
+  const uploadArea=document.getElementById("uploadArea");
+  const uploadButton=document.getElementById("uploadButton");
+  const uploadPlaceholder=document.getElementById("uploadPlaceholder");
+  const uploadedState=document.getElementById("uploadedState");
+  const pdfGrid=document.getElementById("pdfGrid");
+  const status=document.getElementById("status");
+  const editorControls=document.getElementById("editorControls");
+  const convertButton=document.getElementById("convertButton") ||
+                        document.getElementById("convertPdfButton");
+  const formatSelect=document.getElementById("formatSelect");
+  const resultSection=document.getElementById("resultSection");
+  const resultsContent=document.getElementById("resultsContent");
+
+  let selectedFile=null;
+  let pdfDocument=null;
+
+  function escapeHtml(value){
+    return String(value==null?"":value)
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+  }
+
+  function baseName(){
+    return selectedFile
+      ? selectedFile.name.replace(/\.pdf$/i,"")
+      : "converted-pdf";
+  }
+
+  function setStatus(message,visible=true){
+    if(!status)return;
+    status.textContent=message;
+    status.style.display=visible?"block":"none";
+  }
+
+  function download(blob,name){
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download=name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),2000);
+  }
+
+  function openPicker(event){
+    if(event){
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    if(pdfInput)pdfInput.click();
+  }
+
+  if(uploadButton)uploadButton.addEventListener("click",openPicker);
+
+  if(uploadArea){
+    uploadArea.addEventListener("click",function(event){
+      if(event.target.closest("button"))return;
+      if(uploadedState && uploadedState.classList.contains("active"))return;
+      openPicker(event);
+    });
+
+    ["dragenter","dragover"].forEach(type=>{
+      uploadArea.addEventListener(type,event=>{
+        event.preventDefault();
+        uploadArea.classList.add("drag-active");
+      });
+    });
+
+    ["dragleave","drop"].forEach(type=>{
+      uploadArea.addEventListener(type,event=>{
+        event.preventDefault();
+        uploadArea.classList.remove("drag-active");
+      });
+    });
+
+    uploadArea.addEventListener("drop",event=>{
+      const file=event.dataTransfer &&
+                 event.dataTransfer.files &&
+                 event.dataTransfer.files[0];
+      if(file && (file.type==="application/pdf" || /\.pdf$/i.test(file.name))){
+        loadPdf(file);
+      }
+    });
+  }
+
+  if(pdfInput){
+    pdfInput.addEventListener("change",function(){
+      const file=pdfInput.files && pdfInput.files[0];
+      if(file)loadPdf(file);
+    });
+  }
+
+  async function loadPdf(file){
+    try{
+      selectedFile=file;
+      setStatus("Loading PDF...",true);
+
+      const data=await file.arrayBuffer();
+      pdfDocument=await pdfjsLib.getDocument({data}).promise;
+
+      if(uploadPlaceholder)uploadPlaceholder.style.display="none";
+      if(uploadedState)uploadedState.classList.add("active");
+      if(editorControls)editorControls.classList.add("active");
+
+      await renderPreviews();
+
+      setStatus(
+        pdfDocument.numPages+" page"+
+        (pdfDocument.numPages===1?"":"s")+
+        " loaded. Select an output format and convert.",
+        true
+      );
+    }catch(error){
+      console.error(error);
+      setStatus("Unable to open this PDF. Please select another PDF file.",true);
+    }
+  }
+
+  async function renderPreviews(){
+    if(!pdfGrid || !pdfDocument)return;
+    pdfGrid.innerHTML="";
+
+    for(let i=1;i<=pdfDocument.numPages;i++){
+      const page=await pdfDocument.getPage(i);
+      const viewport=page.getViewport({scale:.55});
+
+      const card=document.createElement("div");
+      card.className="pdf-card";
+
+      const preview=document.createElement("div");
+      preview.className="pdf-preview";
+
+      const canvas=document.createElement("canvas");
+      canvas.width=Math.ceil(viewport.width);
+      canvas.height=Math.ceil(viewport.height);
+      preview.appendChild(canvas);
+      card.appendChild(preview);
+
+      const name=document.createElement("div");
+      name.className="pdf-name";
+      name.textContent="Page "+i;
+      card.appendChild(name);
+
+      pdfGrid.appendChild(card);
+
+      await page.render({
+        canvasContext:canvas.getContext("2d"),
+        viewport
+      }).promise;
+    }
+  }
+
+  function selectedFormat(){
+    if(formatSelect && formatSelect.value)return formatSelect.value;
+    const checked=document.querySelector('input[name="outputFormat"]:checked');
+    return checked ? checked.value : "word";
+  }
+
+  async function extractText(){
+    const pages=[];
+    for(let i=1;i<=pdfDocument.numPages;i++){
+      const page=await pdfDocument.getPage(i);
+      const content=await page.getTextContent();
+      pages.push(content.items.map(item=>item.str).join(" "));
+    }
+    return pages;
+  }
+
+  async function pdfToWord(){
+    const pages=await extractText();
+    const body=pages.map((text,i)=>
+      "<h1>Page "+(i+1)+"</h1><p>"+
+      escapeHtml(text).replace(/\n/g,"<br>")+
+      "</p>"
+    ).join("<hr>");
+
+    const doc='<!doctype html><html><head><meta charset="utf-8">'+
+      "<title>"+escapeHtml(baseName())+"</title></head>"+
+      '<body style="font-family:Arial,sans-serif;line-height:1.55">'+
+      body+"</body></html>";
+
+    // Word opens HTML documents saved with the .doc extension.
+    download(
+      new Blob([doc],{type:"application/msword"}),
+      baseName()+".doc"
+    );
+  }
+
+  async function pdfToTxt(){
+    const pages=await extractText();
+    const text=pages.map((p,i)=>
+      "Page "+(i+1)+"\n\n"+p
+    ).join("\n\n--------------------------------\n\n");
+
+    download(
+      new Blob([text],{type:"text/plain;charset=utf-8"}),
+      baseName()+".txt"
+    );
+  }
+
+  async function pdfToExcel(){
+    const pages=await extractText();
+
+    const rows=pages.map((text,i)=>
+      "<Row>"+
+      '<Cell><Data ss:Type="Number">'+(i+1)+"</Data></Cell>"+
+      '<Cell><Data ss:Type="String">'+escapeHtml(text)+"</Data></Cell>"+
+      "</Row>"
+    ).join("");
+
+    const xml='<?xml version="1.0"?>'+
+      '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" '+
+      'xmlns:o="urn:schemas-microsoft-com:office:office" '+
+      'xmlns:x="urn:schemas-microsoft-com:office:excel" '+
+      'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'+
+      '<Worksheet ss:Name="PDF"><Table>'+
+      '<Row><Cell><Data ss:Type="String">Page</Data></Cell>'+
+      '<Cell><Data ss:Type="String">Extracted Text</Data></Cell></Row>'+
+      rows+
+      "</Table></Worksheet></Workbook>";
+
+    download(
+      new Blob([xml],{type:"application/vnd.ms-excel"}),
+      baseName()+".xls"
+    );
+  }
+
+  async function pdfToPowerPoint(){
+    const pages=await extractText();
+
+    const slides=pages.map((text,i)=>
+      '<section style="width:960px;height:540px;padding:55px;box-sizing:border-box;page-break-after:always;background:#fff">'+
+      "<h1>Page "+(i+1)+"</h1>"+
+      '<p style="font:22px/1.5 Arial,sans-serif">'+
+      escapeHtml(text).replace(/\n/g,"<br>")+
+      "</p></section>"
+    ).join("");
+
+    const doc='<!doctype html><html><head><meta charset="utf-8">'+
+      "<title>"+escapeHtml(baseName())+"</title></head><body>"+
+      slides+"</body></html>";
+
+    // Browser-only implementation: PowerPoint-compatible slide HTML.
+    download(
+      new Blob([doc],{type:"text/html;charset=utf-8"}),
+      baseName()+"-powerpoint.html"
+    );
+  }
+
+  async function pdfToImage(format){
+    for(let i=1;i<=pdfDocument.numPages;i++){
+      setStatus(
+        "Converting page "+i+" of "+pdfDocument.numPages+
+        " to "+format.toUpperCase()+"...",
+        true
+      );
+
+      const page=await pdfDocument.getPage(i);
+      const viewport=page.getViewport({scale:2});
+      const canvas=document.createElement("canvas");
+      canvas.width=Math.ceil(viewport.width);
+      canvas.height=Math.ceil(viewport.height);
+
+      await page.render({
+        canvasContext:canvas.getContext("2d"),
+        viewport
+      }).promise;
+
+      const mime=format==="jpg"?"image/jpeg":"image/png";
+      const blob=await new Promise(resolve=>
+        canvas.toBlob(resolve,mime,.94)
+      );
+
+      download(blob,baseName()+"-page-"+i+"."+format);
+    }
+  }
+
+  async function convertPdf(){
+    if(!pdfDocument){
+      setStatus("Please upload a PDF first.",true);
+      return;
+    }
+
+    const format=selectedFormat();
+
+    try{
+      if(convertButton)convertButton.disabled=true;
+
+      if(format==="word" || format==="doc"){
+        await pdfToWord();
+      }else if(format==="excel" || format==="xls"){
+        await pdfToExcel();
+      }else if(format==="txt"){
+        await pdfToTxt();
+      }else if(format==="powerpoint" || format==="ppt"){
+        await pdfToPowerPoint();
+      }else if(format==="jpg" || format==="png"){
+        await pdfToImage(format);
+      }
+
+      setStatus("Conversion complete. Your file(s) have been downloaded.",true);
+    }catch(error){
+      console.error(error);
+      setStatus("Conversion failed. Please try again.",true);
+    }finally{
+      if(convertButton)convertButton.disabled=false;
+    }
+  }
+
+  if(convertButton){
+    convertButton.addEventListener("click",function(event){
+      event.preventDefault();
+      convertPdf();
+    });
+  }
+
+  // If the Merge page uses a format select, convert it to the requested six choices.
+  if(formatSelect){
+    formatSelect.innerHTML=
+      '<option value="word">Word</option>'+
+      '<option value="excel">Excel</option>'+
+      '<option value="txt">TXT</option>'+
+      '<option value="powerpoint">PowerPoint</option>'+
+      '<option value="jpg">JPG</option>'+
+      '<option value="png">PNG</option>';
+    formatSelect.value="word";
+  }
+
+})();
+</script>
+
+</body>
+
+</html>
