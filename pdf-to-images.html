@@ -3001,7 +3001,7 @@ html.dark-mode .conversion-group,html.dark-mode .conversion-option,html.dark-mod
     align-items: center !important;
     justify-content: flex-start !important;
     padding-top: 34px !important;
-    pointer-events: none !important;
+    pointer-events: auto !important;
   }
 
   /* Floating upload button: starts near the top of the preview area.
@@ -3327,6 +3327,112 @@ html.dark-mode #uploadArea #uploadButton.floating-upload-button:hover {
   }
 }
 </style>
+
+<style id="toolnest-filepicker-final-fix">
+  /* Final upload/file-picker fix */
+  #pdfInput {
+    display: none !important;
+  }
+
+  #uploadArea {
+    position: relative;
+  }
+
+  #uploadArea #uploadPlaceholder {
+    position: relative !important;
+    pointer-events: auto !important;
+    z-index: 10 !important;
+  }
+
+  #uploadArea #uploadButton,
+  #uploadArea #uploadButton.floating-upload-button {
+    position: sticky !important;
+    top: 20px !important;
+    z-index: 100 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    min-width: 280px !important;
+    min-height: 72px !important;
+    height: 72px !important;
+    padding: 0 36px !important;
+    border: none !important;
+    border-radius: 36px !important;
+    background: #326ba8 !important;
+    color: #ffffff !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 19px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    box-shadow: 0 10px 26px rgba(50,107,168,.30) !important;
+  }
+
+  #uploadArea #uploadButton:hover {
+    background: #285b91 !important;
+  }
+
+  #uploadArea #uploadButton:active {
+    transform: translateY(0) !important;
+  }
+
+  @media (max-width: 700px) {
+    #uploadArea #uploadButton,
+    #uploadArea #uploadButton.floating-upload-button {
+      min-width: 240px !important;
+      min-height: 62px !important;
+      height: 62px !important;
+      padding: 0 28px !important;
+      border-radius: 31px !important;
+      font-size: 17px !important;
+    }
+  }
+</style>
+
+
+<style id="toolnest-dark-mode-final-fix">
+  /* Final dark-mode toggle fix */
+  #themeToggle {
+    position: relative !important;
+    z-index: 200 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 40px !important;
+    height: 40px !important;
+    padding: 0 !important;
+    border: 1px solid #d8e0e8 !important;
+    border-radius: 7px !important;
+    background: #f7f9fb !important;
+    color: #526273 !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  #themeToggle:hover {
+    background: #edf2f7 !important;
+    border-color: #c7d3df !important;
+    color: #326ba8 !important;
+  }
+
+  html.dark-mode #themeToggle {
+    background: #202731 !important;
+    border-color: #343f4c !important;
+    color: #edf2f7 !important;
+  }
+
+  html.dark-mode #themeToggle:hover {
+    background: #293440 !important;
+    border-color: #465466 !important;
+    color: #78a9d8 !important;
+  }
+</style>
+
 </head><body>
 
 
@@ -3918,7 +4024,91 @@ html.dark-mode #uploadArea #uploadButton.floating-upload-button:hover {
     const blocks=pages.map((p,i)=>
       '<section><h2>Page '+(i+1)+'</h2><pre>'+escapeHtml(p)+'</pre></section>'
     ).join("");
-    return '<!doctype html><html><head><meta charset="utf-8"><title>'+escapeHtml(safeBaseName())+'</title><style>body{font-family:Arial,sans-serif;max-width:900px;margin:40px auto;line-height:1.55;color:#222}section{page-break-after:always}pre{white-space:pre-wrap;font:14px/1.55 Arial}</style></head><body>'+blocks+'</body></html>';
+    return '<!doctype html><html><head><meta charset="utf-8"><title>'+escapeHtml(safeBaseName())+'</title><style>body{font-family:Arial,sans-serif;max-width:900px;margin:40px auto;line-height:1.55;color:#222}section{page-break-after:always}pre{white-space:pre-wrap;font:14px/1.55 Arial}</style></head><body>'+blocks+'
+<script id="toolnest-filepicker-runtime-fix">
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("pdfInput");
+  const button = document.getElementById("uploadButton");
+  const area = document.getElementById("uploadArea");
+
+  if (!input || !button) return;
+
+  // Prevent multiple handlers from causing propagation issues.
+  button.onclick = function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    input.click();
+    return false;
+  };
+
+  if (area) {
+    area.onclick = function (event) {
+      if (event.target.closest("#uploadButton")) return;
+      const uploaded = document.getElementById("uploadedState");
+      if (uploaded && uploaded.classList.contains("active")) return;
+      input.click();
+    };
+  }
+});
+</script>
+
+
+<script id="toolnest-dark-mode-runtime-fix">
+document.addEventListener("DOMContentLoaded", function () {
+  const toggle = document.getElementById("themeToggle");
+  if (!toggle) return;
+
+  function applyTheme(theme) {
+    document.documentElement.classList.remove("dark-mode", "light-mode");
+
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark-mode");
+    } else if (theme === "light") {
+      document.documentElement.classList.add("light-mode");
+    }
+
+    try {
+      localStorage.setItem("toolnest-theme", theme);
+    } catch (e) {}
+  }
+
+  function currentTheme() {
+    if (document.documentElement.classList.contains("dark-mode")) {
+      return "dark";
+    }
+    if (document.documentElement.classList.contains("light-mode")) {
+      return "light";
+    }
+
+    try {
+      const saved = localStorage.getItem("toolnest-theme");
+      if (saved === "dark" || saved === "light") return saved;
+    } catch (e) {}
+
+    return window.matchMedia &&
+           window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  }
+
+  // Preserve the existing visual icon if the page already manages it.
+  toggle.addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const next = currentTheme() === "dark" ? "light" : "dark";
+    applyTheme(next);
+
+    // Update common icon forms only when they are plain text.
+    const icon = toggle.querySelector(".theme-icon");
+    if (icon) {
+      icon.textContent = next === "dark" ? "☀" : "☾";
+    }
+  }, true);
+});
+</script>
+
+</body></html>';
   }
 
   function createCsv(pages){
@@ -4227,21 +4417,23 @@ html.dark-mode #uploadArea #uploadButton.floating-upload-button:hover {
     }
   }
 
-  uploadButton.addEventListener("click",function(event){
-    event.preventDefault();
-    event.stopPropagation();
-    if (pdfInput) {
-      pdfInput.click();
-    }
-  });
+  uploadButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
 
-  uploadArea.addEventListener("click",function(event){
-    if (event.target.closest("button")) return;
-    if (uploadedState.classList.contains("active")) return;
-    if (pdfInput) {
-      pdfInput.click();
-    }
-  });
+        if (pdfInput && typeof pdfInput.click === "function") {
+          pdfInput.click();
+        }
+      });
+
+  uploadArea.addEventListener("click", function (event) {
+        if (event.target.closest("#uploadButton")) return;
+        if (uploadedState && uploadedState.classList.contains("active")) return;
+
+        if (pdfInput && typeof pdfInput.click === "function") {
+          pdfInput.click();
+        }
+      });
   
 pdfInput.addEventListener("change",()=>loadPdf(pdfInput.files && pdfInput.files[0]));
 
