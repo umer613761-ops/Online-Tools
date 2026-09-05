@@ -658,7 +658,15 @@
     ======================================== */
 
     #pdfInput {
-      display: none;
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
     }
 
 
@@ -3727,191 +3735,118 @@ html.dark-mode .theme-toggle .theme-icon {
 </script>
 
 
-</body></html>";
 
-    // Word opens HTML documents saved with the .doc extension.
-    download(
-      new Blob([doc],{type:"application/msword"}),
-      baseName()+".doc"
-    );
-  }
+<script>
+(function () {
+  function setupToolNestPdfPicker() {
+    const pdfInput = document.getElementById("pdfInput");
+    const uploadButton = document.getElementById("uploadButton");
+    const uploadArea = document.getElementById("uploadArea");
 
-  async function pdfToTxt(){
-    const pages=await extractText();
-    const text=pages.map((p,i)=>
-      "Page "+(i+1)+"\n\n"+p
-    ).join("\n\n--------------------------------\n\n");
+    if (!pdfInput || !uploadButton) return;
 
-    download(
-      new Blob([text],{type:"text/plain;charset=utf-8"}),
-      baseName()+".txt"
-    );
-  }
-
-  async function pdfToExcel(){
-    const pages=await extractText();
-
-    const rows=pages.map((text,i)=>
-      "<Row>"+
-      '<Cell><Data ss:Type="Number">'+(i+1)+"</Data></Cell>"+
-      '<Cell><Data ss:Type="String">'+escapeHtml(text)+"</Data></Cell>"+
-      "</Row>"
-    ).join("");
-
-    const xml='<?xml version="1.0"?>'+
-      '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" '+
-      'xmlns:o="urn:schemas-microsoft-com:office:office" '+
-      'xmlns:x="urn:schemas-microsoft-com:office:excel" '+
-      'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'+
-      '<Worksheet ss:Name="PDF"><Table>'+
-      '<Row><Cell><Data ss:Type="String">Page</Data></Cell>'+
-      '<Cell><Data ss:Type="String">Extracted Text</Data></Cell></Row>'+
-      rows+
-      "</Table></Worksheet></Workbook>";
-
-    download(
-      new Blob([xml],{type:"application/vnd.ms-excel"}),
-      baseName()+".xls"
-    );
-  }
-
-  async function pdfToPowerPoint(){
-    const pages=await extractText();
-
-    const slides=pages.map((text,i)=>
-      '<section style="width:960px;height:540px;padding:55px;box-sizing:border-box;page-break-after:always;background:#fff">'+
-      "<h1>Page "+(i+1)+"</h1>"+
-      '<p style="font:22px/1.5 Arial,sans-serif">'+
-      escapeHtml(text).replace(/\n/g,"<br>")+
-      "</p></section>"
-    ).join("");
-
-    const doc='<!doctype html><html><head><meta charset="utf-8">'+
-      "<title>"+escapeHtml(baseName())+"</title></head><body>"+
-      slides+"</body></html>";
-
-    // Browser-only implementation: PowerPoint-compatible slide HTML.
-    download(
-      new Blob([doc],{type:"text/html;charset=utf-8"}),
-      baseName()+"-powerpoint.html"
-    );
-  }
-
-  async function pdfToImage(format){
-    for(let i=1;i<=pdfDocument.numPages;i++){
-      setStatus(
-        "Converting page "+i+" of "+pdfDocument.numPages+
-        " to "+format.toUpperCase()+"...",
-        true
-      );
-
-      const page=await pdfDocument.getPage(i);
-      const viewport=page.getViewport({scale:2});
-      const canvas=document.createElement("canvas");
-      canvas.width=Math.ceil(viewport.width);
-      canvas.height=Math.ceil(viewport.height);
-
-      await page.render({
-        canvasContext:canvas.getContext("2d"),
-        viewport
-      }).promise;
-
-      const mime=format==="jpg"?"image/jpeg":"image/png";
-      const blob=await new Promise(resolve=>
-        canvas.toBlob(resolve,mime,.94)
-      );
-
-      download(blob,baseName()+"-page-"+i+"."+format);
-    }
-  }
-
-  async function convertPdf(){
-    if(!pdfDocument){
-      setStatus("Please upload a PDF first.",true);
-      return;
-    }
-
-    const format=selectedFormat();
-
-    try{
-      if(convertButton)convertButton.disabled=true;
-
-      if(format==="word" || format==="doc"){
-        await pdfToWord();
-      }else if(format==="excel" || format==="xls"){
-        await pdfToExcel();
-      }else if(format==="txt"){
-        await pdfToTxt();
-      }else if(format==="powerpoint" || format==="ppt"){
-        await pdfToPowerPoint();
-      }else if(format==="jpg" || format==="png"){
-        await pdfToImage(format);
+    function openPdfPicker(event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
       }
 
-      setStatus("Conversion complete. Your file(s) have been downloaded.",true);
-    }catch(error){
-      console.error(error);
-      setStatus("Conversion failed. Please try again.",true);
-    }finally{
-      if(convertButton)convertButton.disabled=false;
+      try {
+        pdfInput.value = "";
+      } catch (e) {}
+
+      pdfInput.click();
+    }
+
+    uploadButton.addEventListener("click", openPdfPicker, false);
+
+    if (uploadArea) {
+      uploadArea.addEventListener("click", function (event) {
+        if (event.target.closest("#uploadButton")) return;
+
+        const uploadedFiles = document.getElementById("uploadedFiles");
+        if (uploadedFiles && uploadedFiles.classList.contains("active")) return;
+
+        openPdfPicker(event);
+      }, false);
     }
   }
 
-  if(convertButton){
-    convertButton.addEventListener("click",function(event){
-      event.preventDefault();
-      convertPdf();
-    });
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupToolNestPdfPicker);
+  } else {
+    setupToolNestPdfPicker();
   }
-
-  // If the Merge page uses a format select, convert it to the requested six choices.
-  if(formatSelect){
-    formatSelect.innerHTML=
-      '<option value="word">Word</option>'+
-      '<option value="excel">Excel</option>'+
-      '<option value="txt">TXT</option>'+
-      '<option value="powerpoint">PowerPoint</option>'+
-      '<option value="jpg">JPG</option>'+
-      '<option value="png">PNG</option>';
-    formatSelect.value="word";
-  }
-
 })();
 </script>
 
 
-<footer>
+<script>
+(function () {
+  function initToolNestTheme() {
+    const button = document.getElementById("themeToggle");
+    if (!button) return;
 
-    <div class="footer-inner">
+    function applyTheme(theme) {
+      const root = document.documentElement;
 
-      <div>
-        © 2026 ToolNest · Simple, Fast &amp; Free
-      </div>
+      root.classList.remove("dark-mode", "light-mode");
 
-      <div class="footer-links">
+      if (theme === "dark") {
+        root.classList.add("dark-mode");
+      } else {
+        root.classList.add("light-mode");
+      }
 
-        <a href="#">
-          About
-        </a>
+      try {
+        localStorage.setItem("toolnest-theme", theme);
+      } catch (e) {}
 
-        <a href="#">
-          Privacy
-        </a>
+      const isDark = theme === "dark";
+      button.textContent = isDark ? "☀" : "☾";
+      button.setAttribute(
+        "aria-label",
+        isDark ? "Switch to light mode" : "Switch to dark mode"
+      );
+      button.setAttribute(
+        "title",
+        isDark ? "Switch to light mode" : "Switch to dark mode"
+      );
+    }
 
-        <a href="#">
-          Terms
-        </a>
+    function getSavedTheme() {
+      try {
+        const saved = localStorage.getItem("toolnest-theme");
+        if (saved === "dark" || saved === "light") return saved;
+      } catch (e) {}
 
-        <a href="#">
-          Contact
-        </a>
+      return document.documentElement.classList.contains("dark-mode")
+        ? "dark"
+        : "light";
+    }
 
-      </div>
+    // Apply the current saved preference immediately.
+    applyTheme(getSavedTheme());
 
-    </div>
+    // One clean click handler.
+    button.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
 
-  </footer>
+      const current = document.documentElement.classList.contains("dark-mode")
+        ? "dark"
+        : "light";
 
-</body>
+      applyTheme(current === "dark" ? "light" : "dark");
+    }, false);
+  }
 
-</html>
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initToolNestTheme);
+  } else {
+    initToolNestTheme();
+  }
+})();
+</script>
+
+</body></html>
