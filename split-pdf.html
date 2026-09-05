@@ -1358,6 +1358,187 @@
 
 
     /* ========================================
+       SPLIT OPTIONS BAR
+    ======================================== */
+
+    .split-options-bar {
+      width: 100%;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .split-option {
+      flex: 1;
+      min-width: 0;
+      min-height: 58px;
+      padding: 8px 16px;
+      border: 1px solid #cfd8e2;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #536477;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.2;
+      cursor: pointer;
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .split-option span {
+      display: block;
+      margin-top: 4px;
+      color: #8996a5;
+      font-size: 11px;
+      font-weight: 400;
+    }
+
+    .split-option:hover {
+      background: #f7fafd;
+      border-color: #9fb5ca;
+      color: #326ba8;
+      transform: translateY(-1px);
+    }
+
+    .split-option.active {
+      background: #326ba8;
+      border-color: #326ba8;
+      color: #ffffff;
+      box-shadow: 0 3px 9px rgba(50, 107, 168, 0.18);
+    }
+
+    .split-option.active span {
+      color: #dceafb;
+    }
+
+    .split-option:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(50, 107, 168, 0.14);
+    }
+
+    .page-number-panel {
+      width: 100%;
+      margin: 0 0 14px;
+      padding: 14px 16px;
+      background: #f7fafd;
+      border: 1px solid #d7e1eb;
+      border-radius: 9px;
+    }
+
+    .page-number-panel[hidden] {
+      display: none;
+    }
+
+    .page-number-panel label {
+      display: block;
+      margin-bottom: 7px;
+      color: #435365;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    #pageNumbers {
+      width: 100%;
+      height: 42px;
+      padding: 0 12px;
+      border: 1px solid #cbd7e2;
+      border-radius: 7px;
+      background: #ffffff;
+      color: #34475b;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      outline: none;
+    }
+
+    #pageNumbers:focus {
+      border-color: #7fa6cf;
+      box-shadow: 0 0 0 3px rgba(50, 107, 168, 0.08);
+    }
+
+    .page-number-help {
+      margin-top: 7px;
+      color: #7a8999;
+      font-size: 11px;
+      line-height: 1.4;
+      text-align: left;
+    }
+
+    html.dark-mode .split-option,
+    html:not(.light-mode) .split-option {
+      background: #202c3b;
+      border-color: #3b4b5f;
+      color: #d6dee8;
+    }
+
+    html.dark-mode .split-option span,
+    html:not(.light-mode) .split-option span {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .split-option:hover,
+    html:not(.light-mode) .split-option:hover {
+      background: #293849;
+      border-color: #50667d;
+      color: #78a9d8;
+    }
+
+    html.dark-mode .split-option.active,
+    html:not(.light-mode) .split-option.active {
+      background: #326ba8;
+      border-color: #326ba8;
+      color: #ffffff;
+    }
+
+    html.dark-mode .split-option.active span,
+    html:not(.light-mode) .split-option.active span {
+      color: #dceafb;
+    }
+
+    html.dark-mode .page-number-panel,
+    html:not(.light-mode) .page-number-panel {
+      background: #172330;
+      border-color: #344657;
+    }
+
+    html.dark-mode .page-number-panel label,
+    html:not(.light-mode) .page-number-panel label {
+      color: #d6dee8;
+    }
+
+    html.dark-mode #pageNumbers,
+    html:not(.light-mode) #pageNumbers {
+      background: #202c3b;
+      border-color: #3b4b5f;
+      color: #e1e8ef;
+    }
+
+    html.dark-mode .page-number-help,
+    html:not(.light-mode) .page-number-help {
+      color: #9aa8b7;
+    }
+
+    @media (max-width: 550px) {
+      .split-options-bar {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .split-option {
+        width: 100%;
+        min-height: 52px;
+      }
+    }
+
+
+    /* ========================================
        CONTROLS
     ======================================== */
 
@@ -3106,18 +3287,77 @@
             </div>
 
             <div
-            class="editor-controls"
-            id="editorControls"
-          >
+              class="editor-controls"
+              id="editorControls"
+            >
 
-            <div class="button-row">
-              <button
-                type="button"
-                class="primary-button"
-                id="splitButton"
+              <div
+                class="split-options-bar"
+                role="group"
+                aria-label="Split options"
               >
-                Split PDF and Download
-              </button>
+
+                <button
+                  type="button"
+                  class="split-option active"
+                  id="splitEntireButton"
+                  data-mode="entire"
+                  aria-pressed="true"
+                >
+                  Split entire PDF
+                  <span>Splits each page</span>
+                </button>
+
+                <button
+                  type="button"
+                  class="split-option"
+                  id="splitByPageButton"
+                  data-mode="pages"
+                  aria-pressed="false"
+                >
+                  Split by page no
+                  <span>Choose page numbers</span>
+                </button>
+
+              </div>
+
+              <div
+                class="page-number-panel"
+                id="pageNumberPanel"
+                hidden
+              >
+                <label for="pageNumbers">
+                  Page numbers
+                </label>
+
+                <input
+                  type="text"
+                  id="pageNumbers"
+                  inputmode="text"
+                  autocomplete="off"
+                  placeholder="e.g. 1, 3-5, 8"
+                  aria-describedby="pageNumberHelp"
+                >
+
+                <div
+                  id="pageNumberHelp"
+                  class="page-number-help"
+                >
+                  Enter individual pages or ranges, separated by commas.
+                </div>
+
+              </div>
+
+              <div class="button-row">
+                <button
+                  type="button"
+                  class="primary-button"
+                  id="splitButton"
+                >
+                  Split PDF and Download
+                </button>
+              </div>
+
             </div>
 
           </div>
@@ -3194,9 +3434,14 @@
       const pdfGrid = document.getElementById("pdfGrid");
       const editorControls = document.getElementById("editorControls");
       const splitButton = document.getElementById("splitButton");
+      const splitEntireButton = document.getElementById("splitEntireButton");
+      const splitByPageButton = document.getElementById("splitByPageButton");
+      const pageNumberPanel = document.getElementById("pageNumberPanel");
+      const pageNumbers = document.getElementById("pageNumbers");
       const status = document.getElementById("status");
 
       let pdfFile = null;
+      let splitMode = "entire";
 
       /* ---------------- THEME ---------------- */
 
@@ -3275,6 +3520,26 @@
 
         if (editorControls) {
           editorControls.classList.remove("active");
+        }
+
+        splitMode = "entire";
+
+        if (splitEntireButton) {
+          splitEntireButton.classList.add("active");
+          splitEntireButton.setAttribute("aria-pressed", "true");
+        }
+
+        if (splitByPageButton) {
+          splitByPageButton.classList.remove("active");
+          splitByPageButton.setAttribute("aria-pressed", "false");
+        }
+
+        if (pageNumberPanel) {
+          pageNumberPanel.hidden = true;
+        }
+
+        if (pageNumbers) {
+          pageNumbers.value = "";
         }
 
         if (splitButton) {
@@ -3433,6 +3698,56 @@
         }
       }
 
+      /* ---------------- SPLIT OPTIONS ---------------- */
+
+      function setSplitMode(mode) {
+        splitMode = mode === "pages" ? "pages" : "entire";
+
+        const entireActive = splitMode === "entire";
+        const pagesActive = splitMode === "pages";
+
+        if (splitEntireButton) {
+          splitEntireButton.classList.toggle("active", entireActive);
+          splitEntireButton.setAttribute(
+            "aria-pressed",
+            entireActive ? "true" : "false"
+          );
+        }
+
+        if (splitByPageButton) {
+          splitByPageButton.classList.toggle("active", pagesActive);
+          splitByPageButton.setAttribute(
+            "aria-pressed",
+            pagesActive ? "true" : "false"
+          );
+        }
+
+        if (pageNumberPanel) {
+          pageNumberPanel.hidden = !pagesActive;
+        }
+
+        if (pagesActive && pageNumbers) {
+          pageNumbers.focus();
+        }
+      }
+
+      if (splitEntireButton) {
+        splitEntireButton.addEventListener("click", function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          setSplitMode("entire");
+        });
+      }
+
+      if (splitByPageButton) {
+        splitByPageButton.addEventListener("click", function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          setSplitMode("pages");
+        });
+      }
+
+
       /* ---------------- FILE SELECTION ---------------- */
 
       if (uploadButton) {
@@ -3491,6 +3806,67 @@
 
       /* ---------------- SPLIT + DOWNLOAD ---------------- */
 
+      function parsePageGroups(value, pageCount) {
+        const cleaned = (value || "").replace(/\s+/g, "");
+
+        if (!cleaned) {
+          throw new Error("Please enter at least one page number.");
+        }
+
+        const groups = [];
+        const parts = cleaned.split(",");
+
+        for (const part of parts) {
+          if (!part) {
+            throw new Error("Please enter valid page numbers.");
+          }
+
+          if (/^\d+$/.test(part)) {
+            const page = Number(part);
+
+            if (page < 1 || page > pageCount) {
+              throw new Error(
+                "Page " + page + " is outside the PDF's page range."
+              );
+            }
+
+            groups.push([page - 1]);
+            continue;
+          }
+
+          const match = part.match(/^(\d+)-(\d+)$/);
+
+          if (!match) {
+            throw new Error("Use page numbers like 1, 3-5, 8.");
+          }
+
+          const first = Number(match[1]);
+          const last = Number(match[2]);
+
+          if (
+            first < 1 ||
+            last < 1 ||
+            first > pageCount ||
+            last > pageCount ||
+            first > last
+          ) {
+            throw new Error(
+              "One of the page ranges is outside the PDF's page range."
+            );
+          }
+
+          const group = [];
+
+          for (let page = first; page <= last; page++) {
+            group.push(page - 1);
+          }
+
+          groups.push(group);
+        }
+
+        return groups;
+      }
+
       if (splitButton) {
         splitButton.addEventListener("click", async function (event) {
           event.preventDefault();
@@ -3534,26 +3910,34 @@
               throw new Error("The PDF has no pages.");
             }
 
+            let outputGroups;
+
+            if (splitMode === "entire") {
+              outputGroups = Array.from(
+                { length: pageCount },
+                function (_, index) {
+                  return [index];
+                }
+              );
+            } else {
+              outputGroups =
+                parsePageGroups(
+                  pageNumbers ? pageNumbers.value : "",
+                  pageCount
+                );
+            }
+
+            if (!outputGroups.length) {
+              throw new Error("No valid pages were selected.");
+            }
+
             /*
               Use the original PDF filename without ".pdf" as the
               folder name and ZIP filename.
-
-              Example:
-                MyDocument.pdf
-                  -> MyDocument.zip
-                  -> MyDocument/
-                       MyDocument-page-1.pdf
-                       MyDocument-page-2.pdf
-                       ...
             */
             const baseName =
               pdfFile.name.replace(/\.pdf$/i, "");
 
-            /*
-              Remove characters that are not suitable for a
-              Windows folder/file name while preserving the
-              original name as much as possible.
-            */
             const safeBaseName =
               baseName
                 .replace(/[<>:"/\\|?*]/g, "_")
@@ -3566,12 +3950,19 @@
             const outputFolder =
               zip.folder(safeBaseName);
 
-            for (let i = 0; i < pageCount; i++) {
+            for (
+              let i = 0;
+              i < outputGroups.length;
+              i++
+            ) {
+              const group =
+                outputGroups[i];
+
               setStatus(
-                "Creating page " +
+                "Creating PDF " +
                 (i + 1) +
                 " of " +
-                pageCount +
+                outputGroups.length +
                 "...",
                 true
               );
@@ -3582,19 +3973,45 @@
               const copiedPages =
                 await outputPdf.copyPages(
                   sourcePdf,
-                  [i]
+                  group
                 );
 
-              outputPdf.addPage(copiedPages[0]);
+              copiedPages.forEach(function (page) {
+                outputPdf.addPage(page);
+              });
 
               const outputBytes =
                 await outputPdf.save();
 
+              let fileName;
+
+              if (splitMode === "entire") {
+                fileName =
+                  safeBaseName +
+                  "-page-" +
+                  (i + 1) +
+                  ".pdf";
+              } else {
+                const firstPage = group[0] + 1;
+                const lastPage =
+                  group[group.length - 1] + 1;
+
+                fileName =
+                  group.length === 1
+                    ? safeBaseName +
+                      "-page-" +
+                      firstPage +
+                      ".pdf"
+                    : safeBaseName +
+                      "-pages-" +
+                      firstPage +
+                      "-to-" +
+                      lastPage +
+                      ".pdf";
+              }
+
               outputFolder.file(
-                safeBaseName +
-                "-page-" +
-                (i + 1) +
-                ".pdf",
+                fileName,
                 outputBytes
               );
             }
@@ -3604,10 +4021,6 @@
               true
             );
 
-            /*
-              Generate one ZIP download instead of triggering
-              one browser download for every PDF page.
-            */
             const zipBlob =
               await zip.generateAsync({
                 type: "blob",
@@ -3639,19 +4052,32 @@
               URL.revokeObjectURL(url);
             }, 5000);
 
-            setStatus(
-              pageCount === 1
-                ? "Done! Your PDF page has been downloaded as a ZIP folder."
-                : "Done! " +
-                  pageCount +
-                  " PDF pages have been split and downloaded in a ZIP folder.",
-              true
-            );
+            if (splitMode === "entire") {
+              setStatus(
+                pageCount === 1
+                  ? "Done! Your PDF page has been downloaded as a ZIP folder."
+                  : "Done! " +
+                    pageCount +
+                    " PDF pages have been split and downloaded in a ZIP folder.",
+                true
+              );
+            } else {
+              setStatus(
+                "Done! " +
+                  outputGroups.length +
+                  " PDF file" +
+                  (outputGroups.length === 1 ? "" : "s") +
+                  " have been created and downloaded in a ZIP folder.",
+                true
+              );
+            }
           } catch (error) {
             console.error("Split PDF error:", error);
 
             setStatus(
-              "Could not split the PDF. Please try again.",
+              error && error.message
+                ? error.message
+                : "Could not split the PDF. Please try again.",
               true
             );
           } finally {
