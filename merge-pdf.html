@@ -839,6 +839,94 @@
 
 
     /* ========================================
+       SORT CONTROLS
+    ======================================== */
+
+    .uploaded-files-header {
+      width: 100%;
+      margin: 0 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .sort-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .sort-button {
+      height: 32px;
+      min-width: 82px;
+      padding: 0 11px;
+      border: 1px solid #cbd6e0;
+      border-radius: 6px;
+      background: #ffffff;
+      color: #526273;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .sort-button:hover {
+      background: #f4f8fc;
+      border-color: #9eb6cd;
+      color: #326ba8;
+      transform: translateY(-1px);
+      box-shadow:
+        0 2px 6px
+        rgba(50, 107, 168, 0.10);
+    }
+
+    .sort-button:active {
+      transform: translateY(0);
+    }
+
+    .sort-button:focus-visible {
+      outline: none;
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.14);
+    }
+
+    html.dark-mode .sort-button {
+      background: #202c3b;
+      border-color: #3b4b5f;
+      color: #d6dee8;
+    }
+
+    html.dark-mode .sort-button:hover {
+      background: #293849;
+      border-color: #526b84;
+      color: #7eb0df;
+    }
+
+    @media (max-width: 550px) {
+      .uploaded-files-header {
+        gap: 10px;
+      }
+
+      .sort-button {
+        height: 30px;
+        min-width: 76px;
+        padding: 0 8px;
+        font-size: 11px;
+      }
+    }
+
+
+    /* ========================================
        PDF GRID
     ======================================== */
 
@@ -2683,8 +2771,36 @@
               id="uploadedFiles"
             >
 
-              <div class="drag-hint">
-                Your PDFs are ready — arrange them in the order you want.
+              <div class="uploaded-files-header">
+
+                <div class="drag-hint">
+                  Your PDFs are ready — arrange them in the order you want.
+                </div>
+
+                <div class="sort-controls" aria-label="Sort uploaded PDFs">
+
+                  <button
+                    type="button"
+                    class="sort-button"
+                    id="sortAZ"
+                    title="Sort files in ascending order"
+                    aria-label="Sort files in ascending order"
+                  >
+                    Ascending
+                  </button>
+
+                  <button
+                    type="button"
+                    class="sort-button"
+                    id="sortZA"
+                    title="Sort files in descending order"
+                    aria-label="Sort files in descending order"
+                  >
+                    Descending
+                  </button>
+
+                </div>
+
               </div>
 
               <div
@@ -3044,16 +3160,85 @@
     const status =
       document.getElementById("status");
 
+    const sortAZ =
+      document.getElementById("sortAZ");
+
+    const sortZA =
+      document.getElementById("sortZA");
+
 
     /* ========================================
        FILE STORAGE
-    ======================================== */
+       ======================================== */
 
     let pdfFiles = [];
 
     let draggedId = null;
 
     let suppressUploadClick = false;
+
+
+    /* ========================================
+       SORT FILES
+    ======================================== */
+
+    function sortPDFsAlphabetically(direction) {
+
+      pdfFiles.sort(
+        function(a, b) {
+
+          const nameA =
+            a.file.name.trim().toLocaleLowerCase();
+
+          const nameB =
+            b.file.name.trim().toLocaleLowerCase();
+
+          const result =
+            nameA.localeCompare(
+              nameB,
+              undefined,
+              {
+                numeric: true,
+                sensitivity: "base"
+              }
+            );
+
+          return direction === "asc"
+            ? result
+            : -result;
+
+        }
+      );
+
+      renderPDFs();
+
+    }
+
+
+    sortAZ.addEventListener(
+      "click",
+      function(event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        sortPDFsAlphabetically("asc");
+
+      }
+    );
+
+
+    sortZA.addEventListener(
+      "click",
+      function(event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        sortPDFsAlphabetically("desc");
+
+      }
+    );
 
 
     /* ========================================
