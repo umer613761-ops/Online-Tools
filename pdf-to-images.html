@@ -2943,84 +2943,6 @@ html.dark-mode .pdf-zoom-canvas-wrap{background:#263444;border-color:#435366}
 html.dark-mode .conversion-group,html.dark-mode .conversion-option,html.dark-mode .setting,html.dark-mode .result-card{background:#202c3b;border-color:#3b4b5f;color:#d6dee8}html.dark-mode .group-header:hover,html.dark-mode .conversion-option:hover{background:#293849}html.dark-mode .group-name,html.dark-mode .settings-title,html.dark-mode .result-title,html.dark-mode .results h2{color:#dbe4ee}html.dark-mode .group-summary,html.dark-mode .conversion-option span:not(.check){color:#9aa8b7}html.dark-mode .group-icon{background:#1d344b;color:#78a9d8}html.dark-mode .conversion-option.selected{background:#1d344b;border-color:#4e82b4}html.dark-mode .settings{background:#172330;border-color:#344657}html.dark-mode .setting select{background:#202c3b;border-color:#3b4b5f;color:#e1e8ef}html.dark-mode .result-preview{background:#17212c;border-color:#3b4b5f;color:#d6dee8}html.dark-mode .image-card{background:#202c3b;border-color:#3b4b5f}html.dark-mode .image-preview{background:#263444}
 @media(max-width:700px){.group-options{grid-template-columns:1fr 1fr}.settings-grid{grid-template-columns:1fr}}@media(max-width:550px){.group-options{grid-template-columns:1fr}.convert-button{width:100%}}
 </style>
-<style id="floating-upload-final">
-  /* Initial state: the preview area contains only the floating upload button. */
-  .upload-placeholder {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    min-height: 0 !important;
-    height: 100% !important;
-    padding: 0 !important;
-    display: block !important;
-    pointer-events: none !important;
-  }
-
-  .upload-placeholder .floating-upload-button {
-    position: absolute !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    pointer-events: auto !important;
-    z-index: 999 !important;
-
-    min-width: 280px !important;
-    min-height: 64px !important;
-    padding: 0 34px !important;
-    border: 0 !important;
-    border-radius: 999px !important;
-
-    background: #326ba8 !important;
-    color: #fff !important;
-    font-family: Arial, Helvetica, sans-serif !important;
-    font-size: 17px !important;
-    font-weight: 600 !important;
-    line-height: 1 !important;
-    cursor: pointer !important;
-
-    box-shadow: 0 10px 26px rgba(50, 107, 168, 0.30) !important;
-    transition: background .2s ease, box-shadow .2s ease !important;
-  }
-
-  .upload-placeholder .floating-upload-button:hover {
-    background: #285b91 !important;
-    transform: translate(-50%, -50%) !important;
-    box-shadow: 0 13px 30px rgba(50, 107, 168, 0.36) !important;
-  }
-
-  .upload-placeholder .floating-upload-button:active {
-    transform: translate(-50%, -50%) !important;
-  }
-
-  html.dark-mode .upload-placeholder .floating-upload-button {
-    background: #326ba8 !important;
-    color: #fff !important;
-    box-shadow: 0 10px 26px rgba(0, 0, 0, .32) !important;
-  }
-
-  html.dark-mode .upload-placeholder .floating-upload-button:hover {
-    background: #3a78b8 !important;
-  }
-
-  @media (max-width: 700px) {
-    .upload-placeholder .floating-upload-button {
-      min-width: 230px !important;
-      min-height: 58px !important;
-      padding: 0 28px !important;
-      font-size: 15px !important;
-    }
-  }
-
-  @media (max-width: 520px) {
-    .upload-placeholder .floating-upload-button {
-      min-width: 210px !important;
-      min-height: 56px !important;
-      font-size: 14px !important;
-    }
-  }
-</style>
-
-
 <style id="center-upload-final">
   .upload-area {
     position: relative !important;
@@ -3130,6 +3052,178 @@ html.dark-mode .conversion-group,html.dark-mode .conversion-option,html.dark-mod
       font-size: 14px !important;
     }
   }
+</style>
+
+
+
+<style id="toolnest-final-layout">
+/* =========================================================
+   TOOLNEST FINAL LAYOUT
+   Match the Merge PDF page layout exactly.
+   ========================================================= */
+
+html, body {
+  min-height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-wrapper {
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 24px 60px;
+}
+
+.page-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 200px;
+  gap: 28px;
+  align-items: start;
+}
+
+.content {
+  min-width: 0;
+}
+
+/* Advertisement: keep it in the second grid column and aligned
+   with the top of the page content. */
+.ad-column {
+  width: 200px !important;
+  align-self: start !important;
+  position: sticky !important;
+  top: 20px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.ad-box {
+  width: 200px !important;
+  height: 400px !important;
+  margin: 0 !important;
+}
+
+/* Initial upload state: the button is always centered inside
+   the upload/preview area, exactly where it should be. */
+#uploadArea {
+  position: relative !important;
+  min-height: 390px;
+}
+
+#uploadArea #uploadPlaceholder {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  min-height: 320px !important;
+  height: auto !important;
+  padding: 8px 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+}
+
+#uploadArea #uploadButton.floating-upload-button {
+  position: sticky !important;
+  top: 20px !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  z-index: 20 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 280px !important;
+  min-height: 72px !important;
+  height: 72px !important;
+  padding: 0 36px !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 36px !important;
+  background: #326ba8 !important;
+  color: #fff !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 19px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  box-shadow: 0 10px 26px rgba(50,107,168,.30) !important;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+
+#uploadArea #uploadButton.floating-upload-button:hover {
+  background: #285b91 !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 13px 30px rgba(50,107,168,.36) !important;
+}
+
+#uploadArea #uploadButton.floating-upload-button:active {
+  transform: translateY(0) !important;
+}
+
+/* Footer stays after the page content and does not overlap it. */
+footer {
+  flex-shrink: 0;
+}
+
+/* Tablet/mobile: move the advertisement below the tool. */
+@media (max-width: 900px) {
+  .page-wrapper {
+    padding: 24px 16px 45px;
+  }
+
+  .page-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ad-column {
+    width: 100% !important;
+    position: static !important;
+    margin-top: 28px !important;
+  }
+
+  .ad-box {
+    width: 100% !important;
+    height: 180px !important;
+  }
+}
+
+@media (max-width: 700px) {
+  #uploadArea {
+    min-height: 350px !important;
+  }
+
+  #uploadArea #uploadButton.floating-upload-button {
+    min-width: 250px !important;
+    min-height: 66px !important;
+    height: 66px !important;
+    padding: 0 30px !important;
+    font-size: 17px !important;
+    border-radius: 33px !important;
+  }
+}
+
+@media (max-width: 550px) {
+  #uploadArea {
+    min-height: 320px !important;
+  }
+
+  #uploadArea #uploadButton.floating-upload-button {
+    min-width: 230px !important;
+    min-height: 62px !important;
+    height: 62px !important;
+    padding: 0 26px !important;
+    font-size: 16px !important;
+    border-radius: 31px !important;
+  }
+}
 </style>
 
 </head><body>
@@ -3902,13 +3996,6 @@ html.dark-mode .conversion-group,html.dark-mode .conversion-option,html.dark-mod
     openPicker();
   });
   
-      uploadButton.addEventListener("click", function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        pdfInput.value = "";
-        pdfInput.click();
-      });
-
 pdfInput.addEventListener("change",()=>loadPdf(pdfInput.files && pdfInput.files[0]));
 
   ["dragenter","dragover"].forEach(type=>{
@@ -3956,18 +4043,7 @@ pdfInput.addEventListener("change",()=>loadPdf(pdfInput.files && pdfInput.files[
   document.addEventListener("keydown",e=>{
     if(e.key==="Escape")document.getElementById("pdfZoomModal").classList.remove("active");
   });
-
-
-  /* Keep the upload button centered inside the preview area. */
-  function positionFloatingUploadButton(){
-    if(!floatingUploadButton || !uploadPlaceholder) return;
-    floatingUploadButton.style.left = "50%";
-    floatingUploadButton.style.top = "50%";
-  }
-
-  const floatingUploadButton = document.getElementById("uploadButton");
-
-  themeToggle.addEventListener("click",()=>{
+themeToggle.addEventListener("click",()=>{
     const dark=document.documentElement.classList.toggle("dark-mode");
     document.documentElement.classList.toggle("light-mode",!dark);
     localStorage.setItem("toolnest-theme",dark?"dark":"light");
@@ -3978,30 +4054,7 @@ pdfInput.addEventListener("change",()=>loadPdf(pdfInput.files && pdfInput.files[
   themeToggle.textContent=initialDark?"☀️":"🌙";
 
   resetInterface();
-  requestAnimationFrame(positionFloatingUploadButton);
 })();
 
 </script>
-<style id="upload-final-position">
-  #uploadArea #uploadPlaceholder {
-    position: relative !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    width: 100% !important;
-    min-height: 320px !important;
-    padding-top: 34px !important;
-    pointer-events: none !important;
-  }
-
-  #uploadArea #uploadButton.floating-upload-button {
-    position: sticky !important;
-    top: 18px !important;
-    margin: 0 auto !important;
-    transform: none !important;
-    pointer-events: auto !important;
-  }
-</style>
-
 </body></html>
