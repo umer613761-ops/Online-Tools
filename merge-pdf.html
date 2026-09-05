@@ -811,28 +811,16 @@
 
     .drag-hint {
       width: 100%;
-
-      margin:
-        0 0 16px;
-
+      margin: 0;
       padding: 0;
-
       text-align: center;
-
-      color: #718096;
-
+      color: #667588;
       background: transparent;
-
       border: none;
-
       border-radius: 0;
-
       font-size: 14px;
-
-      font-weight: 500;
-
-      line-height: 1.4;
-
+      font-weight: 600;
+      line-height: 32px;
       transition:
         color 0.2s ease;
     }
@@ -844,28 +832,32 @@
 
     .uploaded-files-header {
       width: 100%;
+      min-height: 32px;
       margin: 0 0 16px;
+      position: relative;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
+      justify-content: center;
+      padding: 0 120px;
     }
 
     .sort-controls {
+      position: absolute;
+      top: 0;
+      right: 0;
       display: flex;
       align-items: center;
       gap: 6px;
-      flex-shrink: 0;
     }
 
     .sort-button {
       height: 32px;
-      min-width: 82px;
-      padding: 0 11px;
-      border: 1px solid #cbd6e0;
-      border-radius: 6px;
-      background: #ffffff;
-      color: #526273;
+      min-width: 52px;
+      padding: 0 12px;
+      border: 1px solid #326ba8;
+      border-radius: 7px;
+      background: #326ba8;
+      color: #ffffff;
       font-family: Arial, Helvetica, sans-serif;
       font-size: 12px;
       font-weight: 700;
@@ -880,13 +872,13 @@
     }
 
     .sort-button:hover {
-      background: #f4f8fc;
-      border-color: #9eb6cd;
-      color: #326ba8;
+      background: #285b91;
+      border-color: #285b91;
+      color: #ffffff;
       transform: translateY(-1px);
       box-shadow:
-        0 2px 6px
-        rgba(50, 107, 168, 0.10);
+        0 3px 8px
+        rgba(50, 107, 168, 0.20);
     }
 
     .sort-button:active {
@@ -901,27 +893,37 @@
     }
 
     html.dark-mode .sort-button {
-      background: #202c3b;
-      border-color: #3b4b5f;
-      color: #d6dee8;
+      background: #326ba8;
+      border-color: #326ba8;
+      color: #ffffff;
     }
 
     html.dark-mode .sort-button:hover {
-      background: #293849;
-      border-color: #526b84;
-      color: #7eb0df;
+      background: #3a78b8;
+      border-color: #3a78b8;
+      color: #ffffff;
     }
 
     @media (max-width: 550px) {
       .uploaded-files-header {
-        gap: 10px;
+        min-height: 30px;
+        padding: 0 92px;
+      }
+
+      .sort-controls {
+        gap: 4px;
       }
 
       .sort-button {
         height: 30px;
-        min-width: 76px;
+        min-width: 45px;
         padding: 0 8px;
         font-size: 11px;
+      }
+
+      .drag-hint {
+        font-size: 12px;
+        line-height: 1.35;
       }
     }
 
@@ -2774,7 +2776,7 @@
               <div class="uploaded-files-header">
 
                 <div class="drag-hint">
-                  Your PDFs are ready — arrange them in the order you want.
+                  Drag files and arrange them in the order you want
                 </div>
 
                 <div class="sort-controls" aria-label="Sort uploaded PDFs">
@@ -2783,20 +2785,20 @@
                     type="button"
                     class="sort-button"
                     id="sortAZ"
-                    title="Sort files in ascending order"
-                    aria-label="Sort files in ascending order"
+                    title="Sort files A-Z"
+                    aria-label="Sort files A-Z"
                   >
-                    Ascending
+                    A-Z
                   </button>
 
                   <button
                     type="button"
                     class="sort-button"
                     id="sortZA"
-                    title="Sort files in descending order"
-                    aria-label="Sort files in descending order"
+                    title="Sort files Z-A"
+                    aria-label="Sort files Z-A"
                   >
-                    Descending
+                    Z-A
                   </button>
 
                 </div>
