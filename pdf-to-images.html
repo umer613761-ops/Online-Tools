@@ -979,19 +979,12 @@ html.dark-mode .pdf-zoom-canvas-wrap{background:#263444;border-color:#435366}
     ======================================== */
 
     .upload-placeholder {
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-
-      justify-content: flex-start;
-
+      position: relative;
+      display: block;
       width: 100%;
-
+      height: 320px;
       min-height: 320px;
-
-      padding-top: 8px;
+      padding: 0;
     }
 
 
@@ -1000,68 +993,38 @@ html.dark-mode .pdf-zoom-canvas-wrap{background:#263444;border-color:#435366}
     ======================================== */
 
     .floating-upload-button {
-      position: sticky;
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 280px;
+  min-height: 72px;
+  padding: 0 36px;
+  border: none;
+  border-radius: 36px;
+  background: #326ba8;
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(50, 107, 168, 0.30);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  will-change: top;
+}
 
-      top: 50vh;
+.floating-upload-button:hover {
+  background: #285b91;
+  box-shadow: 0 13px 30px rgba(50, 107, 168, 0.36);
+}
 
-      z-index: 20;
-
-      display: inline-flex;
-
-      align-items: center;
-      justify-content: center;
-
-      min-width: 280px;
-
-      min-height: 72px;
-
-      padding:
-        0 36px;
-
-      border: none;
-
-      border-radius: 36px;
-
-      background: #326ba8;
-
-      color: #ffffff;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 19px;
-
-      font-weight: 600;
-
-      cursor: pointer;
-
-      box-shadow:
-        0 10px 26px
-        rgba(50, 107, 168, 0.30);
-
-      transition:
-        background 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-    }
-
-    .floating-upload-button:hover {
-      background: #285b91;
-
-      transform:
-        translateY(-3px);
-
-      box-shadow:
-        0 13px 30px
-        rgba(50, 107, 168, 0.36);
-    }
-
-    .floating-upload-button:active {
-      transform:
-        translateY(0);
-    }
+.floating-upload-button:active {
+  transform: translateX(-50%);
+}
 
 
     /* ========================================
@@ -3226,6 +3189,49 @@ footer {
 }
 </style>
 
+
+<style id="floating-upload-authoritative">
+/* Upload button floats only inside the preview/upload box. */
+.upload-area {
+  position: relative !important;
+  overflow: hidden;
+}
+.upload-placeholder {
+  position: relative !important;
+  width: 100% !important;
+  height: 320px !important;
+  min-height: 320px !important;
+  padding: 0 !important;
+  display: block !important;
+}
+.floating-upload-button {
+  position: absolute !important;
+  left: 50% !important;
+  top: 14px;
+  transform: translateX(-50%) !important;
+  z-index: 50 !important;
+  pointer-events: auto !important;
+}
+.floating-upload-button:hover {
+  transform: translateX(-50%) !important;
+}
+.floating-upload-button:active {
+  transform: translateX(-50%) !important;
+}
+@media (max-width:700px) {
+  .upload-placeholder {
+    height: 290px !important;
+    min-height: 290px !important;
+  }
+  .floating-upload-button {
+    min-width: min(280px, calc(100% - 24px));
+    min-height: 64px;
+    padding: 0 24px;
+    font-size: 17px;
+  }
+}
+</style>
+
 </head><body>
 
 
@@ -3990,7 +3996,12 @@ footer {
     }
   }
 
-  uploadButton.addEventListener("click",e=>{e.stopPropagation();openPicker()});
+  uploadButton.addEventListener("click", e => {
+    e.preventDefault();
+    e.stopPropagation();
+    pdfInput.value = "";
+    openPicker();
+  });
   uploadArea.addEventListener("click",e=>{
     if(e.target.closest("button") || uploadedState.classList.contains("active"))return;
     openPicker();
@@ -4053,7 +4064,43 @@ themeToggle.addEventListener("click",()=>{
   const initialDark=document.documentElement.classList.contains("dark-mode");
   themeToggle.textContent=initialDark?"☀️":"🌙";
 
+  // Keep the upload button floating inside the upload/preview box.
+  // It starts near the top and follows page scrolling, but never leaves the box.
+  let floatingUploadFrame = null;
+
+  function updateFloatingUploadButton() {
+    if (!uploadButton || !uploadPlaceholder || !uploadArea) return;
+    if (uploadedState.classList.contains("active")) return;
+
+    const areaRect = uploadArea.getBoundingClientRect();
+    const buttonHeight = uploadButton.offsetHeight || 72;
+    const sidePadding = 14;
+
+    // Desired position: around the middle of the visible viewport.
+    const desiredViewportTop = (window.innerHeight / 2) - (buttonHeight / 2);
+    let newTop = desiredViewportTop - areaRect.top;
+
+    // Keep the button completely inside the upload/preview box.
+    const minTop = sidePadding;
+    const maxTop = Math.max(minTop, areaRect.height - buttonHeight - sidePadding);
+    newTop = Math.max(minTop, Math.min(newTop, maxTop));
+
+    uploadButton.style.top = newTop + "px";
+  }
+
+  function scheduleFloatingUploadUpdate() {
+    if (floatingUploadFrame) return;
+    floatingUploadFrame = requestAnimationFrame(() => {
+      floatingUploadFrame = null;
+      updateFloatingUploadButton();
+    });
+  }
+
+  window.addEventListener("scroll", scheduleFloatingUploadUpdate, { passive: true });
+  window.addEventListener("resize", scheduleFloatingUploadUpdate);
+
   resetInterface();
+  requestAnimationFrame(updateFloatingUploadButton);
 })();
 
 </script>
