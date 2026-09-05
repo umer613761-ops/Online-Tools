@@ -3063,6 +3063,75 @@ html.dark-mode .conversion-group,html.dark-mode .conversion-option,html.dark-mod
   }
 </style>
 
+
+<style id="upload-floating-fix">
+  /* Initial preview state */
+  .upload-area {
+    position: relative !important;
+    overflow: hidden !important;
+  }
+
+  .upload-placeholder {
+    position: relative !important;
+    min-height: 100% !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding-top: 34px !important;
+    pointer-events: none !important;
+  }
+
+  /* Floating upload button: starts near the top of the preview area.
+     It remains inside the preview area and moves with scrolling until the
+     preview area ends. */
+  .floating-upload-button {
+    position: sticky !important;
+    top: 18px !important;
+    z-index: 30 !important;
+    pointer-events: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 220px !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    padding: 0 28px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: #326ba8 !important;
+    color: #fff !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    box-shadow: 0 7px 18px rgba(50,107,168,.25) !important;
+  }
+
+  .floating-upload-button:hover {
+    background: #285b91 !important;
+    transform: translateY(-1px);
+  }
+
+  /* Once a PDF is loaded, the upload placeholder must disappear. */
+  .uploaded-files.active ~ .upload-placeholder,
+  .upload-area.has-file .upload-placeholder {
+    display: none !important;
+  }
+
+  @media (max-width:700px) {
+    .upload-placeholder {
+      padding-top: 26px !important;
+    }
+
+    .floating-upload-button {
+      min-width: 200px !important;
+      height: 48px !important;
+      min-height: 48px !important;
+      font-size: 14px !important;
+    }
+  }
+</style>
+
 </head><body>
 
 
@@ -3832,7 +3901,15 @@ html.dark-mode .conversion-group,html.dark-mode .conversion-option,html.dark-mod
     if(e.target.closest("button") || uploadedState.classList.contains("active"))return;
     openPicker();
   });
-  pdfInput.addEventListener("change",()=>loadPdf(pdfInput.files && pdfInput.files[0]));
+  
+      uploadButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        pdfInput.value = "";
+        pdfInput.click();
+      });
+
+pdfInput.addEventListener("change",()=>loadPdf(pdfInput.files && pdfInput.files[0]));
 
   ["dragenter","dragover"].forEach(type=>{
     uploadArea.addEventListener(type,e=>{
@@ -3904,4 +3981,27 @@ html.dark-mode .conversion-group,html.dark-mode .conversion-option,html.dark-mod
   requestAnimationFrame(positionFloatingUploadButton);
 })();
 
-</script></body></html>
+</script>
+<style id="upload-final-position">
+  #uploadArea #uploadPlaceholder {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    min-height: 320px !important;
+    padding-top: 34px !important;
+    pointer-events: none !important;
+  }
+
+  #uploadArea #uploadButton.floating-upload-button {
+    position: sticky !important;
+    top: 18px !important;
+    margin: 0 auto !important;
+    transform: none !important;
+    pointer-events: auto !important;
+  }
+</style>
+
+</body></html>
