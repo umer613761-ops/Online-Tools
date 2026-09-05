@@ -20,6 +20,12 @@
 
   <!-- PDF.JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    if (window.pdfjsLib) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    }
+  </script>
 
   <!-- PDF-LIB -->
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
@@ -3111,14 +3117,6 @@
               >
                 Split PDF and Download
               </button>
-
-              <button
-                type="button"
-                class="secondary-button"
-                id="clearButton"
-              >
-                Clear
-              </button>
             </div>
 
           </div>
@@ -3477,11 +3475,11 @@
           return;
         }
 
-        showUploadedFile(file);
+        await showUploadedFile(file);
       }
 
       if (pdfInput) {
-        pdfInput.addEventListener("change", function () {
+        pdfInput.addEventListener("change", async function () {
           const file = pdfInput.files && pdfInput.files[0];
 
           if (file) {
@@ -3617,17 +3615,6 @@
           }
         });
       }
-
-      /* ---------------- CLEAR ---------------- */
-
-      if (clearButton) {
-        clearButton.addEventListener("click", function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-          resetInterface();
-        });
-      }
-
       /* Initial state */
       resetInterface();
     })();
@@ -3667,5 +3654,16 @@
   .editor-controls .primary-button {
     width: 100%;
   }
+}
+</style>
+<style id="split-button-final-fix">
+.editor-controls .primary-button {
+  border-radius: 999px !important;
+  background: #326ba8 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+.editor-controls .primary-button:hover:not(:disabled) {
+  background: #285b91 !important;
 }
 </style>
