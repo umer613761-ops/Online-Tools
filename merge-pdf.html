@@ -2556,83 +2556,93 @@
     }
 
 
-    /* Mobile: place the drag message below the PDF previews */
-    @media (max-width: 700px) {
-      .uploaded-files {
-        display: flex !important;
-        flex-direction: column;
-      }
+    
 
-      .uploaded-files-header {
-        display: contents;
-      }
+/* =========================================================
+   FINAL MOBILE PREVIEW LAYOUT
+   - Controls are invisible before the first PDF is uploaded
+   - After upload: A-Z / Z-A above the PDF preview
+   - Drag message below the PDF preview
+   - Sort buttons sit slightly lower
+   ========================================================= */
+@media (max-width: 700px) {
 
-      .sort-controls {
-        order: 1;
-        align-self: flex-end;
-      }
+  /* The preview container only exists visually after .active */
+  .uploaded-files:not(.active) {
+    display: none !important;
+  }
 
-      .pdf-grid {
-        order: 2;
-      }
+  .uploaded-files.active {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    gap: 0 !important;
+  }
 
-      .drag-hint {
-        order: 3;
-        margin-top: 10px;
-        margin-bottom: 0;
-        line-height: 1.35;
-      }
-    }
+  /* Flatten the old header so its two children can be
+     positioned independently around the preview grid. */
+  .uploaded-files.active .uploaded-files-header {
+    display: contents !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 
-  
+  /* A-Z / Z-A: above preview, slightly lower */
+  .uploaded-files.active .sort-controls {
+    position: relative !important;
+    top: 8px !important;
+    right: auto !important;
+    left: auto !important;
+    order: 1 !important;
+    display: flex !important;
+    justify-self: end !important;
+    align-self: start !important;
+    margin: 0 0 14px 0 !important;
+    gap: 5px !important;
+    z-index: 2 !important;
+  }
 
-    /* ========================================
-       MOBILE PREVIEW CONTROLS
-       Hidden until the first PDF is uploaded.
-       After upload: A-Z / Z-A above previews,
-       with the drag message below the previews.
-    ========================================= */
-    @media (max-width: 700px) {
-      .uploaded-files.active {
-        display: flex !important;
-        flex-direction: column;
-      }
+  .uploaded-files.active .sort-button {
+    position: relative !important;
+    height: 30px !important;
+    min-width: 45px !important;
+    padding: 0 8px !important;
+    font-size: 11px !important;
+  }
 
-      .uploaded-files.active .uploaded-files-header {
-        display: contents !important;
-      }
+  /* PDF preview comes next */
+  .uploaded-files.active .pdf-grid {
+    order: 2 !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
 
-      .uploaded-files.active .sort-controls {
-        position: relative !important;
-        top: 9px !important;
-        right: auto !important;
-        order: 1;
-        align-self: flex-end;
-        margin-bottom: 9px !important;
-      }
+  /* Drag message is definitely BELOW the preview */
+  .uploaded-files.active .drag-hint {
+    order: 3 !important;
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    margin: 10px 0 0 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    line-height: 1.35 !important;
+  }
+}
 
-      .uploaded-files.active .pdf-grid {
-        order: 2;
-      }
+@media (max-width: 550px) {
+  .uploaded-files.active .sort-controls {
+    top: 8px !important;
+    margin-bottom: 12px !important;
+  }
 
-      .uploaded-files.active .drag-hint {
-        order: 3;
-        margin-top: 10px !important;
-        margin-bottom: 0 !important;
-        display: block !important;
-      }
-    }
-
-    @media (max-width: 550px) {
-      .uploaded-files.active .sort-controls {
-        top: 8px !important;
-        margin-bottom: 8px !important;
-      }
-
-      .uploaded-files.active .drag-hint {
-        margin-top: 9px !important;
-      }
-    }
+  .uploaded-files.active .drag-hint {
+    margin-top: 9px !important;
+    font-size: 12px !important;
+  }
+}
 
 </style>
 
