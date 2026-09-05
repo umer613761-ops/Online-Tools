@@ -834,107 +834,6 @@
     }
 
 
-    /* ========================================
-       SORT CONTROLS
-    ======================================== */
-
-    .uploaded-files-header {
-      width: 100%;
-      min-height: 32px;
-      margin: 0 0 16px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 120px;
-    }
-
-    .sort-controls {
-      position: absolute;
-      top: 0;
-      right: 0;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .sort-button {
-      height: 32px;
-      min-width: 52px;
-      padding: 0 12px;
-      border: 1px solid #326ba8;
-      border-radius: 7px;
-      background: #326ba8;
-      color: #ffffff;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1;
-      cursor: pointer;
-      transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-    }
-
-    .sort-button:hover {
-      background: #285b91;
-      border-color: #285b91;
-      color: #ffffff;
-      transform: translateY(-1px);
-      box-shadow:
-        0 3px 8px
-        rgba(50, 107, 168, 0.20);
-    }
-
-    .sort-button:active {
-      transform: translateY(0);
-    }
-
-    .sort-button:focus-visible {
-      outline: none;
-      box-shadow:
-        0 0 0 3px
-        rgba(50, 107, 168, 0.14);
-    }
-
-    html.dark-mode .sort-button {
-      background: #326ba8;
-      border-color: #326ba8;
-      color: #ffffff;
-    }
-
-    html.dark-mode .sort-button:hover {
-      background: #3a78b8;
-      border-color: #3a78b8;
-      color: #ffffff;
-    }
-
-    @media (max-width: 550px) {
-      .uploaded-files-header {
-        min-height: 30px;
-        padding: 0 92px;
-      }
-
-      .sort-controls {
-        gap: 4px;
-      }
-
-      .sort-button {
-        height: 30px;
-        min-width: 45px;
-        padding: 0 8px;
-        font-size: 11px;
-      }
-
-      .drag-hint {
-        font-size: 12px;
-        line-height: 1.35;
-      }
-    }
-
 
     /* ========================================
        PDF GRID
@@ -2598,29 +2497,9 @@
   }
 
   /* A-Z / Z-A: above preview, slightly lower */
-  .uploaded-files.active .sort-controls {
-    position: relative !important;
-    top: 8px !important;
-    right: auto !important;
-    left: auto !important;
-    order: 1 !important;
-    display: flex !important;
-    justify-self: end !important;
-    align-self: start !important;
-    margin: 0 0 14px 0 !important;
-    gap: 5px !important;
-    z-index: 2 !important;
-  }
-
-  .uploaded-files.active .sort-button {
-    position: relative !important;
-    height: 30px !important;
-    min-width: 45px !important;
-    padding: 0 8px !important;
-    font-size: 11px !important;
-  }
-
-  /* PDF preview comes next */
+  .uploaded-files.active
+.uploaded-files.active
+/* PDF preview comes next */
   .uploaded-files.active .pdf-grid {
     order: 2 !important;
     width: 100% !important;
@@ -2641,12 +2520,8 @@
 }
 
 @media (max-width: 550px) {
-  .uploaded-files.active .sort-controls {
-    top: 8px !important;
-    margin-bottom: 12px !important;
-  }
-
-  .uploaded-files.active .drag-hint {
+  .uploaded-files.active
+.uploaded-files.active .drag-hint {
     margin-top: 9px !important;
     font-size: 12px !important;
   }
@@ -3292,32 +3167,7 @@ html.dark-mode .theme-toggle .theme-icon {
             >
 
               <div class="uploaded-files-header">
-
-                <div class="sort-controls" aria-label="Sort uploaded PDFs">
-
-                  <button
-                    type="button"
-                    class="sort-button"
-                    id="sortAZ"
-                    title="Sort files A-Z"
-                    aria-label="Sort files A-Z"
-                  >
-                    A-Z
-                  </button>
-
-                  <button
-                    type="button"
-                    class="sort-button"
-                    id="sortZA"
-                    title="Sort files Z-A"
-                    aria-label="Sort files Z-A"
-                  >
-                    Z-A
-                  </button>
-
-                </div>
-
-              </div>
+</div>
 
               <div
                 class="pdf-grid"
@@ -3580,12 +3430,6 @@ html.dark-mode .theme-toggle .theme-icon {
 
       await renderPreviews();
 
-      setStatus(
-        pdfDocument.numPages +
-        " page" +
-        (pdfDocument.numPages === 1 ? "" : "s") +
-        " loaded successfully."
-      );
     } catch (error) {
       console.error("PDF loading error:", error);
 
