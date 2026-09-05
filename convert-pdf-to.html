@@ -3492,361 +3492,270 @@ html.dark-mode .theme-toggle .theme-icon {
   ========================================= -->
 
   <script>
-(function(){
+(function () {
   "use strict";
 
-  const pdfInput=document.getElementById("pdfInput");
-  const uploadArea=document.getElementById("uploadArea");
-  const uploadButton=document.getElementById("uploadButton");
-  const uploadPlaceholder=document.getElementById("uploadPlaceholder");
-  const uploadedState=document.getElementById("uploadedState");
-  const pdfGrid=document.getElementById("pdfGrid");
-  const status=document.getElementById("status");
-  const editorControls=document.getElementById("editorControls");
-  const convertButton=document.getElementById("convertButton") ||
-                        document.getElementById("convertPdfButton");
-  const formatSelect=document.getElementById("formatSelect");
-  const resultSection=document.getElementById("resultSection");
-  const resultsContent=document.getElementById("resultsContent");
-
-  let selectedFile=null;
-  let pdfDocument=null;
-
-  function escapeHtml(value){
-    return String(value==null?"":value)
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;")
-      .replace(/"/g,"&quot;")
-      .replace(/'/g,"&#039;");
+  // PDF.js worker is required for reliable PDF loading.
+  if (window.pdfjsLib && pdfjsLib.GlobalWorkerOptions) {
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
   }
 
-  function baseName(){
-    return selectedFile
-      ? selectedFile.name.replace(/\.pdf$/i,"")
-      : "converted-pdf";
+  const pdfInput = document.getElementById("pdfInput");
+  const uploadArea = document.getElementById("uploadArea");
+  const uploadButton = document.getElementById("uploadButton");
+  const uploadPlaceholder = document.getElementById("uploadPlaceholder");
+
+  // IMPORTANT: the HTML uses id="uploadedFiles", not "uploadedState".
+  const uploadedState = document.getElementById("uploadedFiles");
+
+  const pdfGrid = document.getElementById("pdfGrid");
+  const status = document.getElementById("status");
+  const editorControls = document.getElementById("editorControls");
+  const formatSelect = document.getElementById("formatSelect");
+  const sortAZ = document.getElementById("sortAZ");
+  const sortZA = document.getElementById("sortZA");
+
+  let selectedFile = null;
+  let pdfDocument = null;
+
+  function setStatus(message, visible) {
+    if (!status) return;
+    status.textContent = message || "";
+    status.style.display = visible === false ? "none" : "block";
   }
 
-  function setStatus(message,visible=true){
-    if(!status)return;
-    status.textContent=message;
-    status.style.display=visible?"block":"none";
-  }
-
-  function download(blob,name){
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement("a");
-    a.href=url;
-    a.download=name;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),2000);
-  }
-
-  function openPicker(event){
-    if(event){
+  function openPicker(event) {
+    if (event) {
       event.preventDefault();
       event.stopPropagation();
     }
-    if(pdfInput)pdfInput.click();
+
+    if (pdfInput) {
+      try {
+        pdfInput.value = "";
+      } catch (e) {}
+      pdfInput.click();
+    }
   }
 
-  if(uploadButton)uploadButton.addEventListener("click",openPicker);
+  function isPdf(file) {
+    return !!file &&
+      (file.type === "application/pdf" || /\.pdf$/i.test(file.name));
+  }
 
-  if(uploadArea){
-    uploadArea.addEventListener("click",function(event){
-      if(event.target.closest("button"))return;
-      if(uploadedState && uploadedState.classList.contains("active"))return;
-      openPicker(event);
-    });
+  async function loadPdf(file) {
+    if (!isPdf(file)) {
+      setStatus("Please select a valid PDF file.");
+      return;
+    }
 
-    ["dragenter","dragover"].forEach(type=>{
-      uploadArea.addEventListener(type,event=>{
-        event.preventDefault();
-        uploadArea.classList.add("drag-active");
-      });
-    });
+    if (!window.pdfjsLib) {
+      console.error("PDF.js did not load.");
+      setStatus("PDF reader could not load. Please refresh the page and try again.");
+      return;
+    }
 
-    ["dragleave","drop"].forEach(type=>{
-      uploadArea.addEventListener(type,event=>{
-        event.preventDefault();
-        uploadArea.classList.remove("drag-active");
-      });
-    });
+    try {
+      selectedFile = file;
+      setStatus("Loading " + file.name + "...");
 
-    uploadArea.addEventListener("drop",event=>{
-      const file=event.dataTransfer &&
-                 event.dataTransfer.files &&
-                 event.dataTransfer.files[0];
-      if(file && (file.type==="application/pdf" || /\.pdf$/i.test(file.name))){
-        loadPdf(file);
+      const data = await file.arrayBuffer();
+
+      pdfDocument = await pdfjsLib.getDocument({
+        data: new Uint8Array(data)
+      }).promise;
+
+      if (uploadPlaceholder) {
+        uploadPlaceholder.style.display = "none";
       }
-    });
-  }
 
-  if(pdfInput){
-    pdfInput.addEventListener("change",function(){
-      const file=pdfInput.files && pdfInput.files[0];
-      if(file)loadPdf(file);
-    });
-  }
+      if (uploadedState) {
+        uploadedState.classList.add("active");
+      }
 
-  async function loadPdf(file){
-    try{
-      selectedFile=file;
-      setStatus("Loading PDF...",true);
-
-      const data=await file.arrayBuffer();
-      pdfDocument=await pdfjsLib.getDocument({data}).promise;
-
-      if(uploadPlaceholder)uploadPlaceholder.style.display="none";
-      if(uploadedState)uploadedState.classList.add("active");
-      if(editorControls)editorControls.classList.add("active");
+      if (editorControls) {
+        editorControls.classList.add("active");
+      }
 
       await renderPreviews();
 
       setStatus(
-        pdfDocument.numPages+" page"+
-        (pdfDocument.numPages===1?"":"s")+
-        " loaded. Select an output format and convert.",
-        true
+        pdfDocument.numPages +
+        " page" +
+        (pdfDocument.numPages === 1 ? "" : "s") +
+        " loaded successfully."
       );
-    }catch(error){
-      console.error(error);
-      setStatus("Unable to open this PDF. Please select another PDF file.",true);
+    } catch (error) {
+      console.error("PDF loading error:", error);
+
+      selectedFile = null;
+      pdfDocument = null;
+
+      if (pdfGrid) {
+        pdfGrid.innerHTML = "";
+      }
+
+      if (uploadPlaceholder) {
+        uploadPlaceholder.style.display = "";
+      }
+
+      if (uploadedState) {
+        uploadedState.classList.remove("active");
+      }
+
+      if (editorControls) {
+        editorControls.classList.remove("active");
+      }
+
+      setStatus(
+        "Unable to open this PDF. Please select a valid, non-corrupted PDF file."
+      );
     }
   }
 
-  async function renderPreviews(){
-    if(!pdfGrid || !pdfDocument)return;
-    pdfGrid.innerHTML="";
+  async function renderPreviews() {
+    if (!pdfGrid || !pdfDocument) return;
 
-    for(let i=1;i<=pdfDocument.numPages;i++){
-      const page=await pdfDocument.getPage(i);
-      const viewport=page.getViewport({scale:.55});
+    pdfGrid.innerHTML = "";
 
-      const card=document.createElement("div");
-      card.className="pdf-card";
+    for (let i = 1; i <= pdfDocument.numPages; i++) {
+      const page = await pdfDocument.getPage(i);
+      const viewport = page.getViewport({ scale: 0.55 });
 
-      const preview=document.createElement("div");
-      preview.className="pdf-preview";
+      const card = document.createElement("div");
+      card.className = "pdf-card";
 
-      const canvas=document.createElement("canvas");
-      canvas.width=Math.ceil(viewport.width);
-      canvas.height=Math.ceil(viewport.height);
+      const preview = document.createElement("div");
+      preview.className = "pdf-preview";
+
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.ceil(viewport.width);
+      canvas.height = Math.ceil(viewport.height);
+
       preview.appendChild(canvas);
       card.appendChild(preview);
 
-      const name=document.createElement("div");
-      name.className="pdf-name";
-      name.textContent="Page "+i;
+      const name = document.createElement("div");
+      name.className = "pdf-name";
+      name.textContent = "Page " + i;
       card.appendChild(name);
 
       pdfGrid.appendChild(card);
 
       await page.render({
-        canvasContext:canvas.getContext("2d"),
-        viewport
+        canvasContext: canvas.getContext("2d"),
+        viewport: viewport
       }).promise;
     }
   }
 
-  function selectedFormat(){
-    if(formatSelect && formatSelect.value)return formatSelect.value;
-    const checked=document.querySelector('input[name="outputFormat"]:checked');
-    return checked ? checked.value : "word";
+  // Upload button
+  if (uploadButton) {
+    uploadButton.addEventListener("click", openPicker, false);
   }
 
-  async function extractText(){
-    const pages=[];
-    for(let i=1;i<=pdfDocument.numPages;i++){
-      const page=await pdfDocument.getPage(i);
-      const content=await page.getTextContent();
-      pages.push(content.items.map(item=>item.str).join(" "));
-    }
-    return pages;
-  }
+  // Clicking the upload area also opens the picker.
+  if (uploadArea) {
+    uploadArea.addEventListener("click", function (event) {
+      if (event.target.closest("button")) return;
 
-  async function pdfToWord(){
-    const pages=await extractText();
-    const body=pages.map((text,i)=>
-      "<h1>Page "+(i+1)+"</h1><p>"+
-      escapeHtml(text).replace(/\n/g,"<br>")+
-      "</p>"
-    ).join("<hr>");
+      if (
+        uploadedState &&
+        uploadedState.classList.contains("active")
+      ) {
+        return;
+      }
 
-    const doc='<!doctype html><html><head><meta charset="utf-8">'+
-      "<title>"+escapeHtml(baseName())+"</title></head>"+
-      '<body style="font-family:Arial,sans-serif;line-height:1.55">'+
-      body+"
-<script id="toolnest-theme-controller">
-(function () {
-  "use strict";
+      openPicker(event);
+    }, false);
 
-  const toggle = document.getElementById("themeToggle");
-  const root = document.documentElement;
-  const storageKey = "toolnest-theme";
-
-  if (!toggle) return;
-
-  function applyTheme(theme) {
-    const dark = theme === "dark";
-
-    root.classList.toggle("dark-mode", dark);
-    root.classList.toggle("light-mode", !dark);
-
-    toggle.setAttribute("aria-pressed", dark ? "true" : "false");
-    toggle.setAttribute(
-      "aria-label",
-      dark ? "Switch to light mode" : "Switch to dark mode"
-    );
-    toggle.setAttribute(
-      "title",
-      dark ? "Switch to light mode" : "Switch to dark mode"
-    );
-  }
-
-  function getSavedTheme() {
-    try {
-      const saved = localStorage.getItem(storageKey);
-      if (saved === "dark" || saved === "light") return saved;
-    } catch (error) {}
-
-    return root.classList.contains("dark-mode") ? "dark" : "light";
-  }
-
-  applyTheme(getSavedTheme());
-
-  toggle.addEventListener("click", function (event) {
-    event.preventDefault();
-
-    const nextTheme = root.classList.contains("dark-mode")
-      ? "light"
-      : "dark";
-
-    applyTheme(nextTheme);
-
-    try {
-      localStorage.setItem(storageKey, nextTheme);
-    } catch (error) {}
-  });
-})();
-</script>
-
-
-
-<script>
-(function () {
-  function setupToolNestPdfPicker() {
-    const pdfInput = document.getElementById("pdfInput");
-    const uploadButton = document.getElementById("uploadButton");
-    const uploadArea = document.getElementById("uploadArea");
-
-    if (!pdfInput || !uploadButton) return;
-
-    function openPdfPicker(event) {
-      if (event) {
+    // Drag & drop support.
+    ["dragenter", "dragover"].forEach(function (type) {
+      uploadArea.addEventListener(type, function (event) {
         event.preventDefault();
         event.stopPropagation();
-      }
-
-      try {
-        pdfInput.value = "";
-      } catch (e) {}
-
-      pdfInput.click();
-    }
-
-    uploadButton.addEventListener("click", openPdfPicker, false);
-
-    if (uploadArea) {
-      uploadArea.addEventListener("click", function (event) {
-        if (event.target.closest("#uploadButton")) return;
-
-        const uploadedFiles = document.getElementById("uploadedFiles");
-        if (uploadedFiles && uploadedFiles.classList.contains("active")) return;
-
-        openPdfPicker(event);
+        uploadArea.classList.add("drag-active");
       }, false);
-    }
-  }
+    });
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", setupToolNestPdfPicker);
-  } else {
-    setupToolNestPdfPicker();
-  }
-})();
-</script>
+    ["dragleave", "drop"].forEach(function (type) {
+      uploadArea.addEventListener(type, function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        uploadArea.classList.remove("drag-active");
+      }, false);
+    });
 
+    uploadArea.addEventListener("drop", function (event) {
+      const files = event.dataTransfer && event.dataTransfer.files;
+      if (!files || !files.length) return;
 
-<script>
-(function () {
-  function initToolNestTheme() {
-    const button = document.getElementById("themeToggle");
-    if (!button) return;
-
-    function applyTheme(theme) {
-      const root = document.documentElement;
-
-      root.classList.remove("dark-mode", "light-mode");
-
-      if (theme === "dark") {
-        root.classList.add("dark-mode");
-      } else {
-        root.classList.add("light-mode");
-      }
-
-      try {
-        localStorage.setItem("toolnest-theme", theme);
-      } catch (e) {}
-
-      const isDark = theme === "dark";
-      button.textContent = isDark ? "☀" : "☾";
-      button.setAttribute(
-        "aria-label",
-        isDark ? "Switch to light mode" : "Switch to dark mode"
-      );
-      button.setAttribute(
-        "title",
-        isDark ? "Switch to light mode" : "Switch to dark mode"
-      );
-    }
-
-    function getSavedTheme() {
-      try {
-        const saved = localStorage.getItem("toolnest-theme");
-        if (saved === "dark" || saved === "light") return saved;
-      } catch (e) {}
-
-      return document.documentElement.classList.contains("dark-mode")
-        ? "dark"
-        : "light";
-    }
-
-    // Apply the current saved preference immediately.
-    applyTheme(getSavedTheme());
-
-    // One clean click handler.
-    button.addEventListener("click", function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-
-      const current = document.documentElement.classList.contains("dark-mode")
-        ? "dark"
-        : "light";
-
-      applyTheme(current === "dark" ? "light" : "dark");
+      const file = files[0];
+      loadPdf(file);
     }, false);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initToolNestTheme);
-  } else {
-    initToolNestTheme();
+  // THIS is the important file-selection handler.
+  if (pdfInput) {
+    pdfInput.addEventListener("change", function () {
+      const file = pdfInput.files && pdfInput.files[0];
+
+      if (!file) {
+        return;
+      }
+
+      loadPdf(file);
+    }, false);
+  }
+
+  // Optional sorting controls.
+  function sortCards(direction) {
+    if (!pdfGrid) return;
+
+    const cards = Array.from(pdfGrid.querySelectorAll(".pdf-card"));
+
+    cards.sort(function (a, b) {
+      const aName = (a.querySelector(".pdf-name")?.textContent || "").toLowerCase();
+      const bName = (b.querySelector(".pdf-name")?.textContent || "").toLowerCase();
+
+      return direction === "za"
+        ? bName.localeCompare(aName)
+        : aName.localeCompare(bName);
+    });
+
+    cards.forEach(function (card) {
+      pdfGrid.appendChild(card);
+    });
+  }
+
+  if (sortAZ) {
+    sortAZ.addEventListener("click", function () {
+      sortCards("az");
+    });
+  }
+
+  if (sortZA) {
+    sortZA.addEventListener("click", function () {
+      sortCards("za");
+    });
+  }
+
+  // Keep the format selector functional without interfering with upload.
+  if (formatSelect) {
+    formatSelect.addEventListener("change", function () {
+      if (pdfDocument) {
+        setStatus(
+          pdfDocument.numPages +
+          " page" +
+          (pdfDocument.numPages === 1 ? "" : "s") +
+          " loaded. Output format: " +
+          formatSelect.options[formatSelect.selectedIndex].text +
+          "."
+        );
+      }
+    });
   }
 })();
 </script>
-
 </body></html>
