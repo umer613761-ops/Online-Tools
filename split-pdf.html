@@ -2771,6 +2771,65 @@
       cursor: default;
     }
 
+
+    /* FINAL SPLIT-PDF PREVIEW CONTROLS */
+    .uploaded-files-header,
+    .drag-hint,
+    .sort-controls,
+    .sort-button {
+      display: none !important;
+    }
+
+    .upload-area {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .editor-controls {
+      display: none !important;
+      width: 100%;
+      margin-top: 10px;
+      padding: 0;
+    }
+
+    .editor-controls.active {
+      display: block !important;
+    }
+
+    .editor-controls .button-row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .editor-controls .primary-button {
+      flex: 0 1 420px;
+    }
+
+    .editor-controls .secondary-button {
+      flex: 0 0 auto;
+    }
+
+    @media (max-width: 550px) {
+      .editor-controls {
+        margin-top: 10px;
+      }
+
+      .editor-controls .button-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .editor-controls .primary-button,
+      .editor-controls .secondary-button {
+        width: 100%;
+        flex: none;
+      }
+    }
+
 </style>
 
 </head>
@@ -3012,9 +3071,6 @@
             id="uploadArea"
           >
 
-
-            <!-- INITIAL UPLOAD BUTTON -->
-
             <div
               class="upload-placeholder"
               id="uploadPlaceholder"
@@ -3030,38 +3086,10 @@
 
             </div>
 
-
-            <!-- PREVIEW STATE -->
-
             <div
               class="uploaded-files"
               id="uploadedFiles"
             >
-<div class="sort-controls" aria-label="Sort uploaded PDFs">
-
-                  <button
-                    type="button"
-                    class="sort-button"
-                    id="sortAZ"
-                    title="Sort files A-Z"
-                    aria-label="Sort files A-Z"
-                  >
-                    A-Z
-                  </button>
-
-                  <button
-                    type="button"
-                    class="sort-button"
-                    id="sortZA"
-                    title="Sort files Z-A"
-                    aria-label="Sort files Z-A"
-                  >
-                    Z-A
-                  </button>
-
-                </div>
-
-              </div>
 
               <div
                 class="pdf-grid"
@@ -3070,14 +3098,7 @@
 
             </div>
 
-          </div>
-
-
-          <!-- ======================================
-               CONTROLS
-          ====================================== -->
-
-          <div
+            <div
             class="editor-controls"
             id="editorControls"
           >
@@ -3102,6 +3123,9 @@
 
           </div>
 
+          </div>
+
+          </div>
         </section>
 
           <!-- ======================================
@@ -3171,7 +3195,6 @@
       const pdfGrid = document.getElementById("pdfGrid");
       const editorControls = document.getElementById("editorControls");
       const splitButton = document.getElementById("splitButton");
-      const clearButton = document.getElementById("clearButton");
       const status = document.getElementById("status");
 
       let pdfFile = null;
@@ -3307,13 +3330,16 @@
             canvasContext: context,
             viewport: viewport
           }).promise;
+
+          return true;
         } catch (error) {
           console.error("PDF preview error:", error);
+          return false;
         }
       }
 
-      function renderPreviewCard() {
-        if (!pdfGrid || !pdfFile) return;
+      async function renderPreviewCard() {
+        if (!pdfGrid || !pdfFile) return false;
 
         pdfGrid.innerHTML = "";
 
@@ -3353,10 +3379,10 @@
 
         pdfGrid.appendChild(card);
 
-        renderPreview(pdfFile, canvas);
+        return await renderPreview(pdfFile, canvas);
       }
 
-      function showUploadedFile(file) {
+      async function showUploadedFile(file) {
         pdfFile = file;
 
         if (uploadPlaceholder) {
@@ -3367,17 +3393,45 @@
           uploadedFiles.classList.add("active");
         }
 
+        /* Keep the action area hidden while the preview is loading. */
         if (editorControls) {
-          editorControls.classList.add("active");
+          editorControls.classList.remove("active");
         }
 
         if (splitButton) {
-          splitButton.disabled = false;
+          splitButton.disabled = true;
           splitButton.textContent = "Split PDF and Download";
         }
 
-        setStatus("", false);
-        renderPreviewCard();
+        setStatus("Loading preview...", true);
+
+        const previewLoaded = await renderPreviewCard();
+
+        if (previewLoaded && pdfFile === file) {
+          if (editorControls) {
+            editorControls.classList.add("active");
+          }
+
+          if (splitButton) {
+            splitButton.disabled = false;
+            splitButton.textContent = "Split PDF and Download";
+          }
+
+          setStatus("", false);
+        } else {
+          if (editorControls) {
+            editorControls.classList.remove("active");
+          }
+
+          if (splitButton) {
+            splitButton.disabled = true;
+          }
+
+          setStatus(
+            "Could not load the PDF preview. Please try again.",
+            true
+          );
+        }
       }
 
       /* ---------------- FILE SELECTION ---------------- */
@@ -3410,7 +3464,7 @@
         });
       }
 
-      function handleSelectedFile(file) {
+      async function handleSelectedFile(file) {
         const isPDF =
           file &&
           (
@@ -3431,7 +3485,7 @@
           const file = pdfInput.files && pdfInput.files[0];
 
           if (file) {
-            handleSelectedFile(file);
+            await handleSelectedFile(file);
           }
         });
       }
@@ -3582,3 +3636,36 @@
 </body>
 
 </html>
+<style id="split-button-pill-final">
+/* Split button: match the Upload PDF File button */
+.editor-controls .primary-button {
+  border-radius: 999px !important;
+  background: #2563eb !important;
+  color: #ffffff !important;
+  border: none !important;
+  min-height: 46px;
+  padding: 12px 28px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.editor-controls .primary-button:hover:not(:disabled) {
+  background: #1d4ed8 !important;
+}
+
+.editor-controls .primary-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.editor-controls .button-row {
+  justify-content: center;
+}
+
+@media (max-width: 550px) {
+  .editor-controls .primary-button {
+    width: 100%;
+  }
+}
+</style>
