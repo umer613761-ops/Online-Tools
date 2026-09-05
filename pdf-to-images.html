@@ -2646,6 +2646,216 @@
 
 </style>
 
+
+<style id="convert-bottom-controls-final">
+/* =========================================================
+   CONVERT PDF CONTROLS — BOTTOM OF PREVIEW AREA
+   ========================================================= */
+
+.upload-area {
+  position: relative !important;
+  padding-bottom: 86px !important;
+  overflow: visible !important;
+}
+
+.upload-area > .editor-controls {
+  position: absolute !important;
+  left: 20px !important;
+  right: 20px !important;
+  bottom: 18px !important;
+  width: auto !important;
+  margin: 0 !important;
+  z-index: 60 !important;
+}
+
+.upload-area > .editor-controls.active {
+  display: block !important;
+}
+
+.upload-area > .editor-controls .button-row {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  flex-wrap: nowrap !important;
+}
+
+/* Format dropdown */
+.bottom-convert-format {
+  display: flex !important;
+  align-items: center !important;
+  flex: 0 0 auto !important;
+  gap: 6px !important;
+}
+
+.bottom-convert-format label {
+  margin: 0 !important;
+  color: #667588 !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+}
+
+.bottom-convert-format select,
+.upload-area #formatSelect {
+  width: 125px !important;
+  min-width: 125px !important;
+  height: 40px !important;
+  padding: 0 25px 0 10px !important;
+  border: 1px solid #ccd7e1 !important;
+  border-radius: 7px !important;
+  background: #ffffff !important;
+  color: #435365 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  outline: none !important;
+}
+
+/* Convert PDFs and Download */
+.upload-area > .editor-controls .primary-button {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 175px !important;
+  max-width: 205px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 0 15px !important;
+  border-radius: 7px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+}
+
+/* Keep Add More button fitted alongside them. */
+.upload-area > .editor-controls .secondary-button {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 105px !important;
+  height: 40px !important;
+  padding: 0 10px !important;
+  border-radius: 7px !important;
+  font-size: 11px !important;
+  white-space: nowrap !important;
+}
+
+/* Status remains above the bottom controls. */
+.upload-area > .editor-controls .status {
+  margin-top: 8px !important;
+}
+
+/* Dark mode */
+html.dark-mode .bottom-convert-format label {
+  color: #9aa8b7 !important;
+}
+
+html.dark-mode .bottom-convert-format select,
+html.dark-mode .upload-area #formatSelect {
+  background: #202c3b !important;
+  border-color: #3b4b5f !important;
+  color: #d6dee8 !important;
+}
+
+/* Tablet / smaller desktop: keep controls side-by-side, make them smaller. */
+@media (max-width: 900px) {
+  .upload-area > .editor-controls {
+    left: 14px !important;
+    right: 14px !important;
+    bottom: 14px !important;
+  }
+
+  .upload-area > .editor-controls .button-row {
+    gap: 6px !important;
+  }
+
+  .bottom-convert-format label {
+    display: none !important;
+  }
+
+  .bottom-convert-format select,
+  .upload-area #formatSelect {
+    width: 120px !important;
+    min-width: 120px !important;
+    height: 38px !important;
+  }
+
+  .upload-area > .editor-controls .primary-button {
+    min-width: 160px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    font-size: 11.5px !important;
+  }
+
+  .upload-area > .editor-controls .secondary-button {
+    min-width: 96px !important;
+    height: 38px !important;
+  }
+}
+
+/* Mobile: still side-by-side, with compact sizing. */
+@media (max-width: 550px) {
+  .upload-area {
+    padding-bottom: 82px !important;
+  }
+
+  .upload-area > .editor-controls {
+    left: 10px !important;
+    right: 10px !important;
+    bottom: 10px !important;
+  }
+
+  .upload-area > .editor-controls .button-row {
+    gap: 5px !important;
+  }
+
+  .bottom-convert-format select,
+  .upload-area #formatSelect {
+    width: 92px !important;
+    min-width: 92px !important;
+    height: 36px !important;
+    padding-left: 7px !important;
+    padding-right: 20px !important;
+    font-size: 11px !important;
+  }
+
+  .upload-area > .editor-controls .primary-button {
+    min-width: 145px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 8px !important;
+    font-size: 10.5px !important;
+  }
+
+  .upload-area > .editor-controls .secondary-button {
+    min-width: 78px !important;
+    height: 36px !important;
+    padding: 0 6px !important;
+    font-size: 10px !important;
+  }
+}
+
+/* Very narrow phones: hide Add More to preserve the requested
+   dropdown + Convert button side-by-side. */
+@media (max-width: 400px) {
+  .upload-area > .editor-controls .secondary-button {
+    display: none !important;
+  }
+
+  .bottom-convert-format select,
+  .upload-area #formatSelect {
+    width: 105px !important;
+    min-width: 105px !important;
+  }
+
+  .upload-area > .editor-controls .primary-button {
+    min-width: 170px !important;
+  }
+}
+</style>
+
 </head>
 
 
@@ -2936,14 +3146,9 @@
 
             </div>
 
-          </div>
+          
 
-
-          <!-- ======================================
-               CONTROLS
-          ====================================== -->
-
-          <div
+<div
             class="editor-controls"
             id="editorControls"
           >
@@ -2953,7 +3158,20 @@
 
               <!-- MERGE BUTTON -->
 
-              <button
+              
+              <div class="bottom-convert-format">
+                <label for="formatSelect">Convert PDF to</label>
+                <select id="formatSelect" aria-label="Convert PDF to">
+                  <option value="word">Word</option>
+                  <option value="excel">Excel</option>
+                  <option value="txt">TXT</option>
+                  <option value="powerpoint">PowerPoint</option>
+                  <option value="jpg">JPG</option>
+                  <option value="png">PNG</option>
+                </select>
+              </div>
+
+<button
                 class="primary-button"
                 id="mergeButton"
                 type="button"
@@ -2983,6 +3201,15 @@
             ></div>
 
           </div>
+
+</div>
+
+
+          <!-- ======================================
+               CONTROLS
+          ====================================== -->
+
+          
 
         </div>
 
@@ -3084,21 +3311,6 @@
   <!-- ========================================
        FOOTER
   ========================================= -->
-
-  
-      <div class="conversion-format-panel" style="margin-top:20px;">
-        <label for="formatSelect">Convert PDF to</label>
-        <select id="formatSelect">
-          <option value="word">Word</option>
-          <option value="excel">Excel</option>
-          <option value="txt">TXT</option>
-          <option value="powerpoint">PowerPoint</option>
-          <option value="jpg">JPG</option>
-          <option value="png">PNG</option>
-        </select>
-        <button id="convertPdfButton" class="primary-button" type="button">Convert PDF</button>
-      </div>
-
 <footer>
 
     <div class="footer-inner">
