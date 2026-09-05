@@ -2584,7 +2584,57 @@
       }
     }
 
-  </style>
+  
+
+    /* ========================================
+       MOBILE PREVIEW CONTROLS
+       Hidden until the first PDF is uploaded.
+       After upload: A-Z / Z-A above previews,
+       with the drag message below the previews.
+    ========================================= */
+    @media (max-width: 700px) {
+      .uploaded-files.active {
+        display: flex !important;
+        flex-direction: column;
+      }
+
+      .uploaded-files.active .uploaded-files-header {
+        display: contents !important;
+      }
+
+      .uploaded-files.active .sort-controls {
+        position: relative !important;
+        top: 9px !important;
+        right: auto !important;
+        order: 1;
+        align-self: flex-end;
+        margin-bottom: 9px !important;
+      }
+
+      .uploaded-files.active .pdf-grid {
+        order: 2;
+      }
+
+      .uploaded-files.active .drag-hint {
+        order: 3;
+        margin-top: 10px !important;
+        margin-bottom: 0 !important;
+        display: block !important;
+      }
+    }
+
+    @media (max-width: 550px) {
+      .uploaded-files.active .sort-controls {
+        top: 8px !important;
+        margin-bottom: 8px !important;
+      }
+
+      .uploaded-files.active .drag-hint {
+        margin-top: 9px !important;
+      }
+    }
+
+</style>
 
 </head>
 
