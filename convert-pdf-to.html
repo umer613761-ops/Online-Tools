@@ -903,6 +903,8 @@
     ======================================== */
 
     .pdf-preview {
+      position: relative;
+
       width: 150px;
 
       height: 190px;
@@ -3516,6 +3518,21 @@ html.dark-mode .theme-toggle .theme-icon {
 
       const preview = document.createElement("div");
       preview.className = "pdf-preview";
+
+      const removeButton = document.createElement("button");
+      removeButton.type = "button";
+      removeButton.className = "remove-button";
+      removeButton.setAttribute("aria-label", "Remove page " + i);
+      removeButton.setAttribute("title", "Remove");
+      removeButton.textContent = "×";
+
+      removeButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        card.remove();
+      });
+
+      preview.appendChild(removeButton);
 
       const canvas = document.createElement("canvas");
       canvas.width = Math.ceil(viewport.width);
