@@ -512,18 +512,22 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
       grid-column: 2;
     }
 
-    /* Image Tools: 3 columns */
+    /* Image Tools: 3 columns with a centered final row */
     .tools-grid.image-tools-three-columns {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
     }
 
-    .tools-grid .tool-card[data-category="image"] {
-      grid-column: span 1;
+    .tools-grid.image-tools-three-columns .tool-card[data-category="image"] {
+      grid-column: span 2;
     }
 
-    /* Center the last Image Tools card on the final row */
+    /* Center the final two Image Tools cards as a pair */
     .tools-grid.image-tools-three-columns .tool-card[data-category="image"]:nth-child(23) {
-      grid-column: 2;
+      grid-column: 2 / span 2;
+    }
+
+    .tools-grid.image-tools-three-columns .tool-card[data-category="image"]:nth-child(24) {
+      grid-column: 4 / span 2;
     }
 
     /* Text Tools: 3 columns */
@@ -1354,7 +1358,11 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
         grid-column: span 1;
       }
 
-      .tools-grid.image-tools-three-columns .tool-card[data-category="image"]:nth-child(23) {
+      .tools-grid.image-tools-three-columns {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .tools-grid.image-tools-three-columns .tool-card[data-category="image"] {
         grid-column: span 1;
       }
 
