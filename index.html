@@ -509,6 +509,11 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
       grid-column: span 1;
     }
 
+    /* Keep the six Text Tools cards in a 3-column / 2-row layout */
+    .tools-grid.text-tools-three-columns {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
 
     /* ========================================
        BLUE TOOL CARDS
@@ -2539,6 +2544,9 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
     const noResults =
       document.getElementById("noResults");
 
+    const toolsGrid =
+      document.getElementById("toolsGrid");
+
 
     /* ========================================
        CATEGORY CONTENT
@@ -2607,6 +2615,11 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
       pageDescription.textContent =
         content.description;
+
+      toolsGrid.classList.toggle(
+        "text-tools-three-columns",
+        filter === "text"
+      );
 
 
       let visibleCount = 0;
