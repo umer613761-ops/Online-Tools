@@ -512,6 +512,15 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
       grid-column: 2;
     }
 
+    /* Image Tools: 3 columns */
+    .tools-grid.image-tools-three-columns {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .tools-grid .tool-card[data-category="image"] {
+      grid-column: span 1;
+    }
+
     /* Text Tools: 3 columns */
     .tools-grid .tool-card[data-category="text"] {
       grid-column: span 1;
@@ -2634,6 +2643,11 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
       toolsGrid.classList.toggle(
         "pdf-tools-three-columns",
         filter === "pdf"
+      );
+
+      toolsGrid.classList.toggle(
+        "image-tools-three-columns",
+        filter === "image"
       );
 
 
