@@ -1,5 +1,5 @@
-
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -484,12 +484,130 @@
     }
 
 
+    /* ========================================
+       FOOTER
+    ======================================== */
+
+    footer {
+      background: #ffffff;
+
+      border-top:
+        1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .footer-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 24px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+
+      color: #7b8998;
+
+      font-size: 13px;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .footer-links {
+      display: flex;
+
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: #7b8998;
+
+      text-decoration: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: #326ba8;
+    }
+
+
+    /* ========================================
+       FOOTER DARK MODE
+    ======================================== */
+
+    html.dark-mode footer {
+      background: #171d25;
+      border-top-color: #293340;
+    }
+
+    html.dark-mode .footer-inner {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a:hover {
+      color: #6fa2d2;
+    }
+
+
+    /* ========================================
+       SYSTEM DARK MODE
+    ======================================== */
+
+    @media (prefers-color-scheme: dark) {
+
+      html:not(.light-mode) footer {
+        background: #171d25;
+        border-top-color: #293340;
+      }
+
+      html:not(.light-mode) .footer-inner {
+        color: #8d9aaa;
+      }
+
+      html:not(.light-mode) .footer-links a {
+        color: #8d9aaa;
+      }
+
+      html:not(.light-mode) .footer-links a:hover {
+        color: #6fa2d2;
+      }
+    }
+
+
+    /* ========================================
+       MOBILE FOOTER
+    ======================================== */
+
+    @media (max-width: 550px) {
+
+      .footer-inner {
+        flex-direction: column;
+
+        text-align: center;
+      }
+    }
+
+
   </style>
+
 </head>
 
-
 <body>
-
 
   <!-- ========================================
        HEADER
@@ -497,72 +615,73 @@
 
   <header class="top-header">
 
-    <div class="header-inner">
+```
+<div class="header-inner">
 
 
-      <!-- LOGO -->
+  <!-- LOGO -->
 
-      <a href="index.html" class="logo">
+  <a href="index.html" class="logo">
 
-        <span class="logo-icon">T</span>
+    <span class="logo-icon">T</span>
 
-        <span class="logo-text">
+    <span class="logo-text">
 
-          <span class="logo-tool">
-            Tool
-          </span>
+      <span class="logo-tool">
+        Tool
+      </span>
 
-          <span class="logo-nest">
-            NEST
-          </span>
+      <span class="logo-nest">
+        NEST
+      </span>
 
-        </span>
+    </span>
 
-      </a>
-
-
-      <!-- HEADER RIGHT SIDE -->
-
-      <div class="header-right">
+  </a>
 
 
-        <!-- SEARCH -->
+  <!-- HEADER RIGHT SIDE -->
 
-        <div class="header-search">
-
-          <input
-            type="text"
-            id="toolSearch"
-            placeholder="Search tools..."
-            autocomplete="off"
-          >
-
-          <span class="search-icon">
-            ⌕
-          </span>
-
-        </div>
+  <div class="header-right">
 
 
-        <!-- DARK MODE -->
+    <!-- SEARCH -->
 
-        <button
-          type="button"
-          class="theme-toggle"
-          id="themeToggle"
-          aria-label="Switch to dark mode"
-          title="Switch to dark mode"
-        >
-          🌙
-        </button>
+    <div class="header-search">
 
+      <input
+        type="text"
+        id="toolSearch"
+        placeholder="Search tools..."
+        autocomplete="off"
+      >
 
-      </div>
+      <span class="search-icon">
+        ⌕
+      </span>
 
     </div>
 
-  </header>
 
+    <!-- DARK MODE -->
+
+    <button
+      type="button"
+      class="theme-toggle"
+      id="themeToggle"
+      aria-label="Switch to dark mode"
+      title="Switch to dark mode"
+    >
+      🌙
+    </button>
+
+
+  </div>
+
+</div>
+```
+
+  </header>
 
   <!-- ========================================
        MAIN CATEGORY NAVIGATION
@@ -570,53 +689,54 @@
 
   <nav class="category-nav">
 
-    <div class="category-nav-inner">
+```
+<div class="category-nav-inner">
 
 
-      <a
-        href="index.html"
-        class="category-link"
-      >
-        Popular Tools
-      </a>
+  <a
+    href="index.html"
+    class="category-link"
+  >
+    Popular Tools
+  </a>
 
 
-      <a
-        href="index.html?category=pdf"
-        class="category-link active"
-      >
-        PDF Tools
-      </a>
+  <a
+    href="index.html?category=pdf"
+    class="category-link active"
+  >
+    PDF Tools
+  </a>
 
 
-      <a
-        href="index.html?category=text"
-        class="category-link"
-      >
-        Text Tools
-      </a>
+  <a
+    href="index.html?category=text"
+    class="category-link"
+  >
+    Text Tools
+  </a>
 
 
-      <a
-        href="index.html?category=image"
-        class="category-link"
-      >
-        Image Tools
-      </a>
+  <a
+    href="index.html?category=image"
+    class="category-link"
+  >
+    Image Tools
+  </a>
 
 
-      <a
-        href="index.html?category=calculator"
-        class="category-link"
-      >
-        Calculators
-      </a>
+  <a
+    href="index.html?category=calculator"
+    class="category-link"
+  >
+    Calculators
+  </a>
 
 
-    </div>
+</div>
+```
 
   </nav>
-
 
   <!-- ========================================
        EMPTY PAGE CONTENT
@@ -624,6 +744,43 @@
 
   <main></main>
 
+  <!-- ========================================
+       FOOTER
+  ========================================= -->
+
+  <footer>
+
+```
+<div class="footer-inner">
+
+  <div>
+    © 2026 ToolNest · Simple, Fast &amp; Free
+  </div>
+
+  <div class="footer-links">
+
+    <a href="#">
+      About
+    </a>
+
+    <a href="#">
+      Privacy
+    </a>
+
+    <a href="#">
+      Terms
+    </a>
+
+    <a href="#">
+      Contact
+    </a>
+
+  </div>
+
+</div>
+```
+
+  </footer>
 
   <!-- ========================================
        THEME SCRIPT
@@ -691,9 +848,6 @@
 
   </script>
 
-
 </body>
 
 </html>
-
-
