@@ -495,13 +495,21 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
 
     /* ========================================
-       FIRST TWO PDF CARDS
-       SPAN 2 COLUMNS EACH
+       PDF TOOLS
+       3 COLUMNS
     ======================================== */
 
-    .tools-grid .tool-card[data-category="pdf"]:nth-child(1),
-    .tools-grid .tool-card[data-category="pdf"]:nth-child(2) {
-      grid-column: span 2;
+    .tools-grid.pdf-tools-three-columns {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .tools-grid .tool-card[data-category="pdf"] {
+      grid-column: span 1;
+    }
+
+    /* Center the final PDF card */
+    .tools-grid .tool-card[data-category="pdf"]:nth-child(10) {
+      grid-column: 2;
     }
 
     /* Text Tools: 3 columns */
@@ -1277,9 +1285,16 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
           repeat(3, minmax(0, 1fr));
       }
 
-      .tools-grid .tool-card[data-category="pdf"]:nth-child(1),
-      .tools-grid .tool-card[data-category="pdf"]:nth-child(2) {
-        grid-column: span 3;
+      .tools-grid .tool-card[data-category="pdf"] {
+        grid-column: span 1;
+      }
+
+      .tools-grid .tool-card[data-category="pdf"]:nth-child(10) {
+        grid-column: span 1;
+      }
+
+      .tools-grid .tool-card[data-category="pdf"]:nth-child(10) {
+        grid-column: span 1;
       }
 
       .tools-grid .tool-card[data-category="text"] {
@@ -1317,9 +1332,8 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
           repeat(2, minmax(0, 1fr));
       }
 
-      .tools-grid .tool-card[data-category="pdf"]:nth-child(1),
-      .tools-grid .tool-card[data-category="pdf"]:nth-child(2) {
-        grid-column: span 2;
+      .tools-grid .tool-card[data-category="pdf"] {
+        grid-column: span 1;
       }
 
       .tools-grid .tool-card[data-category="text"] {
@@ -1375,6 +1389,10 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
       .tools-grid .tool-card[data-category="pdf"]:nth-child(1),
       .tools-grid .tool-card[data-category="pdf"]:nth-child(2) {
+        grid-column: span 1;
+      }
+
+      .tools-grid .tool-card[data-category="pdf"]:nth-child(10) {
         grid-column: span 1;
       }
 
@@ -2611,6 +2629,11 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
       toolsGrid.classList.toggle(
         "text-tools-three-columns",
         filter === "text"
+      );
+
+      toolsGrid.classList.toggle(
+        "pdf-tools-three-columns",
+        filter === "pdf"
       );
 
 
