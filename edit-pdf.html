@@ -1,75 +1,671 @@
-<!-- ========================================
-     HEADER
-========================================= -->
+<!DOCTYPE html>
+<html lang="en">
 
-<header class="top-header">
-  <div class="header-inner">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- LOGO -->
-    <a href="index.html" class="logo">
-      <span class="logo-icon">T</span>
-      <span class="logo-text">
-        <span class="logo-tool">Tool</span><span class="logo-nest">Nest</span>
-      </span>
-    </a>
+  <title>Edit PDF - ToolNest</title>
 
-    <!-- HEADER RIGHT SIDE -->
-    <div class="header-right">
+  <style>
+    /* ========================================
+       RESET
+    ======================================== */
 
-      <!-- SEARCH -->
-      <div class="header-search">
-        <input
-          type="text"
-          id="toolSearch"
-          placeholder="Search tools..."
-          autocomplete="off"
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: #f3f5f7;
+      color: #263548;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       HEADER
+    ======================================== */
+
+    .top-header {
+      width: 100%;
+
+      background: #ffffff;
+
+      border-bottom:
+        1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .header-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        10px 24px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 24px;
+    }
+
+
+    /* ========================================
+       LOGO
+    ======================================== */
+
+    .logo {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      text-decoration: none;
+
+      white-space: nowrap;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 9px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #3d78b6,
+          #245b96
+        );
+
+      color: #ffffff;
+
+      font-size: 16px;
+
+      font-weight: 800;
+
+      box-shadow:
+        0 3px 8px
+        rgba(43, 92, 150, 0.18);
+    }
+
+    .logo-text {
+      font-size: 22px;
+
+      letter-spacing: -0.6px;
+    }
+
+    .logo-tool {
+      color: #334155;
+
+      font-family:
+        "Brush Script MT",
+        "Brush Script Std",
+        cursive;
+
+      font-size: 32px;
+
+      font-weight: 400;
+
+      letter-spacing: 0;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .logo-nest {
+      color: #326ba8;
+
+      font-weight: 800;
+
+      transition:
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       HEADER RIGHT SIDE
+    ======================================== */
+
+    .header-right {
+      width: 100%;
+
+      max-width: 570px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: flex-end;
+
+      gap: 10px;
+    }
+
+
+    /* ========================================
+       SEARCH
+    ======================================== */
+
+    .header-search {
+      width: 100%;
+
+      max-width: 312px;
+
+      position: relative;
+    }
+
+    .header-search input {
+      width: 100%;
+
+      height: 40px;
+
+      padding:
+        0 44px 0 15px;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #344256;
+
+      font-size: 14px;
+
+      outline: none;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .header-search input::placeholder {
+      color: #8996a5;
+    }
+
+    .header-search input:focus {
+      background: #ffffff;
+
+      border-color: #7fa6cf;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.08);
+    }
+
+    .search-icon {
+      position: absolute;
+
+      right: 14px;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      color: #718096;
+
+      font-size: 19px;
+
+      pointer-events: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       DARK MODE TOGGLE
+    ======================================== */
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 0;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #526273;
+
+      cursor: pointer;
+
+      font-size: 18px;
+
+      line-height: 1;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      background: #edf2f7;
+
+      border-color: #c7d3df;
+
+      color: #326ba8;
+    }
+
+    .theme-toggle:active {
+      transform:
+        scale(0.94);
+    }
+
+
+    /* ========================================
+       CATEGORY NAVIGATION
+    ======================================== */
+
+    .category-nav {
+      background: #ffffff;
+
+      border-bottom:
+        1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .category-nav-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        0 24px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 30px;
+
+      overflow-x: auto;
+    }
+
+    .category-link {
+      position: relative;
+
+      display: flex;
+
+      align-items: center;
+
+      height: 46px;
+
+      color: #667588;
+
+      text-decoration: none;
+
+      font-size: 14px;
+
+      white-space: nowrap;
+
+      cursor: pointer;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .category-link:hover {
+      color: #2f67a3;
+    }
+
+    .category-link.active {
+      color: #263548;
+
+      font-weight: 600;
+    }
+
+    .category-link.active::after {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      right: 0;
+
+      bottom: 0;
+
+      height: 3px;
+
+      background: #326ba8;
+
+      border-radius:
+        3px 3px 0 0;
+    }
+
+
+    /* ========================================
+       EMPTY PAGE AREA
+    ======================================== */
+
+    .page-content {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 40px 24px;
+    }
+
+
+    /* ========================================
+       DARK MODE
+    ======================================== */
+
+    html.dark-mode body {
+      background: #11161d;
+      color: #e7edf4;
+    }
+
+    html.dark-mode .top-header {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .logo-tool {
+      color: #d7dee7;
+    }
+
+    html.dark-mode .logo-nest {
+      color: #5b95c9;
+    }
+
+    html.dark-mode .header-search input {
+      background: #202731;
+      border-color: #343f4c;
+      color: #edf2f7;
+    }
+
+    html.dark-mode .header-search input:focus {
+      background: #252d38;
+      border-color: #5f8fbd;
+    }
+
+    html.dark-mode .search-icon {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .theme-toggle {
+      background: #202731;
+      border-color: #343f4c;
+      color: #d7e1eb;
+    }
+
+    html.dark-mode .theme-toggle:hover {
+      background: #29323d;
+      border-color: #465463;
+      color: #7eb0df;
+    }
+
+    html.dark-mode .category-nav {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .category-link {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .category-link:hover {
+      color: #6fa2d2;
+    }
+
+    html.dark-mode .category-link.active {
+      color: #e8eef5;
+    }
+
+
+    /* ========================================
+       MOBILE
+    ======================================== */
+
+    @media (max-width: 700px) {
+
+      .header-inner {
+        padding:
+          9px 16px;
+      }
+
+      .header-search,
+      .theme-toggle {
+        display: none;
+      }
+
+      .header-right {
+        width: auto;
+        max-width: none;
+      }
+
+      .category-nav-inner {
+        padding:
+          0 16px;
+
+        gap: 22px;
+      }
+
+      .page-content {
+        padding:
+          30px 16px;
+      }
+    }
+  </style>
+</head>
+
+
+<body>
+
+  <!-- ========================================
+       HEADER
+  ========================================= -->
+
+  <header class="top-header">
+
+    <div class="header-inner">
+
+      <!-- LOGO -->
+      <a href="index.html" class="logo">
+
+        <span class="logo-icon">T</span>
+
+        <span class="logo-text">
+          <span class="logo-tool">Tool</span><span class="logo-nest">Nest</span>
+        </span>
+
+      </a>
+
+
+      <!-- HEADER RIGHT SIDE -->
+      <div class="header-right">
+
+        <!-- SEARCH -->
+        <div class="header-search">
+
+          <input
+            type="text"
+            id="toolSearch"
+            placeholder="Search tools..."
+            autocomplete="off"
+          >
+
+          <span class="search-icon">⌕</span>
+
+        </div>
+
+
+        <!-- DARK MODE -->
+        <button
+          type="button"
+          class="theme-toggle"
+          id="themeToggle"
+          aria-label="Toggle dark mode"
+          title="Toggle dark mode"
         >
-        <span class="search-icon">⌕</span>
-      </div>
+          ☾
+        </button>
 
-      <!-- DARK MODE TOGGLE -->
-      <button
-        type="button"
-        class="theme-toggle"
-        id="themeToggle"
-        aria-label="Toggle dark mode"
-        title="Toggle dark mode"
-      >
-        ☾
-      </button>
+      </div>
 
     </div>
 
-  </div>
-</header>
+  </header>
 
 
-<!-- ========================================
-     CATEGORY NAVIGATION
-========================================= -->
+  <!-- ========================================
+       MAIN CATEGORY NAVIGATION
+  ========================================= -->
 
-<nav class="category-nav">
-  <div class="category-nav-inner">
+  <nav class="category-nav">
 
-    <a href="index.html" class="category-link">
-      Popular Tools
-    </a>
+    <div class="category-nav-inner">
 
-    <a href="index.html?category=pdf" class="category-link active">
-      PDF Tools
-    </a>
+      <a
+        href="index.html"
+        class="category-link"
+      >
+        Popular Tools
+      </a>
 
-    <a href="index.html?category=text" class="category-link">
-      Text Tools
-    </a>
+      <a
+        href="index.html?category=pdf"
+        class="category-link active"
+      >
+        PDF Tools
+      </a>
 
-    <a href="index.html?category=image" class="category-link">
-      Image Tools
-    </a>
+      <a
+        href="index.html?category=text"
+        class="category-link"
+      >
+        Text Tools
+      </a>
 
-    <a href="index.html?category=calculator" class="category-link">
-      Calculators
-    </a>
+      <a
+        href="index.html?category=image"
+        class="category-link"
+      >
+        Image Tools
+      </a>
 
-  </div>
-</nav>
+      <a
+        href="index.html?category=calculator"
+        class="category-link"
+      >
+        Calculators
+      </a>
+
+    </div>
+
+  </nav>
+
+
+  <!-- ========================================
+       EMPTY CONTENT AREA
+       Edit PDF content will go here later.
+  ========================================= -->
+
+  <main class="page-content">
+  </main>
+
+
+  <!-- ========================================
+       THEME SCRIPT
+  ========================================= -->
+
+  <script>
+    const themeToggle =
+      document.getElementById("themeToggle");
+
+    function updateThemeIcon() {
+      if (
+        document.documentElement.classList.contains(
+          "dark-mode"
+        )
+      ) {
+        themeToggle.textContent = "☀";
+      } else {
+        themeToggle.textContent = "☾";
+      }
+    }
+
+    themeToggle.addEventListener(
+      "click",
+      function () {
+
+        const isDark =
+          document.documentElement.classList.toggle(
+            "dark-mode"
+          );
+
+        if (isDark) {
+
+          localStorage.setItem(
+            "toolnest-theme",
+            "dark"
+          );
+
+        } else {
+
+          localStorage.setItem(
+            "toolnest-theme",
+            "light"
+          );
+        }
+
+        updateThemeIcon();
+      }
+    );
+
+    updateThemeIcon();
+  </script>
+
+</body>
+</html>
