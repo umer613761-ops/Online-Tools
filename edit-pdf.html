@@ -388,6 +388,129 @@
 
 
     /* ========================================
+       PDF TOOL CATEGORY BAR
+    ======================================== */
+
+    .tool-category-bar {
+      width: 100%;
+
+      margin-bottom: 20px;
+
+      overflow-x: auto;
+      overflow-y: hidden;
+
+      padding:
+        2px 0;
+
+      scrollbar-width: thin;
+    }
+
+    .tool-category-list {
+      display: grid;
+
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+
+      align-items: center;
+
+      width: 100%;
+
+      gap: 8px;
+    }
+
+
+    /* ========================================
+       COMPACT PDF TOOL BUTTONS
+    ======================================== */
+
+    
+    .tool-category-link {
+      position: relative;
+
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-height: 32px;
+
+      padding:
+        0 13px;
+
+      background: #326ba8;
+
+      /*
+        Slightly stronger outline so the
+        pill buttons are clearly visible.
+      */
+      border:
+        1px solid #cfd8e2;
+
+      border-radius:  999px;
+
+      color: #ffffff;
+
+      text-decoration: none;
+
+      /*
+        Increased slightly from 11px
+        for better readability.
+      */
+      font-size: 12px;
+
+      font-weight: 600;
+
+      white-space: nowrap;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    
+    .tool-category-link:hover {
+      color: #326ba8;
+
+      border-color: #b9c9d9;
+
+      background: #f7fafd;
+
+      transform:
+        translateY(-1px);
+
+      box-shadow:
+        0 2px 6px
+        rgba(50, 107, 168, 0.08);
+    }
+
+    
+    .tool-category-link.active {
+      background: #326ba8;
+
+      border-color: #326ba8;
+
+      color: #ffffff;
+
+      box-shadow:
+        0 2px 6px
+        rgba(50, 107, 168, 0.14);
+    }
+
+    
+    .tool-category-link.active:hover {
+      background: #285b91;
+
+      border-color: #285b91;
+
+      color: #ffffff;
+    }
+
+
+
+
+    /* ========================================
        EMPTY PAGE AREA
     ======================================== */
 
@@ -962,7 +1085,94 @@
 
     <div style="display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 28px; align-items: start;">
 
-      <div></div>
+      <div>
+
+        <!-- ========================================
+             PDF TOOL NAVIGATION
+        ========================================= -->
+
+        <nav
+          class="tool-category-bar"
+          aria-label="PDF tools"
+        >
+
+          <div class="tool-category-list">
+
+            <a
+              href="merge-pdf.html"
+              class="tool-category-link"
+            >
+              Merge PDF
+            </a>
+
+            <a
+              href="split-pdf.html"
+              class="tool-category-link"
+            >
+              Split PDF
+            </a>
+
+            <a
+              href="edit-pdf.html"
+              class="tool-category-link active"
+            >
+              Edit PDF
+            </a>
+
+            <a
+              href="remove-pdf-pages.html"
+              class="tool-category-link"
+            >
+              Remove PDF Pages
+            </a>
+
+            <a
+              href="extract-pdf-pages.html"
+              class="tool-category-link"
+            >
+              Extract PDF Pages
+            </a>
+
+            <a
+              href="re-arrange-pdf-pages.html"
+              class="tool-category-link"
+            >
+              Re-arrange PDF Pages
+            </a>
+
+            <a
+              href="convert-from-pdf.html"
+              class="tool-category-link"
+            >
+              Convert from PDF
+            </a>
+
+            <a
+              href="convert-to-pdf.html"
+              class="tool-category-link"
+            >
+              Convert to PDF
+            </a>
+
+            <a
+              href="rotate-pdf.html"
+              class="tool-category-link"
+            >
+              Rotate PDF
+            </a>
+
+            <a
+              href="compress-pdf.html"
+              class="tool-category-link"
+            >
+              Compress PDF
+            </a>
+
+          </div>
+
+        </nav>
+
+      </div>
 
       <!-- ADVERTISEMENT -->
       <aside class="ad-column" aria-label="Advertisement">
