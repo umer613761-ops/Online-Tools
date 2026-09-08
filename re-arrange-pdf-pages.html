@@ -5,6 +5,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
+  <!-- ========================================
+       THEME INITIALIZATION
+       Prevents light-mode flash on page load
+  ========================================= -->
+
+  <script>
+
+    (function () {
+
+      const savedTheme =
+        localStorage.getItem("toolnest-theme");
+
+      if (savedTheme === "dark") {
+
+        document.documentElement.classList.add(
+          "dark-mode"
+        );
+
+      }
+
+      else if (savedTheme === "light") {
+
+        document.documentElement.classList.add(
+          "light-mode"
+        );
+
+      }
+
+    })();
+  </script>
+
   <title>Re-arrange PDF Pages - ToolNest</title>
 
   <style>
@@ -864,6 +896,243 @@
       color: #6fa2d2;
     }
 
+
+    /* ========================================
+       MANUAL DARK MODE
+    ======================================== */
+
+    html.dark-mode body {
+      background: #11161d;
+      color: #e7edf4;
+    }
+
+    html.dark-mode .top-header {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .logo-tool {
+      color: #d7dee7;
+    }
+
+    html.dark-mode .logo-nest {
+      color: #5b95c9;
+    }
+
+    html.dark-mode .header-search input {
+      background: #202731;
+      border-color: #343f4c;
+      color: #edf2f7;
+    }
+
+    html.dark-mode .header-search input::placeholder {
+      color: #8996a5;
+    }
+
+    html.dark-mode .header-search input:focus {
+      background: #252d38;
+      border-color: #5f8fbd;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(77, 138, 196, 0.14);
+    }
+
+    html.dark-mode .search-icon {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .theme-toggle {
+      background: #202731;
+      border-color: #343f4c;
+      color: #d7e1eb;
+    }
+
+    html.dark-mode .theme-toggle:hover {
+      background: #29323d;
+      border-color: #465463;
+      color: #7eb0df;
+    }
+
+    html.dark-mode .category-nav {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .category-link {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .category-link:hover {
+      color: #6fa2d2;
+    }
+
+    html.dark-mode .category-link.active {
+      color: #e8eef5;
+    }
+
+    html.dark-mode .tool-category-link {
+      background: #1b2735;
+      border-color: #354457;
+      color: #9aa7b6;
+    }
+
+    html.dark-mode .tool-category-link:hover {
+      color: #78a9d8;
+      border-color: #46627d;
+      background: #202f40;
+
+      box-shadow:
+        0 2px 6px
+        rgba(0, 0, 0, 0.20);
+    }
+
+    html.dark-mode .tool-category-link.active {
+      background: #326ba8;
+      border-color: #326ba8;
+      color: #ffffff;
+
+      box-shadow:
+        0 2px 6px
+        rgba(0, 0, 0, 0.28);
+    }
+
+    html.dark-mode .tool-category-link.active:hover {
+      background: #3a78b8;
+      border-color: #3a78b8;
+      color: #ffffff;
+    }
+
+    html.dark-mode .heading h1 {
+      color: #edf2f7;
+    }
+
+    html.dark-mode .heading p {
+      color: #9ca9b8;
+    }
+
+    html.dark-mode .tool-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 16px
+        rgba(0, 0, 0, 0.22);
+    }
+
+    html.dark-mode .upload-area {
+      background: #131e2b;
+      border-color: #52789c;
+    }
+
+    html.dark-mode .upload-area:hover {
+      background: #18283a;
+      border-color: #6b9bc6;
+    }
+
+    html.dark-mode .floating-upload-button {
+      background: #326ba8;
+      color: #ffffff;
+
+      box-shadow:
+        0 10px 26px
+        rgba(0, 0, 0, 0.32);
+    }
+
+    html.dark-mode .floating-upload-button:hover {
+      background: #3a78b8;
+
+      box-shadow:
+        0 13px 30px
+        rgba(0, 0, 0, 0.38);
+    }
+
+    html.dark-mode .drag-hint {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .pdf-preview {
+      background: #263444;
+      border-color: #435366;
+    }
+
+    html.dark-mode .pdf-name {
+      color: #dbe4ee;
+    }
+
+    html.dark-mode .secondary-button {
+      background: #202c3b;
+      border-color: #3b4b5f;
+      color: #d6dee8;
+    }
+
+    html.dark-mode .secondary-button:hover:not(:disabled) {
+      background: #293849;
+    }
+
+    html.dark-mode .status {
+      background: #172b3d;
+      border-color: #31516e;
+      color: #9fc0dd;
+    }
+
+    html.dark-mode .ad-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 18px
+        rgba(0, 0, 0, 0.18);
+    }
+
+    html.dark-mode .ad-label {
+      color: #778493;
+    }
+
+    html.dark-mode .sample-ad {
+      background:
+        linear-gradient(
+          135deg,
+          #202934,
+          #18212b
+        );
+
+      border-color: #354352;
+    }
+
+    html.dark-mode .sample-ad h3 {
+      color: #dce4ec;
+    }
+
+    html.dark-mode .sample-ad p {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .sample-ad-button {
+      background: #202731;
+      border-color: #455361;
+      color: #6fa2d2;
+    }
+
+    html.dark-mode footer {
+      background: #171d25;
+      border-top-color: #293340;
+    }
+
+    html.dark-mode .footer-inner {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a:hover {
+      color: #6fa2d2;
+    }
+
+
+    
 
     /* ========================================
        SYSTEM DARK MODE
