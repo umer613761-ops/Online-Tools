@@ -1683,6 +1683,14 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
     Image Tools
   </button>
 
+  <button
+    type="button"
+    class="category-link"
+    data-filter="calculator"
+  >
+    Calculators
+  </button>
+
 </div>
 
 
@@ -2656,7 +2664,14 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
        CURRENT FILTER
     ======================================== */
 
-    let currentFilter = "pdf";
+    const urlParams = new URLSearchParams(window.location.search);
+    const requestedCategory = urlParams.get("category");
+    const initialFilter =
+      categoryContent[requestedCategory]
+        ? requestedCategory
+        : "pdf";
+
+    let currentFilter = initialFilter;
 
 
     /* ========================================
@@ -2829,10 +2844,19 @@ content="ToolNest - Free online PDF, text, image and calculator tools. Simple, f
 
 
     /* ========================================
-       LOAD PDF TOOLS BY DEFAULT
+       LOAD SELECTED CATEGORY
     ======================================== */
 
-    applyFilter("pdf");
+    applyFilter(initialFilter);
+
+    navButtons.forEach(
+      function(button) {
+        button.classList.toggle(
+          "active",
+          button.dataset.filter === initialFilter
+        );
+      }
+    );
 
   </script>
 
