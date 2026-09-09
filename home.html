@@ -1,0 +1,2055 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>ToolNest - Free Online Tools</title>
+
+  <meta
+    name="description"
+    content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy-to-use tools for everyday tasks."
+  >
+
+  <style>
+
+    /* ========================================
+       RESET
+    ======================================== */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: #f3f5f7;
+      color: #263548;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       HEADER
+    ======================================== */
+
+    .top-header {
+      width: 100%;
+
+      background: #ffffff;
+
+      border-bottom:
+        1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .header-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        10px
+        24px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 24px;
+    }
+
+
+    /* ========================================
+       LOGO
+    ======================================== */
+
+    .logo {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      text-decoration: none;
+
+      white-space: nowrap;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 9px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #3d78b6,
+          #245b96
+        );
+
+      color: #ffffff;
+
+      font-size: 16px;
+      font-weight: 800;
+
+      box-shadow:
+        0 3px 8px
+        rgba(43, 92, 150, 0.18);
+    }
+
+    .logo-text {
+      font-size: 22px;
+
+      letter-spacing: -0.6px;
+    }
+
+    .logo-tool {
+      color: #334155;
+
+      font-family:
+        "Brush Script MT",
+        "Brush Script Std",
+        cursive;
+
+      font-size: 32px;
+
+      font-weight: 400;
+
+      letter-spacing: 0;
+    }
+
+    .logo-nest {
+      color: #326ba8;
+
+      font-weight: 800;
+    }
+
+
+    /* ========================================
+       HEADER RIGHT
+    ======================================== */
+
+    .header-right {
+      width: 100%;
+
+      max-width: 570px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: flex-end;
+
+      gap: 10px;
+    }
+
+
+    /* ========================================
+       SEARCH
+    ======================================== */
+
+    .header-search {
+      width: 100%;
+
+      max-width: 312px;
+
+      position: relative;
+    }
+
+    .header-search input {
+      width: 100%;
+
+      height: 40px;
+
+      padding:
+        0
+        44px
+        0
+        15px;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #344256;
+
+      font-size: 14px;
+
+      outline: none;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .header-search input::placeholder {
+      color: #8996a5;
+    }
+
+    .header-search input:focus {
+      background: #ffffff;
+
+      border-color: #7fa6cf;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.08);
+    }
+
+    .search-icon {
+      position: absolute;
+
+      right: 14px;
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      color: #718096;
+
+      font-size: 19px;
+
+      pointer-events: none;
+    }
+
+
+    /* ========================================
+       THEME TOGGLE
+    ======================================== */
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 0;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #526273;
+
+      cursor: pointer;
+
+      font-size: 18px;
+
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      background: #edf2f7;
+
+      border-color: #c7d3df;
+
+      color: #326ba8;
+    }
+
+
+    /* ========================================
+       NAVIGATION
+    ======================================== */
+
+    .category-nav {
+      background: #ffffff;
+
+      border-bottom:
+        1px solid #dfe5eb;
+    }
+
+    .category-nav-inner {
+      width: 100%;
+
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        0
+        24px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 30px;
+
+      overflow-x: auto;
+    }
+
+    .category-link {
+      position: relative;
+
+      display: flex;
+
+      align-items: center;
+
+      height: 46px;
+
+      padding: 0;
+
+      border: 0;
+
+      background: transparent;
+
+      font-family: inherit;
+
+      font-size: 14px;
+
+      color: #667588;
+
+      text-decoration: none;
+
+      white-space: nowrap;
+
+      cursor: pointer;
+    }
+
+    .category-link:hover {
+      color: #2f67a3;
+    }
+
+    .category-link.active {
+      color: #263548;
+
+      font-weight: 600;
+    }
+
+    .category-link.active::after {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      right: 0;
+
+      bottom: 0;
+
+      height: 3px;
+
+      background: #326ba8;
+
+      border-radius:
+        3px
+        3px
+        0
+        0;
+    }
+
+
+    /* ========================================
+       MAIN
+    ======================================== */
+
+    .page-wrapper {
+      width: 100%;
+
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        40px
+        24px
+        70px;
+    }
+
+
+    /* ========================================
+       HERO
+    ======================================== */
+
+    .hero {
+      text-align: center;
+
+      max-width: 850px;
+
+      margin:
+        0
+        auto
+        42px;
+    }
+
+    .hero h1 {
+      margin:
+        0
+        0
+        12px;
+
+      color: #263548;
+
+      font-size: 44px;
+
+      line-height: 1.15;
+
+      letter-spacing: -1.2px;
+    }
+
+    .hero h1 span {
+      color: #326ba8;
+    }
+
+    .hero p {
+      max-width: 680px;
+
+      margin:
+        0
+        auto;
+
+      color: #718096;
+
+      font-size: 17px;
+
+      line-height: 1.6;
+    }
+
+    .hero-search {
+      max-width: 650px;
+
+      margin:
+        26px
+        auto
+        0;
+
+      position: relative;
+    }
+
+    .hero-search input {
+      width: 100%;
+
+      height: 52px;
+
+      padding:
+        0
+        52px
+        0
+        18px;
+
+      border:
+        1px solid #d4dee8;
+
+      border-radius: 9px;
+
+      background: #ffffff;
+
+      color: #263548;
+
+      font-size: 15px;
+
+      outline: none;
+
+      box-shadow:
+        0 5px 18px
+        rgba(31, 45, 61, 0.06);
+    }
+
+    .hero-search input:focus {
+      border-color: #7fa6cf;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.08);
+    }
+
+    .hero-search-icon {
+      position: absolute;
+
+      right: 18px;
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      color: #718096;
+
+      font-size: 21px;
+
+      pointer-events: none;
+    }
+
+
+    /* ========================================
+       SECTION
+    ======================================== */
+
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-heading {
+      margin-bottom: 18px;
+    }
+
+    .section-heading h2 {
+      margin:
+        0
+        0
+        6px;
+
+      color: #263548;
+
+      font-size: 25px;
+
+      letter-spacing: -0.4px;
+    }
+
+    .section-heading p {
+      margin: 0;
+
+      color: #718096;
+
+      font-size: 14px;
+    }
+
+
+    /* ========================================
+       TOOLS GRID
+    ======================================== */
+
+    .tools-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(0, 1fr)
+        );
+
+      gap: 12px;
+    }
+
+    .tool-card {
+      min-height: 92px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      padding: 13px;
+
+      background: #285b91;
+
+      border:
+        1px solid #285b91;
+
+      border-radius: 9px;
+
+      text-decoration: none;
+
+      color: #ffffff;
+
+      box-shadow:
+        0 3px 10px
+        rgba(40, 91, 145, 0.20);
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .tool-card:hover {
+      transform:
+        translateY(-2px);
+
+      background: #326ba8;
+
+      border-color: #326ba8;
+
+      box-shadow:
+        0 7px 18px
+        rgba(50, 107, 168, 0.28);
+    }
+
+    .tool-icon {
+      width: 42px;
+      height: 42px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 9px;
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          0.14
+        );
+
+      color: #ffffff;
+
+      font-size: 18px;
+
+      font-weight: 600;
+    }
+
+    .tool-info {
+      min-width: 0;
+    }
+
+    .tool-info h3 {
+      margin:
+        0
+        0
+        4px;
+
+      color: #ffffff;
+
+      font-size: 14px;
+
+      font-weight: 700;
+    }
+
+    .tool-info p {
+      margin: 0;
+
+      color:
+        rgba(
+          255,
+          255,
+          255,
+          0.88
+        );
+
+      font-size: 11.5px;
+
+      line-height: 1.35;
+    }
+
+
+    /* ========================================
+       CATEGORY BOXES
+    ======================================== */
+
+    .category-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0, 1fr)
+        );
+
+      gap: 16px;
+    }
+
+    .category-box {
+      padding: 22px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #dce3ea;
+
+      border-radius: 10px;
+
+      text-decoration: none;
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .category-box:hover {
+      transform:
+        translateY(-2px);
+
+      border-color: #bfd0e0;
+
+      box-shadow:
+        0 7px 20px
+        rgba(31, 45, 61, 0.07);
+    }
+
+    .category-box-icon {
+      width: 42px;
+      height: 42px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      margin-bottom: 14px;
+
+      border-radius: 9px;
+
+      background: #edf4fb;
+
+      color: #326ba8;
+
+      font-size: 19px;
+    }
+
+    .category-box h3 {
+      margin:
+        0
+        0
+        7px;
+
+      color: #263548;
+
+      font-size: 17px;
+    }
+
+    .category-box p {
+      margin:
+        0
+        0
+        14px;
+
+      color: #718096;
+
+      font-size: 13px;
+
+      line-height: 1.5;
+    }
+
+    .category-box-link {
+      color: #326ba8;
+
+      font-size: 13px;
+
+      font-weight: 700;
+    }
+
+
+    /* ========================================
+       WHY TOOLNEST
+    ======================================== */
+
+    .why-section {
+      padding:
+        28px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #dce3ea;
+
+      border-radius: 10px;
+    }
+
+    .why-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(0, 1fr)
+        );
+
+      gap: 24px;
+    }
+
+    .why-item h3 {
+      margin:
+        0
+        0
+        7px;
+
+      color: #263548;
+
+      font-size: 16px;
+    }
+
+    .why-item p {
+      margin: 0;
+
+      color: #718096;
+
+      font-size: 13px;
+
+      line-height: 1.55;
+    }
+
+
+    /* ========================================
+       FOOTER
+    ======================================== */
+
+    footer {
+      background: #ffffff;
+
+      border-top:
+        1px solid #dfe5eb;
+    }
+
+    .footer-inner {
+      width: 100%;
+
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 24px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+
+      color: #7b8998;
+
+      font-size: 13px;
+    }
+
+    .footer-links {
+      display: flex;
+
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: #7b8998;
+
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: #326ba8;
+    }
+
+
+    /* ========================================
+       DARK MODE
+    ======================================== */
+
+    html.dark-mode body {
+      background: #11161d;
+
+      color: #e7edf4;
+    }
+
+    html.dark-mode .top-header,
+    html.dark-mode .category-nav,
+    html.dark-mode footer {
+      background: #171d25;
+
+      border-color: #293340;
+    }
+
+    html.dark-mode .logo-tool {
+      color: #d7dee7;
+    }
+
+    html.dark-mode .logo-nest {
+      color: #5b95c9;
+    }
+
+    html.dark-mode .header-search input {
+      background: #202731;
+
+      border-color: #343f4c;
+
+      color: #edf2f7;
+    }
+
+    html.dark-mode .header-search input:focus {
+      background: #252d38;
+    }
+
+    html.dark-mode .theme-toggle {
+      background: #202731;
+
+      border-color: #343f4c;
+
+      color: #d7e1eb;
+    }
+
+    html.dark-mode .category-link {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .category-link.active {
+      color: #e8eef5;
+    }
+
+    html.dark-mode .hero h1,
+    html.dark-mode .section-heading h2,
+    html.dark-mode .category-box h3,
+    html.dark-mode .why-item h3 {
+      color: #edf2f7;
+    }
+
+    html.dark-mode .hero p,
+    html.dark-mode .section-heading p,
+    html.dark-mode .category-box p,
+    html.dark-mode .why-item p {
+      color: #9ca9b8;
+    }
+
+    html.dark-mode .hero-search input {
+      background: #202731;
+
+      border-color: #343f4c;
+
+      color: #edf2f7;
+    }
+
+    html.dark-mode .category-box,
+    html.dark-mode .why-section {
+      background: #171d25;
+
+      border-color: #2e3946;
+    }
+
+    html.dark-mode .category-box-icon {
+      background: #202934;
+
+      color: #6fa2d2;
+    }
+
+    html.dark-mode .footer-inner,
+    html.dark-mode .footer-links a {
+      color: #8d9aaa;
+    }
+
+
+    /* ========================================
+       SYSTEM DARK MODE
+    ======================================== */
+
+    @media (prefers-color-scheme: dark) {
+
+      html:not(.light-mode) body {
+        background: #11161d;
+
+        color: #e7edf4;
+      }
+
+      html:not(.light-mode) .top-header,
+      html:not(.light-mode) .category-nav,
+      html:not(.light-mode) footer {
+        background: #171d25;
+
+        border-color: #293340;
+      }
+
+      html:not(.light-mode) .logo-tool {
+        color: #d7dee7;
+      }
+
+      html:not(.light-mode) .logo-nest {
+        color: #5b95c9;
+      }
+
+      html:not(.light-mode) .header-search input {
+        background: #202731;
+
+        border-color: #343f4c;
+
+        color: #edf2f7;
+      }
+
+      html:not(.light-mode) .theme-toggle {
+        background: #202731;
+
+        border-color: #343f4c;
+
+        color: #d7e1eb;
+      }
+
+      html:not(.light-mode) .category-link {
+        color: #9ba8b7;
+      }
+
+      html:not(.light-mode) .category-link.active {
+        color: #e8eef5;
+      }
+
+      html:not(.light-mode) .hero h1,
+      html:not(.light-mode) .section-heading h2,
+      html:not(.light-mode) .category-box h3,
+      html:not(.light-mode) .why-item h3 {
+        color: #edf2f7;
+      }
+
+      html:not(.light-mode) .hero p,
+      html:not(.light-mode) .section-heading p,
+      html:not(.light-mode) .category-box p,
+      html:not(.light-mode) .why-item p {
+        color: #9ca9b8;
+      }
+
+      html:not(.light-mode) .hero-search input {
+        background: #202731;
+
+        border-color: #343f4c;
+
+        color: #edf2f7;
+      }
+
+      html:not(.light-mode) .category-box,
+      html:not(.light-mode) .why-section {
+        background: #171d25;
+
+        border-color: #2e3946;
+      }
+
+      html:not(.light-mode) .category-box-icon {
+        background: #202934;
+
+        color: #6fa2d2;
+      }
+    }
+
+
+    /* ========================================
+       TABLET
+    ======================================== */
+
+    @media (max-width: 900px) {
+
+      .tools-grid {
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0, 1fr)
+          );
+      }
+
+      .why-grid {
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0, 1fr)
+          );
+      }
+    }
+
+
+    /* ========================================
+       MOBILE
+    ======================================== */
+
+    @media (max-width: 700px) {
+
+      .header-inner {
+        padding:
+          9px
+          16px;
+      }
+
+      .header-right {
+        max-width: 260px;
+      }
+
+      .category-nav-inner {
+        padding:
+          0
+          16px;
+
+        gap: 22px;
+      }
+
+      .page-wrapper {
+        padding:
+          30px
+          16px
+          50px;
+      }
+
+      .hero h1 {
+        font-size: 34px;
+      }
+
+      .hero p {
+        font-size: 15px;
+      }
+
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .category-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+    /* ========================================
+       SMALL MOBILE
+    ======================================== */
+
+    @media (max-width: 550px) {
+
+      .header-inner {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 10px;
+
+        padding:
+          10px
+          16px;
+      }
+
+      .logo {
+        align-self: flex-start;
+      }
+
+      .header-right {
+        max-width: none;
+
+        width: 100%;
+      }
+
+      .header-search {
+        max-width: none;
+      }
+
+      .hero h1 {
+        font-size: 30px;
+      }
+
+      .hero-search input {
+        height: 48px;
+      }
+
+      .tool-card {
+        min-height: 80px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+
+        text-align: center;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+
+        justify-content: center;
+      }
+    }
+
+  </style>
+
+
+  <!-- ========================================
+       THEME INITIALIZATION
+  ========================================= -->
+
+  <script>
+
+    (function () {
+
+      const savedTheme =
+        localStorage.getItem("toolnest-theme");
+
+      if (savedTheme === "dark") {
+
+        document.documentElement.classList.add(
+          "dark-mode"
+        );
+
+      }
+
+      else if (savedTheme === "light") {
+
+        document.documentElement.classList.add(
+          "light-mode"
+        );
+
+      }
+
+    })();
+
+  </script>
+
+</head>
+
+
+<body>
+
+
+  <!-- ========================================
+       HEADER
+  ========================================= -->
+
+  <header class="top-header">
+
+    <div class="header-inner">
+
+      <a
+        href="index.html"
+        class="logo"
+      >
+
+        <div class="logo-icon">
+          T
+        </div>
+
+        <div class="logo-text">
+
+          <span class="logo-tool">
+            Tool
+          </span>
+
+          <span class="logo-nest">
+            NEST
+          </span>
+
+        </div>
+
+      </a>
+
+
+      <div class="header-right">
+
+        <div class="header-search">
+
+          <input
+            type="text"
+            id="toolSearch"
+            placeholder="Search tools..."
+            aria-label="Search tools"
+          >
+
+          <span class="search-icon">
+            ⌕
+          </span>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="theme-toggle"
+          id="themeToggle"
+          aria-label="Switch to dark mode"
+          title="Switch to dark mode"
+        >
+          🌙
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ========================================
+       NAVIGATION
+  ========================================= -->
+
+  <nav class="category-nav">
+
+    <div class="category-nav-inner">
+
+      <a
+        href="index.html"
+        class="category-link active"
+      >
+        Home
+      </a>
+
+      <a
+        href="pdf-tools.html"
+        class="category-link"
+      >
+        PDF Tools
+      </a>
+
+      <a
+        href="text-tools.html"
+        class="category-link"
+      >
+        Text Tools
+      </a>
+
+      <a
+        href="image-tools.html"
+        class="category-link"
+      >
+        Image Tools
+      </a>
+
+    </div>
+
+  </nav>
+
+
+  <!-- ========================================
+       MAIN
+  ========================================= -->
+
+  <main class="page-wrapper">
+
+
+    <!-- ========================================
+         HERO
+    ========================================= -->
+
+    <section class="hero">
+
+      <h1>
+        Free Online Tools for
+        <span>Everyday Tasks</span>
+      </h1>
+
+      <p>
+        Simple, fast and easy-to-use tools for
+        PDFs, text and images. No complicated
+        software required.
+      </p>
+
+
+      <div class="hero-search">
+
+        <input
+          type="text"
+          id="heroSearch"
+          placeholder="What do you want to do?"
+          aria-label="Search ToolNest tools"
+        >
+
+        <span class="hero-search-icon">
+          ⌕
+        </span>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================
+         POPULAR TOOLS
+    ========================================= -->
+
+    <section class="section">
+
+      <div class="section-heading">
+
+        <h2>
+          Popular Tools
+        </h2>
+
+        <p>
+          Quick access to some of the most useful
+          ToolNest tools.
+        </p>
+
+      </div>
+
+
+      <div class="tools-grid" id="popularTools">
+
+
+        <a
+          href="merge-pdf.html"
+          class="tool-card"
+          data-name="Merge PDF"
+        >
+
+          <div class="tool-icon">
+            🔗
+          </div>
+
+          <div class="tool-info">
+
+            <h3>
+              Merge PDF
+            </h3>
+
+            <p>
+              Combine multiple PDF files into one.
+            </p>
+
+          </div>
+
+        </a>
+
+
+        <a
+          href="compress-pdf.html"
+          class="tool-card"
+          data-name="Compress PDF"
+        >
+
+          <div class="tool-icon">
+            ⇊
+          </div>
+
+          <div class="tool-info">
+
+            <h3>
+              Compress PDF
+            </h3>
+
+            <p>
+              Reduce PDF file size quickly.
+            </p>
+
+          </div>
+
+        </a>
+
+
+        <a
+          href="word-character-counter.html"
+          class="tool-card"
+          data-name="Word and Character Counter"
+        >
+
+          <div class="tool-icon">
+            🔤
+          </div>
+
+          <div class="tool-info">
+
+            <h3>
+              Word &amp; Character Counter
+            </h3>
+
+            <p>
+              Count words, characters and more.
+            </p>
+
+          </div>
+
+        </a>
+
+
+        <a
+          href="case-converter.html"
+          class="tool-card"
+          data-name="Case Converter"
+        >
+
+          <div class="tool-icon">
+            Aa
+          </div>
+
+          <div class="tool-info">
+
+            <h3>
+              Case Converter
+            </h3>
+
+            <p>
+              Convert text into different cases.
+            </p>
+
+          </div>
+
+        </a>
+
+
+        <a
+          href="image-compressor.html"
+          class="tool-card"
+          data-name="Image Compressor"
+        >
+
+          <div class="tool-icon">
+            🗜
+          </div>
+
+          <div class="tool-info">
+
+            <h3>
+              Image Compressor
+            </h3>
+
+            <p>
+              Reduce image file size quickly.
+            </p>
+
+          </div>
+
+        </a>
+
+
+        <a
+          href="image-converter.html"
+          class="tool-card"
+          data-name="Image Converter"
+        >
+
+          <div class="tool-icon">
+            🔄
+          </div>
+
+          <div class="tool-info">
+
+            <h3>
+              Image Converter
+            </h3>
+
+            <p>
+              Convert images between formats.
+            </p>
+
+          </div>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================
+         CATEGORIES
+    ========================================= -->
+
+    <section class="section">
+
+      <div class="section-heading">
+
+        <h2>
+          Explore Tool Categories
+        </h2>
+
+        <p>
+          Find the right tool for your task.
+        </p>
+
+      </div>
+
+
+      <div class="category-grid">
+
+
+        <a
+          href="pdf-tools.html"
+          class="category-box"
+        >
+
+          <div class="category-box-icon">
+            📄
+          </div>
+
+          <h3>
+            PDF Tools
+          </h3>
+
+          <p>
+            Merge, split, edit, convert, rotate,
+            compress and manage your PDF documents.
+          </p>
+
+          <span class="category-box-link">
+            Explore PDF Tools →
+          </span>
+
+        </a>
+
+
+        <a
+          href="text-tools.html"
+          class="category-box"
+        >
+
+          <div class="category-box-icon">
+            🔤
+          </div>
+
+          <h3>
+            Text Tools
+          </h3>
+
+          <p>
+            Count, convert, clean and manipulate
+            text quickly and easily.
+          </p>
+
+          <span class="category-box-link">
+            Explore Text Tools →
+          </span>
+
+        </a>
+
+
+        <a
+          href="image-tools.html"
+          class="category-box"
+        >
+
+          <div class="category-box-icon">
+            🖼
+          </div>
+
+          <h3>
+            Image Tools
+          </h3>
+
+          <p>
+            Compress, convert, resize, crop and
+            improve your images online.
+          </p>
+
+          <span class="category-box-link">
+            Explore Image Tools →
+          </span>
+
+        </a>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================
+         WHY TOOLNEST
+    ========================================= -->
+
+    <section class="section">
+
+      <div class="section-heading">
+
+        <h2>
+          Why Use ToolNest?
+        </h2>
+
+        <p>
+          Built to make everyday file and text
+          tasks easier.
+        </p>
+
+      </div>
+
+
+      <div class="why-section">
+
+        <div class="why-grid">
+
+
+          <div class="why-item">
+
+            <h3>
+              Fast &amp; Simple
+            </h3>
+
+            <p>
+              Get your task done without unnecessary
+              steps or complicated software.
+            </p>
+
+          </div>
+
+
+          <div class="why-item">
+
+            <h3>
+              Free to Use
+            </h3>
+
+            <p>
+              ToolNest provides useful online tools
+              without requiring expensive software.
+            </p>
+
+          </div>
+
+
+          <div class="why-item">
+
+            <h3>
+              Easy Access
+            </h3>
+
+            <p>
+              Use ToolNest tools directly from your
+              browser on desktop, tablet or mobile.
+            </p>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+
+  <!-- ========================================
+       FOOTER
+  ========================================= -->
+
+  <footer>
+
+    <div class="footer-inner">
+
+      <div>
+        © 2026 ToolNest · Simple, Fast &amp; Free
+      </div>
+
+      <div class="footer-links">
+
+        <a href="#">
+          About
+        </a>
+
+        <a href="#">
+          Privacy
+        </a>
+
+        <a href="#">
+          Terms
+        </a>
+
+        <a href="#">
+          Contact
+        </a>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- ========================================
+       JAVASCRIPT
+  ========================================= -->
+
+  <script>
+
+    /* ========================================
+       THEME TOGGLE
+    ======================================== */
+
+    const themeToggle =
+      document.getElementById("themeToggle");
+
+
+    function updateThemeButton() {
+
+      const isDark =
+        document.documentElement.classList.contains(
+          "dark-mode"
+        );
+
+      if (isDark) {
+
+        themeToggle.textContent = "☀";
+
+        themeToggle.setAttribute(
+          "aria-label",
+          "Switch to light mode"
+        );
+
+        themeToggle.setAttribute(
+          "title",
+          "Switch to light mode"
+        );
+
+      }
+
+      else {
+
+        themeToggle.textContent = "🌙";
+
+        themeToggle.setAttribute(
+          "aria-label",
+          "Switch to dark mode"
+        );
+
+        themeToggle.setAttribute(
+          "title",
+          "Switch to dark mode"
+        );
+
+      }
+
+    }
+
+
+    function setTheme(theme) {
+
+      if (theme === "dark") {
+
+        document.documentElement.classList.add(
+          "dark-mode"
+        );
+
+        document.documentElement.classList.remove(
+          "light-mode"
+        );
+
+        localStorage.setItem(
+          "toolnest-theme",
+          "dark"
+        );
+
+      }
+
+      else {
+
+        document.documentElement.classList.remove(
+          "dark-mode"
+        );
+
+        document.documentElement.classList.add(
+          "light-mode"
+        );
+
+        localStorage.setItem(
+          "toolnest-theme",
+          "light"
+        );
+
+      }
+
+      updateThemeButton();
+
+    }
+
+
+    themeToggle.addEventListener(
+      "click",
+      function () {
+
+        const isDark =
+          document.documentElement.classList.contains(
+            "dark-mode"
+          );
+
+        if (isDark) {
+
+          setTheme("light");
+
+        }
+
+        else {
+
+          setTheme("dark");
+
+        }
+
+      }
+    );
+
+
+    updateThemeButton();
+
+
+    /* ========================================
+       TOOL SEARCH
+    ======================================== */
+
+    const headerSearch =
+      document.getElementById("toolSearch");
+
+    const heroSearch =
+      document.getElementById("heroSearch");
+
+    const popularTools =
+      document.querySelectorAll(
+        "#popularTools .tool-card"
+      );
+
+
+    function searchTools(value) {
+
+      const searchTerm =
+        value
+          .trim()
+          .toLowerCase();
+
+      if (searchTerm === "") {
+
+        popularTools.forEach(
+          function (card) {
+
+            card.style.display = "flex";
+
+          }
+        );
+
+        return;
+
+      }
+
+
+      popularTools.forEach(
+        function (card) {
+
+          const name =
+            card.dataset.name
+              .toLowerCase();
+
+          const description =
+            card
+              .querySelector("p")
+              .textContent
+              .toLowerCase();
+
+          if (
+            name.includes(searchTerm) ||
+            description.includes(searchTerm)
+          ) {
+
+            card.style.display = "flex";
+
+          }
+
+          else {
+
+            card.style.display = "none";
+
+          }
+
+        }
+      );
+
+    }
+
+
+    headerSearch.addEventListener(
+      "input",
+      function () {
+
+        heroSearch.value =
+          headerSearch.value;
+
+        searchTools(
+          headerSearch.value
+        );
+
+      }
+    );
+
+
+    heroSearch.addEventListener(
+      "input",
+      function () {
+
+        headerSearch.value =
+          heroSearch.value;
+
+        searchTools(
+          heroSearch.value
+        );
+
+      }
+    );
+
+
+    /* ========================================
+       ENTER KEY SEARCH
+    ======================================== */
+
+    heroSearch.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          const searchTerm =
+            heroSearch.value
+              .trim()
+              .toLowerCase();
+
+          if (!searchTerm) {
+            return;
+          }
+
+
+          const matchingTool =
+            Array.from(
+              popularTools
+            ).find(
+              function (card) {
+
+                const name =
+                  card.dataset.name
+                    .toLowerCase();
+
+                return name.includes(
+                  searchTerm
+                );
+
+              }
+            );
+
+
+          if (matchingTool) {
+
+            matchingTool.click();
+
+          }
+
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+
+</html>
+```
