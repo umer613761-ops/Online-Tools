@@ -2649,6 +2649,177 @@
 
 </style>
 
+<style>
+/* ToolNest: compact tool-category buttons only. Dimensions intentionally unchanged. */
+.tool-category-link {
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  background: linear-gradient(135deg, #ffffff 0%, #fbfdff 100%) !important;
+  border: 1px solid #dce7f0 !important;
+  border-radius: 9px !important;
+  color: #102c52 !important;
+  box-shadow: 0 3px 9px rgba(38, 67, 96, 0.08) !important;
+  text-decoration: none !important;
+  transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease !important;
+}
+
+.tool-category-link::after {
+  content: "" !important;
+  position: absolute !important;
+  width: 82px !important;
+  height: 82px !important;
+  right: -42px !important;
+  bottom: -55px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, rgba(103,151,255,.10), rgba(185,111,255,.08)) !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+.tool-category-link:hover {
+  background: #ffffff !important;
+  border-color: #c7d9e8 !important;
+  color: #102c52 !important;
+  box-shadow: 0 5px 12px rgba(38, 67, 96, 0.11) !important;
+  transform: translateY(-1px) !important;
+}
+
+.tool-category-link.active {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fbff 100%) !important;
+  border-color: #cfddea !important;
+  color: #102c52 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 10px rgba(38, 67, 96, 0.10) !important;
+}
+
+.tool-category-link.active::after {
+  background: linear-gradient(135deg, rgba(255, 90, 103, .10), rgba(125, 101, 255, .08)) !important;
+}
+
+/* Keep these compact buttons light in dark mode too. */
+html.dark-mode .tool-category-link,
+html.dark-mode .tool-category-link.active {
+  background: linear-gradient(135deg, #ffffff 0%, #fbfdff 100%) !important;
+  border-color: #dce7f0 !important;
+  color: #102c52 !important;
+  box-shadow: 0 3px 9px rgba(38, 67, 96, 0.08) !important;
+}
+
+html.dark-mode .tool-category-link:hover {
+  background: #ffffff !important;
+  border-color: #c7d9e8 !important;
+  color: #102c52 !important;
+}
+
+/* Pastel accents, matching the approved tool-card visual language. */
+.tool-category-link[href*="merge-pdf"],
+.tool-category-link[href*="remove-pdf-pages"],
+.tool-category-link[href*="image-to-png"] { }
+
+.tool-category-link[href*="merge-pdf"]::after,
+.tool-category-link[href*="remove-pdf-pages"]::after {
+  background: linear-gradient(135deg, rgba(255,90,103,.11), rgba(255,145,178,.09)) !important;
+}
+.tool-category-link[href*="split-pdf"]::after,
+.tool-category-link[href*="compress-pdf"]::after {
+  background: linear-gradient(135deg, rgba(255,158,70,.11), rgba(255,209,154,.09)) !important;
+}
+.tool-category-link[href*="edit-pdf"]::after,
+.tool-category-link[href*="extract-pdf-pages"]::after {
+  background: linear-gradient(135deg, rgba(126,92,255,.11), rgba(205,170,255,.09)) !important;
+}
+.tool-category-link[href*="convert-from-pdf"]::after,
+.tool-category-link[href*="image-compressor"]::after {
+  background: linear-gradient(135deg, rgba(52,213,150,.11), rgba(111,229,177,.09)) !important;
+}
+.tool-category-link[href*="convert-to-pdf"]::after,
+.tool-category-link[href*="image-converter"]::after {
+  background: linear-gradient(135deg, rgba(54,161,255,.10), rgba(154,194,255,.08)) !important;
+}
+.tool-category-link[href*="re-arrange-pdf-pages"]::after,
+.tool-category-link[href*="image-cropper"]::after {
+  background: linear-gradient(135deg, rgba(190,92,255,.10), rgba(228,176,255,.08)) !important;
+}
+.tool-category-link[href*="rotate-pdf"]::after,
+.tool-category-link[href*="image-rotator"]::after {
+  background: linear-gradient(135deg, rgba(54,137,255,.10), rgba(125,188,255,.08)) !important;
+}
+.tool-category-link[href*="image-resizer"]::after {
+  background: linear-gradient(135deg, rgba(255,178,35,.11), rgba(255,220,140,.09)) !important;
+}
+.tool-category-link[href*="blur-censorship-tool"]::after,
+.tool-category-link[href*="case-converter"]::after {
+  background: linear-gradient(135deg, rgba(218,72,255,.10), rgba(247,174,255,.08)) !important;
+}
+.tool-category-link[href*="image-upscaler"]::after,
+.tool-category-link[href*="reading-time-estimator"]::after {
+  background: linear-gradient(135deg, rgba(83,193,255,.10), rgba(173,218,255,.08)) !important;
+}
+.tool-category-link[href*="remove-background"]::after,
+.tool-category-link[href*="find-and-replace"]::after {
+  background: linear-gradient(135deg, rgba(255,77,155,.10), rgba(255,166,211,.08)) !important;
+}
+.tool-category-link[href*="remove-extra-spaces"]::after,
+.tool-category-link[href*="remove-duplicate-lines"]::after {
+  background: linear-gradient(135deg, rgba(33,205,189,.10), rgba(125,236,223,.08)) !important;
+}
+
+</style>
+
+<style>
+/* ToolNest: colored end accents for existing pill buttons only.
+   Dimensions are unchanged; tool cards are not modified. */
+.tool-category-link::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 6px !important;
+  bottom: 6px !important;
+  width: 3px !important;
+  border-radius: 0 4px 4px 0 !important;
+  background: #6b7cff !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+/* PDF tools */
+.tool-category-link[href*="merge-pdf"]::before,
+.tool-category-link[href*="remove-pdf-pages"]::before,
+.tool-category-link[href*="extract-pdf-pages"]::before,
+.tool-category-link[href*="edit-pdf"]::before,
+.tool-category-link[href*="rotate-pdf"]::before,
+.tool-category-link[href*="compress-pdf"]::before,
+.tool-category-link[href*="convert-to-pdf"]::before,
+.tool-category-link[href*="convert-from-pdf"]::before,
+.tool-category-link[href*="re-arrange-pdf-pages"]::before {
+  background: linear-gradient(#ff5a67, #ff8a9a) !important;
+}
+
+/* Text tools */
+.tool-category-link[href*="case-converter"]::before,
+.tool-category-link[href*="word-character-counter"]::before,
+.tool-category-link[href*="find-and-replace"]::before,
+.tool-category-link[href*="reading-time-estimator"]::before,
+.tool-category-link[href*="remove-extra-spaces"]::before,
+.tool-category-link[href*="remove-duplicate-lines"]::before {
+  background: linear-gradient(#b15cff, #6f8cff) !important;
+}
+
+/* Image tools */
+.tool-category-link[href*="image-compressor"]::before,
+.tool-category-link[href*="image-converter"]::before,
+.tool-category-link[href*="image-cropper"]::before,
+.tool-category-link[href*="image-resizer"]::before,
+.tool-category-link[href*="image-rotator"]::before,
+.tool-category-link[href*="image-upscaler"]::before,
+.tool-category-link[href*="background-remover"]::before,
+.tool-category-link[href*="remove-background"]::before,
+.tool-category-link[href*="blur-censorship-tool"]::before {
+  background: linear-gradient(#28cfa0, #48a9ff) !important;
+}
+</style>
+
 </head>
 
 
