@@ -1658,29 +1658,29 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
     Home
   </a>
 
-  <button
-    type="button"
+  <a
+    href="index.html?category=pdf"
     class="category-link active"
     data-filter="pdf"
   >
     PDF Tools
-  </button>
+  </a>
 
-  <button
-    type="button"
+  <a
+    href="index.html?category=text"
     class="category-link"
     data-filter="text"
   >
     Text Tools
-  </button>
+  </a>
 
-  <button
-    type="button"
+  <a
+    href="index.html?category=image"
     class="category-link"
     data-filter="image"
   >
     Image Tools
-  </button>
+  </a>
 
 </div>
 
@@ -2780,7 +2780,9 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
           "click",
           function(event) {
 
-            if (this.tagName === "A" && this.getAttribute("href")) {
+            const filter = this.dataset.filter;
+
+            if (!filter) {
               return;
             }
 
@@ -2788,26 +2790,57 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
 
             navButtons.forEach(
               function(item) {
-
-                item.classList.remove(
-                  "active"
-                );
-
+                item.classList.remove("active");
               }
             );
 
-
-            this.classList.add(
-              "active"
-            );
-
+            this.classList.add("active");
 
             searchInput.value = "";
 
-            applyFilter(
-              this.dataset.filter
+            applyFilter(filter);
+
+            /* Keep the selected category in the URL so
+               refreshing the page stays on that category. */
+            const newUrl =
+              "index.html?category=" +
+              encodeURIComponent(filter);
+
+            window.history.pushState(
+              { category: filter },
+              "",
+              newUrl
             );
 
+          }
+        );
+
+      }
+    );
+
+    /* Handle browser Back / Forward buttons. */
+    window.addEventListener(
+      "popstate",
+      function() {
+
+        const params =
+          new URLSearchParams(window.location.search);
+
+        const filter =
+          categoryContent[params.get("category")]
+            ? params.get("category")
+            : "pdf";
+
+        searchInput.value = "";
+
+        applyFilter(filter);
+
+        navButtons.forEach(
+          function(button) {
+            button.classList.toggle(
+              "active",
+              button.dataset.filter === filter
+            );
           }
         );
 

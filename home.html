@@ -2270,23 +2270,91 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
     const popularTools =
       Array.from(document.querySelectorAll("#popularTools .home-tool-card"));
 
+    const searchResults =
+      document.getElementById("homeSearchResults");
+
+    const searchMessage =
+      document.getElementById("homeSearchMessage");
+
+    /*
+       Keep this list in sync with the tools available on index.html.
+       Search is intentionally independent of the Popular Tools section,
+       so every ToolNest tool can be found from the homepage.
+    */
+    const allTools = [
+      ["merge-pdf.html", "Merge PDF", "Combine multiple PDF files into one.", "🔗"],
+      ["split-pdf.html", "Split PDF", "Split pages from your PDF file.", "✂"],
+      ["edit-pdf.html", "Edit PDF", "Edit and modify your PDF document.", "✎"],
+      ["remove-pdf-pages.html", "Remove PDF Pages", "Remove unwanted pages from your PDF.", "✕"],
+      ["extract-pdf-pages.html", "Extract PDF Pages", "Extract selected pages from your PDF.", "↗"],
+      ["re-arrange-pdf-pages.html", "Re-arrange PDF Pages", "Reorder PDF pages quickly and easily.", "↕"],
+      ["convert-from-pdf.html", "Convert from PDF", "Convert PDF files into other formats.", "⇄"],
+      ["convert-to-pdf.html", "Convert to PDF", "Convert files and documents to PDF.", "📄"],
+      ["rotate-pdf.html", "Rotate PDF", "Rotate PDF pages to the correct orientation.", "↻"],
+      ["compress-pdf.html", "Compress PDF", "Reduce PDF file size quickly and easily.", "⇊"],
+      ["word-character-counter.html", "Word and Character Counter", "Count words, characters and more.", "🔤"],
+      ["reading-time-estimator.html", "Reading Time Estimator", "Estimate how long it takes to read your text.", "⏱"],
+      ["case-converter.html", "Case Converter", "Convert text into different cases.", "Aa"],
+      ["remove-extra-spaces.html", "Remove Extra Spaces", "Remove unnecessary spaces from your text.", "␠"],
+      ["remove-duplicate-lines.html", "Remove Duplicate Lines", "Find and remove duplicate lines from text.", "≡"],
+      ["find-and-replace.html", "Find and Replace", "Find text and replace it quickly and easily.", "⌕"],
+      ["image-compressor.html", "Image Compressor", "Reduce image file size quickly.", "🗜"],
+      ["image-converter.html", "Image Converter", "Convert images between formats.", "🔄"],
+      ["image-cropper.html", "Image Cropper", "Crop images to the size and shape you need.", "✂"],
+      ["image-resizer.html", "Image Resizer", "Resize images to your desired dimensions.", "↔"],
+      ["image-rotator.html", "Image Rotator", "Rotate images to the correct orientation.", "↻"],
+      ["blur-censorship-tool.html", "Blur / Censorship Tool", "Blur or censor selected areas of an image.", "◌"],
+      ["image-upscaler.html", "Image Upscaler", "Increase image resolution and improve quality.", "↗"],
+      ["background-remover.html", "Background Remover", "Remove backgrounds from images quickly.", "✦"],
+    ];
+
+    function renderSearchResults(matches) {
+      searchResults.innerHTML = `
+        <div class="home-section-heading">
+          <h2>Search Results</h2>
+          <p id="homeSearchMessage"></p>
+        </div>
+        <div class="home-tools-grid">
+          ${matches.map(function (tool) {
+            return `
+              <a href="${tool[0]}" class="home-tool-card" data-name="${tool[1]}">
+                <div class="home-tool-icon">${tool[3]}</div>
+                <div class="home-tool-info">
+                  <h3>${tool[1]}</h3>
+                  <p>${tool[2]}</p>
+                </div>
+              </a>`;
+          }).join("")}
+        </div>`;
+
+      searchResults.classList.add("visible");
+      searchResults.querySelector("#homeSearchMessage").textContent =
+        matches.length === 1
+          ? "1 matching tool found."
+          : `${matches.length} matching tools found.`;
+    }
+
     function performSearch(value) {
       const searchTerm = value.trim().toLowerCase();
 
+      if (!searchTerm) {
+        popularTools.forEach(function (card) {
+          card.style.display = "flex";
+        });
+        searchResults.classList.remove("visible");
+        return;
+      }
+
       popularTools.forEach(function (card) {
-        const name =
-          card.dataset.name.toLowerCase();
-
-        const description =
-          card.querySelector("p").textContent.toLowerCase();
-
-        const matches =
-          searchTerm === "" ||
-          name.includes(searchTerm) ||
-          description.includes(searchTerm);
-
-        card.style.display = matches ? "flex" : "none";
+        card.style.display = "none";
       });
+
+      const matches = allTools.filter(function (tool) {
+        return tool[1].toLowerCase().includes(searchTerm) ||
+               tool[2].toLowerCase().includes(searchTerm);
+      });
+
+      renderSearchResults(matches);
     }
 
     headerSearch.addEventListener("input", function () {
@@ -2299,24 +2367,32 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
       performSearch(heroSearch.value);
     });
 
-    heroSearch.addEventListener("keydown", function (event) {
-      if (event.key !== "Enter") {
-        return;
-      }
-
-      const searchTerm =
-        heroSearch.value.trim().toLowerCase();
+    function openFirstSearchResult() {
+      const searchTerm = heroSearch.value.trim().toLowerCase();
 
       if (!searchTerm) {
         return;
       }
 
-      const matchingTool = popularTools.find(function (card) {
-        return card.dataset.name.toLowerCase().includes(searchTerm);
+      const matchingTool = allTools.find(function (tool) {
+        return tool[1].toLowerCase().includes(searchTerm) ||
+               tool[2].toLowerCase().includes(searchTerm);
       });
 
       if (matchingTool) {
-        window.location.href = matchingTool.href;
+        window.location.href = matchingTool[0];
+      }
+    }
+
+    heroSearch.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        openFirstSearchResult();
+      }
+    });
+
+    headerSearch.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        openFirstSearchResult();
       }
     });
 
