@@ -2097,6 +2097,10 @@ html.dark-mode .tool-info h2, html.dark-mode .home-tool-info h3 { color: #f2f6fb
 html.dark-mode .tool-info p, html.dark-mode .home-tool-info p { color: #aebdcb !important; }
 html.dark-mode .home-tool-card[data-popular="true"]::before { background:#39232a; color:#ff9aaa; }
 </style>
+<style>
+/* Image card fix */
+.tool-icon img, .home-tool-icon img { display:block !important; width:100% !important; height:100% !important; max-width:none !important; max-height:none !important; object-fit:contain !important; visibility:visible !important; opacity:1 !important; }
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -2174,42 +2178,42 @@ html.dark-mode .home-tool-card[data-popular="true"]::before { background:#39232a
 </div>
 <div class="home-tools-grid" id="popularTools">
 <a class="home-tool-card" data-name="Merge PDF" data-popular="true" href="merge-pdf.html">
-<div class="home-tool-icon"><img alt="" aria-hidden="true" src="assets/tool-icons/merge-pdf.svg"/></div>
+<div class="home-tool-icon"><img alt="" aria-hidden="true" src="assets/tool-icons/merge-pdf.png"/></div>
 <div class="home-tool-info">
 <h3>Merge PDF</h3>
 <p>Combine multiple PDF files into one.</p>
 </div>
 </a>
 <a class="home-tool-card" data-name="Compress PDF" data-popular="true" href="compress-pdf.html">
-<div class="home-tool-icon"><img alt="" aria-hidden="true" src="assets/tool-icons/compress-pdf.svg"/></div>
+<div class="home-tool-icon"><img alt="" aria-hidden="true" src="assets/tool-icons/compress-pdf.png"/></div>
 <div class="home-tool-info">
 <h3>Compress PDF</h3>
 <p>Reduce PDF file size quickly and easily.</p>
 </div>
 </a>
 <a class="home-tool-card" data-name="Split PDF" data-popular="true" href="split-pdf.html">
-<div class="home-tool-icon"><img alt="" aria-hidden="true" src="assets/tool-icons/split-pdf.svg"/></div>
+<div class="home-tool-icon"><img alt="" aria-hidden="true" src="assets/tool-icons/split-pdf.png"/></div>
 <div class="home-tool-info">
 <h3>Split PDF</h3>
 <p>Split pages from your PDF file.</p>
 </div>
 </a>
 <a class="home-tool-card" data-name="Word and Character Counter" href="word-character-counter.html">
-<div class="home-tool-icon">🔤</div>
+<div class="home-tool-icon"><img alt="" aria-hidden="true" src="assets/tool-icons/word-counter.png"></div>
 <div class="home-tool-info">
 <h3>Word &amp; Character Counter</h3>
 <p>Count words, characters and more.</p>
 </div>
 </a>
 <a class="home-tool-card" data-name="Case Converter" href="case-converter.html">
-<div class="home-tool-icon"><img alt="" aria-hidden="true" src="assets/tool-icons/case-converter.svg"/></div>
+<div class="home-tool-icon"><img alt="" aria-hidden="true" src="assets/tool-icons/case-converter.png"/></div>
 <div class="home-tool-info">
 <h3>Case Converter</h3>
 <p>Convert text into different cases.</p>
 </div>
 </a>
 <a class="home-tool-card" data-name="Image Compressor" href="image-compressor.html">
-<div class="home-tool-icon"><img alt="" aria-hidden="true" src="assets/tool-icons/image-compressor.svg"/></div>
+<div class="home-tool-icon"><img alt="" aria-hidden="true" src="assets/tool-icons/image-compressor.png"/></div>
 <div class="home-tool-info">
 <h3>Image Compressor</h3>
 <p>Reduce image file size quickly.</p>
@@ -2393,30 +2397,30 @@ html.dark-mode .home-tool-card[data-popular="true"]::before { background:#39232a
        so every ToolNest tool can be found from the homepage.
     */
     const allTools = [
-      ["merge-pdf.html", "Merge PDF", "Combine multiple PDF files into one.", "🔗", "merge combine join pdf files"] ,
-      ["split-pdf.html", "Split PDF", "Split pages from your PDF file.", "✂", "split separate extract pages pdf"] ,
-      ["edit-pdf.html", "Edit PDF", "Edit and modify your PDF document.", "✎", "edit modify pdf document"] ,
-      ["remove-pdf-pages.html", "Remove PDF Pages", "Remove unwanted pages from your PDF.", "✕", "delete remove pages pdf"] ,
-      ["extract-pdf-pages.html", "Extract PDF Pages", "Extract selected pages from your PDF.", "↗", "extract pages pdf"] ,
-      ["re-arrange-pdf-pages.html", "Re-arrange PDF Pages", "Reorder PDF pages quickly and easily.", "↕", "reorder rearrange pages pdf"] ,
-      ["convert-from-pdf.html", "Convert from PDF", "Convert PDF files into other formats.", "⇄", "convert pdf export"] ,
-      ["convert-to-pdf.html", "Convert to PDF", "Convert files and documents to PDF.", "📄", "convert pdf create"] ,
-      ["rotate-pdf.html", "Rotate PDF", "Rotate PDF pages to the correct orientation.", "↻", "rotate turn pdf pages"] ,
-      ["compress-pdf.html", "Compress PDF", "Reduce PDF file size quickly and easily.", "⇊", "compress reduce size pdf"] ,
-      ["word-character-counter.html", "Word and Character Counter", "Count words, characters and more.", "🔤", "word character count text"] ,
-      ["reading-time-estimator.html", "Reading Time Estimator", "Estimate how long it takes to read your text.", "⏱", "reading time words text"] ,
-      ["case-converter.html", "Case Converter", "Convert text into different cases.", "Aa", "uppercase lowercase title case text"] ,
-      ["remove-extra-spaces.html", "Remove Extra Spaces", "Remove unnecessary spaces from your text.", "␠", "spaces whitespace clean text"] ,
-      ["remove-duplicate-lines.html", "Remove Duplicate Lines", "Find and remove duplicate lines from text.", "≡", "duplicates lines text clean"] ,
-      ["find-and-replace.html", "Find and Replace", "Find text and replace it quickly and easily.", "⌕", "find replace search text"] ,
-      ["image-compressor.html", "Image Compressor", "Reduce image file size quickly.", "🗜", "compress reduce size jpg png image"] ,
-      ["image-converter.html", "Image Converter", "Convert images between formats.", "🔄", "convert jpg png webp image format"] ,
-      ["image-cropper.html", "Image Cropper", "Crop images to the size and shape you need.", "✂", "crop cut image photo"] ,
-      ["image-resizer.html", "Image Resizer", "Resize images to your desired dimensions.", "↔", "resize dimensions image photo"] ,
-      ["image-rotator.html", "Image Rotator", "Rotate images to the correct orientation.", "↻", "rotate turn image photo"] ,
-      ["blur-censorship-tool.html", "Blur / Censorship Tool", "Blur or censor selected areas of an image.", "◌", "blur censor hide image"] ,
-      ["image-upscaler.html", "Image Upscaler", "Increase image resolution and improve quality.", "↗", "upscale increase resolution image quality"] ,
-      ["background-remover.html", "Background Remover", "Remove backgrounds from images quickly.", "✦", "remove background image"] ,
+      ["merge-pdf.html", "Merge PDF", "Combine multiple PDF files into one.", "assets/tool-icons/merge-pdf.png", "merge combine join pdf files"] ,
+      ["split-pdf.html", "Split PDF", "Split pages from your PDF file.", "assets/tool-icons/split-pdf.png", "split separate extract pages pdf"] ,
+      ["edit-pdf.html", "Edit PDF", "Edit and modify your PDF document.", "assets/tool-icons/edit-pdf.png", "edit modify pdf document"] ,
+      ["remove-pdf-pages.html", "Remove PDF Pages", "Remove unwanted pages from your PDF.", "assets/tool-icons/remove-pdf-pages.png", "delete remove pages pdf"] ,
+      ["extract-pdf-pages.html", "Extract PDF Pages", "Extract selected pages from your PDF.", "assets/tool-icons/extract-pdf-pages.png", "extract pages pdf"] ,
+      ["re-arrange-pdf-pages.html", "Re-arrange PDF Pages", "Reorder PDF pages quickly and easily.", "assets/tool-icons/rearrange-pdf-pages.png", "reorder rearrange pages pdf"] ,
+      ["convert-from-pdf.html", "Convert from PDF", "Convert PDF files into other formats.", "assets/tool-icons/convert-from-pdf.png", "convert pdf export"] ,
+      ["convert-to-pdf.html", "Convert to PDF", "Convert files and documents to PDF.", "assets/tool-icons/convert-to-pdf.png", "convert pdf create"] ,
+      ["rotate-pdf.html", "Rotate PDF", "Rotate PDF pages to the correct orientation.", "assets/tool-icons/rotate-pdf.png", "rotate turn pdf pages"] ,
+      ["compress-pdf.html", "Compress PDF", "Reduce PDF file size quickly and easily.", "assets/tool-icons/compress-pdf.png", "compress reduce size pdf"] ,
+      ["word-character-counter.html", "Word and Character Counter", "Count words, characters and more.", "assets/tool-icons/word-counter.png", "word character count text"] ,
+      ["reading-time-estimator.html", "Reading Time Estimator", "Estimate how long it takes to read your text.", "assets/tool-icons/reading-time.png", "reading time words text"] ,
+      ["case-converter.html", "Case Converter", "Convert text into different cases.", "assets/tool-icons/case-converter.png", "uppercase lowercase title case text"] ,
+      ["remove-extra-spaces.html", "Remove Extra Spaces", "Remove unnecessary spaces from your text.", "assets/tool-icons/remove-spaces.png", "spaces whitespace clean text"] ,
+      ["remove-duplicate-lines.html", "Remove Duplicate Lines", "Find and remove duplicate lines from text.", "assets/tool-icons/remove-duplicates.png", "duplicates lines text clean"] ,
+      ["find-and-replace.html", "Find and Replace", "Find text and replace it quickly and easily.", "assets/tool-icons/find-replace.png", "find replace search text"] ,
+      ["image-compressor.html", "Image Compressor", "Reduce image file size quickly.", "assets/tool-icons/image-compressor.png", "compress reduce size jpg png image"] ,
+      ["image-converter.html", "Image Converter", "Convert images between formats.", "assets/tool-icons/image-converter.png", "convert jpg png webp image format"] ,
+      ["image-cropper.html", "Image Cropper", "Crop images to the size and shape you need.", "assets/tool-icons/image-cropper.png", "crop cut image photo"] ,
+      ["image-resizer.html", "Image Resizer", "Resize images to your desired dimensions.", "assets/tool-icons/image-resizer.png", "resize dimensions image photo"] ,
+      ["image-rotator.html", "Image Rotator", "Rotate images to the correct orientation.", "assets/tool-icons/image-rotator.png", "rotate turn image photo"] ,
+      ["blur-censorship-tool.html", "Blur / Censorship Tool", "Blur or censor selected areas of an image.", "assets/tool-icons/blur-censorship.png", "blur censor hide image"] ,
+      ["image-upscaler.html", "Image Upscaler", "Increase image resolution and improve quality.", "assets/tool-icons/image-upscaler.png", "upscale increase resolution image quality"] ,
+      ["background-remover.html", "Background Remover", "Remove backgrounds from images quickly.", "assets/tool-icons/background-remover.png", "remove background image"] ,
     ];
 
     function renderSearchResults(matches) {
@@ -2429,7 +2433,7 @@ html.dark-mode .home-tool-card[data-popular="true"]::before { background:#39232a
           ${matches.map(function (tool) {
             return `
               <a href="${tool[0]}" class="home-tool-card" data-name="${tool[1]}">
-                <div class="home-tool-icon">${tool[3]}</div>
+                <div class="home-tool-icon"><img alt="" aria-hidden="true" src="${tool[3]}"></div>
                 <div class="home-tool-info">
                   <h3>${tool[1]}</h3>
                   <p>${tool[2]}</p>
