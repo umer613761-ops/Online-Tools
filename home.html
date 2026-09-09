@@ -1839,6 +1839,161 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
       .hero-search input { height: 48px; }
     }
 
+
+    /* ========================================
+       HOMEPAGE POLISH
+       Clean cards, category accents and better search results
+    ======================================== */
+
+    .home-tools-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .home-tool-card {
+      position: relative;
+      min-height: 118px;
+      align-items: flex-start;
+      padding: 18px;
+      background: #ffffff;
+      border: 1px solid #dce3ea;
+      border-radius: 12px;
+      color: #263548;
+      box-shadow: 0 3px 12px rgba(31,45,61,0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .home-tool-card::after {
+      content: "→";
+      position: absolute;
+      right: 16px;
+      bottom: 14px;
+      color: #326ba8;
+      font-size: 17px;
+      font-weight: 700;
+      transition: transform 0.2s ease;
+    }
+
+    .home-tool-card:hover {
+      transform: translateY(-3px);
+      background: #ffffff;
+      border-color: #a9c2db;
+      box-shadow: 0 10px 24px rgba(31,45,61,0.10);
+    }
+
+    .home-tool-card:hover::after {
+      transform: translateX(3px);
+    }
+
+    .home-tool-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 11px;
+      background: #edf4fb;
+      color: #326ba8;
+      font-size: 19px;
+    }
+
+    .home-tool-info h3 {
+      color: #263548;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .home-tool-info p {
+      max-width: 235px;
+      color: #718096;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .home-tool-card:nth-child(1) .home-tool-icon,
+    .home-tool-card:nth-child(2) .home-tool-icon,
+    .home-tool-card:nth-child(3) .home-tool-icon {
+      background: #edf4fb;
+      color: #326ba8;
+    }
+
+    .home-tool-card[data-name="Case Converter"] .home-tool-icon,
+    .home-tool-card[data-name="Word and Character Counter"] .home-tool-icon {
+      background: #f1edfb;
+      color: #6652a8;
+    }
+
+    .home-tool-card[data-name="Image Compressor"] .home-tool-icon {
+      background: #eaf7f3;
+      color: #287d68;
+    }
+
+    .home-tool-card[data-popular="true"]::before {
+      content: "POPULAR";
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: #edf4fb;
+      color: #326ba8;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .45px;
+    }
+
+    .home-search-results {
+      margin-top: 22px;
+    }
+
+    .home-search-empty {
+      padding: 24px;
+      text-align: center;
+      background: #ffffff;
+      border: 1px solid #dce3ea;
+      border-radius: 12px;
+      color: #718096;
+      font-size: 14px;
+    }
+
+    .browse-all-tools {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 16px;
+      padding: 9px 13px;
+      border: 1px solid #cbd9e6;
+      border-radius: 8px;
+      color: #326ba8;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      background: #ffffff;
+    }
+
+    .browse-all-tools:hover {
+      border-color: #9eb9d4;
+      background: #f7fafd;
+    }
+
+    html.dark-mode .home-tool-card,
+    html.dark-mode .home-search-empty,
+    html.dark-mode .browse-all-tools {
+      background: #171d25;
+      border-color: #2e3946;
+    }
+
+    html.dark-mode .home-tool-info h3 { color: #edf2f7; }
+    html.dark-mode .home-tool-info p { color: #9ca9b8; }
+    html.dark-mode .home-tool-icon { background: #202934; color: #6fa2d2; }
+    html.dark-mode .home-tool-card::after { color: #6fa2d2; }
+    html.dark-mode .home-tool-card[data-popular="true"]::before { background: #202934; color: #6fa2d2; }
+
+    @media (max-width: 900px) {
+      .home-tools-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 700px) {
+      .home-tools-grid { grid-template-columns: 1fr; }
+    }
+
   </style>
 
   <!-- ========================================
@@ -2015,7 +2170,7 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
 
       <div class="home-tools-grid" id="popularTools">
 
-        <a href="merge-pdf.html" class="home-tool-card" data-name="Merge PDF">
+        <a href="merge-pdf.html" class="home-tool-card" data-name="Merge PDF" data-popular="true">
           <div class="home-tool-icon">🔗</div>
           <div class="home-tool-info">
             <h3>Merge PDF</h3>
@@ -2023,7 +2178,7 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
           </div>
         </a>
 
-        <a href="compress-pdf.html" class="home-tool-card" data-name="Compress PDF">
+        <a href="compress-pdf.html" class="home-tool-card" data-name="Compress PDF" data-popular="true">
           <div class="home-tool-icon">⇊</div>
           <div class="home-tool-info">
             <h3>Compress PDF</h3>
@@ -2031,7 +2186,7 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
           </div>
         </a>
 
-        <a href="split-pdf.html" class="home-tool-card" data-name="Split PDF">
+        <a href="split-pdf.html" class="home-tool-card" data-name="Split PDF" data-popular="true">
           <div class="home-tool-icon">✂</div>
           <div class="home-tool-info">
             <h3>Split PDF</h3>
@@ -2117,6 +2272,8 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
         </a>
 
       </div>
+
+      <a href="index.html?category=all" class="browse-all-tools">Browse all tools →</a>
 
     </section>
 
@@ -2282,30 +2439,30 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
        so every ToolNest tool can be found from the homepage.
     */
     const allTools = [
-      ["merge-pdf.html", "Merge PDF", "Combine multiple PDF files into one.", "🔗"],
-      ["split-pdf.html", "Split PDF", "Split pages from your PDF file.", "✂"],
-      ["edit-pdf.html", "Edit PDF", "Edit and modify your PDF document.", "✎"],
-      ["remove-pdf-pages.html", "Remove PDF Pages", "Remove unwanted pages from your PDF.", "✕"],
-      ["extract-pdf-pages.html", "Extract PDF Pages", "Extract selected pages from your PDF.", "↗"],
-      ["re-arrange-pdf-pages.html", "Re-arrange PDF Pages", "Reorder PDF pages quickly and easily.", "↕"],
-      ["convert-from-pdf.html", "Convert from PDF", "Convert PDF files into other formats.", "⇄"],
-      ["convert-to-pdf.html", "Convert to PDF", "Convert files and documents to PDF.", "📄"],
-      ["rotate-pdf.html", "Rotate PDF", "Rotate PDF pages to the correct orientation.", "↻"],
-      ["compress-pdf.html", "Compress PDF", "Reduce PDF file size quickly and easily.", "⇊"],
-      ["word-character-counter.html", "Word and Character Counter", "Count words, characters and more.", "🔤"],
-      ["reading-time-estimator.html", "Reading Time Estimator", "Estimate how long it takes to read your text.", "⏱"],
-      ["case-converter.html", "Case Converter", "Convert text into different cases.", "Aa"],
-      ["remove-extra-spaces.html", "Remove Extra Spaces", "Remove unnecessary spaces from your text.", "␠"],
-      ["remove-duplicate-lines.html", "Remove Duplicate Lines", "Find and remove duplicate lines from text.", "≡"],
-      ["find-and-replace.html", "Find and Replace", "Find text and replace it quickly and easily.", "⌕"],
-      ["image-compressor.html", "Image Compressor", "Reduce image file size quickly.", "🗜"],
-      ["image-converter.html", "Image Converter", "Convert images between formats.", "🔄"],
-      ["image-cropper.html", "Image Cropper", "Crop images to the size and shape you need.", "✂"],
-      ["image-resizer.html", "Image Resizer", "Resize images to your desired dimensions.", "↔"],
-      ["image-rotator.html", "Image Rotator", "Rotate images to the correct orientation.", "↻"],
-      ["blur-censorship-tool.html", "Blur / Censorship Tool", "Blur or censor selected areas of an image.", "◌"],
-      ["image-upscaler.html", "Image Upscaler", "Increase image resolution and improve quality.", "↗"],
-      ["background-remover.html", "Background Remover", "Remove backgrounds from images quickly.", "✦"],
+      ["merge-pdf.html", "Merge PDF", "Combine multiple PDF files into one.", "🔗", "merge combine join pdf files"] ,
+      ["split-pdf.html", "Split PDF", "Split pages from your PDF file.", "✂", "split separate extract pages pdf"] ,
+      ["edit-pdf.html", "Edit PDF", "Edit and modify your PDF document.", "✎", "edit modify pdf document"] ,
+      ["remove-pdf-pages.html", "Remove PDF Pages", "Remove unwanted pages from your PDF.", "✕", "delete remove pages pdf"] ,
+      ["extract-pdf-pages.html", "Extract PDF Pages", "Extract selected pages from your PDF.", "↗", "extract pages pdf"] ,
+      ["re-arrange-pdf-pages.html", "Re-arrange PDF Pages", "Reorder PDF pages quickly and easily.", "↕", "reorder rearrange pages pdf"] ,
+      ["convert-from-pdf.html", "Convert from PDF", "Convert PDF files into other formats.", "⇄", "convert pdf export"] ,
+      ["convert-to-pdf.html", "Convert to PDF", "Convert files and documents to PDF.", "📄", "convert pdf create"] ,
+      ["rotate-pdf.html", "Rotate PDF", "Rotate PDF pages to the correct orientation.", "↻", "rotate turn pdf pages"] ,
+      ["compress-pdf.html", "Compress PDF", "Reduce PDF file size quickly and easily.", "⇊", "compress reduce size pdf"] ,
+      ["word-character-counter.html", "Word and Character Counter", "Count words, characters and more.", "🔤", "word character count text"] ,
+      ["reading-time-estimator.html", "Reading Time Estimator", "Estimate how long it takes to read your text.", "⏱", "reading time words text"] ,
+      ["case-converter.html", "Case Converter", "Convert text into different cases.", "Aa", "uppercase lowercase title case text"] ,
+      ["remove-extra-spaces.html", "Remove Extra Spaces", "Remove unnecessary spaces from your text.", "␠", "spaces whitespace clean text"] ,
+      ["remove-duplicate-lines.html", "Remove Duplicate Lines", "Find and remove duplicate lines from text.", "≡", "duplicates lines text clean"] ,
+      ["find-and-replace.html", "Find and Replace", "Find text and replace it quickly and easily.", "⌕", "find replace search text"] ,
+      ["image-compressor.html", "Image Compressor", "Reduce image file size quickly.", "🗜", "compress reduce size jpg png image"] ,
+      ["image-converter.html", "Image Converter", "Convert images between formats.", "🔄", "convert jpg png webp image format"] ,
+      ["image-cropper.html", "Image Cropper", "Crop images to the size and shape you need.", "✂", "crop cut image photo"] ,
+      ["image-resizer.html", "Image Resizer", "Resize images to your desired dimensions.", "↔", "resize dimensions image photo"] ,
+      ["image-rotator.html", "Image Rotator", "Rotate images to the correct orientation.", "↻", "rotate turn image photo"] ,
+      ["blur-censorship-tool.html", "Blur / Censorship Tool", "Blur or censor selected areas of an image.", "◌", "blur censor hide image"] ,
+      ["image-upscaler.html", "Image Upscaler", "Increase image resolution and improve quality.", "↗", "upscale increase resolution image quality"] ,
+      ["background-remover.html", "Background Remover", "Remove backgrounds from images quickly.", "✦", "remove background image"] ,
     ];
 
     function renderSearchResults(matches) {
@@ -2328,6 +2485,19 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
         </div>`;
 
       searchResults.classList.add("visible");
+
+      if (!matches.length) {
+        searchResults.innerHTML = `
+          <div class="home-section-heading">
+            <h2>Search Results</h2>
+            <p>No matching tool found.</p>
+          </div>
+          <div class="home-search-empty">
+            Try a different word, such as <strong>compress</strong>, <strong>image</strong>, <strong>PDF</strong> or <strong>text</strong>.
+          </div>`;
+        return;
+      }
+
       searchResults.querySelector("#homeSearchMessage").textContent =
         matches.length === 1
           ? "1 matching tool found."
@@ -2351,7 +2521,8 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
 
       const matches = allTools.filter(function (tool) {
         return tool[1].toLowerCase().includes(searchTerm) ||
-               tool[2].toLowerCase().includes(searchTerm);
+               tool[2].toLowerCase().includes(searchTerm) ||
+               (tool[4] && tool[4].toLowerCase().includes(searchTerm));
       });
 
       renderSearchResults(matches);

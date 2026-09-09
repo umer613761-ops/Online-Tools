@@ -1536,6 +1536,153 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
 
     }
 
+
+    /* ========================================
+       TOOL CARD REDESIGN
+       Consistent responsive grid + category accents
+    ======================================== */
+
+    .tools-grid,
+    .tools-grid.pdf-tools-three-columns,
+    .tools-grid.image-tools-three-columns,
+    .tools-grid.text-tools-three-columns {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .tools-grid .tool-card,
+    .tools-grid .tool-card[data-category="pdf"],
+    .tools-grid .tool-card[data-category="text"],
+    .tools-grid .tool-card[data-category="image"] {
+      grid-column: span 1 !important;
+    }
+
+    .tools-grid .tool-card[data-category="pdf"]:nth-child(10),
+    .tools-grid.image-tools-three-columns .tool-card[data-category="image"]:nth-child(23),
+    .tools-grid.image-tools-three-columns .tool-card[data-category="image"]:nth-child(24) {
+      grid-column: span 1 !important;
+    }
+
+    .tool-card {
+      position: relative;
+      min-height: 116px;
+      align-items: flex-start;
+      gap: 13px;
+      padding: 17px;
+      background: #ffffff;
+      border: 1px solid #dce3ea;
+      border-radius: 12px;
+      color: #263548;
+      box-shadow: 0 3px 12px rgba(31,45,61,0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .tool-card::after {
+      content: "→";
+      position: absolute;
+      right: 16px;
+      bottom: 13px;
+      color: #326ba8;
+      font-size: 17px;
+      font-weight: 700;
+      transition: transform 0.2s ease;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-3px);
+      background: #ffffff;
+      border-color: #a9c2db;
+      box-shadow: 0 10px 24px rgba(31,45,61,0.10);
+    }
+
+    .tool-card:hover::after { transform: translateX(3px); }
+
+    .tool-icon,
+    .icon-pdf,
+    .icon-text,
+    .icon-image,
+    .icon-calculator {
+      width: 46px;
+      height: 46px;
+      border-radius: 11px;
+      background: #edf4fb;
+      color: #326ba8;
+      font-size: 19px;
+    }
+
+    .tool-card[data-category="text"] .tool-icon {
+      background: #f1edfb;
+      color: #6652a8;
+    }
+
+    .tool-card[data-category="image"] .tool-icon {
+      background: #eaf7f3;
+      color: #287d68;
+    }
+
+    .tool-card[data-category="calculator"] .tool-icon {
+      background: #fff4df;
+      color: #a66b17;
+    }
+
+    .tool-info h2 {
+      color: #263548;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .tool-info p {
+      max-width: 260px;
+      color: #718096;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 1050px) {
+      .tools-grid,
+      .tools-grid.pdf-tools-three-columns,
+      .tools-grid.image-tools-three-columns,
+      .tools-grid.text-tools-three-columns {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 650px) {
+      .tools-grid,
+      .tools-grid.pdf-tools-three-columns,
+      .tools-grid.image-tools-three-columns,
+      .tools-grid.text-tools-three-columns {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    html.dark-mode .tool-card {
+      background: #171d25;
+      border-color: #2e3946;
+      color: #edf2f7;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+    }
+
+    html.dark-mode .tool-card:hover {
+      background: #1b232d;
+      border-color: #42566b;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.30);
+    }
+
+    html.dark-mode .tool-icon,
+    html.dark-mode .icon-pdf,
+    html.dark-mode .icon-text,
+    html.dark-mode .icon-image,
+    html.dark-mode .icon-calculator {
+      background: #202934;
+      color: #6fa2d2;
+    }
+
+    html.dark-mode .tool-info h2 { color: #edf2f7; }
+    html.dark-mode .tool-info p { color: #9ca9b8; }
+    html.dark-mode .tool-card::after { color: #6fa2d2; }
+
   </style>
 
   <!-- ========================================
