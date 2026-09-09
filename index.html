@@ -2780,6 +2780,10 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
           "click",
           function(event) {
 
+            if (this.tagName === "A" && this.getAttribute("href")) {
+              return;
+            }
+
             event.preventDefault();
 
             navButtons.forEach(
