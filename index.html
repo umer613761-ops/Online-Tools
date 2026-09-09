@@ -1,26 +1,12 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
 <head>
-
-  <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
-
->
-
-  <title>ToolNest - Free Online Tools</title>
-
-<meta
-name="description"
-content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy-to-use tools for everyday tasks."
-
->
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ToolNest - Free Online Tools</title>
+<meta content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy-to-use tools for everyday tasks." name="description"/>
+<style>
 
     /* ========================================
        RESET
@@ -1579,7 +1565,7 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
     }
 
     .tool-card::after {
-      content: "";
+      content: "→";
       position: absolute;
       right: 16px;
       bottom: 13px;
@@ -1683,100 +1669,12 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
     html.dark-mode .tool-info p { color: #9ca9b8; }
     html.dark-mode .tool-card::after { color: #6fa2d2; }
 
-  
-    /* FINAL TOOL CARD POLISH */
-    .tools-grid .tool-card {
-      position: relative;
-      min-height: 104px;
-      padding: 17px;
-      gap: 14px;
-      background: #ffffff;
-      border: 1px solid #d5dee8;
-      border-left: 4px solid #326ba8;
-      border-radius: 12px;
-      color: #263548;
-      box-shadow: 0 4px 14px rgba(31,45,61,0.10);
-      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-    }
-    .tools-grid .tool-card:hover {
-      transform: translateY(-3px);
-      background: #ffffff;
-      border-color: #aebfd1;
-      border-left-color: #285b91;
-      box-shadow: 0 10px 24px rgba(31,45,61,0.16);
-    }
-    .tools-grid .tool-card::after,
-    .tools-grid .tool-card:hover::after { content: none; }
-    .tools-grid .tool-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 11px;
-      background: #edf4fb;
-      border: 1px solid #d5e2ef;
-      color: #285b91;
-      font-size: 19px;
-    }
-    .tools-grid .tool-info h2 {
-      color: #263548;
-      font-size: 15px;
-      line-height: 1.3;
-    }
-    .tools-grid .tool-info p {
-      color: #66758a;
-      font-size: 12px;
-      line-height: 1.45;
-    }
-    .tools-grid .tool-card[data-category="text"] {
-      border-left-color: #62549a;
-    }
-    .tools-grid .tool-card[data-category="text"] .tool-icon {
-      background: #f1effb;
-      color: #62549a;
-      border-color: #ddd8f1;
-    }
-    .tools-grid .tool-card[data-category="image"] {
-      border-left-color: #287866;
-    }
-    .tools-grid .tool-card[data-category="image"] .tool-icon {
-      background: #edf8f5;
-      color: #287866;
-      border-color: #d2ebe4;
-    }
-    .tools-grid .tool-card[data-category="calculator"] {
-      border-left-color: #a06a2c;
-    }
-    .tools-grid .tool-card[data-category="calculator"] .tool-icon {
-      background: #fbf3e9;
-      color: #a06a2c;
-      border-color: #efdfc9;
-    }
-    html.dark-mode .tools-grid .tool-card {
-      background: #202a36;
-      border-color: #344454;
-      color: #eef4f9;
-      box-shadow: 0 5px 16px rgba(0,0,0,0.22);
-    }
-    html.dark-mode .tools-grid .tool-card:hover {
-      background: #253241;
-      border-color: #45596c;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.30);
-    }
-    html.dark-mode .tools-grid .tool-icon {
-      background: #293847;
-      border-color: #3b4d60;
-      color: #8bb8df;
-    }
-    html.dark-mode .tools-grid .tool-info h2 { color: #f0f5f9; }
-    html.dark-mode .tools-grid .tool-info p { color: #b5c2ce; }
-
-</style>
-
-  <!-- ========================================
+  </style>
+<!-- ========================================
        THEME INITIALIZATION
        Prevents light-mode flash on page load
   ========================================= -->
-
-  <script>
+<script>
 
     (function () {
 
@@ -1803,897 +1701,515 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
 
   </script>
 
+<style>
+/* ToolNest card refresh: card-only styling. */
+.tool-card, .home-tool-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(135deg, #ffffff 0%, #fbfdff 100%) !important;
+  border: 1px solid #dce6f0 !important;
+  border-radius: 14px !important;
+  color: #24344d !important;
+  box-shadow: 0 7px 20px rgba(35, 65, 95, 0.10), 0 1px 3px rgba(35,65,95,0.06) !important;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease !important;
+}
+.tool-card::after, .home-tool-card::after {
+  content: '';
+  position: absolute;
+  width: 150px; height: 150px;
+  right: -70px; bottom: -92px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(91,139,255,.10), rgba(185,104,255,.08));
+  pointer-events: none;
+  z-index: -1;
+}
+.tool-card:hover, .home-tool-card:hover {
+  transform: translateY(-4px) !important;
+  background: #ffffff !important;
+  border-color: #bfd2e6 !important;
+  box-shadow: 0 14px 30px rgba(35, 65, 95, 0.15), 0 3px 8px rgba(35,65,95,0.08) !important;
+}
+.tool-icon, .home-tool-icon {
+  width: 52px !important; height: 52px !important;
+  min-width: 52px !important;
+  border-radius: 15px !important;
+  background: transparent !important;
+  color: transparent !important;
+  box-shadow: 0 7px 15px rgba(39, 90, 145, .14) !important;
+  overflow: hidden;
+}
+.tool-icon img, .home-tool-icon img {
+  display: block; width: 100%; height: 100%;
+  object-fit: cover;
+}
+.tool-info h2, .home-tool-info h3 {
+  color: #182b49 !important;
+  font-weight: 750 !important;
+  letter-spacing: -0.15px;
+}
+.tool-info p, .home-tool-info p {
+  color: #63748a !important;
+}
+.tool-card[data-category="pdf"]::before {
+  content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 0 4px 4px 0;
+  background: linear-gradient(#ff5a67,#7d65ff); opacity: .75;
+}
+.tool-card[data-category="text"]::before {
+  content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 0 4px 4px 0;
+  background: linear-gradient(#b06cff,#2d9cff); opacity: .75;
+}
+.tool-card[data-category="image"]::before {
+  content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 0 4px 4px 0;
+  background: linear-gradient(#35d8c8,#2b8cff); opacity: .75;
+}
+.tool-card[data-category="calculator"]::before {
+  content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 0 4px 4px 0;
+  background: linear-gradient(#ff9c69,#8b63ff); opacity: .75;
+}
+.home-tool-card[data-popular="true"]::before {
+  content: 'POPULAR'; position: absolute; top: 10px; right: 12px;
+  padding: 4px 8px; border-radius: 999px; background: #fff0f3; color: #d63c56;
+  font-size: 8px; font-weight: 800; letter-spacing: .55px;
+}
+html.dark-mode .tool-card, html.dark-mode .home-tool-card {
+  background: linear-gradient(135deg, #1b2532 0%, #18222e 100%) !important;
+  border-color: #334457 !important;
+  color: #edf4fb !important;
+  box-shadow: 0 9px 22px rgba(0,0,0,.28) !important;
+}
+html.dark-mode .tool-card:hover, html.dark-mode .home-tool-card:hover {
+  background: #202c3a !important; border-color: #476078 !important;
+  box-shadow: 0 15px 30px rgba(0,0,0,.35) !important;
+}
+html.dark-mode .tool-info h2, html.dark-mode .home-tool-info h3 { color: #f2f6fb !important; }
+html.dark-mode .tool-info p, html.dark-mode .home-tool-info p { color: #aebdcb !important; }
+html.dark-mode .home-tool-card[data-popular="true"]::before { background:#39232a; color:#ff9aaa; }
+</style>
 </head>
-
 <body>
-
-  <!-- ========================================
+<!-- ========================================
        HEADER
   ======================================== -->
-
-  <header class="top-header">
-
-
+<header class="top-header">
 <div class="header-inner">
-
-  <a
-    href="home.html"
-    class="logo"
-  >
-
-    <div class="logo-icon">
+<a class="logo" href="home.html">
+<div class="logo-icon">
       T
     </div>
-
-    <div class="logo-text">
-
-      <span class="logo-tool">
+<div class="logo-text">
+<span class="logo-tool">
         Tool
       </span>
-
-      <span class="logo-nest">
+<span class="logo-nest">
         NEST
       </span>
-
-    </div>
-
-  </a>
-
-
-  <div class="header-right">
-
-    <div class="header-search">
-
-      <input
-        type="text"
-        id="toolSearch"
-        placeholder="Search tools..."
-        aria-label="Search tools"
-      >
-
-      <span class="search-icon">
+</div>
+</a>
+<div class="header-right">
+<div class="header-search">
+<input aria-label="Search tools" id="toolSearch" placeholder="Search tools..." type="text"/>
+<span class="search-icon">
         ⌕
       </span>
-
-    </div>
-
-
-    <button
-      type="button"
-      class="theme-toggle"
-      id="themeToggle"
-      aria-label="Switch to dark mode"
-      title="Switch to dark mode"
-    >
+</div>
+<button aria-label="Switch to dark mode" class="theme-toggle" id="themeToggle" title="Switch to dark mode" type="button">
       🌙
     </button>
-
-  </div>
-
 </div>
-
-
-  </header>
-
-  <!-- ========================================
+</div>
+</header>
+<!-- ========================================
        CATEGORY NAVIGATION
   ========================================= -->
-
-  <nav class="category-nav">
-
-
+<nav class="category-nav">
 <div class="category-nav-inner">
-
-  <a
-    href="home.html"
-    class="category-link"
-  >
+<a class="category-link" href="home.html">
     Home
   </a>
-
-  <a
-    href="index.html?category=pdf"
-    class="category-link active"
-    data-filter="pdf"
-  >
+<a class="category-link active" data-filter="pdf" href="index.html?category=pdf">
     PDF Tools
   </a>
-
-  <a
-    href="index.html?category=text"
-    class="category-link"
-    data-filter="text"
-  >
+<a class="category-link" data-filter="text" href="index.html?category=text">
     Text Tools
   </a>
-
-  <a
-    href="index.html?category=image"
-    class="category-link"
-    data-filter="image"
-  >
+<a class="category-link" data-filter="image" href="index.html?category=image">
     Image Tools
   </a>
-
 </div>
-
-
-  </nav>
-
-  <!-- ========================================
+</nav>
+<!-- ========================================
        PAGE
   ========================================= -->
-
-  <main class="page-wrapper">
-
-
+<main class="page-wrapper">
 <div class="page-layout">
-
-
-  <!-- MAIN CONTENT -->
-
-  <section class="content">
-
-
-    <!-- Heading -->
-
-    <div class="heading">
-
-      <h1 id="pageTitle">
+<!-- MAIN CONTENT -->
+<section class="content">
+<!-- Heading -->
+<div class="heading">
+<h1 id="pageTitle">
         PDF Tools
       </h1>
-
-      <p id="pageDescription">
+<p id="pageDescription">
         Simple and fast tools for working with PDF files.
         Merge, split, convert and manage your PDF documents online.
       </p>
-
-    </div>
-
-
-    <!-- TOOLS -->
-
-    <div
-      class="tools-grid"
-      id="toolsGrid"
-    >
-
-
-      <!-- PDF TOOLS -->
-
-      <a
-        href="merge-pdf.html"
-        class="tool-card"
-        data-category="pdf"
-        data-name="Merge PDF"
-      >
-
-        <div class="tool-icon icon-pdf">
-          🔗
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+<!-- TOOLS -->
+<div class="tools-grid" id="toolsGrid">
+<!-- PDF TOOLS -->
+<a class="tool-card" data-category="pdf" data-name="Merge PDF" href="merge-pdf.html">
+<div class="tool-icon icon-pdf"><img alt="" aria-hidden="true" src="assets/tool-icons/merge-pdf.svg"/></div>
+<div class="tool-info">
+<h2>
             Merge PDF
           </h2>
-
-          <p>
+<p>
             Combine multiple PDF files into one.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="split-pdf.html"
-        class="tool-card"
-        data-category="pdf"
-        data-name="Split PDF"
-      >
-
-        <div class="tool-icon icon-pdf">
-          ✂
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="pdf" data-name="Split PDF" href="split-pdf.html">
+<div class="tool-icon icon-pdf"><img alt="" aria-hidden="true" src="assets/tool-icons/split-pdf.svg"/></div>
+<div class="tool-info">
+<h2>
             Split PDF
           </h2>
-
-          <p>
+<p>
             Split pages from your PDF file.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="edit-pdf.html"
-        class="tool-card"
-        data-category="pdf"
-        data-name="Edit PDF"
-      >
-
-        <div class="tool-icon icon-pdf">
-          ✎
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="pdf" data-name="Edit PDF" href="edit-pdf.html">
+<div class="tool-icon icon-pdf"><img alt="" aria-hidden="true" src="assets/tool-icons/edit-pdf.svg"/></div>
+<div class="tool-info">
+<h2>
             Edit PDF
           </h2>
-
-          <p>
+<p>
             Edit and modify your PDF document.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="remove-pdf-pages.html"
-        class="tool-card"
-        data-category="pdf"
-        data-name="Remove PDF Pages"
-      >
-
-        <div class="tool-icon icon-pdf">
-          −
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="pdf" data-name="Remove PDF Pages" href="remove-pdf-pages.html">
+<div class="tool-icon icon-pdf"><img alt="" aria-hidden="true" src="assets/tool-icons/remove-pdf-pages.svg"/></div>
+<div class="tool-info">
+<h2>
             Remove PDF Pages
           </h2>
-
-          <p>
+<p>
             Remove unwanted pages from your PDF.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="extract-pdf-pages.html"
-        class="tool-card"
-        data-category="pdf"
-        data-name="Extract PDF Pages"
-      >
-
-        <div class="tool-icon icon-pdf">
-          ↗
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="pdf" data-name="Extract PDF Pages" href="extract-pdf-pages.html">
+<div class="tool-icon icon-pdf"><img alt="" aria-hidden="true" src="assets/tool-icons/extract-pdf-pages.svg"/></div>
+<div class="tool-info">
+<h2>
             Extract PDF Pages
           </h2>
-
-          <p>
+<p>
             Extract selected pages from your PDF.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="re-arrange-pdf-pages.html"
-        class="tool-card"
-        data-category="pdf"
-        data-name="Re-arrange PDF Pages"
-      >
-
-        <div class="tool-icon icon-pdf">
-          ↕
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="pdf" data-name="Re-arrange PDF Pages" href="re-arrange-pdf-pages.html">
+<div class="tool-icon icon-pdf"><img alt="" aria-hidden="true" src="assets/tool-icons/rearrange-pdf-pages.svg"/></div>
+<div class="tool-info">
+<h2>
             Re-arrange PDF Pages
           </h2>
-
-          <p>
+<p>
             Reorder PDF pages quickly and easily.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="convert-from-pdf.html"
-        class="tool-card"
-        data-category="pdf"
-        data-name="Convert from PDF"
-      >
-
-        <div class="tool-icon icon-pdf">
-          ⇩
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="pdf" data-name="Convert from PDF" href="convert-from-pdf.html">
+<div class="tool-icon icon-pdf"><img alt="" aria-hidden="true" src="assets/tool-icons/convert-from-pdf.svg"/></div>
+<div class="tool-info">
+<h2>
             Convert from PDF
           </h2>
-
-          <p>
+<p>
             Convert PDF files into other formats.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="convert-to-pdf.html"
-        class="tool-card"
-        data-category="pdf"
-        data-name="Convert to PDF"
-      >
-
-        <div class="tool-icon icon-pdf">
-          ⇧
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="pdf" data-name="Convert to PDF" href="convert-to-pdf.html">
+<div class="tool-icon icon-pdf"><img alt="" aria-hidden="true" src="assets/tool-icons/convert-to-pdf.svg"/></div>
+<div class="tool-info">
+<h2>
             Convert to PDF
           </h2>
-
-          <p>
+<p>
             Convert files and documents to PDF.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="rotate-pdf.html"
-        class="tool-card"
-        data-category="pdf"
-        data-name="Rotate PDF"
-      >
-
-        <div class="tool-icon icon-pdf">
-          ↻
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="pdf" data-name="Rotate PDF" href="rotate-pdf.html">
+<div class="tool-icon icon-pdf"><img alt="" aria-hidden="true" src="assets/tool-icons/rotate-pdf.svg"/></div>
+<div class="tool-info">
+<h2>
             Rotate PDF
           </h2>
-
-          <p>
+<p>
             Rotate PDF pages to the correct orientation.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="compress-pdf.html"
-        class="tool-card"
-        data-category="pdf"
-        data-name="Compress PDF"
-      >
-
-        <div class="tool-icon icon-pdf">
-          ⇊
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="pdf" data-name="Compress PDF" href="compress-pdf.html">
+<div class="tool-icon icon-pdf"><img alt="" aria-hidden="true" src="assets/tool-icons/compress-pdf.svg"/></div>
+<div class="tool-info">
+<h2>
             Compress PDF
           </h2>
-
-          <p>
+<p>
             Reduce PDF file size quickly and easily.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <!-- TEXT TOOLS -->
-
-      <a href="word-character-counter.html" class="tool-card" data-category="text" data-name="Word and Character Counter">
-        <div class="tool-icon icon-text">🔤</div>
-        <div class="tool-info">
-          <h2>Word and Character Counter</h2>
-          <p>Count words, characters and more.</p>
-        </div>
-      </a>
-
-      <a href="reading-time-estimator.html" class="tool-card" data-category="text" data-name="Reading Time Estimator">
-        <div class="tool-icon icon-text">⏱</div>
-        <div class="tool-info">
-          <h2>Reading Time Estimator</h2>
-          <p>Estimate how long it takes to read your text.</p>
-        </div>
-      </a>
-
-      <a href="case-converter.html" class="tool-card" data-category="text" data-name="Case Converter">
-        <div class="tool-icon icon-text">Aa</div>
-        <div class="tool-info">
-          <h2>Case Converter</h2>
-          <p>Convert text into different cases.</p>
-        </div>
-      </a>
-
-      <a href="remove-extra-spaces.html" class="tool-card" data-category="text" data-name="Remove Extra Spaces">
-        <div class="tool-icon icon-text">⇥</div>
-        <div class="tool-info">
-          <h2>Remove Extra Spaces</h2>
-          <p>Remove unnecessary spaces from your text.</p>
-        </div>
-      </a>
-
-      <a href="remove-duplicate-lines.html" class="tool-card" data-category="text" data-name="Remove Duplicate Lines">
-        <div class="tool-icon icon-text">≡</div>
-        <div class="tool-info">
-          <h2>Remove Duplicate Lines</h2>
-          <p>Find and remove duplicate lines from text.</p>
-        </div>
-      </a>
-
-      <a href="find-and-replace.html" class="tool-card" data-category="text" data-name="Find and Replace">
-        <div class="tool-icon icon-text">🔎</div>
-        <div class="tool-info">
-          <h2>Find and Replace</h2>
-          <p>Find text and replace it quickly and easily.</p>
-        </div>
-      </a>
-
-
-      <!-- IMAGE TOOLS -->
-
-      <a
-        href="image-compressor.html"
-        class="tool-card"
-        data-category="image"
-        data-name="Image Compressor"
-      >
-
-        <div class="tool-icon icon-image">
-          🗜
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<!-- TEXT TOOLS -->
+<a class="tool-card" data-category="text" data-name="Word and Character Counter" href="word-character-counter.html">
+<div class="tool-icon icon-text">🔤</div>
+<div class="tool-info">
+<h2>Word and Character Counter</h2>
+<p>Count words, characters and more.</p>
+</div>
+</a>
+<a class="tool-card" data-category="text" data-name="Reading Time Estimator" href="reading-time-estimator.html">
+<div class="tool-icon icon-text">⏱</div>
+<div class="tool-info">
+<h2>Reading Time Estimator</h2>
+<p>Estimate how long it takes to read your text.</p>
+</div>
+</a>
+<a class="tool-card" data-category="text" data-name="Case Converter" href="case-converter.html">
+<div class="tool-icon icon-text"><img alt="" aria-hidden="true" src="assets/tool-icons/case-converter.svg"/></div>
+<div class="tool-info">
+<h2>Case Converter</h2>
+<p>Convert text into different cases.</p>
+</div>
+</a>
+<a class="tool-card" data-category="text" data-name="Remove Extra Spaces" href="remove-extra-spaces.html">
+<div class="tool-icon icon-text">⇥</div>
+<div class="tool-info">
+<h2>Remove Extra Spaces</h2>
+<p>Remove unnecessary spaces from your text.</p>
+</div>
+</a>
+<a class="tool-card" data-category="text" data-name="Remove Duplicate Lines" href="remove-duplicate-lines.html">
+<div class="tool-icon icon-text">≡</div>
+<div class="tool-info">
+<h2>Remove Duplicate Lines</h2>
+<p>Find and remove duplicate lines from text.</p>
+</div>
+</a>
+<a class="tool-card" data-category="text" data-name="Find and Replace" href="find-and-replace.html">
+<div class="tool-icon icon-text">🔎</div>
+<div class="tool-info">
+<h2>Find and Replace</h2>
+<p>Find text and replace it quickly and easily.</p>
+</div>
+</a>
+<!-- IMAGE TOOLS -->
+<a class="tool-card" data-category="image" data-name="Image Compressor" href="image-compressor.html">
+<div class="tool-icon icon-image"><img alt="" aria-hidden="true" src="assets/tool-icons/image-compressor.svg"/></div>
+<div class="tool-info">
+<h2>
             Image Compressor
           </h2>
-
-          <p>
+<p>
             Reduce image file size quickly.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="image-converter.html"
-        class="tool-card"
-        data-category="image"
-        data-name="Image Converter"
-      >
-
-        <div class="tool-icon icon-image">
-          🔄
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="image" data-name="Image Converter" href="image-converter.html">
+<div class="tool-icon icon-image"><img alt="" aria-hidden="true" src="assets/tool-icons/image-converter.svg"/></div>
+<div class="tool-info">
+<h2>
             Image Converter
           </h2>
-
-          <p>
+<p>
             Convert images between formats.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="image-cropper.html"
-        class="tool-card"
-        data-category="image"
-        data-name="Image Cropper"
-      >
-
-        <div class="tool-icon icon-image">
-          ✂
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="image" data-name="Image Cropper" href="image-cropper.html">
+<div class="tool-icon icon-image"><img alt="" aria-hidden="true" src="assets/tool-icons/image-cropper.svg"/></div>
+<div class="tool-info">
+<h2>
             Image Cropper
           </h2>
-
-          <p>
+<p>
             Crop images to the size and shape you need.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="image-resizer.html"
-        class="tool-card"
-        data-category="image"
-        data-name="Image Resizer"
-      >
-
-        <div class="tool-icon icon-image">
-          ↔
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="image" data-name="Image Resizer" href="image-resizer.html">
+<div class="tool-icon icon-image"><img alt="" aria-hidden="true" src="assets/tool-icons/image-resizer.svg"/></div>
+<div class="tool-info">
+<h2>
             Image Resizer
           </h2>
-
-          <p>
+<p>
             Resize images to your desired dimensions.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="image-rotator.html"
-        class="tool-card"
-        data-category="image"
-        data-name="Image Rotator"
-      >
-
-        <div class="tool-icon icon-image">
-          ↻
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="image" data-name="Image Rotator" href="image-rotator.html">
+<div class="tool-icon icon-image"><img alt="" aria-hidden="true" src="assets/tool-icons/image-rotator.svg"/></div>
+<div class="tool-info">
+<h2>
             Image Rotator
           </h2>
-
-          <p>
+<p>
             Rotate images to the correct orientation.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="blur-censorship-tool.html"
-        class="tool-card"
-        data-category="image"
-        data-name="Blur / Censorship Tool"
-      >
-
-        <div class="tool-icon icon-image">
+</div>
+</a>
+<a class="tool-card" data-category="image" data-name="Blur / Censorship Tool" href="blur-censorship-tool.html">
+<div class="tool-icon icon-image">
           ◉
         </div>
-
-        <div class="tool-info">
-
-          <h2>
+<div class="tool-info">
+<h2>
             Blur / Censorship Tool
           </h2>
-
-          <p>
+<p>
             Blur or censor selected areas of an image.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="image-upscaler.html"
-        class="tool-card"
-        data-category="image"
-        data-name="Image Upscaler"
-      >
-
-        <div class="tool-icon icon-image">
-          ⤢
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="image" data-name="Image Upscaler" href="image-upscaler.html">
+<div class="tool-icon icon-image"><img alt="" aria-hidden="true" src="assets/tool-icons/image-upscaler.svg"/></div>
+<div class="tool-info">
+<h2>
             Image Upscaler
           </h2>
-
-          <p>
+<p>
             Increase image resolution and improve quality.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="background-remover.html"
-        class="tool-card"
-        data-category="image"
-        data-name="Background Remover"
-      >
-
-        <div class="tool-icon icon-image">
-          ✨
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="image" data-name="Background Remover" href="background-remover.html">
+<div class="tool-icon icon-image"><img alt="" aria-hidden="true" src="assets/tool-icons/background-remover.svg"/></div>
+<div class="tool-info">
+<h2>
             Background Remover
           </h2>
-
-          <p>
+<p>
             Remove backgrounds from images quickly.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <!-- CALCULATORS -->
-
-      <a
-        href="bmi-calculator.html"
-        class="tool-card"
-        data-category="calculator"
-        data-name="BMI Calculator"
-      >
-
-        <div class="tool-icon icon-calculator">
-          ⚖
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<!-- CALCULATORS -->
+<a class="tool-card" data-category="calculator" data-name="BMI Calculator" href="bmi-calculator.html">
+<div class="tool-icon icon-calculator"><img alt="" aria-hidden="true" src="assets/tool-icons/bmi-calculator.svg"/></div>
+<div class="tool-info">
+<h2>
             BMI Calculator
           </h2>
-
-          <p>
+<p>
             Calculate your body mass index.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="percentage-calculator.html"
-        class="tool-card"
-        data-category="calculator"
-        data-name="Percentage Calculator"
-      >
-
-        <div class="tool-icon icon-calculator">
-          %
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="calculator" data-name="Percentage Calculator" href="percentage-calculator.html">
+<div class="tool-icon icon-calculator"><img alt="" aria-hidden="true" src="assets/tool-icons/percentage-calculator.svg"/></div>
+<div class="tool-info">
+<h2>
             Percentage Calculator
           </h2>
-
-          <p>
+<p>
             Quickly calculate percentages.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="profit-calculator.html"
-        class="tool-card"
-        data-category="calculator"
-        data-name="Profit Calculator"
-      >
-
-        <div class="tool-icon icon-calculator">
-          📈
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="calculator" data-name="Profit Calculator" href="profit-calculator.html">
+<div class="tool-icon icon-calculator"><img alt="" aria-hidden="true" src="assets/tool-icons/profit-calculator.svg"/></div>
+<div class="tool-info">
+<h2>
             Profit Calculator
           </h2>
-
-          <p>
+<p>
             Calculate profit and profit margins.
           </p>
-
-        </div>
-
-      </a>
-
-
-      <a
-        href="discount-calculator.html"
-        class="tool-card"
-        data-category="calculator"
-        data-name="Discount Calculator"
-      >
-
-        <div class="tool-icon icon-calculator">
-          🏷
-        </div>
-
-        <div class="tool-info">
-
-          <h2>
+</div>
+</a>
+<a class="tool-card" data-category="calculator" data-name="Discount Calculator" href="discount-calculator.html">
+<div class="tool-icon icon-calculator"><img alt="" aria-hidden="true" src="assets/tool-icons/discount-calculator.svg"/></div>
+<div class="tool-info">
+<h2>
             Discount Calculator
           </h2>
-
-          <p>
+<p>
             Calculate discounts and savings.
           </p>
-
-        </div>
-
-      </a>
-
-
-    </div>
-
-
-    <!-- NO RESULTS -->
-
-    <div
-      class="no-results"
-      id="noResults"
-    >
+</div>
+</a>
+</div>
+<!-- NO RESULTS -->
+<div class="no-results" id="noResults">
       No tools found.
     </div>
-
-
-  </section>
-
-
-  <!-- ========================================
+</section>
+<!-- ========================================
        ADVERTISEMENT
   ========================================= -->
-
-  <aside class="ad-column">
-
-    <div class="ad-box">
-
-      <div class="ad-content">
-
-        <div class="ad-label">
+<aside class="ad-column">
+<div class="ad-box">
+<div class="ad-content">
+<div class="ad-label">
           ADVERTISEMENT
         </div>
-
-        <div class="sample-ad">
-
-          <div class="sample-ad-badge">
+<div class="sample-ad">
+<div class="sample-ad-badge">
             TOOLNEST
           </div>
-
-          <h3>
-            Simple Tools.<br>
+<h3>
+            Simple Tools.<br/>
             Better Productivity.
           </h3>
-
-          <p>
+<p>
             Fast, free and easy-to-use online tools for everyday tasks.
           </p>
-
-          <div class="sample-ad-button">
+<div class="sample-ad-button">
             Explore Tools
           </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </aside>
-
-
 </div>
-
-
-  </main>
-
-  <!-- ========================================
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- ========================================
        FOOTER
   ======================================== -->
-
-  <footer>
-
-
+<footer>
 <div class="footer-inner">
-
-  <div>
+<div>
     © 2026 ToolNest · Simple, Fast &amp; Free
   </div>
-
-  <div class="footer-links">
-
-    <a href="#">
+<div class="footer-links">
+<a href="#">
       About
     </a>
-
-    <a href="#">
+<a href="#">
       Privacy
     </a>
-
-    <a href="#">
+<a href="#">
       Terms
     </a>
-
-    <a href="#">
+<a href="#">
       Contact
     </a>
-
-  </div>
-
 </div>
-
-
-  </footer>
-
-  <!-- ========================================
+</div>
+</footer>
+<!-- ========================================
        JAVASCRIPT
   ======================================== -->
-
-  <script>
+<script>
 
     /* ========================================
        THEME TOGGLE
@@ -3113,7 +2629,5 @@ content="ToolNest - Free online PDF, text and image tools. Simple, fast and easy
     );
 
   </script>
-
 </body>
-
 </html>
