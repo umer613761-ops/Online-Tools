@@ -1109,21 +1109,44 @@
       color: #6fa2d2;
     }
 
-    html.dark-mode footer {
+    html.dark-mode .why-toolnest {
+      background: #1a222c;
+      border-color: #2e3946;
+    }
+
+    html.dark-mode .why-item {
       background: #171d25;
+      border-color: #2e3946;
+      box-shadow: none;
+    }
+
+    html.dark-mode .why-icon {
+      background: #202934;
+      color: #6fa2d2;
+    }
+
+    html.dark-mode footer {
+      background: #101821;
       border-top-color: #293340;
     }
 
-    html.dark-mode .footer-inner {
-      color: #8d9aaa;
+    html.dark-mode .footer-brand h3,
+    html.dark-mode .footer-column h4 {
+      color: #edf2f7;
     }
 
-    html.dark-mode .footer-links a {
+    html.dark-mode .footer-brand p,
+    html.dark-mode .footer-links a,
+    html.dark-mode .footer-bottom {
       color: #8d9aaa;
     }
 
     html.dark-mode .footer-links a:hover {
-      color: #6fa2d2;
+      color: #ffffff;
+    }
+
+    html.dark-mode .footer-bottom {
+      border-top-color: #293340;
     }
 
 
@@ -1714,16 +1737,43 @@
     }
 
     .why-toolnest {
-      padding: 28px;
-      background: #ffffff;
+      padding: 24px;
+      background: #eef3f8;
       border: 1px solid #dce3ea;
-      border-radius: 10px;
+      border-radius: 12px;
     }
 
     .why-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .why-item {
+      padding: 20px;
+      background: #ffffff;
+      border: 1px solid #dce3ea;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(38,53,72,0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .why-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 18px rgba(38,53,72,0.09);
+    }
+
+    .why-icon {
+      width: 42px;
+      height: 42px;
+      margin-bottom: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9px;
+      background: #e8f0f8;
+      color: #326ba8;
+      font-size: 20px;
     }
 
     .why-item h3 {
@@ -1737,6 +1787,81 @@
       color: #718096;
       font-size: 13px;
       line-height: 1.55;
+    }
+
+    /* ========================================
+       HOMEPAGE FOOTER
+       Compact, organized two-row layout
+    ======================================== */
+
+    footer {
+      background: #172333;
+      border-top: 1px solid #263548;
+    }
+
+    .footer-inner {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 14px 28px;
+      display: block;
+      color: #aeb9c7;
+      font-size: 13px;
+      box-sizing: border-box;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .footer-links a {
+      color: #aeb9c7;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .footer-links a:hover {
+      color: #ffffff;
+    }
+
+    .footer-tools-links {
+      flex-wrap: nowrap;
+    }
+
+    .footer-bottom {
+      width: 100%;
+      padding-top: 0;
+      border-top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      color: #8f9cac;
+      box-sizing: border-box;
+    }
+
+    .footer-bottom-links {
+      gap: 24px;
+    }
+
+    @media (max-width: 700px) {
+      .footer-inner {
+        padding: 14px 20px;
+      }
+
+      .footer-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .footer-bottom-links {
+        flex-wrap: wrap;
+        gap: 7px 18px;
+      }
     }
 
     .home-search-results {
@@ -1801,6 +1926,46 @@
       html:not(.light-mode) .home-category-icon {
         background: #202934;
         color: #6fa2d2;
+      }
+
+      html:not(.light-mode) .why-toolnest {
+        background: #1a222c;
+        border-color: #2e3946;
+      }
+
+      html:not(.light-mode) .why-item {
+        background: #171d25;
+        border-color: #2e3946;
+        box-shadow: none;
+      }
+
+      html:not(.light-mode) .why-icon {
+        background: #202934;
+        color: #6fa2d2;
+      }
+
+      html:not(.light-mode) footer {
+        background: #101821;
+        border-top-color: #293340;
+      }
+
+      html:not(.light-mode) .footer-brand h3,
+      html:not(.light-mode) .footer-column h4 {
+        color: #edf2f7;
+      }
+
+      html:not(.light-mode) .footer-brand p,
+      html:not(.light-mode) .footer-links a,
+      html:not(.light-mode) .footer-bottom {
+        color: #8d9aaa;
+      }
+
+      html:not(.light-mode) .footer-links a:hover {
+        color: #ffffff;
+      }
+
+      html:not(.light-mode) .footer-bottom {
+        border-top-color: #293340;
       }
     }
 
@@ -2790,6 +2955,14 @@ html.dark-mode .header-search input:focus {
 .logo-tool { font-weight: 700 !important; }
 .logo-nest { font-weight: 800 !important; }
 </style>
+
+<style id="toolnest-dark-logo-fix">
+/* Ensure the "Tool" part of the ToolNest logo stays visible in dark mode. */
+html.dark-mode .logo-tool { color: #edf2f7 !important; }
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .logo-tool { color: #edf2f7 !important; }
+}
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -2957,25 +3130,24 @@ html.dark-mode .header-search input:focus {
 <div class="why-toolnest">
 <div class="why-grid">
 <div class="why-item">
+<div class="why-icon" aria-hidden="true">⚡</div>
 <h3>Fast &amp; Simple</h3>
-<p>
-              Get your task done without unnecessary
-              steps or complicated software.
-            </p>
+<p>Get your task done without unnecessary steps or complicated software.</p>
 </div>
 <div class="why-item">
+<div class="why-icon" aria-hidden="true">🔒</div>
+<h3>Private &amp; Secure</h3>
+<p>Work with your files through simple browser-based tools with privacy in mind.</p>
+</div>
+<div class="why-item">
+<div class="why-icon" aria-hidden="true">🌐</div>
+<h3>Works Everywhere</h3>
+<p>Use ToolNest directly in your browser on desktop, tablet or mobile.</p>
+</div>
+<div class="why-item">
+<div class="why-icon" aria-hidden="true">✓</div>
 <h3>Free to Use</h3>
-<p>
-              Use useful online tools without needing
-              expensive software or complicated setup.
-            </p>
-</div>
-<div class="why-item">
-<h3>Easy Access</h3>
-<p>
-              Use ToolNest tools directly from your
-              browser on desktop, tablet or mobile.
-            </p>
+<p>Useful everyday tools without expensive software or complicated setup.</p>
 </div>
 </div>
 </div>
@@ -2986,22 +3158,14 @@ html.dark-mode .header-search input:focus {
   ======================================== -->
 <footer>
 <div class="footer-inner">
-<div>
-    © 2026 ToolNest · Simple, Fast &amp; Free
-  </div>
-<div class="footer-links">
-<a href="#">
-      About
-    </a>
-<a href="#">
-      Privacy
-    </a>
-<a href="#">
-      Terms
-    </a>
-<a href="#">
-      Contact
-    </a>
+<div class="footer-bottom">
+<div>© 2026 ToolNest</div>
+<div class="footer-links footer-bottom-links">
+<a href="#">About</a>
+<a href="#">Contact</a>
+<a href="#">Privacy</a>
+<a href="#">Terms</a>
+</div>
 </div>
 </div>
 </footer>
@@ -3604,6 +3768,31 @@ html.dark-mode nav.category-nav .category-link.active-button {
 }
 </style>
 
+
+<style>
+/* Dark mode: let the hero blend seamlessly into the page background */
+html.dark-mode .hero,
+html.dark-mode .hero .hero-content,
+html.dark-mode .hero .hero-text,
+html.dark-mode .hero .hero-card,
+html.dark-mode .hero .hero-panel {
+  background: #11161d !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .hero,
+  html:not(.light-mode) .hero .hero-content,
+  html:not(.light-mode) .hero .hero-text,
+  html:not(.light-mode) .hero .hero-card,
+  html:not(.light-mode) .hero .hero-panel {
+    background: #11161d !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+}
+</style>
 
 <style>
 /* Unified ToolNest logo typography across every page */

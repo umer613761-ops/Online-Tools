@@ -2290,7 +2290,86 @@ html.dark-mode .header-search input:focus {
   border: 1px solid #5f8fbd !important;
   box-shadow: none !important;
 }
-</style></head>
+</style>
+<style id="toolnest-dark-logo-fix">
+/* Ensure the "Tool" part of the ToolNest logo stays visible in dark mode. */
+html.dark-mode .logo-tool { color: #edf2f7 !important; }
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .logo-tool { color: #edf2f7 !important; }
+}
+</style>
+
+<style id="toolnest-unified-footer">
+/* ToolNest unified compact footer — matches home.html */
+footer {
+  background: #172333 !important;
+  border-top: 1px solid #263548 !important;
+}
+.footer-inner {
+  width: 100% !important;
+  max-width: 1240px !important;
+  margin: 0 auto !important;
+  padding: 14px 28px !important;
+  display: block !important;
+  color: #aeb9c7 !important;
+  font-size: 13px !important;
+  box-sizing: border-box !important;
+}
+.footer-bottom {
+  width: 100% !important;
+  padding-top: 0 !important;
+  border-top: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 24px !important;
+  color: #8f9cac !important;
+  box-sizing: border-box !important;
+}
+.footer-links {
+  display: flex !important;
+  align-items: center !important;
+  gap: 24px !important;
+}
+.footer-links a {
+  color: #aeb9c7 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+  white-space: nowrap !important;
+}
+.footer-links a:hover {
+  color: #ffffff !important;
+}
+@media (max-width: 700px) {
+  .footer-inner { padding: 14px 20px !important; }
+  .footer-bottom {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .footer-bottom-links {
+    flex-wrap: wrap !important;
+    gap: 7px 18px !important;
+  }
+}
+html.dark-mode footer {
+  background: #101821 !important;
+  border-top-color: #293340 !important;
+}
+html.dark-mode .footer-inner { color: #8d9aaa !important; }
+html.dark-mode .footer-links a { color: #8d9aaa !important; }
+html.dark-mode .footer-links a:hover { color: #ffffff !important; }
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) footer {
+    background: #101821 !important;
+    border-top-color: #293340 !important;
+  }
+  html:not(.light-mode) .footer-inner { color: #8d9aaa !important; }
+  html:not(.light-mode) .footer-links a { color: #8d9aaa !important; }
+}
+</style>
+
+</head>
 <body>
 <!-- ========================================
        HEADER
@@ -2373,22 +2452,14 @@ html.dark-mode .header-search input:focus {
   ========================================= -->
 <footer>
 <div class="footer-inner">
-<div>
-    © 2026 ToolNest · Simple, Fast &amp; Free
-  </div>
-<div class="footer-links">
-<a href="#">
-      About
-    </a>
-<a href="#">
-      Privacy
-    </a>
-<a href="#">
-      Terms
-    </a>
-<a href="#">
-      Contact
-    </a>
+<div class="footer-bottom">
+<div>© 2026 ToolNest</div>
+<div class="footer-links footer-bottom-links">
+<a href="#">About</a>
+<a href="#">Contact</a>
+<a href="#">Privacy</a>
+<a href="#">Terms</a>
+</div>
 </div>
 </div>
 </footer>

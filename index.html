@@ -886,56 +886,92 @@
     ======================================== */
 
     footer {
-      background: #ffffff;
-
-      border-top:
-        1px solid #dfe5eb;
-
-      transition:
-        background 0.2s ease,
-        border-color 0.2s ease;
+      background: #1f2d3d;
+      border-top: 1px solid #34475b;
+      color: #dbe4ed;
     }
 
     .footer-inner {
       width: 100%;
       max-width: 1200px;
-
       margin: 0 auto;
+      padding: 26px 24px 18px;
+    }
 
-      padding: 24px;
-
+    .footer-top {
       display: flex;
-
       align-items: center;
       justify-content: space-between;
+      gap: 28px;
+    }
 
-      gap: 20px;
+    .footer-brand {
+      flex: 0 0 auto;
+    }
 
-      color: #7b8998;
+    .footer-brand strong {
+      display: block;
+      color: #ffffff;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.1px;
+    }
 
+    .footer-brand span {
+      display: block;
+      margin-top: 3px;
+      color: #aebdcb;
+      font-size: 12px;
+    }
+
+    .footer-tools {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 26px;
+      flex-wrap: wrap;
+    }
+
+    .footer-tools a {
+      color: #dbe4ed;
+      text-decoration: none;
       font-size: 13px;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
 
-      transition:
-        color 0.2s ease;
+    .footer-tools a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      margin-top: 18px;
+      padding-top: 13px;
+      border-top: 1px solid #34475b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      color: #9eafbe;
+      font-size: 12px;
     }
 
     .footer-links {
       display: flex;
-
+      align-items: center;
       gap: 20px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     .footer-links a {
-      color: #7b8998;
-
+      color: #aebdcb;
       text-decoration: none;
-
-      transition:
-        color 0.2s ease;
+      transition: color 0.2s ease;
     }
 
     .footer-links a:hover {
-      color: #326ba8;
+      color: #ffffff;
     }
 
 
@@ -3043,7 +3079,86 @@ html.dark-mode nav.category-nav .category-link.active {
   border:1px solid #43536a !important;
   box-shadow:none !important;
 }
-</style></head>
+</style>
+<style id="toolnest-dark-logo-fix">
+/* Ensure the "Tool" part of the ToolNest logo stays visible in dark mode. */
+html.dark-mode .logo-tool { color: #edf2f7 !important; }
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .logo-tool { color: #edf2f7 !important; }
+}
+</style>
+
+<style id="toolnest-unified-footer">
+/* ToolNest unified compact footer — matches home.html */
+footer {
+  background: #172333 !important;
+  border-top: 1px solid #263548 !important;
+}
+.footer-inner {
+  width: 100% !important;
+  max-width: 1240px !important;
+  margin: 0 auto !important;
+  padding: 14px 28px !important;
+  display: block !important;
+  color: #aeb9c7 !important;
+  font-size: 13px !important;
+  box-sizing: border-box !important;
+}
+.footer-bottom {
+  width: 100% !important;
+  padding-top: 0 !important;
+  border-top: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 24px !important;
+  color: #8f9cac !important;
+  box-sizing: border-box !important;
+}
+.footer-links {
+  display: flex !important;
+  align-items: center !important;
+  gap: 24px !important;
+}
+.footer-links a {
+  color: #aeb9c7 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+  white-space: nowrap !important;
+}
+.footer-links a:hover {
+  color: #ffffff !important;
+}
+@media (max-width: 700px) {
+  .footer-inner { padding: 14px 20px !important; }
+  .footer-bottom {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .footer-bottom-links {
+    flex-wrap: wrap !important;
+    gap: 7px 18px !important;
+  }
+}
+html.dark-mode footer {
+  background: #101821 !important;
+  border-top-color: #293340 !important;
+}
+html.dark-mode .footer-inner { color: #8d9aaa !important; }
+html.dark-mode .footer-links a { color: #8d9aaa !important; }
+html.dark-mode .footer-links a:hover { color: #ffffff !important; }
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) footer {
+    background: #101821 !important;
+    border-top-color: #293340 !important;
+  }
+  html:not(.light-mode) .footer-inner { color: #8d9aaa !important; }
+  html:not(.light-mode) .footer-links a { color: #8d9aaa !important; }
+}
+</style>
+
+</head>
 <body>
 <!-- ========================================
        HEADER
@@ -3389,22 +3504,14 @@ html.dark-mode nav.category-nav .category-link.active {
   ======================================== -->
 <footer>
 <div class="footer-inner">
-<div>
-    © 2026 ToolNest · Simple, Fast &amp; Free
-  </div>
-<div class="footer-links">
-<a href="#">
-      About
-    </a>
-<a href="#">
-      Privacy
-    </a>
-<a href="#">
-      Terms
-    </a>
-<a href="#">
-      Contact
-    </a>
+<div class="footer-bottom">
+<div>© 2026 ToolNest</div>
+<div class="footer-links footer-bottom-links">
+<a href="#">About</a>
+<a href="#">Contact</a>
+<a href="#">Privacy</a>
+<a href="#">Terms</a>
+</div>
 </div>
 </div>
 </footer>
@@ -3897,5 +4004,30 @@ html.dark-mode nav.category-nav .category-link.active-button {
   font-weight: inherit !important;
   line-height: inherit !important;
 }
+
+    @media (max-width: 650px) {
+      .footer-top {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .footer-tools {
+        justify-content: flex-start;
+        gap: 14px 22px;
+      }
+
+      .footer-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .footer-links {
+        justify-content: flex-start;
+        gap: 12px 18px;
+      }
+    }
+
 </style>
 
