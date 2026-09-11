@@ -722,8 +722,6 @@
     .ad-column {
       width: 200px;
 
-      position: sticky;
-
       top: 20px;
     }
 
@@ -3302,6 +3300,30 @@ html.dark-mode .logo-tool { color: #edf2f7 !important; }
 }
 
 </style>
+
+<style>
+/* Match index.html desktop ad layout; preserve existing mobile layout. */
+.home-ad-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 200px;
+  gap: 28px;
+  align-items: start;
+}
+
+.home-main-content {
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .home-ad-layout {
+    display: contents;
+  }
+
+  .home-page > .home-ad-layout > .ad-column {
+    display: none !important;
+  }
+}
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -3353,6 +3375,8 @@ html.dark-mode .logo-tool { color: #edf2f7 !important; }
        HOME PAGE
   ========================================= -->
 <main class="home-page">
+<div class="home-ad-layout">
+<div class="home-main-content">
 <section class="hero">
 <h1>
         Free Online Tools for <span>Everyday Tasks</span>
@@ -3491,6 +3515,32 @@ html.dark-mode .logo-tool { color: #edf2f7 !important; }
 </div>
 </div>
 </section>
+</div>
+<aside class="ad-column">
+<div class="ad-box">
+<div class="ad-content">
+<div class="ad-label">
+          ADVERTISEMENT
+        </div>
+<div class="sample-ad">
+<div class="sample-ad-badge">
+            TOOLNEST
+          </div>
+<h3>
+            Simple Tools.<br/>
+            Better Productivity.
+          </h3>
+<p>
+            Fast, free and easy-to-use online tools for everyday tasks.
+          </p>
+<div class="sample-ad-button">
+            Explore Tools
+          </div>
+</div>
+</div>
+</div>
+</aside>
+</div>
 </main>
 <!-- ========================================
        FOOTER
