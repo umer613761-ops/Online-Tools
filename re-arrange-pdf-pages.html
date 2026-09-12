@@ -3116,6 +3116,120 @@ html.dark-mode .footer-links a:hover { color: #ffffff !important; }
 }
 
 </style>
+<style>
+/* ToolNest PDF tool navigation — preview only.
+   Kept inside .content so the existing ad column/grid is untouched. */
+.tn-tool-category-bar {
+  width: 100%;
+  margin: 0 0 22px;
+}
+.tn-tool-category-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: 20px;
+  row-gap: 14px;
+  width: 100%;
+}
+.tn-tool-category-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 28px;
+  padding: 3px 6px 3px 18px;
+  color: #4d5a68;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  text-decoration: none;
+  white-space: normal;
+  transition: color .18s ease, background .18s ease;
+}
+.tn-tool-category-link::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c8d0d8;
+  transform: translateY(-50%);
+  transition: background .18s ease, transform .18s ease;
+}
+.tn-tool-category-link:hover {
+  color: #8f2630;
+  background: #fff7f7;
+  border-radius: 5px;
+}
+.tn-tool-category-link:hover::before {
+  background: #b52b38;
+  transform: translateY(-50%) scale(1.15);
+}
+.tn-tool-category-link.active {
+  color: #8f2630;
+  font-weight: 700;
+}
+.tn-tool-category-link.active::before {
+  width: 7px;
+  height: 7px;
+  background: #b52b38;
+}
+
+/* Dark mode: keep tool navigation text readable */
+html.dark-mode .tn-tool-category-link {
+  color: #d7dee7;
+}
+html.dark-mode .tn-tool-category-link:hover {
+  color: #f08a92;
+  background: #302326;
+}
+html.dark-mode .tn-tool-category-link.active {
+  color: #f08a92;
+}
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .tn-tool-category-link {
+    color: #d7dee7;
+  }
+  html:not(.light-mode) .tn-tool-category-link:hover {
+    color: #f08a92;
+    background: #302326;
+  }
+  html:not(.light-mode) .tn-tool-category-link.active {
+    color: #f08a92;
+  }
+}
+@media (max-width: 700px) {
+  .tn-tool-category-bar { display: none; }
+}
+</style>
+
+<style>
+/* Ad position correction — desktop only. Keep the existing ad markup untouched. */
+@media (min-width: 701px) {
+  .page-layout > .content {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .page-layout > .ad-column {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+  }
+  .tn-ad-left-column {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+  .tn-ad-left-column + .ad-column {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+  }
+}
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -3164,14 +3278,31 @@ html.dark-mode .footer-links a:hover { color: #ffffff !important; }
 </div>
 </nav>
 <main class="page-content">
-<div style="display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 28px; align-items: start;">
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 28px; align-items: start;"><div class="tn-ad-left-column"><!-- ========================================
+             PDF TOOL NAVIGATION
+        ========================================= -->
+<nav class="tn-tool-category-bar" aria-label="PDF tools">
+  <div class="tn-tool-category-list">
+    <a class="tn-tool-category-link" href="merge-pdf.html">Merge PDF</a>
+    <a class="tn-tool-category-link" href="split-pdf.html">Split PDF</a>
+    <a class="tn-tool-category-link" href="compress-pdf.html">Compress PDF</a>
+    <a class="tn-tool-category-link" href="rotate-pdf.html">Rotate PDF</a>
+    <a class="tn-tool-category-link" href="remove-pdf-pages.html">Remove PDF Pages</a>
+    <a class="tn-tool-category-link" href="extract-pdf-pages.html">Extract PDF Pages</a>
+    <a class="tn-tool-category-link active" href="re-arrange-pdf-pages.html">Re-arrange PDF Pages</a>
+    <a class="tn-tool-category-link" href="edit-pdf.html">Edit PDF</a>
+    <a class="tn-tool-category-link" href="convert-to-pdf.html">Convert to PDF</a>
+    <a class="tn-tool-category-link" href="convert-from-pdf.html">Convert from PDF</a>
+  </div>
+</nav>
+
 <div>
 <!-- ========================================
              PDF TOOL NAVIGATION
         ========================================= -->
 </div>
 <!-- ADVERTISEMENT -->
-<aside aria-label="Advertisement" class="ad-column">
+</div><aside aria-label="Advertisement" class="ad-column">
 <div class="ad-box">
 <div class="ad-content">
 <div class="ad-label">ADVERTISEMENT</div>
