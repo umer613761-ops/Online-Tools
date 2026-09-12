@@ -5,36 +5,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Remove Extra Spaces - ToolNest</title>
-<!-- ========================================
-       THEME INITIALIZATION
-       Prevents light-mode flash on page load
-  ========================================= -->
-<script>
-
-    (function () {
-
-      const savedTheme =
-        localStorage.getItem("toolnest-theme");
-
-      if (savedTheme === "dark") {
-
-        document.documentElement.classList.add(
-          "dark-mode"
-        );
-
-      }
-
-      else if (savedTheme === "light") {
-
-        document.documentElement.classList.add(
-          "light-mode"
-        );
-
-      }
-
-    })();
-  </script>
+<title>Remove Background - ToolNest</title>
 <style>
 
     /* ========================================
@@ -2854,22 +2825,25 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 <div class="category-nav-inner">
 <a class="category-link" href="home.html">Home</a>
 <a class="category-link" href="index.html?category=pdf">PDF Tools</a>
-<a class="category-link active" href="index.html?category=text">Text Tools</a>
-<a class="category-link" href="index.html?category=image">Image Tools</a>
+<a class="category-link" href="index.html?category=text">Text Tools</a>
+<a class="category-link active" href="index.html?category=image">Image Tools</a>
 </div>
 </nav>
 <main>
 <div style="display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 28px; align-items: start; width: 100%; max-width: 1200px; margin: 0 auto; padding: 28px 24px 60px;"><div class="tn-ad-left-column"><!-- ========================================
-             TEXT TOOL NAVIGATION
+             IMAGE TOOL NAVIGATION
         ========================================= -->
-<nav class="tn-tool-category-bar" aria-label="Text tools">
+<nav class="tn-tool-category-bar" aria-label="Image tools">
   <div class="tn-tool-category-list">
-    <a class="tn-tool-category-link" href="word-character-counter.html">Word & Character Counter</a>
-    <a class="tn-tool-category-link" href="case-converter.html">Case Converter</a>
-    <a class="tn-tool-category-link active" href="remove-extra-spaces.html">Remove Extra Spaces</a>
-    <a class="tn-tool-category-link" href="remove-duplicate-lines.html">Remove Duplicate Lines</a>
-    <a class="tn-tool-category-link" href="find-and-replace.html">Find & Replace</a>
-    <a class="tn-tool-category-link" href="reading-time-estimator.html">Reading Time Estimator</a>
+    <a class="tn-tool-category-link" href="image-compressor.html">Image Compressor</a>
+    <a class="tn-tool-category-link" href="image-converter.html">Image Converter</a>
+    <a class="tn-tool-category-link" href="image-cropper.html">Image Cropper</a>
+    <a class="tn-tool-category-link" href="image-resizer.html">Image Resizer</a>
+    <a class="tn-tool-category-link" href="image-rotator.html">Image Rotator</a>
+    <a class="tn-tool-category-link" href="image-upscaler.html">Image Upscaler</a>
+    <a class="tn-tool-category-link" href="background-remover.html">Background Remover</a>
+    <a class="tn-tool-category-link" href="blur-censorship-tool.html">Blur / Censorship Tool</a>
+    <a class="tn-tool-category-link active" href="remove-background.html">Remove Background</a>
   </div>
 </nav>
 
@@ -2893,7 +2867,7 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 <p>
                 Fast, free and easy-to-use online tools for everyday tasks.
               </p>
-<a class="sample-ad-button">
+<a class="sample-ad-button" href="index.html">
                 Explore Tools
               </a>
 </div>
@@ -2967,9 +2941,12 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
   ========================================= -->
 <script>
 
+    /* ========================================
+       THEME
+    ======================================== */
+
     const themeToggle =
       document.getElementById("themeToggle");
-
 
     function updateThemeIcon() {
 
@@ -2980,15 +2957,30 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
       ) {
 
         themeToggle.textContent = "☀";
+        themeToggle.setAttribute(
+          "aria-label",
+          "Switch to light mode"
+        );
+        themeToggle.setAttribute(
+          "title",
+          "Switch to light mode"
+        );
 
       } else {
 
         themeToggle.textContent = "🌙";
+        themeToggle.setAttribute(
+          "aria-label",
+          "Switch to dark mode"
+        );
+        themeToggle.setAttribute(
+          "title",
+          "Switch to dark mode"
+        );
 
       }
 
     }
-
 
     themeToggle.addEventListener(
       "click",
@@ -2999,31 +2991,29 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
             "dark-mode"
           );
 
-
-        if (isDark) {
-
-          localStorage.setItem(
-            "toolnest-theme",
-            "dark"
-          );
-
-        } else {
-
-          localStorage.setItem(
-            "toolnest-theme",
-            "light"
-          );
-
-        }
-
+        localStorage.setItem(
+          "toolnest-theme",
+          isDark ? "dark" : "light"
+        );
 
         updateThemeIcon();
 
       }
     );
 
+    const savedTheme =
+      localStorage.getItem("toolnest-theme");
+
+    if (savedTheme === "dark") {
+      document.documentElement.classList.add("dark-mode");
+    }
+
+    if (savedTheme === "light") {
+      document.documentElement.classList.add("light-mode");
+    }
 
     updateThemeIcon();
+
 
   </script>
 </body>
