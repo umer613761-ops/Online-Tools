@@ -4933,94 +4933,75 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 </style>
 
 
-<style id="toolnest-merge-zoom-redesign">
-/* Full-screen readable PDF preview — no boxed modal */
+
+
+
+<style id="toolnest-merge-plain-big-zoom">
 .pdf-zoom-modal {
   position: fixed !important;
   inset: 0 !important;
   z-index: 1000 !important;
   display: none !important;
-  align-items: stretch !important;
-  justify-content: stretch !important;
-  padding: 0 !important;
-  background: rgba(12, 18, 26, 0.94) !important;
-  backdrop-filter: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px !important;
+  background: rgba(0,0,0,.82) !important;
 }
 .pdf-zoom-modal.active {
   display: flex !important;
 }
 .pdf-zoom-dialog {
   position: relative !important;
-  width: 100vw !important;
-  height: 100vh !important;
+  width: auto !important;
+  height: auto !important;
   max-width: none !important;
   max-height: none !important;
   margin: 0 !important;
-  padding: 52px 14px 14px !important;
+  padding: 0 !important;
   background: transparent !important;
+  border: 0 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  overflow: hidden !important;
-}
-.pdf-zoom-title {
-  position: absolute !important;
-  top: 16px !important;
-  left: 18px !important;
-  right: 60px !important;
-  color: #ffffff !important;
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  text-align: left !important;
-}
-.pdf-zoom-close {
-  position: absolute !important;
-  top: 10px !important;
-  right: 14px !important;
-  z-index: 20 !important;
-  width: 34px !important;
-  height: 34px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 0 !important;
-  border: none !important;
-  border-radius: 50% !important;
-  background: #dc4b4b !important;
-  color: #ffffff !important;
-  font-size: 26px !important;
-  line-height: 1 !important;
-  cursor: pointer !important;
+  overflow: visible !important;
 }
 .pdf-zoom-canvas-wrap {
-  width: 100% !important;
-  height: 100% !important;
-  display: flex !important;
-  align-items: flex-start !important;
-  justify-content: center !important;
+  width: auto !important;
+  height: auto !important;
+  display: block !important;
   overflow: auto !important;
   padding: 0 !important;
-  background: #263444 !important;
-  border: none !important;
-  border-radius: 6px !important;
-  box-sizing: border-box !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
 }
 .pdf-zoom-canvas {
   display: block !important;
-  flex: none !important;
   width: auto !important;
   height: auto !important;
   max-width: none !important;
   max-height: none !important;
   margin: 0 auto !important;
-  box-shadow: 0 3px 18px rgba(0,0,0,.35) !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,.45) !important;
 }
-@media (max-width: 550px) {
-  .pdf-zoom-dialog {
-    padding: 48px 6px 6px !important;
-  }
-  .pdf-zoom-title {
-    left: 10px !important;
-  }
+.pdf-zoom-close {
+  position: fixed !important;
+  top: 14px !important;
+  right: 18px !important;
+  z-index: 1100 !important;
+  width: 38px !important;
+  height: 38px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: #d93636 !important;
+  color: #fff !important;
+  font-size: 30px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
 }
 </style>
 
@@ -6127,7 +6108,7 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
           185;
 
 
-        const scale = Math.max(2.5, Math.min(3.2, (pdfZoomCanvas.parentElement.clientHeight - 20) / page.getViewport({ scale: 1 }).height));
+        const scale = 3.0;
 
 
         const viewport =
