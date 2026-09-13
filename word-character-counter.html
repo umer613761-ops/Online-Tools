@@ -3757,6 +3757,45 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 }
 </style>
 
+
+<style id="mobile-footer-three-columns-correct">
+@media screen and (max-width: 650px) {
+  /* Use the same main footer on mobile, but show only its
+     three link columns: Popular Tools, Categories, Company. */
+  .toolnest-hybrid-footer {
+    display: block !important;
+  }
+
+  .toolnest-hybrid-footer .footer-main {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .toolnest-hybrid-footer .footer-brand {
+    display: none !important;
+  }
+
+  .toolnest-hybrid-footer .footer-column {
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .toolnest-hybrid-footer .footer-column a {
+    display: block !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .toolnest-mobile-original-footer {
+    display: none !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <!-- ========================================
@@ -3864,8 +3903,7 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
       <a href="index.html">PDF Tools</a>
       <a href="index.html">Text Tools</a>
       <a href="index.html">Image Tools</a>
-      <a href="index.html">Calculators</a>
-    </div>
+</div>
 
     <div class="footer-column">
       <h4>Company</h4>
