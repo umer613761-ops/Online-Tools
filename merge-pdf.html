@@ -4819,6 +4819,41 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 }
 </style>
 
+
+<style id="toolnest-merge-controls-inside-preview">
+#uploadArea > #editorControls {
+  margin-top: 18px;
+  width: 100%;
+  box-sizing: border-box;
+}
+#uploadArea > #editorControls.active {
+  display: block;
+}
+#uploadArea > #editorControls .button-row {
+  justify-content: center;
+}
+</style>
+
+
+<style id="toolnest-merge-sort-arrows">
+.merge-sort-btn-arrow {
+  position: relative;
+  padding-bottom: 18px !important;
+  min-width: 62px;
+}
+.merge-sort-btn-arrow::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateX(-50%) rotate(45deg);
+}
+</style>
+
 </head>
 <body>
 <!-- ========================================
@@ -4922,20 +4957,16 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
                   Drag to change order
                 </div>
 <div aria-label="Sort uploaded PDFs" class="sort-controls">
-<button aria-label="Sort files A-Z" class="sort-button merge-sort-btn" id="sortAZ" title="Sort files A-Z" type="button">
+<button aria-label="Sort files A-Z" class="sort-button merge-sort-btn merge-sort-btn-arrow" id="sortAZ" title="Sort files A-Z" type="button">
                     A-Z
                   </button>
-<button aria-label="Sort files Z-A" class="sort-button merge-sort-btn" id="sortZA" title="Sort files Z-A" type="button">
+<button aria-label="Sort files Z-A" class="sort-button merge-sort-btn merge-sort-btn-arrow" id="sortZA" title="Sort files Z-A" type="button">
                     Z-A
                   </button>
 </div>
 </div>
 <div class="pdf-grid" id="pdfGrid"></div>
 </div>
-</div>
-<!-- ======================================
-               CONTROLS
-          ====================================== -->
 <div class="editor-controls" id="editorControls">
 <div class="button-row"><!-- MERGE BUTTON -->
 
@@ -4945,6 +4976,12 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 <!-- STATUS -->
 <div class="status" id="status"></div>
 </div>
+
+</div>
+<!-- ======================================
+               CONTROLS
+          ====================================== -->
+
 </div>
 </section>
 <!-- ========================================
