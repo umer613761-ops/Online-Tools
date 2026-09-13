@@ -4727,6 +4727,98 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 }
 </style>
 
+
+<style id="toolnest-merge-upload-radius">
+.upload-btn,
+.upload-button,
+#uploadButton,
+.file-upload-button {
+  border-radius: 10px !important;
+}
+</style>
+
+
+<style id="toolnest-merge-download-button">
+#mergeDownloadBtn {
+  background: linear-gradient(135deg, #3f8edb 0%, #6857cf 55%, #8055c5 100%) !important;
+  border-radius: 10px !important;
+  color: #fff !important;
+}
+</style>
+
+
+<style id="toolnest-merge-clear-zoom-icon">
+.zoom-icon-clear {
+  position: relative;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+.zoom-icon-clear::before {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 2px;
+  background: currentColor;
+  right: -6px;
+  bottom: -3px;
+  transform: rotate(45deg);
+  transform-origin: left center;
+  border-radius: 2px;
+}
+.zoom-icon-clear::after {
+  content: "+";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -52%);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+</style>
+
+
+<style id="toolnest-merge-sort-buttons">
+.merge-sort-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid #d5d9e3 !important;
+  border-radius: 10px !important;
+  background: #ffffff !important;
+  color: #344154 !important;
+  padding: 9px 15px !important;
+  min-height: 38px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(52, 65, 84, 0.08);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.merge-sort-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(52, 65, 84, 0.12);
+  border-color: #b8c0ce !important;
+}
+.merge-sort-btn:active {
+  transform: translateY(0);
+}
+@media (prefers-color-scheme: dark) {
+  .merge-sort-btn {
+    background: #202735 !important;
+    color: #f3f5f8 !important;
+    border-color: #394354 !important;
+  }
+  .merge-sort-btn:hover {
+    border-color: #526078 !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <!-- ========================================
@@ -4830,10 +4922,10 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
                   Drag to change order
                 </div>
 <div aria-label="Sort uploaded PDFs" class="sort-controls">
-<button aria-label="Sort files A-Z" class="sort-button" id="sortAZ" title="Sort files A-Z" type="button">
+<button aria-label="Sort files A-Z" class="sort-button merge-sort-btn" id="sortAZ" title="Sort files A-Z" type="button">
                     A-Z
                   </button>
-<button aria-label="Sort files Z-A" class="sort-button" id="sortZA" title="Sort files Z-A" type="button">
+<button aria-label="Sort files Z-A" class="sort-button merge-sort-btn" id="sortZA" title="Sort files Z-A" type="button">
                     Z-A
                   </button>
 </div>
@@ -4845,15 +4937,10 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
                CONTROLS
           ====================================== -->
 <div class="editor-controls" id="editorControls">
-<div class="button-row">
-<!-- MERGE BUTTON -->
-<button class="primary-button" id="mergeButton" type="button">
-                Merge PDFs and Download
-              </button>
+<div class="button-row"><!-- MERGE BUTTON -->
+
 <!-- ADD MORE -->
-<button class="secondary-button" id="newFileButton" type="button">
-                + Add More PDFs
-              </button>
+<button type="button" id="mergeDownloadBtn" class="upload-btn">Merge and Download</button>
 </div>
 <!-- STATUS -->
 <div class="status" id="status"></div>
@@ -4895,9 +4982,7 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 <div aria-hidden="true" class="pdf-zoom-modal" id="pdfZoomModal">
 <div aria-label="PDF preview" aria-modal="true" class="pdf-zoom-dialog" role="dialog">
 <div class="pdf-zoom-title" id="pdfZoomTitle"></div>
-<button aria-label="Close PDF preview" class="pdf-zoom-close" id="pdfZoomClose" title="Close" type="button">
-        ×
-      </button>
+<button aria-label="Close PDF preview" class="pdf-zoom-close" id="pdfZoomClose" title="Close" type="button"><span class="zoom-icon-clear" aria-hidden="true"></span></button>
 <div class="pdf-zoom-canvas-wrap">
 <canvas class="pdf-zoom-canvas" id="pdfZoomCanvas"></canvas>
 </div>
