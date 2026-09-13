@@ -4845,12 +4845,95 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 6px;
+  bottom: 5px;
+  width: 16px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transform: translateX(-50%);
+}
+.merge-sort-btn-arrow::before {
+  content: "";
+  position: absolute;
+  bottom: 1px;
   width: 7px;
   height: 7px;
+  border-top: 2px solid currentColor;
   border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: translateX(-50%) rotate(45deg);
+}
+.merge-sort-btn-arrow:first-of-type::before {
+  left: calc(50% - 8px);
+  transform: rotate(-135deg);
+}
+.merge-sort-btn-arrow:last-of-type::before {
+  right: calc(50% - 8px);
+  transform: rotate(45deg);
+}
+</style>
+
+<style id="toolnest-merge-download-size">
+.merge-download-inside-preview #mergeDownloadBtn {
+  min-width: 240px !important;
+  min-height: 52px !important;
+  padding: 14px 28px !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+}
+</style>
+
+<style id="toolnest-merge-zoom-modal-refinement">
+/* Merge PDF preview zoom: smaller modal, larger preview */
+.modal,
+.preview-modal,
+.zoom-modal,
+.lightbox {
+  width: min(82vw, 980px) !important;
+  max-width: 980px !important;
+  height: min(88vh, 900px) !important;
+  max-height: 88vh !important;
+  padding: 14px !important;
+  box-sizing: border-box !important;
+}
+.modal img,
+.preview-modal img,
+.zoom-modal img,
+.lightbox img,
+.modal canvas,
+.preview-modal canvas,
+.zoom-modal canvas,
+.lightbox canvas {
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: calc(88vh - 56px) !important;
+  object-fit: contain !important;
+}
+
+/* Make the close control a proper red X rather than a plus sign. */
+.modal .close,
+.preview-modal .close,
+.zoom-modal .close,
+.lightbox .close,
+.modal .close-btn,
+.preview-modal .close-btn,
+.zoom-modal .close-btn,
+.lightbox .close-btn {
+  font-size: 0 !important;
+}
+.modal .close::before,
+.preview-modal .close::before,
+.zoom-modal .close::before,
+.lightbox .close::before,
+.modal .close-btn::before,
+.preview-modal .close-btn::before,
+.zoom-modal .close-btn::before,
+.lightbox .close-btn::before {
+  content: "×" !important;
+  font-size: 28px !important;
+  line-height: 1 !important;
+  color: #d32f2f !important;
+  font-weight: 700 !important;
 }
 </style>
 
