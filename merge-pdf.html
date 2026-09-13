@@ -4753,8 +4753,6 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
   display: inline-block;
   width: 18px;
   height: 18px;
-  border: 2px solid currentColor;
-  border-radius: 50%;
   box-sizing: border-box;
 }
 .zoom-icon-clear::before {
@@ -4770,14 +4768,15 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
   border-radius: 2px;
 }
 .zoom-icon-clear::after {
-  content: "+";
+  content: "×" !important;
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -52%);
-  font-size: 12px;
+  transform: translate(-50%, -54%);
+  font-size: 22px;
   font-weight: 700;
   line-height: 1;
+  color: currentColor;
 }
 </style>
 
@@ -4937,6 +4936,33 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 }
 </style>
 
+
+<style id="toolnest-merge-zoom-bigger">
+/* Larger zoomed PDF while keeping the modal compact */
+#zoomModal .modal-content,
+.zoom-modal .modal-content,
+#pdfZoomModal .modal-content {
+  width: min(92vw, 1100px) !important;
+  max-width: 1100px !important;
+  height: min(92vh, 950px) !important;
+  max-height: 92vh !important;
+  padding: 10px !important;
+}
+#zoomModal img,
+#zoomModal canvas,
+.zoom-modal img,
+.zoom-modal canvas,
+#pdfZoomModal img,
+#pdfZoomModal canvas {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: calc(92vh - 36px) !important;
+  object-fit: contain !important;
+}
+</style>
+
 </head>
 <body>
 <!-- ========================================
@@ -5037,15 +5063,11 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 <div class="uploaded-files" id="uploadedFiles">
 <div class="uploaded-files-header">
 <div class="drag-hint">
-                  Drag to change order
+                  Tap to add more Files and Drag to change their Order
                 </div>
 <div aria-label="Sort uploaded PDFs" class="sort-controls">
-<button aria-label="Sort files A-Z" class="sort-button merge-sort-btn merge-sort-btn-arrow" id="sortAZ" title="Sort files A-Z" type="button">
-                    A-Z
-                  </button>
-<button aria-label="Sort files Z-A" class="sort-button merge-sort-btn merge-sort-btn-arrow" id="sortZA" title="Sort files Z-A" type="button">
-                    Z-A
-                  </button>
+<button aria-label="Sort files A-Z" class="sort-button merge-sort-btn merge-sort-btn-arrow" id="sortAZ" title="Sort files A-Z" type="button">A &gt;&gt; Z</button>
+<button aria-label="Sort files Z-A" class="sort-button merge-sort-btn merge-sort-btn-arrow" id="sortZA" title="Sort files Z-A" type="button">Z &lt;&lt; A</button>
 </div>
 </div>
 <div class="pdf-grid" id="pdfGrid"></div>
