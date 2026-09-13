@@ -5034,6 +5034,53 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 }
 </style>
 
+
+<style id="toolnest-merge-readable-zoom">
+/* Make the actual zoomed PDF substantially larger and readable. */
+.pdf-zoom-dialog {
+  width: min(92vw, 1200px) !important;
+  height: min(94vh, 1000px) !important;
+  max-width: 1200px !important;
+  max-height: 94vh !important;
+  padding: 42px 10px 10px !important;
+}
+.pdf-zoom-canvas-wrap {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  overflow: auto !important;
+}
+.pdf-zoom-canvas {
+  max-width: none !important;
+  max-height: none !important;
+  width: auto !important;
+  height: auto !important;
+}
+@media (max-width: 700px) {
+  .pdf-zoom-dialog {
+    width: 98vw !important;
+    height: 94vh !important;
+    padding: 42px 4px 4px !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-merge-sort-placement-final">
+.merge-sort-toolbar {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  box-sizing: border-box;
+}
+.merge-sort-toolbar button {
+  margin: 0 !important;
+}
+</style>
+
 </head>
 <body>
 <!-- ========================================
@@ -5131,14 +5178,19 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
               </button>
 </div>
 <!-- PREVIEW STATE -->
+
+<div class="merge-sort-toolbar" aria-label="Sort uploaded files">
+  <button aria-label="Sort files A-Z" class="sort-button merge-sort-btn merge-sort-btn-arrow" id="sortAZ" title="Sort files A-Z" type="button">A &gt;&gt; Z</button>
+  <button aria-label="Sort files Z-A" class="sort-button merge-sort-btn merge-sort-btn-arrow" id="sortZA" title="Sort files Z-A" type="button">Z &lt;&lt; A</button>
+</div>
 <div class="uploaded-files" id="uploadedFiles">
 <div class="uploaded-files-header">
 <div class="drag-hint">
                   Tap to add more Files and Drag to change their Order
                 </div>
 <div aria-label="Sort uploaded PDFs" class="sort-controls">
-<button aria-label="Sort files A-Z" class="sort-button merge-sort-btn merge-sort-btn-arrow" id="sortAZ" title="Sort files A-Z" type="button">A &gt;&gt; Z</button>
-<button aria-label="Sort files Z-A" class="sort-button merge-sort-btn merge-sort-btn-arrow" id="sortZA" title="Sort files Z-A" type="button">Z &lt;&lt; A</button>
+
+
 </div>
 </div>
 <div class="pdf-grid" id="pdfGrid"></div>
@@ -6132,8 +6184,7 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
           185;
 
 
-        const scale =
-          Math.min(2.4, Math.max(1.6, (pdfZoomCanvas.parentElement.clientHeight - 20) / page.getViewport({ scale: 1 }).height));
+        const scale = Math.max(2.5, Math.min(3.2, (pdfZoomCanvas.parentElement.clientHeight - 20) / page.getViewport({ scale: 1 }).height));
 
 
         const viewport =
