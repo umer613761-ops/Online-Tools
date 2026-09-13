@@ -712,18 +712,12 @@
 
     .upload-placeholder {
       display: flex;
-
       flex-direction: column;
-
       align-items: center;
-
       justify-content: flex-start;
-
       width: 100%;
-
       min-height: 320px;
-
-      padding-top: 0;
+      padding-top: 6px;
     }
 
 
@@ -731,27 +725,26 @@
        FLOATING UPLOAD BUTTON
     ======================================== */
 
-    .floating-upload-button {
+        .floating-upload-button {
       position: sticky;
-      top: 0;
+
+      top: 6px;
 
       z-index: 20;
 
       display: inline-flex;
 
       align-items: center;
+
       justify-content: center;
 
       min-width: 280px;
 
       min-height: 72px;
 
-      padding:
-        0 36px;
+      padding: 0 36px;
 
       border: none;
-
-      border-radius: 36px;
 
       background: #326ba8;
 
@@ -776,15 +769,12 @@
         background 0.2s ease,
         transform 0.2s ease,
         box-shadow 0.2s ease;
-
-      transform: translateY(-20px);
     }
 
     .floating-upload-button:hover {
       background: #285b91;
 
-      transform:
-        translateY(-3px);
+
 
       box-shadow:
         0 13px 30px
@@ -792,8 +782,7 @@
     }
 
     .floating-upload-button:active {
-      transform:
-        translateY(0);
+
     }
 
 
@@ -2298,8 +2287,8 @@
           0 30px;
 
         font-size: 17px;
+      
 
-        border-radius: 33px;
       }
 
       .pdf-grid {
@@ -2450,8 +2439,6 @@
           0 26px;
 
         font-size: 16px;
-
-        border-radius: 31px;
       }
 
     }
@@ -4727,27 +4714,6 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
   background: linear-gradient(135deg, #3f8edb 0%, #6857cf 55%, #8055c5 100%) !important;
 }
 </style>
-
-
-<style id="toolnest-merge-upload-radius">
-.upload-btn,
-.upload-button,
-#uploadButton,
-.file-upload-button {
-  border-radius: 10px !important;
-}
-</style>
-
-
-<style id="toolnest-merge-download-button">
-#mergeDownloadBtn {
-  background: linear-gradient(135deg, #3f8edb 0%, #6857cf 55%, #8055c5 100%) !important;
-  border-radius: 10px !important;
-  color: #fff !important;
-}
-</style>
-
-
 <style id="toolnest-merge-clear-zoom-icon">
 .zoom-icon-clear {
   position: relative;
@@ -4878,7 +4844,6 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
   padding: 14px 28px !important;
   font-size: 17px !important;
   font-weight: 700 !important;
-  border-radius: 10px !important;
 }
 </style>
 
@@ -4895,7 +4860,6 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
   padding: 17px 34px !important;
   font-size: 19px !important;
   font-weight: 700 !important;
-  border-radius: 10px !important;
 }
 </style>
 
@@ -5156,6 +5120,15 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 }
 </style>
 
+
+<style id="toolnest-merge-button-rounded-clean">
+/* Merge PDF action buttons: rounded corners, never pill-shaped. */
+.floating-upload-button,
+#uploadButton,
+#mergeDownloadBtn {
+  border-radius: 18px !important;
+}
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -5255,8 +5228,8 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 <!-- PREVIEW STATE -->
 
 <div class="merge-sort-toolbar" aria-label="Sort uploaded files">
-  <button aria-label="Sort files A-Z" class="sort-button merge-sort-btn merge-sort-btn-arrow" id="sortAZ" title="Sort files A-Z" type="button">A &gt;&gt; Z</button>
-  <button aria-label="Sort files Z-A" class="sort-button merge-sort-btn merge-sort-btn-arrow" id="sortZA" title="Sort files Z-A" type="button">Z &lt;&lt; A</button>
+  <button aria-label="Sort files A-Z" class="sort-button merge-sort-btn merge-sort-btn-arrow" id="sortAZ" title="Sort files A-Z" type="button">a → z</button>
+  <button aria-label="Sort files Z-A" class="sort-button merge-sort-btn merge-sort-btn-arrow" id="sortZA" title="Sort files Z-A" type="button">z → a</button>
 </div>
 <div class="uploaded-files" id="uploadedFiles">
 <div class="uploaded-files-header">
