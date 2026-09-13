@@ -4936,15 +4936,21 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 
 
 
-<style id="toolnest-merge-plain-big-zoom">
+
+
+
+<style id="toolnest-merge-a4-zoom">
+/* Zoomed PDF: display one true A4-sized page, with only the red close X. */
 .pdf-zoom-modal {
   position: fixed !important;
   inset: 0 !important;
   z-index: 1000 !important;
   display: none !important;
-  align-items: center !important;
+  align-items: flex-start !important;
   justify-content: center !important;
-  padding: 20px !important;
+  overflow: auto !important;
+  padding: 28px 20px !important;
+  box-sizing: border-box !important;
   background: rgba(0,0,0,.82) !important;
 }
 .pdf-zoom-modal.active {
@@ -4952,8 +4958,10 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 }
 .pdf-zoom-dialog {
   position: relative !important;
-  width: auto !important;
-  height: auto !important;
+  width: 210mm !important;
+  min-width: 210mm !important;
+  height: 297mm !important;
+  min-height: 297mm !important;
   max-width: none !important;
   max-height: none !important;
   margin: 0 !important;
@@ -4965,28 +4973,29 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
   overflow: visible !important;
 }
 .pdf-zoom-canvas-wrap {
-  width: auto !important;
-  height: auto !important;
+  width: 210mm !important;
+  height: 297mm !important;
+  overflow: visible !important;
   display: block !important;
-  overflow: auto !important;
   padding: 0 !important;
+  margin: 0 !important;
   background: transparent !important;
   border: 0 !important;
-  border-radius: 0 !important;
 }
 .pdf-zoom-canvas {
   display: block !important;
-  width: auto !important;
-  height: auto !important;
+  width: 210mm !important;
+  height: 297mm !important;
   max-width: none !important;
   max-height: none !important;
-  margin: 0 auto !important;
-  box-shadow: 0 4px 24px rgba(0,0,0,.45) !important;
+  margin: 0 !important;
+  background: #fff !important;
+  box-shadow: 0 4px 22px rgba(0,0,0,.45) !important;
 }
 .pdf-zoom-close {
   position: fixed !important;
-  top: 14px !important;
-  right: 18px !important;
+  top: 12px !important;
+  right: 16px !important;
   z-index: 1100 !important;
   width: 38px !important;
   height: 38px !important;
@@ -5002,6 +5011,21 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
   font-weight: 700 !important;
   line-height: 1 !important;
   cursor: pointer !important;
+}
+@media (max-width: 900px) {
+  .pdf-zoom-modal {
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding: 50px 8px 12px !important;
+  }
+  .pdf-zoom-dialog,
+  .pdf-zoom-canvas-wrap,
+  .pdf-zoom-canvas {
+    width: 210mm !important;
+    min-width: 210mm !important;
+    height: 297mm !important;
+    min-height: 297mm !important;
+  }
 }
 </style>
 
@@ -6253,14 +6277,7 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
           );
 
 
-        const scale =
-          Math.min(
-            maxWidth /
-              baseViewport.width,
-
-            maxHeight /
-              baseViewport.height
-          );
+        const scale = 2.5;
 
 
         const viewport =
