@@ -4920,12 +4920,40 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 <style id="toolnest-merge-sort-placement-final">
 .merge-sort-toolbar {
   width: 100%;
-  display: flex;
+  display: none;
   justify-content: flex-end;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin: 0 0 10px;
   box-sizing: border-box;
+}
+
+.merge-sort-toolbar button {
+  min-width: 78px;
+  height: 38px;
+  padding: 0 14px;
+  border: 1px solid #d7dde5;
+  border-radius: 8px;
+  background: #fff;
+  color: #344154;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, transform .15s ease;
+}
+
+.merge-sort-toolbar button:hover {
+  background: #f5f7fa;
+  border-color: #bfc7d2;
+}
+
+.merge-sort-toolbar button:active {
+  transform: translateY(1px);
+}
+
+.merge-sort-toolbar.active {
+  display: flex;
 }
 .merge-sort-toolbar button {
   margin: 0 !important;
@@ -5798,6 +5826,11 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
         );
 
 
+        document
+          .querySelector(".merge-sort-toolbar")
+          .classList.add("active");
+
+
         editorControls.classList.add(
           "active"
         );
@@ -5813,6 +5846,11 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
         uploadedFiles.classList.remove(
           "active"
         );
+
+
+        document
+          .querySelector(".merge-sort-toolbar")
+          .classList.remove("active");
 
 
         editorControls.classList.remove(
