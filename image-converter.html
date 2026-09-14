@@ -3117,6 +3117,31 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 }
 </style>
 
+
+
+<style id="toolnest-reference-tool-box">
+/* Match the Merge/Split PDF tool surface.
+   The upload area and upload button themselves are intentionally untouched. */
+.tn-shared-tool-box {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #dce3ea;
+  border-radius: 12px;
+  padding: 26px;
+  box-shadow: 0 4px 16px rgba(31, 45, 61, 0.05);
+  box-sizing: border-box;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.tn-shared-upload-frame { width: 100%; }
+html.dark-mode .tn-shared-tool-box {
+  background: #1a2533;
+  border-color: #33465b;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+}
+@media (max-width: 650px) {
+  .tn-shared-tool-box { padding: 18px; }
+}
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -3185,11 +3210,15 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 <!-- ========================================
      SHARED UPLOAD / PREVIEW AREA
 ========================================= -->
-<div class="tn-shared-upload-area">
-  <div class="tn-shared-upload-placeholder">
-    <button class="tn-shared-upload-button" type="button">
-      Upload Image File
-    </button>
+<div class="tool-box tn-shared-tool-box">
+  <div class="tn-shared-upload-frame">
+    <div class="tn-shared-upload-area">
+      <div class="tn-shared-upload-placeholder">
+        <button class="tn-shared-upload-button" type="button">
+          Upload Image File
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
