@@ -5249,6 +5249,52 @@ html.dark-mode .tn-shared-upload-button:hover {
 }
 </style>
 
+
+<style id="toolnest-split-visual-custom">
+.visual-split-help {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+.visual-split-pages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.visual-split-page {
+  width: min(100%, 760px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.visual-split-page-label {
+  margin: 12px 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.visual-split-canvas {
+  display: block;
+  width: min(100%, 720px);
+  height: auto;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,.16);
+}
+.visual-split-divider {
+  width: 100%;
+  margin: 10px 0 2px;
+  padding: 9px 16px;
+  border: 2px dashed #059669;
+  border-radius: 8px;
+  background: transparent;
+  color: #059669;
+  cursor: pointer;
+  font-weight: 600;
+}
+.visual-split-divider.selected {
+  background: #059669;
+  color: #fff;
+}
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -5353,22 +5399,17 @@ html.dark-mode .tn-shared-upload-button:hover {
 <div class="editor-controls" id="editorControls">
 <div aria-label="Split options" class="split-options-bar" role="group">
 <button aria-pressed="true" class="split-option active" data-mode="entire" id="splitEntireButton" type="button">
-                  Split entire PDF
-                  <span>Splits each page</span>
+                  Split all pages
+                  <span>Split every page into its own PDF</span>
 </button>
 <button aria-pressed="false" class="split-option" data-mode="pages" id="splitByPageButton" type="button">
-                  Split by page no
-                  <span>Choose page numbers</span>
+                  Custom
+                  <span>Choose where to split</span>
 </button>
 </div>
-<div class="page-number-panel" hidden="" id="pageNumberPanel">
-<label for="pageNumbers">
-                  Page numbers
-                </label>
-<input aria-describedby="pageNumberHelp" autocomplete="off" id="pageNumbers" inputmode="text" placeholder="e.g. 1, 3-5, 8" type="text"/>
-<div class="page-number-help" id="pageNumberHelp">
-                  Enter individual pages or ranges, separated by commas.
-                </div>
+<div class="page-number-panel visual-split-panel" hidden id="pageNumberPanel">
+  <div class="visual-split-help">Click “Split here” between pages to mark where you want the PDF split.</div>
+  <div class="visual-split-pages" id="visualSplitPages"></div>
 </div>
 <div class="button-row">
 <button class="primary-button" id="splitButton" type="button">
@@ -5497,9 +5538,12 @@ html.dark-mode .tn-shared-upload-button:hover {
       const splitByPageButton = document.getElementById("splitByPageButton");
       const pageNumberPanel = document.getElementById("pageNumberPanel");
       const pageNumbers = document.getElementById("pageNumbers");
+    const visualSplitPages = document.getElementById("visualSplitPages");
+    let customSplitPoints = new Set();
       const status = document.getElementById("status");
 
       let pdfFile = null;
+      customSplitPoints.clear();
       let splitMode = "entire";
 
       /* ---------------- THEME ---------------- */
@@ -5774,10 +5818,10 @@ html.dark-mode .tn-shared-upload-button:hover {
       /* ---------------- SPLIT OPTIONS ---------------- */
 
       function setSplitMode(mode) {
-        splitMode = mode === "pages" ? "pages" : "entire";
+        splitMode = mode === "custom" ? "custom" : "entire";
 
         const entireActive = splitMode === "entire";
-        const pagesActive = splitMode === "pages";
+        const pagesActive = splitMode === "custom";
 
         if (splitEntireButton) {
           splitEntireButton.classList.toggle("active", entireActive);
@@ -5816,12 +5860,82 @@ html.dark-mode .tn-shared-upload-button:hover {
         splitByPageButton.addEventListener("click", function (event) {
           event.preventDefault();
           event.stopPropagation();
-          setSplitMode("pages");
+          setSplitMode("custom");
         });
       }
 
 
-      /* ---------------- FILE SELECTION ---------------- */
+      
+    async function renderVisualSplitPages() {
+      if (!visualSplitPages || !pdfFile || splitMode !== "custom") return;
+
+      visualSplitPages.innerHTML = "";
+
+      try {
+        const bytes = await pdfFile.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+
+        for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+          const pageWrap = document.createElement("div");
+          pageWrap.className = "visual-split-page";
+
+          const label = document.createElement("div");
+          label.className = "visual-split-page-label";
+          label.textContent = "Page " + pageNumber;
+
+          const canvas = document.createElement("canvas");
+          canvas.className = "visual-split-canvas";
+
+          pageWrap.appendChild(label);
+          pageWrap.appendChild(canvas);
+          visualSplitPages.appendChild(pageWrap);
+
+          const page = await pdf.getPage(pageNumber);
+          const base = page.getViewport({ scale: 1 });
+          const scale = Math.min(720 / base.width, 900 / base.height);
+          const viewport = page.getViewport({ scale });
+
+          canvas.width = Math.floor(viewport.width);
+          canvas.height = Math.floor(viewport.height);
+
+          await page.render({
+            canvasContext: canvas.getContext("2d"),
+            viewport
+          }).promise;
+
+          if (pageNumber < pdf.numPages) {
+            const divider = document.createElement("button");
+            divider.type = "button";
+            divider.className = "visual-split-divider";
+            divider.textContent = customSplitPoints.has(pageNumber)
+              ? "✓ Split here"
+              : "Split here";
+
+            if (customSplitPoints.has(pageNumber)) {
+              divider.classList.add("selected");
+            }
+
+            divider.addEventListener("click", function () {
+              if (customSplitPoints.has(pageNumber)) {
+                customSplitPoints.delete(pageNumber);
+                divider.classList.remove("selected");
+                divider.textContent = "Split here";
+              } else {
+                customSplitPoints.add(pageNumber);
+                divider.classList.add("selected");
+                divider.textContent = "✓ Split here";
+              }
+            });
+
+            pageWrap.appendChild(divider);
+          }
+        }
+      } catch (error) {
+        console.error("Visual split preview error:", error);
+      }
+    }
+
+    /* ---------------- FILE SELECTION ---------------- */
 
       if (uploadButton) {
         uploadButton.addEventListener("click", openFilePicker);
@@ -5871,136 +5985,31 @@ html.dark-mode .tn-shared-upload-button:hover {
         pdfInput.addEventListener("change", async function () {
           const file = pdfInput.files && pdfInput.files[0];
 
-          if (file) {
-            await handleSelectedFile(file);
-          }
-        });
-      }
+          if (splitMode === "custom") {
+        const points = Array.from(customSplitPoints)
+          .filter(function (page) {
+            return page >= 1 && page < pageCount;
+          })
+          .sort(function (a, b) { return a - b; });
 
-      /* ---------------- SPLIT + DOWNLOAD ---------------- */
+        const boundaries = [0].concat(points, [pageCount]);
+        outputGroups = [];
 
-      function parsePageGroups(value, pageCount) {
-        const cleaned = (value || "").replace(/\s+/g, "");
-
-        if (!cleaned) {
-          throw new Error("Please enter at least one page number.");
-        }
-
-        const groups = [];
-        const parts = cleaned.split(",");
-
-        for (const part of parts) {
-          if (!part) {
-            throw new Error("Please enter valid page numbers.");
-          }
-
-          if (/^\d+$/.test(part)) {
-            const page = Number(part);
-
-            if (page < 1 || page > pageCount) {
-              throw new Error(
-                "Page " + page + " is outside the PDF's page range."
-              );
-            }
-
-            groups.push([page - 1]);
-            continue;
-          }
-
-          const match = part.match(/^(\d+)-(\d+)$/);
-
-          if (!match) {
-            throw new Error("Use page numbers like 1, 3-5, 8.");
-          }
-
-          const first = Number(match[1]);
-          const last = Number(match[2]);
-
-          if (
-            first < 1 ||
-            last < 1 ||
-            first > pageCount ||
-            last > pageCount ||
-            first > last
-          ) {
-            throw new Error(
-              "One of the page ranges is outside the PDF's page range."
-            );
-          }
-
+        for (let i = 0; i < boundaries.length - 1; i++) {
           const group = [];
-
-          for (let page = first; page <= last; page++) {
-            group.push(page - 1);
+          for (let page = boundaries[i]; page < boundaries[i + 1]; page++) {
+            group.push(page);
           }
-
-          groups.push(group);
+          if (group.length) outputGroups.push(group);
         }
-
-        return groups;
+      } else {
+        outputGroups = Array.from(
+          { length: pageCount },
+          (_, index) => [index]
+        );
       }
 
-      if (splitButton) {
-        splitButton.addEventListener("click", async function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-
-          if (!pdfFile) {
-            setStatus("Please upload a PDF first.", true);
-            return;
-          }
-
-          if (!window.PDFLib || !PDFLib.PDFDocument) {
-            setStatus(
-              "PDF processing library could not be loaded. Please refresh the page.",
-              true
-            );
-            return;
-          }
-
-          if (!window.JSZip) {
-            setStatus(
-              "ZIP processing library could not be loaded. Please refresh the page.",
-              true
-            );
-            return;
-          }
-
-          splitButton.disabled = true;
-          splitButton.textContent = "Splitting PDF...";
-          setStatus("Preparing your PDF...", true);
-
-          try {
-            const bytes = await pdfFile.arrayBuffer();
-
-            const sourcePdf =
-              await PDFLib.PDFDocument.load(bytes);
-
-            const pageCount =
-              sourcePdf.getPageCount();
-
-            if (pageCount === 0) {
-              throw new Error("The PDF has no pages.");
-            }
-
-            let outputGroups;
-
-            if (splitMode === "entire") {
-              outputGroups = Array.from(
-                { length: pageCount },
-                function (_, index) {
-                  return [index];
-                }
-              );
-            } else {
-              outputGroups =
-                parsePageGroups(
-                  pageNumbers ? pageNumbers.value : "",
-                  pageCount
-                );
-            }
-
-            if (!outputGroups.length) {
+      if (!outputGroups.length) {
               throw new Error("No valid pages were selected.");
             }
 
