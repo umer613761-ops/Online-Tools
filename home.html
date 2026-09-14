@@ -567,10 +567,10 @@
 
       padding: 12px;
 
-      background: #285b91;
+      background: #059669;
 
       border:
-        1px solid #285b91;
+        1px solid #059669;
 
       border-radius: 9px;
 
@@ -580,7 +580,7 @@
 
       box-shadow:
         0 3px 10px
-        rgba(40, 91, 145, 0.20);
+        rgba(5, 150, 105, 0.20);
 
       transition:
         transform 0.2s ease,
@@ -599,7 +599,7 @@
 
       box-shadow:
         0 7px 18px
-        rgba(50, 107, 168, 0.28);
+        rgba(5, 150, 105, 0.28);
     }
 
 
@@ -1025,9 +1025,9 @@
     ======================================== */
 
     html.dark-mode .tool-card {
-      background: #285b91;
+      background: #059669;
 
-      border-color: #285b91;
+      border-color: #059669;
 
       color: #ffffff;
 
@@ -1224,9 +1224,9 @@
       /* SYSTEM DARK MODE TOOL CARDS */
 
       html:not(.light-mode) .tool-card {
-        background: #285b91;
+        background: #059669;
 
-        border-color: #285b91;
+        border-color: #059669;
 
         color: #ffffff;
 
@@ -1641,7 +1641,7 @@
       align-items: center;
       gap: 12px;
       padding: 13px;
-      background: #285b91;
+      background: #059669;
       border: 1px solid #285b91;
       border-radius: 9px;
       text-decoration: none;
@@ -2261,7 +2261,7 @@ html.dark-mode .footer-quick-links a:hover { color: #6fa2d2; }
   width: 150px; height: 150px;
   right: -70px; bottom: -92px;
   border-radius: 50%;
-  background: #f1faf6;
+  background: #dcefe6;
   pointer-events: none;
   z-index: -1;
 }
@@ -2326,6 +2326,9 @@ html.dark-mode .tool-card:hover, html.dark-mode .home-tool-card:hover {
 html.dark-mode .tool-info h2, html.dark-mode .home-tool-info h3 { color: #f2f6fb !important; }
 html.dark-mode .tool-info p, html.dark-mode .home-tool-info p { color: #aebdcb !important; }
 html.dark-mode .home-tool-card[data-popular="true"]::before { background:#39232a; color:#ff9aaa; }
+html.dark-mode .tool-card::after, html.dark-mode .home-tool-card::after {
+  background: #29483b;
+}
 </style>
 <style>
 /* Image card fix */
@@ -2357,7 +2360,7 @@ html.dark-mode .home-tool-card[data-popular="true"]::before { background:#39232a
   right: -70px !important;
   bottom: -92px !important;
   border-radius: 50% !important;
-  background: #f1faf6 !important;
+  background: #dcefe6 !important;
   pointer-events: none !important;
   z-index: -1 !important;
 }
@@ -2465,6 +2468,24 @@ html.dark-mode .home-category-card:hover {
   box-shadow: 0 15px 30px rgba(0,0,0,.35) !important;
 }
 
+html.dark-mode .home-category-card::after {
+  background: #21483a !important;
+}
+
+html.dark-mode .home-category-card::before,
+html.dark-mode .home-category-card:nth-child(2)::before,
+html.dark-mode .home-category-card:nth-child(3)::before {
+  background: #059669 !important;
+}
+
+html.dark-mode .home-category-icon,
+html.dark-mode .home-category-card:nth-child(2) .home-category-icon,
+html.dark-mode .home-category-card:nth-child(3) .home-category-icon {
+  background: #19392f !important;
+  color: #059669 !important;
+  box-shadow: none !important;
+}
+
 html.dark-mode .home-category-card h3 {
   color: #f2f6fb !important;
 }
@@ -2473,9 +2494,12 @@ html.dark-mode .home-category-card p {
   color: #aebdcb !important;
 }
 
-html.dark-mode .home-category-link {
+html.dark-mode .home-category-link,
+html.dark-mode .home-category-card:nth-child(2) .home-category-link,
+html.dark-mode .home-category-card:nth-child(3) .home-category-link {
   background: #202c3a !important;
   border-color: #405267 !important;
+  color: #059669 !important;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -2486,6 +2510,24 @@ html.dark-mode .home-category-link {
     box-shadow: 0 9px 22px rgba(0,0,0,.28) !important;
   }
 
+  html:not(.light-mode) .home-category-card::after {
+    background: #21483a !important;
+  }
+
+  html:not(.light-mode) .home-category-card::before,
+  html:not(.light-mode) .home-category-card:nth-child(2)::before,
+  html:not(.light-mode) .home-category-card:nth-child(3)::before {
+    background: #059669 !important;
+  }
+
+  html:not(.light-mode) .home-category-icon,
+  html:not(.light-mode) .home-category-card:nth-child(2) .home-category-icon,
+  html:not(.light-mode) .home-category-card:nth-child(3) .home-category-icon {
+    background: #19392f !important;
+    color: #059669 !important;
+    box-shadow: none !important;
+  }
+
   html:not(.light-mode) .home-category-card h3 {
     color: #f2f6fb !important;
   }
@@ -2494,9 +2536,12 @@ html.dark-mode .home-category-link {
     color: #aebdcb !important;
   }
 
-  html:not(.light-mode) .home-category-link {
+  html:not(.light-mode) .home-category-link,
+  html:not(.light-mode) .home-category-card:nth-child(2) .home-category-link,
+  html:not(.light-mode) .home-category-card:nth-child(3) .home-category-link {
     background: #202c3a !important;
     border-color: #405267 !important;
+    color: #059669 !important;
   }
 }
 </style>
@@ -2558,7 +2603,7 @@ html.dark-mode .home-category-link {
 .header-search input:focus {
   background: #ffffff;
   border-color: #91b3d5;
-  box-shadow: 0 0 0 3px rgba(75,142,208,0.09), 0 4px 12px rgba(38,53,72,0.05);
+  box-shadow: 0 0 0 3px rgba(5,150,105,0.10), 0 4px 12px rgba(38,53,72,0.05);
 }
 
 .theme-toggle {
@@ -2630,8 +2675,8 @@ html.dark-mode .home-category-link {
   border: 1px solid #e1e9f1;
   border-radius: 22px;
   background:
-    radial-gradient(circle at 15% 10%, rgba(91,154,214,0.09), transparent 34%),
-    radial-gradient(circle at 88% 8%, rgba(114,95,195,0.08), transparent 32%),
+    radial-gradient(circle at 15% 10%, rgba(5,150,105,0.12), transparent 34%),
+    radial-gradient(circle at 88% 8%, rgba(5,150,105,0.10), transparent 32%),
     linear-gradient(180deg, #fbfdff 0%, #f7f9fc 100%);
   box-shadow: 0 10px 28px rgba(38,53,72,0.045);
   overflow: hidden;
@@ -2645,7 +2690,7 @@ html.dark-mode .home-category-link {
   width: 360px;
   height: 150px;
   transform: translateX(-50%);
-  background: radial-gradient(ellipse, rgba(75,142,208,0.09), transparent 68%);
+  background: radial-gradient(ellipse, rgba(5,150,105,0.10), transparent 68%);
   pointer-events: none;
 }
 
@@ -2754,8 +2799,8 @@ html.dark-mode .category-link.active {
 html.dark-mode .hero {
   border-color: #303d4b;
   background:
-    radial-gradient(circle at 15% 10%, rgba(91,154,214,0.09), transparent 34%),
-    radial-gradient(circle at 88% 8%, rgba(114,95,195,0.09), transparent 32%),
+    radial-gradient(circle at 15% 10%, rgba(5,150,105,0.12), transparent 34%),
+    radial-gradient(circle at 88% 8%, rgba(5,150,105,0.10), transparent 32%),
     linear-gradient(180deg, #1a222c 0%, #171e27 100%);
   box-shadow: none;
 }
@@ -4166,7 +4211,7 @@ html.dark-mode .logo-tool { color: #edf2f7 !important; }
   top: -190px;
   left: 8%;
   border-radius: 50%;
-  background: rgba(85,157,229,0.16);
+  background: rgba(5,150,105,0.22) !important;
   filter: blur(8px);
 }
 
@@ -4178,7 +4223,7 @@ html.dark-mode .logo-tool { color: #edf2f7 !important; }
   right: 5%;
   bottom: -245px;
   border-radius: 50%;
-  background: rgba(130,89,205,0.14);
+  background: rgba(5,150,105,0.20) !important;
   filter: blur(8px);
 }
 
@@ -4520,6 +4565,28 @@ html.dark-mode .hero .hero-panel {
 
   .toolnest-mobile-original-footer .footer-links a:hover {
     color: #ffffff !important;
+  }
+}
+
+/* ToolNest corner accent — visible in both themes. */
+html.dark-mode .tool-category-link::after {
+  background: #29483b !important;
+}
+
+html.dark-mode .hero::before {
+  background: rgba(5,150,105,0.20) !important;
+}
+
+html.dark-mode .hero::after {
+  background: rgba(5,150,105,0.18) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .hero::before {
+    background: rgba(5,150,105,0.20) !important;
+  }
+  html:not(.light-mode) .hero::after {
+    background: rgba(5,150,105,0.18) !important;
   }
 }
 </style>
