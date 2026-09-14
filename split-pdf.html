@@ -5239,6 +5239,16 @@ html.dark-mode .tn-shared-upload-button:hover {
 }
 </style>
 
+
+<style id="toolnest-split-page-count">
+.pdf-page-count {
+  font-size: 12px;
+  line-height: 1.3;
+  margin-top: 3px;
+  opacity: 0.72;
+}
+</style>
+
 </head>
 <body>
 <!-- ========================================
@@ -5668,7 +5678,9 @@ html.dark-mode .tn-shared-upload-button:hover {
         const name = document.createElement("div");
         name.className = "pdf-name";
         name.textContent = pdfFile.name;
-        name.title = pdfFile.name;
+        name.title = pdfFile.name; const pageCount = document.createElement("div");
+      pageCount.className = "pdf-page-count";
+      pageCount.textContent = "Loading...";
 
         const removeButton = document.createElement("button");
         removeButton.type = "button";
@@ -5688,11 +5700,23 @@ html.dark-mode .tn-shared-upload-button:hover {
 
         card.appendChild(preview);
         card.appendChild(name);
+      card.appendChild(pageCount);
         card.appendChild(removeButton);
 
         pdfGrid.appendChild(card);
 
-        return await renderPreview(pdfFile, canvas);
+        const previewLoaded = await renderPreview(pdfFile, canvas);
+
+      try {
+        const bytes = await pdfFile.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+        pageCount.textContent = pdf.numPages + " Pages";
+      } catch (error) {
+        console.error("PDF page count error:", error);
+        pageCount.textContent = "Pages unavailable";
+      }
+
+      return previewLoaded;
       }
 
       async function showUploadedFile(file) {
