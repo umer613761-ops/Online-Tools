@@ -782,17 +782,6 @@
         box-shadow 0.2s ease;
     }
 
-    .floating-upload-button:hover {
-      background: #285b91;
-
-      transform:
-        translateY(-3px);
-
-      box-shadow:
-        0 13px 30px
-        rgba(50, 107, 168, 0.36);
-    }
-
     .floating-upload-button:active {
       transform:
         translateY(0);
@@ -2063,14 +2052,6 @@
       box-shadow:
         0 10px 26px
         rgba(0, 0, 0, 0.32);
-    }
-
-    html.dark-mode .floating-upload-button:hover {
-      background: #3a78b8;
-
-      box-shadow:
-        0 13px 30px
-        rgba(0, 0, 0, 0.38);
     }
 
     html.dark-mode .drag-hint {
@@ -5426,6 +5407,492 @@ html:not(.dark-mode) .pdf-card {
   box-shadow: 0 2px 12px rgba(0,0,0,.08);
 }
 </style>
+
+<style id="toolnest-split-radio-plain">
+/* Split mode controls: plain black radio-style options */
+.split-options-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 14px;
+}
+
+.split-option,
+.split-option:hover,
+.split-option.active,
+.split-option:focus-visible {
+  display: grid;
+  grid-template-columns: 18px auto;
+  grid-template-rows: auto auto;
+  column-gap: 8px;
+  align-items: start;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 2px 0;
+  border: 0 !important;
+  border-radius: 0;
+  background: transparent !important;
+  color: #111111 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+  cursor: pointer;
+  text-align: left;
+  transition: none !important;
+}
+
+.split-option input[type="radio"] {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  width: 16px;
+  height: 16px;
+  margin: 1px 0 0;
+  padding: 0;
+  accent-color: #111111;
+  cursor: pointer;
+}
+
+.split-option .split-option-label {
+  grid-column: 2;
+  grid-row: 1;
+  display: block;
+  margin: 0;
+  color: #111111 !important;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.split-option > span:last-child {
+  grid-column: 2;
+  grid-row: 2;
+  display: block;
+  margin: 2px 0 0;
+  color: #111111 !important;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.split-option.active,
+.split-option.active span,
+.split-option.active .split-option-label,
+.split-option:hover,
+.split-option:hover span,
+.split-option:hover .split-option-label {
+  background: transparent !important;
+  border: 0 !important;
+  color: #111111 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+</style>
+
+
+<style id="toolnest-split-radio-final">
+/* Final split-mode layout: centered, side-by-side, plain radio controls */
+.split-options-bar {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 32px !important;
+  width: 100% !important;
+  margin: 0 0 14px !important;
+  padding: 0 !important;
+}
+
+.split-option,
+.split-option:hover,
+.split-option.active,
+.split-option:focus-visible {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #111111 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 1.25 !important;
+  cursor: pointer !important;
+  text-align: left !important;
+  transition: none !important;
+}
+
+.split-option input[type="radio"] {
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 7px 0 0 !important;
+  padding: 0 !important;
+  accent-color: #111111 !important;
+  cursor: pointer !important;
+  flex: 0 0 auto !important;
+}
+
+.split-option .split-option-label,
+.split-option > span:last-child,
+.split-option.active .split-option-label,
+.split-option.active > span:last-child,
+.split-option:hover .split-option-label,
+.split-option:hover > span:last-child {
+  display: inline !important;
+  margin: 0 !important;
+  color: #111111 !important;
+  background: transparent !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+</style>
+
+
+<style id="toolnest-split-radio-perfect-align">
+/* Perfect alignment of split options directly above Split and Download */
+.split-options-bar {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 40px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto 14px !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.split-option,
+.split-option:hover,
+.split-option.active,
+.split-option:focus-visible {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  color: #111111 !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  text-align: left !important;
+}
+
+.split-option input[type="radio"] {
+  flex: 0 0 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 7px 0 0 !important;
+  padding: 0 !important;
+  accent-color: #111111 !important;
+}
+
+.split-option .split-option-label {
+  display: inline-block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #111111 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 20px !important;
+}
+
+/* Keep the button centered directly beneath the options */
+.button-row {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+</style>
+
+
+<style id="toolnest-split-radio-compact">
+/* Compact centered radio choices directly above the download button */
+.split-options-bar {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 18px !important;
+  width: 100% !important;
+  margin: 0 auto 14px !important;
+  padding: 0 !important;
+}
+
+.split-option,
+.split-option:hover,
+.split-option.active,
+.split-option:focus-visible {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  color: #111111 !important;
+  cursor: pointer !important;
+}
+
+.split-option input[type="radio"] {
+  flex: 0 0 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 6px 0 0 !important;
+  padding: 0 !important;
+  accent-color: #111111 !important;
+}
+
+.split-option .split-option-label,
+.split-option.active .split-option-label,
+.split-option:hover .split-option-label {
+  display: inline-block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #111111 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 20px !important;
+  white-space: nowrap !important;
+}
+</style>
+
+
+<style id="toolnest-split-radio-dark-fix">
+/* Final split option fix */
+.split-option,
+.split-option .split-option-label,
+.split-option.active .split-option-label,
+.split-option:hover .split-option-label {
+  color: #111111 !important;
+  opacity: 1 !important;
+}
+
+.split-option input[type="radio"] {
+  accent-color: #111111 !important;
+  opacity: 1 !important;
+}
+</style>
+
+
+<style id="toolnest-split-radio-final-dark">
+.split-option,
+.split-option .split-option-label,
+.split-option:hover,
+.split-option:hover .split-option-label,
+.split-option.active,
+.split-option.active .split-option-label {
+  color: #000000 !important;
+  opacity: 1 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.split-option input[type="radio"] {
+  appearance: auto !important;
+  -webkit-appearance: radio !important;
+  accent-color: #000000 !important;
+  opacity: 1 !important;
+}
+</style>
+
+
+<style id="toolnest-split-radio-definitive">
+/* Definitive split options styling */
+.split-options-bar {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 18px !important;
+  width: 100% !important;
+  margin: 0 auto 14px !important;
+  padding: 0 !important;
+}
+
+.split-options-bar .split-option,
+.split-options-bar .split-option:hover,
+.split-options-bar .split-option.active,
+.split-options-bar .split-option:focus-visible {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #000000 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 20px !important;
+  white-space: nowrap !important;
+}
+
+.split-options-bar .split-option input[type="radio"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  position: relative !important;
+  flex: 0 0 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 7px 0 0 !important;
+  padding: 0 !important;
+  border: 1.5px solid #000000 !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  box-sizing: border-box !important;
+  opacity: 1 !important;
+  cursor: pointer !important;
+}
+
+.split-options-bar .split-option .split-option-label,
+.split-options-bar .split-option span,
+.split-options-bar .split-option:hover .split-option-label,
+.split-options-bar .split-option.active .split-option-label {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #000000 !important;
+  background: transparent !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 20px !important;
+  opacity: 1 !important;
+}
+</style>
+
+
+<style id="toolnest-split-radio-real-dot">
+/* Reliable custom radio visuals */
+.split-options-bar .split-option {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #000000 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+}
+
+.split-options-bar .split-option input[type="radio"] {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.split-options-bar .split-option .radio-circle {
+  position: relative !important;
+  display: inline-block !important;
+  flex: 0 0 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 7px 0 0 !important;
+  box-sizing: border-box !important;
+  border: 1.5px solid #000000 !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+}
+
+.split-options-bar .split-option input[type="radio"]:checked + .radio-circle::after {
+  content: "" !important;
+  position: absolute !important;
+  width: 7px !important;
+  height: 7px !important;
+  left: 50% !important;
+  top: 50% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: #000000 !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.split-options-bar .split-option .split-option-label {
+  display: inline-block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #000000 !important;
+  background: transparent !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 20px !important;
+  opacity: 1 !important;
+}
+
+.split-options-bar .split-option:hover,
+.split-options-bar .split-option:hover .split-option-label,
+.split-options-bar .split-option.active,
+.split-options-bar .split-option.active .split-option-label {
+  color: #000000 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+</style>
+
+
+<style id="toolnest-split-radio-cleanup">
+.split-options-bar .split-option input[type="radio"]::before,
+.split-options-bar .split-option input[type="radio"]::after {
+  content: none !important;
+  display: none !important;
+}
+</style>
+
+
+
+
+
 </head>
 <body>
 <!-- ========================================
@@ -5528,15 +5995,17 @@ html:not(.dark-mode) .pdf-card {
 <div class="pdf-grid" id="pdfGrid"></div>
 </div>
 <div class="editor-controls" id="editorControls">
-<div aria-label="Split options" class="split-options-bar" role="group">
-<button aria-pressed="true" class="split-option active" data-mode="entire" id="splitEntireButton" type="button">
-                  Split all pages
-                  <span>Split every page into its own PDF</span>
-</button>
-<button aria-pressed="false" class="split-option" data-mode="pages" id="splitByPageButton" type="button">
-                  Custom
-                  <span>Choose where to split</span>
-</button>
+<div aria-label="Split options" class="split-options-bar" role="radiogroup">
+<label class="split-option" id="splitEntireOption">
+  <input aria-label="Split all pages" checked data-mode="entire" id="splitEntireButton" name="splitMode" type="radio" value="entire"/>
+  <span class="radio-circle" aria-hidden="true"></span>
+  <span class="split-option-label">Split all pages</span>
+</label>
+<label class="split-option" id="splitByPageOption">
+  <input aria-label="Custom" data-mode="pages" id="splitByPageButton" name="splitMode" type="radio" value="pages"/>
+  <span class="radio-circle" aria-hidden="true"></span>
+  <span class="split-option-label">Custom</span>
+</label>
 </div>
 <div class="page-number-panel visual-split-panel" hidden id="pageNumberPanel">
   <div class="visual-split-help">Click “Split here” between pages to mark where you want the PDF split.</div>
@@ -5544,7 +6013,7 @@ html:not(.dark-mode) .pdf-card {
 </div>
 <div class="button-row">
 <button class="primary-button" id="splitButton" type="button">
-                  Split PDF and Download
+                  Split and Download
                 </button>
 </div>
 </div>
@@ -5694,16 +6163,22 @@ html:not(.dark-mode) .pdf-card {
     if (visualSplitPages) visualSplitPages.innerHTML = "";
     if (splitButton) {
       splitButton.disabled = true;
-      splitButton.textContent = "Split PDF and Download";
+      splitButton.textContent = "Split and Download";
     }
     splitMode = "entire";
     if (splitEntireButton) {
       splitEntireButton.classList.add("active");
       splitEntireButton.setAttribute("aria-pressed", "true");
+      splitEntireButton.checked = true;
+      const entireOption = document.getElementById("splitEntireOption");
+      if (entireOption) entireOption.classList.add("is-selected");
     }
     if (splitByPageButton) {
       splitByPageButton.classList.remove("active");
       splitByPageButton.setAttribute("aria-pressed", "false");
+      splitByPageButton.checked = false;
+      const customOption = document.getElementById("splitByPageOption");
+      if (customOption) customOption.classList.remove("is-selected");
     }
     setStatus("", false);
   }
@@ -5876,10 +6351,16 @@ html:not(.dark-mode) .pdf-card {
     if (splitEntireButton) {
       splitEntireButton.classList.toggle("active", entire);
       splitEntireButton.setAttribute("aria-pressed", entire ? "true" : "false");
+      splitEntireButton.checked = entire;
+      const entireOption = document.getElementById("splitEntireOption");
+      if (entireOption) entireOption.classList.toggle("is-selected", entire);
     }
     if (splitByPageButton) {
       splitByPageButton.classList.toggle("active", !entire);
       splitByPageButton.setAttribute("aria-pressed", !entire ? "true" : "false");
+      splitByPageButton.checked = !entire;
+      const customOption = document.getElementById("splitByPageOption");
+      if (customOption) customOption.classList.toggle("is-selected", !entire);
     }
     if (pageNumberPanel) pageNumberPanel.hidden = entire;
     if (!entire) renderVisualSplitPages().catch(console.error);
@@ -5995,19 +6476,42 @@ html:not(.dark-mode) .pdf-card {
   }
 
   if (splitEntireButton) {
-    splitEntireButton.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      setSplitMode("entire");
+    splitEntireButton.addEventListener("change", function () {
+      if (this.checked) setSplitMode("entire");
     });
   }
 
   if (splitByPageButton) {
-    splitByPageButton.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      setSplitMode("custom");
+    splitByPageButton.addEventListener("change", function () {
+      if (this.checked) setSplitMode("custom");
     });
+  }
+
+  const splitEntireOption = document.getElementById("splitEntireOption");
+  const splitByPageOption = document.getElementById("splitByPageOption");
+
+  if (splitEntireOption) {
+    splitEntireOption.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      if (splitEntireButton) {
+        splitEntireButton.checked = true;
+        setSplitMode("entire");
+      }
+    }, true);
+  }
+
+  if (splitByPageOption) {
+    splitByPageOption.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      if (splitByPageButton) {
+        splitByPageButton.checked = true;
+        setSplitMode("custom");
+      }
+    }, true);
   }
 
   if (splitButton) splitButton.addEventListener("click", splitAndDownload);
@@ -6041,13 +6545,206 @@ html.dark-mode .category-nav .category-link.active:focus {
 }
 </style>
 
-<style id="toolnest-split-upload-hover-green">
-#uploadButton:hover,
-#uploadArea button:hover,
-.upload-button:hover {
+<style id="toolnest-split-button-match-upload">
+/* Split button matches the main Upload PDF File button */
+.editor-controls .primary-button#splitButton {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: 280px !important;
+  min-height: 72px !important;
+  padding: 0 36px !important;
+  border: none !important;
+  border-radius: 18px !important;
+  background: #059669 !important;
+  color: #ffffff !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 19px !important;
+  font-weight: 600 !important;
+  line-height: normal !important;
+  cursor: pointer !important;
+  box-shadow: 0 10px 26px rgba(50, 107, 168, 0.30) !important;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.editor-controls .primary-button#splitButton:hover:not(:disabled) {
+  background: #285b91 !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 13px 30px rgba(50, 107, 168, 0.36) !important;
+}
+
+.editor-controls .primary-button#splitButton:active:not(:disabled) {
+  transform: translateY(0) !important;
+}
+
+@media (max-width: 550px) {
+  .editor-controls .primary-button#splitButton {
+    width: auto !important;
+    min-width: 230px !important;
+    min-height: 62px !important;
+    padding: 0 26px !important;
+    border-radius: 31px !important;
+    font-size: 16px !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-split-radio-absolute-final">
+/* Split PDF options — final styles */
+.split-options-bar {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 16px !important;
+  width: 100% !important;
+  margin: 0 auto 14px !important;
+  padding: 0 !important;
+}
+
+.split-options-bar .split-option {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  width: auto !important;
+  height: 20px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #000000 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+}
+
+.split-options-bar .split-option input[type="radio"] {
+  position: absolute !important;
+  left: 0 !important;
+  top: 50% !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.split-options-bar .split-option .radio-circle {
+  position: relative !important;
+  display: inline-block !important;
+  width: 15px !important;
+  height: 15px !important;
+  min-width: 15px !important;
+  margin: 0 6px 0 0 !important;
+  padding: 0 !important;
+  border: 2px solid #000000 !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  box-sizing: border-box !important;
+}
+
+.split-options-bar .split-option.is-selected .radio-circle::after {
+  content: "" !important;
+  position: absolute !important;
+  display: block !important;
+  width: 7px !important;
+  height: 7px !important;
+  left: 50% !important;
+  top: 50% !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: #000000 !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.split-options-bar .split-option .split-option-label,
+.split-options-bar .split-option:hover .split-option-label,
+.split-options-bar .split-option.active .split-option-label,
+.split-options-bar .split-option.is-selected .split-option-label {
+  display: inline-block !important;
+  color: #000000 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 20px !important;
+  opacity: 1 !important;
+  background: transparent !important;
+}
+
+.split-options-bar .split-option:hover,
+.split-options-bar .split-option.active,
+.split-options-bar .split-option:focus,
+.split-options-bar .split-option:focus-visible {
+  color: #000000 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+</style>
+
+
+<style id="toolnest-split-radio-no-upload-picker">
+.split-options-bar,
+.split-options-bar .split-option,
+.split-options-bar .split-option .radio-circle,
+.split-options-bar .split-option .split-option-label {
+  position: relative !important;
+  z-index: 10 !important;
+}
+</style>
+
+
+
+<style id="toolnest-upload-button-final">
+/* Upload PDF button — hover is identical to normal green */
+.floating-upload-button,
+.floating-upload-button:hover,
+.floating-upload-button:active,
+.floating-upload-button:focus,
+.floating-upload-button:focus-visible,
+html.dark-mode .floating-upload-button,
+html.dark-mode .floating-upload-button:hover,
+html.dark-mode .floating-upload-button:active,
+html.dark-mode .floating-upload-button:focus,
+html.dark-mode .floating-upload-button:focus-visible {
+  background: #059669 !important;
   background-color: #059669 !important;
   background-image: none !important;
   color: #ffffff !important;
+  border-color: transparent !important;
+}
+</style>
+
+
+<style id="toolnest-split-options-dark-mode">
+/* Split options in dark mode */
+html.dark-mode .split-options-bar .split-option,
+html.dark-mode .split-options-bar .split-option:hover,
+html.dark-mode .split-options-bar .split-option.active,
+html.dark-mode .split-options-bar .split-option.is-selected {
+  color: #ffffff !important;
+  background: transparent !important;
+}
+
+html.dark-mode .split-options-bar .split-option .split-option-label,
+html.dark-mode .split-options-bar .split-option:hover .split-option-label,
+html.dark-mode .split-options-bar .split-option.active .split-option-label,
+html.dark-mode .split-options-bar .split-option.is-selected .split-option-label {
+  color: #ffffff !important;
+}
+
+html.dark-mode .split-options-bar .split-option .radio-circle {
+  border-color: #ffffff !important;
+  background: transparent !important;
+}
+
+html.dark-mode .split-options-bar .split-option.is-selected .radio-circle::after {
+  background: #ffffff !important;
 }
 </style>
 
