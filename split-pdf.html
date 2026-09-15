@@ -5893,6 +5893,9 @@ html:not(.dark-mode) .pdf-card {
 
 
 
+
+
+
 </head>
 <body>
 <!-- ========================================
@@ -6152,34 +6155,41 @@ html:not(.dark-mode) .pdf-card {
   }
 
   function resetInterface() {
+    if (pdfInput) pdfInput.value = "";
+
     pdfFile = null;
     customSplitPoints.clear();
-    if (pdfInput) pdfInput.value = "";
-    if (pdfGrid) pdfGrid.innerHTML = "";
-    if (uploadedFiles) uploadedFiles.classList.remove("active");
-    if (uploadPlaceholder) uploadPlaceholder.style.display = "flex";
-    if (editorControls) editorControls.classList.remove("active");
-    if (pageNumberPanel) pageNumberPanel.hidden = true;
+
+    if (pdfGrid) {
+      pdfGrid.innerHTML = "";
+      pdfGrid.style.display = "";
+    }
+
     if (visualSplitPages) visualSplitPages.innerHTML = "";
+
+    if (pageNumberPanel) {
+      pageNumberPanel.hidden = true;
+      pageNumberPanel.style.display = "none";
+    }
+
+    if (uploadedFiles) uploadedFiles.classList.remove("active");
+
+    if (editorControls) editorControls.classList.remove("active");
+
+    if (uploadPlaceholder) {
+      uploadPlaceholder.style.display = "flex";
+    }
+
+    if (uploadButton) {
+      uploadButton.style.display = "inline-flex";
+      uploadButton.style.visibility = "visible";
+    }
+
     if (splitButton) {
       splitButton.disabled = true;
-      splitButton.textContent = "Split and Download";
+      splitButton.style.display = "";
     }
-    splitMode = "entire";
-    if (splitEntireButton) {
-      splitEntireButton.classList.add("active");
-      splitEntireButton.setAttribute("aria-pressed", "true");
-      splitEntireButton.checked = true;
-      const entireOption = document.getElementById("splitEntireOption");
-      if (entireOption) entireOption.classList.add("is-selected");
-    }
-    if (splitByPageButton) {
-      splitByPageButton.classList.remove("active");
-      splitByPageButton.setAttribute("aria-pressed", "false");
-      splitByPageButton.checked = false;
-      const customOption = document.getElementById("splitByPageOption");
-      if (customOption) customOption.classList.remove("is-selected");
-    }
+
     setStatus("", false);
   }
 
@@ -6411,7 +6421,10 @@ html:not(.dark-mode) .pdf-card {
       }
 
       setStatus("PDF split successfully.", true);
-    } catch (error) {
+
+      resetInterface();
+
+} catch (error) {
       console.error("PDF split error:", error);
       setStatus("Could not split the PDF. Please try again.", true);
     } finally {
@@ -6748,6 +6761,9 @@ html.dark-mode .split-options-bar .split-option.is-selected .radio-circle::after
 }
 </style>
 
+
+
+
 </body>
 </html>
 <style id="split-button-pill-final">
@@ -6984,5 +7000,87 @@ html.dark-mode nav.category-nav .category-link.active-button {
 /* ToolNest corner accent — visible in both themes. */
 html.dark-mode .tool-category-link::after {
   background: #29483b !important;
+}
+</style>
+
+
+
+
+
+
+<style id="toolnest-pdf-shared-upload-theme">
+/* Shared PDF upload area/button: one consistent implementation across PDF tools. */
+html.dark-mode .tn-shared-upload-area {
+  background-color: #131e2b !important;
+  background-image: none !important;
+  border-color: #52789c !important;
+}
+.tn-shared-upload-button:hover {
+  background: #059669 !important;
+}
+html.dark-mode .tn-shared-upload-button:hover {
+  background: #059669 !important;
+}
+</style>
+<style id="tn-split-download-button-30-smaller">
+#splitButton,
+#splitButton:hover,
+#splitButton:focus,
+#splitButton:active {
+  transform: scale(0.7) !important;
+  transform-origin: center center !important;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="tn-split-button-true-30-percent">
+/* Visually reduce the existing Split and Download button by exactly 30%. */
+#splitButton,
+#splitButton:hover:not(:disabled),
+#splitButton:focus:not(:disabled),
+#splitButton:active:not(:disabled),
+#splitButton:focus-visible:not(:disabled) {
+  transform: scale(0.7) !important;
+  transform-origin: center center !important;
+}
+</style>
+
+
+<style id="tn-split-hover-specificity-final">
+/* Keep Split and Download at exactly 70% visual size in every state. */
+.editor-controls .primary-button#splitButton,
+.editor-controls .primary-button#splitButton:hover:not(:disabled),
+.editor-controls .primary-button#splitButton:focus:not(:disabled),
+.editor-controls .primary-button#splitButton:active:not(:disabled),
+.editor-controls .primary-button#splitButton:focus-visible:not(:disabled) {
+  transform: scale(0.7) !important;
+  transform-origin: center center !important;
+}
+
+/* Specifically cancel the original hover "lift" that made the button
+   appear to change size/position when hovered. */
+.editor-controls .primary-button#splitButton:hover:not(:disabled) {
+  transform: scale(0.7) !important;
 }
 </style>

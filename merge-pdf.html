@@ -5231,6 +5231,16 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 </style>
 
 
+<style id="merge-pdf-uploaded-no-dots">
+/* Uploaded PDF state: preserve the grey background, remove only the dotted pattern. */
+@media (min-width: 651px) {
+  html:not(.dark-mode) .upload-area.has-files {
+    background-color: #eef0f3 !important;
+    background-image: none !important;
+  }
+}
+</style>
+
 <style id="toolnest-pdf-shared-upload-theme">
 /* Shared PDF upload area/button: one consistent implementation across PDF tools. */
 html.dark-mode .tn-shared-upload-area {
@@ -5920,42 +5930,42 @@ html.dark-mode .tn-shared-upload-button:hover {
         uploadPlaceholder.style.display =
           "none";
 
-
         uploadedFiles.classList.add(
           "active"
         );
-
+          uploadArea.classList.add("has-files");
 
         document
           .querySelector(".merge-sort-toolbar")
           .classList.add("active");
 
-
         editorControls.classList.add(
           "active"
         );
 
-      }
-
-      else {
+      } else {
 
         uploadPlaceholder.style.display =
           "flex";
 
-
         uploadedFiles.classList.remove(
           "active"
         );
+          uploadArea.classList.remove("has-files");
 
+        const toolbar =
+          document.querySelector(".merge-sort-toolbar");
 
-        document
-          .querySelector(".merge-sort-toolbar")
-          .classList.remove("active");
-
+        if (toolbar) {
+          toolbar.classList.remove("active");
+        }
 
         editorControls.classList.remove(
           "active"
         );
+
+        status.style.display =
+          "none";
 
       }
 
@@ -6801,8 +6811,13 @@ html.dark-mode .tn-shared-upload-button:hover {
           );
 
 
-          status.textContent =
-            "Done! Your merged PDF has been downloaded.";
+          status.style.display = "none";
+
+          /* MERGE DOWNLOAD RESET */
+          pdfFiles = [];
+          pdfInput.value = "";
+          updateInterface();
+          renderPDFs();
 
         }
 
