@@ -3652,6 +3652,576 @@ html.dark-mode .tn-shared-upload-button:hover {
 }
 </style>
 
+
+<style id="toolnest-rotate-heading-spec">
+/* Rotate PDF heading specification */
+.heading h1,
+.tool-intro h1 {
+  font-size: 36px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.8px !important;
+}
+@media screen and (max-width: 950px) {
+  .heading h1,
+  .tool-intro h1 {
+    font-size: 31px !important;
+  }
+}
+@media screen and (max-width: 650px) {
+  .heading h1,
+  .tool-intro h1 {
+    font-size: 29px !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-rotate-heading-description">
+.rotate-pdf-heading {
+  margin-bottom: 26px;
+}
+.rotate-pdf-heading h1 {
+  margin: 0 0 10px;
+  color: #263548;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+}
+.rotate-pdf-heading p {
+  max-width: 720px;
+  margin: 0;
+  color: #718096;
+  font-size: 16px;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+@media screen and (max-width: 950px) {
+  .rotate-pdf-heading h1 {
+    font-size: 31px;
+  }
+}
+@media screen and (max-width: 650px) {
+  .rotate-pdf-heading h1 {
+    font-size: 29px;
+  }
+  .rotate-pdf-heading p {
+    font-size: 15px;
+    white-space: normal;
+  }
+}
+</style>
+
+
+<style id="toolnest-rotate-no-dots-after-upload">
+/* Rotate PDF: preserve grey background but remove dotted texture in preview state. */
+@media (min-width: 651px) {
+  html:not(.dark-mode) .tn-shared-upload-area.has-files {
+    background-color: #eef0f3 !important;
+    background-image: none !important;
+  }
+}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style id="toolnest-rotate-upload-preview-cross">
+.rotate-pdf-preview-wrap { width:100%; min-height:320px; display:flex; align-items:center; justify-content:center; }
+.rotate-pdf-preview-card { position:relative; width:150px; text-align:center; }
+.rotate-pdf-preview { width:150px; height:190px; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#edf2f6; border:1px solid #cbd6e0; border-radius:10px; }
+.rotate-pdf-preview canvas { display:block; max-width:100%; max-height:100%; }
+.rotate-pdf-remove { position:absolute; top:0; right:0; width:20px; height:20px; display:flex; align-items:center; justify-content:center; padding:0; border:none; border-radius:50%; background:#dc4b4b; color:#fff; font-size:15px; font-weight:700; line-height:1; cursor:pointer; z-index:5; box-shadow:0 2px 5px rgba(0,0,0,.12); }
+.rotate-pdf-remove:hover { background:#c93d3d; }
+.rotate-pdf-file-name { width:100%; margin-top:8px; color:#34475b; font-size:14px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.rotate-pdf-preview-wrap[hidden] { display:none !important; }
+</style>
+<style id="rotate-upload-button-correct-state">
+#rotateUploadArea.has-files #rotateUploadButton {
+  display: none !important;
+}
+</style>
+<style id="toolnest-rotate-preview-controls">
+.rotate-pdf-controls{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;width:100%}
+.rotate-download-button,
+.rotate-action-button {
+  height: 48px;
+  border-radius: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.rotate-download-button {
+  min-width: 175px;
+  padding: 0 30px;
+  border: 1px solid #059669;
+  background: #059669;
+  color: #ffffff;
+  font-size: 16px;
+}
+.rotate-download-button:hover {
+  background: #059669;
+  border-color: #059669;
+  color: #ffffff;
+}
+.rotate-action-button {
+  width: 48px;
+  padding: 0;
+  border: 1px solid #cfd8e2;
+  background: #ffffff;
+  color: #344154;
+  font-size: 27px;
+  line-height: 1;
+}
+.rotate-action-button:hover {
+  background: #f5f7fa;
+  border-color: #b9c6d2;
+  color: #344154;
+}
+@media(max-width:650px){
+  .rotate-download-button,.rotate-action-button{height:44px}
+  .rotate-download-button{min-width:155px;padding:0 24px;font-size:15px}
+  .rotate-action-button{width:44px;font-size:24px}
+}.rotate-download-button{min-width:132px;padding:0 18px;font-size:14px}.rotate-action-button{width:38px;font-size:22px}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<style id="toolnest-rotate-upload-button-size">
+#rotateUploadButton {
+  min-width: 220px !important;
+  min-height: 58px !important;
+  padding: 0 30px !important;
+  border-radius: 10px !important;
+  background: #059669 !important;
+  border: 1px solid #059669 !important;
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+#rotateUploadButton:hover {
+  background: #059669 !important;
+  border-color: #059669 !important;
+  color: #ffffff !important;
+}
+@media(max-width:650px){
+  #rotateUploadButton {
+    min-width: 200px !important;
+    min-height: 54px !important;
+    font-size: 15px !important;
+  }
+}
+</style>
+
+<style id="rotate-buttons-size-final">
+/* Final button sizing: explicit dimensions override the shared tool styles. */
+#rotateUploadButton.tn-shared-upload-button {
+  width: 240px !important;
+  min-width: 240px !important;
+  max-width: 240px !important;
+  height: 60px !important;
+  min-height: 60px !important;
+  max-height: 60px !important;
+  padding: 0 28px !important;
+  border-radius: 10px !important;
+  background: #059669 !important;
+  border: 1px solid #059669 !important;
+  color: #fff !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  box-sizing: border-box !important;
+}
+#rotateUploadButton.tn-shared-upload-button:hover {
+  width: 240px !important;
+  min-width: 240px !important;
+  max-width: 240px !important;
+  height: 60px !important;
+  min-height: 60px !important;
+  max-height: 60px !important;
+  background: #059669 !important;
+  border-color: #059669 !important;
+  color: #fff !important;
+  transform: none !important;
+}
+#rotateUploadArea .rotate-pdf-preview-card {
+  width: 300px !important;
+}
+#rotateUploadArea .rotate-pdf-controls {
+  width: 300px !important;
+}
+#rotateUploadArea .rotate-download-button {
+  width: 190px !important;
+  min-width: 190px !important;
+  max-width: 190px !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
+  padding: 0 28px !important;
+  box-sizing: border-box !important;
+  font-size: 16px !important;
+}
+#rotateUploadArea .rotate-download-button:hover {
+  width: 190px !important;
+  min-width: 190px !important;
+  max-width: 190px !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
+  transform: none !important;
+}
+#rotateUploadArea .rotate-action-button {
+  width: 50px !important;
+  min-width: 50px !important;
+  max-width: 50px !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 650px) {
+  #rotateUploadButton.tn-shared-upload-button {
+    width: 215px !important;
+    min-width: 215px !important;
+    max-width: 215px !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    max-height: 56px !important;
+  }
+  #rotateUploadArea .rotate-pdf-preview-card,
+  #rotateUploadArea .rotate-pdf-controls {
+    width: 280px !important;
+  }
+  #rotateUploadArea .rotate-download-button {
+    width: 170px !important;
+    min-width: 170px !important;
+    max-width: 170px !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    max-height: 46px !important;
+  }
+  #rotateUploadArea .rotate-action-button {
+    width: 46px !important;
+    min-width: 46px !important;
+    max-width: 46px !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    max-height: 46px !important;
+  }
+}
+</style>
+<style id="rotate-action-green-final">
+#rotateUploadArea .rotate-action-button {
+  background: #059669 !important;
+  border-color: #059669 !important;
+  color: #ffffff !important;
+}
+#rotateUploadArea .rotate-action-button:hover {
+  background: #059669 !important;
+  border-color: #059669 !important;
+  color: #ffffff !important;
+  transform: none !important;
+}
+</style>
+
+<style id="rotate-preview-position-final">
+/* Keep the uploaded PDF preview and red close button above the controls. */
+#rotateUploadArea .rotate-pdf-preview-wrap {
+  width: 100% !important;
+  min-height: 320px !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding-top: 10px !important;
+}
+#rotateUploadArea .rotate-pdf-preview-card {
+  position: relative !important;
+  width: 300px !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+#rotateUploadArea .rotate-pdf-preview {
+  flex: 0 0 auto !important;
+}
+#rotateUploadArea .rotate-pdf-file-name {
+  flex: 0 0 auto !important;
+}
+#rotateUploadArea .rotate-pdf-controls {
+  flex: 0 0 auto !important;
+  width: 300px !important;
+  margin: 14px auto 0 !important;
+  justify-content: center !important;
+}
+#rotateUploadArea .rotate-pdf-remove {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  z-index: 10 !important;
+}
+</style>
+
+<style id="rotate-preview-move-up">
+#rotateUploadArea .rotate-pdf-preview-wrap {
+  min-height: 0 !important;
+  height: auto !important;
+  padding-top: 0 !important;
+  align-items: flex-start !important;
+}
+#rotateUploadArea .rotate-pdf-preview-card {
+  margin-top: 0 !important;
+}
+#rotateUploadArea .rotate-pdf-controls {
+  margin-top: 12px !important;
+}
+</style>
+<style id="rotate-preview-hidden-final">
+#rotateUploadArea .rotate-pdf-preview-wrap[hidden] {
+  display: none !important;
+}
+#rotateUploadArea:not(.has-files) .rotate-pdf-preview-wrap {
+  display: none !important;
+}
+#rotateUploadArea.has-files .rotate-pdf-preview-wrap {
+  display: flex !important;
+}
+</style>
+
+<style id="rotate-group-position-final">
+/* Move the complete uploaded-file group upward inside the upload area. */
+#rotateUploadArea .rotate-pdf-preview-wrap {
+  min-height: 0 !important;
+  height: auto !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+}
+#rotateUploadArea .rotate-pdf-preview-card {
+  margin-top: -35px !important;
+}
+</style>
+
+<style id="rotate-group-position-corrected">
+#rotateUploadArea .rotate-pdf-preview-wrap {
+  transform: translateY(-90px) !important;
+}
+</style>
+
+<style id="rotate-group-position-and-gap">
+/* Move the complete uploaded-file group further upward. */
+#rotateUploadArea .rotate-pdf-preview-wrap {
+  transform: translateY(-145px) !important;
+}
+/* Add more vertical space between the preview and the action buttons. */
+#rotateUploadArea .rotate-pdf-controls {
+  margin-top: 28px !important;
+}
+</style>
+
+<style id="rotate-preview-only-position">
+/* Move only the PDF preview upward; keep filename and buttons in place. */
+#rotateUploadArea .rotate-pdf-preview {
+  transform: translateY(-55px) !important;
+}
+#rotateUploadArea .rotate-pdf-remove {
+  transform: translateY(-55px) !important;
+}
+</style>
+
+<style id="rotate-filename-immediate-under-preview">
+#rotateUploadArea .rotate-pdf-preview-card {
+  align-items: center !important;
+}
+#rotateUploadArea .rotate-pdf-preview {
+  margin-bottom: 0 !important;
+}
+#rotateUploadArea .rotate-pdf-file-name {
+  margin-top: 4px !important;
+  margin-bottom: 0 !important;
+  line-height: 20px !important;
+}
+</style>
+
+<style id="rotate-filename-real-position">
+#rotateUploadArea .rotate-pdf-file-name {
+  position: relative !important;
+  margin-top: -51px !important;
+  margin-bottom: 0 !important;
+  z-index: 2 !important;
+  text-align: center !important;
+}
+#rotateUploadArea .rotate-pdf-controls {
+  position: relative !important;
+  z-index: 3 !important;
+}
+</style>
+
+<style id="rotate-preview-double-size">
+/* Double the visible preview size and scale the surrounding controls accordingly. */
+#rotateUploadArea .rotate-pdf-preview-card {
+  width: 300px !important;
+}
+#rotateUploadArea .rotate-pdf-preview {
+  width: 300px !important;
+  height: 380px !important;
+}
+#rotateUploadArea .rotate-pdf-preview canvas {
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
+#rotateUploadArea .rotate-pdf-file-name {
+  width: 300px !important;
+}
+#rotateUploadArea .rotate-pdf-controls {
+  width: 300px !important;
+  gap: 12px !important;
+  margin-top: 28px !important;
+}
+#rotateUploadArea .rotate-download-button {
+  width: 190px !important;
+  min-width: 190px !important;
+  max-width: 190px !important;
+  height: 50px !important;
+}
+#rotateUploadArea .rotate-action-button {
+  width: 50px !important;
+  min-width: 50px !important;
+  max-width: 50px !important;
+  height: 50px !important;
+}
+@media (max-width: 650px) {
+  #rotateUploadArea .rotate-pdf-preview-card {
+    width: 260px !important;
+  }
+  #rotateUploadArea .rotate-pdf-preview {
+    width: 260px !important;
+    height: 330px !important;
+  }
+  #rotateUploadArea .rotate-pdf-file-name,
+  #rotateUploadArea .rotate-pdf-controls {
+    width: 260px !important;
+  }
+  #rotateUploadArea .rotate-download-button {
+    width: 165px !important;
+    min-width: 165px !important;
+    max-width: 165px !important;
+    height: 46px !important;
+  }
+  #rotateUploadArea .rotate-action-button {
+    width: 46px !important;
+    min-width: 46px !important;
+    max-width: 46px !important;
+    height: 46px !important;
+  }
+}
+</style>
+
+<style id="rotate-buttons-bigger-final">
+#rotateUploadArea .rotate-pdf-controls {
+  gap: 14px !important;
+}
+#rotateUploadArea .rotate-download-button {
+  width: 220px !important;
+  min-width: 220px !important;
+  max-width: 220px !important;
+  height: 58px !important;
+  min-height: 58px !important;
+  max-height: 58px !important;
+  padding: 0 30px !important;
+  font-size: 17px !important;
+  border-radius: 10px !important;
+}
+#rotateUploadArea .rotate-action-button {
+  width: 58px !important;
+  min-width: 58px !important;
+  max-width: 58px !important;
+  height: 58px !important;
+  min-height: 58px !important;
+  max-height: 58px !important;
+  font-size: 30px !important;
+  border-radius: 10px !important;
+}
+@media (max-width:650px) {
+  #rotateUploadArea .rotate-download-button {
+    width: 195px !important;
+    min-width: 195px !important;
+    max-width: 195px !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
+    font-size: 16px !important;
+  }
+  #rotateUploadArea .rotate-action-button {
+    width: 52px !important;
+    min-width: 52px !important;
+    max-width: 52px !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
+    font-size: 27px !important;
+  }
+}
+</style>
+
+<style id="rotate-actual-pdf-preview-size">
+#rotateUploadArea .rotate-pdf-preview canvas {
+  width: auto !important;
+  height: auto !important;
+  max-width: 296px !important;
+  max-height: 376px !important;
+}
+</style>
+
+<style id="rotate-download-hover-final">
+#rotateUploadArea .rotate-download-button,
+#rotateUploadArea .rotate-download-button:hover,
+#rotateUploadArea .rotate-download-button:focus,
+#rotateUploadArea .rotate-download-button:active {
+  background: #059669 !important;
+  border-color: #059669 !important;
+  color: #ffffff !important;
+  transform: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+</style>
+<style id="rotate-cross-canvas-anchor">
+#rotateUploadArea .rotate-pdf-preview-anchor {
+  position: relative !important;
+  display: inline-block !important;
+  width: auto !important;
+  height: auto !important;
+  line-height: 0 !important;
+  transform: translateY(-55px) !important;
+}
+#rotateUploadArea .rotate-pdf-preview-anchor .rotate-pdf-preview {
+  position: relative !important;
+  transform: none !important;
+}
+#rotateUploadArea .rotate-pdf-preview-anchor .rotate-pdf-remove {
+  position: absolute !important;
+  top: -10px !important;
+  right: -10px !important;
+  left: auto !important;
+  bottom: auto !important;
+  width: 24px !important;
+  height: 24px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+  z-index: 100 !important;
+}
+#rotateUploadArea .rotate-pdf-preview-anchor .rotate-pdf-remove:hover,
+#rotateUploadArea .rotate-pdf-preview-anchor .rotate-pdf-remove:focus,
+#rotateUploadArea .rotate-pdf-preview-anchor .rotate-pdf-remove:active {
+  top: -10px !important;
+  right: -10px !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+}
+</style>
+
 </head>
 <body>
 <!-- ========================================
@@ -3721,15 +4291,33 @@ html.dark-mode .tn-shared-upload-button:hover {
 <!-- ========================================
      SHARED UPLOAD / PREVIEW AREA
 ========================================= -->
+
+<div class="heading rotate-pdf-heading">
+  <h1>Rotate PDF</h1>
+  <p>Rotate PDF pages quickly and save your rotated PDF.</p>
+</div>
+
 <div class="tool-box tn-shared-tool-box">
   <div class="tn-shared-upload-frame">
-    <div class="tn-shared-upload-area">
-  <div class="tn-shared-upload-placeholder">
-    <button class="tn-shared-upload-button" type="button">
-      Upload PDF File
-    </button>
+    <div class="tn-shared-upload-area" id="rotateUploadArea">
+  <input id="rotatePdfInput" type="file" accept=".pdf,application/pdf" hidden>
+  <div class="tn-shared-upload-placeholder" id="rotateUploadPlaceholder">
+    <button class="tn-shared-upload-button" id="rotateUploadButton" type="button">Upload PDF File</button>
   </div>
+  <div class="rotate-pdf-preview-wrap" id="rotatePreviewWrap" hidden>
+    <div class="rotate-pdf-preview-card">
+      <div class="rotate-pdf-preview-anchor"><div class="rotate-pdf-preview">
+        <canvas id="rotatePreviewCanvas"></canvas>
+      </div></div>
+      <div class="rotate-pdf-file-name" id="rotateFileName"></div>
+          <div class="rotate-pdf-controls" id="rotatePdfControls">
+            <button class="rotate-download-button" id="rotateDownloadButton" type="button">Download</button>
+            <button class="rotate-action-button" id="rotateActionButton" type="button" aria-label="Rotate PDF" title="Rotate PDF">↻</button>
+          </div>
+      <button class="rotate-pdf-remove" id="rotateRemoveButton" type="button" aria-label="Remove uploaded PDF">×</button>
     </div>
+  </div>
+</div>
   </div>
 </div>
 
@@ -3908,6 +4496,168 @@ html.dark-mode .category-nav .category-link.active:focus {
   box-shadow: none !important;
 }
 </style>
+<script id="toolnest-rotate-upload-preview-functionality">
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("rotatePdfInput");
+  const uploadButton = document.getElementById("rotateUploadButton");
+  const placeholder = document.getElementById("rotateUploadPlaceholder");
+  const previewWrap = document.getElementById("rotatePreviewWrap");
+  const canvas = document.getElementById("rotatePreviewCanvas");
+  const fileName = document.getElementById("rotateFileName");
+  const removeButton = document.getElementById("rotateRemoveButton");
+  const area = document.getElementById("rotateUploadArea");
+  let objectUrl = null;
+
+  async function loadPreview(file) {
+    if (!file) return;
+    placeholder.hidden = true;
+    previewWrap.hidden = false;
+    area.classList.add("has-files");
+    fileName.textContent = file.name;
+
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    objectUrl = URL.createObjectURL(file);
+
+    try {
+      const pdf = await pdfjsLib.getDocument(objectUrl).promise;
+      const page = await pdf.getPage(1);
+      const base = page.getViewport({scale: 1});
+      const scale = Math.min(296 / base.width, 376 / base.height);
+      const viewport = page.getViewport({scale});
+      canvas.width = Math.ceil(viewport.width);
+      canvas.height = Math.ceil(viewport.height);
+      await page.render({canvasContext: canvas.getContext("2d"), viewport}).promise;
+    } catch (error) {
+      console.error("Rotate PDF preview error:", error);
+    }
+  }
+
+  uploadButton.addEventListener("click", function () { input.click(); });
+  input.addEventListener("change", function () {
+    if (input.files && input.files[0]) loadPreview(input.files[0]);
+  });
+
+  removeButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    input.value = "";
+    placeholder.hidden = false;
+    previewWrap.hidden = true;
+    area.classList.remove("has-files");
+    fileName.textContent = "";
+    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    if (objectUrl) {
+      URL.revokeObjectURL(objectUrl);
+      objectUrl = null;
+    }
+  });
+});
+</script>
+<script id="toolnest-rotate-preview-controls-js">
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("rotatePdfInput");
+  const downloadButton = document.getElementById("rotateDownloadButton");
+  const rotateButton = document.getElementById("rotateActionButton");
+  const canvas = document.getElementById("rotatePreviewCanvas");
+
+  let rotation = 0;
+  let rotatedPdfBytes = null;
+
+  async function buildRotatedPdf() {
+    const file = input && input.files ? input.files[0] : null;
+    if (!file || !window.PDFLib) return null;
+
+    const bytes = await file.arrayBuffer();
+    const pdfDoc = await PDFLib.PDFDocument.load(bytes);
+    const pages = pdfDoc.getPages();
+
+    for (const page of pages) {
+      const current = page.getRotation().angle || 0;
+      page.setRotation(PDFLib.degrees((current + rotation) % 360));
+    }
+
+    return await pdfDoc.save();
+  }
+
+  function updatePreviewRotation() {
+    if (!canvas) return;
+    canvas.style.transform = "rotate(" + rotation + "deg)";
+  }
+
+  if (rotateButton) {
+    rotateButton.addEventListener("click", async function () {
+      if (!input || !input.files || !input.files[0]) return;
+
+      rotation = (rotation + 90) % 360;
+      updatePreviewRotation();
+
+      rotateButton.disabled = true;
+      try {
+        rotatedPdfBytes = await buildRotatedPdf();
+      } catch (error) {
+        console.error("PDF rotation error:", error);
+        rotatedPdfBytes = null;
+        rotation = (rotation + 270) % 360;
+        updatePreviewRotation();
+      } finally {
+        rotateButton.disabled = false;
+      }
+    });
+  }
+
+  function resetRotateUpload() {
+    if (input) input.value = "";
+    const placeholder = document.getElementById("rotateUploadPlaceholder");
+    const previewWrap = document.getElementById("rotatePreviewWrap");
+    const area = document.getElementById("rotateUploadArea");
+    const fileName = document.getElementById("rotateFileName");
+
+    if (placeholder) placeholder.hidden = false;
+    if (previewWrap) previewWrap.hidden = true;
+    if (area) area.classList.remove("has-files");
+    if (fileName) fileName.textContent = "";
+    rotation = 0;
+    rotatedPdfBytes = null;
+    if (canvas) canvas.style.transform = "rotate(0deg)";
+  }
+
+  if (downloadButton) {
+    downloadButton.addEventListener("click", async function () {
+      const file = input && input.files ? input.files[0] : null;
+      if (!file) return;
+
+      try {
+        if (!rotatedPdfBytes && rotation === 0) {
+          const bytes = await file.arrayBuffer();
+          rotatedPdfBytes = bytes;
+        } else if (!rotatedPdfBytes) {
+          rotatedPdfBytes = await buildRotatedPdf();
+        }
+
+        const blob = new Blob([rotatedPdfBytes], {type: "application/pdf"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = (file.name || "document.pdf").replace(/\.pdf$/i, "") + "-rotated.pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        setTimeout(resetRotateUpload, 150);
+      } catch (error) {
+        console.error("PDF download error:", error);
+      }
+    });
+  }
+
+  input?.addEventListener("change", function () {
+    rotation = 0;
+    rotatedPdfBytes = null;
+    if (canvas) canvas.style.transform = "rotate(0deg)";
+  });
+});
+</script>
 </body>
 </html>
 
