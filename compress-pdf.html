@@ -3697,45 +3697,53 @@ html.dark-mode .tn-shared-upload-button:hover {
   font-size: 12px;
 }
 .compress-options {
-  margin-top: 18px;
-  padding: 20px;
-  background: #ffffff;
-  border: 1px solid #dce3ea;
-  border-radius: 10px;
+  width: min(900px, 100%);
+  margin-top: 20px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-sizing: border-box;
 }
 .compress-option-title {
-  margin-bottom: 12px;
-  color: #263548;
-  font-size: 14px;
-  font-weight: 700;
+  display: none;
 }
 .compress-levels {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 12px;
 }
 .compress-level {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 9px;
-  padding: 12px;
+  min-height: 44px;
+  padding: 8px 12px;
   border: 1px solid #dce3ea;
   border-radius: 8px;
   cursor: pointer;
-  background: #fff;
+  background: transparent;
 }
 .compress-level:has(input:checked) {
   border-color: #059669;
   box-shadow: 0 0 0 2px rgba(5,150,105,.10);
 }
+.compress-level:has(input:checked) strong {
+  color: #059669;
+}
 .compress-level input {
-  margin-top: 3px;
+  margin: 0;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
   accent-color: #059669;
 }
 .compress-level strong {
   display: block;
-  color: #263548;
-  font-size: 12px;
+  color: #1f2d3d;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 .compress-level small {
   display: block;
@@ -3746,15 +3754,16 @@ html.dark-mode .tn-shared-upload-button:hover {
 }
 .compress-action-button,
 .compress-download-button {
-  margin-top: 16px;
-  min-height: 42px;
-  padding: 0 18px;
+  margin-top: 20px;
+  min-height: 41px;
+  min-width: min(364px, 100%);
+  padding: 0 17px;
   border: 0;
-  border-radius: 7px;
+  border-radius: 14px;
   background: #059669;
   color: #ffffff;
   font: inherit;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   cursor: pointer;
   transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
@@ -3770,71 +3779,35 @@ html.dark-mode .tn-shared-upload-button:hover {
   cursor: wait;
   transform: none;
 }
-.compress-status {
-  min-height: 20px;
-  margin-top: 10px;
-  color: #718096;
-  font-size: 12px;
-}
-.compress-result {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: 12px;
-  padding: 13px;
-  border: 1px solid #dce3ea;
-  border-radius: 8px;
-  background: #f7faf9;
-}
-.compress-result strong {
-  display: block;
-  color: #263548;
-  font-size: 13px;
-}
-.compress-result span {
-  display: block;
-  margin-top: 3px;
-  color: #718096;
-  font-size: 11px;
-}
-.compress-result .compress-download-button {
-  margin-top: 0;
-  flex-shrink: 0;
-}
 html.dark-mode .compress-file-name,
 html.dark-mode .compress-option-title,
-html.dark-mode .compress-level strong,
-html.dark-mode .compress-result strong {
+html.dark-mode .compress-level strong {
   color: #e7edf4;
 }
 html.dark-mode .compress-file-size,
-html.dark-mode .compress-level small,
-html.dark-mode .compress-status,
-html.dark-mode .compress-result span {
+html.dark-mode .compress-level small {
   color: #9ba8b7;
 }
 html.dark-mode .compress-options {
-  background: #171d25;
-  border-color: #2e3946;
+  background: transparent;
+  border-color: transparent;
 }
 html.dark-mode .compress-level {
-  background: #202731;
+  background: transparent;
   border-color: #354352;
 }
-html.dark-mode .compress-result {
-  background: #18231f;
-  border-color: #2e4a3f;
+html.dark-mode .compress-level strong {
+  color: #f1f5f9;
+}
+html.dark-mode .compress-level:has(input:checked) strong {
+  color: #34d399;
 }
 @media (max-width: 700px) {
   .compress-levels {
     grid-template-columns: 1fr;
   }
-  .compress-result {
-    align-items: stretch;
-    flex-direction: column;
-  }
-  .compress-result .compress-download-button {
+
+  .compress-action-button {
     width: 100%;
   }
 }
@@ -3868,45 +3841,110 @@ html.dark-mode .compress-result {
 </style>
 
 
+<style id="compress-pdf-output-size">
+.compress-estimated-size {
+  margin: 14px auto 18px;
+  min-height: 24px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 7px 16px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 600;
+  color: #344154;
+  background: #eef0f3;
+  border: 1px solid #3aa76d;
+}
+
+.compress-estimated-size strong {
+  font-size: 19px;
+}
+
+.compress-estimated-size span {
+  font-weight: 500;
+  color: #687789;
+}
+
+html.dark-mode .compress-estimated-size {
+  color: #eef4fb;
+  background: transparent;
+  border: 1px solid #3aa76d;
+}
+
+html.dark-mode .compress-estimated-size span {
+  color: #9ba8b7;
+}
+</style>
+
 <style id="compress-pdf-preview">
-/* PDF page preview shown after upload. */
+/* Uploaded PDF preview + compression controls stay together inside the dashed preview area. */
 .compress-preview {
   width: 100%;
-  min-height: 320px;
+  min-height: 620px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 10px 0;
+  justify-content: flex-start !important;
+  align-content: flex-start;
+  padding: 0 0 24px;
+  margin: 0 !important;
   box-sizing: border-box;
 }
 
+#compressUploadArea:has(#compressPreview:not([hidden])) {
+  min-height: 680px !important;
+  padding: 0 28px 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+}
+
+#compressPreview:not([hidden]) {
+  align-self: stretch;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  align-content: flex-start !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  position: relative !important;
+  top: 0 !important;
+  transform: none !important;
+}
+
 .compress-preview-page {
-  width: min(420px, 100%);
-  max-height: 500px;
+  width: min(250px, 100%);
+  height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 10px;
+  padding: 8px;
   box-sizing: border-box;
   background: #ffffff;
   border: 1px solid #d7dee7;
-  border-radius: 8px;
+  border-radius: 9px;
   box-shadow: 0 6px 20px rgba(31,45,61,.10);
+  flex-shrink: 0;
 }
 
 .compress-preview-page canvas {
   display: block;
   width: auto;
   max-width: 100%;
-  max-height: 470px;
+  max-height: 282px;
   height: auto;
 }
 
 .compress-preview .compress-file-info {
-  margin-top: 14px;
+  margin-top: 12px;
   text-align: center;
+  flex-shrink: 0;
 }
 
 html.dark-mode .compress-preview-page {
@@ -3916,16 +3954,23 @@ html.dark-mode .compress-preview-page {
 }
 
 @media (max-width: 700px) {
+  #compressUploadArea:has(#compressPreview:not([hidden])) {
+    min-height: 760px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
   .compress-preview {
-    min-height: 300px;
+    min-height: 0 !important;
   }
 
   .compress-preview-page {
-    max-height: 430px;
+    width: min(220px, 100%);
+    height: 270px;
   }
 
   .compress-preview-page canvas {
-    max-height: 400px;
+    max-height: 252px;
   }
 }
 </style>
@@ -4017,6 +4062,7 @@ html.dark-mode .compress-preview-page {
       </div>
 
       <div id="compressPreview" class="compress-preview" hidden>
+  <button type="button" class="compress-preview-close" aria-label="Remove PDF" title="Remove PDF">×</button>
         <div class="compress-preview-page">
           <canvas id="compressPreviewCanvas"></canvas>
         </div>
@@ -4025,41 +4071,33 @@ html.dark-mode .compress-preview-page {
           <div class="compress-file-name" id="compressFileName"></div>
           <div class="compress-file-size" id="compressFileSize"></div>
         </div>
+
+        <div class="compress-options" id="compressOptions" hidden>
+          <div class="compress-levels">
+            <label class="compress-level">
+              <input type="radio" name="compressQuality" value="low">
+              <span><strong>Maximum Compression</strong></span>
+            </label>
+            <label class="compress-level">
+              <input type="radio" name="compressQuality" value="medium" checked>
+              <span><strong>Medium Compression</strong></span>
+            </label>
+            <label class="compress-level">
+              <input type="radio" name="compressQuality" value="high">
+              <span><strong>Best Quality</strong></span>
+            </label>
+          </div>
+
+          <div class="compress-estimated-size" id="compressEstimatedSize" aria-live="polite">
+            Preparing output size…
+          </div>
+
+          <button class="compress-action-button" id="compressButton" type="button" disabled>
+            Compress &amp; Download PDF
+          </button>
+
+        </div>
       </div>
-    </div>
-  </div>
-
-  <div class="compress-options" id="compressOptions" hidden>
-    <div class="compress-option-title">Compression level</div>
-    <div class="compress-levels">
-      <label class="compress-level">
-        <input type="radio" name="compressQuality" value="low">
-        <span><strong>High compression</strong><small>Smaller file, lower image quality</small></span>
-      </label>
-      <label class="compress-level">
-        <input type="radio" name="compressQuality" value="medium" checked>
-        <span><strong>Recommended</strong><small>Good balance of size and quality</small></span>
-      </label>
-      <label class="compress-level">
-        <input type="radio" name="compressQuality" value="high">
-        <span><strong>High quality</strong><small>Better quality, larger file</small></span>
-      </label>
-    </div>
-
-    <button class="compress-action-button" id="compressButton" type="button">
-      Compress PDF
-    </button>
-
-    <div class="compress-status" id="compressStatus" aria-live="polite"></div>
-
-    <div class="compress-result" id="compressResult" hidden>
-      <div>
-        <strong>Compressed PDF ready</strong>
-        <span id="compressResultInfo"></span>
-      </div>
-      <button class="compress-download-button" id="compressDownloadButton" type="button">
-        Download PDF
-      </button>
     </div>
   </div>
 </div>
@@ -4255,10 +4293,6 @@ html.dark-mode .category-nav .category-link.active:focus {
   const fileName = document.getElementById("compressFileName");
   const fileSize = document.getElementById("compressFileSize");
   const compressButton = document.getElementById("compressButton");
-  const status = document.getElementById("compressStatus");
-  const result = document.getElementById("compressResult");
-  const resultInfo = document.getElementById("compressResultInfo");
-  const downloadButton = document.getElementById("compressDownloadButton");
 
   let selectedFile = null;
   let compressedBlob = null;
@@ -4280,10 +4314,10 @@ html.dark-mode .category-nav .category-link.active:focus {
   const uploadArea = document.getElementById("compressUploadArea");
 
   uploadArea.addEventListener("click", function (event) {
-    // Prevent the button's own click handler from firing twice.
-    if (event.target !== fileInput) {
-      fileInput.click();
-    }
+    // Once a PDF is loaded, the controls inside the preview must remain usable
+    // without reopening the file picker.
+    if (event.target.closest("button, label, input, a")) return;
+    if (preview.hidden) fileInput.click();
   });
 
   uploadButton.addEventListener("click", function (event) {
@@ -4317,7 +4351,6 @@ html.dark-mode .category-nav .category-link.active:focus {
     if (!file) return;
 
     if (file.type !== "application/pdf") {
-      status.textContent = "Please select a PDF file.";
       return;
     }
 
@@ -4328,14 +4361,12 @@ html.dark-mode .category-nav .category-link.active:focus {
     fileSize.textContent = formatBytes(file.size);
 
     options.hidden = false;
-    result.hidden = true;
 
     // Replace the upload prompt with the actual PDF preview.
     placeholder.hidden = true;
     uploadButton.hidden = true;
     preview.hidden = false;
 
-    status.textContent = "Loading preview…";
 
     try {
       const pdfjsLib = await pdfjsReady;
@@ -4363,24 +4394,43 @@ html.dark-mode .category-nav .category-link.active:focus {
         viewport: viewport
       }).promise;
 
-      status.textContent =
-        "Choose a compression level, then click Compress PDF.";
+      prepareDefaultCompression();
     } catch (error) {
       console.error(error);
-      status.textContent =
-        "PDF uploaded, but the preview could not be generated.";
+      estimatedSize.textContent = "Output size unavailable";
     }
   });
 
-  compressButton.addEventListener("click", async function () {
-    if (!selectedFile) {
-      status.textContent = "Please upload a PDF file first.";
-      return;
-    }
+  function downloadCompressedPdf() {
+    if (!compressedBlob || !selectedFile) return;
 
+    const baseName = selectedFile.name.replace(/\.pdf$/i, "");
+    const url = URL.createObjectURL(compressedBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = baseName + "-compressed.pdf";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setTimeout(function () {
+      URL.revokeObjectURL(url);
+    }, 1000);
+  }
+
+  const estimatedSize = document.getElementById("compressEstimatedSize");
+  const qualityInputs = document.querySelectorAll('input[name="compressQuality"]');
+  let compressionToken = 0;
+  let compressionBusy = false;
+
+  async function prepareCompressedPdf() {
+    if (!selectedFile) return null;
+
+    const token = ++compressionToken;
+    compressionBusy = true;
+    compressedBlob = null;
     compressButton.disabled = true;
-    result.hidden = true;
-    status.textContent = "Loading PDF…";
+    estimatedSize.textContent = "Calculating output size…";
 
     try {
       const pdfjsLib = await pdfjsReady;
@@ -4398,7 +4448,7 @@ html.dark-mode .category-nav .category-link.active:focus {
       let outputPdf = null;
 
       for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
-        status.textContent = "Compressing page " + pageNumber + " of " + pdf.numPages + "…";
+        if (token !== compressionToken) return null;
 
         const page = await pdf.getPage(pageNumber);
         const baseViewport = page.getViewport({ scale: 1 });
@@ -4448,53 +4498,140 @@ html.dark-mode .category-nav .category-link.active:focus {
         canvas.height = 1;
       }
 
-      compressedBlob = outputPdf.output("blob");
+      if (token !== compressionToken) return null;
+
+      const blob = outputPdf.output("blob");
+      compressedBlob = blob;
 
       const originalSize = selectedFile.size;
-      const compressedSize = compressedBlob.size;
+      const compressedSize = blob.size;
       const savedPercent = originalSize
         ? Math.max(0, (1 - compressedSize / originalSize) * 100)
         : 0;
 
-      resultInfo.textContent =
-        formatBytes(originalSize) + " → " +
-        formatBytes(compressedSize) + " (" +
-        savedPercent.toFixed(1) + "% smaller)";
+      estimatedSize.innerHTML =
+        "Output size: <strong>" + formatBytes(compressedSize) + "</strong>" +
+        (compressedSize < originalSize
+          ? " <span>(" + savedPercent.toFixed(1) + "% smaller)</span>"
+          : " <span>(not smaller than original)</span>");
 
-      result.hidden = false;
+      compressButton.disabled = false;
 
-      if (compressedSize >= originalSize) {
-        status.textContent =
-          "Compression finished, but this PDF did not get smaller. Try High compression.";
-      } else {
-        status.textContent = "Compression complete.";
-      }
+      return blob;
     } catch (error) {
       console.error(error);
-      status.textContent =
-        "Could not compress this PDF in your browser. Please try another PDF.";
-      compressedBlob = null;
+      if (token === compressionToken) {
+        compressedBlob = null;
+        estimatedSize.textContent = "Output size unavailable";
+        compressButton.disabled = true;
+      }
+      return null;
     } finally {
-      compressButton.disabled = false;
+      if (token === compressionToken) compressionBusy = false;
     }
+  }
+
+  qualityInputs.forEach(function (input) {
+    input.addEventListener("change", function () {
+      if (selectedFile) prepareCompressedPdf();
+    });
   });
 
-  downloadButton.addEventListener("click", function () {
-    if (!compressedBlob) return;
-
-    const baseName = selectedFile.name.replace(/\.pdf$/i, "");
-    const url = URL.createObjectURL(compressedBlob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = baseName + "-compressed.pdf";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-
-    setTimeout(function () {
-      URL.revokeObjectURL(url);
-    }, 1000);
+  compressButton.addEventListener("click", function (event) {
+    event.stopPropagation();
+    if (!selectedFile || !compressedBlob || compressionBusy) return;
+    downloadCompressedPdf();
   });
+
+  // The default Medium Compression option is prepared automatically so the
+  // user can see the exact output size before pressing Download.
+  async function prepareDefaultCompression() {
+    await prepareCompressedPdf();
+  }
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<script id="tn-compress-upload-state-controller">
+(function () {
+  const area = document.getElementById("compressUploadArea");
+  const preview = document.getElementById("compressPreview");
+  const placeholder = document.getElementById("compressPlaceholder");
+  const uploadButton = document.getElementById("compressUploadButton");
+
+  function showUploadState() {
+    if (placeholder) {
+      placeholder.hidden = false;
+      placeholder.style.setProperty("display", "flex", "important");
+      placeholder.style.setProperty("visibility", "visible", "important");
+    }
+    if (uploadButton) {
+      uploadButton.hidden = false;
+      uploadButton.style.setProperty("display", "inline-flex", "important");
+      uploadButton.style.setProperty("visibility", "visible", "important");
+    }
+  }
+
+  function hideUploadState() {
+    if (placeholder) {
+      placeholder.hidden = true;
+      placeholder.style.setProperty("display", "none", "important");
+    }
+    if (uploadButton) {
+      uploadButton.hidden = true;
+      uploadButton.style.setProperty("display", "none", "important");
+    }
+  }
+
+  // Watch the preview's hidden state. When a file is loaded, hide the upload
+  // UI. When the preview is closed, restore it.
+  if (preview) {
+    new MutationObserver(function () {
+      const loaded = !preview.hidden && getComputedStyle(preview).display !== "none";
+      if (loaded) {
+        hideUploadState();
+      }
+    }).observe(preview, {
+      attributes: true,
+      attributeFilter: ["hidden", "style", "class"]
+    });
+  }
+
+  document.addEventListener("click", function (event) {
+    const close = event.target.closest("#compressPreview .compress-preview-close");
+    if (!close) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const input = area && area.querySelector('input[type="file"]');
+    if (input) input.value = "";
+
+    if (preview) {
+      preview.hidden = true;
+      preview.style.setProperty("display", "none", "important");
+    }
+
+    if (area) {
+      area.classList.remove("has-file", "file-loaded", "preview-loaded");
+    }
+
+    showUploadState();
+  });
+
+  // Initial state: don't interfere if a preview is already active.
+  if (preview && !preview.hidden && getComputedStyle(preview).display !== "none") {
+    hideUploadState();
+  }
 })();
 </script>
 
@@ -4692,3 +4829,686 @@ html.dark-mode .tool-category-link::after {
   background: #29483b !important;
 }
 </style>
+
+
+<style id="tn-output-size-green-border-fix">
+/* Output size: subtle green border in both themes. */
+.compress-estimated-size {
+  border: 1px solid #3aa76d;
+  border-radius: 10px;
+}
+</style>
+
+/* ToolNest: thicker Output Size border */
+.compress-estimated-size {
+    border: 1px solid #3aa76d;
+    border-radius: 10px;
+}
+
+<style>
+
+/* Compress PDF: remove dotted pattern only after a file is loaded.
+   Keep the existing preview-area background color unchanged. */
+.tn-shared-upload-area.has-file,
+.tn-shared-upload-area.file-loaded,
+.tn-shared-upload-area.preview-loaded,
+.tn-shared-upload-area:has(.compress-preview:not([hidden])) {
+    background-image: none !important;
+}
+
+</style>
+
+<style id="tn-compress-forced-top-final">
+
+/* FINAL: force the loaded Compress PDF content to the top of the preview area.
+   The upload area keeps its existing background color. */
+#compressUploadArea:has(#compressPreview:not([hidden])) {
+  position: relative !important;
+  display: block !important;
+  min-height: 680px !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+#compressUploadArea:has(#compressPreview:not([hidden])) #compressPreview {
+  position: absolute !important;
+  top: 12px !important;
+  left: 28px !important;
+  right: 28px !important;
+  width: auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 0 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  align-content: flex-start !important;
+  transform: none !important;
+}
+
+@media (max-width: 700px) {
+  #compressUploadArea:has(#compressPreview:not([hidden])) {
+    min-height: 760px !important;
+  }
+
+  #compressUploadArea:has(#compressPreview:not([hidden])) #compressPreview {
+    top: 12px !important;
+    left: 14px !important;
+    right: 14px !important;
+  }
+}
+
+</style>
+
+<style id="tn-compress-preview-close">
+
+/* Small red remove button at the top-right of the loaded PDF preview */
+.compress-preview {
+  position: relative !important;
+}
+
+.compress-preview-close {
+  position: absolute !important;
+  top: 4px !important;
+  right: 4px !important;
+  width: 26px !important;
+  height: 26px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: #e5484d !important;
+  color: #fff !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  line-height: 24px !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  z-index: 20 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,.18) !important;
+}
+
+.compress-preview-close:hover {
+  background: #c9363e !important;
+  transform: scale(1.05);
+}
+
+</style>
+
+<style id="tn-compress-preview-close-position">
+
+/* Close control belongs to the actual PDF/file preview card */
+.compress-preview-file,
+.compress-file-preview,
+.compress-preview-document,
+.compress-preview .pdf-preview,
+.compress-preview .file-preview {
+  position: relative !important;
+}
+
+.compress-preview-close {
+  position: absolute !important;
+  top: 6px !important;
+  right: 6px !important;
+  width: 24px !important;
+  height: 24px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: #e5484d !important;
+  color: #fff !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  line-height: 24px !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  z-index: 50 !important;
+}
+
+/* If the PDF/file preview itself has no dedicated wrapper, anchor the button
+   to the first preview/file card. */
+.compress-preview > .compress-preview-close {
+  top: 6px !important;
+  right: 6px !important;
+}
+
+/* Keep the upload state clean when the file is removed */
+#compressPreview[hidden] {
+  display: none !important;
+}
+
+#compressUploadArea:has(#compressPreview[hidden]) .compress-preview-close {
+  display: none !important;
+}
+
+</style>
+
+<style id="tn-compress-restore-upload-css">
+#compressUploadArea:has(#compressPreview[hidden]),
+#compressUploadArea:has(#compressPreview[style*="display: none"]) {
+  align-items: center !important;
+  justify-content: center !important;
+}
+#compressUploadArea:has(#compressPreview[hidden]) .tn-upload-state,
+#compressUploadArea:has(#compressPreview[hidden]) .upload-state,
+#compressUploadArea:has(#compressPreview[hidden]) .compress-upload-state,
+#compressUploadArea:has(#compressPreview[hidden]) .drop-zone-content,
+#compressUploadArea:has(#compressPreview[hidden]) .upload-content,
+#compressUploadArea:has(#compressPreview[hidden]) .upload-prompt {
+  display: flex !important;
+  visibility: visible !important;
+}
+</style>
+
+
+<style id="tn-compress-cross-corner">
+.compress-preview-file,
+.compress-file-preview,
+.compress-preview-document,
+.compress-preview .pdf-preview,
+.compress-preview .file-preview {
+  position: relative !important;
+}
+
+.compress-preview-close {
+  top: -9px !important;
+  right: -9px !important;
+  width: 24px !important;
+  height: 24px !important;
+  line-height: 24px !important;
+  font-size: 18px !important;
+  z-index: 100 !important;
+}
+</style>
+
+<style id="tn-compress-cross-actual-corner">
+/* The close button is positioned against the actual PDF preview page. */
+.compress-preview-page {
+  position: relative !important;
+}
+
+.compress-preview-page > .compress-preview-close {
+  position: absolute !important;
+  top: -10px !important;
+  right: -10px !important;
+  width: 24px !important;
+  height: 24px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: #e5484d !important;
+  color: #fff !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  line-height: 24px !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  z-index: 999 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,.18) !important;
+}
+</style>
+
+<script id="tn-compress-cross-move-to-page">
+(function () {
+  function moveCloseButton() {
+    const preview = document.getElementById('compressPreview');
+    const page = preview && preview.querySelector('.compress-preview-page');
+    const close = preview && preview.querySelector('.compress-preview-close');
+    if (page && close && close.parentElement !== page) {
+      page.appendChild(close);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', moveCloseButton);
+
+  const preview = document.getElementById('compressPreview');
+  if (preview) {
+    new MutationObserver(moveCloseButton).observe(preview, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  // Also retry after the PDF preview is rendered.
+  setTimeout(moveCloseButton, 100);
+  setTimeout(moveCloseButton, 500);
+})();
+</script>
+
+
+<style id="tn-compress-preview-down-10">
+/* Move only the actual PDF preview file down slightly; keep its size unchanged. */
+#compressPreview .compress-preview-page {
+  transform: translateY(10%) !important;
+}
+</style>
+
+
+<style id="tn-compress-preview-20-smaller">
+/* Make the actual PDF preview 20% smaller while preserving its center/corner positioning. */
+#compressPreview .compress-preview-page {
+  transform: translateY(10%) scale(0.8) !important;
+  transform-origin: center top !important;
+}
+</style>
+
+
+<style id="tn-compress-cross-fully-visible">
+/* Keep the red close button fully visible after the preview is scaled. */
+#compressPreview .compress-preview-page {
+  overflow: visible !important;
+}
+
+#compressPreview .compress-preview-close {
+  top: -10px !important;
+  right: -10px !important;
+  transform: none !important;
+  transform-origin: center !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  z-index: 9999 !important;
+  overflow: visible !important;
+}
+</style>
+
+
+<style id="tn-compress-text-smaller">
+/* Slightly smaller compression option text */
+#compressPreview .compression-option,
+#compressPreview .compression-option label {
+  font-size: 16px !important;
+}
+
+/* Slightly smaller Output Size text */
+#compressPreview .compress-estimated-size {
+  font-size: 14px !important;
+}
+
+#compressPreview .compress-estimated-size * {
+  font-size: inherit !important;
+}
+</style>
+
+
+<style id="tn-compress-options-text-final-size">
+/* Compression option labels: make them visibly smaller */
+#compressPreview .compression-options .compression-option,
+#compressPreview .compression-options .compression-option *,
+#compressPreview .compression-option,
+#compressPreview .compression-option *,
+#compressPreview label[for*="compression"],
+#compressPreview label[for*="Compression"] {
+  font-size: 13px !important;
+  line-height: 1.25 !important;
+  font-weight: 600 !important;
+}
+
+/* Keep radio controls appropriately sized */
+#compressPreview .compression-option input[type="radio"] {
+  width: 16px !important;
+  height: 16px !important;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script id="tn-download-popup-persist-js">
+(function () {
+  let running = false;
+
+  function resetToUpload() {
+    const area = document.getElementById("compressUploadArea");
+    const preview = document.getElementById("compressPreview");
+    const placeholder = document.getElementById("compressPlaceholder");
+    const uploadButton = document.getElementById("compressUploadButton");
+    const input = document.getElementById("compressFileInput");
+
+    if (input) input.value = "";
+
+    if (preview) {
+      preview.hidden = true;
+      preview.style.setProperty("display", "none", "important");
+    }
+
+    if (area) {
+      area.classList.remove(
+        "has-file", "file-loaded", "preview-loaded",
+        "hasFile", "fileLoaded", "previewLoaded"
+      );
+    }
+
+    if (placeholder) {
+      placeholder.hidden = false;
+      placeholder.style.setProperty("display", "flex", "important");
+      placeholder.style.setProperty("visibility", "visible", "important");
+    }
+
+    if (uploadButton) {
+      uploadButton.hidden = false;
+      uploadButton.style.setProperty("display", "inline-flex", "important");
+      uploadButton.style.setProperty("visibility", "visible", "important");
+    }
+  }
+
+  function showPopup() {
+    const area = document.getElementById("compressUploadArea");
+    if (!area) return null;
+
+    area.querySelectorAll(".tn-download-popup").forEach(function (p) {
+      p.remove();
+    });
+
+    const popup = document.createElement("div");
+    popup.className = "tn-download-popup";
+    popup.textContent = "File downloaded";
+    area.appendChild(popup);
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        popup.classList.add("show");
+      });
+    });
+
+    return popup;
+  }
+
+  document.addEventListener("click", function (event) {
+    const button = event.target.closest("#compressButton");
+    if (!button || running) return;
+
+    running = true;
+
+    // Allow the original download action to complete first.
+    setTimeout(function () {
+      const popup = showPopup();
+
+      // Keep the preview visible while the message is displayed.
+      // After 4 seconds, remove the message and return to Upload PDF.
+      setTimeout(function () {
+        if (popup) {
+          popup.classList.remove("show");
+          setTimeout(function () {
+            if (popup.parentNode) popup.remove();
+          }, 250);
+        }
+
+        resetToUpload();
+        running = false;
+      }, 2600);
+    }, 450);
+  }, true);
+})();
+</script>
+
+
+
+<style id="tn-compress-reupload-fix-css">
+/* Upload state is hidden only while a file preview is actually active. */
+#compressUploadArea.compress-file-active #compressPlaceholder,
+#compressUploadArea.compress-file-active #compressUploadButton {
+  display: none !important;
+}
+
+/* After reset/re-upload state, the original upload controls are visible. */
+#compressUploadArea:not(.compress-file-active) #compressPlaceholder {
+  display: flex !important;
+  visibility: visible !important;
+}
+#compressUploadArea:not(.compress-file-active) #compressUploadButton {
+  display: inline-flex !important;
+  visibility: visible !important;
+}
+</style>
+
+
+<script id="tn-compress-reupload-fix-js">
+(function () {
+  const area = document.getElementById("compressUploadArea");
+  const preview = document.getElementById("compressPreview");
+  const placeholder = document.getElementById("compressPlaceholder");
+  const uploadButton = document.getElementById("compressUploadButton");
+  const input = document.getElementById("compressFileInput");
+
+  function setUploadState() {
+    if (area) area.classList.remove("compress-file-active");
+
+    if (preview) {
+      preview.hidden = true;
+      preview.style.setProperty("display", "none", "important");
+    }
+
+    if (placeholder) {
+      placeholder.hidden = false;
+      placeholder.style.setProperty("display", "flex", "important");
+      placeholder.style.setProperty("visibility", "visible", "important");
+    }
+
+    if (uploadButton) {
+      uploadButton.hidden = false;
+      uploadButton.style.setProperty("display", "inline-flex", "important");
+      uploadButton.style.setProperty("visibility", "visible", "important");
+    }
+  }
+
+  function setPreviewState() {
+    if (area) area.classList.add("compress-file-active");
+
+    if (placeholder) {
+      placeholder.hidden = true;
+      placeholder.style.setProperty("display", "none", "important");
+    }
+
+    if (uploadButton) {
+      uploadButton.hidden = true;
+      uploadButton.style.setProperty("display", "none", "important");
+    }
+
+    if (preview) {
+      preview.hidden = false;
+      preview.style.removeProperty("display");
+    }
+  }
+
+  // Red X: return to the original upload state.
+  document.addEventListener("click", function (event) {
+    const close = event.target.closest("#compressPreview .compress-preview-close");
+    if (!close) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (input) input.value = "";
+    setUploadState();
+  }, true);
+
+  // Watch the file input. A newly selected file means the preview should be
+  // active again and the upload button must disappear.
+  if (input) {
+    input.addEventListener("change", function () {
+      if (input.files && input.files.length) {
+        setPreviewState();
+
+        // Let the original change handler run after state is restored.
+        setTimeout(function () {
+          if (preview) {
+            preview.hidden = false;
+            preview.style.removeProperty("display");
+          }
+        }, 0);
+      }
+    }, true);
+  }
+
+  // Observe preview visibility so existing PDF rendering code can still
+  // control the preview without leaving the upload state stuck.
+  if (preview) {
+    new MutationObserver(function () {
+      const visible = !preview.hidden && getComputedStyle(preview).display !== "none";
+      if (visible) {
+        setPreviewState();
+      }
+    }).observe(preview, {
+      attributes: true,
+      attributeFilter: ["hidden", "style"]
+    });
+  }
+})();
+</script>
+
+
+
+<style id="tn-download-popup-appear-fade">
+#compressUploadArea > .tn-download-popup {
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 12px !important;
+  top: auto !important;
+  right: auto !important;
+  transform: translateX(-50%) translateY(10px) scale(.96) !important;
+  z-index: 99999 !important;
+  width: max-content !important;
+  max-width: calc(100% - 24px) !important;
+  padding: 16px 30px !important;
+  border-radius: 12px !important;
+  background: #eef7f1 !important;
+  color: #256b45 !important;
+  border: 1px solid #3aa76d !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,.14) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition:
+    opacity .35s ease,
+    transform .35s cubic-bezier(.22,1,.36,1) !important;
+}
+
+#compressUploadArea > .tn-download-popup.show {
+  opacity: 1 !important;
+  transform: translateX(-50%) translateY(0) scale(1) !important;
+}
+
+#compressUploadArea > .tn-download-popup.fade-out {
+  opacity: 0 !important;
+  transform: translateX(-50%) translateY(4px) scale(.98) !important;
+  transition:
+    opacity 1.2s ease-out,
+    transform 1.2s ease-out !important;
+}
+</style>
+
+
+<style id="tn-download-popup-smoother-fade">
+#compressUploadArea > .tn-download-popup.fade-out {
+  opacity: 0 !important;
+  transform: translateX(-50%) translateY(3px) scale(.985) !important;
+  transition:
+    opacity 1.2s ease-out,
+    transform 1.2s ease-out !important;
+}
+</style>
+
+
+
+
+
+<style id="tn-compress-preview-lower-only">
+#compressPreview .compress-preview-page {
+  transform: translateY(10%) scale(0.8) !important;
+  transform-origin: center top !important;
+}
+</style>
+
+
+
+
+
+
+
+
+<script id="tn-compress-scroll-precise-fix">
+(function () {
+  const area = document.getElementById("compressUploadArea");
+  if (!area) return;
+
+  let previousHeight = area.getBoundingClientRect().height;
+  let previousTop = area.getBoundingClientRect().top;
+  let correcting = false;
+
+  // When the preview is removed, the upload area shrinks from the loaded
+  // preview height to the upload-state height. Compensate by exactly the
+  // amount of height lost, but only when that area is above the viewport.
+  // This targets the layout shift itself rather than globally forcing scroll.
+  const observer = new ResizeObserver(function () {
+    if (correcting) {
+      previousHeight = area.getBoundingClientRect().height;
+      previousTop = area.getBoundingClientRect().top;
+      return;
+    }
+
+    const rect = area.getBoundingClientRect();
+    const delta = rect.height - previousHeight;
+
+    if (delta !== 0 && previousTop < window.innerHeight) {
+      correcting = true;
+
+      requestAnimationFrame(function () {
+        window.scrollBy(0, delta);
+        requestAnimationFrame(function () {
+          correcting = false;
+          previousHeight = area.getBoundingClientRect().height;
+          previousTop = area.getBoundingClientRect().top;
+        });
+      });
+    } else {
+      previousHeight = rect.height;
+      previousTop = rect.top;
+    }
+  });
+
+  observer.observe(area);
+})();
+</script>
