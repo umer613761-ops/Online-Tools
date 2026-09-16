@@ -3652,6 +3652,177 @@ html.dark-mode .tn-shared-upload-button:hover {
 }
 </style>
 
+
+<style id="re-arrange-pdf-preview-styles">
+.remove-pages-preview {
+  width: 100%;
+  display: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+  text-align: left;
+}
+
+#reArrangePdfUploadArea.has-pages .remove-pages-preview {
+  display: grid;
+}
+
+.remove-pages-page {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid #d5dde6;
+  border-radius: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(31, 45, 61, 0.06);
+  cursor: grab;
+}
+
+.remove-pages-page:active { cursor: grabbing; }
+.remove-pages-page.dragging { opacity: 0.55; }
+
+.remove-pages-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+
+.remove-pages-page-number {
+  color: #526273;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.remove-pages-page-canvas-wrap {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+  background: #f4f6f8;
+  border-radius: 6px;
+}
+
+.remove-pages-page canvas {
+  display: block;
+  width: 86%;
+  height: auto;
+  max-width: 72%;
+  margin: 0 auto;
+}
+
+.remove-pages-actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.remove-pages-download-button {
+  width: 220px;
+  min-width: 220px;
+  height: 58px;
+  min-height: 58px;
+  padding: 0 28px;
+  border: none;
+  border-radius: 14px;
+  background: #059669;
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: none;
+}
+
+.remove-pages-download-button:hover,
+.remove-pages-download-button:focus,
+.remove-pages-download-button:active {
+  width: 220px; min-width: 220px; height: 58px; min-height: 58px;
+  background: #059669; color: #ffffff; border: none; transform: none;
+}
+
+.remove-pages-cancel-button {
+  width: 220px;
+  min-width: 220px;
+  height: 58px;
+  min-height: 58px;
+  padding: 0 28px;
+  border: none;
+  border-radius: 14px;
+  background: #6b7280;
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: none;
+}
+
+.remove-pages-cancel-button:hover,
+.remove-pages-cancel-button:focus,
+.remove-pages-cancel-button:active {
+  width: 220px; min-width: 220px; height: 58px; min-height: 58px;
+  background: #6b7280; color: #ffffff; border: none; transform: none;
+}
+
+#reArrangePdfActions[hidden] { display: none !important; }
+#reArrangePdfUploadArea:not(.has-pages) {
+  background-image: radial-gradient(circle, rgba(70, 80, 92, 0.46) 1.5px, transparent 1.5px);
+  background-size: 18px 18px;
+}
+#reArrangePdfUploadArea.has-pages {
+  background-image: none !important;
+}
+
+/* The shared upload button sets display:flex, so explicitly honor the hidden state. */
+#reArrangePdfUploadButton[hidden] {
+  display: none !important;
+}
+
+
+@media (max-width: 650px) {
+  #reArrangePdfUploadArea.has-pages { padding: 14px; }
+  .remove-pages-preview { grid-template-columns: 1fr; gap: 14px; }
+}
+</style>
+
+<style id="re-arrange-remove-style-heading">
+  /* Match Remove PDF Pages heading and description exactly. */
+  .re-arrange-remove-style-intro {
+    margin-bottom: 26px;
+  }
+
+  .re-arrange-remove-style-intro h1 {
+    margin: 0 0 10px;
+    color: #263548;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+  }
+
+  .re-arrange-remove-style-intro p {
+    margin: 0;
+    color: #718096;
+    font-size: 16px;
+    line-height: 1.6;
+    white-space: nowrap;
+  }
+</style>
+
+<style id="re-arrange-preview-top-fix">
+#reArrangePdfUploadArea.has-pages { padding-top: 14px !important; }
+#reArrangePdfUploadArea.has-pages .tn-shared-upload-placeholder { display:none !important; min-height:0 !important; height:0 !important; padding:0 !important; margin:0 !important; }
+#reArrangePdfUploadArea.has-pages .remove-pages-preview { margin-top:0 !important; align-self:flex-start !important; transform:none !important; }
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -3721,14 +3892,24 @@ html.dark-mode .tn-shared-upload-button:hover {
 <!-- ========================================
      SHARED UPLOAD / PREVIEW AREA
 ========================================= -->
+<div class="re-arrange-remove-style-intro">
+  <h1>Re-arrange PDF Pages</h1>
+  <p>Re-arrange the pages of your PDF file quickly and easily.</p>
+</div>
 <div class="tool-box tn-shared-tool-box">
   <div class="tn-shared-upload-frame">
-    <div class="tn-shared-upload-area">
-  <div class="tn-shared-upload-placeholder">
-    <button class="tn-shared-upload-button" type="button">
-      Upload PDF File
-    </button>
-  </div>
+    <div class="tn-shared-upload-area" id="reArrangePdfUploadArea">
+      <input id="reArrangePdfFileInput" type="file" accept="application/pdf,.pdf" hidden>
+      <div class="tn-shared-upload-placeholder" id="reArrangePdfUploadPlaceholder">
+        <button class="tn-shared-upload-button" id="reArrangePdfUploadButton" type="button">
+          Upload PDF File
+        </button>
+      </div>
+      <div class="remove-pages-preview" id="reArrangePdfPreview"></div>
+      <div class="remove-pages-actions" id="reArrangePdfActions" hidden>
+        <button class="remove-pages-download-button" id="reArrangePdfDownloadButton" type="button">Download PDF</button>
+        <button class="remove-pages-cancel-button" id="reArrangePdfCancelButton" type="button">Cancel</button>
+      </div>
     </div>
   </div>
 </div>
@@ -3833,6 +4014,175 @@ html.dark-mode .tn-shared-upload-button:hover {
 </footer>
 
 
+
+<script id="re-arrange-pdf-functionality">
+(function () {
+  const PDFJS_VERSION = "3.11.174";
+  const fileInput = document.getElementById("reArrangePdfFileInput");
+  const uploadArea = document.getElementById("reArrangePdfUploadArea");
+  const uploadButton = document.getElementById("reArrangePdfUploadButton");
+  const placeholder = document.getElementById("reArrangePdfUploadPlaceholder");
+  const preview = document.getElementById("reArrangePdfPreview");
+  const actions = document.getElementById("reArrangePdfActions");
+  const downloadButton = document.getElementById("reArrangePdfDownloadButton");
+  const cancelButton = document.getElementById("reArrangePdfCancelButton");
+
+  if (!fileInput || !uploadArea || !uploadButton || !placeholder || !preview || !actions || !downloadButton || !cancelButton) return;
+
+  let pdfBytes = null;
+  let pages = [];
+  let draggedCard = null;
+
+  function ensureScript(src, globalName) {
+    return new Promise((resolve, reject) => {
+      if (window[globalName]) return resolve();
+      const script = document.createElement("script");
+      script.src = src;
+      script.async = false;
+      script.onload = () => window[globalName] ? resolve() : reject(new Error(globalName + " did not initialize."));
+      script.onerror = () => reject(new Error("Could not load " + globalName + "."));
+      document.head.appendChild(script);
+    });
+  }
+
+  async function ensureLibraries() {
+    await ensureScript("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/" + PDFJS_VERSION + "/pdf.min.js", "pdfjsLib");
+    await ensureScript("https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js", "PDFLib");
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/" + PDFJS_VERSION + "/pdf.worker.min.js";
+  }
+
+  uploadButton.addEventListener("click", function (e) { e.stopPropagation(); fileInput.click(); });
+  uploadArea.addEventListener("click", function (e) {
+    if (uploadArea.classList.contains("has-pages")) return;
+    if (!e.target.closest("button, input, a, label")) fileInput.click();
+  });
+  fileInput.addEventListener("change", function () {
+    const file = fileInput.files && fileInput.files[0];
+    if (file) loadPdf(file);
+  });
+
+  async function loadPdf(file) {
+    if (!/\.pdf$/i.test(file.name) && file.type !== "application/pdf") { alert("Please select a PDF file."); fileInput.value = ""; return; }
+    try {
+      uploadButton.disabled = true;
+      uploadButton.textContent = "Loading PDF...";
+      await ensureLibraries();
+      pdfBytes = new Uint8Array(await file.arrayBuffer());
+      const pdf = await window.pdfjsLib.getDocument({ data: pdfBytes.slice() }).promise;
+      pages = [];
+      preview.innerHTML = "";
+      uploadArea.classList.add("has-pages");
+      placeholder.hidden = true;
+      actions.hidden = true;
+
+      for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+        const page = await pdf.getPage(pageNumber);
+        const viewport = page.getViewport({ scale: 1 });
+        const scale = Math.min(1, 210 / viewport.width);
+        const scaledViewport = page.getViewport({ scale });
+
+        const card = document.createElement("div");
+        card.className = "remove-pages-page";
+        card.draggable = true;
+        card.dataset.pageNumber = String(pageNumber);
+
+        const header = document.createElement("div");
+        header.className = "remove-pages-page-header";
+        const number = document.createElement("span");
+        number.className = "remove-pages-page-number";
+        number.textContent = "Page " + pageNumber;
+        const canvasWrap = document.createElement("div");
+        canvasWrap.className = "remove-pages-page-canvas-wrap";
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d", { alpha: false });
+        const outputScale = window.devicePixelRatio || 1;
+        canvas.width = Math.floor(scaledViewport.width * outputScale);
+        canvas.height = Math.floor(scaledViewport.height * outputScale);
+        canvas.style.width = Math.floor(scaledViewport.width) + "px";
+        canvas.style.height = Math.floor(scaledViewport.height) + "px";
+        await page.render({ canvasContext: ctx, viewport: scaledViewport, transform: outputScale !== 1 ? [outputScale,0,0,outputScale,0,0] : null }).promise;
+
+        header.appendChild(number);
+        canvasWrap.appendChild(canvas);
+        card.appendChild(header);
+        card.appendChild(canvasWrap);
+        preview.appendChild(card);
+
+        const pageInfo = { pageNumber };
+        pages.push(pageInfo);
+        card.addEventListener("dragstart", function () { draggedCard = card; card.classList.add("dragging"); });
+        card.addEventListener("dragend", function () { card.classList.remove("dragging"); draggedCard = null; syncOrder(); });
+        card.addEventListener("dragover", function (e) {
+          e.preventDefault();
+          if (!draggedCard || draggedCard === card) return;
+          const rect = card.getBoundingClientRect();
+          const before = e.clientY < rect.top + rect.height / 2;
+          preview.insertBefore(draggedCard, before ? card : card.nextSibling);
+        });
+      }
+      uploadButton.hidden = true;
+      actions.hidden = false;
+      syncOrder();
+    } catch (err) {
+      console.error(err);
+      resetUploadArea();
+      alert("Could not load this PDF. Please try another PDF file.");
+    } finally {
+      uploadButton.disabled = false;
+      uploadButton.textContent = "Upload PDF File";
+    }
+  }
+
+  function syncOrder() {
+    pages = Array.from(preview.querySelectorAll(".remove-pages-page")).map(card => ({ pageNumber: Number(card.dataset.pageNumber) }));
+  }
+
+  downloadButton.addEventListener("click", async function (e) {
+    e.preventDefault();
+    if (!pdfBytes || !pages.length) return;
+    try {
+      downloadButton.disabled = true;
+      downloadButton.textContent = "Creating PDF...";
+      await ensureLibraries();
+      const source = await window.PDFLib.PDFDocument.load(pdfBytes);
+      const output = await window.PDFLib.PDFDocument.create();
+      const copied = await output.copyPages(source, pages.map(p => p.pageNumber - 1));
+      copied.forEach(p => output.addPage(p));
+      const result = await output.save();
+      const url = URL.createObjectURL(new Blob([result], { type: "application/pdf" }));
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "re-arranged-pages.pdf";
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+      // Return to the upload state after the rearranged PDF has been downloaded.
+      resetUploadArea();
+    } catch (err) {
+      console.error(err);
+      alert("Could not create the PDF. Please try again.");
+    } finally {
+      downloadButton.disabled = false;
+      downloadButton.textContent = "Download PDF";
+    }
+  });
+
+  cancelButton.addEventListener("click", function (e) {
+    e.preventDefault();
+    resetUploadArea();
+  });
+
+  function resetUploadArea() {
+    uploadArea.classList.remove("has-pages");
+    placeholder.hidden = false;
+    uploadButton.hidden = false;
+    preview.innerHTML = "";
+    actions.hidden = true;
+    fileInput.value = "";
+    pdfBytes = null;
+    pages = [];
+  }
+})();
+</script>
 
 <!-- ========================================
        THEME SCRIPT
