@@ -3677,6 +3677,201 @@ html.dark-mode .tn-shared-upload-button:hover {
     margin-bottom: 26px;
 }
 </style>
+
+<style id="remove-pages-functionality-style">
+/* Remove PDF Pages functionality */
+#removePdfUploadArea {
+  cursor: pointer;
+}
+
+#removePdfUploadArea.has-pages {
+  cursor: default;
+  padding: 22px;
+}
+
+#removePdfUploadPlaceholder {
+  position: relative;
+  z-index: 5;
+}
+
+#removePdfUploadArea.has-pages #removePdfUploadPlaceholder {
+  display: none;
+}
+
+.remove-pages-preview {
+  width: 100%;
+  display: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+  text-align: left;
+}
+
+#removePdfUploadArea.has-pages .remove-pages-preview {
+  display: grid;
+}
+
+.remove-pages-page {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid #d5dde6;
+  border-radius: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(31, 45, 61, 0.06);
+}
+
+.remove-pages-page.removed {
+  opacity: 0.42;
+}
+
+.remove-pages-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+
+.remove-pages-page-number {
+  color: #526273;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.remove-pages-remove-button {
+  flex: 0 0 auto;
+  padding: 5px 9px;
+  border: 1px solid #e2a4a4;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #d64545;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.remove-pages-remove-button:hover {
+  background: #fff5f5;
+  border-color: #d77b7b;
+}
+
+.remove-pages-page.removed .remove-pages-remove-button {
+  color: #059669;
+  border-color: #9bd5c0;
+  background: #f2fbf7;
+}
+
+.remove-pages-page-canvas-wrap {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+  background: #f4f6f8;
+  border-radius: 6px;
+}
+
+.remove-pages-page canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+.remove-pages-actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.remove-pages-download-button {
+  width: 220px;
+  min-width: 220px;
+  height: 58px;
+  min-height: 58px;
+  padding: 0 28px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #059669 0%, #059669 55%, #059669 100%);
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: none;
+}
+
+.remove-pages-download-button:hover,
+.remove-pages-download-button:focus,
+.remove-pages-download-button:active {
+  width: 220px;
+  min-width: 220px;
+  height: 58px;
+  min-height: 58px;
+  background: #059669;
+  color: #ffffff;
+  border: none;
+  transform: none;
+}
+
+.remove-pages-empty {
+  grid-column: 1 / -1;
+  padding: 28px 10px 12px;
+  color: #718096;
+  font-size: 14px;
+  text-align: center;
+}
+
+@media (max-width: 650px) {
+  #removePdfUploadArea.has-pages {
+    padding: 14px;
+  }
+
+  .remove-pages-preview {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .remove-pages-download-button {
+    width: 220px;
+    min-width: 220px;
+    height: 58px;
+    min-height: 58px;
+  }
+}
+</style>
+
+
+<style id="remove-pages-no-dots-after-preview">
+#removePdfUploadArea.has-pages {
+  background-image: none;
+}
+</style>
+
+
+<style id="remove-pages-download-initial-state">
+#removePdfActions[hidden] {
+  display: none !important;
+}
+#removePdfUploadArea:not(.has-pages) {
+  background-image:
+    radial-gradient(
+      circle,
+      rgba(70, 80, 92, 0.46) 1.5px,
+      transparent 1.5px
+    );
+}
+#removePdfUploadArea.has-pages {
+  background-image: none !important;
+}
+</style>
+
 </head>
 <body>
 <!-- ========================================
@@ -3750,13 +3945,43 @@ html.dark-mode .tn-shared-upload-button:hover {
     <h1>Remove PDF Pages</h1>
     <p>Remove unwanted pages from your PDF file quickly and easily.</p>
 </div>
-<div class="tool-box tn-shared-tool-box"><div class="tn-shared-upload-frame">
-    <div class="tn-shared-upload-area">
-  <div class="tn-shared-upload-placeholder">
-    <button class="tn-shared-upload-button" type="button">
-      Upload PDF File
-    </button>
-  </div>
+<div class="tool-box tn-shared-tool-box">
+  <div class="tn-shared-upload-frame">
+    <div class="tn-shared-upload-area" id="removePdfUploadArea">
+
+      <input
+        id="removePdfFileInput"
+        type="file"
+        accept="application/pdf,.pdf"
+        hidden
+      >
+
+      <div class="tn-shared-upload-placeholder" id="removePdfUploadPlaceholder">
+        <button
+          class="tn-shared-upload-button"
+          id="removePdfUploadButton"
+          type="button"
+        >
+          Upload PDF File
+        </button>
+      </div>
+
+      <div
+        class="remove-pages-preview"
+        id="removePdfPreview"
+        aria-live="polite"
+      ></div>
+
+      <div class="remove-pages-actions" id="removePdfActions" hidden>
+        <button
+          class="remove-pages-download-button"
+          id="removePdfDownloadButton"
+          type="button"
+        >
+          Download PDF
+        </button>
+      </div>
+
     </div>
   </div>
 </div>
@@ -3936,6 +4161,341 @@ html.dark-mode .category-nav .category-link.active:focus {
   box-shadow: none !important;
 }
 </style>
+
+<script id="remove-pages-functionality-script">
+(function () {
+  const PDFJS_VERSION = "3.11.174";
+  const fileInput = document.getElementById("removePdfFileInput");
+  const uploadArea = document.getElementById("removePdfUploadArea");
+  const uploadButton = document.getElementById("removePdfUploadButton");
+  const placeholder = document.getElementById("removePdfUploadPlaceholder");
+  const preview = document.getElementById("removePdfPreview");
+  const actions = document.getElementById("removePdfActions");
+  const downloadButton = document.getElementById("removePdfDownloadButton");
+
+  if (!fileInput || !uploadArea || !uploadButton || !preview || !actions || !downloadButton) {
+    return;
+  }
+
+  let pdfBytes = null;
+  let pages = [];
+
+  function loadScript(src) {
+    return new Promise(function (resolve, reject) {
+      const existing = document.querySelector('script[src="' + src + '"]');
+      if (existing) {
+        if (window.pdfjsLib || window.PDFLib) {
+          resolve();
+          return;
+        }
+        existing.addEventListener("load", resolve, { once: true });
+        existing.addEventListener("error", reject, { once: true });
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  function ensureScriptLoaded(src, globalName) {
+    return new Promise(function (resolve, reject) {
+      if (window[globalName]) {
+        resolve();
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = src;
+      script.async = false;
+
+      script.onload = function () {
+        if (window[globalName]) {
+          resolve();
+        } else {
+          reject(new Error(globalName + " did not initialize."));
+        }
+      };
+
+      script.onerror = function () {
+        reject(new Error("Could not load " + globalName + "."));
+      };
+
+      document.head.appendChild(script);
+    });
+  }
+
+  async function ensureLibraries() {
+    if (!window.pdfjsLib) {
+      await ensureScriptLoaded(
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/" +
+        PDFJS_VERSION +
+        "/pdf.min.js",
+        "pdfjsLib"
+      );
+    }
+
+    if (!window.PDFLib) {
+      await ensureScriptLoaded(
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js",
+        "PDFLib"
+      );
+    }
+
+    if (!window.pdfjsLib || !window.PDFLib) {
+      throw new Error("Required PDF libraries are unavailable.");
+    }
+
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/" +
+      PDFJS_VERSION +
+      "/pdf.worker.min.js";
+  }
+
+  function openFilePicker(event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    if (!uploadArea.classList.contains("has-pages")) {
+      fileInput.click();
+    }
+  }
+
+  uploadButton.addEventListener("click", openFilePicker);
+
+  uploadArea.addEventListener("click", function (event) {
+    if (uploadArea.classList.contains("has-pages")) return;
+    if (event.target.closest("button, a, input, label")) return;
+    fileInput.click();
+  });
+
+  fileInput.addEventListener("change", function () {
+    const file = fileInput.files && fileInput.files[0];
+    if (file) {
+      loadPdf(file);
+    }
+  });
+
+  async function loadPdf(file) {
+    if (!/\.pdf$/i.test(file.name) && file.type !== "application/pdf") {
+      alert("Please select a PDF file.");
+      fileInput.value = "";
+      return;
+    }
+
+    try {
+      uploadButton.disabled = true;
+      uploadButton.textContent = "Loading PDF...";
+
+      await ensureLibraries();
+
+      const fileBuffer = await file.arrayBuffer();
+      pdfBytes = new Uint8Array(fileBuffer);
+
+      const pdf = await window.pdfjsLib.getDocument({
+        data: pdfBytes.slice(),
+        useWorkerFetch: true,
+        isEvalSupported: true
+      }).promise;
+
+      pages = [];
+
+      preview.innerHTML = "";
+      actions.hidden = true;
+      uploadArea.classList.add("has-pages");
+
+      for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+        const page = await pdf.getPage(pageNumber);
+
+        const viewport = page.getViewport({ scale: 1 });
+        const maxWidth = 260;
+        const scale = Math.min(1, maxWidth / viewport.width);
+        const scaledViewport = page.getViewport({ scale: scale });
+
+        const card = document.createElement("div");
+        card.className = "remove-pages-page";
+        card.dataset.pageNumber = String(pageNumber);
+
+        const header = document.createElement("div");
+        header.className = "remove-pages-page-header";
+
+        const number = document.createElement("span");
+        number.className = "remove-pages-page-number";
+        number.textContent = "Page " + pageNumber;
+
+        const removeButton = document.createElement("button");
+        removeButton.className = "remove-pages-remove-button";
+        removeButton.type = "button";
+        removeButton.textContent = "Remove";
+
+        const canvasWrap = document.createElement("div");
+        canvasWrap.className = "remove-pages-page-canvas-wrap";
+
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d", { alpha: false });
+
+        const outputScale = window.devicePixelRatio || 1;
+        canvas.width = Math.floor(scaledViewport.width * outputScale);
+        canvas.height = Math.floor(scaledViewport.height * outputScale);
+        canvas.style.width = Math.floor(scaledViewport.width) + "px";
+        canvas.style.height = Math.floor(scaledViewport.height) + "px";
+
+        const renderContext = {
+          canvasContext: context,
+          viewport: scaledViewport,
+          transform: outputScale !== 1
+            ? [outputScale, 0, 0, outputScale, 0, 0]
+            : null
+        };
+
+        await page.render(renderContext).promise;
+
+        removeButton.addEventListener("click", function (event) {
+          event.stopPropagation();
+
+          const removed = card.classList.toggle("removed");
+
+          if (removed) {
+            removeButton.textContent = "Undo";
+            pages[pageNumber - 1].removed = true;
+          } else {
+            removeButton.textContent = "Remove";
+            pages[pageNumber - 1].removed = false;
+          }
+
+          updateDownloadState();
+        });
+
+        header.appendChild(number);
+        header.appendChild(removeButton);
+        canvasWrap.appendChild(canvas);
+        card.appendChild(header);
+        card.appendChild(canvasWrap);
+        preview.appendChild(card);
+
+        pages.push({
+          pageNumber: pageNumber,
+          removed: false
+        });
+      }
+
+      // Show Download PDF only after every page has finished rendering.
+      actions.hidden = false;
+      updateDownloadState();
+
+    } catch (error) {
+      console.error(error);
+      resetUploadArea();
+      alert("Could not load this PDF. Please try another PDF file.");
+    } finally {
+      uploadButton.disabled = false;
+      uploadButton.textContent = "Upload PDF File";
+    }
+  }
+
+  function updateDownloadState() {
+    const remaining = pages.filter(function (page) {
+      return !page.removed;
+    }).length;
+
+    downloadButton.disabled = remaining === 0;
+    downloadButton.style.opacity = remaining === 0 ? "0.55" : "1";
+    downloadButton.style.cursor = remaining === 0 ? "not-allowed" : "pointer";
+  }
+
+  downloadButton.addEventListener("click", async function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!pdfBytes || !pages.length) return;
+
+    const savedScrollX = window.scrollX;
+    const savedScrollY = window.scrollY;
+
+    const remainingIndexes = pages
+      .filter(function (page) {
+        return !page.removed;
+      })
+      .map(function (page) {
+        return page.pageNumber - 1;
+      });
+
+    if (!remainingIndexes.length) {
+      alert("Please keep at least one page.");
+      return;
+    }
+
+    try {
+      downloadButton.disabled = true;
+      downloadButton.textContent = "Creating PDF...";
+
+      await ensureLibraries();
+
+      const sourcePdf = await window.PDFLib.PDFDocument.load(pdfBytes);
+      const outputPdf = await window.PDFLib.PDFDocument.create();
+
+      const copiedPages = await outputPdf.copyPages(
+        sourcePdf,
+        remainingIndexes
+      );
+
+      copiedPages.forEach(function (page) {
+        outputPdf.addPage(page);
+      });
+
+      const resultBytes = await outputPdf.save();
+
+      const blob = new Blob([resultBytes], {
+        type: "application/pdf"
+      });
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = "removed-pages.pdf";
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      URL.revokeObjectURL(url);
+
+      // After a successful download, return the preview area
+      // to the original upload state.
+      resetUploadArea();
+
+      requestAnimationFrame(function () {
+        window.scrollTo(savedScrollX, savedScrollY);
+        setTimeout(function () {
+          window.scrollTo(savedScrollX, savedScrollY);
+        }, 0);
+      });
+
+    } catch (error) {
+      console.error(error);
+      alert("Could not create the PDF. Please try again.");
+    } finally {
+      downloadButton.disabled = false;
+      downloadButton.textContent = "Download PDF";
+      updateDownloadState();
+    }
+  });
+
+  function resetUploadArea() {
+    uploadArea.classList.remove("has-pages");
+    preview.innerHTML = "";
+    actions.hidden = true;
+    fileInput.value = "";
+    pdfBytes = null;
+    pages = [];
+  }
+})();
+</script>
+
 </body>
 </html>
 
