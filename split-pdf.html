@@ -5205,6 +5205,17 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
 </style>
 
 
+<style id="split-pdf-uploaded-no-dots">
+/* Uploaded PDF state: preserve the grey background, remove only the dotted pattern. */
+@media (min-width: 651px) {
+  html:not(.dark-mode) .upload-area.has-files {
+    background-color: #eef0f3 !important;
+    background-image: none !important;
+  }
+}
+</style>
+
+
 <style id="toolnest-pdf-shared-upload-theme">
 /* Shared PDF upload area/button: one consistent implementation across PDF tools. */
 html.dark-mode .tn-shared-upload-area {
@@ -5296,7 +5307,6 @@ body:not(.dark-mode) {
 html:not(.dark-mode) .page-content,
 html:not(.dark-mode) .main-content,
 html:not(.dark-mode) .tool-container,
-html:not(.dark-mode) .upload-area,
 html:not(.dark-mode) .page-number-panel,
 html:not(.dark-mode) .visual-split-panel,
 html:not(.dark-mode) .pdf-card {
@@ -5362,7 +5372,9 @@ html:not(.dark-mode) .pdf-page-count {
 }
 
 html:not(.dark-mode) .upload-area {
-  background: #ffffff !important;
+  background-color: #eef0f3 !important;
+  background-image: radial-gradient(circle, rgba(70, 80, 92, 0.46) 1.5px, transparent 1.5px) !important;
+  background-size: 18px 18px !important;
   border-color: #b8c7d6 !important;
 }
 
@@ -6173,6 +6185,7 @@ html:not(.dark-mode) .pdf-card {
     }
 
     if (uploadedFiles) uploadedFiles.classList.remove("active");
+    if (uploadArea) uploadArea.classList.remove("has-files");
 
     if (editorControls) editorControls.classList.remove("active");
 
@@ -6277,6 +6290,7 @@ html:not(.dark-mode) .pdf-card {
 
     if (uploadPlaceholder) uploadPlaceholder.style.display = "none";
     if (uploadedFiles) uploadedFiles.classList.add("active");
+    if (uploadArea) uploadArea.classList.add("has-files");
     if (editorControls) editorControls.classList.remove("active");
     if (splitButton) splitButton.disabled = true;
 
@@ -7082,5 +7096,17 @@ html.dark-mode .tn-shared-upload-button:hover {
    appear to change size/position when hovered. */
 .editor-controls .primary-button#splitButton:hover:not(:disabled) {
   transform: scale(0.7) !important;
+}
+</style>
+
+<style id="split-pdf-preview-remove-inner-white">
+/* Keep the outer upload area grey after preview loads; remove inner white panels. */
+@media (min-width: 651px) {
+  html:not(.dark-mode) .upload-area.has-files .uploaded-files,
+  html:not(.dark-mode) .upload-area.has-files .editor-controls,
+  html:not(.dark-mode) .upload-area.has-files .pdf-grid {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
 }
 </style>

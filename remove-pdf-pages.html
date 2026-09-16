@@ -3807,6 +3807,37 @@ html.dark-mode .tn-shared-upload-button:hover {
   transition: none;
 }
 
+.remove-pages-cancel-button {
+  width: 220px;
+  min-width: 220px;
+  height: 58px;
+  min-height: 58px;
+  padding: 0 28px;
+  border: none;
+  border-radius: 14px;
+  background: #d1d5db;
+  color: #344154;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: none;
+}
+
+.remove-pages-cancel-button:hover,
+.remove-pages-cancel-button:focus,
+.remove-pages-cancel-button:active {
+  width: 220px;
+  min-width: 220px;
+  height: 58px;
+  min-height: 58px;
+  background: #d1d5db;
+  color: #344154;
+  border: none;
+  transform: none;
+}
+
 .remove-pages-download-button:hover,
 .remove-pages-download-button:focus,
 .remove-pages-download-button:active {
@@ -3979,6 +4010,13 @@ html.dark-mode .tn-shared-upload-button:hover {
           type="button"
         >
           Download PDF
+        </button>
+        <button
+          class="remove-pages-cancel-button"
+          id="removePdfCancelButton"
+          type="button"
+        >
+          Cancel
         </button>
       </div>
 
@@ -4172,8 +4210,9 @@ html.dark-mode .category-nav .category-link.active:focus {
   const preview = document.getElementById("removePdfPreview");
   const actions = document.getElementById("removePdfActions");
   const downloadButton = document.getElementById("removePdfDownloadButton");
+  const cancelButton = document.getElementById("removePdfCancelButton");
 
-  if (!fileInput || !uploadArea || !uploadButton || !preview || !actions || !downloadButton) {
+  if (!fileInput || !uploadArea || !uploadButton || !preview || !actions || !downloadButton || !cancelButton) {
     return;
   }
 
@@ -4405,6 +4444,12 @@ html.dark-mode .category-nav .category-link.active:focus {
     downloadButton.style.opacity = remaining === 0 ? "0.55" : "1";
     downloadButton.style.cursor = remaining === 0 ? "not-allowed" : "pointer";
   }
+
+  cancelButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    resetUploadArea();
+  });
 
   downloadButton.addEventListener("click", async function (event) {
     event.preventDefault();
