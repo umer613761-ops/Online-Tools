@@ -4852,3 +4852,75 @@ html.dark-mode .tool-category-link::after {
   background: #29483b !important;
 }
 </style>
+
+<style id="toolnest-rotate-upload-button-final-fix">
+/* Rotate PDF upload button: exactly match the shared PDF upload button.
+   Keep hover identical so the color never changes. */
+#rotateUploadButton.tn-shared-upload-button {
+  width: 280px !important;
+  min-width: 280px !important;
+  max-width: 280px !important;
+  height: 72px !important;
+  min-height: 72px !important;
+  max-height: 72px !important;
+  padding: 0 36px !important;
+  border-radius: 18px !important;
+  background: linear-gradient(135deg, #059669 0%, #059669 55%, #059669 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 19px !important;
+  font-weight: 600 !important;
+  box-sizing: border-box !important;
+  transform: none !important;
+}
+#rotateUploadButton.tn-shared-upload-button:hover,
+#rotateUploadButton.tn-shared-upload-button:focus,
+#rotateUploadButton.tn-shared-upload-button:active {
+  width: 280px !important;
+  min-width: 280px !important;
+  max-width: 280px !important;
+  height: 72px !important;
+  min-height: 72px !important;
+  max-height: 72px !important;
+  background: linear-gradient(135deg, #059669 0%, #059669 55%, #059669 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  transform: none !important;
+}
+@media (max-width: 650px) {
+  #rotateUploadButton.tn-shared-upload-button {
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+    height: 72px !important;
+    min-height: 72px !important;
+    max-height: 72px !important;
+    font-size: 19px !important;
+  }
+}
+</style>
+
+<script id="toolnest-rotate-clickable-preview">
+document.addEventListener('DOMContentLoaded', function () {
+  const fileInput = document.getElementById('rotatePdfInput');
+  const uploadArea = document.getElementById('rotateUploadArea');
+  if (!fileInput || !uploadArea) return;
+
+  uploadArea.classList.add('tn-rotate-clickable-upload-area');
+
+  uploadArea.addEventListener('click', function (e) {
+    // Make the entire empty upload/preview box clickable.
+    // Existing controls remain unaffected once a PDF is loaded.
+    if (uploadArea.classList.contains('has-files')) return;
+    if (e.target.closest('button, a, input, label')) return;
+    fileInput.click();
+  });
+});
+</script>
+<style id="toolnest-rotate-clickable-preview-style">
+#rotateUploadArea.tn-rotate-clickable-upload-area:not(.has-files) {
+  cursor: pointer;
+}
+</style>
+
