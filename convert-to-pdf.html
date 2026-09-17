@@ -3653,6 +3653,273 @@ html.dark-mode .tn-shared-upload-button:hover {
 </style>
 
 
+<style id="remove-pages-merge-heading-style">
+.remove-pages-merge-style-intro h1 {
+    margin:
+        0 0 10px;
+    color: #263548;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+}
+.remove-pages-merge-style-intro p {
+    margin: 0;
+    color: #718096;
+    font-size: 16px;
+    line-height: 1.6;
+    white-space: nowrap;
+}
+</style>
+
+
+<style id="remove-pages-heading-outside-preview">
+.remove-pages-merge-style-intro {
+    margin-bottom: 26px;
+}
+</style>
+
+<style id="remove-pages-functionality-style">
+/* Remove PDF Pages functionality */
+#removePdfUploadArea {
+  cursor: pointer;
+}
+
+#removePdfUploadArea.has-pages {
+  cursor: default;
+  padding: 22px;
+}
+
+#removePdfUploadPlaceholder {
+  position: relative;
+  z-index: 5;
+}
+
+#removePdfUploadArea.has-pages #removePdfUploadPlaceholder {
+  display: none;
+}
+
+.remove-pages-preview {
+  width: 100%;
+  display: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+  text-align: left;
+}
+
+#removePdfUploadArea.has-pages .remove-pages-preview {
+  display: grid;
+}
+
+.remove-pages-page {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid #d5dde6;
+  border-radius: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(31, 45, 61, 0.06);
+}
+
+.remove-pages-page.removed {
+  opacity: 0.42;
+}
+
+.remove-pages-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+
+.remove-pages-page-number {
+  color: #526273;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.remove-pages-remove-button {
+  flex: 0 0 auto;
+  padding: 5px 9px;
+  border: 1px solid #e2a4a4;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #d64545;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.remove-pages-remove-button:hover {
+  background: #fff5f5;
+  border-color: #d77b7b;
+}
+
+.remove-pages-page.removed .remove-pages-remove-button {
+  color: #059669;
+  border-color: #9bd5c0;
+  background: #f2fbf7;
+}
+
+.remove-pages-page-canvas-wrap {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+  background: #f4f6f8;
+  border-radius: 6px;
+}
+
+.remove-pages-page canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+.remove-pages-actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.remove-pages-download-button {
+  width: 220px;
+  min-width: 220px;
+  height: 58px;
+  min-height: 58px;
+  padding: 0 28px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #059669 0%, #059669 55%, #059669 100%);
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: none;
+}
+
+.remove-pages-cancel-button {
+  width: 220px;
+  min-width: 220px;
+  height: 58px;
+  min-height: 58px;
+  padding: 0 28px;
+  border: none;
+  border-radius: 14px;
+  background: #d1d5db;
+  color: #344154;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: none;
+}
+
+.remove-pages-cancel-button:hover,
+.remove-pages-cancel-button:focus,
+.remove-pages-cancel-button:active {
+  width: 220px;
+  min-width: 220px;
+  height: 58px;
+  min-height: 58px;
+  background: #d1d5db;
+  color: #344154;
+  border: none;
+  transform: none;
+}
+
+.remove-pages-download-button:hover,
+.remove-pages-download-button:focus,
+.remove-pages-download-button:active {
+  width: 220px;
+  min-width: 220px;
+  height: 58px;
+  min-height: 58px;
+  background: #059669;
+  color: #ffffff;
+  border: none;
+  transform: none;
+}
+
+.remove-pages-empty {
+  grid-column: 1 / -1;
+  padding: 28px 10px 12px;
+  color: #718096;
+  font-size: 14px;
+  text-align: center;
+}
+
+@media (max-width: 650px) {
+  #removePdfUploadArea.has-pages {
+    padding: 14px;
+  }
+
+  .remove-pages-preview {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .remove-pages-download-button {
+    width: 220px;
+    min-width: 220px;
+    height: 58px;
+    min-height: 58px;
+  }
+}
+</style>
+
+
+<style id="remove-pages-no-dots-after-preview">
+#removePdfUploadArea.has-pages {
+  background-image: none;
+}
+</style>
+
+
+<style id="remove-pages-download-initial-state">
+#removePdfActions[hidden] {
+  display: none !important;
+}
+#removePdfUploadArea:not(.has-pages) {
+  background-image:
+    radial-gradient(
+      circle,
+      rgba(70, 80, 92, 0.46) 1.5px,
+      transparent 1.5px
+    );
+}
+#removePdfUploadArea.has-pages {
+  background-image: none !important;
+}
+</style>
+
+
+
+
+<style id="convert-remove-dots-after-upload">
+/* Keep the grey preview background, but remove the dotted texture after files are loaded. */
+#convertToUploadArea.has-files,
+#convertFromUploadArea.has-files {
+  background-image: none !important;
+  background-color: #eef0f3 !important;
+  background-size: auto !important;
+}
+html.dark-mode #convertToUploadArea.has-files,
+html.dark-mode #convertFromUploadArea.has-files {
+  background-image: none !important;
+  background-color: #131e2b !important;
+}
+</style>
 
 </head>
 <body>
@@ -3716,21 +3983,29 @@ html.dark-mode .tn-shared-upload-button:hover {
     <a class="tn-tool-category-link" href="re-arrange-pdf-pages.html">Re-arrange PDF Pages</a>
     <a class="tn-tool-category-link" href="change-pdf-page-size.html">Change PDF Page Size</a>
     <a class="tn-tool-category-link active" href="convert-to-pdf.html">Convert to PDF</a>
-    <a class="tn-tool-category-link" href="convert-from-pdf.html">Convert from PDF</a>
+    <a class="tn-tool-category-link " href="convert-from-pdf.html">Convert from PDF</a>
   </div>
 </nav>
 
 <!-- ========================================
      SHARED UPLOAD / PREVIEW AREA
 ========================================= -->
+<div class="remove-pages-merge-style-intro">
+    <h1>Convert to PDF</h1>
+    <p>Convert your files to PDF quickly and easily.</p>
+</div>
 <div class="tool-box tn-shared-tool-box">
   <div class="tn-shared-upload-frame">
-    <div class="tn-shared-upload-area">
-  <div class="tn-shared-upload-placeholder">
-    <button class="tn-shared-upload-button" type="button">
-      Upload PDF File
-    </button>
-  </div>
+    <div class="tn-shared-upload-area" id="convertToUploadArea">
+      <input id="convertToFileInput" type="file" multiple accept="image/*,.txt,.csv,.json,.xml,.html,.htm,.md,.docx,.xlsx,.pptx" hidden>
+      <div class="tn-shared-upload-placeholder" id="convertToUploadPlaceholder">
+        <button class="tn-shared-upload-button" id="convertToUploadButton" type="button">Upload Files</button>
+      </div>
+      <div class="convert-preview-grid" id="convertToPreview" aria-live="polite"></div>
+      <div class="convert-actions" id="convertToActions" hidden>
+        <button class="convert-download-button" id="convertToDownloadButton" type="button">Download PDF</button>
+        <button class="convert-cancel-button" id="convertToCancelButton" type="button">Cancel</button>
+      </div>
     </div>
   </div>
 </div>
@@ -3911,6 +4186,9 @@ html.dark-mode .category-nav .category-link.active:focus {
 }
 </style>
 
+
+
+
 <style id="toolnest-pdf-outer-box-match-merge-final">
 /* Match the Merge PDF outer tool box exactly in dark mode. */
 html.dark-mode .tool-box,
@@ -3921,6 +4199,221 @@ html:not(.light-mode) .tool-box {
 }
 </style>
 
+
+<style id="convert-pages-exact-remove-layout">
+/* Exact Remove PDF Pages layout shell: intro, upload box, grid, and actions. */
+.convert-preview-grid{width:100%;display:none;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start;text-align:left;}
+#convertToUploadArea.has-files .convert-preview-grid,#convertFromUploadArea.has-files .convert-preview-grid{display:grid;}
+.convert-file-card,.convert-page-card{position:relative;width:100%;min-width:0;padding:12px;background:#fff;border:1px solid #d5dde6;border-radius:10px;box-sizing:border-box;box-shadow:0 2px 8px rgba(31,45,61,.06);}
+.convert-file-card{min-height:110px;}
+.convert-file-name{font-size:14px;font-weight:600;color:#526273;word-break:break-word;}
+.convert-page-card canvas{display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid #d5dde6;}
+.convert-page-number{margin-bottom:9px;color:#526273;font-size:13px;font-weight:600;}
+.convert-file-remove{margin-top:12px;padding:5px 9px;border:1px solid #e2a4a4;border-radius:6px;background:#fff;color:#d64545;font:600 12px Arial;cursor:pointer;}
+.convert-actions{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:24px;}
+.convert-download-button{width:220px;min-width:220px;height:58px;border:0;border-radius:10px;background:#059669;color:#fff;font:700 16px Arial;cursor:pointer;}
+.convert-cancel-button{width:120px;min-width:120px;height:58px;border:1px solid #aeb8c5;border-radius:10px;background:#d4dbe3;color:#344154;font:700 16px Arial;cursor:pointer;}
+.convert-from-toolbar{display:flex;justify-content:flex-end;margin-bottom:18px;}
+.convert-from-toolbar label{font:600 14px Arial;color:#526273;}
+.convert-from-toolbar select{margin-left:8px;height:38px;padding:0 10px;border:1px solid #cbd6e0;border-radius:7px;background:#fff;color:#344154;}
+html.dark-mode .convert-file-card,html.dark-mode .convert-page-card{background:#202a36;border-color:#3b4b5f;}
+html.dark-mode .convert-file-name,html.dark-mode .convert-page-number,html.dark-mode .convert-from-toolbar label{color:#d6dee8;}
+html.dark-mode .convert-cancel-button{background:#3b4654;border-color:#566474;color:#f1f5f9;}
+html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4b5f;color:#f1f5f9;}
+#convertToUploadArea.has-files,#convertFromUploadArea.has-files{padding:22px;}
+#convertToUploadArea.has-files .tn-shared-upload-placeholder,#convertFromUploadArea.has-files .tn-shared-upload-placeholder{display:none;}
+@media(max-width:650px){.convert-preview-grid{grid-template-columns:1fr;gap:14px;}#convertToUploadArea.has-files,#convertFromUploadArea.has-files{padding:14px;}.convert-actions{gap:12px;flex-wrap:wrap;}.convert-download-button{width:220px;min-width:220px;}}
+</style>
+
+<script id="convert-pages-functionality">
+(function(){
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  function setupTo(){
+    const area=document.getElementById('convertToUploadArea');
+    const input=document.getElementById('convertToFileInput');
+    const btn=document.getElementById('convertToUploadButton');
+    const grid=document.getElementById('convertToPreview');
+    const actions=document.getElementById('convertToActions');
+    const cancel=document.getElementById('convertToCancelButton');
+    const download=document.getElementById('convertToDownloadButton');
+    if(!area || !input || !btn) return;
+    let files=[];
+    btn.onclick=()=>input.click();
+    input.onchange=()=>{ files=Array.from(input.files||[]); render(); };
+    function render(){
+      grid.innerHTML=files.map((f,i)=>{
+        const type=f.type||'';
+        let preview='';
+        if(type.startsWith('image/')){
+          const url=URL.createObjectURL(f);
+          preview=`<div class="convert-upload-preview"><img src="${url}" alt="${esc(f.name)}" data-object-url="${url}"></div>`;
+        }else if(type==='text/plain' || /\.(txt|csv|json|xml|html?|md)$/i.test(f.name)){
+          preview=`<div class="convert-upload-preview convert-text-preview"><span>📄</span><strong>Document preview</strong><small>${esc(type||'Text file')}</small></div>`;
+        }else if(/\.(docx|xlsx|pptx)$/i.test(f.name)){
+          preview=`<div class="convert-upload-preview convert-office-preview"><span>📄</span><strong>Office document</strong><small>${esc(f.name.split('.').pop().toUpperCase())} file</small></div>`;
+        }else{
+          preview=`<div class="convert-upload-preview convert-generic-preview"><span>📄</span><strong>File preview</strong><small>${esc(type||'File')}</small></div>`;
+        }
+        return `<div class="convert-file-card">${preview}<div class="convert-file-name">${esc(f.name)}</div><button class="convert-file-remove" data-i="${i}" type="button">Remove</button></div>`;
+      }).join('');
+      grid.querySelectorAll('img[data-object-url]').forEach(img=>{
+        img.addEventListener('load',()=>URL.revokeObjectURL(img.dataset.objectUrl),{once:true});
+      });
+      area.classList.toggle('has-files',files.length>0);
+      actions.hidden=!files.length;
+      grid.querySelectorAll('.convert-file-remove').forEach(b=>b.onclick=()=>{files.splice(+b.dataset.i,1);render();});
+    }
+    function resetToUpload(){files=[];input.value='';grid.innerHTML='';area.classList.remove('has-files');actions.hidden=true;}
+    cancel.onclick=resetToUpload;
+    download.onclick=async()=>{
+      if(!files.length) return;
+      if(!window.jspdf){alert('PDF converter library is still loading. Please try again.');return;}
+      const {jsPDF}=window.jspdf;
+      const doc=new jsPDF({unit:'pt',format:'a4'});
+      let first=true;
+      for(const f of files){
+        if(!first) doc.addPage(); first=false;
+        if(f.type.startsWith('image/')){
+          const data=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f);});
+          const img=await new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=rej;im.src=data;});
+          const pw=doc.internal.pageSize.getWidth()-72, ph=doc.internal.pageSize.getHeight()-72;
+          const scale=Math.min(pw/img.width,ph/img.height);
+          const fmt=f.type==='image/png'?'PNG':f.type==='image/webp'?'WEBP':'JPEG';
+          doc.addImage(data,fmt,(doc.internal.pageSize.getWidth()-img.width*scale)/2,36,img.width*scale,img.height*scale);
+        }else{
+          const text=await f.text(); doc.setFontSize(11);
+          const lines=doc.splitTextToSize(text,doc.internal.pageSize.getWidth()-72);
+          let y=48;
+          for(const line of lines){if(y>doc.internal.pageSize.getHeight()-40){doc.addPage();y=48;}doc.text(line,36,y);y+=15;}
+        }
+      }
+      doc.save('converted-to-pdf.pdf');
+      resetToUpload();
+    };
+  }
+
+  function setupFrom(){
+    const area=document.getElementById('convertFromUploadArea');
+    const input=document.getElementById('convertFromFileInput');
+    const btn=document.getElementById('convertFromUploadButton');
+    const grid=document.getElementById('convertFromPreview');
+    const actions=document.getElementById('convertFromActions');
+    const cancel=document.getElementById('convertFromCancelButton');
+    const download=document.getElementById('convertFromDownloadButton');
+    const toolbar=document.getElementById('convertFromToolbar');
+    const fmt=document.getElementById('convertFromFormat');
+    if(!area || !input || !btn) return;
+    let pdf=null;
+    btn.onclick=()=>input.click();
+    input.onchange=async()=>{
+      const f=input.files&&input.files[0]; if(!f) return;
+      try{pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise; await render();}
+      catch(e){console.error(e);alert('Unable to open this PDF file.');}
+    };
+    async function render(){
+      grid.innerHTML='';
+      for(let i=1;i<=pdf.numPages;i++){
+        const card=document.createElement('div'); card.className='convert-page-card';
+        card.innerHTML=`<div class="convert-page-number">Page ${i}</div><canvas></canvas>`;
+        grid.appendChild(card);
+        const c=card.querySelector('canvas'), p=await pdf.getPage(i), v=p.getViewport({scale:1.1});
+        c.width=v.width;c.height=v.height;
+        await p.render({canvasContext:c.getContext('2d'),viewport:v}).promise;
+      }
+      area.classList.add('has-files'); actions.hidden=false; toolbar.hidden=false;
+    }
+    function resetFromUpload(){pdf=null;input.value='';grid.innerHTML='';area.classList.remove('has-files');actions.hidden=true;toolbar.hidden=true;}
+    cancel.onclick=resetFromUpload;
+    download.onclick=async()=>{
+      if(!pdf) return;
+      if(fmt.value==='txt'){
+        let out=''; for(let i=1;i<=pdf.numPages;i++){const p=await pdf.getPage(i),c=await p.getTextContent();out+=c.items.map(x=>x.str).join(' ')+'\n\n';}
+        const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out],{type:'text/plain'}));a.download='converted-from-pdf.txt';a.click();URL.revokeObjectURL(a.href);resetFromUpload();return;
+      }
+      if(fmt.value==='html'){
+        let out='<html><body>';
+        for(let i=1;i<=pdf.numPages;i++){const p=await pdf.getPage(i),c=await p.getTextContent();out+='<h2>Page '+i+'</h2><p>'+esc(c.items.map(x=>x.str).join(' '))+'</p>'; }
+        out+='</body></html>';
+        const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out],{type:'text/html'}));a.download='converted-from-pdf.html';a.click();URL.revokeObjectURL(a.href);resetFromUpload();return;
+      }
+      alert('The selected format requires an advanced document converter.');
+    };
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded',()=>{setupTo();setupFrom();});
+  }else{
+    setupTo();
+    setupFrom();
+  }
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+
+
+<style id="convert-upload-post-upload-neat-final">
+/* Keep the uploaded state content-driven, like Remove PDF Pages. */
+#convertToUploadArea.has-files,
+#convertFromUploadArea.has-files {
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 22px !important;
+  box-sizing: border-box !important;
+}
+
+#convertToUploadArea.has-files .tn-shared-upload-frame,
+#convertFromUploadArea.has-files .tn-shared-upload-frame {
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+#convertToUploadArea.has-files .convert-preview-grid,
+#convertFromUploadArea.has-files .convert-preview-grid {
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+}
+
+#convertToUploadArea.has-files .convert-actions,
+#convertFromUploadArea.has-files .convert-actions {
+  width: 100% !important;
+  margin: 24px 0 0 !important;
+  padding: 0 !important;
+}
+
+.convert-actions[hidden] {
+  display: none !important;
+}
+
+.convert-file-card {
+  min-height: 0 !important;
+  padding: 18px !important;
+}
+
+.convert-file-name {
+  font-size: 16px !important;
+  line-height: 1.45 !important;
+}
+
+.convert-file-remove {
+  margin-top: 14px !important;
+}
+
+@media (max-width: 650px) {
+  #convertToUploadArea.has-files,
+  #convertFromUploadArea.has-files {
+    padding: 14px !important;
+  }
+
+  #convertToUploadArea.has-files .convert-actions,
+  #convertFromUploadArea.has-files .convert-actions {
+    margin-top: 18px !important;
+  }
+}
+</style>
 </body>
 </html>
 
@@ -4113,5 +4606,80 @@ html.dark-mode nav.category-nav .category-link.active-button {
 /* ToolNest corner accent — visible in both themes. */
 html.dark-mode .tool-category-link::after {
   background: #29483b !important;
+}
+</style>
+
+<style id="convert-to-upload-preview-final">
+#convertToUploadArea.has-files .convert-preview-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:18px !important;
+}
+#convertToUploadArea.has-files .convert-file-card{
+  min-height:0 !important;
+  padding:12px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:stretch !important;
+}
+#convertToUploadArea.has-files .convert-upload-preview{
+  width:100% !important;
+  height:220px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:hidden !important;
+  background:#edf2f6 !important;
+  border:1px solid #d5dde6 !important;
+  border-radius:8px !important;
+  box-sizing:border-box !important;
+  margin-bottom:12px !important;
+}
+#convertToUploadArea.has-files .convert-upload-preview img{
+  display:block !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  width:auto !important;
+  height:auto !important;
+  object-fit:contain !important;
+}
+#convertToUploadArea.has-files .convert-text-preview,
+#convertToUploadArea.has-files .convert-office-preview,
+#convertToUploadArea.has-files .convert-generic-preview{
+  flex-direction:column !important;
+  gap:7px !important;
+  color:#526273 !important;
+  text-align:center !important;
+}
+#convertToUploadArea.has-files .convert-upload-preview span{font-size:40px !important;line-height:1 !important;}
+#convertToUploadArea.has-files .convert-upload-preview strong{font-size:15px !important;}
+#convertToUploadArea.has-files .convert-upload-preview small{font-size:12px !important;opacity:.8 !important;}
+html.dark-mode #convertToUploadArea.has-files .convert-upload-preview{
+  background:#273341 !important;
+  border-color:#3b4b5f !important;
+}
+html.dark-mode #convertToUploadArea.has-files .convert-text-preview,
+html.dark-mode #convertToUploadArea.has-files .convert-office-preview,
+html.dark-mode #convertToUploadArea.has-files .convert-generic-preview{color:#d6dee8 !important;}
+@media(max-width:650px){
+  #convertToUploadArea.has-files .convert-preview-grid{grid-template-columns:1fr !important;}
+  #convertToUploadArea.has-files .convert-upload-preview{height:200px !important;}
+}
+</style>
+<style id="convert-to-single-preview-centered">
+/* Center a single uploaded preview while preserving the 2-column layout for multiple files. */
+#convertToUploadArea.has-files .convert-preview-grid:has(> .convert-file-card:only-child){
+  display:flex !important;
+  justify-content:center !important;
+  align-items:flex-start !important;
+}
+#convertToUploadArea.has-files .convert-preview-grid:has(> .convert-file-card:only-child) .convert-file-card{
+  width:calc(50% - 9px) !important;
+  max-width:420px !important;
+}
+@media(max-width:650px){
+  #convertToUploadArea.has-files .convert-preview-grid:has(> .convert-file-card:only-child) .convert-file-card{
+    width:100% !important;
+    max-width:420px !important;
+  }
 }
 </style>
