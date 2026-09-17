@@ -4224,6 +4224,61 @@ html.dark-mode .tn-shared-upload-button:hover {
 
 
 
+
+<style id="rotate-final-layout-fix">
+#rotateUploadArea .rotate-page-preview{width:auto !important;height:auto !important;min-width:0 !important;min-height:0 !important;}
+#rotateUploadArea .rotate-page-preview canvas{width:auto !important;height:auto !important;max-width:296px !important;max-height:376px !important;}
+#rotateUploadArea .rotate-pdf-bottom-controls{display:flex !important;align-items:center !important;justify-content:center !important;gap:16px !important;margin-top:42px !important;padding-top:0 !important;}
+#rotateUploadArea #rotateDownloadButton,#rotateUploadArea #rotateCancelButton{height:52px !important;min-height:52px !important;box-sizing:border-box !important;font-size:16px !important;font-weight:700 !important;border-radius:10px !important;}
+#rotateUploadArea #rotateDownloadButton{width:190px !important;min-width:190px !important;}
+#rotateUploadArea #rotateCancelButton{width:120px !important;min-width:120px !important;padding:0 18px !important;border:1px solid #aeb8c5 !important;background:#d4dbe3 !important;color:#344154 !important;opacity:1 !important;box-shadow:none !important;}
+#rotateUploadArea #rotateCancelButton:hover,#rotateUploadArea #rotateCancelButton:focus,#rotateUploadArea #rotateCancelButton:active{background:#d4dbe3 !important;border-color:#aeb8c5 !important;color:#344154 !important;transform:none !important;box-shadow:none !important;}
+html.dark-mode #rotateUploadArea #rotateCancelButton,html.dark-mode #rotateUploadArea #rotateCancelButton:hover,html.dark-mode #rotateUploadArea #rotateCancelButton:focus,html.dark-mode #rotateUploadArea #rotateCancelButton:active{background:#3b4654 !important;border-color:#566474 !important;color:#f1f5f9 !important;}
+@media(max-width:650px){#rotateUploadArea .rotate-pdf-bottom-controls{gap:12px !important;margin-top:32px !important;}#rotateUploadArea #rotateDownloadButton{width:170px !important;min-width:170px !important;height:50px !important;min-height:50px !important;}#rotateUploadArea #rotateCancelButton{width:110px !important;min-width:110px !important;height:50px !important;min-height:50px !important;}}
+</style>
+
+<style id="rotate-preview-position-match-remove-pages">
+/* Match Remove PDF Pages uploaded-preview positioning. */
+#rotateUploadArea.has-files {
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 22px !important;
+  box-sizing: border-box !important;
+}
+#rotateUploadArea.has-files .rotate-pdf-preview-wrap {
+  width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  box-sizing: border-box !important;
+}
+#rotateUploadArea.has-files .rotate-pdf-pages {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  align-items: start !important;
+}
+#rotateUploadArea.has-files .rotate-page-card {
+  margin: 0 !important;
+  height: auto !important;
+}
+#rotateUploadArea.has-files .rotate-pdf-bottom-controls {
+  margin-top: 24px !important;
+  padding: 0 !important;
+}
+@media (max-width: 650px) {
+  #rotateUploadArea.has-files {
+    padding: 14px !important;
+  }
+}
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -4306,13 +4361,12 @@ html.dark-mode .tn-shared-upload-button:hover {
   <div class="tn-shared-upload-placeholder" id="rotateUploadPlaceholder">
     <button class="tn-shared-upload-button" id="rotateUploadButton" type="button">Upload PDF File</button>
   </div>
-  <div class="rotate-pdf-preview-wrap" id="rotatePreviewWrap" hidden>
+  <div class="rotate-pdf-preview-wrap" id="rotatePreviewWrap" hidden></div>
   <div class="rotate-pdf-pages" id="rotatePdfPages"></div>
   <div class="rotate-pdf-bottom-controls">
     <button class="rotate-download-button" id="rotateDownloadButton" type="button">Download</button>
     <button class="rotate-cancel-button" id="rotateCancelButton" type="button">Cancel</button>
   </div>
-</div>
 </div>
   </div>
 </div>
@@ -4598,7 +4652,7 @@ html:not(.light-mode) .tool-box {
   align-items:center !important;
   justify-content:center !important;
   gap:14px !important;
-  margin-top:28px !important;
+  margin-top:48px !important;
 }
 #rotateUploadArea .rotate-download-button{
   width:190px !important;
@@ -4697,6 +4751,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const base = page.getViewport({ scale: 1 });
     const scale = Math.min(296 / base.width, 376 / base.height);
     const viewport = page.getViewport({ scale });
+    const preview = document.querySelector('#rotatePageCanvas-' + pageNumber)?.parentElement;
+    if (preview) {
+      const rotated = (pageRotations[pageNumber - 1] % 180 !== 0);
+      const previewWidth = Math.ceil(rotated ? viewport.height : viewport.width) + 2;
+      const previewHeight = Math.ceil(rotated ? viewport.width : viewport.height) + 2;
+      preview.style.setProperty('width', previewWidth + 'px', 'important');
+      preview.style.setProperty('height', previewHeight + 'px', 'important');
+    }
     const canvas = document.querySelector(
       '#rotatePageCanvas-' + pageNumber
     );
@@ -4742,16 +4804,10 @@ document.addEventListener("DOMContentLoaded", function () {
             '<canvas id="rotatePageCanvas-' + pageNumber + '"></canvas>' +
           '</div>' +
           '<div class="rotate-page-number">Page ' + pageNumber + '</div>' +
-          '<div class="rotate-page-actions">' +
-            '<button class="rotate-page-action" type="button" ' +
-              'data-page="' + pageNumber + '" data-direction="-90" ' +
-              'aria-label="Rotate page ' + pageNumber + ' left" ' +
-              'title="Rotate left">↺</button>' +
-            '<button class="rotate-page-action" type="button" ' +
-              'data-page="' + pageNumber + '" data-direction="90" ' +
-              'aria-label="Rotate page ' + pageNumber + ' right" ' +
-              'title="Rotate right">↻</button>' +
-          '</div>';
+          '<button class="rotate-page-action" type="button" ' +
+          'data-page="' + pageNumber + '" ' +
+          'aria-label="Rotate page ' + pageNumber + '" ' +
+          'title="Rotate page">↻</button>';
 
         pagesContainer.appendChild(card);
       }
@@ -4761,11 +4817,12 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       pagesContainer.querySelectorAll(".rotate-page-action").forEach(function (button) {
-        button.addEventListener("click", async function () {
+        button.addEventListener("click", async function (event) {
+          event.preventDefault();
+          event.stopPropagation();
           const pageNumber = Number(button.dataset.page);
-          const direction = Number(button.dataset.direction);
           pageRotations[pageNumber - 1] =
-            (pageRotations[pageNumber - 1] + direction + 360) % 360;
+            (pageRotations[pageNumber - 1] + 90) % 360;
           await renderPage(pageNumber);
         });
       });
@@ -4835,6 +4892,119 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 </script>
+
+<style id="rotate-single-centered-button-final">
+#rotateUploadArea .rotate-page-card{
+  position:relative !important;
+}
+#rotateUploadArea .rotate-page-preview{
+  position:relative !important;
+}
+#rotateUploadArea .rotate-page-action{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  transform:translate(-50%,-50%) !important;
+  z-index:20 !important;
+  width:58px !important;
+  height:58px !important;
+  min-width:58px !important;
+  min-height:58px !important;
+  border-radius:50% !important;
+  background:#059669 !important;
+  border:1px solid #059669 !important;
+  color:#fff !important;
+  font-size:30px !important;
+  font-weight:700 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:0 !important;
+  margin:0 !important;
+  box-shadow:0 3px 10px rgba(0,0,0,.20) !important;
+}
+#rotateUploadArea .rotate-page-action:hover,
+#rotateUploadArea .rotate-page-action:focus,
+#rotateUploadArea .rotate-page-action:active{
+  transform:translate(-50%,-50%) !important;
+  background:#059669 !important;
+  border-color:#059669 !important;
+  color:#fff !important;
+  box-shadow:0 3px 10px rgba(0,0,0,.20) !important;
+}
+#rotateUploadArea .rotate-page-actions{
+  display:none !important;
+}
+</style>
+<style id="rotate-single-center-button-visibility-fix">
+#rotateUploadArea .rotate-page-card{position:relative !important;}
+#rotateUploadArea .rotate-page-preview{position:relative !important;}
+#rotateUploadArea .rotate-page-action{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  transform:translate(-50%,-50%) !important;
+  z-index:50 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:58px !important;
+  height:58px !important;
+  min-width:58px !important;
+  min-height:58px !important;
+  padding:0 !important;
+  margin:0 !important;
+  border:1px solid #059669 !important;
+  border-radius:50% !important;
+  background:#059669 !important;
+  color:#fff !important;
+  font-family:Arial,Helvetica,sans-serif !important;
+  font-size:30px !important;
+  font-weight:700 !important;
+  line-height:1 !important;
+  cursor:pointer !important;
+  opacity:1 !important;
+  visibility:visible !important;
+}
+#rotateUploadArea .rotate-page-action:hover,
+#rotateUploadArea .rotate-page-action:focus,
+#rotateUploadArea .rotate-page-action:active{
+  display:flex !important;
+  transform:translate(-50%,-50%) !important;
+  background:#059669 !important;
+  border-color:#059669 !important;
+  color:#fff !important;
+  opacity:1 !important;
+  visibility:visible !important;
+}
+</style>
+<style id="rotate-preview-tight-fit">
+#rotateUploadArea .rotate-page-preview{
+  width:max-content !important;
+  height:max-content !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  padding:2px !important;
+  overflow:visible !important;
+}
+#rotateUploadArea .rotate-page-preview canvas{
+  display:block !important;
+  max-width:296px !important;
+  max-height:376px !important;
+}
+</style>
+
+<style id="rotate-remove-uploaded-top-space">
+/* When a PDF is loaded, let the flexible preview begin at the top of the outer tool box. */
+.tn-shared-tool-box:has(#rotateUploadArea.has-files){
+  padding:0 !important;
+}
+#rotateUploadArea.has-files{
+  margin-top:0 !important;
+  border-top-left-radius:12px !important;
+  border-top-right-radius:12px !important;
+}
+</style>
 </body>
 </html>
 
@@ -5101,3 +5271,94 @@ document.addEventListener('DOMContentLoaded', function () {
 }
 </style>
 
+<style id="rotate-flexible-preview-final">
+/* Flexible uploaded-preview box: height is determined by the number of rendered pages. */
+#rotateUploadArea.has-files{
+  min-height:0 !important;
+  height:auto !important;
+  padding:0 30px 30px !important;
+}
+#rotateUploadArea.has-files .rotate-pdf-preview-wrap{
+  width:100% !important;
+  min-height:0 !important;
+  height:auto !important;
+  padding:0 !important;
+  margin:0 !important;
+  transform:none !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:stretch !important;
+  justify-content:flex-start !important;
+}
+#rotateUploadArea.has-files .rotate-pdf-pages{
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  align-items:start !important;
+}
+#rotateUploadArea.has-files .rotate-page-card{
+  margin:0 !important;
+  transform:none !important;
+  height:auto !important;
+}
+#rotateUploadArea.has-files .rotate-page-preview{
+  margin:0 !important;
+}
+#rotateUploadArea.has-files .rotate-pdf-bottom-controls{
+  margin-top:42px !important;
+  padding:0 !important;
+}
+@media(max-width:650px){
+  #rotateUploadArea.has-files{padding:0 18px 24px !important;}
+  #rotateUploadArea.has-files .rotate-pdf-bottom-controls{margin-top:32px !important;}
+}
+</style>
+
+<style id="rotate-match-remove-pages-structure-final">
+/* Remove the extra wrapper's layout space. The uploaded pages now participate
+   in the upload area exactly like Remove PDF Pages. */
+#rotateUploadArea.has-files .rotate-pdf-preview-wrap{
+  display:contents !important;
+  position:static !important;
+  transform:none !important;
+  min-height:0 !important;
+  height:auto !important;
+  width:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+#rotateUploadArea.has-files .rotate-pdf-pages{
+  position:static !important;
+  transform:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+}
+#rotateUploadArea.has-files .rotate-page-card{
+  position:relative !important;
+  transform:none !important;
+  margin:0 !important;
+  align-self:start !important;
+}
+#rotateUploadArea.has-files .rotate-pdf-bottom-controls{
+  position:static !important;
+  transform:none !important;
+  margin:24px 0 0 !important;
+  padding:0 !important;
+}
+</style>
+
+<style id="rotate-match-remove-pages-structure-final">
+/* Match Remove PDF Pages: uploaded pages are direct children of the upload area. */
+#rotateUploadArea.has-files { cursor: default !important; min-height: 0 !important; height: auto !important; padding: 22px !important; box-sizing: border-box !important; }
+#rotateUploadArea.has-files #rotateUploadPlaceholder { display: none !important; }
+#rotateUploadArea.has-files #rotatePreviewWrap { display: none !important; }
+#rotateUploadArea.has-files #rotatePdfPages { width: 100% !important; margin: 0 !important; padding: 0 !important; min-height: 0 !important; height: auto !important; display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 18px !important; align-items: start !important; justify-items: center !important; }
+#rotateUploadArea.has-files .rotate-page-card { margin: 0 !important; align-self: start !important; }
+#rotateUploadArea.has-files .rotate-pdf-bottom-controls { margin-top: 24px !important; padding: 0 !important; }
+@media (max-width: 650px) { #rotateUploadArea.has-files { padding: 14px !important; } #rotateUploadArea.has-files #rotatePdfPages { grid-template-columns: 1fr !important; gap: 14px !important; } }
+</style>
