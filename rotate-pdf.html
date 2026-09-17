@@ -4307,18 +4307,12 @@ html.dark-mode .tn-shared-upload-button:hover {
     <button class="tn-shared-upload-button" id="rotateUploadButton" type="button">Upload PDF File</button>
   </div>
   <div class="rotate-pdf-preview-wrap" id="rotatePreviewWrap" hidden>
-    <div class="rotate-pdf-preview-card">
-      <div class="rotate-pdf-preview-anchor"><div class="rotate-pdf-preview">
-        <canvas id="rotatePreviewCanvas"></canvas>
-      </div></div>
-      <div class="rotate-pdf-file-name" id="rotateFileName"></div>
-          <div class="rotate-pdf-controls" id="rotatePdfControls">
-            <button class="rotate-download-button" id="rotateDownloadButton" type="button">Download</button>
-            <button class="rotate-action-button" id="rotateActionButton" type="button" aria-label="Rotate PDF" title="Rotate PDF">↻</button>
-          </div>
-      <button class="rotate-pdf-remove" id="rotateRemoveButton" type="button" aria-label="Remove uploaded PDF">×</button>
-    </div>
+  <div class="rotate-pdf-pages" id="rotatePdfPages"></div>
+  <div class="rotate-pdf-bottom-controls">
+    <button class="rotate-download-button" id="rotateDownloadButton" type="button">Download</button>
+    <button class="rotate-cancel-button" id="rotateCancelButton" type="button">Cancel</button>
   </div>
+</div>
 </div>
   </div>
 </div>
@@ -4498,168 +4492,8 @@ html.dark-mode .category-nav .category-link.active:focus {
   box-shadow: none !important;
 }
 </style>
-<script id="toolnest-rotate-upload-preview-functionality">
-document.addEventListener("DOMContentLoaded", function () {
-  const input = document.getElementById("rotatePdfInput");
-  const uploadButton = document.getElementById("rotateUploadButton");
-  const placeholder = document.getElementById("rotateUploadPlaceholder");
-  const previewWrap = document.getElementById("rotatePreviewWrap");
-  const canvas = document.getElementById("rotatePreviewCanvas");
-  const fileName = document.getElementById("rotateFileName");
-  const removeButton = document.getElementById("rotateRemoveButton");
-  const area = document.getElementById("rotateUploadArea");
-  let objectUrl = null;
 
-  async function loadPreview(file) {
-    if (!file) return;
-    placeholder.hidden = true;
-    previewWrap.hidden = false;
-    area.classList.add("has-files");
-    fileName.textContent = file.name;
 
-    if (objectUrl) URL.revokeObjectURL(objectUrl);
-    objectUrl = URL.createObjectURL(file);
-
-    try {
-      const pdf = await pdfjsLib.getDocument(objectUrl).promise;
-      const page = await pdf.getPage(1);
-      const base = page.getViewport({scale: 1});
-      const scale = Math.min(296 / base.width, 376 / base.height);
-      const viewport = page.getViewport({scale});
-      canvas.width = Math.ceil(viewport.width);
-      canvas.height = Math.ceil(viewport.height);
-      await page.render({canvasContext: canvas.getContext("2d"), viewport}).promise;
-    } catch (error) {
-      console.error("Rotate PDF preview error:", error);
-    }
-  }
-
-  uploadButton.addEventListener("click", function () { input.click(); });
-  input.addEventListener("change", function () {
-    if (input.files && input.files[0]) loadPreview(input.files[0]);
-  });
-
-  removeButton.addEventListener("click", function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-    input.value = "";
-    placeholder.hidden = false;
-    previewWrap.hidden = true;
-    area.classList.remove("has-files");
-    fileName.textContent = "";
-    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-    if (objectUrl) {
-      URL.revokeObjectURL(objectUrl);
-      objectUrl = null;
-    }
-  });
-});
-</script>
-<script id="toolnest-rotate-preview-controls-js">
-document.addEventListener("DOMContentLoaded", function () {
-  const input = document.getElementById("rotatePdfInput");
-  const downloadButton = document.getElementById("rotateDownloadButton");
-  const rotateButton = document.getElementById("rotateActionButton");
-  const canvas = document.getElementById("rotatePreviewCanvas");
-
-  let rotation = 0;
-  let rotatedPdfBytes = null;
-
-  async function buildRotatedPdf() {
-    const file = input && input.files ? input.files[0] : null;
-    if (!file || !window.PDFLib) return null;
-
-    const bytes = await file.arrayBuffer();
-    const pdfDoc = await PDFLib.PDFDocument.load(bytes);
-    const pages = pdfDoc.getPages();
-
-    for (const page of pages) {
-      const current = page.getRotation().angle || 0;
-      page.setRotation(PDFLib.degrees((current + rotation) % 360));
-    }
-
-    return await pdfDoc.save();
-  }
-
-  function updatePreviewRotation() {
-    if (!canvas) return;
-    canvas.style.transform = "rotate(" + rotation + "deg)";
-  }
-
-  if (rotateButton) {
-    rotateButton.addEventListener("click", async function () {
-      if (!input || !input.files || !input.files[0]) return;
-
-      rotation = (rotation + 90) % 360;
-      updatePreviewRotation();
-
-      rotateButton.disabled = true;
-      try {
-        rotatedPdfBytes = await buildRotatedPdf();
-      } catch (error) {
-        console.error("PDF rotation error:", error);
-        rotatedPdfBytes = null;
-        rotation = (rotation + 270) % 360;
-        updatePreviewRotation();
-      } finally {
-        rotateButton.disabled = false;
-      }
-    });
-  }
-
-  function resetRotateUpload() {
-    if (input) input.value = "";
-    const placeholder = document.getElementById("rotateUploadPlaceholder");
-    const previewWrap = document.getElementById("rotatePreviewWrap");
-    const area = document.getElementById("rotateUploadArea");
-    const fileName = document.getElementById("rotateFileName");
-
-    if (placeholder) placeholder.hidden = false;
-    if (previewWrap) previewWrap.hidden = true;
-    if (area) area.classList.remove("has-files");
-    if (fileName) fileName.textContent = "";
-    rotation = 0;
-    rotatedPdfBytes = null;
-    if (canvas) canvas.style.transform = "rotate(0deg)";
-  }
-
-  if (downloadButton) {
-    downloadButton.addEventListener("click", async function () {
-      const file = input && input.files ? input.files[0] : null;
-      if (!file) return;
-
-      try {
-        if (!rotatedPdfBytes && rotation === 0) {
-          const bytes = await file.arrayBuffer();
-          rotatedPdfBytes = bytes;
-        } else if (!rotatedPdfBytes) {
-          rotatedPdfBytes = await buildRotatedPdf();
-        }
-
-        const blob = new Blob([rotatedPdfBytes], {type: "application/pdf"});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = (file.name || "document.pdf").replace(/\.pdf$/i, "") + "-rotated.pdf";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-        setTimeout(resetRotateUpload, 150);
-      } catch (error) {
-        console.error("PDF download error:", error);
-      }
-    });
-  }
-
-  input?.addEventListener("change", function () {
-    rotation = 0;
-    rotatedPdfBytes = null;
-    if (canvas) canvas.style.transform = "rotate(0deg)";
-  });
-});
-</script>
 
 <style id="toolnest-pdf-outer-box-match-merge-final">
 /* Match the Merge PDF outer tool box exactly in dark mode. */
@@ -4671,6 +4505,336 @@ html:not(.light-mode) .tool-box {
 }
 </style>
 
+
+<style id="toolnest-rotate-individual-pages">
+#rotateUploadArea .rotate-pdf-preview-wrap{
+  width:100% !important;
+  min-height:320px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  padding:22px 20px 24px !important;
+  box-sizing:border-box !important;
+}
+#rotateUploadArea .rotate-pdf-pages{
+  width:100% !important;
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:24px !important;
+  align-items:start !important;
+  justify-items:center !important;
+}
+#rotateUploadArea .rotate-page-card{
+  position:relative !important;
+  width:100% !important;
+  max-width:330px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  text-align:center !important;
+  box-sizing:border-box !important;
+}
+#rotateUploadArea .rotate-page-preview{
+  position:relative !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:300px !important;
+  height:380px !important;
+  overflow:hidden !important;
+  background:#edf2f6 !important;
+  border:1px solid #cbd6e0 !important;
+  border-radius:10px !important;
+  box-sizing:border-box !important;
+}
+#rotateUploadArea .rotate-page-preview canvas{
+  display:block !important;
+  max-width:296px !important;
+  max-height:376px !important;
+  transform-origin:center center !important;
+  transition:transform .2s ease !important;
+}
+#rotateUploadArea .rotate-page-number{
+  margin-top:10px !important;
+  color:#34475b !important;
+  font-size:14px !important;
+  font-weight:700 !important;
+}
+#rotateUploadArea .rotate-page-actions{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:10px !important;
+  margin-top:10px !important;
+}
+#rotateUploadArea .rotate-page-action{
+  width:50px !important;
+  height:50px !important;
+  min-width:50px !important;
+  min-height:50px !important;
+  border:1px solid #059669 !important;
+  border-radius:10px !important;
+  background:#059669 !important;
+  color:#fff !important;
+  font-family:Arial,Helvetica,sans-serif !important;
+  font-size:27px !important;
+  font-weight:700 !important;
+  line-height:1 !important;
+  cursor:pointer !important;
+  transition:none !important;
+}
+#rotateUploadArea .rotate-page-action:hover,
+#rotateUploadArea .rotate-page-action:focus,
+#rotateUploadArea .rotate-page-action:active{
+  background:#059669 !important;
+  border-color:#059669 !important;
+  color:#fff !important;
+  transform:none !important;
+  box-shadow:none !important;
+}
+#rotateUploadArea .rotate-bottom-controls{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:14px !important;
+  margin-top:28px !important;
+}
+#rotateUploadArea .rotate-download-button{
+  width:190px !important;
+  min-width:190px !important;
+  height:50px !important;
+  min-height:50px !important;
+  padding:0 28px !important;
+  box-sizing:border-box !important;
+}
+#rotateUploadArea .rotate-cancel-button{
+  width:100px !important;
+  min-width:100px !important;
+  height:50px !important;
+  min-height:50px !important;
+  padding:0 !important;
+  border:1px solid #cbd5df !important;
+  border-radius:10px !important;
+  background:#eef1f4 !important;
+  color:#344154 !important;
+  font-family:Arial,Helvetica,sans-serif !important;
+  font-size:16px !important;
+  font-weight:700 !important;
+  cursor:pointer !important;
+  transition:none !important;
+}
+#rotateUploadArea .rotate-cancel-button:hover,
+#rotateUploadArea .rotate-cancel-button:focus,
+#rotateUploadArea .rotate-cancel-button:active{
+  background:#eef1f4 !important;
+  border-color:#cbd5df !important;
+  color:#344154 !important;
+  transform:none !important;
+  box-shadow:none !important;
+}
+html.dark-mode #rotateUploadArea .rotate-page-number{color:#cbd5e1 !important;}
+html.dark-mode #rotateUploadArea .rotate-page-preview{
+  background:#edf2f6 !important;
+  border-color:#2e3946 !important;
+}
+html.dark-mode #rotateUploadArea .rotate-cancel-button{
+  background:#2b3440 !important;
+  border-color:#43505f !important;
+  color:#edf2f7 !important;
+}
+html.dark-mode #rotateUploadArea .rotate-cancel-button:hover,
+html.dark-mode #rotateUploadArea .rotate-cancel-button:focus,
+html.dark-mode #rotateUploadArea .rotate-cancel-button:active{
+  background:#2b3440 !important;
+  border-color:#43505f !important;
+  color:#edf2f7 !important;
+}
+@media(max-width:650px){
+  #rotateUploadArea .rotate-pdf-pages{
+    grid-template-columns:1fr !important;
+    gap:22px !important;
+  }
+  #rotateUploadArea .rotate-page-card{max-width:300px !important;}
+  #rotateUploadArea .rotate-bottom-controls{gap:10px !important;}
+  #rotateUploadArea .rotate-download-button{width:170px !important;min-width:170px !important;height:46px !important;min-height:46px !important;}
+  #rotateUploadArea .rotate-cancel-button{width:92px !important;min-width:92px !important;height:46px !important;min-height:46px !important;}
+}
+</style>
+<script id="toolnest-rotate-individual-pages-js">
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("rotatePdfInput");
+  const uploadButton = document.getElementById("rotateUploadButton");
+  const placeholder = document.getElementById("rotateUploadPlaceholder");
+  const previewWrap = document.getElementById("rotatePreviewWrap");
+  const pagesContainer = document.getElementById("rotatePdfPages");
+  const downloadButton = document.getElementById("rotateDownloadButton");
+  const cancelButton = document.getElementById("rotateCancelButton");
+  const area = document.getElementById("rotateUploadArea");
+
+  let objectUrl = null;
+  let pdfBytes = null;
+  let pageRotations = [];
+  let pdfDocument = null;
+
+  function resetUpload() {
+    if (input) input.value = "";
+    if (placeholder) placeholder.hidden = false;
+    if (previewWrap) previewWrap.hidden = true;
+    if (area) area.classList.remove("has-files");
+    if (pagesContainer) pagesContainer.innerHTML = "";
+    pdfBytes = null;
+    pdfDocument = null;
+    pageRotations = [];
+    if (objectUrl) {
+      URL.revokeObjectURL(objectUrl);
+      objectUrl = null;
+    }
+  }
+
+  async function renderPage(pageNumber) {
+    const page = await pdfDocument.getPage(pageNumber);
+    const base = page.getViewport({ scale: 1 });
+    const scale = Math.min(296 / base.width, 376 / base.height);
+    const viewport = page.getViewport({ scale });
+    const canvas = document.querySelector(
+      '#rotatePageCanvas-' + pageNumber
+    );
+    if (!canvas) return;
+
+    canvas.width = Math.ceil(viewport.width);
+    canvas.height = Math.ceil(viewport.height);
+    canvas.style.transform =
+      "rotate(" + pageRotations[pageNumber - 1] + "deg)";
+
+    const context = canvas.getContext("2d");
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    await page.render({
+      canvasContext: context,
+      viewport: viewport
+    }).promise;
+    canvas.style.transform =
+      "rotate(" + pageRotations[pageNumber - 1] + "deg)";
+  }
+
+  async function loadPreview(file) {
+    if (!file) return;
+
+    placeholder.hidden = true;
+    previewWrap.hidden = false;
+    area.classList.add("has-files");
+
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    objectUrl = URL.createObjectURL(file);
+
+    try {
+      pdfDocument = await pdfjsLib.getDocument(objectUrl).promise;
+      const count = pdfDocument.numPages;
+      pageRotations = new Array(count).fill(0);
+
+      pagesContainer.innerHTML = "";
+
+      for (let pageNumber = 1; pageNumber <= count; pageNumber++) {
+        const card = document.createElement("div");
+        card.className = "rotate-page-card";
+        card.innerHTML =
+          '<div class="rotate-page-preview">' +
+            '<canvas id="rotatePageCanvas-' + pageNumber + '"></canvas>' +
+          '</div>' +
+          '<div class="rotate-page-number">Page ' + pageNumber + '</div>' +
+          '<div class="rotate-page-actions">' +
+            '<button class="rotate-page-action" type="button" ' +
+              'data-page="' + pageNumber + '" data-direction="-90" ' +
+              'aria-label="Rotate page ' + pageNumber + ' left" ' +
+              'title="Rotate left">↺</button>' +
+            '<button class="rotate-page-action" type="button" ' +
+              'data-page="' + pageNumber + '" data-direction="90" ' +
+              'aria-label="Rotate page ' + pageNumber + ' right" ' +
+              'title="Rotate right">↻</button>' +
+          '</div>';
+
+        pagesContainer.appendChild(card);
+      }
+
+      for (let pageNumber = 1; pageNumber <= count; pageNumber++) {
+        await renderPage(pageNumber);
+      }
+
+      pagesContainer.querySelectorAll(".rotate-page-action").forEach(function (button) {
+        button.addEventListener("click", async function () {
+          const pageNumber = Number(button.dataset.page);
+          const direction = Number(button.dataset.direction);
+          pageRotations[pageNumber - 1] =
+            (pageRotations[pageNumber - 1] + direction + 360) % 360;
+          await renderPage(pageNumber);
+        });
+      });
+
+      pdfBytes = await file.arrayBuffer();
+    } catch (error) {
+      console.error("Rotate PDF preview error:", error);
+      resetUpload();
+    }
+  }
+
+  async function buildRotatedPdf() {
+    if (!pdfBytes || !window.PDFLib) return null;
+
+    const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
+    const pages = pdfDoc.getPages();
+
+    pages.forEach(function (page, index) {
+      const current = page.getRotation().angle || 0;
+      const newAngle = (current + pageRotations[index]) % 360;
+      page.setRotation(PDFLib.degrees(newAngle));
+    });
+
+    return await pdfDoc.save();
+  }
+
+  uploadButton.addEventListener("click", function () {
+    input.click();
+  });
+
+  input.addEventListener("change", function () {
+    if (input.files && input.files[0]) {
+      loadPreview(input.files[0]);
+    }
+  });
+
+  downloadButton.addEventListener("click", async function () {
+    if (!input.files || !input.files[0]) return;
+
+    try {
+      const result = await buildRotatedPdf();
+      if (!result) return;
+
+      const file = input.files[0];
+      const blob = new Blob([result], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download =
+        (file.name || "document.pdf").replace(/\.pdf$/i, "") +
+        "-rotated.pdf";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setTimeout(function () {
+        URL.revokeObjectURL(url);
+        resetUpload();
+      }, 200);
+    } catch (error) {
+      console.error("PDF rotation download error:", error);
+    }
+  });
+
+  cancelButton.addEventListener("click", function () {
+    resetUpload();
+  });
+});
+</script>
 </body>
 </html>
 
