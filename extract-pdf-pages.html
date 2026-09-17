@@ -3737,7 +3737,7 @@ html.dark-mode .tn-shared-upload-button:hover {
     <a class="tn-tool-category-link" href="remove-pdf-pages.html">Remove PDF Pages</a>
     <a class="tn-tool-category-link active" href="extract-pdf-pages.html">Extract PDF Pages</a>
     <a class="tn-tool-category-link" href="re-arrange-pdf-pages.html">Re-arrange PDF Pages</a>
-    <a class="tn-tool-category-link" href="change-pdf-page-size.html">Change PDF Page Size</a>
+    <a class="tn-tool-category-link" href="edit-pdf.html">Edit PDF</a>
     <a class="tn-tool-category-link" href="convert-to-pdf.html">Convert to PDF</a>
     <a class="tn-tool-category-link" href="convert-from-pdf.html">Convert from PDF</a>
   </div>
@@ -4085,6 +4085,9 @@ html.dark-mode #extractPdfUploadArea.has-pages {
 }
 
 .extract-download-button {
+  width: 260px;
+  min-width: 260px;
+  white-space: nowrap;
   border: none;
   background: #059669;
   color: #ffffff;
@@ -4105,17 +4108,28 @@ html.dark-mode #extractPdfUploadArea.has-pages {
 }
 
 .extract-cancel-button {
+  width: 220px;
+  min-width: 220px;
+  height: 58px;
+  min-height: 58px;
+  padding: 0 28px;
   border: none;
+  border-radius: 14px;
   background: #d1d5db;
   color: #344154;
+  font-size: 17px;
 }
 
 .extract-cancel-button:hover,
 .extract-cancel-button:focus,
 .extract-cancel-button:active {
+  width: 220px;
+  min-width: 220px;
+  height: 58px;
+  min-height: 58px;
   background: #d1d5db;
-  border: none;
   color: #344154;
+  border: none;
   transform: none;
 }
 
@@ -4129,7 +4143,7 @@ html.dark-mode .extract-download-button {
   color: #ffffff;
 }
 
-html.dark-mode.extract-cancel-button {
+html.dark-mode .extract-cancel-button {
   background: #202c3b;
   border-color: #3b4b5f;
   color: #d6dee8;
@@ -4170,6 +4184,16 @@ html.dark-mode .extract-page-button {
 }
 
 @media (max-width: 650px) {
+  .extract-pages-actions {
+    flex-direction: column;
+  }
+
+  .extract-download-button,
+  .extract-cancel-button {
+    width: min(100%, 260px);
+    min-width: 0;
+  }
+
   #extractPdfUploadArea.has-pages {
     padding: 14px;
   }
@@ -4209,7 +4233,7 @@ html.dark-mode .extract-page-button {
   const downloadButton = document.createElement('button');
   downloadButton.type = 'button';
   downloadButton.className = 'extract-download-button';
-  downloadButton.textContent = 'Download';
+  downloadButton.textContent = 'Download Extracted Pages';
   downloadButton.disabled = true;
 
   const cancelButton = document.createElement('button');
@@ -4460,7 +4484,7 @@ html.dark-mode .extract-page-button {
       updateDownloadState();
     } finally {
       cancelButton.disabled = false;
-      downloadButton.textContent = 'Download';
+      downloadButton.textContent = 'Download Extracted Pages';
       updateDownloadState();
     }
   }
@@ -4476,7 +4500,7 @@ html.dark-mode .extract-page-button {
     currentFile = null;
     selectedPages = new Set();
     downloadButton.disabled = true;
-    downloadButton.textContent = 'Download';
+    downloadButton.textContent = 'Download Extracted Pages';
   }
 })();
 </script>
