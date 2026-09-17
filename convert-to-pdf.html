@@ -3999,11 +3999,11 @@ html.dark-mode #convertFromUploadArea.has-files {
     <div class="tn-shared-upload-area" id="convertToUploadArea">
       <input id="convertToFileInput" type="file" multiple accept="image/*,.txt,.csv,.json,.xml,.html,.htm,.md,.docx,.xlsx,.pptx" hidden>
       <div class="tn-shared-upload-placeholder" id="convertToUploadPlaceholder">
-        <button class="tn-shared-upload-button" id="convertToUploadButton" type="button">Upload Files</button>
+        <label class="tn-shared-upload-button" id="convertToUploadButton" for="convertToFileInput">Upload Files</label>
       </div>
       <div class="convert-preview-grid" id="convertToPreview" aria-live="polite"></div>
       <div class="convert-actions" id="convertToActions" hidden>
-        <button class="convert-download-button" id="convertToDownloadButton" type="button">Download PDF</button>
+        <button class="convert-download-button" id="convertToDownloadButton" type="button">Convert &amp; Download</button>
         <button class="convert-cancel-button" id="convertToCancelButton" type="button">Cancel</button>
       </div>
     </div>
@@ -4239,7 +4239,6 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
     const download=document.getElementById('convertToDownloadButton');
     if(!area || !input || !btn) return;
     let files=[];
-    btn.onclick=()=>input.click();
     input.onchange=()=>{ files=Array.from(input.files||[]); render(); };
     function render(){
       grid.innerHTML=files.map((f,i)=>{
@@ -4305,7 +4304,6 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
     const fmt=document.getElementById('convertFromFormat');
     if(!area || !input || !btn) return;
     let pdf=null;
-    btn.onclick=()=>input.click();
     input.onchange=async()=>{
       const f=input.files&&input.files[0]; if(!f) return;
       try{pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise; await render();}
