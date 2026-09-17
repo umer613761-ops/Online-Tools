@@ -3955,6 +3955,12 @@ html.dark-mode .category-nav .category-link.active:focus {
   background-color: #eef0f3 !important;
 }
 
+/* Dark mode: match the Merge PDF upload-area surface exactly. */
+html.dark-mode #extractPdfUploadArea.has-pages {
+  background-image: none !important;
+  background-color: #131e2b !important;
+}
+
 #extractPdfUploadArea.has-pages .tn-shared-upload-placeholder {
   display: none;
 }
@@ -3970,6 +3976,11 @@ html.dark-mode .category-nav .category-link.active:focus {
 
 #extractPdfUploadArea.has-pages .extract-pages-preview {
   display: grid;
+}
+
+/* Selected pages stay in place but the PDF preview itself fades. */
+.extract-page-card.is-selected .extract-page-canvas-wrap canvas {
+  opacity: 0.45;
 }
 
 .extract-page-card {
@@ -4057,37 +4068,80 @@ html.dark-mode .category-nav .category-link.active:focus {
   margin-top: 24px;
 }
 
-.extract-change-button {
-  width: 220px;
-  min-width: 220px;
-  height: 58px;
-  min-height: 58px;
-  padding: 0 28px;
-  border: none;
-  border-radius: 14px;
-  background: #059669;
-  color: #ffffff;
+.extract-download-button,
+.extract-cancel-button {
+  width: 180px;
+  min-width: 180px;
+  height: 54px;
+  min-height: 54px;
+  padding: 0 24px;
+  border-radius: 12px;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   box-sizing: border-box;
   transition: none;
 }
 
-.extract-change-button:hover,
-.extract-change-button:focus,
-.extract-change-button:active {
-  width: 220px;
-  min-width: 220px;
-  height: 58px;
-  min-height: 58px;
+.extract-download-button {
+  border: none;
+  background: #059669;
+  color: #ffffff;
+}
+
+.extract-download-button:hover,
+.extract-download-button:focus,
+.extract-download-button:active {
   background: #059669;
   color: #ffffff;
   border: none;
   transform: none;
 }
 
+.extract-download-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.extract-cancel-button {
+  border: none;
+  background: #d1d5db;
+  color: #344154;
+}
+
+.extract-cancel-button:hover,
+.extract-cancel-button:focus,
+.extract-cancel-button:active {
+  background: #d1d5db;
+  border: none;
+  color: #344154;
+  transform: none;
+}
+
+.extract-page-card.is-selected {
+  border-color: #059669;
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.16);
+}
+
+html.dark-mode .extract-download-button {
+  background: #059669;
+  color: #ffffff;
+}
+
+html.dark-mode.extract-cancel-button {
+  background: #202c3b;
+  border-color: #3b4b5f;
+  color: #d6dee8;
+}
+
+html.dark-mode .extract-cancel-button:hover,
+html.dark-mode .extract-cancel-button:focus,
+html.dark-mode .extract-cancel-button:active {
+  background: #202c3b;
+  border-color: #3b4b5f;
+  color: #d6dee8;
+}
 .extract-loading {
   grid-column: 1 / -1;
   padding: 28px 10px 12px;
@@ -4152,12 +4206,19 @@ html.dark-mode .extract-page-button {
   actions.className = 'extract-pages-actions';
   actions.hidden = true;
 
-  const changeButton = document.createElement('button');
-  changeButton.type = 'button';
-  changeButton.className = 'extract-change-button';
-  changeButton.textContent = 'Done';
+  const downloadButton = document.createElement('button');
+  downloadButton.type = 'button';
+  downloadButton.className = 'extract-download-button';
+  downloadButton.textContent = 'Download';
+  downloadButton.disabled = true;
 
-  actions.appendChild(changeButton);
+  const cancelButton = document.createElement('button');
+  cancelButton.type = 'button';
+  cancelButton.className = 'extract-cancel-button';
+  cancelButton.textContent = 'Cancel';
+
+  actions.appendChild(downloadButton);
+  actions.appendChild(cancelButton);
 
   uploadArea.insertBefore(fileInput, uploadArea.firstChild);
   uploadArea.appendChild(preview);
@@ -4165,6 +4226,7 @@ html.dark-mode .extract-page-button {
 
   let pdfBytes = null;
   let currentFile = null;
+  let selectedPages = new Set();
 
   function ensureScriptLoaded(src, globalName) {
     return new Promise(function (resolve, reject) {
@@ -4217,16 +4279,42 @@ html.dark-mode .extract-page-button {
     fileInput.click();
   });
 
-  changeButton.addEventListener('click', function (event) {
+  cancelButton.addEventListener('click', function (event) {
+    event.preventDefault();
     event.stopPropagation();
     resetUploadArea();
   });
 
+  downloadButton.addEventListener('click', function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    downloadSelectedPages();
+  });
 
   fileInput.addEventListener('change', function () {
     const file = fileInput.files && fileInput.files[0];
     if (file) loadPdf(file);
   });
+
+  function updateDownloadState() {
+    downloadButton.disabled = selectedPages.size === 0;
+  }
+
+  function togglePageSelection(pageNumber, button, card) {
+    if (selectedPages.has(pageNumber)) {
+      selectedPages.delete(pageNumber);
+      button.textContent = 'Extract';
+      card.classList.remove('is-selected');
+      button.setAttribute('aria-pressed', 'false');
+    } else {
+      selectedPages.add(pageNumber);
+      button.textContent = 'Selected';
+      card.classList.add('is-selected');
+      button.setAttribute('aria-pressed', 'true');
+    }
+
+    updateDownloadState();
+  }
 
   async function loadPdf(file) {
     if (!/\.pdf$/i.test(file.name) && file.type !== 'application/pdf') {
@@ -4242,6 +4330,8 @@ html.dark-mode .extract-page-button {
 
       currentFile = file;
       pdfBytes = new Uint8Array(await file.arrayBuffer());
+      selectedPages = new Set();
+      updateDownloadState();
 
       const pdf = await window.pdfjsLib.getDocument({
         data: pdfBytes.slice(),
@@ -4275,6 +4365,8 @@ html.dark-mode .extract-page-button {
         extractButton.type = 'button';
         extractButton.className = 'extract-page-button';
         extractButton.textContent = 'Extract';
+        extractButton.setAttribute('aria-pressed', 'false');
+        extractButton.setAttribute('aria-label', 'Select page ' + pageNumber + ' for extraction');
 
         const canvasWrap = document.createElement('div');
         canvasWrap.className = 'extract-page-canvas-wrap';
@@ -4298,7 +4390,7 @@ html.dark-mode .extract-page-button {
 
         extractButton.addEventListener('click', function (event) {
           event.stopPropagation();
-          extractPage(pageNumber, extractButton);
+          togglePageSelection(pageNumber, extractButton, card);
         });
 
         header.appendChild(number);
@@ -4311,7 +4403,6 @@ html.dark-mode .extract-page-button {
 
       actions.hidden = false;
       actions.style.display = 'flex';
-      changeButton.style.display = '';
     } catch (error) {
       console.error(error);
       resetUploadArea();
@@ -4322,44 +4413,55 @@ html.dark-mode .extract-page-button {
     }
   }
 
-  async function extractPage(pageNumber, button) {
-    if (!pdfBytes || !window.PDFLib) return;
+  async function downloadSelectedPages() {
+    if (!pdfBytes || !currentFile || selectedPages.size === 0 || !window.PDFLib) return;
 
     try {
-      button.disabled = true;
-      button.textContent = 'Extracting...';
+      downloadButton.disabled = true;
+      cancelButton.disabled = true;
+      downloadButton.textContent = 'Creating...';
+
+      await ensureLibraries();
 
       const sourcePdf = await window.PDFLib.PDFDocument.load(pdfBytes);
-      const outputPdf = await window.PDFLib.PDFDocument.create();
-      const copiedPages = await outputPdf.copyPages(sourcePdf, [pageNumber - 1]);
-      outputPdf.addPage(copiedPages[0]);
-
-      const outputBytes = await outputPdf.save();
-      const blob = new Blob([outputBytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-
+      const selected = Array.from(selectedPages).sort(function (a, b) { return a - b; });
       const baseName = currentFile.name.replace(/\.pdf$/i, '');
-      link.href = url;
-      link.download = baseName + '-page-' + pageNumber + '.pdf';
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
 
-      URL.revokeObjectURL(url);
+      for (let i = 0; i < selected.length; i++) {
+        const pageNumber = selected[i];
+        const outputPdf = await window.PDFLib.PDFDocument.create();
+        const copiedPages = await outputPdf.copyPages(sourcePdf, [pageNumber - 1]);
+        outputPdf.addPage(copiedPages[0]);
 
-      // Remove the extracted page from the preview after the PDF
-      // has been successfully created and downloaded.
-      const card = button.closest('.extract-page-card');
-      if (card) {
-        card.remove();
+        const outputBytes = await outputPdf.save();
+        const blob = new Blob([outputBytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+
+        link.href = url;
+        link.download = baseName + '-page-' + pageNumber + '.pdf';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+
+        // A short pause helps browsers handle multiple individual downloads.
+        if (i < selected.length - 1) {
+          await new Promise(function (resolve) { setTimeout(resolve, 180); });
+        }
       }
+
+      // Return the preview area to the original upload state after a successful download.
+      resetUploadArea();
+      return;
     } catch (error) {
       console.error(error);
-      alert('Could not extract this page. Please try again.');
-      button.textContent = 'Extract';
+      alert('Could not extract the selected pages. Please try again.');
+      updateDownloadState();
     } finally {
-      button.disabled = false;
+      cancelButton.disabled = false;
+      downloadButton.textContent = 'Download';
+      updateDownloadState();
     }
   }
 
@@ -4368,10 +4470,13 @@ html.dark-mode .extract-page-button {
     preview.innerHTML = '';
     actions.hidden = true;
     actions.style.display = 'none';
-    changeButton.style.display = 'none';
+    uploadPlaceholder.style.display = '';
     fileInput.value = '';
     pdfBytes = null;
     currentFile = null;
+    selectedPages = new Set();
+    downloadButton.disabled = true;
+    downloadButton.textContent = 'Download';
   }
 })();
 </script>
