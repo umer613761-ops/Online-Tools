@@ -33,7 +33,7 @@
 
     })();
   </script>
-<title>Convert from PDF - ToolNest</title>
+<title>Change PDF Page Size - ToolNest</title>
 <style>
     /* ========================================
        RESET
@@ -3653,6 +3653,29 @@ html.dark-mode .tn-shared-upload-button:hover {
 </style>
 
 
+<style id="extract-pages-remove-heading-style">
+.extract-pages-remove-style-intro {
+    margin-bottom: 26px;
+}
+.extract-pages-remove-style-intro h1 {
+    margin: 0 0 10px;
+    color: #263548;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+}
+.extract-pages-remove-style-intro p {
+    margin: 0;
+    color: #718096;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    white-space: nowrap;
+}
+</style>
+
+
 
 </head>
 <body>
@@ -3714,32 +3737,309 @@ html.dark-mode .tn-shared-upload-button:hover {
     <a class="tn-tool-category-link" href="remove-pdf-pages.html">Remove PDF Pages</a>
     <a class="tn-tool-category-link" href="extract-pdf-pages.html">Extract PDF Pages</a>
     <a class="tn-tool-category-link" href="re-arrange-pdf-pages.html">Re-arrange PDF Pages</a>
-    <a class="tn-tool-category-link" href="change-pdf-page-size.html">Change PDF Page Size</a>
+    <a class="tn-tool-category-link active" href="change-pdf-page-size.html">Change PDF Page Size</a>
     <a class="tn-tool-category-link" href="convert-to-pdf.html">Convert to PDF</a>
-    <a class="tn-tool-category-link active" href="convert-from-pdf.html">Convert from PDF</a>
+    <a class="tn-tool-category-link" href="convert-from-pdf.html">Convert from PDF</a>
   </div>
 </nav>
+
+<!-- ========================================
+     TOOL HEADING
+========================================= -->
+<div class="extract-pages-remove-style-intro">
+    <h1>Change PDF Page Size</h1>
+    <p>Resize every page of your PDF to a standard paper size quickly and easily.</p>
+</div>
 
 <!-- ========================================
      SHARED UPLOAD / PREVIEW AREA
 ========================================= -->
 <div class="tool-box tn-shared-tool-box">
   <div class="tn-shared-upload-frame">
-    <div class="tn-shared-upload-area">
-  <div class="tn-shared-upload-placeholder">
-    <button class="tn-shared-upload-button" type="button">
-      Upload PDF File
-    </button>
-  </div>
+    <div class="tn-shared-upload-area" id="changePageSizeUploadArea">
+      <input id="changePageSizeFileInput" type="file" accept="application/pdf,.pdf" hidden>
+      <div class="tn-shared-upload-placeholder" id="changePageSizePlaceholder">
+        <button class="tn-shared-upload-button" id="changePageSizeUploadButton" type="button">Upload PDF File</button>
+      </div>
+
+      <div class="change-page-size-workspace" id="changePageSizeWorkspace" hidden>
+        <div class="change-page-size-preview" id="changePageSizePreview" aria-live="polite"></div>
+
+        <div class="change-page-size-options" aria-label="Page size options">
+          <div class="change-page-size-field">
+            <label for="pageSizeSelect">Page Size</label>
+            <select id="pageSizeSelect">
+              <option value="original">Original Size</option>
+              <option value="a4" selected>A4</option>
+              <option value="a3">A3</option>
+              <option value="a5">A5</option>
+              <option value="letter">Letter</option>
+              <option value="legal">Legal</option>
+              <option value="tabloid">Tabloid</option>
+            </select>
+          </div>
+          <div class="change-page-size-field">
+            <label for="pageOrientationSelect">Orientation</label>
+            <select id="pageOrientationSelect">
+              <option value="auto" selected>Auto</option>
+              <option value="portrait">Portrait</option>
+              <option value="landscape">Landscape</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="change-page-size-actions" id="changePageSizeActions">
+          <button type="button" class="change-page-size-download" id="changePageSizeDownload">Download</button>
+          <button type="button" class="change-page-size-cancel" id="changePageSizeCancel">Cancel</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<div>
-<!-- ========================================
-             PDF TOOL NAVIGATION
-        ========================================= -->
-</div>
+<style id="change-pdf-page-size-functional">
+#changePageSizeUploadArea { cursor: pointer; }
+#changePageSizeUploadArea.has-pages { cursor: default; padding: 22px; background-image: none !important; background-color: #eef0f3 !important; }
+html.dark-mode #changePageSizeUploadArea.has-pages { background-image: none !important; background-color: #131e2b !important; }
+#changePageSizeUploadArea.has-pages .tn-shared-upload-placeholder { display: none; }
+
+.change-page-size-workspace { width: 100%; }
+.change-page-size-options { display: flex; justify-content: center; align-items: end; gap: 18px; flex-wrap: wrap; margin: 22px auto 0; }
+.change-page-size-field { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; }
+.change-page-size-field label { color: #526273; font: 600 13px Arial, Helvetica, sans-serif; }
+.change-page-size-field select { min-width: 190px; height: 42px; padding: 0 38px 0 12px; border: 1px solid #cbd5df; border-radius: 8px; background: #fff; color: #344154; font: 500 14px Arial, Helvetica, sans-serif; cursor: pointer; box-sizing: border-box; }
+.change-page-size-field select:focus { outline: none; border-color: #059669; box-shadow: 0 0 0 2px rgba(5,150,105,.12); }
+
+.change-page-size-preview { width: 100%; display: flex; justify-content: center; align-items: flex-start; text-align: center; }
+.change-page-size-card { width: max-content; max-width: 100%; min-width: 0; padding: 12px; background: #fff; border: 1px solid #d5dde6; border-radius: 10px; box-sizing: border-box; box-shadow: 0 2px 8px rgba(31,45,61,.06); }
+.change-page-size-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 9px; }
+.change-page-size-number { color: #526273; font-size: 13px; font-weight: 600; }
+.change-page-size-canvas-wrap { width: max-content; display: flex; align-items: flex-start; justify-content: center; overflow: hidden; background: #f4f6f8; border-radius: 6px; }
+.change-page-size-card canvas { display: block; width: 100%; height: auto; max-width: 100%; }
+
+.change-page-size-actions { width: 100%; display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 18px; }
+.change-page-size-download, .change-page-size-cancel { width: 180px; min-width: 180px; height: 54px; min-height: 54px; padding: 0 24px; border-radius: 12px; font: 600 16px Arial, Helvetica, sans-serif; cursor: pointer; box-sizing: border-box; transition: none; }
+.change-page-size-download { border: none; background: #059669; color: #fff; }
+.change-page-size-download:hover, .change-page-size-download:focus, .change-page-size-download:active { background: #059669; color: #fff; border: none; transform: none; }
+.change-page-size-download:disabled { opacity: .55; cursor: not-allowed; }
+.change-page-size-cancel { border: none; background: #d1d5db; color: #344154; }
+.change-page-size-cancel:hover, .change-page-size-cancel:focus, .change-page-size-cancel:active { background: #d1d5db; border: none; color: #344154; transform: none; }
+
+html.dark-mode .change-page-size-field label { color: #b8c4d2; }
+html.dark-mode .change-page-size-field select { background: #1a2533; border-color: #3b4b5f; color: #d6dee8; }
+html.dark-mode .change-page-size-card { background: #1a2533; border-color: #33465b; }
+html.dark-mode .change-page-size-number { color: #b8c4d2; }
+html.dark-mode .change-page-size-canvas-wrap { background: #131e2b; }
+html.dark-mode .change-page-size-cancel { background: #202c3b; border: 1px solid #3b4b5f; color: #d6dee8; }
+html.dark-mode .change-page-size-cancel:hover, html.dark-mode .change-page-size-cancel:focus, html.dark-mode .change-page-size-cancel:active { background: #202c3b; border-color: #3b4b5f; color: #d6dee8; }
+
+@media (max-width: 650px) {
+  #changePageSizeUploadArea.has-pages { padding: 14px; }
+  .change-page-size-preview { width: 100%; }
+  .change-page-size-options { align-items: stretch; flex-direction: column; gap: 12px; }
+  .change-page-size-field select { width: 100%; min-width: 0; }
+  .change-page-size-actions { flex-direction: column; }
+  .change-page-size-download, .change-page-size-cancel { width: 100%; max-width: 320px; }
+}
+</style>
+
+<script id="change-pdf-page-size-functionality">
+(function () {
+  const PDFJS_VERSION = '3.11.174';
+  const uploadArea = document.getElementById('changePageSizeUploadArea');
+  const uploadButton = document.getElementById('changePageSizeUploadButton');
+  const fileInput = document.getElementById('changePageSizeFileInput');
+  const workspace = document.getElementById('changePageSizeWorkspace');
+  const preview = document.getElementById('changePageSizePreview');
+  const sizeSelect = document.getElementById('pageSizeSelect');
+  const orientationSelect = document.getElementById('pageOrientationSelect');
+  const downloadButton = document.getElementById('changePageSizeDownload');
+  const cancelButton = document.getElementById('changePageSizeCancel');
+  if (!uploadArea || !uploadButton || !fileInput || !workspace || !preview) return;
+
+  let pdfBytes = null;
+  let currentFile = null;
+  let sourcePdf = null;
+
+  const sizes = {
+    a3: [841.89, 1190.55],
+    a4: [595.28, 841.89],
+    a5: [419.53, 595.28],
+    letter: [612, 792],
+    legal: [612, 1008],
+    tabloid: [792, 1224]
+  };
+
+  function loadScript(src, globalName) {
+    return new Promise((resolve, reject) => {
+      if (window[globalName]) return resolve();
+      const script = document.createElement('script');
+      script.src = src;
+      script.async = false;
+      script.onload = () => window[globalName] ? resolve() : reject(new Error(globalName + ' did not initialize.'));
+      script.onerror = () => reject(new Error('Could not load ' + globalName + '.'));
+      document.head.appendChild(script);
+    });
+  }
+
+  async function ensureLibraries() {
+    if (!window.pdfjsLib) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.min.js', 'pdfjsLib');
+    if (!window.PDFLib) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js', 'PDFLib');
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.worker.min.js';
+  }
+
+  uploadButton.addEventListener('click', e => { e.stopPropagation(); if (!uploadArea.classList.contains('has-pages')) fileInput.click(); });
+  uploadArea.addEventListener('click', e => { if (uploadArea.classList.contains('has-pages')) return; if (e.target.closest('button,a,input,label')) return; fileInput.click(); });
+  fileInput.addEventListener('change', () => { const file = fileInput.files && fileInput.files[0]; if (file) loadPdf(file); });
+  sizeSelect.addEventListener('change', renderPreviews);
+  orientationSelect.addEventListener('change', renderPreviews);
+  cancelButton.addEventListener('click', e => { e.stopPropagation(); reset(); });
+  downloadButton.addEventListener('click', downloadResizedPdf);
+
+  async function loadPdf(file) {
+    if (!/\.pdf$/i.test(file.name) && file.type !== 'application/pdf') { alert('Please select a PDF file.'); fileInput.value = ''; return; }
+    try {
+      uploadButton.disabled = true;
+      uploadButton.textContent = 'Loading PDF...';
+      await ensureLibraries();
+      currentFile = file;
+      pdfBytes = new Uint8Array(await file.arrayBuffer());
+      sourcePdf = await window.pdfjsLib.getDocument({ data: pdfBytes.slice() }).promise;
+      uploadArea.classList.add('has-pages');
+      workspace.hidden = false;
+      downloadButton.disabled = false;
+      await renderPreviews();
+    } catch (err) {
+      console.error(err);
+      alert('Could not load this PDF. Please try another PDF file.');
+      reset();
+    } finally {
+      uploadButton.disabled = false;
+      uploadButton.textContent = 'Upload PDF File';
+    }
+  }
+
+  function targetSizeForPage(pageWidth, pageHeight) {
+    const selected = sizeSelect.value;
+    if (selected === 'original') return [pageWidth, pageHeight];
+    let [w, h] = sizes[selected];
+    const orientation = orientationSelect.value;
+    if (orientation === 'portrait') { if (w > h) [w, h] = [h, w]; }
+    if (orientation === 'landscape') { if (w < h) [w, h] = [h, w]; }
+    if (orientation === 'auto') {
+      if (pageWidth > pageHeight && w < h) [w, h] = [h, w];
+      if (pageWidth <= pageHeight && w > h) [w, h] = [h, w];
+    }
+    return [w, h];
+  }
+
+  async function renderPreviews() {
+    if (!sourcePdf) return;
+    preview.innerHTML = '';
+    // Show only the first page in the preview. The downloaded PDF still processes every page.
+    for (let pageNumber = 1; pageNumber <= Math.min(1, sourcePdf.numPages); pageNumber++) {
+      const page = await sourcePdf.getPage(pageNumber);
+      const sourceViewport = page.getViewport({ scale: 1 });
+      const [targetW, targetH] = targetSizeForPage(sourceViewport.width, sourceViewport.height);
+      const maxWidth = 260;
+      const maxHeight = 350;
+      const scale = Math.min(maxWidth / targetW, maxHeight / targetH);
+      const viewport = page.getViewport({ scale });
+      const targetCssWidth = targetW * scale;
+      const targetCssHeight = targetH * scale;
+      const offsetX = (targetCssWidth - viewport.width) / 2;
+      const offsetY = (targetCssHeight - viewport.height) / 2;
+
+      const card = document.createElement('div');
+      card.className = 'change-page-size-card';
+      const header = document.createElement('div');
+      header.className = 'change-page-size-header';
+      const number = document.createElement('span');
+      number.className = 'change-page-size-number';
+      number.textContent = 'Page ' + pageNumber;
+      header.appendChild(number);
+
+      const wrap = document.createElement('div');
+      wrap.className = 'change-page-size-canvas-wrap';
+      const canvas = document.createElement('canvas');
+      // Keep the preview card fitted tightly to the actual PDF preview.
+      card.style.width = (Math.floor(targetCssWidth) + 24) + 'px';
+      wrap.style.width = Math.floor(targetCssWidth) + 'px';
+      const ctx = canvas.getContext('2d', { alpha: false });
+      const outputScale = window.devicePixelRatio || 1;
+      canvas.width = Math.floor(targetCssWidth * outputScale);
+      canvas.height = Math.floor(targetCssHeight * outputScale);
+      canvas.style.width = Math.floor(targetCssWidth) + 'px';
+      canvas.style.height = Math.floor(targetCssHeight) + 'px';
+      wrap.appendChild(canvas);
+      card.appendChild(header);
+      card.appendChild(wrap);
+      preview.appendChild(card);
+
+      // Render the original page fitted and centered inside the selected paper-size preview.
+      const transform = [outputScale, 0, 0, outputScale, offsetX * outputScale, offsetY * outputScale];
+      await page.render({ canvasContext: ctx, viewport, transform }).promise;
+    }
+  }
+
+  async function downloadResizedPdf() {
+    if (!pdfBytes || !currentFile || !window.PDFLib) return;
+    try {
+      downloadButton.disabled = true;
+      downloadButton.textContent = 'Preparing...';
+      const src = await window.PDFLib.PDFDocument.load(pdfBytes);
+      const out = await window.PDFLib.PDFDocument.create();
+      const pageCount = src.getPageCount();
+      for (let i = 0; i < pageCount; i++) {
+        const oldPage = src.getPage(i);
+        const oldW = oldPage.getWidth();
+        const oldH = oldPage.getHeight();
+        const [targetW, targetH] = targetSizeForPage(oldW, oldH);
+        const newPage = out.addPage([targetW, targetH]);
+        const embedded = await out.embedPage(oldPage);
+        const scale = Math.min(targetW / oldW, targetH / oldH);
+        const drawW = oldW * scale;
+        const drawH = oldH * scale;
+        newPage.drawPage(embedded, { x: (targetW - drawW) / 2, y: (targetH - drawH) / 2, width: drawW, height: drawH });
+      }
+      const outputBytes = await out.save();
+      const blob = new Blob([outputBytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const base = currentFile.name.replace(/\.pdf$/i, '');
+      const suffix = sizeSelect.value === 'original' ? 'original-size' : sizeSelect.value;
+      link.href = url;
+      link.download = base + '-page-size-' + suffix + '.pdf';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      reset();
+    } catch (err) {
+      console.error(err);
+      alert('Could not change the PDF page size. Please try again.');
+    } finally {
+      downloadButton.disabled = false;
+      downloadButton.textContent = 'Download';
+    }
+  }
+
+  function reset() {
+    uploadArea.classList.remove('has-pages');
+    workspace.hidden = true;
+    preview.innerHTML = '';
+    fileInput.value = '';
+    pdfBytes = null;
+    currentFile = null;
+    sourcePdf = null;
+    sizeSelect.value = 'a4';
+    orientationSelect.value = 'auto';
+    downloadButton.disabled = false;
+    downloadButton.textContent = 'Download';
+  }
+})();
+</script>
+
 <!-- ADVERTISEMENT -->
 </div><aside aria-label="Advertisement" class="ad-column">
 <div class="ad-box">
