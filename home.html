@@ -1108,7 +1108,7 @@
     }
 
     html.dark-mode .why-toolnest {
-      background: #1a222c;
+      background: #212324 !important;
       border-color: #2e3946;
     }
 
@@ -1891,9 +1891,13 @@
       color: #edf2f7;
     }
 
-    html.dark-mode .home-category-card,
-    html.dark-mode .why-toolnest {
+    html.dark-mode .home-category-card {
       background: #171d25;
+      border-color: #2e3946;
+    }
+
+    html.dark-mode .why-toolnest {
+      background: #212324 !important;
       border-color: #2e3946;
     }
 
@@ -1919,9 +1923,13 @@
         color: #edf2f7;
       }
 
-      html:not(.light-mode) .home-category-card,
-      html:not(.light-mode) .why-toolnest {
+      html:not(.light-mode) .home-category-card {
         background: #171d25;
+        border-color: #2e3946;
+      }
+
+      html:not(.light-mode) .why-toolnest {
+        background: #212324 !important;
         border-color: #2e3946;
       }
 
@@ -1931,7 +1939,7 @@
       }
 
       html:not(.light-mode) .why-toolnest {
-        background: #1a222c;
+        background: #212324 !important;
         border-color: #2e3946;
       }
 
@@ -3582,6 +3590,50 @@ html.dark-mode .logo-icon {
   background: #121212 !important;
 }
 </style>
+
+<style id="toolnest-home-sections-dark-toolcard-colors">
+/* Match Explore Tool Categories and Why Use ToolNest cards to the tool-card dark theme. */
+html.dark-mode .home-category-card,
+html.dark-mode .why-item {
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  background: linear-gradient(135deg, #131313 0%, #1a1b1c 100%) !important;
+  border: 1px solid #424448 !important;
+  color: #edf0f4 !important;
+  box-shadow: 0 9px 22px rgba(0, 0, 0, .28) !important;
+}
+
+html.dark-mode .home-category-card:hover,
+html.dark-mode .why-item:hover {
+  background: linear-gradient(135deg, #151616 0%, #1c1d1e 100%) !important;
+  border-color: #4a4d51 !important;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, .35) !important;
+}
+
+html.dark-mode .home-category-card h3,
+html.dark-mode .why-item h3 {
+  color: #dbebff !important;
+}
+
+html.dark-mode .home-category-card p,
+html.dark-mode .why-item p {
+  color: #8698af !important;
+}
+
+html.dark-mode .home-category-card::after {
+  background: #1f2d27 !important;
+}
+
+html.dark-mode .home-category-card::before {
+  background: #059669 !important;
+}
+
+html.dark-mode .home-category-card .home-category-link {
+  color: #059669 !important;
+}
+</style>
+
 </head>
 <body>
 <!-- ========================================
@@ -4251,6 +4303,80 @@ html.dark-mode main .tool-description {
 }
 </style>
 
+
+<style id="toolnest-dark-card-colors">
+/* Dark-mode tool-card colors matched to the approved card design. */
+html.dark-mode .tool-card,
+html.dark-mode .home-tool-card {
+  background: linear-gradient(135deg, #131313 0%, #1a1b1c 100%) !important;
+  border-color: #424448 !important;
+  color: #edf0f4 !important;
+  box-shadow: 0 9px 22px rgba(0, 0, 0, .28) !important;
+}
+
+html.dark-mode .tool-card:hover,
+html.dark-mode .home-tool-card:hover {
+  background: linear-gradient(135deg, #151616 0%, #1c1d1e 100%) !important;
+  border-color: #4a4d51 !important;
+}
+
+html.dark-mode .tool-info h2,
+html.dark-mode .home-tool-info h3 {
+  color: #dbebff !important;
+}
+
+html.dark-mode .tool-info p,
+html.dark-mode .home-tool-info p {
+  color: #8698af !important;
+}
+
+html.dark-mode .home-tool-card[data-popular="true"]::before {
+  background: #2b2123 !important;
+  color: #f3586c !important;
+}
+
+html.dark-mode .tool-card::after,
+html.dark-mode .home-tool-card::after {
+  background: #1f2d27 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .tool-card,
+  html:not(.light-mode) .home-tool-card {
+    background: linear-gradient(135deg, #131313 0%, #1a1b1c 100%) !important;
+    border-color: #424448 !important;
+    color: #edf0f4 !important;
+    box-shadow: 0 9px 22px rgba(0, 0, 0, .28) !important;
+  }
+
+  html:not(.light-mode) .tool-card:hover,
+  html:not(.light-mode) .home-tool-card:hover {
+    background: linear-gradient(135deg, #151616 0%, #1c1d1e 100%) !important;
+    border-color: #4a4d51 !important;
+  }
+
+  html:not(.light-mode) .tool-info h2,
+  html:not(.light-mode) .home-tool-info h3 {
+    color: #dbebff !important;
+  }
+
+  html:not(.light-mode) .tool-info p,
+  html:not(.light-mode) .home-tool-info p {
+    color: #8698af !important;
+  }
+
+  html:not(.light-mode) .home-tool-card[data-popular="true"]::before {
+    background: #2b2123 !important;
+    color: #f3586c !important;
+  }
+
+  html:not(.light-mode) .tool-card::after,
+  html:not(.light-mode) .home-tool-card::after {
+    background: #1f2d27 !important;
+  }
+}
+</style>
+
 </body>
 </html><style>
 /* ToolNest stronger blue-purple header direction */
@@ -4602,7 +4728,8 @@ html.dark-mode .hero .hero-content,
 html.dark-mode .hero .hero-text,
 html.dark-mode .hero .hero-card,
 html.dark-mode .hero .hero-panel {
-  background: #11161d !important;
+  background: #212324 !important;
+  background-image: none !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
@@ -4613,7 +4740,7 @@ html.dark-mode .hero .hero-panel {
   html:not(.light-mode) .hero .hero-text,
   html:not(.light-mode) .hero .hero-card,
   html:not(.light-mode) .hero .hero-panel {
-    background: #11161d !important;
+    background: #212324 !important;
     border-color: transparent !important;
     box-shadow: none !important;
   }
@@ -4734,3 +4861,40 @@ html.dark-mode .hero::after {
 }
 </style>
 
+
+<style id="toolnest-why-cards-exact-dark-match">
+/* Dark mode only: Why Use ToolNest cards use the exact same background as tool cards. */
+html.dark-mode .why-item {
+  background: linear-gradient(135deg, #131313 0%, #1a1b1c 100%) !important;
+  border-color: #424448 !important;
+  color: #edf0f4 !important;
+  box-shadow: 0 9px 22px rgba(0, 0, 0, .28) !important;
+}
+
+html.dark-mode .why-item:hover {
+  background: linear-gradient(135deg, #151616 0%, #1c1d1e 100%) !important;
+  border-color: #4a4d51 !important;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, .35) !important;
+}
+
+html.dark-mode .why-item h3 { color: #dbebff !important; }
+html.dark-mode .why-item p { color: #8698af !important; }
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .why-item {
+    background: linear-gradient(135deg, #131313 0%, #1a1b1c 100%) !important;
+    border-color: #424448 !important;
+    color: #edf0f4 !important;
+    box-shadow: 0 9px 22px rgba(0, 0, 0, .28) !important;
+  }
+
+  html:not(.light-mode) .why-item:hover {
+    background: linear-gradient(135deg, #151616 0%, #1c1d1e 100%) !important;
+    border-color: #4a4d51 !important;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, .35) !important;
+  }
+
+  html:not(.light-mode) .why-item h3 { color: #dbebff !important; }
+  html:not(.light-mode) .why-item p { color: #8698af !important; }
+}
+</style>
