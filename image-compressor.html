@@ -4554,8 +4554,19 @@ function buildCompressor(){
  help("Adjust image quality, then download the compressed image.");
  const r=row();r.appendChild(label("Quality"));
  const s=document.createElement("input");s.type="range";s.min=10;s.max=100;s.value=80;r.appendChild(s);
- const v=document.createElement("span");v.className="tn-image-value";v.textContent="80%";r.appendChild(v);
- s.oninput=()=>{state.quality=+s.value/100;v.textContent=s.value+"%"};
+ const v=document.createElement("span");v.className="tn-image-value";v.textContent="Size: …";v.style.minWidth="92px";r.appendChild(v);
+ function formatSize(bytes){
+   if(bytes<1024)return bytes+" B";
+   if(bytes<1024*1024)return (bytes/1024).toFixed(1)+" KB";
+   return (bytes/(1024*1024)).toFixed(2)+" MB";
+ }
+ function updateSize(){
+   const c=makeCanvas(state.img.naturalWidth,state.img.naturalHeight);
+   c.toBlob(blob=>{if(blob)v.textContent="Size: "+formatSize(blob.size)},"image/jpeg",state.quality);
+ }
+ state.quality=.8;
+ s.oninput=()=>{state.quality=+s.value/100;updateSize()};
+ updateSize();
  const d=btn("Download Compressed Image","tn-image-download");r.appendChild(d);
  d.onclick=()=>downloadCanvas(makeCanvas(state.img.naturalWidth,state.img.naturalHeight),baseName()+"-compressed.jpg","image/jpeg",state.quality);
 }
