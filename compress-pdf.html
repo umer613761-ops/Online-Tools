@@ -4071,6 +4071,39 @@ max-width: 720px;
 
 
 
+
+<style id="toolnest-dark-background-only">
+/* STEP 1: Dark mode background only. Light mode is intentionally untouched. */
+html.dark-mode .top-header,
+html.dark-mode .category-nav,
+html.dark-mode footer,
+html.dark-mode .mobile-footer,
+html.dark-mode .mobile-footer-copyright,
+html.dark-mode .toolnest-hybrid-footer {
+  background: #121212 !important;
+}
+</style>
+
+<style id="toolnest-dark-main-background-only">
+/* STEP 2: Main page background only. Light mode remains untouched. */
+html.dark-mode body,
+html.dark-mode main,
+html.dark-mode .page-wrapper,
+html.dark-mode .page-content,
+html.dark-mode .home-page,
+html.dark-mode .about-page,
+html.dark-mode .privacy-page,
+html.dark-mode .contact-page {
+  background-color: #212324 !important;
+}
+</style>
+
+<style id="toolnest-dark-logo-background-fix">
+/* Dark Mode only: make the logo background blend with the dark header. */
+html.dark-mode .logo-icon {
+  background: #121212 !important;
+}
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -4761,6 +4794,78 @@ html:not(.light-mode) .tool-box {
   background: #171d25 !important;
   border-color: #2e3946 !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22) !important;
+}
+</style>
+
+
+<style id="toolnest-dark-upload-preview-exact-final">
+/* STEP 3: Dark-mode upload/preview surface. Light mode is untouched. */
+html.dark-mode .tn-shared-upload-area,
+html.dark-mode .upload-area {
+  background-color: #212324 !important;
+  background-image: radial-gradient(circle, rgba(70, 80, 92, 0.46) 1.5px, transparent 1.5px) !important;
+  background-size: 18px 18px !important;
+}
+
+/* Once an image is loaded, the preview surface stays #212324 and the dots disappear. */
+html.dark-mode .tn-shared-upload-area.tn-image-upload-area.has-image,
+html.dark-mode .tn-shared-upload-area.tn-image-upload-area.has-image .tn-image-preview,
+html.dark-mode .tn-shared-upload-area.tn-image-upload-area.has-image .tn-canvas-wrap,
+html.dark-mode .upload-area.has-files {
+  background-color: #212324 !important;
+  background-image: none !important;
+}
+</style>
+
+<style id="toolnest-dark-outer-preview-header-color-final">
+/* Dark mode only: outer tool/preview frame matches the header color. */
+html.dark-mode .tool-box {
+  background: #121212 !important;
+}
+</style>
+
+<style id="toolnest-dark-active-tool-red-final">
+/* Dark mode: match the light-mode active tool link exactly. */
+html.dark-mode .tn-tool-category-link.active {
+  color: #e53935 !important;
+  text-decoration: none !important;
+}
+html.dark-mode .tn-tool-category-link.active::before {
+  background: #e53935 !important;
+}
+</style>
+
+<style id="toolnest-dark-font-visibility-fix">
+/* Dark mode font visibility fix: restore readable text where an older light-mode rule was overriding the dark theme. */
+html.dark-mode .tool-category-link,
+html.dark-mode .tool-category-link:hover {
+  color: #d7dee7 !important;
+}
+html.dark-mode .tool-category-link.active {
+  color: #e53935 !important;
+}
+</style>
+
+
+<style id="toolnest-dark-all-main-text-visibility">
+/* Dark mode only: ensure page headings and descriptive text remain readable. */
+html.dark-mode .page-content h1,
+html.dark-mode .page-content h2,
+html.dark-mode .page-content h3,
+html.dark-mode main h1,
+html.dark-mode main h2,
+html.dark-mode main h3 {
+  color: #edf2f7 !important;
+}
+html.dark-mode .page-content .heading p,
+html.dark-mode .page-content .tool-info p,
+html.dark-mode .page-content .home-tool-info p,
+html.dark-mode .page-content .tool-description,
+html.dark-mode main .heading p,
+html.dark-mode main .tool-info p,
+html.dark-mode main .home-tool-info p,
+html.dark-mode main .tool-description {
+  color: #aebdcb !important;
 }
 </style>
 
