@@ -3251,6 +3251,221 @@ html.dark-mode .logo-icon {
 }
 </style>
 
+
+<style id="image-cropper-fit-screen-final">
+/* Keep the crop image fully visible within the browser viewport.
+   CSS scales the canvas visually while its internal dimensions stay unchanged,
+   so crop coordinates remain accurate. */
+.tn-image-preview .tn-canvas-wrap{
+  width:100% !important;
+  max-width:100% !important;
+  max-height:calc(100vh - 300px) !important;
+  overflow:hidden !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+.tn-image-preview .tn-edit-canvas{
+  width:auto !important;
+  height:auto !important;
+  max-width:100% !important;
+  max-height:calc(100vh - 300px) !important;
+  object-fit:contain !important;
+  cursor:crosshair !important;
+  touch-action:none !important;
+}
+@media (max-width:700px){
+  .tn-image-preview .tn-canvas-wrap,
+  .tn-image-preview .tn-edit-canvas{
+    max-height:calc(100vh - 260px) !important;
+  }
+}
+</style>
+
+<style id="image-cropper-fit-screen-final-v2">
+/* Ensure the entire crop image is visible; scale the canvas to the available viewport. */
+.tn-image-preview .tn-canvas-wrap{
+  width:100% !important;
+  max-width:100% !important;
+  height:auto !important;
+  max-height:calc(100vh - 320px) !important;
+  overflow:hidden !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+.tn-image-preview .tn-edit-canvas{
+  display:block !important;
+  width:auto !important;
+  height:auto !important;
+  max-width:100% !important;
+  max-height:calc(100vh - 320px) !important;
+  object-fit:contain !important;
+  margin:0 auto !important;
+  border-radius:8px !important;
+  cursor:crosshair !important;
+  touch-action:none !important;
+}
+@media (max-width:700px){
+  .tn-image-preview .tn-canvas-wrap,
+  .tn-image-preview .tn-edit-canvas{max-height:calc(100vh - 280px) !important;}
+}
+</style>
+
+<style id="image-cropper-page-scroll-final">
+.tn-image-upload-area.has-image{overflow:visible !important;height:auto !important;max-height:none !important;}
+.tn-image-upload-area.has-image .tn-image-preview{overflow:visible !important;height:auto !important;max-height:none !important;}
+.tn-image-upload-area.has-image .tn-canvas-wrap{overflow:visible !important;height:auto !important;max-height:none !important;}
+.tn-image-upload-area.has-image .tn-edit-canvas{max-height:none !important;height:auto !important;width:auto !important;max-width:100% !important;}
+</style>
+
+<style id="image-cropper-corner-handles-final">
+.tn-crop-handle-layer{
+  position:absolute !important;
+  inset:0 !important;
+  pointer-events:none !important;
+  z-index:20 !important;
+}
+.tn-crop-handle{
+  position:absolute !important;
+  width:12px !important;
+  height:12px !important;
+  min-width:12px !important;
+  min-height:12px !important;
+  padding:0 !important;
+  margin:0 !important;
+  box-sizing:border-box !important;
+  border:2px solid #fff !important;
+  background:#344154 !important;
+  border-radius:2px !important;
+  pointer-events:auto !important;
+  z-index:21 !important;
+}
+.tn-crop-handle.tl{cursor:nwse-resize !important}
+.tn-crop-handle.tr{cursor:nesw-resize !important}
+.tn-crop-handle.bl{cursor:nesw-resize !important}
+.tn-crop-handle.br{cursor:nwse-resize !important}
+</style>
+<script id="image-cropper-corner-handles-final">
+(function(){
+  function installCornerHandles(){
+    const canvas=document.querySelector(".tn-edit-canvas");
+    if(!canvas || canvas.dataset.cornerHandlesInstalled) return;
+    const parent=canvas.parentElement;
+    if(!parent) return;
+    const cs=getComputedStyle(parent);
+    if(cs.position==="static") parent.style.position="relative";
+
+    const layer=document.createElement("div");
+    layer.className="tn-crop-handle-layer";
+    ["tl","tr","bl","br"].forEach(c=>{
+      const h=document.createElement("button");
+      h.type="button";
+      h.className="tn-crop-handle "+c;
+      h.setAttribute("aria-label","Resize crop "+c);
+      layer.appendChild(h);
+    });
+    parent.appendChild(layer);
+    canvas.dataset.cornerHandlesInstalled="1";
+
+    function getCropBox(){
+      const sel=document.querySelector(".tn-crop-selection, .crop-selection, .crop-box, .selection-box");
+      if(sel) return sel.getBoundingClientRect();
+      return null;
+    }
+    function position(){
+      const box=getCropBox(), pr=parent.getBoundingClientRect();
+      if(!box) { layer.style.display="none"; return; }
+      layer.style.display="block";
+      const pts={
+        tl:[box.left-pr.left,box.top-pr.top],
+        tr:[box.right-pr.left,box.top-pr.top],
+        bl:[box.left-pr.left,box.bottom-pr.top],
+        br:[box.right-pr.left,box.bottom-pr.top]
+      };
+      layer.querySelectorAll(".tn-crop-handle").forEach(h=>{
+        const p=pts[h.classList[1]];
+        h.style.left=(p[0]-6)+"px";
+        h.style.top=(p[1]-6)+"px";
+      });
+    }
+    function refresh(){
+      position();
+      requestAnimationFrame(position);
+    }
+
+    layer.querySelectorAll(".tn-crop-handle").forEach(handle=>{
+      handle.addEventListener("pointerdown",function(e){
+        const box=getCropBox();
+        if(!box) return;
+        e.preventDefault(); e.stopPropagation();
+        handle.setPointerCapture(e.pointerId);
+        const startX=e.clientX,startY=e.clientY;
+        const start={left:box.left,top:box.top,width:box.width,height:box.height};
+        const corner=handle.classList[1];
+        let resizing=true;
+
+        function move(ev){
+          if(!resizing) return;
+          let dx=ev.clientX-startX, dy=ev.clientY-startY;
+          let left=start.left, top=start.top, right=start.left+start.width, bottom=start.top+start.height;
+          const min=20;
+          if(corner==="tl"){left=Math.min(start.left+start.width-min,start.left+dx);top=Math.min(start.top+start.height-min,start.top+dy)}
+          if(corner==="tr"){right=Math.max(start.left+min,start.left+start.width+dx);top=Math.min(start.top+start.height-min,start.top+dy)}
+          if(corner==="bl"){left=Math.min(start.left+start.width-min,start.left+dx);bottom=Math.max(start.top+min,start.top+start.height+dy)}
+          if(corner==="br"){right=Math.max(start.left+min,start.left+start.width+dx);bottom=Math.max(start.top+min,start.top+start.height+dy)}
+          const parentRect=parent.getBoundingClientRect();
+          left=Math.max(parentRect.left,Math.min(left,parentRect.right-min));
+          right=Math.max(left+min,Math.min(right,parentRect.right));
+          top=Math.max(parentRect.top,Math.min(top,parentRect.bottom-min));
+          bottom=Math.max(top+min,Math.min(bottom,parentRect.bottom));
+          const sel=document.querySelector(".tn-crop-selection, .crop-selection, .crop-box, .selection-box");
+          if(sel){
+            sel.style.left=(left-parentRect.left)+"px";
+            sel.style.top=(top-parentRect.top)+"px";
+            sel.style.width=(right-left)+"px";
+            sel.style.height=(bottom-top)+"px";
+          }
+          position();
+        }
+        function up(){
+          if(!resizing) return;
+          resizing=false;
+          try{handle.releasePointerCapture(e.pointerId)}catch(_){}
+          document.removeEventListener("pointermove",move);
+          document.removeEventListener("pointerup",up);
+          document.removeEventListener("pointercancel",up);
+          document.dispatchEvent(new Event("cropselectionchange"));
+        }
+        document.addEventListener("pointermove",move);
+        document.addEventListener("pointerup",up);
+        document.addEventListener("pointercancel",up);
+        handle.addEventListener("lostpointercapture",up,{once:true});
+      });
+    });
+
+    new MutationObserver(refresh).observe(parent,{childList:true,subtree:true,attributes:true,attributeFilter:["style","class"]});
+    window.addEventListener("resize",refresh);
+    setInterval(refresh,250);
+    refresh();
+  }
+
+  const observer=new MutationObserver(installCornerHandles);
+  observer.observe(document.documentElement,{childList:true,subtree:true});
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",installCornerHandles);
+  else installCornerHandles();
+})();
+</script>
+
+<style id="image-cropper-real-corner-handles-final">
+.tn-crop-overlay{position:absolute!important;inset:0!important;pointer-events:none!important;z-index:50!important}
+.tn-crop-corner{position:absolute!important;width:14px!important;height:14px!important;min-width:14px!important;min-height:14px!important;padding:0!important;margin:0!important;box-sizing:border-box!important;border:2px solid #fff!important;border-radius:2px!important;background:#059669!important;pointer-events:auto!important;z-index:51!important}
+.tn-crop-corner.tl,.tn-crop-corner.br{cursor:nwse-resize!important}
+.tn-crop-corner.tr,.tn-crop-corner.bl{cursor:nesw-resize!important}
+</style><style id="image-cropper-side-handles-final">
+.tn-crop-corner.tm,.tn-crop-corner.bm{cursor:ns-resize!important}
+.tn-crop-corner.ml,.tn-crop-corner.mr{cursor:ew-resize!important}
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -3653,7 +3868,7 @@ function showImage(file){
 }
 function renderPreview(){
  preview.innerHTML="";
- if(kind==="crop"||kind==="blur"){
+ if(kind==="cropper"||kind==="crop"||kind==="blur"){
    const wrap=document.createElement("div");wrap.className="tn-canvas-wrap";
    const c=document.createElement("canvas");c.className="tn-edit-canvas";state.canvas=c;state.ctx=c.getContext("2d");
    wrap.appendChild(c);preview.appendChild(wrap);
@@ -3701,27 +3916,102 @@ function makeCanvas(w,h){
  const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(state.img,0,0,w,h);return c
 }
 function buildCropper(){
- help("Drag on the image to select a crop area. Then download the cropped image.");
+ help("Drag on the image to select a crop area. After the crop is selected, use the 8 handles to adjust it.");
  const r=row();
  const a=actionRow();
  const d=btn("Download Cropped Image","tn-image-download");a.appendChild(d);
- addActionButton(a,"Reset Crop",()=>{delete c.dataset.crop;drawEditor();});
+ addActionButton(a,"Reset Crop",()=>{delete c.dataset.crop;cropFinalized=false;sel=null;drawEditor();updateHandles();});
  addCancelButton(a);
- const c=state.canvas;let start=null,sel=null;
- c.onpointerdown=e=>{const q=pos(e);start=q;sel={x:q.x,y:q.y,w:0,h:0};};
- c.onpointermove=e=>{if(!start)return;const q=pos(e);sel={x:Math.min(start.x,q.x),y:Math.min(start.y,q.y),w:Math.abs(q.x-start.x),h:Math.abs(q.y-start.y)};drawCropSelection(sel)};
- c.onpointerup=()=>{if(start&&sel&&sel.w>5&&sel.h>5)c.dataset.crop=JSON.stringify(sel);start=null};
+
+ const c=state.canvas,wrap=c.parentElement;
+ wrap.style.position="relative";
+ let start=null,sel=null,mode=null,dragStart=null,original=null,cropFinalized=false;
+
+ const overlay=document.createElement("div");
+ overlay.className="tn-crop-overlay";wrap.appendChild(overlay);
+ const handles={};
+ ["tl","tm","tr","ml","mr","bl","bm","br"].forEach(corner=>{
+   const h=document.createElement("button");
+   h.type="button";h.className="tn-crop-corner "+corner;
+   h.setAttribute("aria-label","Adjust crop "+corner);
+   overlay.appendChild(h);handles[corner]=h;
+   h.addEventListener("pointerdown",e=>{
+     const q=currentSelection();if(!q)return;
+     e.preventDefault();e.stopPropagation();
+     if(mode===corner){
+       mode=null;dragStart=null;original=null;
+       updateHandles();
+       return;
+     }
+     mode=corner;dragStart=pos(e);original={...q};
+   });
+ });
+
+ c.onpointerdown=e=>{
+   const q=pos(e),existing=currentSelection();
+   if(existing&&q.x>=existing.x&&q.x<=existing.x+existing.w&&q.y>=existing.y&&q.y<=existing.y+existing.h){
+     mode="move";dragStart=q;original={...existing};
+   }else{mode="new";start=q;sel={x:q.x,y:q.y,w:0,h:0};}
+ };
+ c.onpointermove=e=>{
+   if(!mode)return;const q=pos(e);
+   if(mode==="new") sel={x:Math.min(start.x,q.x),y:Math.min(start.y,q.y),w:Math.abs(q.x-start.x),h:Math.abs(q.y-start.y)};
+   else if(mode==="move"){const dx=q.x-dragStart.x,dy=q.y-dragStart.y;sel={...original,x:Math.max(0,Math.min(c.width-original.w,original.x+dx)),y:Math.max(0,Math.min(c.height-original.h,original.y+dy))};}
+   else sel=resizeFromCorner(original,mode,q);
+   drawCropSelection(sel);
+ };
+ document.addEventListener("pointermove",e=>{
+   if(!mode || mode==="new" || mode==="move" || !original)return;
+   const q=pos(e);
+   sel=resizeFromCorner(original,mode,q);
+   drawCropSelection(sel);
+ });
+
+ c.onpointerup=()=>{
+   if(mode==="new"||mode==="move"){
+     if(sel&&sel.w>5&&sel.h>5){c.dataset.crop=JSON.stringify(sel);cropFinalized=true;}
+     start=null;mode=null;dragStart=null;original=null;updateHandles();
+   }
+ };
+
  d.onclick=()=>{
-   if(!c.dataset.crop){alert("Please select an area to crop.");return}
-   const q=JSON.parse(c.dataset.crop),sx=state.img.naturalWidth/c.width,sy=state.img.naturalHeight/c.height;
+   const q=currentSelection();if(!q){alert("Please select an area to crop.");return}
+   const sx=state.img.naturalWidth/c.width,sy=state.img.naturalHeight/c.height;
    const out=document.createElement("canvas");out.width=Math.round(q.w*sx);out.height=Math.round(q.h*sy);
    out.getContext("2d").drawImage(state.img,q.x*sx,q.y*sy,q.w*sx,q.h*sy,0,0,out.width,out.height);
    downloadCanvas(out,baseName()+"-cropped.png");
  };
- function pos(e){const r=c.getBoundingClientRect();return{x:Math.max(0,Math.min(c.width,(e.clientX-r.left)*c.width/r.width)),y:Math.max(0,Math.min(c.height,(e.clientY-r.top)*c.height/r.height))}}
- function drawCropSelection(q){drawEditor();const ctx=state.ctx;ctx.save();ctx.fillStyle="rgba(0,0,0,.35)";ctx.fillRect(0,0,c.width,c.height);ctx.clearRect(q.x,q.y,q.w,q.h);ctx.drawImage(state.img,q.x*sx(),q.y*sy(),q.w*sx(),q.h*sy(),q.x,q.y,q.w,q.h);ctx.strokeStyle="#059669";ctx.lineWidth=2;ctx.strokeRect(q.x,q.y,q.w,q.h);ctx.restore()}
+ function currentSelection(){if(sel&&sel.w>0&&sel.h>0)return sel;if(c.dataset.crop)try{return JSON.parse(c.dataset.crop)}catch(_){}return null}
+ function pos(e){const cr=c.getBoundingClientRect();return{x:Math.max(0,Math.min(c.width,(e.clientX-cr.left)*c.width/cr.width)),y:Math.max(0,Math.min(c.height,(e.clientY-cr.top)*c.height/cr.height))}}
+ function resizeFromCorner(q,corner,p){
+   const min=20;let left=q.x,top=q.y,right=q.x+q.w,bottom=q.y+q.h;
+   if(corner==="tl"){left=Math.max(0,Math.min(p.x,right-min));top=Math.max(0,Math.min(p.y,bottom-min))}
+   if(corner==="tm"){top=Math.max(0,Math.min(p.y,bottom-min))}
+   if(corner==="tr"){right=Math.min(c.width,Math.max(p.x,left+min));top=Math.max(0,Math.min(p.y,bottom-min))}
+   if(corner==="ml"){left=Math.max(0,Math.min(p.x,right-min))}
+   if(corner==="mr"){right=Math.min(c.width,Math.max(p.x,left+min))}
+   if(corner==="bl"){left=Math.max(0,Math.min(p.x,right-min));bottom=Math.min(c.height,Math.max(p.y,top+min))}
+   if(corner==="bm"){bottom=Math.min(c.height,Math.max(p.y,top+min))}
+   if(corner==="br"){right=Math.min(c.width,Math.max(p.x,left+min));bottom=Math.min(c.height,Math.max(p.y,top+min))}
+   return{x:left,y:top,w:right-left,h:bottom-top};
+ }
+ function drawCropSelection(q){
+   drawEditor();const ctx=state.ctx;ctx.save();ctx.fillStyle="rgba(0,0,0,.35)";ctx.fillRect(0,0,c.width,c.height);
+   ctx.clearRect(q.x,q.y,q.w,q.h);ctx.drawImage(state.img,q.x*sx(),q.y*sy(),q.w*sx(),q.h*sy(),q.x,q.y,q.w,q.h);
+   ctx.strokeStyle="#059669";ctx.lineWidth=2;ctx.strokeRect(q.x,q.y,q.w,q.h);ctx.restore();updateHandles();
+ }
  function sx(){return state.img.naturalWidth/c.width} function sy(){return state.img.naturalHeight/c.height}
+ function updateHandles(){
+   const q=currentSelection();if(!q||!cropFinalized){overlay.style.display="none";return}
+   overlay.style.display="block";const cr=c.getBoundingClientRect(),wr=wrap.getBoundingClientRect();
+   const scaleX=cr.width/c.width,scaleY=cr.height/c.height,left=cr.left-wr.left+q.x*scaleX,top=cr.top-wr.top+q.y*scaleY;
+   const midX=left+q.w*scaleX/2,midY=top+q.h*scaleY/2;
+   const pts={tl:[left,top],tm:[midX,top],tr:[left+q.w*scaleX,top],ml:[left,midY],mr:[left+q.w*scaleX,midY],bl:[left,top+q.h*scaleY],bm:[midX,top+q.h*scaleY],br:[left+q.w*scaleX,top+q.h*scaleY]};
+   Object.keys(handles).forEach(k=>{handles[k].style.left=(pts[k][0]-7)+"px";handles[k].style.top=(pts[k][1]-7)+"px"});
+ }
+ drawEditor();updateHandles();
 }
+
 function buildResizer(){
  help("Set the output dimensions. Aspect ratio is locked by default.");
  const r=row();r.appendChild(label("Width"));const w=document.createElement("input");w.type="number";w.min=1;w.value=state.img.naturalWidth;r.appendChild(w);
