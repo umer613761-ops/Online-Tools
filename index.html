@@ -3685,55 +3685,6 @@ html.dark-mode .logo-icon {
   background: #121212 !important;
 }
 </style>
-
-<style>
-/* ToolNest index: image/icon + very large tool name only */
-.tool-card h1,.tool-card h2,.tool-card h3,.tool-card h4,.tool-card h5,.tool-card h6{font-size:28px !important;line-height:1.1 !important;margin:0 !important;}
-.tool-card p,.tool-card .description,.tool-card .tool-description{display:none !important;}
-</style>
-
-<style id="toolnest-category-filter-visibility-fix">
-/* Keep filtered-out cards completely hidden even when cards use flex layout. */
-.tools-grid .tool-card[hidden] {
-  display: none !important;
-}
-</style>
-
-
-<style id="toolnest-center-only">
-/* Center the existing card contents as a group; keep image + name side-by-side */
-.tool-card {
-  justify-content: center !important;
-  align-items: center !important;
-  flex-direction: row !important;
-}
-.tool-card .tool-info {
-  text-align: center !important;
-}
-</style>
-
-
-<style id="toolnest-font-slightly-smaller">
-.tool-card .tool-info h2,
-.tool-card .tool-info h3,
-.tool-card .tool-info h4,
-.tool-card .tool-info .tool-name {
-  font-size: 20px !important;
-}
-</style>
-
-
-<style id="toolnest-left-align-only">
-.tool-card {
-  justify-content: flex-start !important;
-  align-items: center !important;
-  flex-direction: row !important;
-}
-.tool-card .tool-info {
-  text-align: left !important;
-}
-</style>
-
 </head>
 <body>
 <!-- ========================================
@@ -4407,13 +4358,11 @@ html.dark-mode .logo-icon {
             card.dataset.name
               .toLowerCase();
 
-          const descriptionElement =
-            card.querySelector("p");
-
           const description =
-            descriptionElement
-              ? descriptionElement.textContent.toLowerCase()
-              : "";
+            card
+              .querySelector("p")
+              .textContent
+              .toLowerCase();
 
 
           const matchesCategory =
@@ -4427,16 +4376,23 @@ html.dark-mode .logo-icon {
             description.includes(searchTerm);
 
 
-          const shouldShow =
+          if (
             matchesCategory &&
-            matchesSearch;
+            matchesSearch
+          ) {
 
-          /* Use the hidden property so category filtering cannot be
-             overridden by card layout CSS such as display:flex. */
-          card.hidden = !shouldShow;
+            card.style.display =
+              "flex";
 
-          if (shouldShow) {
             visibleCount++;
+
+          }
+
+          else {
+
+            card.style.display =
+              "none";
+
           }
 
         }
