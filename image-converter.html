@@ -3224,6 +3224,22 @@ html.dark-mode .logo-icon {
   background: #121212 !important;
 }
 </style>
+
+<style id="image-converter-options-above-actions-final">
+.tn-image-controls{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+}
+.tn-image-actions{
+  width:100% !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  gap:12px !important;
+}
+</style>
+
 </head>
 <body>
 <!-- ========================================
@@ -3611,7 +3627,7 @@ function btn(label,cls="tn-image-control-btn"){const b=document.createElement("b
 function row(){const r=document.createElement("div");r.className="tn-control-row";controls.appendChild(r);return r}
 function label(t){const x=document.createElement("span");x.className="tn-control-label";x.textContent=t;return x}
 function help(t){const p=document.createElement("p");p.className="tn-image-help";p.textContent=t;controls.appendChild(p)}
-function downloadCanvas(c,filename,type="image/png",quality){c.toBlob(blob=>{if(!blob)return;const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)},type,quality)}
+function downloadCanvas(c,filename,type="image/png",quality){c.toBlob(blob=>{if(!blob)return;const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);reset()},100)},type,quality)}
 function ext(type){return type==="image/jpeg"?"jpg":type==="image/webp"?"webp":"png"}
 function baseName(){return (state.file?.name||"image").replace(/\.[^.]+$/,"")}
 function reset(){
