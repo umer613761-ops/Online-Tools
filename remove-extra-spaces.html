@@ -3108,6 +3108,40 @@ html.dark-mode .logo-icon {
   background: #121212 !important;
 }
 </style>
+
+<style id="toolnest-text-heading">
+.heading { margin-bottom: 26px; }
+.heading h1 {
+  margin: 0 0 10px;
+  color: #263548;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  transition: color 0.2s ease;
+}
+.heading p {
+  max-width: 720px;
+  margin: 0;
+  color: #718096;
+  font-size: 16px;
+  line-height: 1.6;
+  transition: color 0.2s ease;
+}
+html.dark-mode .heading h1 { color: #edf2f7; }
+html.dark-mode .heading p { color: #9ca9b8; }
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .heading h1 { color: #edf2f7; }
+  html:not(.light-mode) .heading p { color: #9ca9b8; }
+}
+@media (max-width: 700px) {
+  .heading h1 { font-size: 31px; }
+}
+@media (max-width: 550px) {
+  .heading h1 { font-size: 29px; }
+  .heading p { font-size: 15px; }
+}
+</style>
+
 </head>
 <body>
 <!-- ========================================
@@ -3169,8 +3203,15 @@ html.dark-mode .logo-icon {
     <a class="tn-tool-category-link" href="reading-time-estimator.html">Reading Time Estimator</a>
   </div>
 </nav>
-
-<div>
+<div class="heading"><h1>Remove Extra Spaces</h1><p>Clean up your text by removing extra spaces and unnecessary whitespace.</p></div>
+<div class="tn-text-tool" id="tnTextTool">
+<label for="tnTextInput">Enter your text</label>
+<textarea id="tnTextInput" placeholder="Type or paste text with extra spaces here..."></textarea>
+<div class="tn-text-actions">
+<button class="tn-text-btn" id="tnClean">Remove Extra Spaces</button>
+<button class="tn-text-btn secondary" id="tnClear">Clear</button>
+</div>
+<p class="tn-text-help">Removes repeated spaces, trims line edges and removes unnecessary blank lines.</p>
 </div>
 <!-- ADVERTISEMENT -->
 </div><aside aria-label="Advertisement" class="ad-column">
@@ -3440,6 +3481,41 @@ html.dark-mode main .tool-description {
 }
 </style>
 
+
+<style id="toolnest-text-tools-functional-css">
+.tn-text-tool{margin-top:24px;background:#fff;border:1px solid #e1e7ee;border-radius:12px;padding:22px;box-shadow:0 4px 16px rgba(31,45,61,.06)}
+.tn-text-tool label{display:block;margin:0 0 8px;font-weight:600;color:#344154}
+.tn-text-tool textarea,.tn-text-tool input,.tn-text-tool select{width:100%;box-sizing:border-box;border:1px solid #d7dee7;border-radius:9px;background:#fff;color:#263548;font:inherit;padding:13px 14px;outline:none}
+.tn-text-tool textarea{min-height:230px;resize:vertical;line-height:1.55}
+.tn-text-tool textarea:focus,.tn-text-tool input:focus,.tn-text-tool select:focus{border-color:#6b9bc6;box-shadow:0 0 0 3px rgba(107,155,198,.12)}
+.tn-text-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.tn-text-btn{border:0;border-radius:8px;padding:11px 18px;font:inherit;font-weight:600;cursor:pointer;background:#344154;color:#fff}
+.tn-text-btn:hover{opacity:.92}
+.tn-text-btn.secondary{background:#eef2f6;color:#344154;border:1px solid #d7dee7}
+.tn-text-btn.accent{background:#e53935;color:#fff}
+.tn-text-output{margin-top:18px}
+.tn-text-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.tn-text-stat{background:#f5f7fa;border:1px solid #e1e7ee;border-radius:9px;padding:13px;text-align:center}
+.tn-text-stat strong{display:block;font-size:21px;color:#263548}.tn-text-stat span{font-size:12px;color:#718096}
+.tn-text-help{margin:8px 0 0;color:#718096;font-size:13px}
+.tn-text-two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tn-text-result{min-height:170px!important}
+.tn-text-row{display:flex;gap:12px;align-items:end}
+.tn-text-row>div{flex:1}
+.tn-reading-result{font-size:28px;font-weight:700;color:#263548;padding:18px;background:#f5f7fa;border:1px solid #e1e7ee;border-radius:9px;margin-top:16px}
+html.dark-mode .tn-text-tool{background:#121212 !important;border-color:#2e3946;box-shadow:0 4px 16px rgba(0,0,0,.22)}
+html.dark-mode .tn-text-tool label{color:#edf2f7}
+html.dark-mode .tn-text-tool textarea,html.dark-mode .tn-text-tool input,html.dark-mode .tn-text-tool select{background:#303236;border-color:#4a4d52;color:#edf2f7}
+html.dark-mode .tn-text-btn.secondary{background:#202c3b;border-color:#3b4b5f;color:#d6dee8}
+html.dark-mode .tn-text-stat,html.dark-mode .tn-reading-result{background:#202934;border-color:#35435a}
+html.dark-mode .tn-text-stat strong,html.dark-mode .tn-reading-result{color:#edf2f7}
+html.dark-mode .tn-text-stat span,html.dark-mode .tn-text-help{color:#9ca9b8}
+@media(max-width:700px){.tn-text-grid{grid-template-columns:repeat(2,1fr)}.tn-text-two{grid-template-columns:1fr}.tn-text-row{flex-direction:column;align-items:stretch}}
+</style>
+
+<script id="toolnest-text-spaces">
+(()=>{const t=document.getElementById("tnTextInput"),cl=document.getElementById("tnClear"),b=document.getElementById("tnClean");b.addEventListener("click",()=>{t.value=t.value.split(/\r?\n/).map(x=>x.replace(/[ \t]+/g," ").trim()).filter((x,i,a)=>x!==""|| (i>0&&a[i-1]!=="")).join("\n")});cl.addEventListener("click",()=>{t.value="";t.focus()})})();
+</script>
 </body>
 </html>
 
