@@ -4137,7 +4137,7 @@ html.dark-mode .tool-intro p {
     <div class="mobile-footer-column">
       <h3>Popular Tools</h3>
       <a href="merge-pdf.html">Merge PDF</a>
-      <a href="word-character-counter.html">Word Counter</a>
+      <a href="word-counter.html">Word Counter</a>
       <a href="image-compressor.html">Image Compressor</a>
     </div>
 
@@ -4174,9 +4174,9 @@ html.dark-mode .tool-intro p {
     <div class="footer-column">
       <h4>Popular Tools</h4>
       <a href="merge-pdf.html">Merge PDF</a>
-      <a href="word-character-counter.html">Word Counter</a>
+      <a href="word-counter.html">Word Counter</a>
       <a href="image-compressor.html">Image Compressor</a>
-      <a href="compress-pdf.html">PDF Compressor</a>
+      <a href="pdf-compressor.html">PDF Compressor</a>
     </div>
 
     <div class="footer-column">
@@ -4184,6 +4184,7 @@ html.dark-mode .tool-intro p {
       <a href="index.html">PDF Tools</a>
       <a href="index.html">Text Tools</a>
       <a href="index.html">Image Tools</a>
+      <a href="index.html">Calculators</a>
     </div>
 
     <div class="footer-column">
@@ -4399,11 +4400,13 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
     let pdfBytes=null;
     let selectedPages=new Set();
     let mode='whole';
+    let sourceFileName='converted-from-pdf';
 
     btn.onclick=()=>input.click();
     input.onchange=async()=>{
       const f=input.files&&input.files[0]; if(!f) return;
       try{
+        sourceFileName=(f.name||'converted-from-pdf').replace(/\.[^.]+$/,'')||'converted-from-pdf';
         pdfBytes=await f.arrayBuffer();
         pdf=await pdfjsLib.getDocument({data:pdfBytes.slice(0)}).promise;
         selectedPages=new Set();
@@ -4463,7 +4466,11 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
     async function renderPageCanvas(pageNum){
       const p=await pdf.getPage(pageNum);
       const base=p.getViewport({scale:1});
-      const scale=Math.min(160/base.width,204/base.height);
+      // Use a high-resolution render for downloaded images. The small preview
+      // scale must not determine the quality of the exported JPG/PNG.
+      const targetWidth = 1600;
+      const targetHeight = 2200;
+      const scale = Math.min(targetWidth/base.width, targetHeight/base.height);
       const v=p.getViewport({scale});
       const canvas=document.createElement('canvas');
       canvas.width=Math.ceil(v.width); canvas.height=Math.ceil(v.height);
@@ -4475,7 +4482,7 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
       const canvas=await renderPageCanvas(pageNum);
       const mime=type==='png'?'image/png':'image/jpeg';
       const ext=type==='png'?'png':'jpg';
-      const a=document.createElement('a'); a.href=canvas.toDataURL(mime,0.92); a.download='page-'+pageNum+'.'+ext; a.click();
+      const a=document.createElement('a'); a.href=canvas.toDataURL(mime,0.92); a.download=sourceFileName+'-page-'+pageNum+'.'+ext; a.click();
     }
 
     download.onclick=async()=>{
@@ -4488,14 +4495,104 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
       }
       if(fmt.value==='txt'){
         let out='';
-        for(const i of pages){const p=await pdf.getPage(i),c=await p.getTextContent();out+='Page '+i+'\n'+c.items.map(x=>x.str).join(' ')+'\n\n';}
-        const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out],{type:'text/plain'}));a.download='converted-from-pdf.txt';a.click();URL.revokeObjectURL(a.href);reset();return;
+        for(const i of pages){
+          const p=await pdf.getPage(i);
+          const viewport=p.getViewport({scale:1});
+          const c=await p.getTextContent({normalizeWhitespace:false,disableCombineTextItems:false});
+          const items=c.items.filter(x=>x.str && x.str.trim()!=='');
+          const lines=[];
+          const yTolerance=2;
+
+          for(const item of items){
+            const tx=pdfjsLib.Util.transform(viewport.transform,item.transform);
+            const x=tx[4];
+            const y=tx[5];
+            const fontSize=Math.max(1,Math.sqrt((item.transform[0]||0)**2+(item.transform[1]||0)**2));
+            let line=lines.find(l=>Math.abs(l.y-y)<=Math.max(yTolerance,fontSize*0.35));
+            if(!line){
+              line={y,items:[],fontSize};
+              lines.push(line);
+            }
+            line.items.push({x,str:item.str,hasEOL:!!item.hasEOL,fontSize,width:item.width||0});
+            line.fontSize=Math.max(line.fontSize,fontSize);
+          }
+
+          lines.sort((a,b)=>a.y-b.y);
+          out+='Page '+i+'\n\n';
+
+          for(let li=0;li<lines.length;li++){
+            const line=lines[li];
+            line.items.sort((a,b)=>a.x-b.x);
+            let text='';
+            let previous=null;
+            for(const item of line.items){
+              let value=item.str.replace(/[\u0000-\u001f\u007f]/g,'');
+              if(!value) continue;
+              if(previous){
+                const gap=item.x-(previous.x+previous.width);
+                const prevLast=text.slice(-1);
+                const nextFirst=value.charAt(0);
+                const punctuation=/^[,.;:!?%)\]}]/.test(nextFirst);
+                const opens=/[(\[{]$/.test(prevLast);
+                // Add a space only when the PDF's horizontal gap indicates a real word gap.
+                // Small gaps are kept intact so words split into multiple PDF text items
+                // (for example "conta" + "ct") are not turned into "conta ct".
+                if(gap>Math.max(1.5,line.fontSize*0.20) && !punctuation && !opens && !/\s$/.test(text) && !/^\s/.test(value)) text+=' ';
+              }
+              text+=value;
+              previous={x:item.x,width:item.width||0};
+            }
+            text=text.replace(/[ \t]+$/,'');
+            if(text) out+=text+'\n';
+          }
+          out+='\n';
+        }
+        const a=document.createElement('a');
+        const url=URL.createObjectURL(new Blob([out],{type:'text/plain;charset=utf-8'}));
+        a.href=url;
+        a.download=sourceFileName.replace(/\.[^.]+$/,'')+'-converted.txt';
+        a.click();
+        setTimeout(()=>URL.revokeObjectURL(url),1000);
+        reset();
+        return;
       }
       if(fmt.value==='html'){
-        let out='<html><body>';
-        for(const i of pages){const p=await pdf.getPage(i),c=await p.getTextContent();out+='<h2>Page '+i+'</h2><p>'+esc(c.items.map(x=>x.str).join(' '))+'</p>';}
-        out+='</body></html>';;
-        const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out],{type:'text/html'}));a.download='converted-from-pdf.html';a.click();URL.revokeObjectURL(a.href);reset();return;
+        // Build a standalone HTML document that preserves each PDF page's
+        // dimensions and positions text using the PDF's own text transforms.
+        // This is intentionally separate from the small on-screen preview.
+        let out='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PDF to HTML</title>';
+        out+='<style>html,body{margin:0;padding:0;background:#e9edf1;color:#111;font-family:Arial,Helvetica,sans-serif}.pdf-html-document{padding:24px}.pdf-html-page{position:relative;margin:0 auto 24px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.14);overflow:hidden}.pdf-html-text{position:absolute;white-space:pre;transform-origin:0 0;line-height:1;unicode-bidi:bidi-override}.pdf-html-page:last-child{margin-bottom:0}@media print{body{background:#fff}.pdf-html-document{padding:0}.pdf-html-page{margin:0;box-shadow:none;break-after:page}.pdf-html-page:last-child{break-after:auto}}</style></head><body><div class="pdf-html-document">';
+        for(const i of pages){
+          const p=await pdf.getPage(i);
+          const viewport=p.getViewport({scale:1});
+          const c=await p.getTextContent();
+          const styles=c.styles||{};
+          out+='<div class="pdf-html-page" style="width:'+viewport.width+'px;height:'+viewport.height+'px">';
+          for(const item of c.items){
+            if(!item.str) continue;
+            const tx=pdfjsLib.Util.transform(viewport.transform,item.transform);
+            const fontSize=Math.max(1,Math.sqrt((tx[2]*tx[2])+(tx[3]*tx[3])));
+            const angle=Math.atan2(tx[1],tx[0]);
+            const sx=Math.sqrt((tx[0]*tx[0])+(tx[1]*tx[1]))/fontSize || 1;
+            const style=styles[item.fontName]||{};
+            const family=(style.fontFamily||'Arial, Helvetica, sans-serif').replace(/"/g,'&quot;');
+            const weight=/bold/i.test(family)?'700':'400';
+            const escaped=esc(item.str).replace(/ /g,'&nbsp;');
+            const top=tx[5]-fontSize*0.82;
+            out+='<span class="pdf-html-text" style="left:'+tx[4]+'px;top:'+top+'px;font-size:'+fontSize+'px;font-family:'+family+';font-weight:'+weight+';transform:rotate('+angle+'rad) scaleX('+sx+')">'+escaped+'</span>';
+          }
+          out+='</div>';
+        }
+        out+='</div></body></html>';
+        const a=document.createElement('a');
+        const htmlBlob=new Blob([out],{type:'text/html;charset=utf-8'});
+        const url=URL.createObjectURL(htmlBlob);
+        a.href=url;
+        a.download='converted-from-pdf.html';
+        a.click();
+        setTimeout(()=>URL.revokeObjectURL(url),1000);
+        reset();
+        return;
       }
       alert('The selected format requires an advanced document converter.');
     };

@@ -4130,7 +4130,7 @@ html.dark-mode .tool-intro p {
     <div class="mobile-footer-column">
       <h3>Popular Tools</h3>
       <a href="merge-pdf.html">Merge PDF</a>
-      <a href="word-character-counter.html">Word Counter</a>
+      <a href="word-counter.html">Word Counter</a>
       <a href="image-compressor.html">Image Compressor</a>
     </div>
 
@@ -4167,9 +4167,9 @@ html.dark-mode .tool-intro p {
     <div class="footer-column">
       <h4>Popular Tools</h4>
       <a href="merge-pdf.html">Merge PDF</a>
-      <a href="word-character-counter.html">Word Counter</a>
+      <a href="word-counter.html">Word Counter</a>
       <a href="image-compressor.html">Image Compressor</a>
-      <a href="compress-pdf.html">PDF Compressor</a>
+      <a href="pdf-compressor.html">PDF Compressor</a>
     </div>
 
     <div class="footer-column">
@@ -4177,6 +4177,7 @@ html.dark-mode .tool-intro p {
       <a href="index.html">PDF Tools</a>
       <a href="index.html">Text Tools</a>
       <a href="index.html">Image Tools</a>
+      <a href="index.html">Calculators</a>
     </div>
 
     <div class="footer-column">
@@ -4369,6 +4370,81 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
           const scale=Math.min(pw/img.width,ph/img.height);
           const fmt=f.type==='image/png'?'PNG':f.type==='image/webp'?'WEBP':'JPEG';
           doc.addImage(data,fmt,(doc.internal.pageSize.getWidth()-img.width*scale)/2,36,img.width*scale,img.height*scale);
+        }else if(/\.html?$/i.test(f.name) || f.type==='text/html'){
+          if(!window.html2canvas){alert('HTML converter library is still loading. Please try again.');return;}
+          const html=await f.text();
+          const frame=document.createElement('iframe');
+          frame.setAttribute('aria-hidden','true');
+          /* Keep the iframe rendered but place it far off-screen. html2canvas cannot reliably
+             capture documents inside an iframe whose visibility is hidden. */
+          frame.style.cssText='position:fixed;left:-100000px;top:0;width:794px;height:1123px;border:0;background:#fff;display:block;';
+          document.body.appendChild(frame);
+          try{
+            await new Promise((resolve,reject)=>{
+              const timer=setTimeout(()=>reject(new Error('HTML document timed out while loading.')),20000);
+              frame.onload=()=>{clearTimeout(timer);resolve();};
+              frame.onerror=()=>{clearTimeout(timer);reject(new Error('Unable to load the HTML document.'));};
+              /* srcdoc avoids the opaque blob origin and lets normal absolute web resources load. */
+              frame.srcdoc=html;
+            });
+            const frameDoc=frame.contentDocument;
+            const body=frameDoc&&frameDoc.body;
+            if(!body) throw new Error('HTML document has no body.');
+            /* Give the document its natural height so long HTML pages can be captured. */
+            const contentWidth=Math.max(794,Math.ceil(body.scrollWidth||794));
+            const contentHeight=Math.max(1123,Math.ceil(body.scrollHeight||1123));
+            frame.style.width=contentWidth+'px';
+            frame.style.height=Math.min(Math.max(contentHeight,1123),50000)+'px';
+            const images=Array.from(frameDoc.images||[]);
+            await Promise.all(images.map(img=>{
+              if(img.complete) return img.decode ? img.decode().catch(()=>{}) : Promise.resolve();
+              return new Promise(resolve=>{img.onload=()=>resolve();img.onerror=()=>resolve();});
+            }));
+            if(frameDoc.fonts&&frameDoc.fonts.ready) await frameDoc.fonts.ready.catch(()=>{});
+            await new Promise(resolve=>setTimeout(resolve,250));
+            const canvas=await window.html2canvas(body,{
+              scale:2,
+              useCORS:true,
+              allowTaint:false,
+              backgroundColor:'#ffffff',
+              logging:false,
+              width:contentWidth,
+              height:contentHeight,
+              windowWidth:contentWidth,
+              windowHeight:contentHeight,
+              scrollX:0,
+              scrollY:0
+            });
+            const pageW=doc.internal.pageSize.getWidth();
+            const pageH=doc.internal.pageSize.getHeight();
+            const margin=36;
+            const usableW=pageW-margin*2;
+            const pxPerPt=canvas.width/usableW;
+            const pageCanvasHeight=Math.max(1,Math.floor((pageH-margin*2)*pxPerPt));
+            let offset=0;
+            let firstHtmlPage=true;
+            while(offset<canvas.height){
+              const sliceH=Math.min(pageCanvasHeight,canvas.height-offset);
+              const slice=document.createElement('canvas');
+              slice.width=canvas.width;
+              slice.height=sliceH;
+              const ctx=slice.getContext('2d');
+              ctx.fillStyle='#ffffff';
+              ctx.fillRect(0,0,slice.width,slice.height);
+              ctx.drawImage(canvas,0,offset,canvas.width,sliceH,0,0,canvas.width,sliceH);
+              if(!firstHtmlPage) doc.addPage();
+              firstHtmlPage=false;
+              const imgH=sliceH/pxPerPt;
+              doc.addImage(slice.toDataURL('image/jpeg',0.92),'JPEG',margin,margin,usableW,imgH,'','FAST');
+              offset+=sliceH;
+            }
+          }catch(error){
+            console.error('HTML to PDF conversion failed:',error);
+            alert('Unable to convert this HTML file to PDF. If the file uses local CSS/images, please use a self-contained HTML file or absolute web URLs.');
+            return;
+          }finally{
+            frame.remove();
+          }
         }else{
           const text=await f.text(); doc.setFontSize(11);
           const lines=doc.splitTextToSize(text,doc.internal.pageSize.getWidth()-72);
@@ -4376,7 +4452,8 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
           for(const line of lines){if(y>doc.internal.pageSize.getHeight()-40){doc.addPage();y=48;}doc.text(line,36,y);y+=15;}
         }
       }
-      doc.save('converted-to-pdf.pdf');
+      const baseName=(files[0]?.name||'converted-to-pdf').replace(/\.[^.]+$/,'').replace(/[\\/:*?"<>|]+/g,'-').trim()||'converted-to-pdf';
+      doc.save(baseName+'-converted.pdf');
       resetToUpload();
     };
   }
@@ -4437,6 +4514,7 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
 })();
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
 
