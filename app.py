@@ -18,13 +18,29 @@ app.config["MAX_CONTENT_LENGTH"] = int(os.environ.get("MAX_UPLOAD_MB", "50")) * 
 
 def safe_filename(name: str) -> str:
     name = Path(name or "document.pdf").name
-    stem = re.sub(r"[^A-Za-z0-9._-]+", "_", Path(name).stem).strip("._") or "document"
+    stem = re.sub(
+        r"[^A-Za-z0-9._-]+",
+        "_",
+        Path(name).stem
+    ).strip("._") or "document"
     return stem + ".pdf"
+
+
+@app.get("/")
+def home():
+    return jsonify({
+        "ok": True,
+        "service": "ToolNest conversion API",
+        "status": "running"
+    })
 
 
 @app.get("/health")
 def health():
-    return jsonify({"ok": True, "service": "ToolNest conversion API"})
+    return jsonify({
+        "ok": True,
+        "service": "ToolNest conversion API"
+    })
 
 
 @app.post("/api/pdf-to-xlsx")
@@ -33,10 +49,12 @@ def pdf_to_xlsx():
         return jsonify({"error": "Please upload a PDF file."}), 400
 
     uploaded = request.files["file"]
+
     if not uploaded.filename:
         return jsonify({"error": "Please choose a PDF file."}), 400
 
     original = safe_filename(uploaded.filename)
+
     if not original.lower().endswith(".pdf"):
         return jsonify({"error": "Only PDF files are supported."}), 400
 
@@ -46,39 +64,55 @@ def pdf_to_xlsx():
 
     try:
         uploaded.save(input_path)
-        result = convert_pdf_to_xlsx(input_path, output_path)
+
+        result = convert_pdf_to_xlsx(
+            input_path,
+            output_path
+        )
 
         if not output_path.exists() or output_path.stat().st_size == 0:
-            raise RuntimeError("The converter did not produce an Excel file.")
+            raise RuntimeError(
+                "The converter did not produce an Excel file."
+            )
 
         response = send_file(
             output_path,
             as_attachment=True,
             download_name=f"{Path(original).stem}.xlsx",
-            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            mimetype=(
+                "application/vnd.openxmlformats-officedocument."
+                "spreadsheetml.sheet"
+            ),
         )
-        response.headers["X-ToolNest-Mode"] = result.get("mode", "unknown")
-        response.headers["X-ToolNest-Tables"] = str(result.get("tables", 0))
+
+        response.headers["X-ToolNest-Mode"] = result.get(
+            "mode",
+            "unknown"
+        )
+        response.headers["X-ToolNest-Tables"] = str(
+            result.get("tables", 0)
+        )
+
         return response
+
     except Exception as exc:
         return jsonify({
             "error": "Unable to convert this PDF to Excel.",
             "details": str(exc),
         }), 500
+
     finally:
         try:
             input_path.unlink(missing_ok=True)
         except Exception:
             pass
-        # The response needs the XLSX file while it is being sent. Flask's
-        # send_file opens it during response handling, so schedule cleanup
-        # through a response callback instead of deleting it immediately.
-        # A small janitor below removes old files on subsequent requests.
 
 
 def _cleanup_old_outputs(max_age_seconds=3600):
     import time
+
     now = time.time()
+
     for path in UPLOAD_DIR.glob("*.xlsx"):
         try:
             if now - path.stat().st_mtime > max_age_seconds:
@@ -94,8 +128,13 @@ def cleanup_outputs():
 
 @app.errorhandler(413)
 def too_large(_):
-    return jsonify({"error": "The PDF is too large. Maximum upload size is 50 MB."}), 413
+    return jsonify({
+        "error": "The PDF is too large. Maximum upload size is 50 MB."
+    }), 413
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", "10000")))
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", "10000"))
+    )
