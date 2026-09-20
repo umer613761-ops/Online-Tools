@@ -4556,6 +4556,58 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
         reset();
         return;
       }
+      if(fmt.value==='xlsx'){
+        if(mode==='individual'){
+          alert('PDF to XLSX converts the complete PDF. Please keep Whole PDF selected.');
+          return;
+        }
+
+        const API_URL='https://toolnest-api-production-dda7.up.railway.app/api/pdf-to-xlsx';
+
+        try{
+          download.disabled=true;
+          download.textContent='Converting...';
+
+          const form=document.createElement('form');
+          form.method='POST';
+          form.action=API_URL;
+          form.enctype='multipart/form-data';
+          form.target='toolnestXlsxDownloadFrame';
+          form.style.display='none';
+
+          const frame=document.createElement('iframe');
+          frame.name='toolnestXlsxDownloadFrame';
+          frame.style.display='none';
+
+          const currentParent=input.parentNode;
+          const currentNext=input.nextSibling;
+
+          document.body.appendChild(frame);
+          document.body.appendChild(form);
+          form.appendChild(input);
+          form.submit();
+
+          setTimeout(()=>{
+            if(currentNext && currentNext.parentNode===currentParent){
+              currentParent.insertBefore(input,currentNext);
+            }else{
+              currentParent.appendChild(input);
+            }
+            form.remove();
+            frame.remove();
+            download.disabled=false;
+            download.textContent='Convert & Download';
+            reset();
+          },1500);
+        }catch(e){
+          console.error(e);
+          alert('Unable to convert this PDF to Excel. Please try again.');
+          download.disabled=false;
+          download.textContent='Convert & Download';
+        }
+        return;
+      }
+
       if(fmt.value==='html'){
         // Build a standalone HTML document that preserves each PDF page's
         // dimensions and positions text using the PDF's own text transforms.
