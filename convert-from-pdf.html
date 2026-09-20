@@ -4568,40 +4568,46 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
           download.disabled=true;
           download.textContent='Converting...';
 
-          const form=document.createElement('form');
-          form.method='POST';
-          form.action=API_URL;
-          form.enctype='multipart/form-data';
-          form.target='toolnestXlsxDownloadFrame';
-          form.style.display='none';
+          const formData=new FormData();
+          formData.append('file',input.files[0],input.files[0].name);
 
-          const frame=document.createElement('iframe');
-          frame.name='toolnestXlsxDownloadFrame';
-          frame.style.display='none';
+          const response=await fetch(API_URL,{
+            method:'POST',
+            body:formData
+          });
 
-          const currentParent=input.parentNode;
-          const currentNext=input.nextSibling;
+          if(!response.ok){
+            let message='Unable to convert this PDF to Excel.';
+            try{
+              const data=await response.json();
+              if(data && data.error) message=data.error + (data.details ? '\n\n'+data.details : '');
+            }catch(_){}
+            throw new Error(message);
+          }
 
-          document.body.appendChild(frame);
-          document.body.appendChild(form);
-          form.appendChild(input);
-          form.submit();
+          const blob=await response.blob();
+          if(!blob.size){
+            throw new Error('The server returned an empty Excel file.');
+          }
 
-          setTimeout(()=>{
-            if(currentNext && currentNext.parentNode===currentParent){
-              currentParent.insertBefore(input,currentNext);
-            }else{
-              currentParent.appendChild(input);
-            }
-            form.remove();
-            frame.remove();
-            download.disabled=false;
-            download.textContent='Convert & Download';
-            reset();
-          },1500);
+          const url=URL.createObjectURL(blob);
+          const a=document.createElement('a');
+          a.href=url;
+
+          const disposition=response.headers.get('Content-Disposition') || '';
+          const match=disposition.match(/filename[^;=]*=(?:UTF-8''|\")?([^;\"]+)/i);
+          const fallbackName=sourceFileName.replace(/\.[^.]+$/,'')+'.xlsx';
+          a.download=match ? decodeURIComponent(match[1].replace(/^\"|\"$/g,'')) : fallbackName;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+
+          setTimeout(()=>URL.revokeObjectURL(url),5000);
+          reset();
         }catch(e){
           console.error(e);
-          alert('Unable to convert this PDF to Excel. Please try again.');
+          alert(e && e.message ? e.message : 'Unable to convert this PDF to Excel. Please try again.');
+        }finally{
           download.disabled=false;
           download.textContent='Convert & Download';
         }
