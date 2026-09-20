@@ -50,7 +50,7 @@ def _ensure_tesseract():
         raise RuntimeError("Tesseract OCR could not be started on the server.") from exc
 
 
-def _render_page(page, dpi=216):
+def _render_page(page, dpi=180):
     scale = dpi / 72.0
     pix = page.get_pixmap(matrix=pymupdf.Matrix(scale, scale), alpha=False)
     img = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.height, pix.width, pix.n)
@@ -448,43 +448,122 @@ def _ocr_text_sheet(wb, page_no, image):
     return lines
 
 
+
+def _ocr_full_page_lines(image):
+    """Run OCR once for a page and return (vertical_center, text) lines."""
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray = cv2.fastNlMeansDenoising(gray, None, 6, 7, 21)
+    threshold = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+    data = pytesseract.image_to_data(
+        threshold,
+        config="--oem 3 --psm 6",
+        output_type=pytesseract.Output.DICT,
+    )
+    words = []
+    for i, raw in enumerate(data["text"]):
+        text = _normalize_cell(raw)
+        if not text:
+            continue
+        try:
+            conf = float(data["conf"][i])
+        except (ValueError, TypeError):
+            conf = -1
+        if conf < 12:
+            continue
+        x = int(data["left"][i]); y = int(data["top"][i])
+        w = int(data["width"][i]); h = int(data["height"][i])
+        words.append({"text": text, "x": x, "y": y, "w": w, "h": h})
+    rows = _cluster_rows(words)
+    result = []
+    for row in rows:
+        text = _normalize_cell(" ".join(w["text"] for w in row["words"]))
+        if text:
+            cy = sum(w["y"] + w["h"] / 2 for w in row["words"]) / len(row["words"])
+            result.append((cy, text))
+    return result
+
+
+def _write_page_content_sheet(wb, page_no, image, grid=None, full_lines=None):
+    """Write the whole page in reading order, preserving text around a table."""
+    ws = wb.create_sheet(title=f"Page {page_no}")
+    height = image.shape[0]
+    full_lines = full_lines or []
+    row = 1
+
+    if grid:
+        xs, ys = grid
+        table_top, table_bottom = ys[0], ys[-1]
+
+        # Keep all OCR content above the table.
+        for cy, line in full_lines:
+            if cy < table_top - 12:
+                ws.cell(row, 1, line)
+                ws.cell(row, 1).alignment = Alignment(vertical="top", wrap_text=True)
+                row += 1
+
+        row += 1
+        ws.cell(row, 1, "TABLE")
+        ws.cell(row, 1).font = Font(bold=True)
+        ws.cell(row, 1).fill = PatternFill(fill_type="solid", fgColor="D9EAF7")
+        row += 1
+
+        table_rows = _grid_table_from_image(image, grid)
+        for r_idx, values in enumerate(table_rows):
+            for col, value in enumerate(values, start=1):
+                cell = ws.cell(row, col, _normalize_cell(value))
+                cell.alignment = Alignment(vertical="top", wrap_text=True)
+                if r_idx == 0:
+                    cell.font = Font(bold=True)
+            row += 1
+
+        row += 1
+        # Keep all OCR content below the table.
+        for cy, line in full_lines:
+            if cy > table_bottom + 12:
+                ws.cell(row, 1, line)
+                ws.cell(row, 1).alignment = Alignment(vertical="top", wrap_text=True)
+                row += 1
+    else:
+        for _, line in full_lines:
+            ws.cell(row, 1, line)
+            ws.cell(row, 1).alignment = Alignment(vertical="top", wrap_text=True)
+            row += 1
+
+    ws.column_dimensions["A"].width = 60
+    for col in range(2, ws.max_column + 1):
+        max_len = 0
+        for cell in ws[get_column_letter(col)]:
+            if cell.value:
+                max_len = max(max_len, len(str(cell.value)))
+        ws.column_dimensions[get_column_letter(col)].width = min(max(14, max_len + 2), 30)
+    ws.freeze_panes = "A2"
+    return ws
+
+
 def convert_pdf_to_xlsx(input_path, output_path):
+    """Convert a PDF into an editable workbook while preserving full-page content."""
     _ensure_tesseract()
     doc = pymupdf.open(str(input_path))
     wb = openpyxl.Workbook()
     wb.remove(wb.active)
     tables = 0
     modes = []
-    text_rows = []
 
     for page_no, page in enumerate(doc, start=1):
-        native_text = page.get_text("text").strip()
         image = _render_page(page)
+        full_lines = _ocr_full_page_lines(image)
         grid = _detect_table_grid(image)
-        if grid:
-            rows = _grid_table_from_image(image, grid)
-            if len(rows) >= 2 and len(rows[0]) >= 2:
-                _write_sheet(wb, f"Table {tables + 1}", rows)
-                tables += 1
-                modes.append("ocr-grid")
-                continue
-
-        if native_text:
-            # Preserve ordinary native-PDF text without pretending it is a table.
-            text_rows.append([f"Page {page_no}"])
-            for line in native_text.splitlines():
-                line = _normalize_cell(line)
-                if line:
-                    text_rows.append([line])
-            modes.append("native-text")
+        if grid and len(grid[0]) >= 4 and len(grid[1]) >= 3:
+            _write_page_content_sheet(wb, page_no, image, grid, full_lines)
+            tables += 1
+            modes.append("ocr-grid-full-page")
         else:
-            text_rows.extend(_ocr_text_sheet(wb, page_no, image))
-            modes.append("ocr-text")
+            _write_page_content_sheet(wb, page_no, image, None, full_lines)
+            modes.append("ocr-text-full-page")
 
-    if text_rows:
-        _write_sheet(wb, "Text", text_rows)
     if not wb.sheetnames:
-        _write_sheet(wb, "Text", [["No extractable text or table was detected."]])
+        _write_sheet(wb, "Text", [["No extractable content was detected."]])
+
     wb.save(output_path)
     doc.close()
     return {"tables": tables, "mode": ",".join(sorted(set(modes))) or "none"}
