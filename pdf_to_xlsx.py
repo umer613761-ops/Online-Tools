@@ -9,7 +9,9 @@ import cv2
 import numpy as np
 import openpyxl
 import pytesseract
-from openpyxl.styles import Alignment, Font, PatternFill
+from openpyxl.styles import Alignment, Font, PatternFill, Border, Side
+from openpyxl.drawing.image import Image as XLImage
+import tempfile
 from openpyxl.utils import get_column_letter
 
 try:
@@ -465,73 +467,81 @@ def _ocr_full_page_lines(image):
 
 
 def _write_page_content_sheet(wb, page_no, image, grid=None, full_lines=None):
-    """Write the whole page in reading order, preserving text around a table."""
+    """Hybrid page sheet: preserve the complete original page image plus editable OCR/table data."""
     ws = wb.create_sheet(title=f"Page {page_no}")
-    height = image.shape[0]
-    full_lines = full_lines or []
-    row = 1
+    ws.sheet_view.showGridLines = False
+    ws.column_dimensions["A"].width = 18
+    ws.column_dimensions["B"].width = 18
+    ws.column_dimensions["C"].width = 18
+    ws.column_dimensions["D"].width = 18
+    ws.column_dimensions["E"].width = 18
+
+    ws["A1"] = f"PAGE {page_no} — ORIGINAL PDF PAGE"
+    ws["A1"].font = Font(size=14, bold=True)
+    ws["A2"] = "Original page image is preserved below so no visual content is lost. Editable OCR text and detected tables follow it."
+    ws["A2"].alignment = Alignment(wrap_text=True, vertical="top")
+
+    # Embed a scaled copy of the complete source page.
+    tmp = Path(tempfile.gettempdir()) / f"toolnest_source_page_{os.getpid()}_{page_no}.png"
+    cv2.imwrite(str(tmp), image)
+    xl_img = XLImage(str(tmp))
+    target_width = 700
+    scale = target_width / max(1, xl_img.width)
+    xl_img.width = target_width
+    xl_img.height = int(xl_img.height * scale)
+    ws.add_image(xl_img, "A4")
+
+    # Put editable data far enough below the image.
+    row = max(12, int(xl_img.height / 18) + 7)
+    ws.cell(row, 1, "EDITABLE OCR TEXT")
+    ws.cell(row, 1).font = Font(size=12, bold=True)
+    row += 1
+
+    for line in (full_lines or []):
+        ws.cell(row, 1, _normalize_cell(line))
+        ws.cell(row, 1).alignment = Alignment(vertical="top", wrap_text=True)
+        row += 1
 
     if grid:
-        xs, ys = grid
-        table_top, table_bottom = ys[0], ys[-1]
-
-        # Keep all OCR content above the table.
-        for cy, line in full_lines:
-            if cy < table_top - 12:
-                ws.cell(row, 1, line)
-                ws.cell(row, 1).alignment = Alignment(vertical="top", wrap_text=True)
-                row += 1
-
-        row += 1
-        ws.cell(row, 1, "TABLE")
-        ws.cell(row, 1).font = Font(bold=True)
-        ws.cell(row, 1).fill = PatternFill(fill_type="solid", fgColor="D9EAF7")
-        row += 1
-
         table_rows = _grid_table_from_image(image, grid)
-        for r_idx, values in enumerate(table_rows):
-            for col, value in enumerate(values, start=1):
-                cell = ws.cell(row, col, _normalize_cell(value))
-                cell.alignment = Alignment(vertical="top", wrap_text=True)
-                if r_idx == 0:
-                    cell.font = Font(bold=True)
+        if table_rows:
             row += 1
-
-        row += 1
-        # Keep all OCR content below the table.
-        for cy, line in full_lines:
-            if cy > table_bottom + 12:
-                ws.cell(row, 1, line)
-                ws.cell(row, 1).alignment = Alignment(vertical="top", wrap_text=True)
+            ws.cell(row, 1, "EDITABLE DETECTED TABLE")
+            ws.cell(row, 1).font = Font(size=12, bold=True)
+            row += 1
+            thin = Side(style="thin", color="B7C3D0")
+            for r_idx, values in enumerate(table_rows):
+                for col, value in enumerate(values, start=1):
+                    cell = ws.cell(row, col, _normalize_cell(value))
+                    cell.alignment = Alignment(vertical="top", wrap_text=True)
+                    cell.border = Border(left=thin, right=thin, top=thin, bottom=thin)
+                    if r_idx == 0:
+                        cell.font = Font(bold=True)
+                        cell.fill = PatternFill(fill_type="solid", fgColor="D9EAF7")
                 row += 1
-    else:
-        for _, line in full_lines:
-            ws.cell(row, 1, line)
-            ws.cell(row, 1).alignment = Alignment(vertical="top", wrap_text=True)
-            row += 1
 
-    ws.column_dimensions["A"].width = 60
-    for col in range(2, ws.max_column + 1):
-        max_len = 0
-        for cell in ws[get_column_letter(col)]:
-            if cell.value:
-                max_len = max(max_len, len(str(cell.value)))
-        ws.column_dimensions[get_column_letter(col)].width = min(max(14, max_len + 2), 30)
-    ws.freeze_panes = "A2"
-    return ws
+    ws.freeze_panes = f"A{max(1, int(xl_img.height / 18) + 8)}"
+    return ws, tmp
 
 
 def convert_pdf_to_xlsx(input_path, output_path):
     _ensure_tesseract()
     doc=pymupdf.open(str(input_path)); wb=openpyxl.Workbook(); wb.remove(wb.active)
-    tables=0; modes=[]
-    for page_no,page in enumerate(doc,start=1):
-        image=_render_page(page,180); full_lines=_ocr_full_page_lines(image); grid=_detect_table_grid(image)
-        if grid and len(grid[0])>=4 and len(grid[1])>=3:
-            _write_page_content_sheet(wb,page_no,image,grid,full_lines); tables+=1; modes.append('ocr-grid-full-page')
-        else:
-            _write_page_content_sheet(wb,page_no,image,None,full_lines); modes.append('ocr-text-full-page')
-    if not wb.sheetnames: _write_sheet(wb,'Text',[['No extractable content was detected.']])
-    wb.save(output_path); doc.close()
+    tables=0; modes=[]; temp_images=[]
+    try:
+        for page_no,page in enumerate(doc,start=1):
+            image=_render_page(page,180); full_lines=_ocr_full_page_lines(image); grid=_detect_table_grid(image)
+            if grid and len(grid[0])>=4 and len(grid[1])>=3:
+                _write_page_content_sheet(wb,page_no,image,grid,full_lines); tables+=1; modes.append('ocr-grid-full-page')
+            else:
+                _write_page_content_sheet(wb,page_no,image,None,full_lines); modes.append('ocr-text-full-page')
+            temp_images.append(Path(tempfile.gettempdir()) / f"toolnest_source_page_{os.getpid()}_{page_no}.png")
+        if not wb.sheetnames: _write_sheet(wb,'Text',[['No extractable content was detected.']])
+        wb.save(output_path)
+    finally:
+        doc.close()
+        for p in temp_images:
+            try: p.unlink()
+            except OSError: pass
     return {'tables':tables,'mode':','.join(sorted(set(modes))) or 'none'}
 
