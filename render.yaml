@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: toolnest-api
+    runtime: python
+    buildCommand: apt-get update && apt-get install -y tesseract-ocr && pip install -r backend/requirements.txt
+    startCommand: gunicorn --chdir backend app:app
+    envVars:
+      - key: MAX_UPLOAD_MB
+        value: "50"
