@@ -16,6 +16,22 @@ app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = int(os.environ.get("MAX_UPLOAD_MB", "50")) * 1024 * 1024
 
 
+@app.after_request
+def add_cors_headers(response):
+    # The ToolNest frontend is hosted on GitHub Pages, while this API is
+    # hosted separately on Railway. Allow the browser to read API responses.
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+    response.headers["Access-Control-Expose-Headers"] = "Content-Disposition, X-ToolNest-Mode, X-ToolNest-Tables"
+    return response
+
+
+@app.route("/api/pdf-to-xlsx", methods=["OPTIONS"])
+def pdf_to_xlsx_options():
+    return ("", 204)
+
+
 def safe_filename(name: str) -> str:
     name = Path(name or "document.pdf").name
     stem = re.sub(

@@ -4573,7 +4573,8 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
 
           const response=await fetch(API_URL,{
             method:'POST',
-            body:formData
+            body:formData,
+            cache:'no-store'
           });
 
           if(!response.ok){
@@ -4606,7 +4607,12 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
           reset();
         }catch(e){
           console.error(e);
-          alert(e && e.message ? e.message : 'Unable to convert this PDF to Excel. Please try again.');
+          const message = e && e.message ? e.message : '';
+          if (e instanceof TypeError && /fetch/i.test(message)) {
+            alert('The PDF-to-Excel service could not be reached. Please try again in a moment.');
+          } else {
+            alert(message || 'Unable to convert this PDF to Excel. Please try again.');
+          }
         }finally{
           download.disabled=false;
           download.textContent='Convert & Download';
