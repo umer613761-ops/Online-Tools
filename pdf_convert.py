@@ -235,8 +235,14 @@ def _detect_table_regions(page, scale=1.5):
     decorative page border alone is rejected because it does not contain the
     repeated internal grid lines expected from a table.
     """
-    import cv2
-    import numpy as np
+    try:
+        import cv2
+        import numpy as np
+    except ImportError:
+        # Table detection is an enhancement, not a reason to make PDF → DOCX
+        # fail completely. If an old deployment is missing OpenCV, fall back
+        # to the normal OCR/DOCX path instead of returning a server error.
+        return []
 
     pil_img = _render_page_image(page, scale=scale)
     img = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2GRAY)
