@@ -31,7 +31,12 @@ def root():
 
 @app.get("/health")
 def health():
-    return jsonify({"ok": True, "service": "ToolNest conversion API", "status": "running"})
+    return jsonify({
+        "ok": True,
+        "service": "ToolNest conversion API",
+        "status": "running",
+        "conversions": ["txt", "docx", "html"],
+    })
 
 
 
@@ -66,10 +71,23 @@ def serve_pdf_conversion(extension, converter, mimetype):
             raise RuntimeError("The converter did not produce a file.")
         return send_file(output_path, as_attachment=True, download_name=f"{Path(original).stem}.{extension}", mimetype=mimetype)
     except Exception as exc:
-        return jsonify({"error": f"Unable to convert this PDF to {extension.upper()}.", "details": str(exc)}), 500
+        # Keep the user-facing message useful while exposing the real
+        # converter exception for debugging instead of hiding it.
+        return jsonify({
+            "ok": False,
+            "error": f"Unable to convert this PDF to {extension.upper()}.",
+            "details": str(exc) or exc.__class__.__name__,
+            "exception": exc.__class__.__name__,
+        }), 500
     finally:
-        try: input_path.unlink(missing_ok=True)
-        except Exception: pass
+        try:
+            input_path.unlink(missing_ok=True)
+        except Exception:
+            pass
+        try:
+            output_path.unlink(missing_ok=True)
+        except Exception:
+            pass
 
 
 @app.post("/api/pdf-to-txt")

@@ -1,10 +1,22 @@
-# ToolNest PDF to XLSX backend
+# ToolNest PDF conversion backend
 
-This backend is designed for the Railway deployment used by ToolNest.
+This backend provides the PDF conversion API used by the ToolNest frontend.
 
-Key fixes:
-- CORS enabled for the GitHub Pages frontend, preventing browser "Failed to fetch" errors.
-- Root and /health endpoints return a simple running status.
-- Tesseract OCR is installed inside the Docker image; visitors do not install anything.
-- PDF pages are preserved as images inside the Excel workbook in addition to editable OCR/table data.
-- Existing `/api/pdf-to-xlsx` endpoint is preserved.
+## Supported PDF conversions
+
+- `POST /api/pdf-to-txt`
+- `POST /api/pdf-to-docx`
+- `POST /api/pdf-to-html`
+- `GET /health`
+
+The frontend can also convert PDF pages to JPG/PNG locally in the browser using PDF.js.
+
+## Deployment
+
+The Docker image installs Tesseract OCR and runs the Flask application with Gunicorn. The service listens on Railway's `PORT` environment variable (default `10000`).
+
+The API returns JSON error details for conversion failures so the frontend can display the actual server-side error instead of hiding it behind a generic message.
+
+## Upload limits
+
+The default maximum PDF upload size is 50 MB. This can be changed with `MAX_UPLOAD_MB`.

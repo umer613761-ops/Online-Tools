@@ -4525,10 +4525,15 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
           setTimeout(()=>URL.revokeObjectURL(url),5000);
           reset();
         }catch(e){
-          console.error(e);
+          console.error('ToolNest PDF conversion error:', e);
           const message=e&&e.message?e.message:'';
-          if(e instanceof TypeError && /fetch/i.test(message)) alert('The PDF conversion service could not be reached. Please try again in a moment.');
-          else alert(message||'Unable to convert this PDF. Please try again.');
+          if(e instanceof TypeError && /fetch|network|load failed/i.test(message)){
+            alert('Could not connect to the PDF conversion server. Check that the Railway deployment is running and try again.');
+          }else{
+            // HTTP errors from the API already contain the server's real
+            // error/details, so show them directly instead of masking them.
+            alert(message||'Unable to convert this PDF. Please try again.');
+          }
         }finally{
           download.disabled=false;
           download.textContent='Convert & Download';
