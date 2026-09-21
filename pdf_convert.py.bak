@@ -313,151 +313,12 @@ def _add_signature_hint(docx, page):
     return
 
 
-
-def _detect_editable_tables(page, scale=2.5):
-    """Detect simple ruled tables on scanned pages and return cell geometry."""
-    try:
-        import cv2
-        import numpy as np
-        pix = page.get_pixmap(matrix=fitz.Matrix(scale, scale), alpha=False, colorspace=fitz.csRGB)
-        from PIL import Image
-        img = np.array(Image.open(io.BytesIO(pix.tobytes('png'))).convert('L'))
-        ad = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C,
-                                   cv2.THRESH_BINARY_INV, 51, 10)
-        vmask = cv2.morphologyEx(ad, cv2.MORPH_OPEN,
-                                 cv2.getStructuringElement(cv2.MORPH_RECT, (1, 20)))
-        hmask = cv2.morphologyEx(ad, cv2.MORPH_OPEN,
-                                 cv2.getStructuringElement(cv2.MORPH_RECT, (50, 1)))
-        H, W = img.shape
-        def verticals(mask):
-            cnts,_=cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            vals=[]
-            for c in cnts:
-                x,y,w,h=cv2.boundingRect(c)
-                if h > H*0.20 and w < 80:
-                    vals.append((x,y,w,h))
-            return vals
-        def horizontals(mask):
-            cnts,_=cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            vals=[]
-            for c in cnts:
-                x,y,w,h=cv2.boundingRect(c)
-                if w > W*0.25 and h < 80:
-                    vals.append((x,y,w,h))
-            return vals
-        vs=verticals(vmask); hs=horizontals(hmask)
-        if len(vs)<3 or len(hs)<3:
-            return []
-        # Cluster nearby line positions.
-        def cluster(values, tol=20):
-            values=sorted(values)
-            groups=[]
-            for v in values:
-                if not groups or v-groups[-1][-1]>tol:
-                    groups.append([v])
-                else:
-                    groups[-1].append(v)
-            return [int(sum(g)/len(g)) for g in groups]
-        vx=cluster([x+w//2 for x,y,w,h in vs])
-        hy=cluster([y+h//2 for x,y,w,h in hs])
-        # Candidate table regions: adjacent vertical lines enclosing many horizontal lines.
-        tables=[]
-        for i in range(len(vx)-2):
-            for j in range(i+2,len(vx)):
-                left,right=vx[i],vx[j]
-                if right-left < W*0.30: continue
-                inside=[y for y in hy if y>0]
-                # horizontal lines spanning this table are approximated by width coverage.
-                spanning=[]
-                for x,y,w,h in hs:
-                    center=y+h//2
-                    if center and x <= left+40 and x+w >= right-40:
-                        spanning.append(center)
-                spanning=cluster(spanning)
-                if len(spanning)>=4:
-                    tables.append((left,right,spanning))
-        # More reliable fallback for full-width ruled tables: use all long horizontals
-        # when several long verticals occur in the same y-range.
-        if not tables:
-            long_v=[x for x,y,w,h in vs if h>H*0.25]
-            if len(long_v)>=3:
-                left,right=min(long_v),max(long_v)
-                spanning=cluster([y+h//2 for x,y,w,h in hs if x <= left+50 and x+w >= right-50])
-                if len(spanning)>=4:
-                    tables=[(left,right,spanning)]
-        # Deduplicate and return only the largest plausible table.
-        unique=[]
-        for left,right,ys in tables:
-            key=(left,right,tuple(ys))
-            if key not in [(a,b,tuple(c)) for a,b,c in unique]: unique.append((left,right,ys))
-        unique.sort(key=lambda t:(t[1]-t[0])*max(0,len(t[2])-1), reverse=True)
-        results=[]
-        for left,right,ys in unique[:2]:
-            # Limit to a sensible page region and require actual columns.
-            cols=[x for x in vx if left-25 <= x <= right+25]
-            cols=cluster(cols)
-            if len(cols)>=3 and len(ys)>=4:
-                results.append({'left':left,'right':right,'top':min(ys)-2,
-                                'bottom':max(ys)+2,'x':cols,'y':ys})
-        return results
-    except Exception:
-        return []
-
-
-def _ocr_table_cells(page, table, scale=2.5):
-    """OCR a detected table once and place words into editable cells."""
-    import cv2
-    import numpy as np
-    import pytesseract
-    from PIL import Image
-    pix = page.get_pixmap(matrix=fitz.Matrix(scale, scale), alpha=False, colorspace=fitz.csRGB)
-    img = np.array(Image.open(io.BytesIO(pix.tobytes('png'))).convert('L'))
-    x0=max(0,table['left']-4); x1=min(img.shape[1],table['right']+4)
-    y0=max(0,table['top']-4); y1=min(img.shape[0],table['bottom']+4)
-    crop=img[y0:y1,x0:x1]
-    crop=cv2.medianBlur(crop,3)
-    proc=cv2.threshold(crop,175,255,cv2.THRESH_BINARY)[1]
-    data=pytesseract.image_to_data(proc,config='--oem 3 --psm 6',lang='eng',output_type=pytesseract.Output.DICT)
-    xs=table['x']; ys=table['y']
-    rows=[['' for _ in range(len(xs)-1)] for _ in range(len(ys)-1)]
-    buckets=[[[] for _ in range(len(xs)-1)] for _ in range(len(ys)-1)]
-    for i,text in enumerate(data.get('text',[])):
-        text=(text or '').strip()
-        if not text: continue
-        try: conf=float(data['conf'][i])
-        except Exception: conf=0
-        if conf < 8: continue
-        left=int(data['left'][i])+x0; top=int(data['top'][i])+y0
-        w=int(data['width'][i]); h=int(data['height'][i])
-        cx=left+w/2; cy=top+h/2
-        ci=next((j for j in range(len(xs)-1) if xs[j] <= cx < xs[j+1]),None)
-        ri=next((j for j in range(len(ys)-1) if ys[j] <= cy < ys[j+1]),None)
-        if ci is not None and ri is not None:
-            buckets[ri][ci].append((left,text,conf))
-    for r in range(len(rows)):
-        for c in range(len(rows[r])):
-            vals=sorted(buckets[r][c],key=lambda z:z[0])
-            rows[r][c]=' '.join(v[1] for v in vals)
-    return rows
-
-
-def _add_docx_table(docx, rows):
-    if not rows:
-        return
-    cols=max(len(r) for r in rows)
-    table=docx.add_table(rows=len(rows), cols=cols)
-    table.style='Table Grid'
-    for r,row in enumerate(rows):
-        for c in range(cols):
-            table.cell(r,c).text=row[c] if c<len(row) else ''
-    docx.add_paragraph()
-
 def convert_docx(pdf_path, output_path, pages):
     """Create an editable DOCX from native or scanned PDFs.
 
-    Scanned pages are OCR'd as editable Word text. Simple ruled tables are
-    additionally reconstructed as real editable Word tables instead of page
-    images.
+    Native PDF text is extracted directly. Scanned pages are OCR'd and the
+    OCR result is written as real Word paragraphs, so the document is editable
+    rather than a collection of full-page screenshots.
     """
     docx = Document()
     pdf = fitz.open(pdf_path)
@@ -467,44 +328,17 @@ def convert_docx(pdf_path, output_path, pages):
         if idx:
             docx.add_page_break()
 
-        tables = _detect_editable_tables(page) if _has_large_page_image(page) else []
         lines = _native_page_lines(page)
+        # A scanned page may have a useless hidden OCR layer. Re-OCR visible
+        # content whenever the page is image-heavy.
         if _has_large_page_image(page) or not lines:
             lines = _ocr_page_lines(page)
 
-        if not tables:
-            if not lines:
-                lines = [f'[Page {n}: no readable text detected]']
-            _add_editable_lines(docx, lines)
-            continue
+        # Keep a small page marker only when there is no extracted content.
+        if not lines:
+            lines = [f'[Page {n}: no readable text detected]']
 
-        # For a table page, write OCR text outside the table and insert the
-        # reconstructed table as an actual editable Word table. This keeps the
-        # document editable while avoiding the old full-page-image approach.
-        table = tables[0]
-        rows = _ocr_table_cells(page, table)
-        # Header/body table pages: add OCR lines first, then the table. The
-        # surrounding text remains editable; table cells are editable too.
-        table_start_hint = re.compile(r'^(SUBJECTS|CLIENT NAME|DATE OF BIRTH|APPLICATION DETAILS|MAX\.? MARKS)', re.I)
-        before=[]
-        after=[]
-        seen_hint=False
-        for line in lines:
-            if table_start_hint.search(line):
-                seen_hint=True
-            if seen_hint:
-                after.append(line)
-            else:
-                before.append(line)
-        _add_editable_lines(docx, before)
-        _add_docx_table(docx, rows)
-        # Keep useful text following the table, but avoid duplicating obvious
-        # table OCR fragments.
-        for line in after:
-            if re.search(r'(MARKS IN WORDS|RESULT|GRADE|DATE OF ISSUE|REMARKS|SYSTEM GENERATED|CONTROLLER|TOTAL)', line, re.I):
-                p=docx.add_paragraph()
-                p.paragraph_format.space_after=Pt(5)
-                p.add_run(line)
+        _add_editable_lines(docx, lines)
 
     pdf.close()
     docx.save(output_path)
