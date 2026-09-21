@@ -140,8 +140,19 @@ def get_page_text(page):
             if text:
                 candidates.append((confidence, text))
         if candidates:
+            # Confidence alone can favour a cleaner-looking OCR pass that has
+            # silently dropped whole paragraphs. Prefer the fuller pass when
+            # its confidence is close to the best pass. This matters for
+            # scanned letters/certificates where PSM 3 can miss text near
+            # signatures, stamps, or the lower part of the page.
             candidates.sort(key=lambda item: item[0], reverse=True)
-            return candidates[0][1]
+            best_conf, best_text = candidates[0]
+            fuller = max(candidates, key=lambda item: len(item[1]))
+            if (fuller is not candidates[0]
+                    and fuller[0] >= best_conf - 5.0
+                    and len(fuller[1]) >= len(best_text) * 1.12):
+                return fuller[1]
+            return best_text
 
     if extracted:
         return extracted
