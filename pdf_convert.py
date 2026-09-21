@@ -7,10 +7,13 @@ from pathlib import Path
 import fitz
 from PIL import Image, ImageOps
 from docx import Document
+from docx.text.paragraph import Paragraph
+from docx.enum.text import WD_TAB_ALIGNMENT
 from docx.shared import Pt, Inches
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from lxml import etree
+import pdfplumber
 
 V_NS='urn:schemas-microsoft-com:vml'
 O_NS='urn:schemas-microsoft-com:office:office'
@@ -244,61 +247,271 @@ def _vml(paragraph,kind,x,y,w,h,rid=None,text='',font_size=10,bold=False):
     pict.append(shape); paragraph._p.append(pict)
 
 
-def convert_docx(pdf_path,output_path,pages):
-    pdf=fitz.open(pdf_path); doc=Document()
-    for i,n in enumerate(pages):
-        sec=doc.sections[0] if i==0 else doc.add_section(1)
-        page=pdf[n-1]; pw=page.rect.width; ph=page.rect.height
-        sec.page_width=Inches(pw/72); sec.page_height=Inches(ph/72)
-        sec.top_margin=sec.bottom_margin=sec.left_margin=sec.right_margin=Inches(0); sec.header_distance=sec.footer_distance=Inches(0); sec.header.is_linked_to_previous=False
-        header=sec.header; p=header.paragraphs[0]; p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0)
-        scanned=_has_large_page_image(page)
-        if scanned:
-            img=_scan_image(page); lines,_,_= _ocr_page(page); table=_detect_table(page,img)
-            cleaned=_clean_scan(img,lines,table)
-            tmp=Path(output_path).with_name(f'.toolnest_{i+1}.png'); cleaned.save(tmp)
-            rid,_=doc.part.get_or_add_image(str(tmp)); _vml(p,'image',0,0,pw,ph,rid=rid)
-            sx=pw/img.width; sy=ph/img.height
-            # Replace table text with targeted cell OCR when a ruled table is found.
-            table_boxes=[]
-            if table:
-                cells=_ocr_table_words(img,table)
-                for r,row in enumerate(cells):
-                    for c,text in enumerate(row):
-                        if not text: continue
-                        x=table['x'][c]*sx; y=table['y'][r]*sy; w=(table['x'][c+1]-table['x'][c])*sx; h=(table['y'][r+1]-table['y'][r])*sy
-                        # table text is centered/left depending on column; a white box hides original printed text.
-                        fs=max(6,min(13,(table['y'][r+1]-table['y'][r])*.42))
-                        _vml(p,'text',x+2,y+2,max(8,w-4),max(10,h-4),text=text,font_size=fs)
-                        table_boxes.append((table['x'][c],table['y'][r],table['x'][c+1],table['y'][r+1]))
-            for ln in lines:
-                if not ln['text'] or ln['conf']<25: continue
-                # Skip OCR lines inside detected table; cells above handle them.
-                if table and table['left']<=ln['x']<=table['right'] and table['y'][0]<=ln['y']<=table['y'][-1]:
-                    continue
-                x,y,x2,y2=ln['x']*sx,ln['y']*sy,ln['x2']*sx,ln['y2']*sy
-                import numpy as np
-                arr=np.array(img); xa=max(0,int(ln['x']-3)); xb=min(arr.shape[1],int(ln['x2']+3)); ya=max(0,int(ln['y']-3)); yb=min(arr.shape[0],int(ln['y2']+3)); sample=arr[ya:yb,xa:xb].mean() if xb>xa and yb>ya else 255
-                if sample<145: continue
-                fs=max(6,min(15,(y2-y)*.78)); _vml(p,'text',x,y,max(8,x2-x+4),max(10,y2-y+3),text=ln['text'],font_size=fs)
-            tmp.unlink(missing_ok=True)
-        else:
-            # Native text PDFs: keep the existing editable text path.
-            for ln in _native_lines(page):
-                para=doc.add_paragraph(); para.paragraph_format.space_after=Pt(4); para.add_run(ln['text'])
-        doc.add_paragraph('')
-    pdf.close(); doc.save(output_path)
+def _set_cell_borders(cell, color="B7B7B7", size="4"):
+    tcPr = cell._tc.get_or_add_tcPr()
+    borders = tcPr.first_child_found_in("w:tcBorders")
+    if borders is None:
+        borders = OxmlElement('w:tcBorders')
+        tcPr.append(borders)
+    for edge in ('top','left','bottom','right','insideH','insideV'):
+        tag = 'w:' + edge
+        el = borders.find(qn(tag))
+        if el is None:
+            el = OxmlElement(tag); borders.append(el)
+        el.set(qn('w:val'),'single'); el.set(qn('w:sz'),size); el.set(qn('w:space'),'0'); el.set(qn('w:color'),color)
 
 
-def _native_lines(page):
-    data=page.get_text('dict'); out=[]
+def _insert_paragraph_after(parent, text='', runs=None):
+    p = OxmlElement('w:p')
+    parent._element.addnext(p) if hasattr(parent, '_element') else parent.addnext(p)
+    para = Paragraph(p, parent._parent if hasattr(parent, '_parent') else parent)
+    if runs is None:
+        para.add_run(text)
+    else:
+        for r in runs:
+            run = para.add_run(r.get('text',''))
+            run.bold = bool(r.get('bold'))
+            run.italic = bool(r.get('italic'))
+            run.font.size = Pt(r.get('size', 10.5))
+            run.font.name = r.get('font','Arial')
+    return para
+
+
+def _add_table_after(doc, anchor, rows, col_widths=None):
+    cols = max((len(r) for r in rows), default=1)
+    table = doc.add_table(rows=len(rows), cols=cols)
+    table.style = 'Table Grid'
+    for ri, row in enumerate(rows):
+        for ci in range(cols):
+            cell = table.cell(ri, ci)
+            cell.text = ''
+            _set_cell_borders(cell)
+            if ci < len(row):
+                cell.paragraphs[0].paragraph_format.space_after = Pt(0)
+                run = cell.paragraphs[0].add_run(row[ci] or '')
+                run.font.name = 'Arial'; run.font.size = Pt(10.5)
+            if col_widths and ci < len(col_widths):
+                cell.width = Inches(max(0.25, col_widths[ci] / 72.0))
+    # The table is initially appended at the end. Move it immediately after the
+    # current page cursor so native PDF tables stay in their original reading order.
+    anchor._p.addnext(table._tbl)
+    return table
+
+
+def _native_lines(page, table_bboxes=None):
+    table_bboxes = table_bboxes or []
+    data = page.get_text('dict')
+    out=[]
     for block in data.get('blocks',[]):
-        if block.get('type')!=0: continue
+        if block.get('type') != 0: continue
         for line in block.get('lines',[]):
-            text=''.join(s.get('text','') for s in line.get('spans',[])).strip()
-            if text: out.append({'text':text})
-    return out
+            bbox = line.get('bbox',[0,0,0,0])
+            cx=(bbox[0]+bbox[2])/2; cy=(bbox[1]+bbox[3])/2
+            if any(tb[0]-2 <= cx <= tb[2]+2 and tb[1]-2 <= cy <= tb[3]+2 for tb in table_bboxes):
+                continue
+            runs=[]
+            for span in line.get('spans',[]):
+                text=span.get('text','')
+                if not text: continue
+                flags=int(span.get('flags',0))
+                runs.append({
+                    'text': text,
+                    'size': float(span.get('size',10.5) or 10.5),
+                    'font': 'Arial',
+                    'bold': bool(flags & 16),
+                    'italic': bool(flags & 2),
+                })
+            text=''.join(r['text'] for r in runs).strip()
+            if text:
+                out.append({'x':bbox[0],'y':bbox[1],'x2':bbox[2],'y2':bbox[3],'text':text,'runs':runs})
+    return sorted(out,key=lambda z:(z['y'],z['x']))
 
+
+def _group_native_lines(lines, tolerance=1.8):
+    """Merge PDF text lines sharing the same baseline into one Word paragraph."""
+    groups=[]
+    for ln in lines:
+        placed=False
+        for g in groups:
+            if abs(g[0]['y']-ln['y']) <= tolerance:
+                g.append(ln); placed=True; break
+        if not placed: groups.append([ln])
+    merged=[]
+    for g in groups:
+        g.sort(key=lambda z:z['x'])
+        base=g[0]
+        runs=[]
+        for idx,ln in enumerate(g):
+            if idx:
+                runs.append({'text':'\t','size':9,'font':'Arial','bold':False,'italic':False,'tab_x':ln['x']})
+            runs.extend(ln['runs'])
+        merged.append({'x':base['x'],'y':min(z['y'] for z in g),'x2':max(z['x2'] for z in g),'y2':max(z['y2'] for z in g),'text':'\t'.join(z['text'] for z in g),'runs':runs})
+    return sorted(merged,key=lambda z:(z['y'],z['x']))
+
+
+def _native_tables(plumber_page):
+    result=[]
+    try:
+        for t in plumber_page.find_tables():
+            rows=t.extract() or []
+            if not rows: continue
+            cleaned=[]
+            for row in rows:
+                cleaned.append([re.sub(r'\s+',' ', (c or '').strip()) for c in row])
+            result.append({'bbox':tuple(float(v) for v in t.bbox), 'rows':cleaned, 'cells':t.rows})
+    except Exception:
+        pass
+    return result
+
+
+def _common_footer_lines(pdf):
+    # Repeated bottom lines are better represented by a real Word footer than
+    # being duplicated in every page body.
+    per_page=[]
+    for page in pdf:
+        lines=[]
+        for block in page.get_text('dict').get('blocks',[]):
+            if block.get('type')!=0: continue
+            for line in block.get('lines',[]):
+                text=''.join(s.get('text','') for s in line.get('spans',[])).strip()
+                if text and line['bbox'][1] > page.rect.height*0.90:
+                    lines.append(text)
+        per_page.append(lines)
+    if not per_page: return []
+    common=per_page[0]
+    for lines in per_page[1:]:
+        common=[x for x in common if x in lines]
+    return common[:4]
+
+
+def _set_section_geometry(section, page):
+    section.page_width=Inches(float(page.rect.width)/72.0)
+    section.page_height=Inches(float(page.rect.height)/72.0)
+    section.top_margin=Inches(0)
+    section.bottom_margin=Inches(0)
+    section.left_margin=Inches(40/72)
+    section.right_margin=Inches(40/72)
+    section.header_distance=Inches(0)
+    section.footer_distance=Inches(0)
+
+
+def _repeated_header_image(pdf):
+    """Return (image_bytes, width_pt, height_pt) for a wide image repeated near the top."""
+    candidates=[]
+    for page in pdf:
+        for im in page.get_images(full=True):
+            try:
+                rects=page.get_image_rects(im[0])
+                for rect in rects:
+                    if rect.y1 <= page.rect.height*0.20 and rect.width >= page.rect.width*0.70:
+                        data=page.parent.extract_image(im[0])
+                        if data and data.get('image'):
+                            candidates.append((im[0],rect,data['image'],rect.width,rect.height))
+            except Exception:
+                pass
+    if not candidates: return None
+    # Prefer an image appearing on more than one page, then the widest.
+    counts={}
+    for x in candidates: counts[x[0]]=counts.get(x[0],0)+1
+    candidates.sort(key=lambda x:(counts.get(x[0],0),x[3],x[4]),reverse=True)
+    xref,rect,data,w,h=candidates[0]
+    return data,w,h
+
+
+def _append_native_page(doc, page, plumber_page, first_page=False, footer_lines=None):
+    if first_page:
+        section=doc.sections[0]
+    else:
+        section=doc.sections[0]
+    _set_section_geometry(section,page)
+
+    # Remove footer from body flow and create one real Word footer when the PDF
+    # has the same footer on every page.
+    if first_page and footer_lines:
+        fp=section.footer.paragraphs[0]
+        fp.text=''
+        fp.alignment=1
+        for i,line in enumerate(footer_lines):
+            if i: fp.add_run().add_break()
+            r=fp.add_run(line); r.font.name='Arial'; r.font.size=Pt(8)
+
+    # Recreate a repeated full-width header image (e.g. an official letterhead)
+    # as a real editable Word header image instead of losing it during text extraction.
+    header_info=_repeated_header_image(page.parent)
+    header_height=0.0
+    if first_page and header_info:
+        data,w,h=header_info
+        hp=section.header.paragraphs[0]
+        hp.text=''
+        hp.paragraph_format.space_before=Pt(0); hp.paragraph_format.space_after=Pt(0)
+        hp.alignment=0
+        run=hp.add_run()
+        from io import BytesIO
+        run.add_picture(BytesIO(data), width=Inches(float(page.rect.width)/72.0))
+        header_height=float(h)
+        section.header_distance=Inches(0)
+
+    tables=_native_tables(plumber_page)
+    table_bboxes=[t['bbox'] for t in tables]
+    lines=_group_native_lines([ln for ln in _native_lines(page,table_bboxes) if not footer_lines or ln['text'] not in footer_lines])
+
+    # Build a single ordered stream using PDF coordinates.
+    items=[]
+    for ln in lines: items.append(('line',ln['y'],ln))
+    for t in tables: items.append(('table',t['bbox'][1],t))
+    items.sort(key=lambda x:(x[1], 0 if x[0]=='table' else 1))
+
+    cursor=None
+    prev_y=header_height
+    first_line=True
+    for kind, y, obj in items:
+        if kind=='table':
+            if cursor is None:
+                cursor=doc.add_paragraph()
+            table=_add_table_after(doc,cursor,obj['rows'],
+                                   [obj['bbox'][2]-obj['bbox'][0]])
+            # Set a sensible two-column width for the common key/value tables.
+            if len(obj['rows']) and max(map(len,obj['rows']))==2:
+                total=max(0.5,obj['bbox'][2]-obj['bbox'][0])
+                for row in table.rows:
+                    row.cells[0].width=Inches(total*0.42/72)
+                    row.cells[1].width=Inches(total*0.58/72)
+            p=OxmlElement('w:p'); table._tbl.addnext(p); cursor=Paragraph(p,doc._body)
+            prev_y=obj['bbox'][3]
+            continue
+        ln=obj
+        p=doc.add_paragraph() if cursor is None else _insert_paragraph_after(cursor)
+        p.paragraph_format.left_indent=Inches(16.5/72.0)
+        gap=max(0.0, ln['y']-prev_y)
+        p.paragraph_format.space_before=Pt(3 if gap > 13 else 0)
+        p.paragraph_format.space_after=Pt(0)
+        p.paragraph_format.line_spacing=1.0
+        tab_xs=[r.get('tab_x') for r in ln['runs'] if r.get('tab_x')]
+        if tab_xs:
+            from docx.shared import Inches as _Inches
+            p.paragraph_format.tab_stops.add_tab_stop(_Inches(max(0, tab_xs[0]-ln['x'])/72.0), WD_TAB_ALIGNMENT.LEFT)
+        for rinfo in ln['runs']:
+            r=p.add_run(rinfo['text'])
+            r.font.name='Arial'; r.font.size=Pt(9); r.bold=rinfo['bold']; r.italic=rinfo['italic']
+        cursor=p
+        prev_y=ln['y2']
+    return cursor
+
+
+def convert_docx(pdf_path,output_path,pages):
+    pdf=fitz.open(pdf_path)
+    plumber=pdfplumber.open(pdf_path)
+    doc=Document()
+    # Remove the default empty paragraph content while retaining the body.
+    for p in list(doc.paragraphs):
+        p._element.getparent().remove(p._element)
+    normal=doc.styles['Normal']; normal.font.name='Arial'; normal.font.size=Pt(10.5)
+    footer_lines=_common_footer_lines(pdf)
+    for idx,n in enumerate(pages):
+        if idx:
+            doc.add_page_break()
+        _append_native_page(doc,pdf[n-1],plumber.pages[n-1],first_page=(idx==0),footer_lines=footer_lines)
+    plumber.close(); pdf.close(); doc.save(output_path)
 
 def convert_html(pdf_path,output_path,pages):
     pdf=fitz.open(pdf_path); out=['<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF to HTML</title><style>html,body{margin:0;background:#e9edf1;font-family:Arial,sans-serif}.pdf-document{padding:24px}.pdf-page{position:relative;margin:0 auto 24px;background:#fff;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.14)}.pdf-bg{position:absolute;inset:0;width:100%;height:100%}.editable{position:absolute;background:#fff;border:0;padding:0;margin:0;outline:none;line-height:1;box-sizing:border-box}.native{background:transparent}@media print{body{background:#fff}.pdf-document{padding:0}.pdf-page{margin:0;box-shadow:none;break-after:page}.pdf-page:last-child{break-after:auto}}</style></head><body><div class="pdf-document">']

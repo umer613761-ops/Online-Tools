@@ -1,0 +1,15 @@
+ToolNest PDF conversion backend
+
+This build restores the earlier document-conversion approach as the baseline:
+- Native/text PDFs: PyMuPDF text extraction + PDF-coordinate line grouping + pdfplumber table detection.
+- DOCX: real editable Word paragraphs, real editable tables, repeated PDF letterhead as a Word header image, and repeated footer as a Word footer.
+- Scanned/image PDFs: existing OCR + editable text overlay path is retained.
+- TXT: page-aware text extraction with OCR fallback.
+- HTML: page-preserving HTML output with the existing OCR/image handling.
+
+Primary endpoints:
+POST /api/pdf-to-docx
+POST /api/pdf-to-txt
+POST /api/pdf-to-html
+
+The frontend convert-from-pdf.html already points to the Railway API endpoints.
