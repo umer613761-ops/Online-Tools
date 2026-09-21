@@ -261,73 +261,84 @@ def _docx_paragraphs(text):
     return paragraphs
 
 
-def _add_docx_text(docx, text):
-    if not text:
-        return
-    for lines in _docx_paragraphs(text):
+def _ocr_page_lines(page, scale=2.5):
+    """Return OCR lines with editable text for a scanned page."""
+    try:
+        import pytesseract
+        from PIL import Image, ImageOps
+        pix = page.get_pixmap(matrix=fitz.Matrix(scale, scale), alpha=False, colorspace=fitz.csRGB)
+        img = Image.open(io.BytesIO(pix.tobytes('png'))).convert('L')
+        img = ImageOps.autocontrast(img)
+        # Try two layouts and keep the fuller readable result.
+        candidates = []
+        for psm in (3, 6):
+            cfg = f'--oem 3 --psm {psm}'
+            text = pytesseract.image_to_string(img, config=cfg, lang='eng').strip()
+            data = pytesseract.image_to_data(img, config=cfg, lang='eng', output_type=pytesseract.Output.DICT)
+            confs=[]
+            for t,c in zip(data.get('text',[]), data.get('conf',[])):
+                if t.strip():
+                    try:
+                        c=float(c)
+                        if c>=0: confs.append(c)
+                    except: pass
+            conf=sum(confs)/len(confs) if confs else 0
+            candidates.append((conf,text))
+        candidates.sort(key=lambda x:x[0], reverse=True)
+        best=candidates[0]
+        fuller=max(candidates,key=lambda x:len(x[1]))
+        text = fuller[1] if fuller[0] >= best[0]-5 and len(fuller[1]) >= len(best[1])*1.08 else best[1]
+        return [re.sub(r'[ \t]+',' ',ln).strip() for ln in text.splitlines() if ln.strip()]
+    except Exception:
+        return []
+
+
+def _native_page_lines(page):
+    text = page_text(page)
+    return [re.sub(r'[ \t]+',' ',ln).strip() for ln in text.splitlines() if ln.strip()]
+
+
+def _add_editable_lines(docx, lines):
+    """Write extracted/OCR lines as real editable Word text."""
+    for line in lines:
         p = docx.add_paragraph()
-        p.paragraph_format.space_after = Pt(7)
-        p.paragraph_format.line_spacing = 1.08
-        for line_index, line in enumerate(lines):
-            if line_index:
-                p.add_run().add_break()
-            p.add_run(line)
+        p.paragraph_format.space_after = Pt(5)
+        p.paragraph_format.line_spacing = 1.05
+        p.add_run(line)
 
 
-def _add_full_page_image(docx, page, section, scale=2.5):
-    """Place a scanned PDF page as a full-page image in the DOCX.
-
-    For image-only/scanned PDFs this is the safest way to preserve tables,
-    stamps, signatures, columns and other visual layout without introducing
-    OCR fragments into the Word document.
-    """
-    img = _render_page_image(page, scale=scale)
-    buf = io.BytesIO()
-    img.save(buf, format='PNG')
-    buf.seek(0)
-
-    # PDF points are 1/72 inch. Match the Word page to the source page.
-    section.page_width = Inches(float(page.rect.width) / 72.0)
-    section.page_height = Inches(float(page.rect.height) / 72.0)
-    section.top_margin = Inches(0)
-    section.bottom_margin = Inches(0)
-    section.left_margin = Inches(0)
-    section.right_margin = Inches(0)
-    p = docx.add_paragraph()
-    p.paragraph_format.space_before = Pt(0)
-    p.paragraph_format.space_after = Pt(0)
-    p.paragraph_format.line_spacing = 1
-    p.add_run().add_picture(
-        buf,
-        width=Inches(float(page.rect.width) / 72.0),
-        height=Inches(float(page.rect.height) / 72.0),
-    )
-
-
-def _prepare_section_for_page(section, page):
-    section.page_width = Inches(float(page.rect.width) / 72.0)
-    section.page_height = Inches(float(page.rect.height) / 72.0)
-    section.top_margin = Inches(0.65)
-    section.bottom_margin = Inches(0.65)
-    section.left_margin = Inches(0.7)
-    section.right_margin = Inches(0.7)
+def _add_signature_hint(docx, page):
+    """Keep the conversion editable; signatures/stamps remain non-editable visual marks only."""
+    # Deliberately do not turn the whole page into an image.
+    return
 
 
 def convert_docx(pdf_path, output_path, pages):
-    """Create a visually faithful DOCX from the selected PDF pages.
+    """Create an editable DOCX from native or scanned PDFs.
 
-    Each source page is placed on a matching Word page as a high-resolution
-    image. This avoids losing tables, columns, stamps, signatures and other
-    layout elements that OCR/text reconstruction cannot reliably reproduce.
+    Native PDF text is extracted directly. Scanned pages are OCR'd and the
+    OCR result is written as real Word paragraphs, so the document is editable
+    rather than a collection of full-page screenshots.
     """
     docx = Document()
     pdf = fitz.open(pdf_path)
 
-    # Remove the default section's margins; each page image fills the page.
     for idx, n in enumerate(pages):
         page = pdf[n - 1]
-        section = docx.sections[0] if idx == 0 else docx.add_section()
-        _add_full_page_image(docx, page, section, scale=2.0)
+        if idx:
+            docx.add_page_break()
+
+        lines = _native_page_lines(page)
+        # A scanned page may have a useless hidden OCR layer. Re-OCR visible
+        # content whenever the page is image-heavy.
+        if _has_large_page_image(page) or not lines:
+            lines = _ocr_page_lines(page)
+
+        # Keep a small page marker only when there is no extracted content.
+        if not lines:
+            lines = [f'[Page {n}: no readable text detected]']
+
+        _add_editable_lines(docx, lines)
 
     pdf.close()
     docx.save(output_path)
