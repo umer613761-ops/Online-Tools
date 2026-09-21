@@ -7,7 +7,7 @@ from pathlib import Path
 from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 
-from pdf_to_xlsx import convert_pdf_to_xlsx
+from pdf_convert import convert_txt, convert_docx, convert_html, parse_pages, safe_stem
 
 UPLOAD_DIR = Path(os.environ.get("TOOLNEST_TEMP_DIR", tempfile.gettempdir())) / "toolnest"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -33,53 +33,63 @@ def health():
     return jsonify({"ok": True, "service": "ToolNest conversion API", "status": "running"})
 
 
-@app.post("/api/pdf-to-xlsx")
-def pdf_to_xlsx():
+
+
+def pdf_request_setup(extension):
     if "file" not in request.files:
-        return jsonify({"error": "Please upload a PDF file."}), 400
+        return None, jsonify({"error": "Please upload a PDF file."}), 400
     uploaded = request.files["file"]
     if not uploaded.filename:
-        return jsonify({"error": "Please choose a PDF file."}), 400
-
+        return None, jsonify({"error": "Please choose a PDF file."}), 400
     original = safe_filename(uploaded.filename)
     if not original.lower().endswith(".pdf"):
-        return jsonify({"error": "Only PDF files are supported."}), 400
-
+        return None, jsonify({"error": "Only PDF files are supported."}), 400
     job_id = uuid.uuid4().hex
     input_path = UPLOAD_DIR / f"{job_id}-{original}"
-    output_path = UPLOAD_DIR / f"{job_id}-{Path(original).stem}.xlsx"
+    output_path = UPLOAD_DIR / f"{job_id}-{Path(original).stem}.{extension}"
+    uploaded.save(input_path)
+    return (uploaded, original, input_path, output_path, job_id), None, None
 
+
+def serve_pdf_conversion(extension, converter, mimetype):
+    setup, error, code = pdf_request_setup(extension)
+    if error:
+        return error, code
+    uploaded, original, input_path, output_path, job_id = setup
     try:
-        uploaded.save(input_path)
-        result = convert_pdf_to_xlsx(input_path, output_path)
+        pdf=fitz.open(input_path)
+        pages=parse_pages(request.form.get("pages"), pdf.page_count)
+        pdf.close()
+        converter(input_path, output_path, pages)
         if not output_path.exists() or output_path.stat().st_size == 0:
-            raise RuntimeError("The converter did not produce an Excel file.")
-
-        response = send_file(
-            output_path,
-            as_attachment=True,
-            download_name=f"{Path(original).stem}.xlsx",
-            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        )
-        response.headers["X-ToolNest-Mode"] = result.get("mode", "unknown")
-        response.headers["X-ToolNest-Tables"] = str(result.get("tables", 0))
-        return response
+            raise RuntimeError("The converter did not produce a file.")
+        return send_file(output_path, as_attachment=True, download_name=f"{Path(original).stem}.{extension}", mimetype=mimetype)
     except Exception as exc:
-        return jsonify({
-            "error": "Unable to convert this PDF to Excel.",
-            "details": str(exc),
-        }), 500
+        return jsonify({"error": f"Unable to convert this PDF to {extension.upper()}.", "details": str(exc)}), 500
     finally:
-        try:
-            input_path.unlink(missing_ok=True)
-        except Exception:
-            pass
+        try: input_path.unlink(missing_ok=True)
+        except Exception: pass
+
+
+@app.post("/api/pdf-to-txt")
+def pdf_to_txt():
+    return serve_pdf_conversion("txt", convert_txt, "text/plain; charset=utf-8")
+
+
+@app.post("/api/pdf-to-docx")
+def pdf_to_docx():
+    return serve_pdf_conversion("docx", convert_docx, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+
+
+@app.post("/api/pdf-to-html")
+def pdf_to_html():
+    return serve_pdf_conversion("html", convert_html, "text/html; charset=utf-8")
 
 
 def _cleanup_old_outputs(max_age_seconds=3600):
     import time
     now = time.time()
-    for path in UPLOAD_DIR.glob("*.xlsx"):
+    for path in UPLOAD_DIR.glob("*"):
         try:
             if now - path.stat().st_mtime > max_age_seconds:
                 path.unlink(missing_ok=True)

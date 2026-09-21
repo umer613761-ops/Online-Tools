@@ -4493,107 +4493,49 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
         for(const pageNum of pages){await downloadImagePage(pageNum,fmt.value); await new Promise(r=>setTimeout(r,80));}
         reset(); return;
       }
-      if(fmt.value==='txt'){
-        let out='';
-        for(const i of pages){
-          const p=await pdf.getPage(i);
-          const viewport=p.getViewport({scale:1});
-          const c=await p.getTextContent({normalizeWhitespace:false,disableCombineTextItems:false});
-          const items=c.items.filter(x=>x.str && x.str.trim()!=='');
-          const lines=[];
-          const yTolerance=2;
+      if(fmt.value==='txt' || fmt.value==='docx' || fmt.value==='html'){
+        try{
+          download.disabled=true;
+          download.textContent='Converting...';
+          const API_URL='https://toolnest-api-production-dda7.up.railway.app/api/pdf-to-'+fmt.value;
+          const formData=new FormData();
+          formData.append('file',input.files[0],input.files[0].name);
+          if(mode==='individual') formData.append('pages',pages.join(','));
 
-          for(const item of items){
-            const tx=pdfjsLib.Util.transform(viewport.transform,item.transform);
-            const x=tx[4];
-            const y=tx[5];
-            const fontSize=Math.max(1,Math.sqrt((item.transform[0]||0)**2+(item.transform[1]||0)**2));
-            let line=lines.find(l=>Math.abs(l.y-y)<=Math.max(yTolerance,fontSize*0.35));
-            if(!line){
-              line={y,items:[],fontSize};
-              lines.push(line);
-            }
-            line.items.push({x,str:item.str,hasEOL:!!item.hasEOL,fontSize,width:item.width||0});
-            line.fontSize=Math.max(line.fontSize,fontSize);
+          const response=await fetch(API_URL,{method:'POST',body:formData,cache:'no-store'});
+          if(!response.ok){
+            let message='Unable to convert this PDF.';
+            try{
+              const data=await response.json();
+              if(data && data.error) message=data.error+(data.details?'\n\n'+data.details:'');
+            }catch(_){}
+            throw new Error(message);
           }
-
-          lines.sort((a,b)=>a.y-b.y);
-          out+='Page '+i+'\n\n';
-
-          for(let li=0;li<lines.length;li++){
-            const line=lines[li];
-            line.items.sort((a,b)=>a.x-b.x);
-            let text='';
-            let previous=null;
-            for(const item of line.items){
-              let value=item.str.replace(/[\u0000-\u001f\u007f]/g,'');
-              if(!value) continue;
-              if(previous){
-                const gap=item.x-(previous.x+previous.width);
-                const prevLast=text.slice(-1);
-                const nextFirst=value.charAt(0);
-                const punctuation=/^[,.;:!?%)\]}]/.test(nextFirst);
-                const opens=/[(\[{]$/.test(prevLast);
-                // Add a space only when the PDF's horizontal gap indicates a real word gap.
-                // Small gaps are kept intact so words split into multiple PDF text items
-                // (for example "conta" + "ct") are not turned into "conta ct".
-                if(gap>Math.max(1.5,line.fontSize*0.20) && !punctuation && !opens && !/\s$/.test(text) && !/^\s/.test(value)) text+=' ';
-              }
-              text+=value;
-              previous={x:item.x,width:item.width||0};
-            }
-            text=text.replace(/[ \t]+$/,'');
-            if(text) out+=text+'\n';
-          }
-          out+='\n';
+          const blob=await response.blob();
+          if(!blob.size) throw new Error('The server returned an empty file.');
+          const url=URL.createObjectURL(blob);
+          const a=document.createElement('a');
+          a.href=url;
+          const disposition=response.headers.get('Content-Disposition')||'';
+          const match=disposition.match(/filename[^;=]*=(?:UTF-8''|\")?([^;\"]+)/i);
+          const ext=fmt.value;
+          const fallbackName=sourceFileName.replace(/\.[^.]+$/,'')+'.'+ext;
+          a.download=match?decodeURIComponent(match[1].replace(/^\"|\"$/g,'')):fallbackName;
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(()=>URL.revokeObjectURL(url),5000);
+          reset();
+        }catch(e){
+          console.error(e);
+          const message=e&&e.message?e.message:'';
+          if(e instanceof TypeError && /fetch/i.test(message)) alert('The PDF conversion service could not be reached. Please try again in a moment.');
+          else alert(message||'Unable to convert this PDF. Please try again.');
+        }finally{
+          download.disabled=false;
+          download.textContent='Convert & Download';
         }
-        const a=document.createElement('a');
-        const url=URL.createObjectURL(new Blob([out],{type:'text/plain;charset=utf-8'}));
-        a.href=url;
-        a.download=sourceFileName.replace(/\.[^.]+$/,'')+'-converted.txt';
-        a.click();
-        setTimeout(()=>URL.revokeObjectURL(url),1000);
-        reset();
         return;
       }
-      if(fmt.value==='html'){
-        // Build a standalone HTML document that preserves each PDF page's
-        // dimensions and positions text using the PDF's own text transforms.
-        // This is intentionally separate from the small on-screen preview.
-        let out='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PDF to HTML</title>';
-        out+='<style>html,body{margin:0;padding:0;background:#e9edf1;color:#111;font-family:Arial,Helvetica,sans-serif}.pdf-html-document{padding:24px}.pdf-html-page{position:relative;margin:0 auto 24px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.14);overflow:hidden}.pdf-html-text{position:absolute;white-space:pre;transform-origin:0 0;line-height:1;unicode-bidi:bidi-override}.pdf-html-page:last-child{margin-bottom:0}@media print{body{background:#fff}.pdf-html-document{padding:0}.pdf-html-page{margin:0;box-shadow:none;break-after:page}.pdf-html-page:last-child{break-after:auto}}</style></head><body><div class="pdf-html-document">';
-        for(const i of pages){
-          const p=await pdf.getPage(i);
-          const viewport=p.getViewport({scale:1});
-          const c=await p.getTextContent();
-          const styles=c.styles||{};
-          out+='<div class="pdf-html-page" style="width:'+viewport.width+'px;height:'+viewport.height+'px">';
-          for(const item of c.items){
-            if(!item.str) continue;
-            const tx=pdfjsLib.Util.transform(viewport.transform,item.transform);
-            const fontSize=Math.max(1,Math.sqrt((tx[2]*tx[2])+(tx[3]*tx[3])));
-            const angle=Math.atan2(tx[1],tx[0]);
-            const sx=Math.sqrt((tx[0]*tx[0])+(tx[1]*tx[1]))/fontSize || 1;
-            const style=styles[item.fontName]||{};
-            const family=(style.fontFamily||'Arial, Helvetica, sans-serif').replace(/"/g,'&quot;');
-            const weight=/bold/i.test(family)?'700':'400';
-            const escaped=esc(item.str).replace(/ /g,'&nbsp;');
-            const top=tx[5]-fontSize*0.82;
-            out+='<span class="pdf-html-text" style="left:'+tx[4]+'px;top:'+top+'px;font-size:'+fontSize+'px;font-family:'+family+';font-weight:'+weight+';transform:rotate('+angle+'rad) scaleX('+sx+')">'+escaped+'</span>';
-          }
-          out+='</div>';
-        }
-        out+='</div></body></html>';
-        const a=document.createElement('a');
-        const htmlBlob=new Blob([out],{type:'text/html;charset=utf-8'});
-        const url=URL.createObjectURL(htmlBlob);
-        a.href=url;
-        a.download='converted-from-pdf.html';
-        a.click();
-        setTimeout(()=>URL.revokeObjectURL(url),1000);
-        reset();
-        return;
-      }
+
       alert('The selected format requires an advanced document converter.');
     };
   }
