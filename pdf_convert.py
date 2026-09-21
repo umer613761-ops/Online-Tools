@@ -45,24 +45,115 @@ def page_text(page):
     return '\n'.join(blocks).strip()
 
 
-def ocr_page(page):
+def _text_quality(text):
+    """Return a rough readability score for extracted PDF text (0..1).
+
+    Some scanned PDFs contain an invisible OCR/text layer. PyMuPDF can extract
+    that layer successfully even when the layer itself is badly corrupted.
+    In that case, using the extracted text verbatim produces results like
+    ``Cti\u2018\u201cC*rLS`` instead of the words visible on the page. This score
+    helps us decide when to re-OCR the rendered page.
+    """
+    if not text or not text.strip():
+        return 0.0
+
+    compact = re.sub(r'\s+', ' ', text).strip()
+    chars = len(compact)
+    if chars < 20:
+        return 0.25
+
+    alpha_num = sum(ch.isalnum() for ch in compact)
+    printable = sum(ch.isprintable() for ch in compact)
+    replacement = compact.count('\ufffd')
+    symbol_runs = len(re.findall(r'[^\w\s]{2,}', compact, flags=re.UNICODE))
+    words = re.findall(r"[A-Za-z]{2,}", compact)
+
+    alpha_ratio = alpha_num / max(chars, 1)
+    printable_ratio = printable / max(chars, 1)
+    word_ratio = min(len(words) / max(len(compact.split()), 1), 1.0)
+    penalty = min(0.45, symbol_runs * 0.025 + replacement * 0.05)
+
+    score = (
+        alpha_ratio * 0.40
+        + printable_ratio * 0.15
+        + word_ratio * 0.45
+        - penalty
+    )
+    return max(0.0, min(1.0, score))
+
+
+def _has_large_page_image(page):
+    """Detect a scanned page with a near-full-page image behind an OCR layer."""
+    page_area = max(float(page.rect.width * page.rect.height), 1.0)
+    image_area = 0.0
+    for image in page.get_images(full=True):
+        try:
+            rects = page.get_image_rects(image[0])
+            image_area = max(image_area, max((r.width * r.height for r in rects), default=0.0))
+        except Exception:
+            continue
+    return image_area / page_area >= 0.70
+
+
+def ocr_page(page, psm=3, scale=2.5):
     try:
         import pytesseract
-        from PIL import Image
-        pix=page.get_pixmap(matrix=fitz.Matrix(2,2), alpha=False)
-        img=Image.open(io.BytesIO(pix.tobytes('png')))
-        text=pytesseract.image_to_string(img, config='--psm 6')
-        return text.strip()
+        from PIL import Image, ImageOps
+
+        pix = page.get_pixmap(
+            matrix=fitz.Matrix(scale, scale),
+            alpha=False,
+            colorspace=fitz.csRGB,
+        )
+        img = Image.open(io.BytesIO(pix.tobytes('png'))).convert('L')
+        img = ImageOps.autocontrast(img)
+        config = f'--oem 3 --psm {psm}'
+        text = pytesseract.image_to_string(img, config=config, lang='eng').strip()
+        data = pytesseract.image_to_data(
+            img, config=config, lang='eng', output_type=pytesseract.Output.DICT
+        )
+        confidences = []
+        for value, conf in zip(data.get('text', []), data.get('conf', [])):
+            if value.strip():
+                try:
+                    confidence = float(conf)
+                    if confidence >= 0:
+                        confidences.append(confidence)
+                except (TypeError, ValueError):
+                    pass
+        confidence = sum(confidences) / len(confidences) if confidences else 0.0
+        return text, confidence
     except Exception:
-        return ''
+        return '', 0.0
 
 
 def get_page_text(page):
-    text=page_text(page)
-    if text:
-        return text
-    return ocr_page(page)
+    extracted = page_text(page)
 
+    # Scanned PDFs commonly contain a bad hidden OCR layer. When a large page
+    # image is present, trust fresh OCR of the visible page instead of that
+    # hidden layer.
+    if _has_large_page_image(page):
+        candidates = []
+        for psm in (3, 6):
+            text, confidence = ocr_page(page, psm=psm)
+            if text:
+                candidates.append((confidence, text))
+        if candidates:
+            candidates.sort(key=lambda item: item[0], reverse=True)
+            return candidates[0][1]
+
+    if extracted:
+        return extracted
+
+    candidates = []
+    for psm in (3, 6):
+        text, confidence = ocr_page(page, psm=psm)
+        if text:
+            candidates.append((confidence, text))
+    if candidates:
+        return max(candidates, key=lambda item: item[0])[1]
+    return ''
 
 def safe_stem(name):
     stem=Path(name).stem
