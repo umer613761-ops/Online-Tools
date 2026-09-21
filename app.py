@@ -5,6 +5,7 @@ import tempfile
 from pathlib import Path
 
 from flask import Flask, jsonify, request, send_file
+import fitz
 from flask_cors import CORS
 
 from pdf_convert import convert_txt, convert_docx, convert_html, parse_pages, safe_stem
