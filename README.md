@@ -20,3 +20,7 @@ The API returns JSON error details for conversion failures so the frontend can d
 ## Upload limits
 
 The default maximum PDF upload size is 50 MB. This can be changed with `MAX_UPLOAD_MB`.
+
+## Deployment build
+
+The PDF conversion backend uses Python 3.12 with OpenCV headless and NumPy for scanned-document/table processing.

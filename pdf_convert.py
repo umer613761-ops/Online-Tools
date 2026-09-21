@@ -228,134 +228,38 @@ def _render_page_image(page, scale=2.5):
     return Image.open(io.BytesIO(pix.tobytes('png'))).convert('RGB')
 
 
-def _detect_table_regions(page, scale=1.5):
-    """Find strong ruled-table regions on a scanned page.
+def _docx_paragraphs(text):
+    """Group extracted lines into readable Word paragraphs."""
+    raw = [re.sub(r'[ \t]+', ' ', line).strip() for line in text.splitlines()]
+    lines = [line for line in raw if line]
+    paragraphs = []
+    current = []
 
-    This deliberately looks for repeated horizontal and vertical rules. A
-    decorative page border alone is rejected because it does not contain the
-    repeated internal grid lines expected from a table.
-    """
-    try:
-        import cv2
-        import numpy as np
-    except ImportError:
-        # Table detection is an enhancement, not a reason to make PDF → DOCX
-        # fail completely. If an old deployment is missing OpenCV, fall back
-        # to the normal OCR/DOCX path instead of returning a server error.
-        return []
+    def flush():
+        nonlocal current
+        if current:
+            paragraphs.append(current)
+            current = []
 
-    pil_img = _render_page_image(page, scale=scale)
-    img = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2GRAY)
-    h_img, w_img = img.shape
-    bw = cv2.adaptiveThreshold(
-        img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 31, 15
-    )
-    h_kernel = cv2.getStructuringElement(
-        cv2.MORPH_RECT, (max(30, w_img // 25), 1)
-    )
-    v_kernel = cv2.getStructuringElement(
-        cv2.MORPH_RECT, (1, max(30, h_img // 25))
-    )
-    horizontal = cv2.morphologyEx(bw, cv2.MORPH_OPEN, h_kernel)
-    vertical = cv2.morphologyEx(bw, cv2.MORPH_OPEN, v_kernel)
-    grid = cv2.bitwise_or(horizontal, vertical)
+    def is_heading(line):
+        letters = re.sub(r'[^A-Za-z]', '', line)
+        return bool(letters) and len(line) <= 80 and letters.upper() == letters and not line.endswith('.')
 
-    contours, _ = cv2.findContours(grid, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    candidates = []
-    for contour in contours:
-        x, y, w, h = cv2.boundingRect(contour)
-        if w < w_img * 0.30 or h < h_img * 0.05:
+    def is_date(line):
+        return bool(re.fullmatch(r'\d{1,2}\s+[A-Za-z]+\s+\d{4}', line))
+
+    for line in lines:
+        if is_heading(line) or is_date(line):
+            flush()
+            paragraphs.append([line])
             continue
-        area = w * h
-        crop_h = horizontal[y:y+h, x:x+w]
-        crop_v = vertical[y:y+h, x:x+w]
+        current.append(line)
+        if re.search(r'[.!?]["\'\)]?$', line):
+            flush()
 
-        h_lines = []
-        for c in cv2.findContours(crop_h, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]:
-            xx, yy, ww, hh = cv2.boundingRect(c)
-            if ww >= w * 0.40:
-                h_lines.append(yy)
-        v_lines = []
-        for c in cv2.findContours(crop_v, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]:
-            xx, yy, ww, hh = cv2.boundingRect(c)
-            if hh >= h * 0.30:
-                v_lines.append(xx)
+    flush()
+    return paragraphs
 
-        def distinct(values, tolerance=10):
-            out = []
-            for value in sorted(values):
-                if not out or value - out[-1] > tolerance:
-                    out.append(value)
-                else:
-                    out[-1] = int((out[-1] + value) / 2)
-            return out
-
-        h_count = len(distinct(h_lines))
-        v_count = len(distinct(v_lines))
-        # Require multiple internal rules in both directions. This rejects
-        # page borders and decorative boxes that merely look table-like.
-        if h_count >= 4 and v_count >= 3:
-            candidates.append((x, y, w, h, area, h_count, v_count))
-
-    candidates.sort(key=lambda item: item[4], reverse=True)
-    regions = []
-    for x, y, w, h, *_ in candidates:
-        # Ignore a candidate that is almost completely contained in a region
-        # already selected.
-        contained = False
-        for rx, ry, rw, rh in regions:
-            if x >= rx and y >= ry and x + w <= rx + rw and y + h <= ry + rh:
-                contained = True
-                break
-        if not contained:
-            # Convert rendered-pixel coordinates back to PDF points.
-            regions.append((x / scale, y / scale, w / scale, h / scale))
-    return regions
-
-
-def _ocr_lines_outside_regions(page, regions, scale=1.5):
-    """OCR a scanned page and return (vertical_position, line) outside tables."""
-    import pytesseract
-    from PIL import ImageOps
-
-    img = _render_page_image(page, scale=scale)
-    img = ImageOps.autocontrast(img.convert('L'))
-    data = pytesseract.image_to_data(
-        img, config='--oem 3 --psm 3', lang='eng', output_type=pytesseract.Output.DICT
-    )
-    grouped = {}
-    for i, raw in enumerate(data.get('text', [])):
-        text = (raw or '').strip()
-        if not text:
-            continue
-        try:
-            conf = float(data['conf'][i])
-        except (TypeError, ValueError):
-            conf = -1
-        if conf < 0:
-            continue
-        left = float(data['left'][i]) / scale
-        top = float(data['top'][i]) / scale
-        width = float(data['width'][i]) / scale
-        height = float(data['height'][i]) / scale
-        cx = left + width / 2
-        cy = top + height / 2
-        if any(rx <= cx <= rx + rw and ry <= cy <= ry + rh for rx, ry, rw, rh in regions):
-            continue
-        key = (
-            data.get('block_num', [0])[i],
-            data.get('par_num', [0])[i],
-            data.get('line_num', [0])[i],
-        )
-        grouped.setdefault(key, []).append((left, cy, text))
-
-    lines = []
-    for words in grouped.values():
-        words.sort(key=lambda item: item[0])
-        cy = sum(item[1] for item in words) / len(words)
-        lines.append((cy, ' '.join(item[2] for item in words).strip()))
-    lines.sort(key=lambda item: item[0])
-    return [(cy, line) for cy, line in lines if line]
 
 def _add_docx_text(docx, text):
     if not text:
@@ -370,75 +274,61 @@ def _add_docx_text(docx, text):
             p.add_run(line)
 
 
-def _add_table_image(docx, page, region, scale=2.5):
-    """Insert the detected table as an image so its layout and numbers survive."""
-    from docx.shared import Inches
-    import io as _io
+def _add_full_page_image(docx, page, section, scale=2.5):
+    """Place a scanned PDF page as a full-page image in the DOCX.
 
+    For image-only/scanned PDFs this is the safest way to preserve tables,
+    stamps, signatures, columns and other visual layout without introducing
+    OCR fragments into the Word document.
+    """
     img = _render_page_image(page, scale=scale)
-    x, y, w, h = region
-    # Small padding keeps the outer grid line visible without including a large
-    # amount of surrounding page content.
-    pad = 4
-    left = max(0, int((x - pad) * scale))
-    top = max(0, int((y - pad) * scale))
-    right = min(img.width, int((x + w + pad) * scale))
-    bottom = min(img.height, int((y + h + pad) * scale))
-    crop = img.crop((left, top, right, bottom))
-    buf = _io.BytesIO()
-    crop.save(buf, format='PNG')
+    buf = io.BytesIO()
+    img.save(buf, format='PNG')
     buf.seek(0)
+
+    # PDF points are 1/72 inch. Match the Word page to the source page.
+    section.page_width = Inches(float(page.rect.width) / 72.0)
+    section.page_height = Inches(float(page.rect.height) / 72.0)
+    section.top_margin = Inches(0)
+    section.bottom_margin = Inches(0)
+    section.left_margin = Inches(0)
+    section.right_margin = Inches(0)
     p = docx.add_paragraph()
-    p.paragraph_format.space_after = Pt(7)
-    # Keep the table readable while fitting normal portrait pages.
-    p.add_run().add_picture(buf, width=Inches(6.35))
+    p.paragraph_format.space_before = Pt(0)
+    p.paragraph_format.space_after = Pt(0)
+    p.paragraph_format.line_spacing = 1
+    p.add_run().add_picture(
+        buf,
+        width=Inches(float(page.rect.width) / 72.0),
+        height=Inches(float(page.rect.height) / 72.0),
+    )
+
+
+def _prepare_section_for_page(section, page):
+    section.page_width = Inches(float(page.rect.width) / 72.0)
+    section.page_height = Inches(float(page.rect.height) / 72.0)
+    section.top_margin = Inches(0.65)
+    section.bottom_margin = Inches(0.65)
+    section.left_margin = Inches(0.7)
+    section.right_margin = Inches(0.7)
 
 
 def convert_docx(pdf_path, output_path, pages):
+    """Create a visually faithful DOCX from the selected PDF pages.
+
+    Each source page is placed on a matching Word page as a high-resolution
+    image. This avoids losing tables, columns, stamps, signatures and other
+    layout elements that OCR/text reconstruction cannot reliably reproduce.
+    """
     docx = Document()
-    normal = docx.styles['Normal']
-    normal.font.name = 'Arial'
-    normal.font.size = Pt(10.5)
     pdf = fitz.open(pdf_path)
+
+    # Remove the default section's margins; each page image fills the page.
     for idx, n in enumerate(pages):
-        if idx:
-            docx.add_page_break()
         page = pdf[n - 1]
+        section = docx.sections[0] if idx == 0 else docx.add_section()
+        _add_full_page_image(docx, page, section, scale=2.0)
 
-        # Only run the more expensive visual-table analysis on scanned pages.
-        if _has_large_page_image(page):
-            regions = sorted(_detect_table_regions(page), key=lambda r: r[1])
-        else:
-            regions = []
-
-        if regions:
-            # For a ruled table, preserve the table itself as a high-resolution
-            # image. This is substantially more faithful than converting a
-            # noisy scanned grid into dozens of broken OCR paragraphs.
-            lines = _ocr_lines_outside_regions(page, regions)
-            if len(regions) == 1:
-                region = regions[0]
-                before = [line for cy, line in lines if cy < region[1]]
-                after = [line for cy, line in lines if cy >= region[1] + region[3]]
-                _add_docx_text(docx, '\n'.join(before))
-                _add_table_image(docx, page, region)
-                _add_docx_text(docx, '\n'.join(after))
-            else:
-                # Multiple ruled regions are uncommon. Keep the page visually
-                # faithful rather than producing interleaved OCR garbage.
-                img = _render_page_image(page)
-                buf = io.BytesIO()
-                img.save(buf, format='PNG')
-                buf.seek(0)
-                p = docx.add_paragraph()
-                p.add_run().add_picture(buf, width=Inches(6.35))
-        else:
-            text = get_page_text(page)
-            if not text:
-                p = docx.add_paragraph()
-                p.add_run(f'Page {n}').bold = True
-            else:
-                _add_docx_text(docx, text)
     pdf.close()
     docx.save(output_path)
 
