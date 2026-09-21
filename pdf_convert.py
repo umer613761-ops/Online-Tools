@@ -9,6 +9,7 @@ from PIL import Image, ImageOps
 from docx import Document
 from docx.text.paragraph import Paragraph
 from docx.enum.text import WD_TAB_ALIGNMENT
+from docx.enum.section import WD_SECTION
 from docx.shared import Pt, Inches
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
@@ -498,19 +499,212 @@ def _append_native_page(doc, page, plumber_page, first_page=False, footer_lines=
     return cursor
 
 
+
+def _scan_ocr_items(img, page_index=0):
+    """Return OCR word/line items for editable scanned-PDF reconstruction.
+    PSM 6 works well for dense certificates/tables; PSM 3 is cleaner for ordinary forms.
+    """
+    psm = 6 if page_index else 3
+    # Use the denser layout pass for pages containing substantial table-like content.
+    if img.width < 1200 and img.height > 1400:
+        psm = 6
+    text, conf, data = _ocr_data(img, psm)
+    words=[]
+    for i,t in enumerate(data.get('text',[])):
+        t=(t or '').strip()
+        if not t: continue
+        try: c=float(data['conf'][i])
+        except Exception: c=0
+        if c < 45: continue
+        x=int(data['left'][i]); y=int(data['top'][i]);
+        w=int(data['width'][i]); h=int(data['height'][i])
+        if w<2 or h<2: continue
+        words.append({'x':x,'y':y,'x2':x+w,'y2':y+h,'text':t,'conf':c,
+                      'block':data.get('block_num',[0])[i],
+                      'par':data.get('par_num',[0])[i],
+                      'line':data.get('line_num',[0])[i]})
+    # Group words into editable text frames, preserving large horizontal gaps
+    # (important for certificate columns and marks tables).
+    groups={}
+    for w in words:
+        groups.setdefault((w['block'],w['par'],w['line']),[]).append(w)
+    lines=[]
+    for ws in groups.values():
+        ws.sort(key=lambda z:z['x'])
+        if not ws: continue
+        chunks=[]; cur=[ws[0]]
+        for w in ws[1:]:
+            prev=cur[-1]
+            gap=w['x']-prev['x2']
+            medw=sum(max(1,z['x2']-z['x']) for z in cur)/len(cur)
+            # A gap much larger than normal word spacing is a new editable box.
+            if gap > max(24, medw*1.8):
+                chunks.append(cur); cur=[w]
+            else:
+                cur.append(w)
+        chunks.append(cur)
+        for ch in chunks:
+            txt=' '.join(z['text'] for z in ch).strip()
+            if not txt: continue
+            lines.append({'x':min(z['x'] for z in ch),
+                          'y':min(z['y'] for z in ch),
+                          'x2':max(z['x2'] for z in ch),
+                          'y2':max(z['y2'] for z in ch),
+                          'text':txt,
+                          'conf':sum(z['conf'] for z in ch)/len(ch)})
+    return sorted(lines,key=lambda z:(z['y'],z['x'])), data
+
+
+def _clean_scanned_background(img, data):
+    """Remove OCR-recognised text while retaining the scan's artwork, photos and lines."""
+    import cv2, numpy as np
+    arr=np.array(img.convert('RGB')).copy()
+    mask=np.zeros(arr.shape[:2],np.uint8)
+    for i,t in enumerate(data.get('text',[])):
+        t=(t or '').strip()
+        if not t: continue
+        try: c=float(data['conf'][i])
+        except Exception: c=0
+        if c < 45: continue
+        x=int(data['left'][i]); y=int(data['top'][i]); w=int(data['width'][i]); h=int(data['height'][i])
+        if w<2 or h<2: continue
+        pad=1
+        xa=max(0,x-pad); xb=min(arr.shape[1],x+w+pad)
+        ya=max(0,y-pad); yb=min(arr.shape[0],y+h+pad)
+        mask[ya:yb,xa:xb]=255
+    # Inpaint text, then restore long document/table rules so the editable text
+    # sits on top of the original form/certificate geometry.
+    cleaned=cv2.inpaint(arr,mask,2,cv2.INPAINT_TELEA)
+    gray=np.array(img.convert('L'))
+    bw=cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY_INV,31,10)
+    hker=cv2.getStructuringElement(cv2.MORPH_RECT,(max(30,gray.shape[1]//25),1))
+    vker=cv2.getStructuringElement(cv2.MORPH_RECT,(1,max(20,gray.shape[0]//40)))
+    hlines=cv2.morphologyEx(bw,cv2.MORPH_OPEN,hker)
+    vlines=cv2.morphologyEx(bw,cv2.MORPH_OPEN,vker)
+    line_mask=np.maximum(hlines,vlines)
+    # Only strong, long rules; don't redraw tiny OCR glyph fragments.
+    contours,_=cv2.findContours(line_mask,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    for c in contours:
+        x,y,w,h=cv2.boundingRect(c)
+        if (w >= gray.shape[1]*0.20 and h <= 8) or (h >= gray.shape[0]*0.10 and w <= 8):
+            cleaned[max(0,y-1):min(cleaned.shape[0],y+h+1),max(0,x-1):min(cleaned.shape[1],x+w+1)] = np.minimum(
+                cleaned[max(0,y-1):min(cleaned.shape[0],y+h+1),max(0,x-1):min(cleaned.shape[1],x+w+1)],
+                90)
+    return Image.fromarray(cleaned)
+
+
+def _set_scanned_section(section, page):
+    section.page_width=Inches(float(page.rect.width)/72.0)
+    section.page_height=Inches(float(page.rect.height)/72.0)
+    section.top_margin=Inches(0)
+    section.bottom_margin=Inches(0)
+    section.left_margin=Inches(0)
+    section.right_margin=Inches(0)
+    section.header_distance=Inches(0)
+    section.footer_distance=Inches(0)
+    section.different_first_page_header_footer=False
+    section.header.is_linked_to_previous=False
+
+
+def _put_page_image_in_header(section, image_bytes, page):
+    """Place the cleaned page scan as a page-anchored background image."""
+    hp=section.header.paragraphs[0]
+    hp.text=''
+    hp.paragraph_format.space_before=Pt(0)
+    hp.paragraph_format.space_after=Pt(0)
+    hp.paragraph_format.line_spacing=1
+    run=hp.add_run()
+    run.add_picture(io.BytesIO(image_bytes), width=Inches(float(page.rect.width)/72.0),
+                    height=Inches(float(page.rect.height)/72.0))
+    inline=run._r.xpath('.//wp:inline')[0]
+    anchor=OxmlElement('wp:anchor')
+    for k,v in {'distT':'0','distB':'0','distL':'0','distR':'0','simplePos':'0',
+                'relativeHeight':'0','behindDoc':'1','locked':'0',
+                'layoutInCell':'1','allowOverlap':'1'}.items():
+        anchor.set(k,v)
+    for child in list(inline):
+        anchor.append(child)
+    inline.getparent().replace(inline,anchor)
+    sp=OxmlElement('wp:simplePos'); sp.set('x','0'); sp.set('y','0'); anchor.insert(0,sp)
+    for tag in ('wp:positionH','wp:positionV'):
+        el=OxmlElement(tag); el.set('relativeFrom','page')
+        off=OxmlElement('wp:posOffset'); off.text='0'; el.append(off); anchor.insert(1,el)
+
+
+def _add_scanned_frame(doc, page, line, img_scale):
+    """Add a normal editable Word paragraph positioned over the scanned page.
+    WordprocessingML frame paragraphs are supported by Word and LibreOffice,
+    unlike the legacy VML text boxes used by the previous scanned path.
+    """
+    p=doc.add_paragraph()
+    p.paragraph_format.space_before=Pt(0)
+    p.paragraph_format.space_after=Pt(0)
+    p.paragraph_format.line_spacing=1
+    pPr=p._p.get_or_add_pPr()
+    fp=OxmlElement('w:framePr')
+    x=line['x']/img_scale; y=line['y']/img_scale
+    w=max(8,(line['x2']-line['x'])/img_scale+3)
+    h=max(8,(line['y2']-line['y'])/img_scale+3)
+    # Word frame coordinates are twentieths of a point (twips).
+    for k,v in {'w':str(int(w*20)),'h':str(int(h*20)),
+                'x':str(int(x*20)),'y':str(int(y*20)),
+                'hAnchor':'page','vAnchor':'page','wrap':'none'}.items():
+        fp.set(qn('w:'+k),v)
+    pPr.append(fp)
+    r=p.add_run(line['text'])
+    r.font.name='Arial'
+    r.font.size=Pt(max(6,min(18,(line['y2']-line['y'])/img_scale*0.55)))
+    return p
+
+
+def _append_scanned_page(doc, section, page, page_index):
+    _set_scanned_section(section,page)
+    img=_scan_image(page)
+    lines,data=_scan_ocr_items(img,page_index)
+    cleaned=_clean_scanned_background(img,data)
+    buf=io.BytesIO(); cleaned.save(buf,'PNG'); _put_page_image_in_header(section,buf.getvalue(),page)
+    scale=img.width/float(page.rect.width)
+    # Keep only reasonably confident OCR so bad recognition does not make the
+    # reconstructed document visually worse than the source scan.
+    for line in lines:
+        if line['conf'] < (52 if page_index else 58):
+            continue
+        _add_scanned_frame(doc,page,line,scale)
+
+
+def _append_scanned_image_page(doc, section, page):
+    """Preserve a scanned/image-only PDF page exactly as an editable Word picture.
+    OCR is intentionally not overlaid: unreliable OCR can corrupt certificates,
+    cursive text and complex tables. The picture itself remains selectable and
+    editable as a Word image, while TXT/HTML use the OCR path separately.
+    """
+    _set_scanned_section(section,page)
+    img=_scan_image(page)
+    buf=io.BytesIO(); img.save(buf,'PNG',optimize=True)
+    _put_page_image_in_header(section,buf.getvalue(),page)
+
+
 def convert_docx(pdf_path,output_path,pages):
     pdf=fitz.open(pdf_path)
     plumber=pdfplumber.open(pdf_path)
     doc=Document()
-    # Remove the default empty paragraph content while retaining the body.
     for p in list(doc.paragraphs):
         p._element.getparent().remove(p._element)
     normal=doc.styles['Normal']; normal.font.name='Arial'; normal.font.size=Pt(10.5)
     footer_lines=_common_footer_lines(pdf)
     for idx,n in enumerate(pages):
+        page=pdf[n-1]
+        scanned=_has_large_page_image(page)
         if idx:
-            doc.add_page_break()
-        _append_native_page(doc,pdf[n-1],plumber.pages[n-1],first_page=(idx==0),footer_lines=footer_lines)
+            section=doc.add_section(WD_SECTION.NEW_PAGE)
+        else:
+            section=doc.sections[0]
+        if scanned:
+            _append_scanned_image_page(doc,section,page)
+        else:
+            if idx and footer_lines:
+                pass
+            _append_native_page(doc,page,plumber.pages[n-1],first_page=(idx==0),footer_lines=footer_lines)
     plumber.close(); pdf.close(); doc.save(output_path)
 
 def convert_html(pdf_path,output_path,pages):

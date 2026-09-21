@@ -1,15 +1,24 @@
-ToolNest PDF conversion backend
+ToolNest PDF Conversion - restored native method + scanned PDF visual fix
 
-This build restores the earlier document-conversion approach as the baseline:
-- Native/text PDFs: PyMuPDF text extraction + PDF-coordinate line grouping + pdfplumber table detection.
-- DOCX: real editable Word paragraphs, real editable tables, repeated PDF letterhead as a Word header image, and repeated footer as a Word footer.
-- Scanned/image PDFs: existing OCR + editable text overlay path is retained.
-- TXT: page-aware text extraction with OCR fallback.
-- HTML: page-preserving HTML output with the existing OCR/image handling.
+Baseline:
+- Restored the earlier native/text PDF conversion approach.
+- Native PDFs use PyMuPDF + pdfplumber for editable text and real Word tables.
+- Repeated letterheads/footers are preserved as Word header/footer elements.
 
-Primary endpoints:
-POST /api/pdf-to-docx
-POST /api/pdf-to-txt
-POST /api/pdf-to-html
+Scanned/image-only PDFs:
+- The previous VML OCR-overlay path could render blank in common DOCX renderers.
+- Scanned pages now use the original scan as a page-anchored Word picture.
+- Each scanned page is preserved visually and remains selectable/editable as a Word image.
+- OCR remains available through the TXT and HTML conversion paths, where extracted text is directly editable.
+- This avoids corrupting certificates, cursive text, signatures, photos and complex tables with unreliable OCR overlays.
 
-The frontend convert-from-pdf.html already points to the Railway API endpoints.
+Validation performed locally:
+1. PersonalStatement_MC-PUBHL.pdf -> DOCX/TXT/HTML
+   - DOCX rendered successfully as 2 pages and visually preserved the Curtin form.
+2. HSSC(3).pdf -> DOCX/TXT/HTML
+   - DOCX rendered successfully as 2 pages and visually preserved both scanned certificate pages.
+   - The previous blank DOCX result was eliminated.
+3. Native refusal-letter PDF -> DOCX
+   - DOCX rendered successfully as 6 pages.
+   - 2 real Word tables remained present.
+4. Python syntax check completed successfully.
