@@ -181,6 +181,42 @@ def convert_txt(pdf_path, output_path, pages):
     doc.close()
 
 
+def _docx_paragraphs(text):
+    """Group OCR lines into readable Word paragraphs without destroying rows."""
+    raw=[re.sub(r'[ \t]+', ' ', line).strip() for line in text.splitlines()]
+    lines=[line for line in raw if line]
+    paragraphs=[]
+    current=[]
+
+    def flush():
+        nonlocal current
+        if current:
+            paragraphs.append(current)
+            current=[]
+
+    def is_heading(line):
+        letters=re.sub(r'[^A-Za-z]', '', line)
+        return bool(letters) and len(line) <= 80 and letters.upper() == letters and not line.endswith('.')
+
+    def is_date(line):
+        return bool(re.fullmatch(r'\d{1,2}\s+[A-Za-z]+\s+\d{4}', line))
+
+    for line in lines:
+        if is_heading(line) or is_date(line):
+            flush()
+            paragraphs.append([line])
+            continue
+
+        current.append(line)
+        # A sentence-ending line is normally the end of a printed paragraph.
+        # Keep short administrative/table lines separate unless they clearly
+        # continue a sentence.
+        if re.search(r'[.!?]["\'\)]?$', line):
+            flush()
+
+    flush()
+    return paragraphs
+
 def convert_docx(pdf_path, output_path, pages):
     docx=Document()
     normal=docx.styles['Normal']
@@ -195,13 +231,15 @@ def convert_docx(pdf_path, output_path, pages):
             p=docx.add_paragraph()
             p.add_run(f'Page {n}').bold=True
             continue
-        page_lines=text.splitlines()
-        first=True
-        for line in page_lines:
+
+        for lines in _docx_paragraphs(text):
             p=docx.add_paragraph()
-            p.paragraph_format.space_after=Pt(3)
-            p.add_run(line)
-            first=False
+            p.paragraph_format.space_after=Pt(7)
+            p.paragraph_format.line_spacing=1.08
+            for line_index,line in enumerate(lines):
+                if line_index:
+                    p.add_run().add_break()
+                p.add_run(line)
     pdf.close()
     docx.save(output_path)
 
