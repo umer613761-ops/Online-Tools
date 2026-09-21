@@ -1,542 +1,320 @@
+import base64
 import html
 import io
-import os
 import re
-import tempfile
 from pathlib import Path
 
 import fitz
+from PIL import Image, ImageOps
 from docx import Document
 from docx.shared import Pt, Inches
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
+from lxml import etree
+
+V_NS='urn:schemas-microsoft-com:vml'
+O_NS='urn:schemas-microsoft-com:office:office'
 
 
-def parse_pages(value, page_count):
-    if not value:
-        return list(range(1, page_count + 1))
+def parse_pages(value,page_count):
+    if not value: return list(range(1,page_count+1))
     pages=[]
     for part in str(value).split(','):
         try:
             n=int(part.strip())
-            if 1 <= n <= page_count and n not in pages:
-                pages.append(n)
-        except ValueError:
-            pass
-    return pages or list(range(1, page_count + 1))
+            if 1<=n<=page_count and n not in pages: pages.append(n)
+        except ValueError: pass
+    return pages or list(range(1,page_count+1))
 
 
 def page_text(page):
-    data=page.get_text('dict')
-    blocks=[]
+    data=page.get_text('dict'); blocks=[]
     for block in data.get('blocks',[]):
-        if block.get('type') != 0:
-            continue
+        if block.get('type')!=0: continue
         lines=[]
         for line in block.get('lines',[]):
-            parts=[]
-            for span in line.get('spans',[]):
-                text=span.get('text','')
-                if text:
-                    parts.append(text)
-            text=''.join(parts).rstrip()
-            if text:
-                lines.append(text)
-        if lines:
-            blocks.append('\n'.join(lines))
+            text=''.join(s.get('text','') for s in line.get('spans',[]) if s.get('text','')).rstrip()
+            if text: lines.append(text)
+        if lines: blocks.append('\n'.join(lines))
     return '\n'.join(blocks).strip()
 
 
-def _text_quality(text):
-    """Return a rough readability score for extracted PDF text (0..1).
-
-    Some scanned PDFs contain an invisible OCR/text layer. PyMuPDF can extract
-    that layer successfully even when the layer itself is badly corrupted.
-    In that case, using the extracted text verbatim produces results like
-    ``Cti\u2018\u201cC*rLS`` instead of the words visible on the page. This score
-    helps us decide when to re-OCR the rendered page.
-    """
-    if not text or not text.strip():
-        return 0.0
-
-    compact = re.sub(r'\s+', ' ', text).strip()
-    chars = len(compact)
-    if chars < 20:
-        return 0.25
-
-    alpha_num = sum(ch.isalnum() for ch in compact)
-    printable = sum(ch.isprintable() for ch in compact)
-    replacement = compact.count('\ufffd')
-    symbol_runs = len(re.findall(r'[^\w\s]{2,}', compact, flags=re.UNICODE))
-    words = re.findall(r"[A-Za-z]{2,}", compact)
-
-    alpha_ratio = alpha_num / max(chars, 1)
-    printable_ratio = printable / max(chars, 1)
-    word_ratio = min(len(words) / max(len(compact.split()), 1), 1.0)
-    penalty = min(0.45, symbol_runs * 0.025 + replacement * 0.05)
-
-    score = (
-        alpha_ratio * 0.40
-        + printable_ratio * 0.15
-        + word_ratio * 0.45
-        - penalty
-    )
-    return max(0.0, min(1.0, score))
-
-
 def _has_large_page_image(page):
-    """Detect a scanned page with a near-full-page image behind an OCR layer."""
-    page_area = max(float(page.rect.width * page.rect.height), 1.0)
-    image_area = 0.0
-    for image in page.get_images(full=True):
+    area=max(float(page.rect.width*page.rect.height),1)
+    best=0
+    for im in page.get_images(full=True):
         try:
-            rects = page.get_image_rects(image[0])
-            image_area = max(image_area, max((r.width * r.height for r in rects), default=0.0))
-        except Exception:
-            continue
-    return image_area / page_area >= 0.70
+            rects=page.get_image_rects(im[0]); best=max(best,max((r.width*r.height for r in rects),default=0))
+        except Exception: pass
+    return best/area>=.70
 
 
-def ocr_page(page, psm=3, scale=2.5):
-    try:
-        import pytesseract
-        from PIL import Image, ImageOps
-
-        pix = page.get_pixmap(
-            matrix=fitz.Matrix(scale, scale),
-            alpha=False,
-            colorspace=fitz.csRGB,
-        )
-        img = Image.open(io.BytesIO(pix.tobytes('png'))).convert('L')
-        img = ImageOps.autocontrast(img)
-        config = f'--oem 3 --psm {psm}'
-        text = pytesseract.image_to_string(img, config=config, lang='eng').strip()
-        data = pytesseract.image_to_data(
-            img, config=config, lang='eng', output_type=pytesseract.Output.DICT
-        )
-        confidences = []
-        for value, conf in zip(data.get('text', []), data.get('conf', [])):
-            if value.strip():
-                try:
-                    confidence = float(conf)
-                    if confidence >= 0:
-                        confidences.append(confidence)
-                except (TypeError, ValueError):
-                    pass
-        confidence = sum(confidences) / len(confidences) if confidences else 0.0
-        return text, confidence
-    except Exception:
-        return '', 0.0
-
-
-def get_page_text(page):
-    extracted = page_text(page)
-
-    # Scanned PDFs commonly contain a bad hidden OCR layer. When a large page
-    # image is present, trust fresh OCR of the visible page instead of that
-    # hidden layer.
-    if _has_large_page_image(page):
-        candidates = []
-        for psm in (3, 6):
-            text, confidence = ocr_page(page, psm=psm)
-            if text:
-                candidates.append((confidence, text))
-        if candidates:
-            # Confidence alone can favour a cleaner-looking OCR pass that has
-            # silently dropped whole paragraphs. Prefer the fuller pass when
-            # its confidence is close to the best pass. This matters for
-            # scanned letters/certificates where PSM 3 can miss text near
-            # signatures, stamps, or the lower part of the page.
-            candidates.sort(key=lambda item: item[0], reverse=True)
-            best_conf, best_text = candidates[0]
-            fuller = max(candidates, key=lambda item: len(item[1]))
-            if (fuller is not candidates[0]
-                    and fuller[0] >= best_conf - 5.0
-                    and len(fuller[1]) >= len(best_text) * 1.12):
-                return fuller[1]
-            return best_text
-
-    if extracted:
-        return extracted
-
-    candidates = []
-    for psm in (3, 6):
-        text, confidence = ocr_page(page, psm=psm)
-        if text:
-            candidates.append((confidence, text))
-    if candidates:
-        return max(candidates, key=lambda item: item[0])[1]
-    return ''
-
-def safe_stem(name):
-    stem=Path(name).stem
-    return re.sub(r'[^A-Za-z0-9._-]+','_',stem).strip('._') or 'converted-from-pdf'
-
-
-def convert_txt(pdf_path, output_path, pages):
-    doc=fitz.open(pdf_path)
-    chunks=[]
-    for n in pages:
-        text=get_page_text(doc[n-1])
-        chunks.append(f'Page {n}\n\n{text}')
-    Path(output_path).write_text('\n\n'.join(chunks)+'\n',encoding='utf-8')
-    doc.close()
-
-
-def _docx_paragraphs(text):
-    """Group OCR lines into readable Word paragraphs without destroying rows."""
-    raw=[re.sub(r'[ \t]+', ' ', line).strip() for line in text.splitlines()]
-    lines=[line for line in raw if line]
-    paragraphs=[]
-    current=[]
-
-    def flush():
-        nonlocal current
-        if current:
-            paragraphs.append(current)
-            current=[]
-
-    def is_heading(line):
-        letters=re.sub(r'[^A-Za-z]', '', line)
-        return bool(letters) and len(line) <= 80 and letters.upper() == letters and not line.endswith('.')
-
-    def is_date(line):
-        return bool(re.fullmatch(r'\d{1,2}\s+[A-Za-z]+\s+\d{4}', line))
-
-    for line in lines:
-        if is_heading(line) or is_date(line):
-            flush()
-            paragraphs.append([line])
-            continue
-
-        current.append(line)
-        # A sentence-ending line is normally the end of a printed paragraph.
-        # Keep short administrative/table lines separate unless they clearly
-        # continue a sentence.
-        if re.search(r'[.!?]["\'\)]?$', line):
-            flush()
-
-    flush()
-    return paragraphs
-
-def _render_page_image(page, scale=2.5):
-    """Render a PDF page for OCR/table detection."""
+def _scan_image(page):
+    """Use the PDF's original full-page image when available; this preserves the source appearance."""
     from PIL import Image
-    pix = page.get_pixmap(
-        matrix=fitz.Matrix(scale, scale),
-        alpha=False,
-        colorspace=fitz.csRGB,
-    )
+    for im in page.get_images(full=True):
+        try:
+            data=page.parent.extract_image(im[0])
+            img=Image.open(io.BytesIO(data['image'])).convert('RGB')
+            area=img.width*img.height
+            if area >= 500000:
+                return img
+        except Exception: pass
+    pix=page.get_pixmap(matrix=fitz.Matrix(1,1),alpha=False,colorspace=fitz.csRGB)
     return Image.open(io.BytesIO(pix.tobytes('png'))).convert('RGB')
 
 
-def _docx_paragraphs(text):
-    """Group extracted lines into readable Word paragraphs."""
-    raw = [re.sub(r'[ \t]+', ' ', line).strip() for line in text.splitlines()]
-    lines = [line for line in raw if line]
-    paragraphs = []
-    current = []
-
-    def flush():
-        nonlocal current
-        if current:
-            paragraphs.append(current)
-            current = []
-
-    def is_heading(line):
-        letters = re.sub(r'[^A-Za-z]', '', line)
-        return bool(letters) and len(line) <= 80 and letters.upper() == letters and not line.endswith('.')
-
-    def is_date(line):
-        return bool(re.fullmatch(r'\d{1,2}\s+[A-Za-z]+\s+\d{4}', line))
-
-    for line in lines:
-        if is_heading(line) or is_date(line):
-            flush()
-            paragraphs.append([line])
-            continue
-        current.append(line)
-        if re.search(r'[.!?]["\'\)]?$', line):
-            flush()
-
-    flush()
-    return paragraphs
-
-
-def _ocr_page_lines(page, scale=2.5):
-    """Return OCR lines with editable text for a scanned page."""
-    try:
-        import pytesseract
-        from PIL import Image, ImageOps
-        pix = page.get_pixmap(matrix=fitz.Matrix(scale, scale), alpha=False, colorspace=fitz.csRGB)
-        img = Image.open(io.BytesIO(pix.tobytes('png'))).convert('L')
-        img = ImageOps.autocontrast(img)
-        # Try two layouts and keep the fuller readable result.
-        candidates = []
-        for psm in (3, 6):
-            cfg = f'--oem 3 --psm {psm}'
-            text = pytesseract.image_to_string(img, config=cfg, lang='eng').strip()
-            data = pytesseract.image_to_data(img, config=cfg, lang='eng', output_type=pytesseract.Output.DICT)
-            confs=[]
-            for t,c in zip(data.get('text',[]), data.get('conf',[])):
-                if t.strip():
-                    try:
-                        c=float(c)
-                        if c>=0: confs.append(c)
-                    except: pass
-            conf=sum(confs)/len(confs) if confs else 0
-            candidates.append((conf,text))
-        candidates.sort(key=lambda x:x[0], reverse=True)
-        best=candidates[0]
-        fuller=max(candidates,key=lambda x:len(x[1]))
-        text = fuller[1] if fuller[0] >= best[0]-5 and len(fuller[1]) >= len(best[1])*1.08 else best[1]
-        return [re.sub(r'[ \t]+',' ',ln).strip() for ln in text.splitlines() if ln.strip()]
-    except Exception:
-        return []
-
-
-def _native_page_lines(page):
-    text = page_text(page)
-    return [re.sub(r'[ \t]+',' ',ln).strip() for ln in text.splitlines() if ln.strip()]
-
-
-def _add_editable_lines(docx, lines):
-    """Write extracted/OCR lines as real editable Word text."""
-    for line in lines:
-        p = docx.add_paragraph()
-        p.paragraph_format.space_after = Pt(5)
-        p.paragraph_format.line_spacing = 1.05
-        p.add_run(line)
-
-
-def _add_signature_hint(docx, page):
-    """Keep the conversion editable; signatures/stamps remain non-editable visual marks only."""
-    # Deliberately do not turn the whole page into an image.
-    return
-
-
-
-def _detect_editable_tables(page, scale=2.5):
-    """Detect simple ruled tables on scanned pages and return cell geometry."""
-    try:
-        import cv2
-        import numpy as np
-        pix = page.get_pixmap(matrix=fitz.Matrix(scale, scale), alpha=False, colorspace=fitz.csRGB)
-        from PIL import Image
-        img = np.array(Image.open(io.BytesIO(pix.tobytes('png'))).convert('L'))
-        ad = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C,
-                                   cv2.THRESH_BINARY_INV, 51, 10)
-        vmask = cv2.morphologyEx(ad, cv2.MORPH_OPEN,
-                                 cv2.getStructuringElement(cv2.MORPH_RECT, (1, 20)))
-        hmask = cv2.morphologyEx(ad, cv2.MORPH_OPEN,
-                                 cv2.getStructuringElement(cv2.MORPH_RECT, (50, 1)))
-        H, W = img.shape
-        def verticals(mask):
-            cnts,_=cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            vals=[]
-            for c in cnts:
-                x,y,w,h=cv2.boundingRect(c)
-                if h > H*0.20 and w < 80:
-                    vals.append((x,y,w,h))
-            return vals
-        def horizontals(mask):
-            cnts,_=cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            vals=[]
-            for c in cnts:
-                x,y,w,h=cv2.boundingRect(c)
-                if w > W*0.25 and h < 80:
-                    vals.append((x,y,w,h))
-            return vals
-        vs=verticals(vmask); hs=horizontals(hmask)
-        if len(vs)<3 or len(hs)<3:
-            return []
-        # Cluster nearby line positions.
-        def cluster(values, tol=20):
-            values=sorted(values)
-            groups=[]
-            for v in values:
-                if not groups or v-groups[-1][-1]>tol:
-                    groups.append([v])
-                else:
-                    groups[-1].append(v)
-            return [int(sum(g)/len(g)) for g in groups]
-        vx=cluster([x+w//2 for x,y,w,h in vs])
-        hy=cluster([y+h//2 for x,y,w,h in hs])
-        # Candidate table regions: adjacent vertical lines enclosing many horizontal lines.
-        tables=[]
-        for i in range(len(vx)-2):
-            for j in range(i+2,len(vx)):
-                left,right=vx[i],vx[j]
-                if right-left < W*0.30: continue
-                inside=[y for y in hy if y>0]
-                # horizontal lines spanning this table are approximated by width coverage.
-                spanning=[]
-                for x,y,w,h in hs:
-                    center=y+h//2
-                    if center and x <= left+40 and x+w >= right-40:
-                        spanning.append(center)
-                spanning=cluster(spanning)
-                if len(spanning)>=4:
-                    tables.append((left,right,spanning))
-        # More reliable fallback for full-width ruled tables: use all long horizontals
-        # when several long verticals occur in the same y-range.
-        if not tables:
-            long_v=[x for x,y,w,h in vs if h>H*0.25]
-            if len(long_v)>=3:
-                left,right=min(long_v),max(long_v)
-                spanning=cluster([y+h//2 for x,y,w,h in hs if x <= left+50 and x+w >= right-50])
-                if len(spanning)>=4:
-                    tables=[(left,right,spanning)]
-        # Deduplicate and return only the largest plausible table.
-        unique=[]
-        for left,right,ys in tables:
-            key=(left,right,tuple(ys))
-            if key not in [(a,b,tuple(c)) for a,b,c in unique]: unique.append((left,right,ys))
-        unique.sort(key=lambda t:(t[1]-t[0])*max(0,len(t[2])-1), reverse=True)
-        results=[]
-        for left,right,ys in unique[:2]:
-            # Limit to a sensible page region and require actual columns.
-            cols=[x for x in vx if left-25 <= x <= right+25]
-            cols=cluster(cols)
-            if len(cols)>=3 and len(ys)>=4:
-                results.append({'left':left,'right':right,'top':min(ys)-2,
-                                'bottom':max(ys)+2,'x':cols,'y':ys})
-        return results
-    except Exception:
-        return []
-
-
-def _ocr_table_cells(page, table, scale=2.5):
-    """OCR a detected table once and place words into editable cells."""
-    import cv2
-    import numpy as np
+def _ocr_data(img,psm=3):
     import pytesseract
-    from PIL import Image
-    pix = page.get_pixmap(matrix=fitz.Matrix(scale, scale), alpha=False, colorspace=fitz.csRGB)
-    img = np.array(Image.open(io.BytesIO(pix.tobytes('png'))).convert('L'))
-    x0=max(0,table['left']-4); x1=min(img.shape[1],table['right']+4)
-    y0=max(0,table['top']-4); y1=min(img.shape[0],table['bottom']+4)
-    crop=img[y0:y1,x0:x1]
-    crop=cv2.medianBlur(crop,3)
-    proc=cv2.threshold(crop,175,255,cv2.THRESH_BINARY)[1]
-    data=pytesseract.image_to_data(proc,config='--oem 3 --psm 6',lang='eng',output_type=pytesseract.Output.DICT)
-    xs=table['x']; ys=table['y']
-    rows=[['' for _ in range(len(xs)-1)] for _ in range(len(ys)-1)]
-    buckets=[[[] for _ in range(len(xs)-1)] for _ in range(len(ys)-1)]
-    for i,text in enumerate(data.get('text',[])):
-        text=(text or '').strip()
-        if not text: continue
-        try: conf=float(data['conf'][i])
-        except Exception: conf=0
-        if conf < 8: continue
-        left=int(data['left'][i])+x0; top=int(data['top'][i])+y0
-        w=int(data['width'][i]); h=int(data['height'][i])
-        cx=left+w/2; cy=top+h/2
-        ci=next((j for j in range(len(xs)-1) if xs[j] <= cx < xs[j+1]),None)
-        ri=next((j for j in range(len(ys)-1) if ys[j] <= cy < ys[j+1]),None)
-        if ci is not None and ri is not None:
-            buckets[ri][ci].append((left,text,conf))
-    for r in range(len(rows)):
-        for c in range(len(rows[r])):
-            vals=sorted(buckets[r][c],key=lambda z:z[0])
-            rows[r][c]=' '.join(v[1] for v in vals)
+    gray=ImageOps.autocontrast(img.convert('L'))
+    cfg=f'--oem 3 --psm {psm}'
+    text=pytesseract.image_to_string(gray,config=cfg,lang='eng').strip()
+    data=pytesseract.image_to_data(gray,config=cfg,lang='eng',output_type=pytesseract.Output.DICT)
+    confs=[]
+    for t,c in zip(data.get('text',[]),data.get('conf',[])):
+        if (t or '').strip():
+            try:
+                c=float(c)
+                if c>=0: confs.append(c)
+            except Exception: pass
+    conf=sum(confs)/len(confs) if confs else 0
+    return text,conf,data
+
+
+def _line_data(data):
+    groups={}
+    for i,t in enumerate(data.get('text',[])):
+        t=(t or '').strip()
+        if not t: continue
+        try: c=float(data['conf'][i])
+        except Exception: c=0
+        if c<20: continue
+        key=(data['block_num'][i],data['par_num'][i],data['line_num'][i])
+        groups.setdefault(key,[]).append(i)
+    lines=[]
+    for ids in groups.values():
+        ids.sort(key=lambda i:int(data['left'][i]))
+        x=min(int(data['left'][i]) for i in ids); y=min(int(data['top'][i]) for i in ids)
+        x2=max(int(data['left'][i])+int(data['width'][i]) for i in ids); y2=max(int(data['top'][i])+int(data['height'][i]) for i in ids)
+        txt=' '.join((data['text'][i] or '').strip() for i in ids).strip()
+        if not txt: continue
+        avg=sum(float(data['conf'][i]) for i in ids)/len(ids)
+        lines.append({'x':x,'y':y,'x2':x2,'y2':y2,'text':txt,'conf':avg,'word_ids':ids})
+    return sorted(lines,key=lambda z:(z['y'],z['x']))
+
+
+def _ocr_page(page):
+    img=_scan_image(page)
+    text,conf,data=_ocr_data(img,3)
+    lines=_line_data(data)
+    # PSM 3 is the primary pass because it gives much cleaner ordinary document text.
+    # For pages that clearly have a ruled table, add a second pass only for table cells.
+    return lines,img,conf
+
+
+def _text_quality(text):
+    if not text.strip(): return 0
+    compact=re.sub(r'\s+',' ',text).strip(); chars=len(compact)
+    if chars<20: return .25
+    alpha=sum(c.isalnum() for c in compact)/chars
+    words=len(re.findall(r'[A-Za-z]{2,}',compact))/max(len(compact.split()),1)
+    symbols=len(re.findall(r'[^\w\s]{2,}',compact))
+    return max(0,min(1,alpha*.4+words*.6-min(.45,symbols*.025)))
+
+
+def get_page_text(page):
+    extracted=page_text(page)
+    if _has_large_page_image(page):
+        img=_scan_image(page); candidates=[]
+        for psm in (3,6):
+            t,c,_=_ocr_data(img,psm)
+            if t: candidates.append((c,t))
+        if candidates:
+            candidates.sort(key=lambda x:x[0],reverse=True); best=candidates[0]; fuller=max(candidates,key=lambda x:len(x[1]))
+            if fuller[0]>=best[0]-5 and len(fuller[1])>=len(best[1])*1.12: return fuller[1]
+            return best[1]
+    if extracted and _text_quality(extracted)>=.45: return extracted
+    img=_scan_image(page); return max((_ocr_data(img,p)[0] for p in (3,6)),key=len,default=extracted)
+
+
+def safe_stem(name):
+    return re.sub(r'[^A-Za-z0-9._-]+','_',Path(name).stem).strip('._') or 'converted-from-pdf'
+
+
+def convert_txt(pdf_path,output_path,pages):
+    pdf=fitz.open(pdf_path); chunks=[]
+    for n in pages: chunks.append(f'Page {n}\n\n{get_page_text(pdf[n-1])}')
+    Path(output_path).write_text('\n\n'.join(chunks)+'\n',encoding='utf-8'); pdf.close()
+
+
+def _detect_table(page,img):
+    """Detect a large ruled table in a scanned page at native image resolution."""
+    import cv2, numpy as np
+    gray=np.array(img.convert('L'))
+    bw=cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY_INV,31,10)
+    h=cv2.morphologyEx(bw,cv2.MORPH_OPEN,cv2.getStructuringElement(cv2.MORPH_RECT,(max(30,gray.shape[1]//20),1)))
+    v=cv2.morphologyEx(bw,cv2.MORPH_OPEN,cv2.getStructuringElement(cv2.MORPH_RECT,(1,max(20,gray.shape[0]//45))))
+    hc,_=cv2.findContours(h,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE); vc,_=cv2.findContours(v,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    hs=[]; vs=[]
+    for c in hc:
+        x,y,w,hh=cv2.boundingRect(c)
+        if w>gray.shape[1]*.35 and hh<15: hs.append((x,y,w,hh))
+    for c in vc:
+        x,y,w,hh=cv2.boundingRect(c)
+        if hh>gray.shape[0]*.10 and w<15: vs.append((x,y,w,hh))
+    if len(hs)<4 or len(vs)<3: return None
+    # choose the densest rectangular region
+    xs=sorted([x+w//2 for x,y,w,hh in vs]); ys=sorted([y+hh//2 for x,y,w,hh in hs])
+    # cluster positions
+    def cluster(vals,tol=12):
+        out=[]
+        for v in vals:
+            if not out or v-out[-1][-1]>tol: out.append([v])
+            else: out[-1].append(v)
+        return [int(sum(g)/len(g)) for g in out]
+    xs=cluster(xs); ys=cluster(ys)
+    if len(xs)<3 or len(ys)<4: return None
+    # select largest group of horizontals spanning between outer verticals
+    best=None
+    for i in range(len(xs)-2):
+        for j in range(i+2,len(xs)):
+            l,r=xs[i],xs[j]
+            span=[y for x,y,w,hh in hs if x<=l+25 and x+w>=r-25]
+            span=cluster([int(y+hh//2) for x,y,w,hh in hs if x<=l+25 and x+w>=r-25])
+            if len(span)>=4:
+                score=(r-l)*(len(span)-1)
+                if best is None or score>best[0]: best=(score,l,r,span)
+    if not best: return None
+    _,l,r,ys=best; cols=[x for x in xs if l-15<=x<=r+15]
+    if len(cols)<3: return None
+    # infer bottom line if the final row border is weak
+    return {'x':cols,'y':ys,'left':l,'right':r}
+
+
+def _ocr_table_words(img,table):
+    import cv2,numpy as np,pytesseract
+    arr=np.array(img.convert('L')); xs=table['x']; ys=table['y']; rows=[]
+    # Use cell-level OCR. This is slower than a whole-page pass but dramatically reduces
+    # column/row mixing in marks certificates and similar ruled tables.
+    for r in range(len(ys)-1):
+        row=[]
+        for c in range(len(xs)-1):
+            x0,y0,x1,y1=xs[c],ys[r],xs[c+1],ys[r+1]
+            crop=arr[max(0,y0+3):min(arr.shape[0],y1-3),max(0,x0+3):min(arr.shape[1],x1-3)]
+            if crop.size==0: row.append(''); continue
+            crop=cv2.resize(crop,None,fx=2,fy=2,interpolation=cv2.INTER_CUBIC)
+            crop=cv2.threshold(crop,200,255,cv2.THRESH_BINARY)[1]
+            whitelist='0123456789-' if c>0 else ''
+            cfg='--oem 3 --psm 7'+(f' -c tessedit_char_whitelist={whitelist}' if whitelist else '')
+            txt=pytesseract.image_to_string(crop,config=cfg,lang='eng').strip()
+            row.append(re.sub(r'\s+',' ',txt))
+        rows.append(row)
     return rows
 
 
-def _add_docx_table(docx, rows):
-    if not rows:
-        return
-    cols=max(len(r) for r in rows)
-    table=docx.add_table(rows=len(rows), cols=cols)
-    table.style='Table Grid'
-    for r,row in enumerate(rows):
-        for c in range(cols):
-            table.cell(r,c).text=row[c] if c<len(row) else ''
-    docx.add_paragraph()
+def _clean_scan(img,lines,table=None):
+    import cv2,numpy as np
+    arr=np.array(img).copy(); mask=np.zeros(arr.shape[:2],np.uint8)
+    for ln in lines:
+        if ln['conf']<30: continue
+        x,y,x2,y2=map(int,(ln['x'],ln['y'],ln['x2'],ln['y2']))
+        if x2-x<3 or y2-y<3: continue
+        pad=5; xa=max(0,x-pad); xb=min(arr.shape[1],x2+pad); ya=max(0,y-pad); yb=min(arr.shape[0],y2+pad)
+        ring=arr[ya:yb,xa:xb]; yy1=min(pad,ring.shape[0]); yy2=min(pad+(y2-y),ring.shape[0]); xx1=min(pad,ring.shape[1]); xx2=min(pad+(x2-x),ring.shape[1])
+        m=np.ones(ring.shape[:2],bool); m[yy1:yy2,xx1:xx2]=False; vals=ring[m]
+        if vals.size and float(vals.mean())>155:
+            mask[max(0,y-1):min(arr.shape[0],y2+2),max(0,x-1):min(arr.shape[1],x2+2)]=255
+    mask=cv2.dilate(mask,np.ones((3,3),np.uint8),iterations=1)
+    return Image.fromarray(cv2.inpaint(arr,mask,3,cv2.INPAINT_TELEA))
 
-def convert_docx(pdf_path, output_path, pages):
-    """Create an editable DOCX from native or scanned PDFs.
 
-    Scanned pages are OCR'd as editable Word text. Simple ruled tables are
-    additionally reconstructed as real editable Word tables instead of page
-    images.
-    """
-    docx = Document()
-    pdf = fitz.open(pdf_path)
+def _vml(paragraph,kind,x,y,w,h,rid=None,text='',font_size=10,bold=False):
+    pict=OxmlElement('w:pict'); shape=etree.Element(f'{{{V_NS}}}shape')
+    shape.set('id','s'+str(abs(hash((kind,x,y,w,h,text)))%1000000000)); shape.set('type','#_x0000_t75' if kind=='image' else '#_x0000_t202')
+    shape.set('style',f'position:absolute;left:0;top:0;width:{max(w,1)}pt;height:{max(h,10)}pt;margin-left:{x}pt;margin-top:{y}pt;mso-position-horizontal-relative:page;mso-position-vertical-relative:page;z-index:{-251658752 if kind=="image" else 251658240}')
+    shape.set('stroked','f'); shape.set('filled','f' if kind=='image' else 't')
+    if kind=='image':
+        im=etree.Element(f'{{{V_NS}}}imagedata'); im.set(qn('r:id'),rid); im.set(f'{{{O_NS}}}title','page'); shape.append(im)
+    else:
+        fill=etree.Element(f'{{{V_NS}}}fill'); fill.set('color','#FFFFFF'); fill.set('opacity','100%'); shape.append(fill)
+        tb=etree.Element(f'{{{V_NS}}}textbox'); tb.set('style','mso-fit-shape-to-text:t;margin:0;padding:0')
+        tx=OxmlElement('w:txbxContent'); wp=OxmlElement('w:p'); wr=OxmlElement('w:r'); rpr=OxmlElement('w:rPr'); sz=OxmlElement('w:sz'); sz.set(qn('w:val'),str(max(10,int(round(font_size*2))))); rpr.append(sz)
+        if bold: rpr.append(OxmlElement('w:b'))
+        wr.append(rpr); wt=OxmlElement('w:t'); wt.text=text; wr.append(wt); wp.append(wr); tx.append(wp); tb.append(tx); shape.append(tb)
+    pict.append(shape); paragraph._p.append(pict)
 
-    for idx, n in enumerate(pages):
-        page = pdf[n - 1]
-        if idx:
-            docx.add_page_break()
 
-        tables = _detect_editable_tables(page) if _has_large_page_image(page) else []
-        lines = _native_page_lines(page)
-        if _has_large_page_image(page) or not lines:
-            lines = _ocr_page_lines(page)
-
-        if not tables:
-            if not lines:
-                lines = [f'[Page {n}: no readable text detected]']
-            _add_editable_lines(docx, lines)
-            continue
-
-        # For a table page, write OCR text outside the table and insert the
-        # reconstructed table as an actual editable Word table. This keeps the
-        # document editable while avoiding the old full-page-image approach.
-        table = tables[0]
-        rows = _ocr_table_cells(page, table)
-        # Header/body table pages: add OCR lines first, then the table. The
-        # surrounding text remains editable; table cells are editable too.
-        table_start_hint = re.compile(r'^(SUBJECTS|CLIENT NAME|DATE OF BIRTH|APPLICATION DETAILS|MAX\.? MARKS)', re.I)
-        before=[]
-        after=[]
-        seen_hint=False
-        for line in lines:
-            if table_start_hint.search(line):
-                seen_hint=True
-            if seen_hint:
-                after.append(line)
-            else:
-                before.append(line)
-        _add_editable_lines(docx, before)
-        _add_docx_table(docx, rows)
-        # Keep useful text following the table, but avoid duplicating obvious
-        # table OCR fragments.
-        for line in after:
-            if re.search(r'(MARKS IN WORDS|RESULT|GRADE|DATE OF ISSUE|REMARKS|SYSTEM GENERATED|CONTROLLER|TOTAL)', line, re.I):
-                p=docx.add_paragraph()
-                p.paragraph_format.space_after=Pt(5)
-                p.add_run(line)
-
-    pdf.close()
-    docx.save(output_path)
-
-def convert_html(pdf_path, output_path, pages):
-    pdf=fitz.open(pdf_path)
-    out=['<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">',
-         '<title>PDF to HTML</title><style>html,body{margin:0;padding:0;background:#e9edf1;color:#111;font-family:Arial,Helvetica,sans-serif}.pdf-document{padding:24px}.pdf-page{position:relative;margin:0 auto 24px;background:#fff;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.14)}.pdf-text{position:absolute;white-space:pre;transform-origin:0 0;line-height:1}.pdf-ocr{white-space:pre-wrap;padding:32px;font:14px/1.55 Arial,sans-serif;box-sizing:border-box}@media print{body{background:#fff}.pdf-document{padding:0}.pdf-page{margin:0;box-shadow:none;break-after:page}.pdf-page:last-child{break-after:auto}}</style></head><body><div class="pdf-document">']
-    for n in pages:
-        page=pdf[n-1]
-        rect=page.rect
-        data=page.get_text('dict')
-        has_spans=any(b.get('type')==0 and any(s.get('text','').strip() for l in b.get('lines',[]) for s in l.get('spans',[])) for b in data.get('blocks',[]))
-        out.append(f'<section class="pdf-page" style="width:{rect.width}px;height:{rect.height}px">')
-        if has_spans:
-            for block in data.get('blocks',[]):
-                if block.get('type')!=0: continue
-                for line in block.get('lines',[]):
-                    for span in line.get('spans',[]):
-                        text=span.get('text','')
+def convert_docx(pdf_path,output_path,pages):
+    pdf=fitz.open(pdf_path); doc=Document()
+    for i,n in enumerate(pages):
+        sec=doc.sections[0] if i==0 else doc.add_section(1)
+        page=pdf[n-1]; pw=page.rect.width; ph=page.rect.height
+        sec.page_width=Inches(pw/72); sec.page_height=Inches(ph/72)
+        sec.top_margin=sec.bottom_margin=sec.left_margin=sec.right_margin=Inches(0); sec.header_distance=sec.footer_distance=Inches(0); sec.header.is_linked_to_previous=False
+        header=sec.header; p=header.paragraphs[0]; p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0)
+        scanned=_has_large_page_image(page)
+        if scanned:
+            img=_scan_image(page); lines,_,_= _ocr_page(page); table=_detect_table(page,img)
+            cleaned=_clean_scan(img,lines,table)
+            tmp=Path(output_path).with_name(f'.toolnest_{i+1}.png'); cleaned.save(tmp)
+            rid,_=doc.part.get_or_add_image(str(tmp)); _vml(p,'image',0,0,pw,ph,rid=rid)
+            sx=pw/img.width; sy=ph/img.height
+            # Replace table text with targeted cell OCR when a ruled table is found.
+            table_boxes=[]
+            if table:
+                cells=_ocr_table_words(img,table)
+                for r,row in enumerate(cells):
+                    for c,text in enumerate(row):
                         if not text: continue
-                        x0,y0,x1,y1=span.get('bbox',[0,0,0,0])
-                        size=max(1,float(span.get('size',10)))
-                        font=html.escape(span.get('font','Arial'))
-                        flags=int(span.get('flags',0))
-                        weight='700' if flags & 16 else '400'
-                        angle=0
-                        out.append(f'<span class="pdf-text" style="left:{x0}px;top:{y0}px;font-size:{size}px;font-family:{font},Arial,sans-serif;font-weight:{weight}">{html.escape(text).replace(" ","&nbsp;")}</span>')
+                        x=table['x'][c]*sx; y=table['y'][r]*sy; w=(table['x'][c+1]-table['x'][c])*sx; h=(table['y'][r+1]-table['y'][r])*sy
+                        # table text is centered/left depending on column; a white box hides original printed text.
+                        fs=max(6,min(13,(table['y'][r+1]-table['y'][r])*.42))
+                        _vml(p,'text',x+2,y+2,max(8,w-4),max(10,h-4),text=text,font_size=fs)
+                        table_boxes.append((table['x'][c],table['y'][r],table['x'][c+1],table['y'][r+1]))
+            for ln in lines:
+                if not ln['text'] or ln['conf']<25: continue
+                # Skip OCR lines inside detected table; cells above handle them.
+                if table and table['left']<=ln['x']<=table['right'] and table['y'][0]<=ln['y']<=table['y'][-1]:
+                    continue
+                x,y,x2,y2=ln['x']*sx,ln['y']*sy,ln['x2']*sx,ln['y2']*sy
+                import numpy as np
+                arr=np.array(img); xa=max(0,int(ln['x']-3)); xb=min(arr.shape[1],int(ln['x2']+3)); ya=max(0,int(ln['y']-3)); yb=min(arr.shape[0],int(ln['y2']+3)); sample=arr[ya:yb,xa:xb].mean() if xb>xa and yb>ya else 255
+                if sample<145: continue
+                fs=max(6,min(15,(y2-y)*.78)); _vml(p,'text',x,y,max(8,x2-x+4),max(10,y2-y+3),text=ln['text'],font_size=fs)
+            tmp.unlink(missing_ok=True)
         else:
-            text=html.escape(ocr_page(page))
-            out.append(f'<div class="pdf-ocr">{text}</div>')
+            # Native text PDFs: keep the existing editable text path.
+            for ln in _native_lines(page):
+                para=doc.add_paragraph(); para.paragraph_format.space_after=Pt(4); para.add_run(ln['text'])
+        doc.add_paragraph('')
+    pdf.close(); doc.save(output_path)
+
+
+def _native_lines(page):
+    data=page.get_text('dict'); out=[]
+    for block in data.get('blocks',[]):
+        if block.get('type')!=0: continue
+        for line in block.get('lines',[]):
+            text=''.join(s.get('text','') for s in line.get('spans',[])).strip()
+            if text: out.append({'text':text})
+    return out
+
+
+def convert_html(pdf_path,output_path,pages):
+    pdf=fitz.open(pdf_path); out=['<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF to HTML</title><style>html,body{margin:0;background:#e9edf1;font-family:Arial,sans-serif}.pdf-document{padding:24px}.pdf-page{position:relative;margin:0 auto 24px;background:#fff;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.14)}.pdf-bg{position:absolute;inset:0;width:100%;height:100%}.editable{position:absolute;background:#fff;border:0;padding:0;margin:0;outline:none;line-height:1;box-sizing:border-box}.native{background:transparent}@media print{body{background:#fff}.pdf-document{padding:0}.pdf-page{margin:0;box-shadow:none;break-after:page}.pdf-page:last-child{break-after:auto}}</style></head><body><div class="pdf-document">']
+    for n in pages:
+        page=pdf[n-1]; scanned=_has_large_page_image(page); img=_scan_image(page) if scanned else None
+        if scanned:
+            lines,_,_= _ocr_page(page); cleaned=_clean_scan(img,lines); buf=io.BytesIO(); cleaned.save(buf,'PNG'); b=base64.b64encode(buf.getvalue()).decode(); sx=page.rect.width/img.width; sy=page.rect.height/img.height
+        else:
+            buf=io.BytesIO(); pix=page.get_pixmap(matrix=fitz.Matrix(1,1),alpha=False,colorspace=fitz.csRGB); Image.open(io.BytesIO(pix.tobytes('png'))).save(buf,'PNG'); b=base64.b64encode(buf.getvalue()).decode(); lines=_native_lines(page); sx=sy=1
+        out.append(f'<section class="pdf-page" style="width:{page.rect.width}px;height:{page.rect.height}px"><img class="pdf-bg" src="data:image/png;base64,{b}">')
+        for ln in lines:
+            if scanned:
+                x,y,w,h=ln['x']*sx,ln['y']*sy,max(8,(ln['x2']-ln['x'])*sx+4),max(10,(ln['y2']-ln['y'])*sy+3); fs=max(7,min(16,(ln['y2']-ln['y'])*sy*.78))
+            else:
+                x,y,w,h=0,0,0,0; continue
+            if ln['conf']<25: continue
+            out.append(f'<div contenteditable="true" class="editable" style="left:{x}px;top:{y}px;width:{w}px;height:{h}px;font-size:{fs}px">{html.escape(ln["text"])}</div>')
         out.append('</section>')
-    out.append('</div></body></html>')
-    Path(output_path).write_text(''.join(out),encoding='utf-8')
-    pdf.close()
+    out.append('</div></body></html>'); Path(output_path).write_text(''.join(out),encoding='utf-8'); pdf.close()
