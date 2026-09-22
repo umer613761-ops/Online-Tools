@@ -4357,6 +4357,44 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
     cancel.onclick=resetToUpload;
     download.onclick=async()=>{
       if(!files.length) return;
+      const office=files.find(f=>/\.(docx|xlsx)$/i.test(f.name));
+      if(office){
+        const ext=office.name.split('.').pop().toLowerCase();
+        const endpoint=ext==='docx'
+          ? 'https://toolnest-api-production-dda7.up.railway.app/api/docx-to-pdf'
+          : 'https://toolnest-api-production-dda7.up.railway.app/api/xlsx-to-pdf';
+        try{
+          download.disabled=true;
+          download.textContent='Converting...';
+          const formData=new FormData();
+          formData.append('file',office,office.name);
+          const response=await fetch(endpoint,{method:'POST',body:formData});
+          if(!response.ok){
+            let message='Unable to convert this file to PDF.';
+            try{const data=await response.json();if(data?.error) message=data.error+(data.details?'\n\n'+data.details:'');}catch(_){ }
+            throw new Error(message);
+          }
+          const blob=await response.blob();
+          if(!blob.size) throw new Error('The server returned an empty PDF file.');
+          const url=URL.createObjectURL(blob);
+          const a=document.createElement('a');
+          a.href=url;
+          const disposition=response.headers.get('Content-Disposition')||'';
+          const match=disposition.match(/filename[^;=]*=(?:UTF-8''|\")?([^;\"]+)/i);
+          const fallback=office.name.replace(/\.[^.]+$/,'')+'.pdf';
+          a.download=match?decodeURIComponent(match[1].replace(/^\"|\"$/g,'')):fallback;
+          document.body.appendChild(a);a.click();a.remove();
+          setTimeout(()=>URL.revokeObjectURL(url),5000);
+          resetToUpload();
+        }catch(e){
+          console.error(e);
+          alert(e?.message||'Unable to convert this file to PDF. Please try again.');
+        }finally{
+          download.disabled=false;
+          download.textContent='Convert & Download';
+        }
+        return;
+      }
       if(!window.jspdf){alert('PDF converter library is still loading. Please try again.');return;}
       const {jsPDF}=window.jspdf;
       const doc=new jsPDF({unit:'pt',format:'a4'});
@@ -4371,43 +4409,27 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
           const fmt=f.type==='image/png'?'PNG':f.type==='image/webp'?'WEBP':'JPEG';
           doc.addImage(data,fmt,(doc.internal.pageSize.getWidth()-img.width*scale)/2,36,img.width*scale,img.height*scale);
         }else if(/\.html?$/i.test(f.name) || f.type==='text/html'){
-          if(files.length!==1){
-            alert('For HTML to PDF, please upload one HTML file at a time.');
-            return;
-          }
+          if(!window.jspdf || !window.jspdf.jsPDF){alert('PDF converter library is still loading. Please try again.');return;}
+          const html=await f.text();
+          const frame=document.createElement('iframe');
+          frame.setAttribute('aria-hidden','true');
+          frame.style.cssText='position:fixed;left:-100000px;top:0;width:794px;height:1123px;border:0;background:#fff;display:block;';
+          document.body.appendChild(frame);
           try{
-            const apiBase=(window.TOOLNEST_API_BASE||'/api').replace(/\/$/,'');
-            const form=new FormData();
-            form.append('file',f,f.name);
-            const response=await fetch(apiBase+'/html-to-pdf',{method:'POST',body:form});
-            if(!response.ok){
-              let message='Unable to convert this HTML file to PDF.';
-              try{
-                const data=await response.json();
-                if(data&&data.error) message=data.error+(data.details?'\n'+data.details:'');
-              }catch(_){ }
-              throw new Error(message);
-            }
-            const blob=await response.blob();
-            const url=URL.createObjectURL(blob);
-            const a=document.createElement('a');
-            a.href=url;
-            a.download=(f.name.replace(/\.[^.]+$/,'')||'converted-to-pdf')+'-converted.pdf';
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            setTimeout(()=>URL.revokeObjectURL(url),1000);
-            resetToUpload();
-            return;
-          }catch(error){
-            console.error('HTML to PDF conversion failed:',error);
-            alert(error.message||'Unable to convert this HTML file to PDF.');
-            return;
-          }
+            await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(new Error('HTML document timed out while loading.')),20000);frame.onload=()=>{clearTimeout(timer);resolve();};frame.onerror=()=>{clearTimeout(timer);reject(new Error('Unable to load the HTML document.'));};frame.srcdoc=html;});
+            const frameDoc=frame.contentDocument, body=frameDoc&&frameDoc.body;
+            if(!body) throw new Error('HTML document has no body.');
+            const images=Array.from(frameDoc.images||[]);
+            await Promise.all(images.map(img=>img.complete?(img.decode?img.decode().catch(()=>{}):Promise.resolve()):new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;})));
+            if(frameDoc.fonts?.ready) await frameDoc.fonts.ready.catch(()=>{});
+            await new Promise(resolve=>setTimeout(resolve,150));
+            const printStyle=frameDoc.createElement('style');
+            printStyle.textContent='@media screen{html,body{width:794px;min-height:1123px;margin:0;background:#fff}} @media print{body{margin:0}}';
+            frameDoc.head.appendChild(printStyle);
+            await new Promise((resolve,reject)=>doc.html(body,{x:36,y:36,width:doc.internal.pageSize.getWidth()-72,windowWidth:794,autoPaging:'text',margin:[36,36,36,36],html2canvas:{scale:2,useCORS:true,allowTaint:false,backgroundColor:'#ffffff',logging:false,windowWidth:794,windowHeight:1123,scrollX:0,scrollY:0},callback:resolve,error:reject}));
+          }finally{frame.remove();}
         }else{
-          const text=await f.text(); doc.setFontSize(11);
-          const lines=doc.splitTextToSize(text,doc.internal.pageSize.getWidth()-72);
-          let y=48;
+          const text=await f.text(); doc.setFontSize(11); const lines=doc.splitTextToSize(text,doc.internal.pageSize.getWidth()-72); let y=48;
           for(const line of lines){if(y>doc.internal.pageSize.getHeight()-40){doc.addPage();y=48;}doc.text(line,36,y);y+=15;}
         }
       }
@@ -4415,6 +4437,7 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
       doc.save(baseName+'-converted.pdf');
       resetToUpload();
     };
+
   }
 
   function setupFrom(){
@@ -4473,6 +4496,7 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
 })();
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
 
