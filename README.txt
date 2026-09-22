@@ -1,12 +1,14 @@
-ToolNest Convert to PDF - XLSX Header Repeat Fix
+ToolNest Convert to PDF backend update
 
-Replace the ROOT app.py in the Railway/GitHub repository with this version.
-Do not create a backend folder.
+HTML -> PDF now uses the backend /api/html-to-pdf endpoint with WeasyPrint.
+This preserves real PDF text, CSS page breaks, A4 @page rules, and repeating table headers.
 
-This change only affects modern Excel workbook conversion (.xlsx/.xlsm/.xltx/.xltm):
-- detects the first likely table/header row on each worksheet
-- repeats that row on continuation PDF pages
-- keeps fit-to-width pagination enabled
-- leaves the original uploaded workbook untouched
+Files:
+- app-updated-cors.py  Updated Flask backend with /api/html-to-pdf
+- convert-to-pdf.html  Updated frontend; HTML files are sent to the backend renderer
+- requirements.txt      Runtime dependencies
 
-DOCX/PPTX/other Office conversion remains on the existing LibreOffice path.
+Deploy the backend with WeasyPrint installed, then serve the updated convert-to-pdf.html.
+If the API is on a different origin, set window.TOOLNEST_API_BASE to the API base URL before the page script runs. Otherwise the page uses /api automatically.
+
+Important: HTML conversion is intentionally limited to one HTML file per conversion. Image/text conversion remains client-side and unchanged.
