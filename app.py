@@ -10,6 +10,13 @@ from flask import Flask, jsonify, request, send_file
 from pypdf import PdfReader, PdfWriter
 
 try:
+    from openpyxl import load_workbook
+    from openpyxl.worksheet.page import PageMargins
+except Exception:
+    load_workbook = None
+    PageMargins = None
+
+try:
     from pdf_to_xlsx import convert_pdf_to_xlsx
 except Exception:
     convert_pdf_to_xlsx = None
@@ -45,6 +52,38 @@ def find_office_binary():
         if path:
             return path
     raise RuntimeError("LibreOffice is not installed on the conversion server.")
+
+
+def prepare_spreadsheet_for_pdf(input_path: Path, output_dir: Path) -> Path:
+    """Prepare Excel/Calc workbooks for clean PDF pagination without changing the user's file."""
+    ext = input_path.suffix.lower()
+    if ext not in {".xlsx", ".xlsm", ".xltx", ".xltm"} or load_workbook is None:
+        return input_path
+
+    prepared = output_dir / f"prepared-{input_path.name}"
+    keep_vba = ext in {".xlsm", ".xltm"}
+    wb = load_workbook(input_path, keep_vba=keep_vba)
+    for ws in wb.worksheets:
+        # Office spreadsheets commonly have content wider than a portrait page.
+        # Fit the complete used range to one page wide, while allowing rows to
+        # continue onto additional pages vertically. This prevents isolated
+        # right-side fragments and blank-looking pages in the PDF.
+        ws.sheet_properties.pageSetUpPr.fitToPage = True
+        ws.page_setup.orientation = "landscape"
+        ws.page_setup.paperSize = ws.PAPERSIZE_A4
+        ws.page_setup.fitToWidth = 1
+        ws.page_setup.fitToHeight = 0
+        ws.page_setup.scale = None
+        ws.page_margins = PageMargins(
+            left=0.25, right=0.25, top=0.35, bottom=0.35,
+            header=0.1, footer=0.1
+        )
+        ws.print_options.horizontalCentered = True
+        ws.print_options.verticalCentered = False
+        if not ws.print_area:
+            ws.print_area = ws.calculate_dimension()
+    wb.save(prepared)
+    return prepared
 
 
 def convert_one_office(input_path: Path, output_dir: Path) -> Path:
@@ -113,7 +152,14 @@ def office_to_pdf():
             uploaded.save(path)
             input_paths.append(path)
 
-        pdfs = [convert_one_office(path, work) for path in input_paths]
+        prepared_paths = []
+        for path in input_paths:
+            if path.suffix.lower() in {".xlsx", ".xlsm", ".xltx", ".xltm"}:
+                prepared_paths.append(prepare_spreadsheet_for_pdf(path, work))
+            else:
+                prepared_paths.append(path)
+
+        pdfs = [convert_one_office(path, work) for path in prepared_paths]
         output = work / "converted-to-pdf.pdf"
         merge_pdfs(pdfs, output)
         if not output.exists() or output.stat().st_size == 0:
