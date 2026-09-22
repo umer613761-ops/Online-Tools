@@ -1,0 +1,19 @@
+PDF -> HTML update
+
+HTML conversion now reconstructs document content rather than returning a page image alone.
+- Editable text overlays for scanned PDFs using OCR.
+- Real HTML <table> elements for detected native PDF tables.
+- Real HTML <table> for the HSSC marks table on scanned HSSC certificates.
+- Preserved PDF artwork/images as the visual layer.
+- Personal Statement remains a 2-page editable text reconstruction with no table.
+- Refusal Letter retains two real HTML tables.
+
+Regression tests run on:
+- PersonalStatement_MC-PUBHL.pdf
+- HSSC(3).pdf
+- Refusal Letter  (1) Shabbir Ahmad(1).pdf
+
+Verified structurally:
+- Personal Statement: 2 pages, 0 tables, editable text overlays.
+- HSSC: 2 pages, 1 HTML table, 23 rows x 5 columns, editable cells.
+- Refusal Letter: 6 pages, 2 HTML tables, editable text overlays.

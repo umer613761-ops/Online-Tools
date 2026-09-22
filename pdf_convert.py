@@ -1054,21 +1054,113 @@ def convert_docx(pdf_path,output_path,pages):
             _append_native_page(doc,page,plumber.pages[n-1],first_page=(idx==0),footer_lines=footer_lines)
     plumber.close(); pdf.close(); doc.save(output_path)
 
+def _html_table(rows, x, y, w, h, scanned=False):
+    if not rows:
+        return ''
+    # Normalize row widths.
+    cols=max(len(r) for r in rows)
+    norm=[list(r)+['']*(cols-len(r)) for r in rows]
+    head=norm[0]
+    body=norm[1:]
+    html=['<table class="pdf-table" contenteditable="true" style="left:%gpx;top:%gpx;width:%gpx;height:%gpx">' % (x,y,w,h)]
+    html.append('<colgroup>'+''.join('<col style="width:%g%%">'%(100/cols) for _ in range(cols))+'</colgroup>')
+    html.append('<thead><tr>'+''.join('<th contenteditable="true">%s</th>'%html_escape(v).replace('\n','<br>') for v in head)+'</tr></thead><tbody>')
+    for r in body:
+        html.append('<tr>'+''.join('<td contenteditable="true">%s</td>'%html_escape(v).replace('\n','<br>') for v in r)+'</tr>')
+    html.append('</tbody></table>')
+    return ''.join(html)
+
+
+def html_escape(value):
+    return html.escape(str(value or ''))
+
+
+def _mask_boxes(img, boxes, fill=(255,255,255)):
+    from PIL import ImageDraw
+    out=img.copy(); d=ImageDraw.Draw(out)
+    for b in boxes:
+        x0,y0,x1,y1=[int(v) for v in b]
+        if x1>x0 and y1>y0: d.rectangle((x0,y0,x1,y1),fill=fill)
+    return out
+
+
 def convert_html(pdf_path,output_path,pages):
-    pdf=fitz.open(pdf_path); out=['<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF to HTML</title><style>html,body{margin:0;background:#e9edf1;font-family:Arial,sans-serif}.pdf-document{padding:24px}.pdf-page{position:relative;margin:0 auto 24px;background:#fff;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.14)}.pdf-bg{position:absolute;inset:0;width:100%;height:100%}.editable{position:absolute;background:#fff;border:0;padding:0;margin:0;outline:none;line-height:1;box-sizing:border-box}.native{background:transparent}@media print{body{background:#fff}.pdf-document{padding:0}.pdf-page{margin:0;box-shadow:none;break-after:page}.pdf-page:last-child{break-after:auto}}</style></head><body><div class="pdf-document">']
+    """Create a real HTML reconstruction: editable text overlays, real HTML tables,
+    and preserved PDF artwork/images as the visual layer."""
+    pdf=fitz.open(pdf_path)
+    out=['<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">',
+         '<title>PDF to HTML</title><style>',
+         'html,body{margin:0;background:#e9edf1;font-family:Arial,sans-serif;color:#111}',
+         '.pdf-document{padding:24px}',
+         '.pdf-page{position:relative;margin:0 auto 24px;background:#fff;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.14)}',
+         '.pdf-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;user-select:none}',
+         '.editable{position:absolute;margin:0;padding:1px 2px;box-sizing:border-box;outline:none;white-space:pre-wrap;line-height:1.05;background:rgba(255,255,255,.93);border-radius:1px}',
+         '.native-text{background:rgba(255,255,255,.94)}',
+         '.pdf-table{position:absolute;border-collapse:collapse;table-layout:fixed;background:#fff;font-family:Arial,sans-serif;font-size:7px;line-height:1.0;z-index:5}',
+         '.pdf-table th,.pdf-table td{border:1px solid #555;padding:1px 2px;vertical-align:middle;overflow:hidden}',
+         '.pdf-table th{background:#b7b7b7;font-weight:700;text-align:center}',
+         '.pdf-table td{text-align:left}',
+         '.pdf-table td:not(:first-child){text-align:center}',
+         '@media print{body{background:#fff}.pdf-document{padding:0}.pdf-page{margin:0;box-shadow:none;break-after:page}.pdf-page:last-child{break-after:auto}}',
+         '</style></head><body><div class="pdf-document">']
+
     for n in pages:
-        page=pdf[n-1]; scanned=_has_large_page_image(page); img=_scan_image(page) if scanned else None
+        page=pdf[n-1]
+        scanned=_has_large_page_image(page)
+        page_w=float(page.rect.width); page_h=float(page.rect.height)
+        # Render at 1x for native PDFs and 144 dpi for scans, but CSS coordinates stay in PDF points.
         if scanned:
-            lines,_,_= _ocr_page(page); cleaned=_clean_scan(img,lines); buf=io.BytesIO(); cleaned.save(buf,'PNG'); b=base64.b64encode(buf.getvalue()).decode(); sx=page.rect.width/img.width; sy=page.rect.height/img.height
+            img=_scan_image(page).convert('RGB')
+            sx=page_w/img.width; sy=page_h/img.height
+            lines,_,_= _ocr_page(page)
+            # Detect a large ruled table and replace it with a genuine HTML table.
+            table_info=_scan_table_region(img)
+            table_html=''
+            excluded=None
+            if table_info:
+                tx0,tx1=table_info['x'][0],table_info['x'][-1]
+                ty0,ty1=table_info['top'],table_info['bottom']
+                table_data=_scan_table_cells(img,table_info)
+                bx0,by0,bx1,by1=tx0*sx,ty0*sy,tx1*sx,ty1*sy
+                table_html=_html_table(table_data,bx0,by0,bx1-bx0,by1-by0,scanned=True)
+                excluded=(tx0,ty0,tx1,ty1)
+            # OCR overlays remain editable; table text is omitted where the real table is inserted.
+            overlays=[]
+            for ln in lines:
+                if ln.get('conf',0)<45: continue
+                x0,y0,x1,y1=ln['x']*sx,ln['y']*sy,ln['x2']*sx,ln['y2']*sy
+                if excluded and x0>=excluded[0]*sx-3 and x1<=excluded[2]*sx+3 and y0>=excluded[1]*sy-3 and y1<=excluded[3]*sy+3:
+                    continue
+                fs=max(7,min(16,(ln['y2']-ln['y'])*sy*.78))
+                overlays.append(f'<div contenteditable="true" class="editable" style="left:{x0:.2f}px;top:{y0:.2f}px;width:{max(8,x1-x0+4):.2f}px;height:{max(10,y1-y0+4):.2f}px;font-size:{fs:.2f}px">{html_escape(ln["text"])}</div>')
+            buf=io.BytesIO(); img.save(buf,'JPEG',quality=84,optimize=True); b=base64.b64encode(buf.getvalue()).decode()
+            out.append(f'<section class="pdf-page" style="width:{page_w:.2f}px;height:{page_h:.2f}px"><img class="pdf-bg" src="data:image/png;base64,{b}">')
+            out.extend(overlays); out.append(table_html); out.append('</section>')
         else:
-            buf=io.BytesIO(); pix=page.get_pixmap(matrix=fitz.Matrix(1,1),alpha=False,colorspace=fitz.csRGB); Image.open(io.BytesIO(pix.tobytes('png'))).save(buf,'PNG'); b=base64.b64encode(buf.getvalue()).decode(); lines=_native_lines(page); sx=sy=1
-        out.append(f'<section class="pdf-page" style="width:{page.rect.width}px;height:{page.rect.height}px"><img class="pdf-bg" src="data:image/png;base64,{b}">')
-        for ln in lines:
-            if scanned:
-                x,y,w,h=ln['x']*sx,ln['y']*sy,max(8,(ln['x2']-ln['x'])*sx+4),max(10,(ln['y2']-ln['y'])*sy+3); fs=max(7,min(16,(ln['y2']-ln['y'])*sy*.78))
-            else:
-                x,y,w,h=0,0,0,0; continue
-            if ln['conf']<25: continue
-            out.append(f'<div contenteditable="true" class="editable" style="left:{x}px;top:{y}px;width:{w}px;height:{h}px;font-size:{fs}px">{html.escape(ln["text"])}</div>')
-        out.append('</section>')
-    out.append('</div></body></html>'); Path(output_path).write_text(''.join(out),encoding='utf-8'); pdf.close()
+            # Native/text PDF: use the rendered page only as artwork, mask text/table regions,
+            # then place the actual selectable/editable text and real HTML tables on top.
+            pix=page.get_pixmap(matrix=fitz.Matrix(1,1),alpha=False,colorspace=fitz.csRGB)
+            img=Image.open(io.BytesIO(pix.tobytes('png'))).convert('RGB')
+            plumber_page=pdfplumber.open(pdf_path).pages[n-1]
+            tables=_native_tables(plumber_page)
+            table_bboxes=[t['bbox'] for t in tables]
+            lines=_native_lines(page,table_bboxes=table_bboxes)
+            mask_boxes=[]
+            for ln in lines:
+                mask_boxes.append((ln['x']-1,ln['y']-1,ln['x2']+2,ln['y2']+2))
+            for t in tables: mask_boxes.append(t['bbox'])
+            bg=_mask_boxes(img,mask_boxes)
+            buf=io.BytesIO(); bg.save(buf,'PNG',optimize=True); b=base64.b64encode(buf.getvalue()).decode()
+            out.append(f'<section class="pdf-page" style="width:{page_w:.2f}px;height:{page_h:.2f}px"><img class="pdf-bg" src="data:image/png;base64,{b}">')
+            for ln in lines:
+                fs=max(7,min(16,float(ln['y2']-ln['y'])*.82))
+                out.append(f'<div contenteditable="true" class="editable native-text" style="left:{ln["x"]:.2f}px;top:{ln["y"]:.2f}px;width:{max(8,ln["x2"]-ln["x"]+4):.2f}px;height:{max(10,ln["y2"]-ln["y"]+4):.2f}px;font-size:{fs:.2f}px">{html_escape(ln["text"])}</div>')
+            for t in tables:
+                x0,y0,x1,y1=t['bbox']
+                out.append(_html_table(t['rows'],x0,y0,x1-x0,y1-y0))
+            out.append('</section>')
+            plumber_page.close()
+    out.append('</div></body></html>')
+    Path(output_path).write_text(''.join(out),encoding='utf-8')
+    pdf.close()
+
