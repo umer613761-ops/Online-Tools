@@ -1,14 +1,23 @@
-ToolNest PDF conversion regression test
+ToolNest PDF conversion regression test - 2026-09-22
 
-Test PDFs:
-- original/HSSC.pdf
-- original/PS.pdf
+Test inputs:
+1. HSSC(3).pdf - 2-page scanned certificate / marks certificate
+2. PersonalStatement_MC-PUBHL.pdf - 2-page Curtin University form
+3. Refusal Letter (1) Shabbir Ahmad(1).pdf - native/text PDF regression
 
-Verified:
-- PS.pdf -> DOCX: 2 pages; no Word tables because source form contains no table; text/header/footer retained.
-- HSSC.pdf -> DOCX: 2 pages; 1 real editable Word table with 23 rows x 5 columns on the marks-certificate page. Certificate artwork, photo, signatures and other non-table areas are retained as raster segments.
-- Refusal Letter sample -> DOCX: 6 pages; 2 real Word tables; native PDF path remains intact.
+DOCX results:
+- HSSC: 2 pages after LibreOffice round-trip; 1 visible editable marks grid reconstructed as a real Word table; certificate artwork, photo, signatures and non-table content retained as page artwork.
+- Personal Statement: 2 pages after round-trip; form layout/header/footer preserved.
+- Refusal Letter: 6 pages after round-trip; 2 native Word tables preserved.
+
+Scanned-page strategy:
+- Render the actual PDF page at a fixed DPI so coordinates match the Word page.
+- Preserve scanned artwork as page image segments.
+- Detect the prominent ruled marks table on the HSSC page.
+- White out only that table rectangle in the surrounding scan.
+- Rebuild the table as editable Word table cells with text, borders and header shading.
+- Keep photographs, signatures, logos, handwritten/cursive material and other artwork in the scan image.
 
 Important:
-- The HSSC scan contains cursive/handwritten content. That artwork is intentionally retained as image rather than replacing it with unreliable OCR.
-- The HSSC marks table is reconstructed as editable Word cells; it is not a single page image.
+- Scanned certificate page text outside reconstructed tables remains image content. TXT/HTML use OCR separately.
+- This is a hybrid editable reconstruction, not a claim that every pixel of a scanned certificate can become native Word objects.

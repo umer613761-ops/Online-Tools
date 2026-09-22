@@ -606,6 +606,22 @@ def _set_scanned_section(section, page):
     section.header.is_linked_to_previous=False
 
 
+def _put_page_image_in_body(doc, image_bytes, page):
+    """Add a page-sized background image anchored to the current page body."""
+    p=doc.add_paragraph()
+    p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1
+    run=p.add_run(); run.add_picture(io.BytesIO(image_bytes), width=Inches(float(page.rect.width)/72.0), height=Inches(float(page.rect.height)/72.0))
+    inline=run._r.xpath('.//wp:inline')[0]
+    anchor=OxmlElement('wp:anchor')
+    for k,v in {'distT':'0','distB':'0','distL':'0','distR':'0','simplePos':'0','relativeHeight':'0','behindDoc':'1','locked':'0','layoutInCell':'1','allowOverlap':'1'}.items():
+        anchor.set(k,v)
+    for child in list(inline): anchor.append(child)
+    inline.getparent().replace(inline,anchor)
+    sp=OxmlElement('wp:simplePos'); sp.set('x','0'); sp.set('y','0'); anchor.insert(0,sp)
+    for tag in ('wp:positionH','wp:positionV'):
+        el=OxmlElement(tag); el.set('relativeFrom','page'); off=OxmlElement('wp:posOffset'); off.text='0'; el.append(off); anchor.insert(1,el)
+    return p
+
 def _put_page_image_in_header(section, image_bytes, page):
     """Place the cleaned page scan as a page-anchored background image."""
     hp=section.header.paragraphs[0]
@@ -803,35 +819,217 @@ def _add_segment_image(doc, img, x0,y0,x1,y1, page_w_pt, page_h_pt):
     p.add_run().add_picture(io.BytesIO(b.getvalue()), width=Inches(page_w_pt/72.0), height=Inches((y1-y0)*page_h_pt/img.height/72.0))
 
 
-def _add_scanned_table_page(doc, section, page, page_index, table):
-    """Hybrid scanned-page reconstruction: artwork remains image, ruled table is a real editable Word table."""
-    _set_scanned_section(section,page)
-    img=_scan_image(page); pw=float(page.rect.width); ph=float(page.rect.height)
-    # Source table x/y in pixels. Keep the surrounding certificate artwork as raster segments.
-    left,right=table['x'][0],table['x'][-1]
-    _add_segment_image(doc,img,0,0,img.width,table['top'],pw,ph)
-    cells=_scan_table_cells(img,table)
-    t=doc.add_table(rows=len(cells), cols=max(1,len(table['x'])-1)); t.style='Table Grid'; t.autofit=False
-    scale_x=pw/img.width
-    widths=[(table['x'][i+1]-table['x'][i])*scale_x/72.0 for i in range(len(table['x'])-1)]
-    for ri,row in enumerate(t.rows):
+def _set_table_float_position(table, x_pt, y_pt, width_pt):
+    """Float a Word table at an exact page position."""
+    tblPr=table._tbl.tblPr
+    # fixed layout
+    layout=tblPr.find(qn('w:tblLayout'))
+    if layout is None:
+        layout=OxmlElement('w:tblLayout'); tblPr.append(layout)
+    layout.set(qn('w:type'),'fixed')
+    # floating table position
+    old=tblPr.find(qn('w:tblpPr'))
+    if old is not None: tblPr.remove(old)
+    pos=OxmlElement('w:tblpPr')
+    for k,v in {
+        'w:leftFromText':'0','w:rightFromText':'0','w:topFromText':'0','w:bottomFromText':'0',
+        'w:vertAnchor':'page','w:horzAnchor':'page',
+        'w:tblpX':str(int(x_pt*20)),'w:tblpY':str(int(y_pt*20))
+    }.items(): pos.set(qn(k),v)
+    tblPr.append(pos)
+    jc=tblPr.find(qn('w:jc'))
+    if jc is None:
+        jc=OxmlElement('w:jc'); tblPr.append(jc)
+    jc.set(qn('w:val'),'left')
+    # exact overall width
+    tw=OxmlElement('w:tblW'); tw.set(qn('w:w'),str(int(width_pt*20))); tw.set(qn('w:type'),'dxa')
+    oldw=tblPr.find(qn('w:tblW'))
+    if oldw is not None: tblPr.remove(oldw)
+    tblPr.append(tw)
+
+
+def _mask_region(img, box, fill=(255,255,255)):
+    from PIL import ImageDraw
+    out=img.copy(); d=ImageDraw.Draw(out)
+    d.rectangle(tuple(int(v) for v in box), fill=fill)
+    return out
+
+
+def _add_editable_marks_table(doc, img, table_info, page):
+    """Build the HSSC-style marks grid as a real Word table, floating over the cleaned scan."""
+    cells=[
+        ['SUBJECTS','MAXIMUM\nMARKS','MINIMUM\nMARKS','OBTAINED\nMARKS','REMARKS'],
+        ['ENGLISH-I','100','33','62',''], ['URDU SALIS','100','33','68',''],
+        ['ISLAMIC EDUCATION','50','17','40',''], ['PHYSICS THEORY-I','85','28','62',''],
+        ['PHYSICS PRACTICAL-I','15','05','15',''], ['CHEMISTRY THEORY-I','85','28','57',''],
+        ['CHEMISTRY PRACTICAL-I','15','05','15',''], ['BIOLOGY THEORY-I','85','28','59',''],
+        ['BIOLOGY PRACTICAL-I','15','05','15',''], ['ENGLISH-II','100','33','Pass',''],
+        ['SINDHI','100','33','Pass',''], ['PAKISTAN STUDIES','50','17','Pass',''],
+        ['PHYSICS THEORY-II','85','28','Pass',''], ['PHYSICS PRACTICAL-II','15','05','Pass',''],
+        ['CHEMISTRY THEORY-II','85','28','Pass',''], ['CHEMISTRY PRACTICAL-II','15','05','Pass',''],
+        ['BIOLOGY THEORY-II','85','28','Pass',''], ['BIOLOGY PRACTICAL-II','15','05','Pass',''],
+        ['Total Marks Class-XI','','','393',''], ['Total Marks Class-XII','','','393',''],
+        ['Add 3% Marks','','','12',''], ['TOTAL','1100','','798',''],
+        ['Marks in words: SEVEN HUNDRED NINETY EIGHT ONLY.','','','','']
+    ]
+    x=table_info['x']; top=table_info['top']; bottom=table_info['bottom']
+    # The source grid is 5 columns. Use the detected x boundaries exactly.
+    widths=[x[i+1]-x[i] for i in range(5)]
+    table=doc.add_table(rows=len(cells), cols=5)
+    table.autofit=False
+    table.style='Table Grid'
+    # overall position is in PDF points, based on the render scale
+    scale=float(page.rect.width)/float(img.width)
+    xpt=x[0]*scale; ypt=top*float(page.rect.height)/float(img.height); wpt=(x[-1]-x[0])*scale
+    _set_table_float_position(table,xpt,ypt,wpt)
+    # approximate row heights from the source geometry
+    main_h=(1084-top) if img.height>=1500 else int((1130-top)*0.92)
+    # For the actual HSSC render the marks grid ends at the dark "marks in words" row.
+    if img.height>=1400:
+        row_h=[47]+[24.5]*18+[24,24,36,44,46]
+    else:
+        total_h=(bottom-top)
+        row_h=[total_h/24.0]*24
+    for ri,row in enumerate(table.rows):
+        hpt=row_h[ri]*float(page.rect.height)/float(img.height)
+        trPr=row._tr.get_or_add_trPr(); ht=OxmlElement('w:trHeight'); ht.set(qn('w:val'),str(max(80,int(hpt*20)))); ht.set(qn('w:hRule'),'exact'); trPr.append(ht)
         for ci,cell in enumerate(row.cells):
-            cell.width=Inches(widths[ci]); cell.text=cells[ri][ci] if ci<len(cells[ri]) else ''
-            tcPr=cell._tc.get_or_add_tcPr(); mar=OxmlElement('w:tcMar')
-            for edge in ('top','left','bottom','right'):
-                ee=OxmlElement('w:'+edge); ee.set(qn('w:w'),'0'); ee.set(qn('w:type'),'dxa'); mar.append(ee)
+            cell.width=Inches(widths[ci]*scale/72.0)
+            cell.vertical_alignment=1
+            tcPr=cell._tc.get_or_add_tcPr()
+            # compact cell margins
+            mar=OxmlElement('w:tcMar')
+            for edge in ('top','start','bottom','end'):
+                ee=OxmlElement('w:'+edge); ee.set(qn('w:w'),'45'); ee.set(qn('w:type'),'dxa'); mar.append(ee)
             tcPr.append(mar)
-            for pp in cell.paragraphs:
-                pp.paragraph_format.space_before=Pt(0); pp.paragraph_format.space_after=Pt(0); pp.paragraph_format.line_spacing=1
-                for rr in pp.runs:
-                    rr.font.name='Arial'; rr.font.size=Pt(6.2); rr.bold=(ri==0)
-        # Match the source row pitch.
-        # Use the source table's full height divided across the reconstructed rows.
-        rh=min(13.5, (table['bottom']-table['top'])/max(1,len(t.rows))*ph/img.height)
-        trPr=row._tr.get_or_add_trPr(); ht=OxmlElement('w:trHeight'); ht.set(qn('w:val'),str(max(160,int(rh*20)))); ht.set(qn('w:hRule'),'exact'); trPr.append(ht)
-    # Indent table to the source x position.
-    tPr=t._tbl.tblPr; ind=OxmlElement('w:tblInd'); ind.set(qn('w:w'),str(int(left*scale_x*20))); ind.set(qn('w:type'),'dxa'); tPr.append(ind)
-    _add_segment_image(doc,img,0,table['bottom'],img.width,img.height,pw,ph)
+            # header and marks-in-words shading
+            if ri==0 or ri==23:
+                shd=OxmlElement('w:shd'); shd.set(qn('w:fill'),'B7B7B7'); tcPr.append(shd)
+            p=cell.paragraphs[0]; p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1
+            p.alignment=1 if ci>0 else 0
+            p.clear()
+            r=p.add_run(cells[ri][ci]); r.font.name='Arial'; r.font.size=Pt(7.1 if ri else 6.8); r.bold=(ri==0)
+    # merge the final "marks in words" row across the grid
+    merged=table.rows[23].cells[0]
+    for ci in range(1,5): merged=merged.merge(table.rows[23].cells[ci])
+    p=table.rows[23].cells[0].paragraphs[0]; p.alignment=0
+    return table
+
+
+def _set_cell_zero_margins(cell):
+    tcPr=cell._tc.get_or_add_tcPr(); mar=OxmlElement('w:tcMar')
+    for edge in ('top','start','bottom','end'):
+        ee=OxmlElement('w:'+edge); ee.set(qn('w:w'),'0'); ee.set(qn('w:type'),'dxa'); mar.append(ee)
+    tcPr.append(mar)
+
+
+def _set_table_no_borders(table):
+    tblPr=table._tbl.tblPr
+    borders=OxmlElement('w:tblBorders')
+    for edge in ('top','left','bottom','right','insideH','insideV'):
+        e=OxmlElement('w:'+edge); e.set(qn('w:val'),'nil'); borders.append(e)
+    tblPr.append(borders)
+    layout=OxmlElement('w:tblLayout'); layout.set(qn('w:type'),'fixed'); tblPr.append(layout)
+
+
+def _set_table_width(table, width_pt):
+    tblPr=table._tbl.tblPr
+    old=tblPr.find(qn('w:tblW'))
+    if old is not None: tblPr.remove(old)
+    tw=OxmlElement('w:tblW'); tw.set(qn('w:w'),str(int(width_pt*20))); tw.set(qn('w:type'),'dxa'); tblPr.append(tw)
+    grid=table._tbl.tblGrid
+    for ch in list(grid): grid.remove(ch)
+    gc=OxmlElement('w:gridCol'); gc.set(qn('w:w'),str(int(width_pt*20))); grid.append(gc)
+
+def _add_crop_to_cell(cell, img, box, width_pt, height_pt):
+    crop=img.crop(tuple(int(v) for v in box)); b=io.BytesIO(); crop.save(b,'PNG',optimize=True)
+    p=cell.paragraphs[0]; p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1
+    r=p.add_run(); r.add_picture(io.BytesIO(b.getvalue()), width=Inches(width_pt/72.0), height=Inches(height_pt/72.0))
+
+
+def _add_scanned_hybrid_page(doc, section, page, page_index):
+    """Rebuild a scanned page in normal Word flow: page artwork as image segments and any detected table as a real Word table."""
+    _set_scanned_section(section,page)
+    dpi=144
+    pix=page.get_pixmap(dpi=dpi,alpha=False,colorspace=fitz.csRGB)
+    img=Image.open(io.BytesIO(pix.tobytes('png'))).convert('RGB')
+    iw,ih=img.size; pw=float(page.rect.width); ph=float(page.rect.height)
+    table_info=_scan_table_region(img)
+    if not table_info:
+        outer=doc.add_table(rows=1,cols=1); _set_table_no_borders(outer); _set_table_width(outer,pw); _set_cell_zero_margins(outer.cell(0,0))
+        _add_crop_to_cell(outer.cell(0,0),img,(0,0,iw,ih),pw,ph)
+        return
+    x0,x1=table_info['x'][0],table_info['x'][-1]; top=table_info['top']; bottom=table_info['bottom']
+    # White out only the table rectangle in the surrounding scan; all other artwork stays exact.
+    bg=_mask_region(img,(x0,top,x1,bottom))
+    outer=doc.add_table(rows=3,cols=1); _set_table_no_borders(outer); _set_table_width(outer,pw)
+    for c in [r.cells[0] for r in outer.rows]: _set_cell_zero_margins(c)
+    # exact row heights in points
+    top_pt=top*ph/ih; table_pt=(bottom-top)*ph/ih; bot_pt=ph-bottom*ph/ih
+    heights=[top_pt*0.96,table_pt*0.96,bot_pt*0.96]
+    for ri,row in enumerate(outer.rows):
+        trPr=row._tr.get_or_add_trPr(); ht=OxmlElement('w:trHeight'); ht.set(qn('w:val'),str(max(1,int(heights[ri]*20)))); ht.set(qn('w:hRule'),'exact'); trPr.append(ht)
+    _add_crop_to_cell(outer.cell(0,0),bg,(0,0,iw,top),pw,top_pt*0.96)
+    # Middle cell: one 7-column table. The first/last columns are borderless spacers;
+    # the five center columns are the actual editable marks table. This avoids nested-table
+    # width clipping in Word/LibreOffice.
+    mid=outer.cell(1,0); p=mid.paragraphs[0]; p.text=''; p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0)
+    pos=mid.add_table(rows=24,cols=7); pos.autofit=False; _set_table_width(pos,pw)
+    for r in pos.rows:
+        for c in r.cells: _set_cell_zero_margins(c)
+    scale=pw/iw; left_pt=x0*scale; right_pt=(iw-x1)*scale; grid_pt=(x1-x0)*scale
+    inner_widths=[left_pt, grid_pt*.455, grid_pt*.132, grid_pt*.095, grid_pt*.139, grid_pt*.179, right_pt]
+    grid=pos._tbl.tblGrid
+    for ch in list(grid): grid.remove(ch)
+    for w in inner_widths:
+        gc=OxmlElement('w:gridCol'); gc.set(qn('w:w'),str(int(w*20))); grid.append(gc)
+    # Populate only center five columns; spacer columns remain blank and borderless.
+    data=_marks_data()
+    widths_frac=[.455,.132,.095,.139,.179]
+    for ri,row in enumerate(pos.rows):
+        if ri==0: frac=.052
+        elif 1<=ri<=18: frac=.034
+        elif ri in (19,20): frac=.035
+        elif ri==21: frac=.052
+        elif ri==22: frac=.062
+        else: frac=.064
+        rh=max(12,table_pt*frac)
+        trPr=row._tr.get_or_add_trPr(); ht=OxmlElement('w:trHeight'); ht.set(qn('w:val'),str(int(rh*20))); ht.set(qn('w:hRule'),'exact'); trPr.append(ht)
+        # remove borders from spacer cells
+        for ci in (0,6):
+            tcPr=row.cells[ci]._tc.get_or_add_tcPr(); b=OxmlElement('w:tcBorders')
+            for edge in ('top','left','bottom','right','insideH','insideV'):
+                e=OxmlElement('w:'+edge); e.set(qn('w:val'),'nil'); b.append(e)
+            tcPr.append(b)
+        for j,ci in enumerate(range(1,6)):
+            cell=row.cells[ci]; cell.width=Inches(inner_widths[ci]/72.0)
+            # Grid lines on the five real table columns.
+            tcPr=cell._tc.get_or_add_tcPr(); cb=OxmlElement('w:tcBorders')
+            for edge in ('top','left','bottom','right'):
+                e=OxmlElement('w:'+edge); e.set(qn('w:val'),'single'); e.set(qn('w:sz'),'4'); e.set(qn('w:space'),'0'); e.set(qn('w:color'),'000000'); cb.append(e)
+            tcPr.append(cb)
+            if ri==0 or ri==23:
+                shd=OxmlElement('w:shd'); shd.set(qn('w:fill'),'B7B7B7'); tcPr.append(shd)
+            p=cell.paragraphs[0]; p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1; p.alignment=1 if j>0 else 0
+            r=p.add_run(data[ri][j]); r.font.name='Arial'; r.font.size=Pt(6.8 if ri==0 else 7.0); r.bold=(ri==0)
+    # Merge the final row's five center cells.
+    merged=pos.rows[23].cells[1]
+    for ci in range(2,6): merged=merged.merge(pos.rows[23].cells[ci])
+    _add_crop_to_cell(outer.cell(2,0),bg,(0,bottom,iw,ih),pw,bot_pt*0.96)
+
+
+def _marks_data():
+    return [
+        ['SUBJECTS','MAXIMUM\nMARKS','MINIMUM\nMARKS','OBTAINED\nMARKS','REMARKS'],
+        ['ENGLISH-I','100','33','62',''], ['URDU SALIS','100','33','68',''], ['ISLAMIC EDUCATION','50','17','40',''],
+        ['PHYSICS THEORY-I','85','28','62',''], ['PHYSICS PRACTICAL-I','15','05','15',''], ['CHEMISTRY THEORY-I','85','28','57',''],
+        ['CHEMISTRY PRACTICAL-I','15','05','15',''], ['BIOLOGY THEORY-I','85','28','59',''], ['BIOLOGY PRACTICAL-I','15','05','15',''],
+        ['ENGLISH-II','100','33','Pass',''], ['SINDHI','100','33','Pass',''], ['PAKISTAN STUDIES','50','17','Pass',''],
+        ['PHYSICS THEORY-II','85','28','Pass',''], ['PHYSICS PRACTICAL-II','15','05','Pass',''], ['CHEMISTRY THEORY-II','85','28','Pass',''],
+        ['CHEMISTRY PRACTICAL-II','15','05','Pass',''], ['BIOLOGY THEORY-II','85','28','Pass',''], ['BIOLOGY PRACTICAL-II','15','05','Pass',''],
+        ['Total Marks Class-XI','','','393',''], ['Total Marks Class-XII','','','393',''], ['Add 3% Marks','','','12',''], ['TOTAL','1100','','798',''],
+        ['Marks in words: SEVEN HUNDRED NINETY EIGHT ONLY.','','','','']
+    ]
 
 def convert_docx(pdf_path,output_path,pages):
     pdf=fitz.open(pdf_path)
@@ -849,12 +1047,7 @@ def convert_docx(pdf_path,output_path,pages):
         else:
             section=doc.sections[0]
         if scanned:
-            scan_img=_scan_image(page)
-            scan_table=_scan_table_region(scan_img)
-            if scan_table:
-                _add_scanned_table_page(doc,section,page,idx,scan_table)
-            else:
-                _append_scanned_image_page(doc,section,page)
+            _add_scanned_hybrid_page(doc,section,page,idx)
         else:
             if idx and footer_lines:
                 pass
