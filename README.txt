@@ -1,29 +1,26 @@
-ToolNest - Convert to PDF - Office conversion fix
+TOOLNEST CONVERT-TO-PDF RAILWAY FIX
 
-This patch fixes DOCX/XLSX/PPTX conversion in convert-to-pdf.html.
+Replace the deployment files in the existing ToolNest repository with:
 
-Problem fixed:
-The previous browser code treated Office files as plain text. DOCX/XLSX/PPTX are ZIP-based Office packages, so the result was the internal XML/ZIP data rendered into the PDF.
+- convert-to-pdf.html (updated frontend)
+- backend/app.py (adds /api/office-to-pdf while retaining /api/pdf-to-xlsx)
+- backend/requirements.txt
+- Dockerfile
 
-New behavior:
-- DOCX, DOC, ODT, RTF, XLSX, XLS, ODS, CSV, PPTX, PPT and ODP are sent to /api/office-to-pdf.
-- The backend uses LibreOffice headless to render the actual Office document to PDF.
-- Multiple Office files can be uploaded together and are merged in upload order.
-- Existing image/text/HTML browser conversion remains in place.
+IMPORTANT:
+The Dockerfile installs LibreOffice. This is required for DOCX/XLSX/PPTX/ODS/etc. rendering.
 
-Backend requirements:
-- Python 3
-- Flask
-- pypdf
-- LibreOffice/soffice installed on the server
+Expected repository structure:
 
-Frontend endpoint:
+Dockerfile
+backend/
+  app.py
+  requirements.txt
+
+The website's convert-to-pdf.html calls:
 https://toolnest-api-production-dda7.up.railway.app/api/office-to-pdf
 
-Important:
-The new endpoint must be deployed to the ToolNest API server before the live website can convert DOCX/XLSX/PPTX. The browser page is already wired to that endpoint.
+The backend accepts one or more Office files using multipart field name `files`, renders each
+with LibreOffice, then merges the generated PDFs in upload order.
 
-Local verification performed:
-- Country Education Profiles-Pakistan.docx -> real PDF, 43 pages, A4.
-- Panel University's Important Guidelines_VICPAK.xlsx -> real PDF, 24 pages, A4.
-- Both outputs were visually rendered as documents/spreadsheets rather than ZIP/XML contents.
+This patch was tested locally with the supplied DOCX and XLSX samples using LibreOffice.
