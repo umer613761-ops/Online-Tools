@@ -4375,6 +4375,10 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
             const form=new FormData();
             form.append('file',f,f.name);
             const response=await fetch('/api/html-to-pdf',{method:'POST',body:form});
+            const renderer=response.headers.get('X-ToolNest-HTML-Renderer') || '';
+            if(renderer!=='weasyprint'){
+              throw new Error('HTML-to-PDF server is not using the new renderer. Please deploy the updated ToolNest backend.');
+            }
             if(!response.ok){
               let message='Unable to convert this HTML file to PDF.';
               try{const data=await response.json(); if(data&&data.error) message=data.error;}catch(_e){}

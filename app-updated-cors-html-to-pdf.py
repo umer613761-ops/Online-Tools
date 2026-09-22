@@ -80,7 +80,9 @@ def html_to_pdf():
         HTML(filename=str(input_path), base_url=input_path.parent.as_uri() + "/").write_pdf(str(output_path))
         if not output_path.exists() or output_path.stat().st_size == 0:
             raise RuntimeError("The HTML renderer did not produce a PDF.")
-        return send_file(output_path, as_attachment=True, download_name=f"{safe_stem(uploaded.filename)}-converted.pdf", mimetype="application/pdf")
+        response = send_file(output_path, as_attachment=True, download_name=f"{safe_stem(uploaded.filename)}-converted.pdf", mimetype="application/pdf")
+        response.headers["X-ToolNest-HTML-Renderer"] = "weasyprint"
+        return response
     except Exception as exc:
         return jsonify({"error": "Unable to convert this HTML file to PDF.", "details": str(exc)}), 500
     finally:
