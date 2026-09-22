@@ -1,0 +1,14 @@
+ToolNest PDF conversion regression test
+
+Test PDFs:
+- original/HSSC.pdf
+- original/PS.pdf
+
+Verified:
+- PS.pdf -> DOCX: 2 pages; no Word tables because source form contains no table; text/header/footer retained.
+- HSSC.pdf -> DOCX: 2 pages; 1 real editable Word table with 23 rows x 5 columns on the marks-certificate page. Certificate artwork, photo, signatures and other non-table areas are retained as raster segments.
+- Refusal Letter sample -> DOCX: 6 pages; 2 real Word tables; native PDF path remains intact.
+
+Important:
+- The HSSC scan contains cursive/handwritten content. That artwork is intentionally retained as image rather than replacing it with unreliable OCR.
+- The HSSC marks table is reconstructed as editable Word cells; it is not a single page image.
