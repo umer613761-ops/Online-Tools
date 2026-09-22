@@ -8,7 +8,7 @@ from flask import Flask, jsonify, request, send_file
 import fitz
 from flask_cors import CORS
 
-from pdf_convert import convert_txt, convert_docx, convert_html, parse_pages, safe_stem
+from pdf_convert import convert_txt, convert_docx, convert_html, convert_xlsx, parse_pages, safe_stem
 
 UPLOAD_DIR = Path(os.environ.get("TOOLNEST_TEMP_DIR", tempfile.gettempdir())) / "toolnest"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -35,7 +35,7 @@ def health():
         "ok": True,
         "service": "ToolNest conversion API",
         "status": "running",
-        "conversions": ["txt", "docx", "html"],
+        "conversions": ["txt", "docx", "html", "xlsx"],
     })
 
 
@@ -103,6 +103,11 @@ def pdf_to_docx():
 @app.post("/api/pdf-to-html")
 def pdf_to_html():
     return serve_pdf_conversion("html", convert_html, "text/html; charset=utf-8")
+
+
+@app.post("/api/pdf-to-xlsx")
+def pdf_to_xlsx():
+    return serve_pdf_conversion("xlsx", convert_xlsx, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 
 def _cleanup_old_outputs(max_age_seconds=3600):

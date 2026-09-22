@@ -145,6 +145,78 @@ def safe_stem(name):
     return re.sub(r'[^A-Za-z0-9._-]+','_',Path(name).stem).strip('._') or 'converted-from-pdf'
 
 
+
+def convert_xlsx(pdf_path, output_path, pages):
+    """Extract detected PDF tables into an XLSX workbook.
+
+    XLSX is intentionally a data/table conversion: it does not attempt to
+    recreate an entire PDF page layout. Native PDF tables are extracted with
+    pdfplumber; scanned ruled tables use the existing OCR/table detector.
+    """
+    from openpyxl import Workbook
+    from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+    from openpyxl.utils import get_column_letter
+
+    pdf=fitz.open(pdf_path)
+    wb=Workbook()
+    wb.remove(wb.active)
+    found=0
+
+    def add_sheet(rows, page_no, table_no):
+        nonlocal found
+        cleaned=[]
+        max_cols=0
+        for row in rows or []:
+            vals=["" if v is None else re.sub(r'\s+',' ',str(v)).strip() for v in row]
+            if any(vals):
+                cleaned.append(vals); max_cols=max(max_cols,len(vals))
+        if not cleaned: return
+        found += 1
+        title=f"Page {page_no} Table {table_no}"[:31]
+        ws=wb.create_sheet(title)
+        for vals in cleaned:
+            vals += ['']*(max_cols-len(vals))
+            ws.append(vals)
+        thin=Side(style='thin', color='B7C0CA')
+        for cell in ws[1]:
+            cell.font=Font(bold=True)
+            cell.fill=PatternFill('solid', fgColor='E8EEF4')
+            cell.alignment=Alignment(horizontal='center', vertical='center', wrap_text=True)
+        for row in ws.iter_rows():
+            for cell in row:
+                cell.border=Border(left=thin,right=thin,top=thin,bottom=thin)
+                cell.alignment=Alignment(vertical='top', wrap_text=True)
+        ws.freeze_panes='A2'
+        ws.auto_filter.ref=ws.dimensions if ws.max_row>1 else None
+        for col in range(1,max_cols+1):
+            letter=get_column_letter(col)
+            longest=max((len(str(ws.cell(r,col).value or '')) for r in range(1,ws.max_row+1)),default=10)
+            ws.column_dimensions[letter].width=min(max(longest+2,10),45)
+
+    with pdfplumber.open(pdf_path) as plumb:
+        for page_no in pages:
+            fitz_page=pdf[page_no-1]
+            plumber_page=plumb.pages[page_no-1]
+            native=_native_tables(plumber_page)
+            if native:
+                for ti,t in enumerate(native,1): add_sheet(t['rows'],page_no,ti)
+                continue
+            if _has_large_page_image(fitz_page):
+                img=_scan_image(fitz_page)
+                table=_scan_table_region(img)
+                if table:
+                    rows=_scan_table_cells(img,table)
+                    add_sheet(rows,page_no,1)
+
+    if not found:
+        ws=wb.create_sheet('Info')
+        ws['A1']='No structured tables were detected in the selected PDF pages.'
+        ws['A1'].font=Font(bold=True)
+        ws.column_dimensions['A'].width=72
+
+    wb.save(output_path)
+    pdf.close()
+
 def convert_txt(pdf_path,output_path,pages):
     pdf=fitz.open(pdf_path); chunks=[]
     for n in pages: chunks.append(f'Page {n}\n\n{get_page_text(pdf[n-1])}')
