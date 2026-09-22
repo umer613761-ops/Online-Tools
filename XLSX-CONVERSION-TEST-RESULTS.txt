@@ -1,0 +1,34 @@
+ToolNest PDF -> XLSX validation
+Date: 2026-09-22
+
+Validated locally with the bundled pdf_convert.py converter and the three supplied sample PDFs.
+
+HSSC(4).pdf
+- 2 pages
+- 1 structured table detected on page 2
+- Output: Page 2 Table 1
+- 24 extracted rows x 5 columns
+- Header: SUBJECTS / MAXIMUM MARKS / MINIMUM MARKS / OBTAINED MARKS / REMARKS
+- Includes subject rows, totals, and the source's marks-in-words line
+
+Refusal Letter (1) Shabbir Ahmad(4).pdf
+- 6 pages
+- 2 structured tables detected (pages 1 and 3)
+- Output sheets: Page 1 Table 1, Page 3 Table 1
+
+PersonalStatement_MC-PUBHL(2).pdf
+- 2 pages
+- No structured tables detected
+- Output contains an Info sheet stating that no structured tables were detected
+
+Frontend/backend checks
+- convert-from-pdf.html contains XLSX as a conversion option
+- Frontend sends the selected format to /api/pdf-to-xlsx through the shared conversion endpoint logic
+- app.py exposes POST /api/pdf-to-xlsx
+- requirements.txt includes openpyxl
+- app.py and pdf_convert.py pass Python syntax compilation
+
+Important design rule
+PDF -> XLSX is treated as table/data extraction, not full-page document recreation. This avoids producing meaningless spreadsheets for certificates/forms that do not contain structured tabular data.
+
+Note: the local environment used for this validation did not have Flask installed, so a live Flask HTTP request was not executed here. The converter function itself and the generated XLSX files were validated directly.
