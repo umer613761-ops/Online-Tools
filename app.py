@@ -1,134 +1,174 @@
 import os
 import re
 import uuid
+import shutil
+import subprocess
 import tempfile
 from pathlib import Path
 
 from flask import Flask, jsonify, request, send_file
-import fitz
-from flask_cors import CORS
+from pypdf import PdfReader, PdfWriter
 
-from pdf_convert import convert_txt, convert_docx, convert_html, convert_xlsx, parse_pages, safe_stem
+try:
+    from pdf_to_xlsx import convert_pdf_to_xlsx
+except Exception:
+    convert_pdf_to_xlsx = None
 
+BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = Path(os.environ.get("TOOLNEST_TEMP_DIR", tempfile.gettempdir())) / "toolnest"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "*"}}, expose_headers=["X-ToolNest-Mode", "X-ToolNest-Tables"])
 app.config["MAX_CONTENT_LENGTH"] = int(os.environ.get("MAX_UPLOAD_MB", "50")) * 1024 * 1024
 
+OFFICE_EXTENSIONS = {".docx", ".doc", ".odt", ".rtf", ".txt", ".xlsx", ".xls", ".ods", ".csv", ".pptx", ".ppt", ".odp"}
 
-def safe_filename(name: str) -> str:
-    name = Path(name or "document.pdf").name
-    stem = re.sub(r"[^A-Za-z0-9._-]+", "_", Path(name).stem).strip("._") or "document"
-    return stem + ".pdf"
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+    response.headers["Access-Control-Allow-Methods"] = "GET,POST,OPTIONS"
+    response.headers["Access-Control-Expose-Headers"] = "Content-Disposition, X-ToolNest-Files"
+    return response
+
+
+def safe_name(name: str) -> str:
+    base = Path(name or "document").name
+    stem = re.sub(r"[^A-Za-z0-9._-]+", "_", Path(base).stem).strip("._") or "document"
+    ext = Path(base).suffix.lower()
+    return stem + ext
+
+
+def find_office_binary():
+    for candidate in ("libreoffice", "soffice"):
+        path = shutil.which(candidate)
+        if path:
+            return path
+    raise RuntimeError("LibreOffice is not installed on the conversion server.")
+
+
+def convert_one_office(input_path: Path, output_dir: Path) -> Path:
+    binary = find_office_binary()
+    profile = output_dir / f"profile-{uuid.uuid4().hex}"
+    profile.mkdir(parents=True, exist_ok=True)
+    try:
+        cmd = [
+            binary,
+            "--headless",
+            "--nologo",
+            "--nodefault",
+            "--nofirststartwizard",
+            f"-env:UserInstallation={profile.as_uri()}",
+            "--convert-to", "pdf",
+            "--outdir", str(output_dir),
+            str(input_path),
+        ]
+        completed = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
+        output_pdf = output_dir / (input_path.stem + ".pdf")
+        if completed.returncode != 0 or not output_pdf.exists() or output_pdf.stat().st_size == 0:
+            detail = (completed.stderr or completed.stdout or "LibreOffice did not produce a PDF.").strip()
+            raise RuntimeError(detail[-1500:])
+        return output_pdf
+    finally:
+        shutil.rmtree(profile, ignore_errors=True)
+
+
+def merge_pdfs(pdf_paths, output_path: Path):
+    writer = PdfWriter()
+    for path in pdf_paths:
+        reader = PdfReader(str(path))
+        for page in reader.pages:
+            writer.add_page(page)
+    with output_path.open("wb") as fh:
+        writer.write(fh)
 
 
 @app.get("/")
-def root():
+def home():
     return jsonify({"ok": True, "service": "ToolNest conversion API", "status": "running"})
 
 
 @app.get("/health")
 def health():
-    return jsonify({
-        "ok": True,
-        "service": "ToolNest conversion API",
-        "status": "running",
-        "conversions": ["txt", "docx", "html", "xlsx"],
-    })
+    office = shutil.which("libreoffice") or shutil.which("soffice")
+    return jsonify({"ok": True, "service": "ToolNest conversion API", "libreoffice": bool(office)})
 
 
+@app.post("/api/office-to-pdf")
+def office_to_pdf():
+    uploads = request.files.getlist("files") or request.files.getlist("file")
+    uploads = [f for f in uploads if f and f.filename]
+    if not uploads:
+        return jsonify({"error": "Please upload at least one supported file."}), 400
 
-
-def pdf_request_setup(extension):
-    if "file" not in request.files:
-        return None, jsonify({"error": "Please upload a PDF file."}), 400
-    uploaded = request.files["file"]
-    if not uploaded.filename:
-        return None, jsonify({"error": "Please choose a PDF file."}), 400
-    original = safe_filename(uploaded.filename)
-    if not original.lower().endswith(".pdf"):
-        return None, jsonify({"error": "Only PDF files are supported."}), 400
-    job_id = uuid.uuid4().hex
-    input_path = UPLOAD_DIR / f"{job_id}-{original}"
-    output_path = UPLOAD_DIR / f"{job_id}-{Path(original).stem}.{extension}"
-    uploaded.save(input_path)
-    return (uploaded, original, input_path, output_path, job_id), None, None
-
-
-def serve_pdf_conversion(extension, converter, mimetype):
-    setup, error, code = pdf_request_setup(extension)
-    if error:
-        return error, code
-    uploaded, original, input_path, output_path, job_id = setup
+    work = UPLOAD_DIR / f"office-{uuid.uuid4().hex}"
+    work.mkdir(parents=True, exist_ok=True)
     try:
-        pdf=fitz.open(input_path)
-        pages=parse_pages(request.form.get("pages"), pdf.page_count)
-        pdf.close()
-        converter(input_path, output_path, pages)
-        if not output_path.exists() or output_path.stat().st_size == 0:
-            raise RuntimeError("The converter did not produce a file.")
-        return send_file(output_path, as_attachment=True, download_name=f"{Path(original).stem}.{extension}", mimetype=mimetype)
+        input_paths = []
+        for idx, uploaded in enumerate(uploads):
+            name = safe_name(uploaded.filename)
+            if Path(name).suffix.lower() not in OFFICE_EXTENSIONS:
+                return jsonify({"error": f"Unsupported Office file: {uploaded.filename}"}), 400
+            path = work / f"{idx}-{name}"
+            uploaded.save(path)
+            input_paths.append(path)
+
+        pdfs = [convert_one_office(path, work) for path in input_paths]
+        output = work / "converted-to-pdf.pdf"
+        merge_pdfs(pdfs, output)
+        if not output.exists() or output.stat().st_size == 0:
+            raise RuntimeError("The PDF conversion produced an empty file.")
+
+        return send_file(
+            output,
+            as_attachment=True,
+            download_name="converted-to-pdf.pdf",
+            mimetype="application/pdf",
+        )
+    except subprocess.TimeoutExpired:
+        return jsonify({"error": "The document took too long to convert."}), 504
     except Exception as exc:
-        # Keep the user-facing message useful while exposing the real
-        # converter exception for debugging instead of hiding it.
-        return jsonify({
-            "ok": False,
-            "error": f"Unable to convert this PDF to {extension.upper()}.",
-            "details": str(exc) or exc.__class__.__name__,
-            "exception": exc.__class__.__name__,
-        }), 500
+        return jsonify({"error": "Unable to convert the selected Office file(s) to PDF.", "details": str(exc)}), 500
     finally:
-        try:
-            input_path.unlink(missing_ok=True)
-        except Exception:
-            pass
-        try:
-            output_path.unlink(missing_ok=True)
-        except Exception:
-            pass
-
-
-@app.post("/api/pdf-to-txt")
-def pdf_to_txt():
-    return serve_pdf_conversion("txt", convert_txt, "text/plain; charset=utf-8")
-
-
-@app.post("/api/pdf-to-docx")
-def pdf_to_docx():
-    return serve_pdf_conversion("docx", convert_docx, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-
-
-@app.post("/api/pdf-to-html")
-def pdf_to_html():
-    return serve_pdf_conversion("html", convert_html, "text/html; charset=utf-8")
+        shutil.rmtree(work, ignore_errors=True)
 
 
 @app.post("/api/pdf-to-xlsx")
 def pdf_to_xlsx():
-    return serve_pdf_conversion("xlsx", convert_xlsx, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-
-
-def _cleanup_old_outputs(max_age_seconds=3600):
-    import time
-    now = time.time()
-    for path in UPLOAD_DIR.glob("*"):
-        try:
-            if now - path.stat().st_mtime > max_age_seconds:
-                path.unlink(missing_ok=True)
-        except OSError:
-            pass
-
-
-@app.before_request
-def cleanup_outputs():
-    _cleanup_old_outputs()
+    if convert_pdf_to_xlsx is None:
+        return jsonify({"error": "PDF-to-XLSX converter is not installed on this server."}), 503
+    if "file" not in request.files:
+        return jsonify({"error": "Please upload a PDF file."}), 400
+    uploaded = request.files["file"]
+    if not uploaded.filename:
+        return jsonify({"error": "Please choose a PDF file."}), 400
+    original = safe_name(uploaded.filename)
+    if not original.lower().endswith(".pdf"):
+        return jsonify({"error": "Only PDF files are supported."}), 400
+    job_id = uuid.uuid4().hex
+    input_path = UPLOAD_DIR / f"{job_id}-{original}"
+    output_path = UPLOAD_DIR / f"{job_id}-{Path(original).stem}.xlsx"
+    try:
+        uploaded.save(input_path)
+        result = convert_pdf_to_xlsx(input_path, output_path)
+        if not output_path.exists() or output_path.stat().st_size == 0:
+            raise RuntimeError("The converter did not produce an Excel file.")
+        response = send_file(output_path, as_attachment=True,
+                             download_name=f"{Path(original).stem}.xlsx",
+                             mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response.headers["X-ToolNest-Mode"] = result.get("mode", "unknown")
+        response.headers["X-ToolNest-Tables"] = str(result.get("tables", 0))
+        return response
+    except Exception as exc:
+        return jsonify({"error": "Unable to convert this PDF to Excel.", "details": str(exc)}), 500
+    finally:
+        input_path.unlink(missing_ok=True)
+        output_path.unlink(missing_ok=True)
 
 
 @app.errorhandler(413)
 def too_large(_):
-    return jsonify({"error": "The PDF is too large. Maximum upload size is 50 MB."}), 413
+    return jsonify({"error": "The upload is too large. Maximum upload size is 50 MB."}), 413
 
 
 if __name__ == "__main__":
