@@ -14,9 +14,11 @@ RUN apt-get update \
 
 WORKDIR /app
 
-COPY backend/requirements.txt /app/requirements.txt
+# The ToolNest repository keeps app.py and requirements.txt at the repo root.
+COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
-COPY backend/ /app/
+# Copy the repository root so existing modules such as pdf_to_xlsx.py remain available.
+COPY . /app/
 
 CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-10000} --workers 1 --threads 2 --timeout 180 app:app"]
