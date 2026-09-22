@@ -1,14 +1,12 @@
-ToolNest Convert to PDF - Railway root-layout fix
+ToolNest Convert to PDF - XLSX Header Repeat Fix
 
-The Railway repository has app.py and requirements.txt at the repository root, not in backend/.
-This package therefore uses root-level COPY instructions.
+Replace the ROOT app.py in the Railway/GitHub repository with this version.
+Do not create a backend folder.
 
-Files:
-- Dockerfile
-- app.py
-- requirements.txt
-- convert-to-pdf.html
+This change only affects modern Excel workbook conversion (.xlsx/.xlsm/.xltx/.xltm):
+- detects the first likely table/header row on each worksheet
+- repeats that row on continuation PDF pages
+- keeps fit-to-width pagination enabled
+- leaves the original uploaded workbook untouched
 
-Important: Do not delete existing repository modules such as pdf_to_xlsx.py. The Dockerfile copies the whole repo so the existing PDF-to-XLSX converter remains available.
-
-After committing these files to the connected GitHub repository, trigger a new Railway deployment. Check /health and confirm libreoffice:true.
+DOCX/PPTX/other Office conversion remains on the existing LibreOffice path.

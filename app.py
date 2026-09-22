@@ -11,10 +11,8 @@ from pypdf import PdfReader, PdfWriter
 
 try:
     from openpyxl import load_workbook
-    from openpyxl.worksheet.page import PageMargins
 except Exception:
     load_workbook = None
-    PageMargins = None
 
 try:
     from pdf_to_xlsx import convert_pdf_to_xlsx
@@ -27,6 +25,8 @@ UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = int(os.environ.get("MAX_UPLOAD_MB", "50")) * 1024 * 1024
+
+SPREADSHEET_EXTENSIONS = {".xlsx", ".xlsm", ".xltx", ".xltm"}
 
 OFFICE_EXTENSIONS = {".docx", ".doc", ".odt", ".rtf", ".txt", ".xlsx", ".xls", ".ods", ".csv", ".pptx", ".ppt", ".odp"}
 
@@ -54,34 +54,31 @@ def find_office_binary():
     raise RuntimeError("LibreOffice is not installed on the conversion server.")
 
 
-def prepare_spreadsheet_for_pdf(input_path: Path, output_dir: Path) -> Path:
-    """Prepare Excel/Calc workbooks for clean PDF pagination without changing the user's file."""
-    ext = input_path.suffix.lower()
-    if ext not in {".xlsx", ".xlsm", ".xltx", ".xltm"} or load_workbook is None:
-        return input_path
+def _prepare_spreadsheet_for_pdf(input_path: Path, output_dir: Path) -> Path:
+    """Prepare modern Excel workbooks for PDF printing without changing the upload.
+
+    Repeats the detected table/header row on continuation pages while preserving
+    the workbook's existing formatting and the previously fixed fit-to-width settings.
+    """
+    if load_workbook is None:
+        raise RuntimeError("Excel workbook support is not installed on the conversion server.")
 
     prepared = output_dir / f"prepared-{input_path.name}"
-    keep_vba = ext in {".xlsm", ".xltm"}
-    wb = load_workbook(input_path, keep_vba=keep_vba)
+    wb = load_workbook(input_path, keep_vba=input_path.suffix.lower() in {".xlsm", ".xltm"})
     for ws in wb.worksheets:
-        # Office spreadsheets commonly have content wider than a portrait page.
-        # Fit the complete used range to one page wide, while allowing rows to
-        # continue onto additional pages vertically. This prevents isolated
-        # right-side fragments and blank-looking pages in the PDF.
+        max_scan = min(ws.max_row, 12)
+        header_row = None
+        for row_idx in range(1, max_scan + 1):
+            values = [ws.cell(row_idx, c).value for c in range(1, min(ws.max_column, 30) + 1)]
+            nonempty = sum(v not in (None, "") for v in values)
+            if nonempty >= 3:
+                header_row = row_idx
+                break
+        if header_row is not None and ws.max_row > header_row:
+            ws.print_title_rows = f"{header_row}:{header_row}"
         ws.sheet_properties.pageSetUpPr.fitToPage = True
-        ws.page_setup.orientation = "landscape"
-        ws.page_setup.paperSize = ws.PAPERSIZE_A4
         ws.page_setup.fitToWidth = 1
         ws.page_setup.fitToHeight = 0
-        ws.page_setup.scale = None
-        ws.page_margins = PageMargins(
-            left=0.25, right=0.25, top=0.35, bottom=0.35,
-            header=0.1, footer=0.1
-        )
-        ws.print_options.horizontalCentered = True
-        ws.print_options.verticalCentered = False
-        if not ws.print_area:
-            ws.print_area = ws.calculate_dimension()
     wb.save(prepared)
     return prepared
 
@@ -91,6 +88,10 @@ def convert_one_office(input_path: Path, output_dir: Path) -> Path:
     profile = output_dir / f"profile-{uuid.uuid4().hex}"
     profile.mkdir(parents=True, exist_ok=True)
     try:
+        conversion_input = input_path
+        if input_path.suffix.lower() in SPREADSHEET_EXTENSIONS:
+            conversion_input = _prepare_spreadsheet_for_pdf(input_path, output_dir)
+
         cmd = [
             binary,
             "--headless",
@@ -100,10 +101,10 @@ def convert_one_office(input_path: Path, output_dir: Path) -> Path:
             f"-env:UserInstallation={profile.as_uri()}",
             "--convert-to", "pdf",
             "--outdir", str(output_dir),
-            str(input_path),
+            str(conversion_input),
         ]
         completed = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
-        output_pdf = output_dir / (input_path.stem + ".pdf")
+        output_pdf = output_dir / (conversion_input.stem + ".pdf")
         if completed.returncode != 0 or not output_pdf.exists() or output_pdf.stat().st_size == 0:
             detail = (completed.stderr or completed.stdout or "LibreOffice did not produce a PDF.").strip()
             raise RuntimeError(detail[-1500:])
@@ -152,14 +153,7 @@ def office_to_pdf():
             uploaded.save(path)
             input_paths.append(path)
 
-        prepared_paths = []
-        for path in input_paths:
-            if path.suffix.lower() in {".xlsx", ".xlsm", ".xltx", ".xltm"}:
-                prepared_paths.append(prepare_spreadsheet_for_pdf(path, work))
-            else:
-                prepared_paths.append(path)
-
-        pdfs = [convert_one_office(path, work) for path in prepared_paths]
+        pdfs = [convert_one_office(path, work) for path in input_paths]
         output = work / "converted-to-pdf.pdf"
         merge_pdfs(pdfs, output)
         if not output.exists() or output.stat().st_size == 0:
