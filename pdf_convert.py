@@ -1076,16 +1076,20 @@ def convert_xlsx(pdf_path, output_path, pages):
                 if _table_is_meaningful(rows):
                     tables.append((n, _normalize_table(rows)))
 
-            # Scanned PDFs: only accept a table when ruled-table geometry is
-            # detected; OCR is then performed cell-by-cell.
+            # Scanned PDFs: detect ruled tables from the rendered page image
+            # and OCR the cells.  _scan_table_region is intentionally used first
+            # because it handles scanned certificate/marks tables whose faint
+            # grid lines do not survive the stricter native-resolution detector.
             if _has_large_page_image(page):
                 try:
                     img=_scan_image(page)
-                    table=_detect_table(page,img)
-                    if table:
-                        rows=_ocr_table_words(img,table)
-                        if _table_is_meaningful(rows):
-                            tables.append((n, _normalize_table(rows)))
+                    table=_scan_table_region(img)
+                    rows=_scan_table_cells(img,table) if table else []
+                    if not _table_is_meaningful(rows):
+                        table=_detect_table(page,img)
+                        rows=_ocr_table_words(img,table) if table else []
+                    if _table_is_meaningful(rows):
+                        tables.append((n, _normalize_table(rows)))
                 except Exception:
                     pass
 
