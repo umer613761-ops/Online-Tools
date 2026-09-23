@@ -1152,41 +1152,100 @@ def _html_escape_text(text):
     return html.escape(text or '', quote=False)
 
 
+def _merge_html_spans(parts):
+    """Merge adjacent spans with identical styling so ordinary words stay grouped."""
+    merged=[]
+    for text, style in parts:
+        if not text:
+            continue
+        if merged and merged[-1][1] == style:
+            merged[-1] = (merged[-1][0] + text, style)
+        else:
+            merged.append((text, style))
+    return merged
+
+
+def _html_line(line):
+    parts=[]
+    for span in line.get('spans',[]):
+        text=span.get('text','')
+        if not text:
+            continue
+        parts.append((_html_escape_text(text), _html_style_for_span(span)))
+    merged=_merge_html_spans(parts)
+    return ''.join(
+        f'<span style="{style}">{text}</span>' if style else text
+        for text,style in merged
+    )
+
+
+def _html_block_lines(lines):
+    """Keep text fragments sharing the same baseline on one HTML line."""
+    groups=[]
+    for line in lines:
+        if not any(s.get('text','') for s in line.get('spans',[])):
+            continue
+        bbox=line.get('bbox') or (0,0,0,0)
+        if groups:
+            prev=groups[-1]
+            pb=prev[-1].get('bbox') or (0,0,0,0)
+            same_row=abs(float(bbox[1])-float(pb[1])) <= 2.0
+            close_x=float(bbox[0]) >= float(pb[2])-2 and float(bbox[0]) <= float(pb[2])+35
+            if same_row and close_x:
+                prev.append(line)
+                continue
+        groups.append([line])
+
+    result=[]
+    for group in groups:
+        # Sort same-row fragments left-to-right, then concatenate without a line break.
+        group=sorted(group,key=lambda l: float((l.get('bbox') or (0,0,0,0))[0]))
+        result.append(''.join(_html_line(line) for line in group))
+    return result
+
+
 def _native_page_to_html(page):
-    """Build PDF24-style flowing HTML from native PDF text blocks."""
-    blocks=[]
+    """Build flowing text-only HTML while keeping PDF text blocks/lines intact."""
     data=page.get_text('dict')
+    raw=[]
     for block in data.get('blocks',[]):
         if block.get('type') != 0:
             continue
-        lines=block.get('lines',[])
+        lines=[line for line in block.get('lines',[]) if any(s.get('text','') for s in line.get('spans',[]))]
         if not lines:
             continue
-        runs=[]
-        line_sizes=[]
-        for line in lines:
-            line_runs=[]
-            for span in line.get('spans',[]):
-                text=span.get('text','')
-                if not text:
-                    continue
-                line_runs.append((text,span))
-                try: line_sizes.append(float(span.get('size') or 10))
-                except Exception: pass
-            if line_runs:
-                runs.append(line_runs)
-        if not runs:
+        bbox=block.get('bbox') or (0,0,0,0)
+        line_html=_html_block_lines(lines)
+        if not line_html:
             continue
-        base_size=(sum(line_sizes)/len(line_sizes)) if line_sizes else 10
-        parts=[]
-        for li,line_runs in enumerate(runs):
-            for text,span in line_runs:
-                st=_html_style_for_span(span)
-                parts.append(f'<span style="{st}">{_html_escape_text(text)}</span>')
-            if li < len(runs)-1:
-                parts.append('<br>')
-        blocks.append(f'<p style="margin:0 0 10px;line-height:1.25">{"".join(parts)}</p>')
-    return ''.join(blocks)
+        raw.append({
+            'x':float(bbox[0]), 'y':float(bbox[1]),
+            'x2':float(bbox[2]), 'y2':float(bbox[3]),
+            'html':'<br>'.join(line_html)
+        })
+
+    # PDF24's text-only output keeps nearby blocks that belong to the same
+    # visual text run inside one <p>. Merge only when their left edges are
+    # aligned (or very close) and the vertical gap is small. This avoids
+    # accidentally joining separate columns/tables.
+    merged=[]
+    for block in raw:
+        if merged:
+            prev=merged[-1]
+            gap=block['y']-prev['y2']
+            xdelta=abs(block['x']-prev['x'])
+            prev_center=(prev['y']+prev['y2'])/2
+            block_center=(block['y']+block['y2'])/2
+            same_row=abs(block_center-prev_center) <= 3.0 and xdelta <= 12.0
+            close_block=-2.0 <= gap <= 15.0 and xdelta <= 12.0
+            if same_row or close_block:
+                prev['html'] += '<br>' + block['html']
+                prev['x2']=max(prev['x2'],block['x2'])
+                prev['y2']=max(prev['y2'],block['y2'])
+                continue
+        merged.append(block.copy())
+
+    return ''.join(f'<p>{b["html"]}</p>' for b in merged)
 
 
 def _ocr_page_to_flow_html(page):
@@ -1221,10 +1280,9 @@ def convert_html(pdf_path,output_path,pages):
     out=["""<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"
 \"http://www.w3.org/TR/html4/loose.dtd\">
 <html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>PDF to HTML</title><style>
-html,body{margin:0;background:#fff;font-family:Arial,sans-serif;color:#111}
-.pdf-page{page-break-before:always;page-break-after:always;padding:24px;box-sizing:border-box}
+html,body{background:#fff;font-family:Arial,sans-serif;color:#111}
+.pdf-page{page-break-before:always;page-break-after:always}
 .pdf-page:first-child{page-break-before:always}
-.pdf-page p{white-space:normal}
 @media print{.pdf-page{padding:0}}
 </style></head><body>"""]
     for n in pages:
