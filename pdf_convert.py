@@ -1137,16 +1137,15 @@ def convert_docx(pdf_path,output_path,pages):
     plumber.close(); pdf.close(); doc.save(output_path)
 
 def _html_style_for_span(span):
-    """Return a compact inline style for a native PDF text span."""
-    size=float(span.get('size') or 10)
+    """Preserve semantic emphasis while using a readable browser-default text size."""
     flags=int(span.get('flags') or 0)
-    style=[f'font-size:{max(6,min(72,size)):.2f}px']
     font=(span.get('font') or '').lower()
+    styles=[]
     if flags & 16 or 'bold' in font:
-        style.append('font-weight:700')
+        styles.append('font-weight:700')
     if flags & 2 or 'italic' in font or 'oblique' in font:
-        style.append('font-style:italic')
-    return ';'.join(style)
+        styles.append('font-style:italic')
+    return ';'.join(styles)
 
 
 def _html_escape_text(text):
@@ -1186,7 +1185,7 @@ def _native_page_to_html(page):
                 parts.append(f'<span style="{st}">{_html_escape_text(text)}</span>')
             if li < len(runs)-1:
                 parts.append('<br>')
-        blocks.append(f'<p style="margin:0 0 10px;line-height:1.25;font-size:{base_size:.2f}px">{"".join(parts)}</p>')
+        blocks.append(f'<p style="margin:0 0 10px;line-height:1.25">{"".join(parts)}</p>')
     return ''.join(blocks)
 
 
