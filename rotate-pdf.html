@@ -4237,6 +4237,10 @@ html.dark-mode #rotateUploadArea #rotateCancelButton,html.dark-mode #rotateUploa
 @media(max-width:650px){#rotateUploadArea .rotate-pdf-bottom-controls{gap:12px !important;margin-top:32px !important;}#rotateUploadArea #rotateDownloadButton{width:170px !important;min-width:170px !important;height:50px !important;min-height:50px !important;}#rotateUploadArea #rotateCancelButton{width:110px !important;min-width:110px !important;height:50px !important;min-height:50px !important;}}
 </style>
 
+<style id="rotate-download-cancel-visibility-final">
+#rotateUploadArea .rotate-pdf-bottom-controls[hidden]{display:none !important;}
+</style>
+
 <style id="rotate-preview-position-match-remove-pages">
 /* Match Remove PDF Pages uploaded-preview positioning. */
 #rotateUploadArea.has-files {
@@ -4396,7 +4400,7 @@ html.dark-mode .logo-icon {
   </div>
   <div class="rotate-pdf-preview-wrap" id="rotatePreviewWrap" hidden></div>
   <div class="rotate-pdf-pages" id="rotatePdfPages"></div>
-  <div class="rotate-pdf-bottom-controls">
+  <div class="rotate-pdf-bottom-controls" id="rotateBottomControls" hidden>
     <button class="rotate-download-button" id="rotateDownloadButton" type="button">Download</button>
     <button class="rotate-cancel-button" id="rotateCancelButton" type="button">Cancel</button>
   </div>
@@ -4756,6 +4760,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const pagesContainer = document.getElementById("rotatePdfPages");
   const downloadButton = document.getElementById("rotateDownloadButton");
   const cancelButton = document.getElementById("rotateCancelButton");
+  const bottomControls = document.getElementById("rotateBottomControls");
   const area = document.getElementById("rotateUploadArea");
 
   let objectUrl = null;
@@ -4769,6 +4774,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (previewWrap) previewWrap.hidden = true;
     if (area) area.classList.remove("has-files");
     if (pagesContainer) pagesContainer.innerHTML = "";
+    if (bottomControls) bottomControls.hidden = true;
     pdfBytes = null;
     pdfDocument = null;
     pageRotations = [];
@@ -4847,6 +4853,8 @@ document.addEventListener("DOMContentLoaded", function () {
       for (let pageNumber = 1; pageNumber <= count; pageNumber++) {
         await renderPage(pageNumber);
       }
+
+      if (bottomControls) bottomControls.hidden = false;
 
       pagesContainer.querySelectorAll(".rotate-page-action").forEach(function (button) {
         button.addEventListener("click", async function (event) {
