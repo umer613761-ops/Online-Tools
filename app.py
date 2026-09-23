@@ -8,7 +8,7 @@ from flask import Flask, jsonify, request, send_file
 import fitz
 from flask_cors import CORS
 
-from pdf_convert import convert_txt, convert_docx, convert_html, convert_xlsx, parse_pages, safe_stem
+from pdf_convert import convert_txt, convert_docx, convert_html, convert_html_image, convert_xlsx, parse_pages, safe_stem
 
 UPLOAD_DIR = Path(os.environ.get("TOOLNEST_TEMP_DIR", tempfile.gettempdir())) / "toolnest"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -103,6 +103,11 @@ def pdf_to_docx():
     return serve_pdf_conversion("docx", convert_docx, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 
 
+
+
+@app.post("/api/pdf-to-html-image")
+def pdf_to_html_image():
+    return serve_pdf_conversion("html", convert_html_image, "text/html; charset=utf-8")
 
 
 @app.post("/api/pdf-to-xlsx")

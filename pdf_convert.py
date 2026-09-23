@@ -1274,6 +1274,21 @@ def _ocr_page_to_flow_html(page):
     return ''.join(f'<p style="margin:0 0 10px;line-height:1.25">{_html_escape_text(t)}</p>' for t in parts if t)
 
 
+
+def convert_html_image(pdf_path,output_path,pages):
+    """Convert PDF pages into self-contained image-only HTML."""
+    import base64
+    pdf=fitz.open(pdf_path)
+    out=["""<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF to HTML - Image Only</title><style>html,body{margin:0;padding:0;background:#fff}.pdf-page{page-break-before:always;page-break-after:always;width:100%;text-align:center}.pdf-page img{display:block;width:100%;height:auto;margin:0 auto}</style></head><body>"""]
+    for n in pages:
+        page=pdf[n-1]
+        pix=page.get_pixmap(matrix=fitz.Matrix(2,2),alpha=False)
+        data=base64.b64encode(pix.tobytes("png")).decode("ascii")
+        out.append(f'<div class="pdf-page" data-page="{n}"><img src="data:image/png;base64,{data}" alt="PDF page {n}"></div>')
+    out.append('</body></html>')
+    Path(output_path).write_text(''.join(out),encoding='utf-8')
+    pdf.close()
+
 def convert_html(pdf_path,output_path,pages):
     """Convert PDF to PDF24-style flowing, self-contained HTML."""
     pdf=fitz.open(pdf_path)
