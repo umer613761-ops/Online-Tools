@@ -98,11 +98,47 @@ def _safe_office_stem(name: str) -> str:
     return re.sub(r"[^A-Za-z0-9._-]+", "_", Path(name or "document").stem).strip("._") or "document"
 
 
+def _prepare_xlsx_for_pdf(input_path: Path, prepared_path: Path):
+    """Prepare XLSX print settings so LibreOffice does not split wide sheets.
+
+    The workbook content is unchanged. Only print-area/page-scaling settings
+    are applied: all populated columns are kept on one page wide, with the
+    right-hand callout column included in the same page as the comments.
+    """
+    from openpyxl import load_workbook
+    from openpyxl.worksheet.page import PageMargins
+    from openpyxl.utils import get_column_letter
+
+    wb = load_workbook(input_path)
+    for ws in wb.worksheets:
+        max_row = 0
+        max_col = 0
+        for row in ws.iter_rows():
+            for cell in row:
+                if cell.value is not None:
+                    max_row = max(max_row, cell.row)
+                    max_col = max(max_col, cell.column)
+        if not max_row or not max_col:
+            continue
+
+        ws.print_area = f"A1:{get_column_letter(max_col)}{max_row}"
+        ws.sheet_properties.pageSetUpPr.fitToPage = True
+        ws.page_setup.orientation = "landscape"
+        ws.page_setup.paperSize = ws.PAPERSIZE_A4
+        ws.page_setup.fitToWidth = 1
+        ws.page_setup.fitToHeight = 0
+        ws.page_margins = PageMargins(left=0.25, right=0.25, top=0.35, bottom=0.35, header=0.15, footer=0.15)
+        ws.print_options.horizontalCentered = False
+
+    wb.save(prepared_path)
+
+
 def _convert_office_to_pdf(input_path: Path, output_path: Path):
     """Convert Office documents using LibreOffice headlessly.
 
     This keeps binary Office files binary all the way to the server. Do not
-    read DOCX/XLSX/PPTX through File.text() in the browser.
+    read DOCX/XLSX/PPTX through File.text() in the browser. XLSX workbooks
+    receive print-area/scaling settings first so wide sheets stay together.
     """
     import shutil
     import subprocess
@@ -114,7 +150,10 @@ def _convert_office_to_pdf(input_path: Path, output_path: Path):
     work_dir = Path(tempfile.mkdtemp(prefix="toolnest-office-", dir=str(UPLOAD_DIR)))
     try:
         src = work_dir / Path(input_path).name
-        shutil.copy2(input_path, src)
+        if input_path.suffix.lower() == ".xlsx":
+            _prepare_xlsx_for_pdf(input_path, src)
+        else:
+            shutil.copy2(input_path, src)
         result = subprocess.run(
             [soffice, "--headless", "--convert-to", "pdf", "--outdir", str(work_dir), str(src)],
             stdout=subprocess.PIPE,
