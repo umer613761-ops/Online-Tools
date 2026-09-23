@@ -1237,7 +1237,7 @@ def _native_page_to_html(page):
             prev_center=(prev['y']+prev['y2'])/2
             block_center=(block['y']+block['y2'])/2
             same_row=abs(block_center-prev_center) <= 3.0 and xdelta <= 12.0
-            close_block=-2.0 <= gap <= 15.0 and xdelta <= 12.0
+            close_block=-2.0 <= gap <= 6.0 and xdelta <= 12.0
             if same_row or close_block:
                 prev['html'] += '<br>' + block['html']
                 prev['x2']=max(prev['x2'],block['x2'])
