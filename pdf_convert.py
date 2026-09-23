@@ -1136,21 +1136,81 @@ def convert_docx(pdf_path,output_path,pages):
             _append_native_page(doc,page,plumber.pages[n-1],first_page=(idx==0),footer_lines=footer_lines)
     plumber.close(); pdf.close(); doc.save(output_path)
 
-def convert_html(pdf_path,output_path,pages):
-    pdf=fitz.open(pdf_path); out=['<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF to HTML</title><style>html,body{margin:0;background:#e9edf1;font-family:Arial,sans-serif}.pdf-document{padding:24px}.pdf-page{position:relative;margin:0 auto 24px;background:#fff;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.14)}.pdf-bg{position:absolute;inset:0;width:100%;height:100%}.editable{position:absolute;background:#fff;border:0;padding:0;margin:0;outline:none;line-height:1;box-sizing:border-box}.native{background:transparent}@media print{body{background:#fff}.pdf-document{padding:0}.pdf-page{margin:0;box-shadow:none;break-after:page}.pdf-page:last-child{break-after:auto}}</style></head><body><div class="pdf-document">']
+def _html_style_for_span(span):
+    size=float(span.get('size') or 10)
+    flags=int(span.get('flags') or 0)
+    style=[f"font-size:{max(6,min(72,size)):.2f}px"]
+    font=(span.get('font') or '').lower()
+    if flags & 16 or 'bold' in font: style.append('font-weight:700')
+    if flags & 2 or 'italic' in font or 'oblique' in font: style.append('font-style:italic')
+    return ';'.join(style)
+
+def _native_page_to_html(page):
+    blocks=[]
+    data=page.get_text('dict')
+    for block in data.get('blocks',[]):
+        if block.get('type') != 0: continue
+        lines=block.get('lines',[])
+        runs=[]; sizes=[]
+        for line in lines:
+            lr=[]
+            for span in line.get('spans',[]):
+                text=span.get('text','')
+                if text:
+                    lr.append((text,span))
+                    try: sizes.append(float(span.get('size') or 10))
+                    except Exception: pass
+            if lr: runs.append(lr)
+        if not runs: continue
+        base=sum(sizes)/len(sizes) if sizes else 10
+        parts=[]
+        for li,lr in enumerate(runs):
+            for text,span in lr:
+                parts.append(f'<span style="{_html_style_for_span(span)}">{html.escape(text,quote=False)}</span>')
+            if li < len(runs)-1: parts.append('<br>')
+        blocks.append(f'<p style="margin:0 0 10px;line-height:1.25;font-size:{base:.2f}px">{"".join(parts)}</p>')
+    return ''.join(blocks)
+
+def _ocr_page_to_flow_html(page):
+    img=_scan_image(page); candidates=[]
+    for psm in (3,6):
+        text,conf,data=_ocr_data(img,psm); lines=_line_data(data); candidates.append((conf,len(lines),lines))
+    candidates.sort(key=lambda x:(x[0],x[1]),reverse=True)
+    lines=candidates[0][2] if candidates else []
+    fuller=max(candidates,key=lambda x:len(x[2]),default=(0,0,[]))
+    if len(fuller[2]) > len(lines)*1.15: lines=fuller[2]
+    if not lines: return ''
+    parts=[]; current=[]; prev=None
+    for ln in lines:
+        y=float(ln['y']); h=max(1,float(ln['y2']-ln['y']))
+        if prev is not None and y-prev > h*1.9 and current:
+            parts.append(' '.join(current)); current=[]
+        current.append(ln['text'].strip()); prev=float(ln['y2'])
+    if current: parts.append(' '.join(current))
+    return ''.join(f'<p style="margin:0 0 10px;line-height:1.25">{html.escape(t)}</p>' for t in parts if t)
+
+def convert_html_text(pdf_path,output_path,pages):
+    pdf=fitz.open(pdf_path)
+    out=['<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF to HTML Text</title><style>html,body{margin:0;background:#fff;font-family:Arial,sans-serif;color:#111}.pdf-page{page-break-before:always;page-break-after:always;padding:24px;box-sizing:border-box;min-height:100vh}.pdf-page:first-child{page-break-before:always}@media print{.pdf-page{padding:0}}</style></head><body>']
     for n in pages:
-        page=pdf[n-1]; scanned=_has_large_page_image(page); img=_scan_image(page) if scanned else None
-        if scanned:
-            lines,_,_= _ocr_page(page); cleaned=_clean_scan(img,lines); buf=io.BytesIO(); cleaned.save(buf,'PNG'); b=base64.b64encode(buf.getvalue()).decode(); sx=page.rect.width/img.width; sy=page.rect.height/img.height
-        else:
-            buf=io.BytesIO(); pix=page.get_pixmap(matrix=fitz.Matrix(1,1),alpha=False,colorspace=fitz.csRGB); Image.open(io.BytesIO(pix.tobytes('png'))).save(buf,'PNG'); b=base64.b64encode(buf.getvalue()).decode(); lines=_native_lines(page); sx=sy=1
-        out.append(f'<section class="pdf-page" style="width:{page.rect.width}px;height:{page.rect.height}px"><img class="pdf-bg" src="data:image/png;base64,{b}">')
-        for ln in lines:
-            if scanned:
-                x,y,w,h=ln['x']*sx,ln['y']*sy,max(8,(ln['x2']-ln['x'])*sx+4),max(10,(ln['y2']-ln['y'])*sy+3); fs=max(7,min(16,(ln['y2']-ln['y'])*sy*.78))
-            else:
-                x,y,w,h=0,0,0,0; continue
-            if ln['conf']<25: continue
-            out.append(f'<div contenteditable="true" class="editable" style="left:{x}px;top:{y}px;width:{w}px;height:{h}px;font-size:{fs}px">{html.escape(ln["text"])}</div>')
-        out.append('</section>')
-    out.append('</div></body></html>'); Path(output_path).write_text(''.join(out),encoding='utf-8'); pdf.close()
+        page=pdf[n-1]
+        body=_native_page_to_html(page) or _ocr_page_to_flow_html(page)
+        out.append(f'<div class="pdf-page" data-page="{n}">{body}</div>')
+    out.append('</body></html>')
+    Path(output_path).write_text(''.join(out),encoding='utf-8')
+    pdf.close()
+
+def convert_html_image(pdf_path,output_path,pages):
+    pdf=fitz.open(pdf_path)
+    out=['<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF to HTML Image</title><style>html,body{margin:0;padding:0;background:#e9edf1}.pdf-document{padding:24px}.pdf-page{margin:0 auto 24px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.14);page-break-after:always}.pdf-page img{display:block;width:100%;height:auto}@media print{html,body{background:#fff}.pdf-document{padding:0}.pdf-page{margin:0;box-shadow:none}}</style></head><body><div class="pdf-document">']
+    for n in pages:
+        page=pdf[n-1]
+        pix=page.get_pixmap(matrix=fitz.Matrix(2,2),alpha=False,colorspace=fitz.csRGB)
+        b=base64.b64encode(pix.tobytes('png')).decode('ascii')
+        out.append(f'<section class="pdf-page" data-page="{n}"><img src="data:image/png;base64,{b}" alt="PDF page {n}"></section>')
+    out.append('</div></body></html>')
+    Path(output_path).write_text(''.join(out),encoding='utf-8')
+    pdf.close()
+
+def convert_html(pdf_path,output_path,pages):
+    return convert_html_text(pdf_path,output_path,pages)
