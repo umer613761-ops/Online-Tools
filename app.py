@@ -2,8 +2,6 @@ import os
 import re
 import uuid
 import tempfile
-import subprocess
-import shutil
 from pathlib import Path
 
 from flask import Flask, jsonify, request, send_file
@@ -24,90 +22,6 @@ def safe_filename(name: str) -> str:
     name = Path(name or "document.pdf").name
     stem = re.sub(r"[^A-Za-z0-9._-]+", "_", Path(name).stem).strip("._") or "document"
     return stem + ".pdf"
-
-
-def convert_office_to_pdf(source_path: Path, output_path: Path):
-    """Render Office-compatible documents to PDF using LibreOffice."""
-    soffice = shutil.which("libreoffice") or shutil.which("soffice")
-    if not soffice:
-        raise RuntimeError("LibreOffice is not installed on the conversion server.")
-
-    work_dir = source_path.parent / f"lo-{uuid.uuid4().hex}"
-    work_dir.mkdir(parents=True, exist_ok=True)
-    try:
-        result = subprocess.run(
-            [
-                soffice,
-                "--headless",
-                "--convert-to",
-                "pdf",
-                "--outdir",
-                str(work_dir),
-                str(source_path),
-            ],
-            capture_output=True,
-            text=True,
-            timeout=180,
-            check=False,
-        )
-        generated = work_dir / f"{source_path.stem}.pdf"
-        if result.returncode != 0 or not generated.exists():
-            details = (result.stderr or result.stdout or "LibreOffice conversion failed.").strip()
-            raise RuntimeError(details)
-        shutil.move(str(generated), str(output_path))
-    finally:
-        shutil.rmtree(work_dir, ignore_errors=True)
-
-
-@app.post("/api/office-to-pdf")
-def office_to_pdf():
-    if "file" not in request.files:
-        return jsonify({"error": "Please upload a document file."}), 400
-    uploaded = request.files["file"]
-    if not uploaded.filename:
-        return jsonify({"error": "Please choose a document file."}), 400
-
-    original_name = Path(uploaded.filename).name
-    allowed = {
-        ".doc", ".docx", ".odt", ".rtf",
-        ".xls", ".xlsx", ".ods", ".csv",
-        ".ppt", ".pptx", ".odp",
-    }
-    suffix = Path(original_name).suffix.lower()
-    if suffix not in allowed:
-        return jsonify({"error": "Unsupported document format."}), 400
-
-    job_id = uuid.uuid4().hex
-    input_path = UPLOAD_DIR / f"{job_id}-{re.sub(r'[^A-Za-z0-9._-]+', '_', original_name)}"
-    output_path = UPLOAD_DIR / f"{job_id}-{Path(original_name).stem}.pdf"
-    uploaded.save(input_path)
-
-    try:
-        convert_office_to_pdf(input_path, output_path)
-        if not output_path.exists() or output_path.stat().st_size == 0:
-            raise RuntimeError("The converter did not produce a PDF.")
-        return send_file(
-            output_path,
-            as_attachment=True,
-            download_name=f"{Path(original_name).stem}.pdf",
-            mimetype="application/pdf",
-        )
-    except Exception as exc:
-        return jsonify({
-            "ok": False,
-            "error": "Unable to convert this document to PDF.",
-            "details": str(exc) or exc.__class__.__name__,
-            "exception": exc.__class__.__name__,
-        }), 500
-    finally:
-        try:
-            input_path.unlink(missing_ok=True)
-        except Exception:
-            pass
-        try:
-            output_path.unlink(missing_ok=True)
-        except Exception:
-            pass
 
 
 @app.get("/")
@@ -178,6 +92,73 @@ def serve_pdf_conversion(extension, converter, mimetype):
         except Exception:
             pass
 
+
+
+def _safe_office_stem(name: str) -> str:
+    return re.sub(r"[^A-Za-z0-9._-]+", "_", Path(name or "document").stem).strip("._") or "document"
+
+
+def _convert_office_to_pdf(input_path: Path, output_path: Path):
+    """Convert Office documents using LibreOffice headlessly.
+
+    This keeps binary Office files binary all the way to the server. Do not
+    read DOCX/XLSX/PPTX through File.text() in the browser.
+    """
+    import shutil
+    import subprocess
+
+    soffice = shutil.which("soffice") or shutil.which("libreoffice")
+    if not soffice:
+        raise RuntimeError("LibreOffice is not installed on the conversion server.")
+
+    work_dir = Path(tempfile.mkdtemp(prefix="toolnest-office-", dir=str(UPLOAD_DIR)))
+    try:
+        src = work_dir / Path(input_path).name
+        shutil.copy2(input_path, src)
+        result = subprocess.run(
+            [soffice, "--headless", "--convert-to", "pdf", "--outdir", str(work_dir), str(src)],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            timeout=180,
+        )
+        produced = work_dir / (src.stem + ".pdf")
+        if result.returncode != 0 or not produced.exists() or produced.stat().st_size == 0:
+            details = (result.stderr or result.stdout or "LibreOffice conversion failed.").strip()
+            raise RuntimeError(details)
+        shutil.copy2(produced, output_path)
+    finally:
+        shutil.rmtree(work_dir, ignore_errors=True)
+
+
+@app.post("/api/office-to-pdf")
+def office_to_pdf():
+    if "file" not in request.files:
+        return jsonify({"error": "Please upload a document."}), 400
+    uploaded = request.files["file"]
+    if not uploaded.filename:
+        return jsonify({"error": "Please choose a file."}), 400
+
+    ext = Path(uploaded.filename).suffix.lower()
+    allowed = {".docx", ".doc", ".xlsx", ".xls", ".xlsm", ".xltx", ".xltm", ".pptx", ".ppt", ".odp", ".ods", ".odt"}
+    if ext not in allowed:
+        return jsonify({"error": "Unsupported Office document format."}), 400
+
+    job_id = uuid.uuid4().hex
+    stem = _safe_office_stem(uploaded.filename)
+    input_path = UPLOAD_DIR / f"{job_id}-{stem}{ext}"
+    output_path = UPLOAD_DIR / f"{job_id}-{stem}.pdf"
+    try:
+        uploaded.save(input_path)
+        _convert_office_to_pdf(input_path, output_path)
+        response = send_file(output_path, as_attachment=True, download_name=f"{stem}-converted.pdf", mimetype="application/pdf")
+        response.headers["X-ToolNest-Office-Renderer"] = "libreoffice"
+        return response
+    except Exception as exc:
+        return jsonify({"ok": False, "error": "Unable to convert this Office document to PDF.", "details": str(exc)}), 500
+    finally:
+        input_path.unlink(missing_ok=True)
+        output_path.unlink(missing_ok=True)
 
 @app.post("/api/pdf-to-txt")
 def pdf_to_txt():
