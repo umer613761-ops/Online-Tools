@@ -148,7 +148,12 @@ def _prepare_xlsx_for_pdf(input_path: Path, prepared_path: Path):
                 callout.alignment = alignment
 
         from openpyxl.utils import get_column_letter
-        ws.print_area = f"A1:{get_column_letter(max_col)}{max_row}"
+        # Include a small buffer of blank columns in the print area.
+        # Some real-world XLSX files contain floating text boxes/callouts
+        # anchored just beyond the last populated cell; LibreOffice clips
+        # those objects if the print area ends exactly at max_col.
+        print_max_col = max_col + (3 if max_col >= 6 else 1)
+        ws.print_area = f"A1:{get_column_letter(print_max_col)}{max_row}"
         ws.sheet_properties.pageSetUpPr.fitToPage = True
         ws.sheet_properties.pageSetUpPr.autoPageBreaks = False
         ws.page_setup.orientation = "landscape" if max_col >= 6 else "portrait"
