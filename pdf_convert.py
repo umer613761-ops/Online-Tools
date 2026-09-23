@@ -1137,20 +1137,43 @@ def convert_docx(pdf_path,output_path,pages):
     plumber.close(); pdf.close(); doc.save(output_path)
 
 def convert_html(pdf_path,output_path,pages):
-    pdf=fitz.open(pdf_path); out=['<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF to HTML</title><style>html,body{margin:0;background:#e9edf1;font-family:Arial,sans-serif}.pdf-document{padding:24px}.pdf-page{position:relative;margin:0 auto 24px;background:#fff;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.14)}.pdf-bg{position:absolute;inset:0;width:100%;height:100%}.editable{position:absolute;background:#fff;border:0;padding:0;margin:0;outline:none;line-height:1;box-sizing:border-box}.native{background:transparent}@media print{body{background:#fff}.pdf-document{padding:0}.pdf-page{margin:0;box-shadow:none;break-after:page}.pdf-page:last-child{break-after:auto}}</style></head><body><div class="pdf-document">']
+    """Convert PDF pages to self-contained HTML with an editable text layer."""
+    pdf=fitz.open(pdf_path)
+    out=['''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF to HTML</title><style>
+html,body{margin:0;background:#e9edf1;font-family:Arial,sans-serif}
+.pdf-document{padding:24px}
+.pdf-page{position:relative;margin:0 auto 24px;background:#fff;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.14)}
+.pdf-bg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.editable{position:absolute;background:transparent;border:0;padding:0;margin:0;outline:none;box-sizing:border-box;white-space:pre-wrap;overflow:hidden;color:#111;line-height:1.08;font-family:Arial,sans-serif}
+.editable:focus{outline:1px solid rgba(37,99,235,.35);background:rgba(255,255,255,.35)}
+@media print{body{background:#fff}.pdf-document{padding:0}.pdf-page{margin:0;box-shadow:none;break-after:page}.pdf-page:last-child{break-after:auto}}
+</style></head><body><div class="pdf-document">''']
+    OCR_SCALE=2.0
     for n in pages:
-        page=pdf[n-1]; scanned=_has_large_page_image(page); img=_scan_image(page) if scanned else None
-        if scanned:
-            lines,_,_= _ocr_page(page); cleaned=_clean_scan(img,lines); buf=io.BytesIO(); cleaned.save(buf,'PNG'); b=base64.b64encode(buf.getvalue()).decode(); sx=page.rect.width/img.width; sy=page.rect.height/img.height
-        else:
-            buf=io.BytesIO(); pix=page.get_pixmap(matrix=fitz.Matrix(1,1),alpha=False,colorspace=fitz.csRGB); Image.open(io.BytesIO(pix.tobytes('png'))).save(buf,'PNG'); b=base64.b64encode(buf.getvalue()).decode(); lines=_native_lines(page); sx=sy=1
-        out.append(f'<section class="pdf-page" style="width:{page.rect.width}px;height:{page.rect.height}px"><img class="pdf-bg" src="data:image/png;base64,{b}">')
+        page=pdf[n-1]
+        pix=page.get_pixmap(matrix=fitz.Matrix(OCR_SCALE,OCR_SCALE),alpha=False,colorspace=fitz.csRGB)
+        img=Image.open(io.BytesIO(pix.tobytes('png'))).convert('RGB')
+        candidates=[]
+        for psm in (3,6):
+            text,conf,data=_ocr_data(img,psm)
+            lines=_line_data(data)
+            candidates.append((conf,len(lines),lines,data))
+        candidates.sort(key=lambda x:(x[0],x[1]),reverse=True)
+        _,_,lines,data=candidates[0]
+        fuller=max(candidates,key=lambda x:len(x[2]))
+        if len(fuller[2]) > len(lines)*1.15:
+            lines,data=fuller[2],fuller[3]
+        cleaned=_clean_scanned_background(img,data)
+        cleaned=cleaned.resize((max(1,round(page.rect.width)),max(1,round(page.rect.height))),Image.Resampling.LANCZOS)
+        buf=io.BytesIO(); cleaned.save(buf,'PNG'); b=base64.b64encode(buf.getvalue()).decode()
+        out.append(f'<section class="pdf-page" style="width:{page.rect.width}px;height:{page.rect.height}px"><img class="pdf-bg" src="data:image/png;base64,{b}" alt="PDF page background">')
         for ln in lines:
-            if scanned:
-                x,y,w,h=ln['x']*sx,ln['y']*sy,max(8,(ln['x2']-ln['x'])*sx+4),max(10,(ln['y2']-ln['y'])*sy+3); fs=max(7,min(16,(ln['y2']-ln['y'])*sy*.78))
-            else:
-                x,y,w,h=0,0,0,0; continue
-            if ln['conf']<25: continue
-            out.append(f'<div contenteditable="true" class="editable" style="left:{x}px;top:{y}px;width:{w}px;height:{h}px;font-size:{fs}px">{html.escape(ln["text"])}</div>')
+            if ln['conf'] < 25: continue
+            x=ln['x']/OCR_SCALE; y=ln['y']/OCR_SCALE
+            w=max(8,(ln['x2']-ln['x'])/OCR_SCALE+2); h=max(10,(ln['y2']-ln['y'])/OCR_SCALE+3)
+            fs=max(7,min(24,(ln['y2']-ln['y'])/OCR_SCALE*.78))
+            out.append(f'<div contenteditable="true" class="editable" style="left:{x:.2f}px;top:{y:.2f}px;width:{w:.2f}px;height:{h:.2f}px;font-size:{fs:.2f}px">{html.escape(ln["text"])}</div>')
         out.append('</section>')
-    out.append('</div></body></html>'); Path(output_path).write_text(''.join(out),encoding='utf-8'); pdf.close()
+    out.append('</div></body></html>')
+    Path(output_path).write_text(''.join(out),encoding='utf-8')
+    pdf.close()
