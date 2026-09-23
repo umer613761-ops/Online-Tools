@@ -1,12 +1,12 @@
-ToolNest Convert to PDF restoration
+ToolNest Convert to PDF - XLSX Header Repeat Fix
 
-Files:
-- convert-to-pdf.html
-- app.py
+Replace the ROOT app.py in the Railway/GitHub repository with this version.
+Do not create a backend folder.
 
-DOCX -> PDF and XLSX -> PDF use the Railway/LibreOffice backend routes:
-- POST /api/docx-to-pdf
-- POST /api/xlsx-to-pdf
+This change only affects modern Excel workbook conversion (.xlsx/.xlsm/.xltx/.xltm):
+- detects the first likely table/header row on each worksheet
+- repeats that row on continuation PDF pages
+- keeps fit-to-width pagination enabled
+- leaves the original uploaded workbook untouched
 
-The existing PDF -> XLSX route remains in app.py.
-HTML -> PDF was not changed.
+DOCX/PPTX/other Office conversion remains on the existing LibreOffice path.
