@@ -4370,41 +4370,6 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
           const scale=Math.min(pw/img.width,ph/img.height);
           const fmt=f.type==='image/png'?'PNG':f.type==='image/webp'?'WEBP':'JPEG';
           doc.addImage(data,fmt,(doc.internal.pageSize.getWidth()-img.width*scale)/2,36,img.width*scale,img.height*scale);
-        }else if(/\.(docx|xlsx)$/i.test(f.name)){
-          const endpoint=/\.docx$/i.test(f.name)
-            ? 'https://toolnest-api-production-dda7.up.railway.app/api/docx-to-pdf'
-            : 'https://toolnest-api-production-dda7.up.railway.app/api/xlsx-to-pdf';
-          try{
-            download.disabled=true;
-            download.textContent='Converting...';
-            const formData=new FormData();
-            formData.append('file',f,f.name);
-            const response=await fetch(endpoint,{method:'POST',body:formData});
-            if(!response.ok){
-              let message='Unable to convert this Office file to PDF.';
-              try{const data=await response.json(); if(data&&data.error) message=data.error+(data.details?'\n\n'+data.details:'');}catch(_){}
-              throw new Error(message);
-            }
-            const blob=await response.blob();
-            if(!blob.size || blob.type!=='application/pdf') throw new Error('The server did not return a valid PDF file.');
-            const url=URL.createObjectURL(blob);
-            const a=document.createElement('a');
-            a.href=url;
-            const disposition=response.headers.get('Content-Disposition')||'';
-            const match=disposition.match(/filename[^;=]*=(?:UTF-8''|\")?([^;\"]+)/i);
-            const fallback=f.name.replace(/\.[^.]+$/,'')+'.pdf';
-            a.download=match ? decodeURIComponent(match[1].replace(/^\"|\"$/g,'')) : fallback;
-            document.body.appendChild(a); a.click(); a.remove();
-            setTimeout(()=>URL.revokeObjectURL(url),5000);
-          }catch(error){
-            console.error('Office to PDF conversion failed:',error);
-            alert(error&&error.message ? error.message : 'Unable to convert this file to PDF. Please try again.');
-            return;
-          }finally{
-            download.disabled=false;
-            download.textContent='Convert & Download';
-          }
-          continue;
         }else if(/\.html?$/i.test(f.name) || f.type==='text/html'){
           /*
              Browser-based HTML -> PDF.
