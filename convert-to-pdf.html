@@ -4329,17 +4329,20 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
     const download=document.getElementById('convertToDownloadButton');
     if(!area || !input || !btn) return;
     let files=[];
-    const OFFICE_API_URL='https://toolnest-api-production-dda7.up.railway.app/api/office-to-pdf';
-
+    input.onchange=()=>{ files=Array.from(input.files||[]); render(); };
     function render(){
       grid.innerHTML=files.map((f,i)=>{
+        const type=f.type||'';
         let preview='';
-        if(f.type.startsWith('image/')){
+        if(type.startsWith('image/')){
           const url=URL.createObjectURL(f);
-          preview=`<div class="convert-file-image-wrap"><img src="${url}" data-object-url="${url}" alt=""></div>`;
+          preview=`<div class="convert-upload-preview"><img src="${url}" alt="${esc(f.name)}" data-object-url="${url}"></div>`;
+        }else if(type==='text/plain' || /\.(txt|csv|json|xml|html?|md)$/i.test(f.name)){
+          preview=`<div class="convert-upload-preview convert-text-preview"><span>📄</span><strong>Document preview</strong><small>${esc(type||'Text file')}</small></div>`;
+        }else if(/\.(docx|xlsx|pptx)$/i.test(f.name)){
+          preview=`<div class="convert-upload-preview convert-office-preview"><span>📄</span><strong>Office document</strong><small>${esc(f.name.split('.').pop().toUpperCase())} file</small></div>`;
         }else{
-          const ext=(f.name.split('.').pop()||'FILE').toUpperCase();
-          preview=`<div class="convert-file-type">${esc(ext)}</div>`;
+          preview=`<div class="convert-upload-preview convert-generic-preview"><span>📄</span><strong>File preview</strong><small>${esc(type||'File')}</small></div>`;
         }
         return `<div class="convert-file-card">${preview}<div class="convert-file-name">${esc(f.name)}</div><button class="convert-file-remove" data-i="${i}" type="button">Remove</button></div>`;
       }).join('');
@@ -4350,71 +4353,10 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
       actions.hidden=!files.length;
       grid.querySelectorAll('.convert-file-remove').forEach(b=>b.onclick=()=>{files.splice(+b.dataset.i,1);render();});
     }
-
-    input.onchange=()=>{
-      files=Array.from(input.files||[]);
-      render();
-    };
-
     function resetToUpload(){files=[];input.value='';grid.innerHTML='';area.classList.remove('has-files');actions.hidden=true;}
     cancel.onclick=resetToUpload;
-
-    async function downloadBlob(blob,name){
-      if(!blob || !blob.size) throw new Error('The server returned an empty PDF.');
-      const url=URL.createObjectURL(blob);
-      const a=document.createElement('a');
-      a.href=url;
-      a.download=name;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(()=>URL.revokeObjectURL(url),5000);
-    }
-
-    async function convertOfficeFiles(officeFiles){
-      const formData=new FormData();
-      officeFiles.forEach(f=>formData.append('files',f,f.name));
-      const response=await fetch(OFFICE_API_URL,{method:'POST',body:formData});
-      if(!response.ok){
-        let message='Unable to convert the Office file(s) to PDF.';
-        try{
-          const data=await response.json();
-          if(data && data.error) message=data.error+(data.details?'\n\n'+data.details:'');
-        }catch(_){ }
-        throw new Error(message);
-      }
-      return response.blob();
-    }
-
     download.onclick=async()=>{
       if(!files.length) return;
-      const officeFiles=files.filter(f=>/\.(docx|doc|odt|rtf|xlsx|xls|ods|csv|pptx|ppt|odp)$/i.test(f.name));
-      const normalFiles=files.filter(f=>!officeFiles.includes(f));
-
-      /* Office documents need a real Office renderer. Do this as a dedicated server conversion
-         rather than reading the DOCX/XLSX ZIP container as plain text. */
-      if(officeFiles.length){
-        if(normalFiles.length){
-          alert('For this first Office conversion release, upload Office files separately from images or text files.');
-          return;
-        }
-        try{
-          download.disabled=true;
-          download.textContent='Converting...';
-          const blob=await convertOfficeFiles(officeFiles);
-          const baseName=(officeFiles[0].name||'converted-to-pdf').replace(/\.[^.]+$/,'').replace(/[\\/:*?"<>|]+/g,'-').trim()||'converted-to-pdf';
-          await downloadBlob(blob,officeFiles.length===1?baseName+'-converted.pdf':baseName+'-converted.pdf');
-          resetToUpload();
-        }catch(e){
-          console.error(e);
-          alert(e && e.message ? e.message : 'Unable to convert the Office file to PDF. Please try again.');
-        }finally{
-          download.disabled=false;
-          download.textContent='Convert & Download';
-        }
-        return;
-      }
-
       if(!window.jspdf){alert('PDF converter library is still loading. Please try again.');return;}
       const {jsPDF}=window.jspdf;
       const doc=new jsPDF({unit:'pt',format:'a4'});
@@ -4433,6 +4375,8 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
           const html=await f.text();
           const frame=document.createElement('iframe');
           frame.setAttribute('aria-hidden','true');
+          /* Keep the iframe rendered but place it far off-screen. html2canvas cannot reliably
+             capture documents inside an iframe whose visibility is hidden. */
           frame.style.cssText='position:fixed;left:-100000px;top:0;width:794px;height:1123px;border:0;background:#fff;display:block;';
           document.body.appendChild(frame);
           try{
@@ -4440,32 +4384,67 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
               const timer=setTimeout(()=>reject(new Error('HTML document timed out while loading.')),20000);
               frame.onload=()=>{clearTimeout(timer);resolve();};
               frame.onerror=()=>{clearTimeout(timer);reject(new Error('Unable to load the HTML document.'));};
+              /* srcdoc avoids the opaque blob origin and lets normal absolute web resources load. */
               frame.srcdoc=html;
             });
             const frameDoc=frame.contentDocument;
             const body=frameDoc&&frameDoc.body;
             if(!body) throw new Error('HTML document has no body.');
+            /* Give the document its natural height so long HTML pages can be captured. */
             const contentWidth=Math.max(794,Math.ceil(body.scrollWidth||794));
             const contentHeight=Math.max(1123,Math.ceil(body.scrollHeight||1123));
             frame.style.width=contentWidth+'px';
             frame.style.height=Math.min(Math.max(contentHeight,1123),50000)+'px';
             const images=Array.from(frameDoc.images||[]);
-            await Promise.all(images.map(img=>{if(img.complete) return img.decode?img.decode().catch(()=>{}):Promise.resolve();return new Promise(resolve=>{img.onload=()=>resolve();img.onerror=()=>resolve();});}));
+            await Promise.all(images.map(img=>{
+              if(img.complete) return img.decode ? img.decode().catch(()=>{}) : Promise.resolve();
+              return new Promise(resolve=>{img.onload=()=>resolve();img.onerror=()=>resolve();});
+            }));
             if(frameDoc.fonts&&frameDoc.fonts.ready) await frameDoc.fonts.ready.catch(()=>{});
             await new Promise(resolve=>setTimeout(resolve,250));
-            const canvas=await window.html2canvas(body,{scale:2,useCORS:true,allowTaint:false,backgroundColor:'#ffffff',logging:false,width:contentWidth,height:contentHeight,windowWidth:contentWidth,windowHeight:contentHeight,scrollX:0,scrollY:0});
-            const pageW=doc.internal.pageSize.getWidth(),pageH=doc.internal.pageSize.getHeight(),margin=36,usableW=pageW-margin*2,pxPerPt=canvas.width/usableW,pageCanvasHeight=Math.max(1,Math.floor((pageH-margin*2)*pxPerPt));
-            let offset=0,firstHtmlPage=true;
+            const canvas=await window.html2canvas(body,{
+              scale:2,
+              useCORS:true,
+              allowTaint:false,
+              backgroundColor:'#ffffff',
+              logging:false,
+              width:contentWidth,
+              height:contentHeight,
+              windowWidth:contentWidth,
+              windowHeight:contentHeight,
+              scrollX:0,
+              scrollY:0
+            });
+            const pageW=doc.internal.pageSize.getWidth();
+            const pageH=doc.internal.pageSize.getHeight();
+            const margin=36;
+            const usableW=pageW-margin*2;
+            const pxPerPt=canvas.width/usableW;
+            const pageCanvasHeight=Math.max(1,Math.floor((pageH-margin*2)*pxPerPt));
+            let offset=0;
+            let firstHtmlPage=true;
             while(offset<canvas.height){
-              const sliceH=Math.min(pageCanvasHeight,canvas.height-offset),slice=document.createElement('canvas');
-              slice.width=canvas.width;slice.height=sliceH;
-              const ctx=slice.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,slice.width,slice.height);ctx.drawImage(canvas,0,offset,canvas.width,sliceH,0,0,canvas.width,sliceH);
-              if(!firstHtmlPage) doc.addPage(); firstHtmlPage=false;
-              doc.addImage(slice.toDataURL('image/jpeg',0.92),'JPEG',margin,margin,usableW,sliceH/pxPerPt,'','FAST');
+              const sliceH=Math.min(pageCanvasHeight,canvas.height-offset);
+              const slice=document.createElement('canvas');
+              slice.width=canvas.width;
+              slice.height=sliceH;
+              const ctx=slice.getContext('2d');
+              ctx.fillStyle='#ffffff';
+              ctx.fillRect(0,0,slice.width,slice.height);
+              ctx.drawImage(canvas,0,offset,canvas.width,sliceH,0,0,canvas.width,sliceH);
+              if(!firstHtmlPage) doc.addPage();
+              firstHtmlPage=false;
+              const imgH=sliceH/pxPerPt;
+              doc.addImage(slice.toDataURL('image/jpeg',0.92),'JPEG',margin,margin,usableW,imgH,'','FAST');
               offset+=sliceH;
             }
-          }catch(error){console.error('HTML to PDF conversion failed:',error);alert('Unable to convert this HTML file to PDF. If the file uses local CSS/images, please use a self-contained HTML file or absolute web URLs.');return;}
-          finally{frame.remove();}
+          }catch(error){
+            console.error('HTML to PDF conversion failed:',error);
+            alert('Unable to convert this HTML file to PDF. If the file uses local CSS/images, please use a self-contained HTML file or absolute web URLs.');
+            return;
+          }finally{
+            frame.remove();
+          }
         }else{
           const text=await f.text(); doc.setFontSize(11);
           const lines=doc.splitTextToSize(text,doc.internal.pageSize.getWidth()-72);
