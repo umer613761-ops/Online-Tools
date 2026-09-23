@@ -15,6 +15,7 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from lxml import etree
 import pdfplumber
+from openpyxl import Workbook
 
 V_NS='urn:schemas-microsoft-com:vml'
 O_NS='urn:schemas-microsoft-com:office:office'
@@ -1030,6 +1031,83 @@ def _marks_data():
         ['Total Marks Class-XI','','','393',''], ['Total Marks Class-XII','','','393',''], ['Add 3% Marks','','','12',''], ['TOTAL','1100','','798',''],
         ['Marks in words: SEVEN HUNDRED NINETY EIGHT ONLY.','','','','']
     ]
+
+
+def _table_is_meaningful(rows):
+    if not rows or len(rows) < 2:
+        return False
+    cleaned=[]
+    for row in rows:
+        if not row: continue
+        vals=["" if v is None else re.sub(r"\s+", " ", str(v)).strip() for v in row]
+        if any(vals): cleaned.append(vals)
+    if len(cleaned) < 2: return False
+    width=max(len(r) for r in cleaned)
+    return width >= 2 and sum(bool(v) for r in cleaned for v in r) >= 4
+
+
+def _normalize_table(rows):
+    width=max(len(r) for r in rows)
+    out=[]
+    for row in rows:
+        vals=["" if v is None else re.sub(r"\s+", " ", str(v)).strip() for v in row]
+        out.append(vals + [""]*(width-len(vals)))
+    return out
+
+
+def convert_xlsx(pdf_path, output_path, pages):
+    """Create an XLSX containing only detected tables/tabular data.
+    Raises ValueError when no meaningful table is found, so the API does not
+    create a meaningless workbook for ordinary/non-tabular PDFs.
+    """
+    pdf=fitz.open(pdf_path)
+    plumber=pdfplumber.open(pdf_path)
+    tables=[]
+    try:
+        for n in pages:
+            page=pdf[n-1]
+            # Native PDFs: use pdfplumber's table extraction.
+            try:
+                ppage=plumber.pages[n-1]
+                native_tables=ppage.extract_tables() or []
+            except Exception:
+                native_tables=[]
+            for rows in native_tables:
+                if _table_is_meaningful(rows):
+                    tables.append((n, _normalize_table(rows)))
+
+            # Scanned PDFs: only accept a table when ruled-table geometry is
+            # detected; OCR is then performed cell-by-cell.
+            if _has_large_page_image(page):
+                try:
+                    img=_scan_image(page)
+                    table=_detect_table(page,img)
+                    if table:
+                        rows=_ocr_table_words(img,table)
+                        if _table_is_meaningful(rows):
+                            tables.append((n, _normalize_table(rows)))
+                except Exception:
+                    pass
+
+        if not tables:
+            raise ValueError("No tables or tabular data were found in this PDF. XLSX was not created.")
+
+        wb=Workbook()
+        wb.remove(wb.active)
+        for index,(page_num,rows) in enumerate(tables,1):
+            ws=wb.create_sheet(title=f"Page {page_num} Table {index}"[:31])
+            for r,row in enumerate(rows,1):
+                for c,value in enumerate(row,1):
+                    ws.cell(r,c,value)
+            ws.freeze_panes='A2' if len(rows)>1 else None
+            for col in ws.columns:
+                letter=col[0].column_letter
+                max_len=max((len(str(cell.value)) if cell.value is not None else 0) for cell in col)
+                ws.column_dimensions[letter].width=min(max(max_len+2,10),50)
+        wb.save(output_path)
+    finally:
+        plumber.close()
+        pdf.close()
 
 def convert_docx(pdf_path,output_path,pages):
     pdf=fitz.open(pdf_path)

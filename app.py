@@ -8,7 +8,7 @@ from flask import Flask, jsonify, request, send_file
 import fitz
 from flask_cors import CORS
 
-from pdf_convert import convert_txt, convert_docx, convert_html, parse_pages, safe_stem
+from pdf_convert import convert_txt, convert_docx, convert_html, convert_xlsx, parse_pages, safe_stem
 
 UPLOAD_DIR = Path(os.environ.get("TOOLNEST_TEMP_DIR", tempfile.gettempdir())) / "toolnest"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -35,7 +35,7 @@ def health():
         "ok": True,
         "service": "ToolNest conversion API",
         "status": "running",
-        "conversions": ["txt", "docx", "html"],
+        "conversions": ["txt", "docx", "html", "xlsx"],
     })
 
 
@@ -73,10 +73,13 @@ def serve_pdf_conversion(extension, converter, mimetype):
     except Exception as exc:
         # Keep the user-facing message useful while exposing the real
         # converter exception for debugging instead of hiding it.
+        details=str(exc) or exc.__class__.__name__
+        if extension == "xlsx" and details.startswith("No tables or tabular data were found"):
+            return jsonify({"ok": False, "error": details}), 422
         return jsonify({
             "ok": False,
             "error": f"Unable to convert this PDF to {extension.upper()}.",
-            "details": str(exc) or exc.__class__.__name__,
+            "details": details,
             "exception": exc.__class__.__name__,
         }), 500
     finally:
@@ -99,6 +102,12 @@ def pdf_to_txt():
 def pdf_to_docx():
     return serve_pdf_conversion("docx", convert_docx, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 
+
+
+
+@app.post("/api/pdf-to-xlsx")
+def pdf_to_xlsx():
+    return serve_pdf_conversion("xlsx", convert_xlsx, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 @app.post("/api/pdf-to-html")
 def pdf_to_html():
