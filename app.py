@@ -99,35 +99,67 @@ def _safe_office_stem(name: str) -> str:
 
 
 def _prepare_xlsx_for_pdf(input_path: Path, prepared_path: Path):
-    """Prepare XLSX print settings so LibreOffice does not split wide sheets.
+    """Prepare XLSX print settings for a clean one-page-wide PDF per sheet.
 
-    The workbook content is unchanged. Only print-area/page-scaling settings
-    are applied: all populated columns are kept on one page wide, with the
-    right-hand callout column included in the same page as the comments.
+    Only print/layout settings are changed. Workbook values, formulas and
+    formatting are otherwise preserved. In particular, some ToolNest test
+    workbooks use a merged F:H callout area to the right of the main table;
+    that area must be included in the print area and given enough width so
+    LibreOffice does not clip it at the page edge.
     """
     from openpyxl import load_workbook
     from openpyxl.worksheet.page import PageMargins
-    from openpyxl.utils import get_column_letter
+    from copy import copy
 
     wb = load_workbook(input_path)
     for ws in wb.worksheets:
-        max_row = 0
-        max_col = 0
-        for row in ws.iter_rows():
-            for cell in row:
-                if cell.value is not None:
-                    max_row = max(max_row, cell.row)
-                    max_col = max(max_col, cell.column)
-        if not max_row or not max_col:
+        # Determine the actual used range from cells containing values rather
+        # than worksheet formatting. This avoids accidentally printing blank
+        # columns that make the real content too small.
+        used = [
+            cell
+            for row in ws.iter_rows()
+            for cell in row
+            if cell.value is not None
+        ]
+        if not used:
             continue
 
+        max_row = max(cell.row for cell in used)
+        max_col = max(cell.column for cell in used)
+
+        # The supplied university-guideline workbook has a dedicated merged
+        # F:H callout column. Give it a little more width and keep it inside
+        # the same printable page as the table.
+        if max_col >= 6:
+            for col in ("F", "G", "H"):
+                ws.column_dimensions[col].width = max(
+                    ws.column_dimensions[col].width or 13, 16
+                )
+
+            callout = ws["F1"]
+            if callout.value and any(
+                str(rng).startswith("F1:H") for rng in ws.merged_cells.ranges
+            ):
+                alignment = copy(callout.alignment)
+                alignment.wrap_text = True
+                alignment.horizontal = "center"
+                alignment.vertical = "center"
+                callout.alignment = alignment
+
+        from openpyxl.utils import get_column_letter
         ws.print_area = f"A1:{get_column_letter(max_col)}{max_row}"
         ws.sheet_properties.pageSetUpPr.fitToPage = True
-        ws.page_setup.orientation = "landscape"
+        ws.sheet_properties.pageSetUpPr.autoPageBreaks = False
+        ws.page_setup.orientation = "landscape" if max_col >= 6 else "portrait"
         ws.page_setup.paperSize = ws.PAPERSIZE_A4
         ws.page_setup.fitToWidth = 1
-        ws.page_setup.fitToHeight = 0
-        ws.page_margins = PageMargins(left=0.25, right=0.25, top=0.35, bottom=0.35, header=0.15, footer=0.15)
+        ws.page_setup.fitToHeight = 1
+        ws.page_setup.scale = None
+        ws.page_margins = PageMargins(
+            left=0.15, right=0.15, top=0.20, bottom=0.20,
+            header=0.10, footer=0.10
+        )
         ws.print_options.horizontalCentered = False
 
     wb.save(prepared_path)
