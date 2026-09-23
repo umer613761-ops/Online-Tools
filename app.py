@@ -1,23 +1,12 @@
 import os
 import re
 import uuid
-import shutil
-import subprocess
 import tempfile
 from pathlib import Path
 
 from flask import Flask, jsonify, request, send_file
-from pypdf import PdfReader, PdfWriter
 
-try:
-    from openpyxl import load_workbook
-except Exception:
-    load_workbook = None
-
-try:
-    from pdf_to_xlsx import convert_pdf_to_xlsx
-except Exception:
-    convert_pdf_to_xlsx = None
+from pdf_to_xlsx import convert_pdf_to_xlsx
 
 BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = Path(os.environ.get("TOOLNEST_TEMP_DIR", tempfile.gettempdir())) / "toolnest"
@@ -26,189 +15,166 @@ UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = int(os.environ.get("MAX_UPLOAD_MB", "50")) * 1024 * 1024
 
-SPREADSHEET_EXTENSIONS = {".xlsx", ".xlsm", ".xltx", ".xltm"}
-
-OFFICE_EXTENSIONS = {".docx", ".doc", ".odt", ".rtf", ".txt", ".xlsx", ".xls", ".ods", ".csv", ".pptx", ".ppt", ".odp"}
 
 @app.after_request
 def add_cors_headers(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
-    response.headers["Access-Control-Allow-Methods"] = "GET,POST,OPTIONS"
-    response.headers["Access-Control-Expose-Headers"] = "Content-Disposition, X-ToolNest-Files"
+    response.headers["Access-Control-Expose-Headers"] = "Content-Disposition, X-ToolNest-Mode, X-ToolNest-Tables"
     return response
 
 
-def safe_name(name: str) -> str:
-    base = Path(name or "document").name
-    stem = re.sub(r"[^A-Za-z0-9._-]+", "_", Path(base).stem).strip("._") or "document"
-    ext = Path(base).suffix.lower()
-    return stem + ext
-
-
-def find_office_binary():
-    for candidate in ("libreoffice", "soffice"):
-        path = shutil.which(candidate)
-        if path:
-            return path
-    raise RuntimeError("LibreOffice is not installed on the conversion server.")
-
-
-def _prepare_spreadsheet_for_pdf(input_path: Path, output_dir: Path) -> Path:
-    """Prepare modern Excel workbooks for PDF printing without changing the upload.
-
-    Repeats the detected table/header row on continuation pages while preserving
-    the workbook's existing formatting and the previously fixed fit-to-width settings.
-    """
-    if load_workbook is None:
-        raise RuntimeError("Excel workbook support is not installed on the conversion server.")
-
-    prepared = output_dir / f"prepared-{input_path.name}"
-    wb = load_workbook(input_path, keep_vba=input_path.suffix.lower() in {".xlsm", ".xltm"})
-    for ws in wb.worksheets:
-        max_scan = min(ws.max_row, 12)
-        header_row = None
-        for row_idx in range(1, max_scan + 1):
-            values = [ws.cell(row_idx, c).value for c in range(1, min(ws.max_column, 30) + 1)]
-            nonempty = sum(v not in (None, "") for v in values)
-            if nonempty >= 3:
-                header_row = row_idx
-                break
-        if header_row is not None and ws.max_row > header_row:
-            ws.print_title_rows = f"{header_row}:{header_row}"
-        ws.sheet_properties.pageSetUpPr.fitToPage = True
-        ws.page_setup.fitToWidth = 1
-        ws.page_setup.fitToHeight = 0
-    wb.save(prepared)
-    return prepared
-
-
-def convert_one_office(input_path: Path, output_dir: Path) -> Path:
-    binary = find_office_binary()
-    profile = output_dir / f"profile-{uuid.uuid4().hex}"
-    profile.mkdir(parents=True, exist_ok=True)
-    try:
-        conversion_input = input_path
-        if input_path.suffix.lower() in SPREADSHEET_EXTENSIONS:
-            conversion_input = _prepare_spreadsheet_for_pdf(input_path, output_dir)
-
-        cmd = [
-            binary,
-            "--headless",
-            "--nologo",
-            "--nodefault",
-            "--nofirststartwizard",
-            f"-env:UserInstallation={profile.as_uri()}",
-            "--convert-to", "pdf",
-            "--outdir", str(output_dir),
-            str(conversion_input),
-        ]
-        completed = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
-        output_pdf = output_dir / (conversion_input.stem + ".pdf")
-        if completed.returncode != 0 or not output_pdf.exists() or output_pdf.stat().st_size == 0:
-            detail = (completed.stderr or completed.stdout or "LibreOffice did not produce a PDF.").strip()
-            raise RuntimeError(detail[-1500:])
-        return output_pdf
-    finally:
-        shutil.rmtree(profile, ignore_errors=True)
-
-
-def merge_pdfs(pdf_paths, output_path: Path):
-    writer = PdfWriter()
-    for path in pdf_paths:
-        reader = PdfReader(str(path))
-        for page in reader.pages:
-            writer.add_page(page)
-    with output_path.open("wb") as fh:
-        writer.write(fh)
+def safe_filename(name: str) -> str:
+    name = Path(name or "document.pdf").name
+    stem = re.sub(r"[^A-Za-z0-9._-]+", "_", Path(name).stem).strip("._") or "document"
+    return stem + ".pdf"
 
 
 @app.get("/")
 def home():
-    return jsonify({"ok": True, "service": "ToolNest conversion API", "status": "running"})
+    return jsonify({
+        "ok": True,
+        "service": "ToolNest conversion API",
+        "status": "running"
+    })
 
 
 @app.get("/health")
 def health():
-    office = shutil.which("libreoffice") or shutil.which("soffice")
-    return jsonify({"ok": True, "service": "ToolNest conversion API", "libreoffice": bool(office)})
-
-
-@app.post("/api/office-to-pdf")
-def office_to_pdf():
-    uploads = request.files.getlist("files") or request.files.getlist("file")
-    uploads = [f for f in uploads if f and f.filename]
-    if not uploads:
-        return jsonify({"error": "Please upload at least one supported file."}), 400
-
-    work = UPLOAD_DIR / f"office-{uuid.uuid4().hex}"
-    work.mkdir(parents=True, exist_ok=True)
-    try:
-        input_paths = []
-        for idx, uploaded in enumerate(uploads):
-            name = safe_name(uploaded.filename)
-            if Path(name).suffix.lower() not in OFFICE_EXTENSIONS:
-                return jsonify({"error": f"Unsupported Office file: {uploaded.filename}"}), 400
-            path = work / f"{idx}-{name}"
-            uploaded.save(path)
-            input_paths.append(path)
-
-        pdfs = [convert_one_office(path, work) for path in input_paths]
-        output = work / "converted-to-pdf.pdf"
-        merge_pdfs(pdfs, output)
-        if not output.exists() or output.stat().st_size == 0:
-            raise RuntimeError("The PDF conversion produced an empty file.")
-
-        return send_file(
-            output,
-            as_attachment=True,
-            download_name="converted-to-pdf.pdf",
-            mimetype="application/pdf",
-        )
-    except subprocess.TimeoutExpired:
-        return jsonify({"error": "The document took too long to convert."}), 504
-    except Exception as exc:
-        return jsonify({"error": "Unable to convert the selected Office file(s) to PDF.", "details": str(exc)}), 500
-    finally:
-        shutil.rmtree(work, ignore_errors=True)
+    return jsonify({
+        "ok": True,
+        "service": "ToolNest conversion API"
+    })
 
 
 @app.post("/api/pdf-to-xlsx")
 def pdf_to_xlsx():
-    if convert_pdf_to_xlsx is None:
-        return jsonify({"error": "PDF-to-XLSX converter is not installed on this server."}), 503
     if "file" not in request.files:
         return jsonify({"error": "Please upload a PDF file."}), 400
+
     uploaded = request.files["file"]
     if not uploaded.filename:
         return jsonify({"error": "Please choose a PDF file."}), 400
-    original = safe_name(uploaded.filename)
+
+    original = safe_filename(uploaded.filename)
     if not original.lower().endswith(".pdf"):
         return jsonify({"error": "Only PDF files are supported."}), 400
+
     job_id = uuid.uuid4().hex
     input_path = UPLOAD_DIR / f"{job_id}-{original}"
     output_path = UPLOAD_DIR / f"{job_id}-{Path(original).stem}.xlsx"
+
     try:
         uploaded.save(input_path)
         result = convert_pdf_to_xlsx(input_path, output_path)
+
         if not output_path.exists() or output_path.stat().st_size == 0:
             raise RuntimeError("The converter did not produce an Excel file.")
-        response = send_file(output_path, as_attachment=True,
-                             download_name=f"{Path(original).stem}.xlsx",
-                             mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+        response = send_file(
+            output_path,
+            as_attachment=True,
+            download_name=f"{Path(original).stem}.xlsx",
+            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
         response.headers["X-ToolNest-Mode"] = result.get("mode", "unknown")
         response.headers["X-ToolNest-Tables"] = str(result.get("tables", 0))
         return response
     except Exception as exc:
-        return jsonify({"error": "Unable to convert this PDF to Excel.", "details": str(exc)}), 500
+        return jsonify({
+            "error": "Unable to convert this PDF to Excel.",
+            "details": str(exc),
+        }), 500
     finally:
-        input_path.unlink(missing_ok=True)
-        output_path.unlink(missing_ok=True)
+        try:
+            input_path.unlink(missing_ok=True)
+        except Exception:
+            pass
+
+
+def _cleanup_old_outputs(max_age_seconds=3600):
+    import time
+    now = time.time()
+    for path in UPLOAD_DIR.glob("*.xlsx"):
+        try:
+            if now - path.stat().st_mtime > max_age_seconds:
+                path.unlink(missing_ok=True)
+        except OSError:
+            pass
+
+
+@app.before_request
+def cleanup_outputs():
+    _cleanup_old_outputs()
 
 
 @app.errorhandler(413)
 def too_large(_):
-    return jsonify({"error": "The upload is too large. Maximum upload size is 50 MB."}), 413
+    return jsonify({"error": "The PDF is too large. Maximum upload size is 50 MB."}), 413
+
+
+def _office_to_pdf(kind):
+    if "file" not in request.files:
+        return jsonify({"error": "Please upload a file."}), 400
+
+    uploaded = request.files["file"]
+    if not uploaded.filename:
+        return jsonify({"error": "Please choose a file."}), 400
+
+    expected = ".docx" if kind == "docx" else ".xlsx"
+    if Path(uploaded.filename).suffix.lower() != expected:
+        return jsonify({"error": f"Only {expected[1:].upper()} files are supported."}), 400
+
+    job_id = uuid.uuid4().hex
+    stem = re.sub(r"[^A-Za-z0-9._-]+", "_", Path(uploaded.filename).stem).strip("._") or "document"
+    input_path = UPLOAD_DIR / f"{job_id}-{stem}{expected}"
+    output_dir = UPLOAD_DIR / job_id
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_path = output_dir / f"{stem}.pdf"
+
+    try:
+        uploaded.save(input_path)
+        import subprocess
+        result = subprocess.run(
+            ["libreoffice", "--headless", "--convert-to", "pdf", "--outdir", str(output_dir), str(input_path)],
+            capture_output=True, text=True, timeout=180
+        )
+
+        if result.returncode != 0 or not output_path.exists() or output_path.stat().st_size == 0:
+            details = (result.stderr or result.stdout or "LibreOffice did not produce a PDF.").strip()
+            raise RuntimeError(details)
+
+        with output_path.open("rb") as fh:
+            if fh.read(5) != b"%PDF-":
+                raise RuntimeError("The conversion engine returned a non-PDF file.")
+
+        return send_file(
+            output_path,
+            as_attachment=True,
+            download_name=f"{stem}.pdf",
+            mimetype="application/pdf"
+        )
+    except Exception as exc:
+        return jsonify({
+            "error": f"Unable to convert {expected[1:].upper()} to PDF.",
+            "details": str(exc)
+        }), 500
+    finally:
+        try:
+            input_path.unlink(missing_ok=True)
+        except OSError:
+            pass
+        import shutil
+        shutil.rmtree(output_dir, ignore_errors=True)
+
+
+@app.post("/api/docx-to-pdf")
+def docx_to_pdf():
+    return _office_to_pdf("docx")
+
+
+@app.post("/api/xlsx-to-pdf")
+def xlsx_to_pdf():
+    return _office_to_pdf("xlsx")
 
 
 if __name__ == "__main__":

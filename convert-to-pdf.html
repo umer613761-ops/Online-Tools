@@ -4357,44 +4357,6 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
     cancel.onclick=resetToUpload;
     download.onclick=async()=>{
       if(!files.length) return;
-      const office=files.find(f=>/\.(docx|xlsx)$/i.test(f.name));
-      if(office){
-        const ext=office.name.split('.').pop().toLowerCase();
-        const endpoint=ext==='docx'
-          ? 'https://toolnest-api-production-dda7.up.railway.app/api/docx-to-pdf'
-          : 'https://toolnest-api-production-dda7.up.railway.app/api/xlsx-to-pdf';
-        try{
-          download.disabled=true;
-          download.textContent='Converting...';
-          const formData=new FormData();
-          formData.append('file',office,office.name);
-          const response=await fetch(endpoint,{method:'POST',body:formData});
-          if(!response.ok){
-            let message='Unable to convert this file to PDF.';
-            try{const data=await response.json();if(data?.error) message=data.error+(data.details?'\n\n'+data.details:'');}catch(_){ }
-            throw new Error(message);
-          }
-          const blob=await response.blob();
-          if(!blob.size) throw new Error('The server returned an empty PDF file.');
-          const url=URL.createObjectURL(blob);
-          const a=document.createElement('a');
-          a.href=url;
-          const disposition=response.headers.get('Content-Disposition')||'';
-          const match=disposition.match(/filename[^;=]*=(?:UTF-8''|\")?([^;\"]+)/i);
-          const fallback=office.name.replace(/\.[^.]+$/,'')+'.pdf';
-          a.download=match?decodeURIComponent(match[1].replace(/^\"|\"$/g,'')):fallback;
-          document.body.appendChild(a);a.click();a.remove();
-          setTimeout(()=>URL.revokeObjectURL(url),5000);
-          resetToUpload();
-        }catch(e){
-          console.error(e);
-          alert(e?.message||'Unable to convert this file to PDF. Please try again.');
-        }finally{
-          download.disabled=false;
-          download.textContent='Convert & Download';
-        }
-        return;
-      }
       if(!window.jspdf){alert('PDF converter library is still loading. Please try again.');return;}
       const {jsPDF}=window.jspdf;
       const doc=new jsPDF({unit:'pt',format:'a4'});
@@ -4408,28 +4370,120 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
           const scale=Math.min(pw/img.width,ph/img.height);
           const fmt=f.type==='image/png'?'PNG':f.type==='image/webp'?'WEBP':'JPEG';
           doc.addImage(data,fmt,(doc.internal.pageSize.getWidth()-img.width*scale)/2,36,img.width*scale,img.height*scale);
+        }else if(/\.(docx|xlsx)$/i.test(f.name)){
+          const endpoint=/\.docx$/i.test(f.name)
+            ? 'https://toolnest-api-production-dda7.up.railway.app/api/docx-to-pdf'
+            : 'https://toolnest-api-production-dda7.up.railway.app/api/xlsx-to-pdf';
+          try{
+            download.disabled=true;
+            download.textContent='Converting...';
+            const formData=new FormData();
+            formData.append('file',f,f.name);
+            const response=await fetch(endpoint,{method:'POST',body:formData});
+            if(!response.ok){
+              let message='Unable to convert this Office file to PDF.';
+              try{const data=await response.json(); if(data&&data.error) message=data.error+(data.details?'\n\n'+data.details:'');}catch(_){}
+              throw new Error(message);
+            }
+            const blob=await response.blob();
+            if(!blob.size || blob.type!=='application/pdf') throw new Error('The server did not return a valid PDF file.');
+            const url=URL.createObjectURL(blob);
+            const a=document.createElement('a');
+            a.href=url;
+            const disposition=response.headers.get('Content-Disposition')||'';
+            const match=disposition.match(/filename[^;=]*=(?:UTF-8''|\")?([^;\"]+)/i);
+            const fallback=f.name.replace(/\.[^.]+$/,'')+'.pdf';
+            a.download=match ? decodeURIComponent(match[1].replace(/^\"|\"$/g,'')) : fallback;
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(()=>URL.revokeObjectURL(url),5000);
+          }catch(error){
+            console.error('Office to PDF conversion failed:',error);
+            alert(error&&error.message ? error.message : 'Unable to convert this file to PDF. Please try again.');
+            return;
+          }finally{
+            download.disabled=false;
+            download.textContent='Convert & Download';
+          }
+          continue;
         }else if(/\.html?$/i.test(f.name) || f.type==='text/html'){
-          if(!window.jspdf || !window.jspdf.jsPDF){alert('PDF converter library is still loading. Please try again.');return;}
+          /*
+             Browser-based HTML -> PDF.
+             Render the actual HTML DOM through jsPDF's HTML renderer instead of
+             rasterising the whole document with html2canvas and slicing a canvas.
+             This keeps the conversion entirely client-side and gives the renderer
+             access to normal HTML/CSS flow and pagination.
+          */
+          if(!window.jspdf || !window.jspdf.jsPDF){
+            alert('PDF converter library is still loading. Please try again.');
+            return;
+          }
           const html=await f.text();
           const frame=document.createElement('iframe');
           frame.setAttribute('aria-hidden','true');
           frame.style.cssText='position:fixed;left:-100000px;top:0;width:794px;height:1123px;border:0;background:#fff;display:block;';
           document.body.appendChild(frame);
           try{
-            await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(new Error('HTML document timed out while loading.')),20000);frame.onload=()=>{clearTimeout(timer);resolve();};frame.onerror=()=>{clearTimeout(timer);reject(new Error('Unable to load the HTML document.'));};frame.srcdoc=html;});
-            const frameDoc=frame.contentDocument, body=frameDoc&&frameDoc.body;
+            await new Promise((resolve,reject)=>{
+              const timer=setTimeout(()=>reject(new Error('HTML document timed out while loading.')),20000);
+              frame.onload=()=>{clearTimeout(timer);resolve();};
+              frame.onerror=()=>{clearTimeout(timer);reject(new Error('Unable to load the HTML document.'));};
+              frame.srcdoc=html;
+            });
+
+            const frameDoc=frame.contentDocument;
+            const body=frameDoc && frameDoc.body;
             if(!body) throw new Error('HTML document has no body.');
+
+            /* Wait for images and web fonts before rendering. */
             const images=Array.from(frameDoc.images||[]);
-            await Promise.all(images.map(img=>img.complete?(img.decode?img.decode().catch(()=>{}):Promise.resolve()):new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;})));
-            if(frameDoc.fonts?.ready) await frameDoc.fonts.ready.catch(()=>{});
+            await Promise.all(images.map(img=>{
+              if(img.complete) return img.decode ? img.decode().catch(()=>{}) : Promise.resolve();
+              return new Promise(resolve=>{img.onload=()=>resolve();img.onerror=()=>resolve();});
+            }));
+            if(frameDoc.fonts && frameDoc.fonts.ready){
+              await frameDoc.fonts.ready.catch(()=>{});
+            }
             await new Promise(resolve=>setTimeout(resolve,150));
+
+            /* Make the print viewport A4-sized while preserving the uploaded CSS. */
             const printStyle=frameDoc.createElement('style');
             printStyle.textContent='@media screen{html,body{width:794px;min-height:1123px;margin:0;background:#fff}} @media print{body{margin:0}}';
             frameDoc.head.appendChild(printStyle);
-            await new Promise((resolve,reject)=>doc.html(body,{x:36,y:36,width:doc.internal.pageSize.getWidth()-72,windowWidth:794,autoPaging:'text',margin:[36,36,36,36],html2canvas:{scale:2,useCORS:true,allowTaint:false,backgroundColor:'#ffffff',logging:false,windowWidth:794,windowHeight:1123,scrollX:0,scrollY:0},callback:resolve,error:reject}));
-          }finally{frame.remove();}
+
+            await new Promise((resolve,reject)=>{
+              doc.html(body,{
+                x:36,
+                y:36,
+                width:doc.internal.pageSize.getWidth()-72,
+                windowWidth:794,
+                autoPaging:'text',
+                margin:[36,36,36,36],
+                html2canvas:{
+                  scale:2,
+                  useCORS:true,
+                  allowTaint:false,
+                  backgroundColor:'#ffffff',
+                  logging:false,
+                  windowWidth:794,
+                  windowHeight:1123,
+                  scrollX:0,
+                  scrollY:0
+                },
+                callback:()=>resolve(),
+                error:reject
+              });
+            });
+          }catch(error){
+            console.error('HTML to PDF conversion failed:',error);
+            alert('Unable to convert this HTML file to PDF. Please try again with a self-contained HTML file.');
+            return;
+          }finally{
+            frame.remove();
+          }
         }else{
-          const text=await f.text(); doc.setFontSize(11); const lines=doc.splitTextToSize(text,doc.internal.pageSize.getWidth()-72); let y=48;
+          const text=await f.text(); doc.setFontSize(11);
+          const lines=doc.splitTextToSize(text,doc.internal.pageSize.getWidth()-72);
+          let y=48;
           for(const line of lines){if(y>doc.internal.pageSize.getHeight()-40){doc.addPage();y=48;}doc.text(line,36,y);y+=15;}
         }
       }
@@ -4437,7 +4491,6 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
       doc.save(baseName+'-converted.pdf');
       resetToUpload();
     };
-
   }
 
   function setupFrom(){
