@@ -2,13 +2,15 @@ import os
 import re
 import uuid
 import tempfile
+import subprocess
+import shutil
 from pathlib import Path
 
 from flask import Flask, jsonify, request, send_file
 import fitz
 from flask_cors import CORS
 
-from pdf_convert import convert_txt, convert_docx, convert_html, convert_html_image, convert_xlsx, parse_pages, safe_stem
+from pdf_convert import convert_txt, convert_docx, convert_html, convert_xlsx, parse_pages, safe_stem
 
 UPLOAD_DIR = Path(os.environ.get("TOOLNEST_TEMP_DIR", tempfile.gettempdir())) / "toolnest"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -22,6 +24,90 @@ def safe_filename(name: str) -> str:
     name = Path(name or "document.pdf").name
     stem = re.sub(r"[^A-Za-z0-9._-]+", "_", Path(name).stem).strip("._") or "document"
     return stem + ".pdf"
+
+
+def convert_office_to_pdf(source_path: Path, output_path: Path):
+    """Render Office-compatible documents to PDF using LibreOffice."""
+    soffice = shutil.which("libreoffice") or shutil.which("soffice")
+    if not soffice:
+        raise RuntimeError("LibreOffice is not installed on the conversion server.")
+
+    work_dir = source_path.parent / f"lo-{uuid.uuid4().hex}"
+    work_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        result = subprocess.run(
+            [
+                soffice,
+                "--headless",
+                "--convert-to",
+                "pdf",
+                "--outdir",
+                str(work_dir),
+                str(source_path),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=180,
+            check=False,
+        )
+        generated = work_dir / f"{source_path.stem}.pdf"
+        if result.returncode != 0 or not generated.exists():
+            details = (result.stderr or result.stdout or "LibreOffice conversion failed.").strip()
+            raise RuntimeError(details)
+        shutil.move(str(generated), str(output_path))
+    finally:
+        shutil.rmtree(work_dir, ignore_errors=True)
+
+
+@app.post("/api/office-to-pdf")
+def office_to_pdf():
+    if "file" not in request.files:
+        return jsonify({"error": "Please upload a document file."}), 400
+    uploaded = request.files["file"]
+    if not uploaded.filename:
+        return jsonify({"error": "Please choose a document file."}), 400
+
+    original_name = Path(uploaded.filename).name
+    allowed = {
+        ".doc", ".docx", ".odt", ".rtf",
+        ".xls", ".xlsx", ".ods", ".csv",
+        ".ppt", ".pptx", ".odp",
+    }
+    suffix = Path(original_name).suffix.lower()
+    if suffix not in allowed:
+        return jsonify({"error": "Unsupported document format."}), 400
+
+    job_id = uuid.uuid4().hex
+    input_path = UPLOAD_DIR / f"{job_id}-{re.sub(r'[^A-Za-z0-9._-]+', '_', original_name)}"
+    output_path = UPLOAD_DIR / f"{job_id}-{Path(original_name).stem}.pdf"
+    uploaded.save(input_path)
+
+    try:
+        convert_office_to_pdf(input_path, output_path)
+        if not output_path.exists() or output_path.stat().st_size == 0:
+            raise RuntimeError("The converter did not produce a PDF.")
+        return send_file(
+            output_path,
+            as_attachment=True,
+            download_name=f"{Path(original_name).stem}.pdf",
+            mimetype="application/pdf",
+        )
+    except Exception as exc:
+        return jsonify({
+            "ok": False,
+            "error": "Unable to convert this document to PDF.",
+            "details": str(exc) or exc.__class__.__name__,
+            "exception": exc.__class__.__name__,
+        }), 500
+    finally:
+        try:
+            input_path.unlink(missing_ok=True)
+        except Exception:
+            pass
+        try:
+            output_path.unlink(missing_ok=True)
+        except Exception:
+            pass
 
 
 @app.get("/")
@@ -103,11 +189,6 @@ def pdf_to_docx():
     return serve_pdf_conversion("docx", convert_docx, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 
 
-
-
-@app.post("/api/pdf-to-html-image")
-def pdf_to_html_image():
-    return serve_pdf_conversion("html", convert_html_image, "text/html; charset=utf-8")
 
 
 @app.post("/api/pdf-to-xlsx")

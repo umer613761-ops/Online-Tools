@@ -1136,175 +1136,21 @@ def convert_docx(pdf_path,output_path,pages):
             _append_native_page(doc,page,plumber.pages[n-1],first_page=(idx==0),footer_lines=footer_lines)
     plumber.close(); pdf.close(); doc.save(output_path)
 
-def _html_style_for_span(span):
-    """Preserve semantic emphasis while using a readable browser-default text size."""
-    flags=int(span.get('flags') or 0)
-    font=(span.get('font') or '').lower()
-    styles=[]
-    if flags & 16 or 'bold' in font:
-        styles.append('font-weight:700')
-    if flags & 2 or 'italic' in font or 'oblique' in font:
-        styles.append('font-style:italic')
-    return ';'.join(styles)
-
-
-def _html_escape_text(text):
-    return html.escape(text or '', quote=False)
-
-
-def _merge_html_spans(parts):
-    """Merge adjacent spans with identical styling so ordinary words stay grouped."""
-    merged=[]
-    for text, style in parts:
-        if not text:
-            continue
-        if merged and merged[-1][1] == style:
-            merged[-1] = (merged[-1][0] + text, style)
-        else:
-            merged.append((text, style))
-    return merged
-
-
-def _html_line(line):
-    parts=[]
-    for span in line.get('spans',[]):
-        text=span.get('text','')
-        if not text:
-            continue
-        parts.append((_html_escape_text(text), _html_style_for_span(span)))
-    merged=_merge_html_spans(parts)
-    return ''.join(
-        f'<span style="{style}">{text}</span>' if style else text
-        for text,style in merged
-    )
-
-
-def _html_block_lines(lines):
-    """Keep text fragments sharing the same baseline on one HTML line."""
-    groups=[]
-    for line in lines:
-        if not any(s.get('text','') for s in line.get('spans',[])):
-            continue
-        bbox=line.get('bbox') or (0,0,0,0)
-        if groups:
-            prev=groups[-1]
-            pb=prev[-1].get('bbox') or (0,0,0,0)
-            same_row=abs(float(bbox[1])-float(pb[1])) <= 2.0
-            close_x=float(bbox[0]) >= float(pb[2])-2 and float(bbox[0]) <= float(pb[2])+35
-            if same_row and close_x:
-                prev.append(line)
-                continue
-        groups.append([line])
-
-    result=[]
-    for group in groups:
-        # Sort same-row fragments left-to-right, then concatenate without a line break.
-        group=sorted(group,key=lambda l: float((l.get('bbox') or (0,0,0,0))[0]))
-        result.append(''.join(_html_line(line) for line in group))
-    return result
-
-
-def _native_page_to_html(page):
-    """Build flowing text-only HTML while keeping PDF text blocks/lines intact."""
-    data=page.get_text('dict')
-    raw=[]
-    for block in data.get('blocks',[]):
-        if block.get('type') != 0:
-            continue
-        lines=[line for line in block.get('lines',[]) if any(s.get('text','') for s in line.get('spans',[]))]
-        if not lines:
-            continue
-        bbox=block.get('bbox') or (0,0,0,0)
-        line_html=_html_block_lines(lines)
-        if not line_html:
-            continue
-        raw.append({
-            'x':float(bbox[0]), 'y':float(bbox[1]),
-            'x2':float(bbox[2]), 'y2':float(bbox[3]),
-            'html':'<br>'.join(line_html)
-        })
-
-    # PDF24's text-only output keeps nearby blocks that belong to the same
-    # visual text run inside one <p>. Merge only when their left edges are
-    # aligned (or very close) and the vertical gap is small. This avoids
-    # accidentally joining separate columns/tables.
-    merged=[]
-    for block in raw:
-        if merged:
-            prev=merged[-1]
-            gap=block['y']-prev['y2']
-            xdelta=abs(block['x']-prev['x'])
-            prev_center=(prev['y']+prev['y2'])/2
-            block_center=(block['y']+block['y2'])/2
-            same_row=abs(block_center-prev_center) <= 3.0 and xdelta <= 12.0
-            close_block=-2.0 <= gap <= 6.0 and xdelta <= 12.0
-            if same_row or close_block:
-                prev['html'] += '<br>' + block['html']
-                prev['x2']=max(prev['x2'],block['x2'])
-                prev['y2']=max(prev['y2'],block['y2'])
-                continue
-        merged.append(block.copy())
-
-    return ''.join(f'<p>{b["html"]}</p>' for b in merged)
-
-
-def _ocr_page_to_flow_html(page):
-    """Fallback for image-only/scanned pages: OCR into ordinary HTML paragraphs."""
-    img=_scan_image(page)
-    candidates=[]
-    for psm in (3,6):
-        text,conf,data=_ocr_data(img,psm)
-        lines=_line_data(data)
-        candidates.append((conf,len(lines),lines))
-    candidates.sort(key=lambda x:(x[0],x[1]),reverse=True)
-    lines=candidates[0][2] if candidates else []
-    fuller=max(candidates,key=lambda x:len(x[2]),default=(0,0,[]))
-    if len(fuller[2]) > len(lines)*1.15:
-        lines=fuller[2]
-    if not lines:
-        return ''
-    parts=[]; current=[]; prev=None
-    for ln in lines:
-        y=float(ln['y']); h=max(1,float(ln['y2']-ln['y']))
-        if prev is not None and y-prev > h*1.9 and current:
-            parts.append(' '.join(current)); current=[]
-        current.append(ln['text'].strip())
-        prev=float(ln['y2'])
-    if current: parts.append(' '.join(current))
-    return ''.join(f'<p style="margin:0 0 10px;line-height:1.25">{_html_escape_text(t)}</p>' for t in parts if t)
-
-
-
-def convert_html_image(pdf_path,output_path,pages):
-    """Convert PDF pages into self-contained image-only HTML."""
-    import base64
-    pdf=fitz.open(pdf_path)
-    out=["""<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF to HTML - Image Only</title><style>html,body{margin:0;padding:0;background:#fff}.pdf-page{page-break-before:always;page-break-after:always;width:100%;text-align:center}.pdf-page img{display:block;width:100%;height:auto;margin:0 auto}</style></head><body>"""]
-    for n in pages:
-        page=pdf[n-1]
-        pix=page.get_pixmap(matrix=fitz.Matrix(2,2),alpha=False)
-        data=base64.b64encode(pix.tobytes("png")).decode("ascii")
-        out.append(f'<div class="pdf-page" data-page="{n}"><img src="data:image/png;base64,{data}" alt="PDF page {n}"></div>')
-    out.append('</body></html>')
-    Path(output_path).write_text(''.join(out),encoding='utf-8')
-    pdf.close()
-
 def convert_html(pdf_path,output_path,pages):
-    """Convert PDF to PDF24-style flowing, self-contained HTML."""
-    pdf=fitz.open(pdf_path)
-    out=["""<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"
-\"http://www.w3.org/TR/html4/loose.dtd\">
-<html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>PDF to HTML</title><style>
-html,body{background:#fff;font-family:Arial,sans-serif;color:#111}
-.pdf-page{page-break-before:always;page-break-after:always}
-.pdf-page:first-child{page-break-before:always}
-@media print{.pdf-page{padding:0}}
-</style></head><body>"""]
+    pdf=fitz.open(pdf_path); out=['<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF to HTML</title><style>html,body{margin:0;background:#e9edf1;font-family:Arial,sans-serif}.pdf-document{padding:24px}.pdf-page{position:relative;margin:0 auto 24px;background:#fff;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.14)}.pdf-bg{position:absolute;inset:0;width:100%;height:100%}.editable{position:absolute;background:#fff;border:0;padding:0;margin:0;outline:none;line-height:1;box-sizing:border-box}.native{background:transparent}@media print{body{background:#fff}.pdf-document{padding:0}.pdf-page{margin:0;box-shadow:none;break-after:page}.pdf-page:last-child{break-after:auto}}</style></head><body><div class="pdf-document">']
     for n in pages:
-        page=pdf[n-1]
-        native_html=_native_page_to_html(page)
-        body=native_html if native_html else _ocr_page_to_flow_html(page)
-        out.append(f'<div class="pdf-page" data-page="{n}">{body}</div>')
-    out.append('</body></html>')
-    Path(output_path).write_text(''.join(out),encoding='utf-8')
-    pdf.close()
+        page=pdf[n-1]; scanned=_has_large_page_image(page); img=_scan_image(page) if scanned else None
+        if scanned:
+            lines,_,_= _ocr_page(page); cleaned=_clean_scan(img,lines); buf=io.BytesIO(); cleaned.save(buf,'PNG'); b=base64.b64encode(buf.getvalue()).decode(); sx=page.rect.width/img.width; sy=page.rect.height/img.height
+        else:
+            buf=io.BytesIO(); pix=page.get_pixmap(matrix=fitz.Matrix(1,1),alpha=False,colorspace=fitz.csRGB); Image.open(io.BytesIO(pix.tobytes('png'))).save(buf,'PNG'); b=base64.b64encode(buf.getvalue()).decode(); lines=_native_lines(page); sx=sy=1
+        out.append(f'<section class="pdf-page" style="width:{page.rect.width}px;height:{page.rect.height}px"><img class="pdf-bg" src="data:image/png;base64,{b}">')
+        for ln in lines:
+            if scanned:
+                x,y,w,h=ln['x']*sx,ln['y']*sy,max(8,(ln['x2']-ln['x'])*sx+4),max(10,(ln['y2']-ln['y'])*sy+3); fs=max(7,min(16,(ln['y2']-ln['y'])*sy*.78))
+            else:
+                x,y,w,h=0,0,0,0; continue
+            if ln['conf']<25: continue
+            out.append(f'<div contenteditable="true" class="editable" style="left:{x}px;top:{y}px;width:{w}px;height:{h}px;font-size:{fs}px">{html.escape(ln["text"])}</div>')
+        out.append('</section>')
+    out.append('</div></body></html>'); Path(output_path).write_text(''.join(out),encoding='utf-8'); pdf.close()

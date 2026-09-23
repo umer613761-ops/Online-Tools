@@ -4097,7 +4097,7 @@ html.dark-mode .tool-intro p {
           <label class="convert-mode-option"><input type="radio" name="convertFromMode" id="convertFromWholePdf" checked><span class="convert-mode-radio"></span><span>Whole PDF</span></label>
           <label class="convert-mode-option"><input type="radio" name="convertFromMode" id="convertFromIndividualPages"><span class="convert-mode-radio"></span><span>Individual Pages</span></label>
         </div>
-        <label class="convert-format-label">Convert to <select id="convertFromFormat"><option value="jpg">JPG</option><option value="png">PNG</option><option value="txt">TXT</option><option value="html">HTML Text</option><option value="html-image">HTML Image</option><option value="docx">DOCX</option><option value="xlsx">XLSX</option></select></label>
+        <label class="convert-format-label">Convert to <select id="convertFromFormat"><option value="jpg">JPG</option><option value="png">PNG</option><option value="txt">TXT</option><option value="html">HTML</option><option value="docx">DOCX</option><option value="xlsx">XLSX</option></select></label>
       </div>
       <div class="convert-actions" id="convertFromActions" hidden>
         <button class="convert-download-button" id="convertFromDownloadButton" type="button">Convert &amp; Download</button>
@@ -4493,12 +4493,11 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
         for(const pageNum of pages){await downloadImagePage(pageNum,fmt.value); await new Promise(r=>setTimeout(r,80));}
         reset(); return;
       }
-      if(fmt.value==='txt' || fmt.value==='docx' || fmt.value==='html' || fmt.value==='html-image' || fmt.value==='xlsx'){
+      if(fmt.value==='txt' || fmt.value==='docx' || fmt.value==='html' || fmt.value==='xlsx'){
         try{
           download.disabled=true;
           download.textContent='Converting...';
-          const apiFormat=fmt.value==='html-image'?'html-image':fmt.value;
-          const API_URL='https://toolnest-api-production-dda7.up.railway.app/api/pdf-to-'+apiFormat;
+          const API_URL='https://toolnest-api-production-dda7.up.railway.app/api/pdf-to-'+fmt.value;
           const formData=new FormData();
           formData.append('file',input.files[0],input.files[0].name);
           if(mode==='individual') formData.append('pages',pages.join(','));
@@ -4519,7 +4518,7 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
           a.href=url;
           const disposition=response.headers.get('Content-Disposition')||'';
           const match=disposition.match(/filename[^;=]*=(?:UTF-8''|\")?([^;\"]+)/i);
-          const ext=fmt.value==='html-image'?'html':fmt.value;
+          const ext=fmt.value;
           const fallbackName=sourceFileName.replace(/\.[^.]+$/,'')+'.'+ext;
           a.download=match?decodeURIComponent(match[1].replace(/^\"|\"$/g,'')):fallbackName;
           document.body.appendChild(a); a.click(); a.remove();

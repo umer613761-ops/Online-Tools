@@ -4445,6 +4445,43 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
           }finally{
             frame.remove();
           }
+        }else if(/\.(doc|docx|odt|rtf|xls|xlsx|ods|csv|ppt|pptx|odp)$/i.test(f.name)){
+          const form=new FormData();
+          form.append('file',f,f.name);
+          let response;
+          try{
+            response=await fetch('/api/office-to-pdf',{method:'POST',body:form});
+          }catch(error){
+            console.error('Office to PDF request failed:',error);
+            alert('Unable to reach the document converter. Please try again.');
+            return;
+          }
+          if(!response.ok){
+            let message='Unable to convert this document to PDF.';
+            try{const data=await response.json();message=data.details||data.error||message;}catch(_){}
+            alert(message);
+            return;
+          }
+          const pdfBytes=new Uint8Array(await response.arrayBuffer());
+          const officePdf=await pdfjsLib.getDocument({data:pdfBytes}).promise;
+          for(let pageNumber=1;pageNumber<=officePdf.numPages;pageNumber++){
+            if(pageNumber>1 || !first) doc.addPage();
+            first=false;
+            const page=await officePdf.getPage(pageNumber);
+            const base=page.getViewport({scale:1});
+            const maxW=doc.internal.pageSize.getWidth()-72;
+            const maxH=doc.internal.pageSize.getHeight()-72;
+            const scale=Math.min(maxW/base.width,maxH/base.height);
+            const viewport=page.getViewport({scale});
+            const canvas=document.createElement('canvas');
+            canvas.width=Math.max(1,Math.ceil(viewport.width*2));
+            canvas.height=Math.max(1,Math.ceil(viewport.height*2));
+            const renderViewport=page.getViewport({scale:scale*2});
+            await page.render({canvasContext:canvas.getContext('2d'),viewport:renderViewport}).promise;
+            const x=(doc.internal.pageSize.getWidth()-viewport.width)/2;
+            const y=(doc.internal.pageSize.getHeight()-viewport.height)/2;
+            doc.addImage(canvas.toDataURL('image/jpeg',0.94),'JPEG',x,y,viewport.width,viewport.height,'','FAST');
+          }
         }else{
           const text=await f.text(); doc.setFontSize(11);
           const lines=doc.splitTextToSize(text,doc.internal.pageSize.getWidth()-72);
