@@ -485,7 +485,7 @@ def _append_native_page(doc, page, plumber_page, first_page=False, footer_lines=
         p=doc.add_paragraph() if cursor is None else _insert_paragraph_after(cursor)
         p.paragraph_format.left_indent=Inches(16.5/72.0)
         gap=max(0.0, ln['y']-prev_y)
-        p.paragraph_format.space_before=Pt(3 if gap > 13 else 0)
+        p.paragraph_format.space_before=Pt(min(gap, 300) if gap > 13 else 0)
         p.paragraph_format.space_after=Pt(0)
         p.paragraph_format.line_spacing=1.0
         tab_xs=[r.get('tab_x') for r in ln['runs'] if r.get('tab_x')]
