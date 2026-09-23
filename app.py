@@ -206,6 +206,170 @@ def pdf_to_xlsx():
         output_path.unlink(missing_ok=True)
 
 
+def _parse_pages(value, total):
+    if not value:
+        return list(range(1, total + 1))
+    pages=[]
+    for part in str(value).split(','):
+        part=part.strip()
+        if not part:
+            continue
+        try:
+            n=int(part)
+        except ValueError:
+            continue
+        if 1 <= n <= total and n not in pages:
+            pages.append(n)
+    return sorted(pages)
+
+
+def _pdf_input(uploaded):
+    if not uploaded or not uploaded.filename:
+        raise ValueError('Please choose a PDF file.')
+    original=safe_name(uploaded.filename)
+    if Path(original).suffix.lower() != '.pdf':
+        raise ValueError('Only PDF files are supported.')
+    job=UPLOAD_DIR / f"pdf-from-{uuid.uuid4().hex}"
+    job.mkdir(parents=True, exist_ok=True)
+    path=job / original
+    uploaded.save(path)
+    return job, path, Path(original).stem
+
+
+def _page_numbers(pdf_path, pages_value):
+    import fitz
+    doc=fitz.open(pdf_path)
+    try:
+        return _parse_pages(pages_value, doc.page_count)
+    finally:
+        doc.close()
+
+
+@app.post('/api/pdf-to-txt')
+def pdf_to_txt():
+    try:
+        job, pdf_path, stem = _pdf_input(request.files.get('file'))
+        import fitz
+        doc=fitz.open(pdf_path)
+        try:
+            pages=_parse_pages(request.form.get('pages'), doc.page_count)
+            chunks=[]
+            for n in pages:
+                text=doc.load_page(n-1).get_text('text').strip()
+                chunks.append(f'Page {n}\n\n{text}')
+            output=job / f'{stem}.txt'
+            output.write_text('\n\n--------------------------------\n\n'.join(chunks), encoding='utf-8')
+        finally:
+            doc.close()
+        return send_file(output, as_attachment=True, download_name=f'{stem}.txt', mimetype='text/plain; charset=utf-8')
+    except ValueError as exc:
+        return jsonify({'error': str(exc)}), 400
+    except Exception as exc:
+        return jsonify({'error': 'Unable to convert this PDF to text.', 'details': str(exc)}), 500
+    finally:
+        try: shutil.rmtree(locals().get('job'), ignore_errors=True)
+        except Exception: pass
+
+
+@app.post('/api/pdf-to-html')
+def pdf_to_html():
+    try:
+        job, pdf_path, stem = _pdf_input(request.files.get('file'))
+        import fitz, html
+        doc=fitz.open(pdf_path)
+        try:
+            pages=_parse_pages(request.form.get('pages'), doc.page_count)
+            out=['<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF to HTML</title>',
+                 '<style>html,body{margin:0;padding:0;background:#e9edf1;font-family:Arial,Helvetica,sans-serif}.document{padding:24px}.page{position:relative;margin:0 auto 24px;background:#fff;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.14)}.text{position:absolute;white-space:pre;transform-origin:0 0;line-height:1}</style></head><body><div class="document">']
+            for n in pages:
+                page=doc.load_page(n-1); rect=page.rect; out.append(f'<div class="page" style="width:{rect.width:.2f}px;height:{rect.height:.2f}px">')
+                data=page.get_text('dict')
+                for block in data.get('blocks',[]):
+                    if block.get('type') != 0: continue
+                    for line in block.get('lines',[]):
+                        for span in line.get('spans',[]):
+                            text=span.get('text','')
+                            if not text: continue
+                            x0,y0,x1,y1=span.get('bbox',[0,0,0,0]); size=float(span.get('size') or 10)
+                            out.append(f'<span class="text" style="left:{x0:.2f}px;top:{y0:.2f}px;font-size:{size:.2f}px">{html.escape(text)}</span>')
+                out.append('</div>')
+            out.append('</div></body></html>')
+            output=job/f'{stem}.html'; output.write_text(''.join(out),encoding='utf-8')
+        finally: doc.close()
+        return send_file(output, as_attachment=True, download_name=f'{stem}.html', mimetype='text/html')
+    except ValueError as exc:
+        return jsonify({'error': str(exc)}), 400
+    except Exception as exc:
+        return jsonify({'error': 'Unable to convert this PDF to HTML.', 'details': str(exc)}), 500
+    finally:
+        try: shutil.rmtree(locals().get('job'), ignore_errors=True)
+        except Exception: pass
+
+
+@app.post('/api/pdf-to-docx')
+def pdf_to_docx():
+    try:
+        job, pdf_path, stem = _pdf_input(request.files.get('file'))
+        import fitz
+        from docx import Document
+        from docx.shared import Pt
+        doc_pdf=fitz.open(pdf_path)
+        try:
+            pages=_parse_pages(request.form.get('pages'), doc_pdf.page_count)
+            doc=Document()
+            style=doc.styles['Normal']; style.font.name='Arial'; style.font.size=Pt(10)
+            for idx,n in enumerate(pages):
+                if idx: doc.add_page_break()
+                text=doc_pdf.load_page(n-1).get_text('text').strip()
+                for line in text.splitlines():
+                    doc.add_paragraph(line)
+            output=job/f'{stem}.docx'; doc.save(output)
+        finally: doc_pdf.close()
+        return send_file(output, as_attachment=True, download_name=f'{stem}.docx', mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    except ValueError as exc:
+        return jsonify({'error': str(exc)}), 400
+    except Exception as exc:
+        return jsonify({'error': 'Unable to convert this PDF to Word.', 'details': str(exc)}), 500
+    finally:
+        try: shutil.rmtree(locals().get('job'), ignore_errors=True)
+        except Exception: pass
+
+
+@app.post('/api/pdf-to-pptx')
+def pdf_to_pptx():
+    try:
+        job, pdf_path, stem = _pdf_input(request.files.get('file'))
+        import fitz
+        from pptx import Presentation
+        from pptx.util import Inches, Pt
+        doc_pdf=fitz.open(pdf_path)
+        try:
+            pages=_parse_pages(request.form.get('pages'), doc_pdf.page_count)
+            prs=Presentation(); prs.slide_width=Inches(13.333); prs.slide_height=Inches(7.5)
+            blank=prs.slide_layouts[6]
+            for n in pages:
+                slide=prs.slides.add_slide(blank)
+                page=doc_pdf.load_page(n-1); rect=page.rect
+                scale=min(prs.slide_width/rect.width, prs.slide_height/rect.height)
+                tx=(prs.slide_width-rect.width*scale)/2; ty=(prs.slide_height-rect.height*scale)/2
+                for block in page.get_text('blocks'):
+                    if len(block)<5: continue
+                    x0,y0,x1,y1,text=block[:5]
+                    if not text.strip(): continue
+                    box=slide.shapes.add_textbox(int(tx+x0*scale),int(ty+y0*scale),max(1,int((x1-x0)*scale)),max(1,int((y1-y0)*scale)))
+                    tf=box.text_frame; tf.clear(); para=tf.paragraphs[0]; run=para.add_run(); run.text=text.strip(); run.font.size=Pt(max(8,min(24,10*scale)))
+            output=job/f'{stem}.pptx'; prs.save(output)
+        finally: doc_pdf.close()
+        return send_file(output, as_attachment=True, download_name=f'{stem}.pptx', mimetype='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+    except ValueError as exc:
+        return jsonify({'error': str(exc)}), 400
+    except Exception as exc:
+        return jsonify({'error': 'Unable to convert this PDF to PowerPoint.', 'details': str(exc)}), 500
+    finally:
+        try: shutil.rmtree(locals().get('job'), ignore_errors=True)
+        except Exception: pass
+
+
 @app.errorhandler(413)
 def too_large(_):
     return jsonify({"error": "The upload is too large. Maximum upload size is 50 MB."}), 413
