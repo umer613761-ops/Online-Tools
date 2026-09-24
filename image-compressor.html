@@ -4457,8 +4457,8 @@ html.dark-mode .tn-image-undo:hover:not(:disabled){background:#314055 !important
 
 </style>
 
-<style id="toolnest-original-file-size-under-preview">
-.tn-original-file-size{margin:10px auto 0;text-align:center;font-size:14px;font-weight:600;color:#5b6777;}
+<style id="toolnest-original-file-size-label">
+.tn-original-file-size{margin-top:10px;text-align:center;font-size:14px;font-weight:600;color:#64748b;}
 html.dark-mode .tn-original-file-size{color:#cbd5e1;}
 </style>
 
@@ -4520,7 +4520,18 @@ function renderPreview(){
    drawEditor();
  }else{
    const img=document.createElement("img");img.src=state.url;img.alt=state.file.name;preview.appendChild(img);
+   if(kind==="compressor"){
+     const size=document.createElement("div");
+     size.className="tn-original-file-size";
+     size.textContent="Original file size: "+formatFileSize(state.file.size);
+     preview.appendChild(size);
+   }
  }
+}
+function formatFileSize(bytes){
+ if(bytes<1024)return bytes+" B";
+ if(bytes<1024*1024)return (bytes/1024).toFixed(1)+" KB";
+ return (bytes/(1024*1024)).toFixed(2)+" MB";
 }
 function drawEditor(){
  const img=state.img, c=state.canvas;
@@ -4552,17 +4563,8 @@ function buildControls(){
  if(kind==="upscaler") buildUpscaler();
  addCancelButtons();
 }
-function formatOriginalSize(bytes){
- if(bytes<1024)return bytes+" B";
- if(bytes<1024*1024)return (bytes/1024).toFixed(1)+" KB";
- return (bytes/(1024*1024)).toFixed(2)+" MB";
-}
 function buildCompressor(){
  help("Adjust image quality, then download the compressed image.");
- const originalSize=document.createElement("div");
- originalSize.className="tn-original-file-size";
- originalSize.textContent="Original file size: "+formatOriginalSize(state.file?.size||0);
- preview.insertAdjacentElement("afterend",originalSize);
  const r=row();r.appendChild(label("Quality"));
  const s=document.createElement("input");s.type="range";s.min=10;s.max=100;s.value=80;r.appendChild(s);
  const v=document.createElement("span");v.className="tn-image-value";v.textContent="Size: …";v.style.minWidth="92px";r.appendChild(v);
