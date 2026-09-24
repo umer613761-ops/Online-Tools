@@ -4762,6 +4762,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const cancelButton = document.getElementById("rotateCancelButton");
   const bottomControls = document.getElementById("rotateBottomControls");
   const area = document.getElementById("rotateUploadArea");
+  const toolBox = document.querySelector(".tn-shared-tool-box");
 
   let objectUrl = null;
   let pdfBytes = null;
@@ -4773,6 +4774,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (placeholder) placeholder.hidden = false;
     if (previewWrap) previewWrap.hidden = true;
     if (area) area.classList.remove("has-files");
+    if (toolBox) toolBox.classList.remove("has-files");
     if (pagesContainer) pagesContainer.innerHTML = "";
     if (bottomControls) bottomControls.hidden = true;
     pdfBytes = null;
@@ -4823,6 +4825,7 @@ document.addEventListener("DOMContentLoaded", function () {
     placeholder.hidden = true;
     previewWrap.hidden = false;
     area.classList.add("has-files");
+    if (toolBox) toolBox.classList.add("has-files");
 
     if (objectUrl) URL.revokeObjectURL(objectUrl);
     objectUrl = URL.createObjectURL(file);
@@ -5037,7 +5040,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <style id="rotate-remove-uploaded-top-space">
 /* When a PDF is loaded, let the flexible preview begin at the top of the outer tool box. */
 .tn-shared-tool-box:has(#rotateUploadArea.has-files){
-  padding:0 !important;
+  padding:26px !important;
 }
 #rotateUploadArea.has-files{
   margin-top:0 !important;
@@ -5498,5 +5501,22 @@ html:not(.dark-mode) #rotateUploadArea.has-files {
   margin-top: 0 !important;
   border-radius: 12px !important;
   box-sizing: border-box !important;
+}
+</style>
+
+<style id="rotate-outer-frame-after-upload-final">
+/* Preserve the same outer frame and inset used before upload. */
+.tn-shared-tool-box:has(#rotateUploadArea.has-files),
+.tn-shared-tool-box.has-files {
+  padding:26px !important;
+  background:#121212 !important;
+  border:1px solid #2e3946 !important;
+  border-radius:12px !important;
+  box-sizing:border-box !important;
+}
+html:not(.dark-mode) .tn-shared-tool-box:has(#rotateUploadArea.has-files),
+html:not(.dark-mode) .tn-shared-tool-box.has-files {
+  background:#ffffff !important;
+  border-color:#dce3ea !important;
 }
 </style>
