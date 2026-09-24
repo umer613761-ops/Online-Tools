@@ -4457,6 +4457,11 @@ html.dark-mode .tn-image-undo:hover:not(:disabled){background:#314055 !important
 
 </style>
 
+<style id="toolnest-original-file-size-under-preview">
+.tn-original-file-size{margin:10px auto 0;text-align:center;font-size:14px;font-weight:600;color:#5b6777;}
+html.dark-mode .tn-original-file-size{color:#cbd5e1;}
+</style>
+
 <script id="toolnest-all-image-tools-functionality">
 (function(){
 "use strict";
@@ -4547,8 +4552,17 @@ function buildControls(){
  if(kind==="upscaler") buildUpscaler();
  addCancelButtons();
 }
+function formatOriginalSize(bytes){
+ if(bytes<1024)return bytes+" B";
+ if(bytes<1024*1024)return (bytes/1024).toFixed(1)+" KB";
+ return (bytes/(1024*1024)).toFixed(2)+" MB";
+}
 function buildCompressor(){
  help("Adjust image quality, then download the compressed image.");
+ const originalSize=document.createElement("div");
+ originalSize.className="tn-original-file-size";
+ originalSize.textContent="Original file size: "+formatOriginalSize(state.file?.size||0);
+ preview.insertAdjacentElement("afterend",originalSize);
  const r=row();r.appendChild(label("Quality"));
  const s=document.createElement("input");s.type="range";s.min=10;s.max=100;s.value=80;r.appendChild(s);
  const v=document.createElement("span");v.className="tn-image-value";v.textContent="Size: …";v.style.minWidth="92px";r.appendChild(v);
@@ -4565,7 +4579,7 @@ function buildCompressor(){
  s.oninput=()=>{state.quality=+s.value/100;updateSize()};
  updateSize();
  const d=btn("Download Compressed Image","tn-image-download");r.appendChild(d);
- d.onclick=()=>{downloadCanvas(makeCanvas(state.img.naturalWidth,state.img.naturalHeight),baseName()+"-compressed.jpg","image/jpeg",state.quality);setTimeout(reset,350)};
+ d.onclick=()=>downloadCanvas(makeCanvas(state.img.naturalWidth,state.img.naturalHeight),baseName()+"-compressed.jpg","image/jpeg",state.quality);
 }
 function buildConverter(){
  const r=row();r.appendChild(label("Convert to"));
@@ -4626,7 +4640,7 @@ function buildBlur(){
   const temp=document.createElement("canvas");temp.width=c.width;temp.height=c.height;temp.getContext("2d").drawImage(c,0,0);
   const ctx=c.getContext("2d");ctx.save();ctx.beginPath();ctx.arc(x,y,br,0,Math.PI*2);ctx.clip();ctx.filter="blur(9px)";ctx.drawImage(temp,0,0);ctx.restore();
  }
- d.onclick=()=>{const out=document.createElement("canvas");const sx=state.img.naturalWidth/c.width,sy=state.img.naturalHeight/c.height;out.width=state.img.naturalWidth;out.height=state.img.naturalHeight;out.getContext("2d").drawImage(c,0,0,out.width,out.height);downloadCanvas(out,baseName()+"-blurred.png");setTimeout(reset,350)};
+ d.onclick=()=>{const out=document.createElement("canvas");const sx=state.img.naturalWidth/c.width,sy=state.img.naturalHeight/c.height;out.width=state.img.naturalWidth;out.height=state.img.naturalHeight;out.getContext("2d").drawImage(c,0,0,out.width,out.height);downloadCanvas(out,baseName()+"-blurred.png")};
 }
 function buildBackground(){
  help("Removes a simple, uniform background by sampling the top-left pixel. Best for images with a clean solid background.");
