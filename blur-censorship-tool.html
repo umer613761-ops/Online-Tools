@@ -3681,7 +3681,7 @@ function buildCompressor(){
  const v=document.createElement("span");v.className="tn-image-value";v.textContent="80%";r.appendChild(v);
  s.oninput=()=>{state.quality=+s.value/100;v.textContent=s.value+"%"};
  const d=btn("Download Compressed Image","tn-image-download");r.appendChild(d);
- d.onclick=()=>downloadCanvas(makeCanvas(state.img.naturalWidth,state.img.naturalHeight),baseName()+"-compressed.jpg","image/jpeg",state.quality);
+ d.onclick=()=>{downloadCanvas(makeCanvas(state.img.naturalWidth,state.img.naturalHeight),baseName()+"-compressed.jpg","image/jpeg",state.quality);setTimeout(reset,350)};
 }
 function buildConverter(){
  const r=row();r.appendChild(label("Convert to"));
@@ -3770,7 +3770,7 @@ function buildBlur(){
   const temp=document.createElement("canvas");temp.width=c.width;temp.height=c.height;temp.getContext("2d").drawImage(c,0,0);
   const ctx=c.getContext("2d");ctx.save();ctx.beginPath();ctx.arc(x,y,br,0,Math.PI*2);ctx.clip();ctx.filter="blur(9px)";ctx.drawImage(temp,0,0);ctx.restore();
  }
- d.onclick=()=>{const out=document.createElement("canvas");const sx=state.img.naturalWidth/c.width,sy=state.img.naturalHeight/c.height;out.width=state.img.naturalWidth;out.height=state.img.naturalHeight;out.getContext("2d").drawImage(c,0,0,out.width,out.height);downloadCanvas(out,baseName()+"-blurred.png")};
+ d.onclick=()=>{const out=document.createElement("canvas");const sx=state.img.naturalWidth/c.width,sy=state.img.naturalHeight/c.height;out.width=state.img.naturalWidth;out.height=state.img.naturalHeight;out.getContext("2d").drawImage(c,0,0,out.width,out.height);downloadCanvas(out,baseName()+"-blurred.png");setTimeout(reset,350)};
 }
 function buildBackground(){
  help("Removes a simple, uniform background by sampling the top-left pixel. Best for images with a clean solid background.");
