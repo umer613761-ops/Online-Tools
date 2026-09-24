@@ -4057,6 +4057,39 @@ html.dark-mode .tn-image-cancel:active {
   color: #dc2626 !important;
 }
 </style>
+
+<style id="toolnest-mobile-preview-width-ideal-final">
+/* Mobile only: make the upload/preview surface use the full tool content width. Desktop untouched. */
+@media screen and (max-width: 650px) {
+  .page-content > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+  .tn-ad-left-column {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+  .tn-shared-tool-box,
+  .tool-box:has(.tn-shared-upload-area),
+  .tool-box:has(.upload-area) {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .tn-shared-upload-frame,
+  .tn-shared-upload-area,
+  .upload-area,
+  .tn-image-upload-area {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
+</style>
 </body>
 </html>
 
