@@ -3465,47 +3465,53 @@ html.dark-mode .logo-icon {
 .tn-crop-corner.tm,.tn-crop-corner.bm{cursor:ns-resize!important}
 .tn-crop-corner.ml,.tn-crop-corner.mr{cursor:ew-resize!important}
 </style>
-
-<style id="toolnest-mobile-description-viewport-final">
-/* Mobile only: keep the tool description inside the phone viewport and allow natural wrapping. */
-@media screen and (max-width: 700px) {
-  .heading > p,
-  .tool-intro > p,
-  .extract-pages-remove-style-intro > p,
-  .remove-pages-merge-style-intro > p,
-  .rotate-pdf-heading > p {
-    white-space: normal !important;
-    width: min(100%, calc(100vw - 32px)) !important;
-    max-width: calc(100vw - 32px) !important;
+<style id="toolnest-mobile-preview-viewport-final">
+@media screen and (max-width:650px) {
+  /* Mobile only: keep the upload/preview surface inside the same viewport proportions as Merge PDF. */
+  .tn-shared-tool-box,
+  .tool-box:has(.tn-shared-upload-area),
+  .tool-box:has(.upload-area),
+  .tn-shared-upload-frame,
+  .tn-shared-upload-area,
+  .upload-area,
+  .tn-image-upload-area {
+    width: min(100%, calc(100vw - 76px)) !important;
+    max-width: calc(100vw - 76px) !important;
     min-width: 0 !important;
     box-sizing: border-box !important;
-    overflow-wrap: anywhere !important;
-    word-break: normal !important;
+    overflow-x: hidden !important;
   }
-}
-</style>
 
-<style id="toolnest-mobile-heading-merge-match-final">
-@media screen and (max-width: 700px) {
-  .heading h1,
-  .tool-intro h1,
-  .extract-pages-remove-style-intro h1,
-  .remove-pages-merge-style-intro h1,
-  .rotate-pdf-heading h1 {
-    font-size: 31px !important;
+  .tn-shared-upload-placeholder,
+  .upload-placeholder {
+    width: 100% !important;
     max-width: 100% !important;
-    white-space: normal !important;
-    overflow-wrap: normal !important;
-    word-break: normal !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
   }
-}
-@media screen and (max-width: 550px) {
-  .heading h1,
-  .tool-intro h1,
-  .extract-pages-remove-style-intro h1,
-  .remove-pages-merge-style-intro h1,
-  .rotate-pdf-heading h1 {
-    font-size: 29px !important;
+
+  .tn-shared-upload-button,
+  .floating-upload-button,
+  .upload-btn,
+  .upload-button,
+  #uploadButton,
+  .file-upload-button {
+    width: min(530px, calc(100vw - 76px)) !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .tn-image-preview,
+  .tn-canvas-wrap,
+  .change-page-size-preview,
+  .change-page-size-workspace {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
   }
 }
 </style>
