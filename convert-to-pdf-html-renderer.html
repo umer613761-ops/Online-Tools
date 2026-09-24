@@ -4454,7 +4454,120 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
       if(fmt.value==='html'){
         let out='<html><body>';
         for(let i=1;i<=pdf.numPages;i++){const p=await pdf.getPage(i),c=await p.getTextContent();out+='<h2>Page '+i+'</h2><p>'+esc(c.items.map(x=>x.str).join(' '))+'</p>'; }
-        out+='</body></html>';;
+        out+='<style id="toolnest-mobile-file-preview-size-only">
+/* MOBILE ONLY: compact loaded file previews. Desktop is intentionally untouched. */
+@media screen and (max-width: 650px) {
+  /* PDF tools other than Merge/Split: keep the loaded preview compact. */
+  .tn-shared-upload-area.has-files,
+  .tn-shared-upload-area.has-pages,
+  .tn-shared-upload-area.has-file,
+  #compressUploadArea.preview-loaded,
+  #fillUploadPanel.has-file {
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 12px !important;
+  }
+
+  /* PDF page thumbnails/previews */
+  .extract-pages-preview,
+  .remove-pages-preview,
+  .convert-preview-grid,
+  .change-page-size-preview,
+  #compressPreview,
+  #rotatePreviewWrap,
+  #rotateUploadArea .rotate-pdf-preview-wrap {
+    max-width: 100% !important;
+  }
+
+  .extract-page-card,
+  .remove-pages-page,
+  .compress-preview-page,
+  .change-page-size-card,
+  #rotateUploadArea .rotate-pdf-preview-card,
+  #rotateUploadArea .rotate-page-preview {
+    width: min(220px, 100%) !important;
+    max-width: 220px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .extract-page-card canvas,
+  .remove-pages-page canvas,
+  .extract-page-canvas-wrap canvas,
+  .remove-pages-page-canvas-wrap canvas,
+  .compress-preview-page canvas,
+  .change-page-size-card canvas,
+  #rotateUploadArea .rotate-page-preview canvas,
+  #rotateUploadArea .rotate-pdf-preview canvas {
+    width: auto !important;
+    max-width: 196px !important;
+    max-height: 250px !important;
+    height: auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    object-fit: contain !important;
+  }
+
+  .extract-page-canvas-wrap,
+  .remove-pages-page-canvas-wrap,
+  .change-page-size-canvas-wrap {
+    max-width: 196px !important;
+    max-height: 250px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  #rotateUploadArea .rotate-pdf-preview-card,
+  #rotateUploadArea .rotate-page-preview {
+    max-height: 270px !important;
+    overflow: hidden !important;
+  }
+
+  /* Fill PDF has a different editor preview structure. Only its mobile
+     loaded-page display is constrained; desktop is untouched. */
+  .workspace.active .pdf-page-wrap {
+    max-width: 100% !important;
+    max-height: 360px !important;
+    overflow: hidden !important;
+  }
+  .workspace.active .pdf-page-wrap canvas {
+    max-width: 100% !important;
+    max-height: 360px !important;
+    height: auto !important;
+  }
+
+  /* ALL IMAGE TOOLS: compact loaded image preview area. */
+  .tn-shared-upload-area.tn-image-upload-area.has-image {
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 10px !important;
+    overflow: hidden !important;
+  }
+
+  .tn-image-preview,
+  .tn-image-preview .tn-canvas-wrap {
+    max-width: 100% !important;
+    max-height: 250px !important;
+    overflow: hidden !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .tn-image-preview > img,
+  .tn-image-preview .tn-edit-canvas,
+  .tn-image-preview .tn-canvas-wrap img {
+    max-width: 100% !important;
+    max-height: 250px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+</style>
+
+</body></html>';;
         const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out],{type:'text/html'}));a.download='converted-from-pdf.html';a.click();URL.revokeObjectURL(a.href);resetFromUpload();return;
       }
       alert('The selected format requires an advanced document converter.');
@@ -4707,6 +4820,119 @@ html.dark-mode main .tool-description {
   };
 })();
 </script>
+<style id="toolnest-mobile-file-preview-size-only">
+/* MOBILE ONLY: compact loaded file previews. Desktop is intentionally untouched. */
+@media screen and (max-width: 650px) {
+  /* PDF tools other than Merge/Split: keep the loaded preview compact. */
+  .tn-shared-upload-area.has-files,
+  .tn-shared-upload-area.has-pages,
+  .tn-shared-upload-area.has-file,
+  #compressUploadArea.preview-loaded,
+  #fillUploadPanel.has-file {
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 12px !important;
+  }
+
+  /* PDF page thumbnails/previews */
+  .extract-pages-preview,
+  .remove-pages-preview,
+  .convert-preview-grid,
+  .change-page-size-preview,
+  #compressPreview,
+  #rotatePreviewWrap,
+  #rotateUploadArea .rotate-pdf-preview-wrap {
+    max-width: 100% !important;
+  }
+
+  .extract-page-card,
+  .remove-pages-page,
+  .compress-preview-page,
+  .change-page-size-card,
+  #rotateUploadArea .rotate-pdf-preview-card,
+  #rotateUploadArea .rotate-page-preview {
+    width: min(220px, 100%) !important;
+    max-width: 220px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .extract-page-card canvas,
+  .remove-pages-page canvas,
+  .extract-page-canvas-wrap canvas,
+  .remove-pages-page-canvas-wrap canvas,
+  .compress-preview-page canvas,
+  .change-page-size-card canvas,
+  #rotateUploadArea .rotate-page-preview canvas,
+  #rotateUploadArea .rotate-pdf-preview canvas {
+    width: auto !important;
+    max-width: 196px !important;
+    max-height: 250px !important;
+    height: auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    object-fit: contain !important;
+  }
+
+  .extract-page-canvas-wrap,
+  .remove-pages-page-canvas-wrap,
+  .change-page-size-canvas-wrap {
+    max-width: 196px !important;
+    max-height: 250px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  #rotateUploadArea .rotate-pdf-preview-card,
+  #rotateUploadArea .rotate-page-preview {
+    max-height: 270px !important;
+    overflow: hidden !important;
+  }
+
+  /* Fill PDF has a different editor preview structure. Only its mobile
+     loaded-page display is constrained; desktop is untouched. */
+  .workspace.active .pdf-page-wrap {
+    max-width: 100% !important;
+    max-height: 360px !important;
+    overflow: hidden !important;
+  }
+  .workspace.active .pdf-page-wrap canvas {
+    max-width: 100% !important;
+    max-height: 360px !important;
+    height: auto !important;
+  }
+
+  /* ALL IMAGE TOOLS: compact loaded image preview area. */
+  .tn-shared-upload-area.tn-image-upload-area.has-image {
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 10px !important;
+    overflow: hidden !important;
+  }
+
+  .tn-image-preview,
+  .tn-image-preview .tn-canvas-wrap {
+    max-width: 100% !important;
+    max-height: 250px !important;
+    overflow: hidden !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .tn-image-preview > img,
+  .tn-image-preview .tn-edit-canvas,
+  .tn-image-preview .tn-canvas-wrap img {
+    max-width: 100% !important;
+    max-height: 250px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+</style>
+
 </body>
 </html>
 
