@@ -4525,7 +4525,36 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
       if(fmt.value==='html'){
         let out='<html><body>';
         for(let i=1;i<=pdf.numPages;i++){const p=await pdf.getPage(i),c=await p.getTextContent();out+='<h2>Page '+i+'</h2><p>'+esc(c.items.map(x=>x.str).join(' '))+'</p>'; }
-        out+='</body></html>';;
+        out+='<script id="toolnest-mobile-preview-runtime-fix">
+(function(){
+  if (!window.matchMedia || !window.matchMedia('(max-width: 650px)').matches) return;
+  function setImp(el,p,v){ if(el) el.style.setProperty(p,v,'important'); }
+  function apply(){
+    document.querySelectorAll('.tn-shared-upload-area, .upload-area').forEach(function(area){
+      setImp(area,'min-height','350px'); setImp(area,'height','350px'); setImp(area,'max-height','350px');
+      setImp(area,'padding','20px'); setImp(area,'box-sizing','border-box');
+      setImp(area,'overflow','hidden');
+    });
+    document.querySelectorAll('.tn-shared-upload-placeholder, .upload-placeholder').forEach(function(el){
+      setImp(el,'min-height','300px'); setImp(el,'height','300px'); setImp(el,'max-height','300px');
+      setImp(el,'box-sizing','border-box');
+    });
+    document.querySelectorAll('.pdf-grid').forEach(function(g){
+      setImp(g,'grid-template-columns','repeat(auto-fit,minmax(120px,120px))'); setImp(g,'gap','14px'); setImp(g,'padding','4px'); setImp(g,'justify-content','center');
+    });
+    document.querySelectorAll('.pdf-card').forEach(function(c){ setImp(c,'width','120px'); setImp(c,'min-width','120px'); setImp(c,'max-width','120px'); });
+    document.querySelectorAll('.pdf-preview').forEach(function(p){ setImp(p,'width','120px'); setImp(p,'min-width','120px'); setImp(p,'max-width','120px'); setImp(p,'height','155px'); setImp(p,'max-height','155px'); });
+    document.querySelectorAll('.pdf-preview canvas, .remove-pages-page canvas, .extract-page-card canvas, .rotate-pdf-preview canvas').forEach(function(c){ setImp(c,'max-width','100%'); setImp(c,'max-height','155px'); });
+    document.querySelectorAll('.remove-pages-page-canvas-wrap, .extract-page-canvas-wrap, .rotate-pdf-preview-card, .rotate-pdf-preview').forEach(function(p){ setImp(p,'max-width','120px'); setImp(p,'max-height','155px'); });
+    document.querySelectorAll('.tn-image-preview').forEach(function(p){ setImp(p,'max-width','100%'); setImp(p,'max-height','280px'); setImp(p,'overflow','hidden'); });
+    document.querySelectorAll('.tn-image-preview img, .tn-image-preview canvas, .tn-image-preview .tn-edit-canvas, .tn-image-preview .tn-canvas-wrap, .tn-image-preview .tn-canvas-wrap img').forEach(function(el){ setImp(el,'max-width','100%'); setImp(el,'max-height','280px'); setImp(el,'width','auto'); setImp(el,'height','auto'); setImp(el,'object-fit','contain'); });
+  }
+  apply();
+  new MutationObserver(apply).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style']});
+  window.addEventListener('resize',function(){ if(window.matchMedia('(max-width: 650px)').matches) apply(); });
+})();
+</script>
+</body></html>';;
         const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out],{type:'text/html'}));a.download='converted-from-pdf.html';a.click();URL.revokeObjectURL(a.href);resetFromUpload();return;
       }
       alert('The selected format requires an advanced document converter.');
@@ -5065,117 +5094,5 @@ html.dark-mode #convertToUploadArea.has-files .convert-generic-preview{color:#d6
 html.dark-mode #convertToUploadArea.has-files {
   background-color: #212324 !important;
   background-image: none !important;
-}
-</style>
-
-<!-- TOOLNEST MOBILE PREVIEW MATCH MERGE -->
-
-<style id="toolnest-mobile-preview-match-merge">
-/* Mobile only: match the compact file-preview sizing used by Merge PDF. Desktop is untouched. */
-@media screen and (max-width: 650px) {
-  /* Shared upload/preview surface: same compact mobile footprint as Merge PDF. */
-  .tn-shared-upload-area,
-  .upload-area {
-    min-height: 350px !important;
-    padding: 20px !important;
-    box-sizing: border-box !important;
-  }
-
-  /* PDF page previews: match Merge PDF's 120 x 155 mobile cards. */
-  .pdf-grid {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 120px)) !important;
-    gap: 14px !important;
-    padding: 4px !important;
-    justify-content: center !important;
-  }
-  .pdf-card {
-    width: 120px !important;
-    min-width: 120px !important;
-    max-width: 120px !important;
-  }
-  .pdf-preview {
-    width: 120px !important;
-    min-width: 120px !important;
-    max-width: 120px !important;
-    height: 155px !important;
-    max-height: 155px !important;
-  }
-  .pdf-preview canvas {
-    max-width: 100% !important;
-    max-height: 155px !important;
-  }
-
-  /* Page-selection previews. */
-  .remove-pages-preview,
-  .extract-pages-preview {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 120px)) !important;
-    gap: 14px !important;
-    justify-content: center !important;
-  }
-  .remove-pages-page,
-  .extract-page-card {
-    width: 120px !important;
-    max-width: 120px !important;
-  }
-  .remove-pages-page canvas,
-  .extract-page-card canvas,
-  .remove-pages-page-canvas-wrap,
-  .extract-page-canvas-wrap {
-    width: 120px !important;
-    max-width: 120px !important;
-    max-height: 155px !important;
-  }
-
-  /* Rotate PDF: replace its larger mobile preview with Merge PDF sizing. */
-  #rotateUploadArea .rotate-pdf-preview-card,
-  #rotateUploadArea .rotate-pdf-preview {
-    width: 120px !important;
-    min-width: 120px !important;
-    max-width: 120px !important;
-    height: 155px !important;
-    max-height: 155px !important;
-  }
-  #rotateUploadArea .rotate-pdf-preview canvas {
-    max-width: 100% !important;
-    max-height: 155px !important;
-  }
-  #rotateUploadArea .rotate-pdf-file-name,
-  #rotateUploadArea .rotate-pdf-controls {
-    width: 120px !important;
-    max-width: 120px !important;
-  }
-
-  /* Image tools: keep the upload/preview surface compact and prevent the image
-     itself from expanding the mobile preview area beyond the Merge PDF footprint. */
-  .tn-shared-upload-area.tn-image-upload-area {
-    min-height: 350px !important;
-    padding: 20px !important;
-    box-sizing: border-box !important;
-  }
-  .tn-shared-upload-area.tn-image-upload-area.has-image {
-    min-height: 0 !important;
-    height: auto !important;
-    padding: 20px !important;
-  }
-  .tn-image-preview {
-    width: auto !important;
-    max-width: 100% !important;
-    max-height: 280px !important;
-    overflow: hidden !important;
-  }
-  .tn-image-preview > img,
-  .tn-image-preview .tn-edit-canvas,
-  .tn-image-preview .tn-canvas-wrap img {
-    width: auto !important;
-    height: auto !important;
-    max-width: 100% !important;
-    max-height: 280px !important;
-    object-fit: contain !important;
-  }
-  .tn-image-preview .tn-canvas-wrap {
-    max-width: 100% !important;
-    max-height: 280px !important;
-    overflow: hidden !important;
-  }
 }
 </style>
