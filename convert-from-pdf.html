@@ -4853,51 +4853,6 @@ html.dark-mode main .tool-description {
   };
 })();
 </script>
-
-<style id="toolnest-mobile-preview-match-merge">
-/* Mobile only: match the compact PDF preview sizing used by Merge PDF. */
-@media screen and (max-width: 650px) {
-  .pdf-grid {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 140px)) !important;
-    gap: 18px !important;
-    padding: 4px !important;
-  }
-  .pdf-card { width: 140px !important; }
-  .pdf-preview {
-    width: 140px !important;
-    height: 180px !important;
-  }
-  .remove-pages-preview,
-  .extract-pages-preview { gap: 18px !important; }
-  .remove-pages-page canvas,
-  .extract-page-card canvas,
-  #rotateUploadArea .rotate-page-preview canvas {
-    max-width: 140px !important;
-    max-height: 180px !important;
-  }
-}
-@media screen and (max-width: 550px) {
-  .pdf-grid {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 120px)) !important;
-    gap: 14px !important;
-    padding: 4px !important;
-  }
-  .pdf-card { width: 120px !important; }
-  .pdf-preview {
-    width: 120px !important;
-    height: 155px !important;
-  }
-  .remove-pages-preview,
-  .extract-pages-preview { gap: 14px !important; }
-  .remove-pages-page canvas,
-  .extract-page-card canvas,
-  #rotateUploadArea .rotate-page-preview canvas {
-    max-width: 120px !important;
-    max-height: 155px !important;
-  }
-}
-</style>
-
 </body>
 </html>
 
@@ -5124,5 +5079,117 @@ html.dark-mode .tool-category-link::after {
 html.dark-mode #convertFromUploadArea.has-files {
   background-color: #212324 !important;
   background-image: none !important;
+}
+</style>
+
+<!-- TOOLNEST MOBILE PREVIEW MATCH MERGE -->
+
+<style id="toolnest-mobile-preview-match-merge">
+/* Mobile only: match the compact file-preview sizing used by Merge PDF. Desktop is untouched. */
+@media screen and (max-width: 650px) {
+  /* Shared upload/preview surface: same compact mobile footprint as Merge PDF. */
+  .tn-shared-upload-area,
+  .upload-area {
+    min-height: 350px !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* PDF page previews: match Merge PDF's 120 x 155 mobile cards. */
+  .pdf-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 120px)) !important;
+    gap: 14px !important;
+    padding: 4px !important;
+    justify-content: center !important;
+  }
+  .pdf-card {
+    width: 120px !important;
+    min-width: 120px !important;
+    max-width: 120px !important;
+  }
+  .pdf-preview {
+    width: 120px !important;
+    min-width: 120px !important;
+    max-width: 120px !important;
+    height: 155px !important;
+    max-height: 155px !important;
+  }
+  .pdf-preview canvas {
+    max-width: 100% !important;
+    max-height: 155px !important;
+  }
+
+  /* Page-selection previews. */
+  .remove-pages-preview,
+  .extract-pages-preview {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 120px)) !important;
+    gap: 14px !important;
+    justify-content: center !important;
+  }
+  .remove-pages-page,
+  .extract-page-card {
+    width: 120px !important;
+    max-width: 120px !important;
+  }
+  .remove-pages-page canvas,
+  .extract-page-card canvas,
+  .remove-pages-page-canvas-wrap,
+  .extract-page-canvas-wrap {
+    width: 120px !important;
+    max-width: 120px !important;
+    max-height: 155px !important;
+  }
+
+  /* Rotate PDF: replace its larger mobile preview with Merge PDF sizing. */
+  #rotateUploadArea .rotate-pdf-preview-card,
+  #rotateUploadArea .rotate-pdf-preview {
+    width: 120px !important;
+    min-width: 120px !important;
+    max-width: 120px !important;
+    height: 155px !important;
+    max-height: 155px !important;
+  }
+  #rotateUploadArea .rotate-pdf-preview canvas {
+    max-width: 100% !important;
+    max-height: 155px !important;
+  }
+  #rotateUploadArea .rotate-pdf-file-name,
+  #rotateUploadArea .rotate-pdf-controls {
+    width: 120px !important;
+    max-width: 120px !important;
+  }
+
+  /* Image tools: keep the upload/preview surface compact and prevent the image
+     itself from expanding the mobile preview area beyond the Merge PDF footprint. */
+  .tn-shared-upload-area.tn-image-upload-area {
+    min-height: 350px !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+  }
+  .tn-shared-upload-area.tn-image-upload-area.has-image {
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 20px !important;
+  }
+  .tn-image-preview {
+    width: auto !important;
+    max-width: 100% !important;
+    max-height: 280px !important;
+    overflow: hidden !important;
+  }
+  .tn-image-preview > img,
+  .tn-image-preview .tn-edit-canvas,
+  .tn-image-preview .tn-canvas-wrap img {
+    width: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: 280px !important;
+    object-fit: contain !important;
+  }
+  .tn-image-preview .tn-canvas-wrap {
+    max-width: 100% !important;
+    max-height: 280px !important;
+    overflow: hidden !important;
+  }
 }
 </style>
