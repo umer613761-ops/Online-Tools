@@ -4138,6 +4138,107 @@ html.dark-mode main .tool-description {
 }
 </style>
 
+<!-- ToolNest download animation -->
+<style id="toolnest-download-animation">
+#toolnestDownloadPopup {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(.94);
+  z-index: 99999;
+  min-width: 250px;
+  padding: 22px 26px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 14px;
+  background: rgba(24,28,32,.97);
+  box-shadow: 0 18px 55px rgba(0,0,0,.35);
+  color: #fff;
+  font: 600 15px Arial, sans-serif;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease;
+}
+#toolnestDownloadPopup.tn-download-show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+#toolnestDownloadPopup .tn-download-spinner,
+#toolnestDownloadPopup .tn-download-check {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 11px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#toolnestDownloadPopup .tn-download-spinner {
+  border: 4px solid rgba(255,255,255,.22);
+  border-top-color: #10b981;
+  animation: tnDownloadSpin .75s linear infinite;
+}
+#toolnestDownloadPopup .tn-download-check {
+  background: #059669;
+  font-size: 24px;
+  font-weight: 700;
+}
+#toolnestDownloadPopup .tn-download-text { line-height: 1.35; }
+@keyframes tnDownloadSpin { to { transform: rotate(360deg); } }
+@media (max-width:650px) {
+  #toolnestDownloadPopup { min-width: 210px; max-width: calc(100vw - 40px); padding: 19px 22px; }
+}
+</style>
+<div id="toolnestDownloadPopup" aria-live="polite" aria-hidden="true">
+  <div class="tn-download-spinner" data-download-spinner></div>
+  <div class="tn-download-check" data-download-check style="display:none">✓</div>
+  <div class="tn-download-text" data-download-text>Preparing download…</div>
+</div>
+<script id="toolnest-download-animation-script">
+(function(){
+  if(window.__toolnestDownloadAnimationInstalled) return;
+  window.__toolnestDownloadAnimationInstalled = true;
+  var popup=document.getElementById('toolnestDownloadPopup');
+  if(!popup) return;
+  var spinner=popup.querySelector('[data-download-spinner]');
+  var check=popup.querySelector('[data-download-check]');
+  var text=popup.querySelector('[data-download-text]');
+  var hideTimer=null, fallbackTimer=null;
+  function show(){
+    clearTimeout(hideTimer); clearTimeout(fallbackTimer);
+    spinner.style.display='flex'; check.style.display='none';
+    text.textContent='Preparing download…';
+    popup.classList.add('tn-download-show');
+    popup.setAttribute('aria-hidden','false');
+    fallbackTimer=setTimeout(finish, 12000);
+  }
+  function finish(){
+    clearTimeout(hideTimer);
+    spinner.style.display='none'; check.style.display='flex';
+    text.textContent='Download started';
+    hideTimer=setTimeout(function(){
+      popup.classList.remove('tn-download-show');
+      popup.setAttribute('aria-hidden','true');
+    }, 850);
+  }
+  function isDownloadElement(el){
+    if(!el) return false;
+    if(el.hasAttribute && el.hasAttribute('download')) return true;
+    var s=((el.innerText||el.textContent||'')+'').replace(/\s+/g,' ').trim().toLowerCase();
+    return /\bdownload\b/.test(s) || /convert\s*(?:&|and)?\s*download/.test(s) || /merge\s*(?:&|and)?\s*download/.test(s);
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target && e.target.closest ? e.target.closest('button,a') : null;
+    if(isDownloadElement(el)) show();
+  },true);
+  var nativeAnchorClick=HTMLAnchorElement.prototype.click;
+  HTMLAnchorElement.prototype.click=function(){
+    var isDownload=this.hasAttribute('download') || /^blob:/i.test(this.href||'');
+    if(isDownload){ show(); setTimeout(finish,80); }
+    return nativeAnchorClick.apply(this,arguments);
+  };
+})();
+</script>
 </body>
 </html>
 
