@@ -3142,6 +3142,32 @@ html.dark-mode .heading p { color: #9ca9b8; }
 }
 </style>
 
+
+<style id="toolnest-mobile-text-image-ad-stack">
+/* Mobile only: stack the advertisement below the tool content. Desktop is untouched. */
+@media screen and (max-width: 700px) {
+  .tn-mobile-stack-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .tn-mobile-stack-layout > .ad-column {
+    grid-column: 1 !important;
+    width: 100% !important;
+    max-width: 320px !important;
+    margin: 18px auto 0 !important;
+    position: static !important;
+  }
+  .tn-mobile-stack-layout > .ad-column .ad-box {
+    width: 100% !important;
+    max-width: 320px !important;
+    height: 100px !important;
+    min-height: 100px !important;
+    box-sizing: border-box !important;
+  }
+}
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -3190,7 +3216,7 @@ html.dark-mode .heading p { color: #9ca9b8; }
 </div>
 </nav>
 <main>
-<div style="display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 28px; align-items: start; width: 100%; max-width: 1200px; margin: 0 auto; padding: 28px 24px 60px;"><div class="tn-ad-left-column"><!-- ========================================
+<div class="tn-mobile-stack-layout" style="display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 28px; align-items: start; width: 100%; max-width: 1200px; margin: 0 auto; padding: 28px 24px 60px;"><div class="tn-ad-left-column"><!-- ========================================
              TEXT TOOL NAVIGATION
         ========================================= -->
 <nav class="tn-tool-category-bar" aria-label="Text tools">
