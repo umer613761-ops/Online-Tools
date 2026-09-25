@@ -3767,71 +3767,34 @@ html.dark-mode .tool-intro p {
   }
 }
 </style>
-<style id="toolnest-mobile-preview-viewport-final">
-@media screen and (max-width:650px) {
-  /* Mobile only: keep the upload/preview surface inside the same viewport proportions as Merge PDF. */
-  .tn-shared-tool-box,
-  .tool-box:has(.tn-shared-upload-area),
-  .tool-box:has(.upload-area),
-  .tn-shared-upload-frame,
-  .tn-shared-upload-area,
-  .upload-area,
-  .tn-image-upload-area {
-    width: min(100%, calc(100vw - 76px)) !important;
-    max-width: calc(100vw - 76px) !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-    overflow-x: hidden !important;
-  }
 
-  .tn-shared-upload-placeholder,
-  .upload-placeholder {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-  }
-
+<style id="toolnest-mobile-uniform-upload-button-final">
+/* Mobile only: uniform upload button across PDF and image tools. Desktop is intentionally untouched. */
+@media screen and (max-width: 650px) {
   .tn-shared-upload-button,
   .floating-upload-button,
-  .upload-btn,
-  .upload-button,
-  #uploadButton,
-  .file-upload-button {
-    width: min(530px, calc(100vw - 76px)) !important;
-    max-width: 100% !important;
+  .upload-btn {
+    width: 100% !important;
     min-width: 0 !important;
+    max-width: 530px !important;
+    min-height: 72px !important;
+    height: 72px !important;
     box-sizing: border-box !important;
+    padding: 0 24px !important;
     margin-left: auto !important;
     margin-right: auto !important;
-  }
-
-  .tn-image-preview,
-  .tn-canvas-wrap,
-  .change-page-size-preview,
-  .change-page-size-workspace {
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-    overflow-x: hidden !important;
-  }
-}
-</style>
-
-<style id="toolnest-mobile-description-wrap-final">
-@media screen and (max-width: 700px) {
-  .extract-pages-remove-style-intro p,
-  .remove-pages-merge-style-intro p {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
     white-space: normal !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-    overflow-wrap: anywhere !important;
-    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    font-size: 19px !important;
+    font-weight: 600 !important;
+    border-radius: 18px !important;
   }
 }
 </style>
-
 </head>
 <body>
 <!-- ========================================
@@ -4565,67 +4528,6 @@ html.dark-mode main .tool-description {
   };
 })();
 </script>
-
-<style id="toolnest-mobile-preview-width-ideal-final">
-/* Mobile only: make the upload/preview surface use the full tool content width. Desktop untouched. */
-@media screen and (max-width: 650px) {
-  .page-content > div[style*="grid-template-columns"] {
-    grid-template-columns: 1fr !important;
-    width: 100% !important;
-    max-width: none !important;
-  }
-  .tn-ad-left-column {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: none !important;
-  }
-  .tn-shared-tool-box,
-  .tool-box:has(.tn-shared-upload-area),
-  .tool-box:has(.upload-area) {
-    width: 100% !important;
-    max-width: none !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-  }
-  .tn-shared-upload-frame,
-  .tn-shared-upload-area,
-  .upload-area,
-  .tn-image-upload-area {
-    width: 100% !important;
-    max-width: none !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-  }
-}
-</style>
-
-<style id="toolnest-mobile-ad-fit-final">
-/* Mobile only: compact advertisement space below the tool content. Desktop untouched. */
-@media screen and (max-width: 650px) {
-  .page-layout > .ad-column,
-  .ad-column {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin: 18px auto 0 !important;
-    padding: 0 !important;
-    position: static !important;
-    box-sizing: border-box !important;
-  }
-  .page-layout > .ad-column .ad-box,
-  .ad-column .ad-box {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: 100px !important;
-    min-height: 100px !important;
-    margin: 0 !important;
-    padding: 10px !important;
-    box-sizing: border-box !important;
-    position: static !important;
-    overflow: hidden !important;
-  }
-}
-</style>
 </body>
 </html>
 
