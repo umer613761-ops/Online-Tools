@@ -3896,7 +3896,6 @@ html.dark-mode .tool-intro p {
     <a class="tn-tool-category-link" href="add-page-numbers.html">Add Page Numbers</a>
     <a class="tn-tool-category-link" href="add-watermark.html">Add Watermark</a>
     <a class="tn-tool-category-link" href="lock-unlock-pdf.html">Lock / Unlock PDF</a>
-    <a class="tn-tool-category-link" href="fill-pdf.html">Fill PDF</a>
     <a class="tn-tool-category-link" href="convert-to-pdf.html">Convert to PDF</a>
     <a class="tn-tool-category-link" href="convert-from-pdf.html">Convert from PDF</a>
   </div>
@@ -4142,58 +4141,34 @@ html.dark-mode .change-page-size-cancel:hover, html.dark-mode .change-page-size-
   }
 
   async function downloadResizedPdf() {
-    if (!pdfBytes || !currentFile || !window.PDFLib) return;
+    if (!pdfBytes || !currentFile) return;
     try {
       downloadButton.disabled = true;
       downloadButton.textContent = 'Preparing...';
-      const src = await window.PDFLib.PDFDocument.load(pdfBytes);
-      const out = await window.PDFLib.PDFDocument.create();
-      const pageCount = src.getPageCount();
-      for (let i = 0; i < pageCount; i++) {
-        const oldPage = src.getPage(i);
-        const oldW = oldPage.getWidth();
-        const oldH = oldPage.getHeight();
-        const rotation = ((oldPage.getRotation().angle % 360) + 360) % 360;
-        const quarterTurn = rotation === 90 || rotation === 270;
-        const visualW = quarterTurn ? oldH : oldW;
-        const visualH = quarterTurn ? oldW : oldH;
-        const [targetW, targetH] = targetSizeForPage(visualW, visualH);
-        const newPage = out.addPage([targetW, targetH]);
-        const embedded = await out.embedPage(oldPage);
-
-        // Resize the page without changing its visual orientation. PDF page
-        // rotation is part of the source page state, so use the effective
-        // (displayed) width/height and preserve the rotation when drawing.
-        const scale = Math.min(targetW / visualW, targetH / visualH);
-        const drawW = oldW * scale;
-        const drawH = oldH * scale;
-        const visualDrawW = quarterTurn ? drawH : drawW;
-        const visualDrawH = quarterTurn ? drawW : drawH;
-        const drawOptions = {
-          x: (targetW - visualDrawW) / 2,
-          y: (targetH - visualDrawH) / 2,
-          width: drawW,
-          height: drawH
-        };
-        if (rotation) drawOptions.rotate = window.PDFLib.degrees(rotation);
-        newPage.drawPage(embedded, drawOptions);
+      const fd = new FormData();
+      fd.append('file', currentFile);
+      fd.append('size', sizeSelect.value);
+      fd.append('orientation', orientationSelect.value);
+      const r = await fetch('https://toolnest-api-production-dda7.up.railway.app/api/change-pdf-page-size', {
+        method: 'POST',
+        body: fd
+      });
+      const raw = await r.text();
+      let data = {};
+      try { data = raw ? JSON.parse(raw) : {}; } catch (_) {}
+      if (!r.ok || !data.ok) {
+        throw new Error(data.error || ('Server error (' + r.status + ') while processing the PDF.'));
       }
-      const outputBytes = await out.save();
-      const blob = new Blob([outputBytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      const base = currentFile.name.replace(/\.pdf$/i, '');
-      const suffix = sizeSelect.value === 'original' ? 'original-size' : sizeSelect.value;
-      link.href = url;
-      link.download = base + '-page-size-' + suffix + '.pdf';
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-      reset();
+      const a = document.createElement('a');
+      a.href = data.download_url.startsWith('http') ? data.download_url : 'https://toolnest-api-production-dda7.up.railway.app' + data.download_url;
+      a.download = data.filename || 'page-size.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => reset(), 350);
     } catch (err) {
       console.error(err);
-      alert('Could not change the PDF page size. Please try again.');
+      alert(err.message || 'Could not change the PDF page size. Please try again.');
     } finally {
       downloadButton.disabled = false;
       downloadButton.textContent = 'Download';

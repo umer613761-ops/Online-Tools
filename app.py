@@ -291,6 +291,130 @@ def _convert_office_to_pdf(input_path: Path, output_path: Path):
         shutil.rmtree(work_dir, ignore_errors=True)
 
 
+@app.post("/api/change-pdf-page-size")
+def change_pdf_page_size():
+    """Change PDF page size while preserving page appearance.
+
+    Image-only pages are rebuilt from their embedded image when the source
+    page contains a malformed/off-page image transform. This avoids the
+    clipping/upside-down result that can occur when re-embedding such pages
+    with a PDF page wrapper.
+    """
+    upload = request.files.get("file")
+    size_name = (request.form.get("size") or "a4").strip().lower()
+    orientation = (request.form.get("orientation") or "auto").strip().lower()
+    sizes = {
+        "a3": (841.89, 1190.55),
+        "a4": (595.28, 841.89),
+        "a5": (419.53, 595.28),
+        "letter": (612.0, 792.0),
+        "legal": (612.0, 1008.0),
+        "tabloid": (792.0, 1224.0),
+    }
+    if not upload or not upload.filename.lower().endswith(".pdf"):
+        return jsonify({"ok": False, "error": "Please upload a PDF file."}), 400
+    if size_name not in sizes and size_name != "original":
+        return jsonify({"ok": False, "error": "Invalid page size."}), 400
+    if orientation not in {"auto", "portrait", "landscape"}:
+        return jsonify({"ok": False, "error": "Invalid page orientation."}), 400
+
+    source = UPLOAD_DIR / f"{uuid.uuid4().hex}.pdf"
+    out = UPLOAD_DIR / f"{uuid.uuid4().hex}.pdf"
+    try:
+        upload.save(source)
+        src = fitz.open(str(source))
+        dst = fitz.open()
+
+        for page in src:
+            rect = page.rect
+            src_w, src_h = rect.width, rect.height
+            rotation = int(page.rotation or 0) % 360
+            visual_w, visual_h = (src_h, src_w) if rotation in (90, 270) else (src_w, src_h)
+
+            if size_name == "original":
+                target_w, target_h = visual_w, visual_h
+            else:
+                target_w, target_h = sizes[size_name]
+                if orientation == "portrait" and target_w > target_h:
+                    target_w, target_h = target_h, target_w
+                elif orientation == "landscape" and target_w < target_h:
+                    target_w, target_h = target_h, target_w
+                elif orientation == "auto":
+                    if visual_w > visual_h and target_w < target_h:
+                        target_w, target_h = target_h, target_w
+                    elif visual_w <= visual_h and target_w > target_h:
+                        target_w, target_h = target_h, target_w
+
+            images = page.get_images(full=True)
+            text = page.get_text("text").strip()
+
+            # Scanned/image-only page: use the actual embedded image pixels.
+            # This repairs pages whose image matrix places most of the image
+            # outside the MediaBox or rotates it independently of page rotation.
+            repaired = False
+            if not text and len(images) == 1:
+                try:
+                    img_rect = page.get_image_rects(images[0])[0]
+                    xref = images[0][0]
+                    pix = fitz.Pixmap(src, xref)
+                    if pix.alpha:
+                        pix = fitz.Pixmap(fitz.csRGB, pix)
+                    image_w, image_h = pix.width, pix.height
+                    # Rebuild single-raster pages from their intrinsic pixels.
+                    # This deliberately ignores a broken image placement matrix;
+                    # the raster itself contains the intended document page.
+                    # Use a temporary file rather than reusing the source image
+                    # xref, because reusing that xref can also retain the source
+                    # transform and reproduce the clipping/rotation bug.
+                    tmp_png = UPLOAD_DIR / f"{uuid.uuid4().hex}.png"
+                    pix.save(str(tmp_png))
+                    new_page = dst.new_page(width=target_w, height=target_h)
+                    scale = min(target_w / image_w, target_h / image_h)
+                    draw_w, draw_h = image_w * scale, image_h * scale
+                    x0 = (target_w - draw_w) / 2
+                    y0 = (target_h - draw_h) / 2
+                    new_page.insert_image(fitz.Rect(x0, y0, x0 + draw_w, y0 + draw_h), filename=str(tmp_png))
+                    tmp_png.unlink(missing_ok=True)
+                    repaired = True
+                except Exception:
+                    try:
+                        tmp_png.unlink(missing_ok=True)
+                    except Exception:
+                        pass
+                    repaired = False
+
+            if repaired:
+                continue
+
+            # Normal vector/text pages: preserve their content and scale it to
+            # the new page rectangle. show_pdf_page respects the source page's
+            # own coordinate system and rotation better than manually embedding
+            # the raw page object.
+            new_page = dst.new_page(width=target_w, height=target_h)
+            scale = min(target_w / visual_w, target_h / visual_h)
+            draw_w, draw_h = visual_w * scale, visual_h * scale
+            x0 = (target_w - draw_w) / 2
+            y0 = (target_h - draw_h) / 2
+            new_page.show_pdf_page(fitz.Rect(x0, y0, x0 + draw_w, y0 + draw_h), src, page.number)
+
+        dst.save(str(out), garbage=4, deflate=True)
+        dst.close()
+        src.close()
+        filename = safe_filename(Path(upload.filename).stem + "-page-size-" + size_name + ".pdf")
+        return jsonify({"ok": True, "download_url": f"/api/download/{out.name}?filename={filename}", "filename": filename})
+    except Exception as exc:
+        try:
+            if 'src' in locals(): src.close()
+        except Exception: pass
+        try:
+            if 'dst' in locals(): dst.close()
+        except Exception: pass
+        out.unlink(missing_ok=True)
+        return jsonify({"ok": False, "error": str(exc) or "Could not change the PDF page size."}), 500
+    finally:
+        source.unlink(missing_ok=True)
+
+
 @app.post("/api/office-to-pdf")
 def office_to_pdf():
     if "file" not in request.files:
