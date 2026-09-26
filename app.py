@@ -2,6 +2,7 @@ import os
 import re
 import uuid
 import tempfile
+import subprocess
 from pathlib import Path
 
 from flask import Flask, jsonify, request, send_file
@@ -29,13 +30,96 @@ def root():
     return jsonify({"ok": True, "service": "ToolNest conversion API", "status": "running"})
 
 
+
+@app.post("/api/lock-unlock-pdf")
+def lock_unlock_pdf():
+    """Password-protect or remove password protection from a PDF."""
+    from werkzeug.utils import secure_filename
+    import fitz
+    upload = request.files.get("file")
+    mode = (request.form.get("mode") or "").strip().lower()
+    password = request.form.get("password") or ""
+    if not upload or not upload.filename.lower().endswith(".pdf"):
+        return jsonify({"ok": False, "error": "Please upload a PDF file."}), 400
+    if not password:
+        return jsonify({"ok": False, "error": "Please enter a password."}), 400
+    if mode == "lock" and len(password) < 6:
+        return jsonify({"ok": False, "error": "Password must be at least 6 characters."}), 400
+    if mode not in {"lock", "unlock"}:
+        return jsonify({"ok": False, "error": "Invalid operation."}), 400
+    source = UPLOAD_DIR / f"{uuid.uuid4().hex}.pdf"
+    out = UPLOAD_DIR / f"{uuid.uuid4().hex}.pdf"
+    try:
+        upload.save(source)
+        doc = fitz.open(str(source))
+        if mode == "unlock":
+            if not doc.needs_pass:
+                doc.close()
+                return jsonify({"ok": False, "error": "This PDF is not password-protected."}), 400
+            if not doc.authenticate(password):
+                doc.close()
+                return jsonify({"ok": False, "error": "Incorrect PDF password."}), 400
+            doc.save(str(out), garbage=4, deflate=True, encryption=fitz.PDF_ENCRYPT_NONE)
+            filename = Path(upload.filename).stem + "-unlocked.pdf"
+        else:
+            if doc.needs_pass:
+                doc.close()
+                return jsonify({"ok": False, "error": "This PDF is already password-protected. Use Unlock PDF first."}), 400
+            owner_pw = uuid.uuid4().hex + password
+            try:
+                doc.save(str(out), garbage=4, deflate=True, encryption=fitz.PDF_ENCRYPT_AES_256, user_pw=password, owner_pw=owner_pw)
+            except Exception:
+                # Some PDFs contain structures that PyMuPDF cannot re-save while
+                # applying encryption. Rebuild them with Ghostscript as a fallback.
+                try:
+                    doc.close()
+                except Exception:
+                    pass
+                out.unlink(missing_ok=True)
+                gs = subprocess.run([
+                    "gs", "-q", "-dBATCH", "-dNOPAUSE", "-sDEVICE=pdfwrite",
+                    "-dCompatibilityLevel=1.4",
+                    f"-sOwnerPassword={owner_pw}",
+                    f"-sUserPassword={password}",
+                    "-dEncryptionR=3", "-dKeyLength=128",
+                    f"-sOutputFile={out}", str(source)
+                ], capture_output=True, text=True, timeout=120)
+                if gs.returncode != 0 or not out.exists() or out.stat().st_size == 0:
+                    detail = (gs.stderr or gs.stdout or "").strip()
+                    raise RuntimeError(detail or "Could not encrypt this PDF.")
+            filename = Path(upload.filename).stem + "-locked.pdf"
+        doc.close()
+        return jsonify({"ok": True, "download_url": f"/api/download/{out.name}?filename={secure_filename(filename)}", "filename": filename})
+    except Exception as exc:
+        try:
+            if 'doc' in locals() and doc is not None:
+                doc.close()
+        except Exception:
+            pass
+        return jsonify({"ok": False, "error": str(exc) or "Could not process the PDF."}), 500
+    finally:
+        try: source.unlink(missing_ok=True)
+        except Exception: pass
+
+
+@app.get("/api/download/<name>")
+def download_processed(name):
+    from urllib.parse import unquote
+    from werkzeug.utils import secure_filename
+    filename = secure_filename(unquote(name))
+    path = UPLOAD_DIR / filename
+    if not path.exists() or path.suffix.lower() != ".pdf":
+        return jsonify({"ok": False, "error": "File not found."}), 404
+    download_name = request.args.get("filename") or filename
+    return send_file(path, mimetype="application/pdf", as_attachment=True, download_name=secure_filename(download_name))
+
 @app.get("/health")
 def health():
     return jsonify({
         "ok": True,
         "service": "ToolNest conversion API",
         "status": "running",
-        "conversions": ["txt", "docx", "html", "xlsx"],
+        "conversions": ["txt", "docx", "html", "xlsx", "lock-unlock-pdf"],
     })
 
 
