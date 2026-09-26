@@ -368,12 +368,34 @@ def change_pdf_page_size():
                     # transform and reproduce the clipping/rotation bug.
                     tmp_png = UPLOAD_DIR / f"{uuid.uuid4().hex}.png"
                     pix.save(str(tmp_png))
-                    new_page = dst.new_page(width=target_w, height=target_h)
-                    scale = min(target_w / image_w, target_h / image_h)
-                    draw_w, draw_h = image_w * scale, image_h * scale
-                    x0 = (target_w - draw_w) / 2
-                    y0 = (target_h - draw_h) / 2
-                    new_page.insert_image(fitz.Rect(x0, y0, x0 + draw_w, y0 + draw_h), filename=str(tmp_png))
+                    # Match PDF24-style orientation for malformed raster pages:
+                    # when the requested visual page is landscape, keep the
+                    # underlying A4 box portrait and use a 90-degree page
+                    # rotation, while rotating the raster into that coordinate
+                    # system. This preserves the full landscape page instead
+                    # of producing a portrait page with the content squeezed
+                    # into it.
+                    use_rotated_landscape = target_w > target_h and image_w > image_h
+                    if use_rotated_landscape:
+                        media_w, media_h = target_h, target_w
+                        new_page = dst.new_page(width=media_w, height=media_h)
+                        new_page.set_rotation(90)
+                        scale = min(media_w / image_h, media_h / image_w)
+                        draw_w, draw_h = image_w * scale, image_h * scale
+                        x0 = (media_w - draw_h) / 2
+                        y0 = (media_h - draw_w) / 2
+                        new_page.insert_image(
+                            fitz.Rect(x0, y0, x0 + draw_h, y0 + draw_w),
+                            filename=str(tmp_png),
+                            rotate=90,
+                        )
+                    else:
+                        new_page = dst.new_page(width=target_w, height=target_h)
+                        scale = min(target_w / image_w, target_h / image_h)
+                        draw_w, draw_h = image_w * scale, image_h * scale
+                        x0 = (target_w - draw_w) / 2
+                        y0 = (target_h - draw_h) / 2
+                        new_page.insert_image(fitz.Rect(x0, y0, x0 + draw_w, y0 + draw_h), filename=str(tmp_png))
                     tmp_png.unlink(missing_ok=True)
                     repaired = True
                 except Exception:
