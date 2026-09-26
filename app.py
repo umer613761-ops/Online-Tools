@@ -293,12 +293,15 @@ def _convert_office_to_pdf(input_path: Path, output_path: Path):
 
 @app.post("/api/change-pdf-page-size")
 def change_pdf_page_size():
-    """Change PDF page size while preserving page appearance.
+    """Change PDF page size while preserving the page's *visual* appearance.
 
-    Image-only pages are rebuilt from their embedded image when the source
-    page contains a malformed/off-page image transform. This avoids the
-    clipping/upside-down result that can occur when re-embedding such pages
-    with a PDF page wrapper.
+    Important: PDF pages can have a portrait MediaBox plus a 90/270-degree
+    page rotation.  page.rect already represents the displayed (visual)
+    orientation, so conversion must be based on that rather than the raw
+    MediaBox dimensions.  For scanned/image-only pages we rasterize the
+    displayed page itself; this makes the page rotation part of the rendered
+    content and prevents rotated scans from becoming portrait pages with
+    large blank areas.
     """
     upload = request.files.get("file")
     size_name = (request.form.get("size") or "a4").strip().lower()
@@ -326,10 +329,12 @@ def change_pdf_page_size():
         dst = fitz.open()
 
         for page in src:
-            rect = page.rect
-            src_w, src_h = rect.width, rect.height
-            rotation = int(page.rotation or 0) % 360
-            visual_w, visual_h = (src_h, src_w) if rotation in (90, 270) else (src_w, src_h)
+            # page.rect is the effective/displayed page rectangle.  This is
+            # deliberately used instead of page.mediabox because a page may
+            # be stored as portrait + /Rotate 90 while being displayed as
+            # landscape (the user's Original.pdf does exactly this on page 2).
+            visual_rect = page.rect
+            visual_w, visual_h = visual_rect.width, visual_rect.height
 
             if size_name == "original":
                 target_w, target_h = visual_w, visual_h
@@ -340,101 +345,60 @@ def change_pdf_page_size():
                 elif orientation == "landscape" and target_w < target_h:
                     target_w, target_h = target_h, target_w
                 elif orientation == "auto":
-                    if visual_w > visual_h and target_w < target_h:
-                        target_w, target_h = target_h, target_w
-                    elif visual_w <= visual_h and target_w > target_h:
+                    source_landscape = visual_w > visual_h
+                    target_landscape = target_w > target_h
+                    if source_landscape != target_landscape:
                         target_w, target_h = target_h, target_w
 
             images = page.get_images(full=True)
             text = page.get_text("text").strip()
 
-            # Scanned/image-only page: use the actual embedded image pixels.
-            # This repairs pages whose image matrix places most of the image
-            # outside the MediaBox or rotates it independently of page rotation.
-            repaired = False
-            if not text and len(images) == 1:
+            # Scanned/image-only page: render the DISPLAYED page, not the raw
+            # embedded image.  This is crucial for PDFs whose page rotation is
+            # 90/270 degrees. PyMuPDF applies the page rotation when rendering
+            # the page, so the resulting raster has the correct visual
+            # landscape orientation before it is fitted onto the new paper.
+            if not text and images:
                 try:
-                    img_rect = page.get_image_rects(images[0])[0]
-                    xref = images[0][0]
-                    pix = fitz.Pixmap(src, xref)
-                    if pix.alpha:
-                        pix = fitz.Pixmap(fitz.csRGB, pix)
+                    # 180 DPI keeps the quality close to the original scans
+                    # while keeping output files reasonable.
+                    pix = page.get_pixmap(dpi=180, colorspace=fitz.csRGB, alpha=False)
                     image_w, image_h = pix.width, pix.height
 
-                    # For malformed/image-only PDFs, the page MediaBox can have
-                    # the wrong orientation even though the embedded raster has
-                    # the real document orientation.  In Auto mode, use the
-                    # raster orientation after accounting for the source page
-                    # rotation.  This is important for pages such as landscape
-                    # transcripts stored inside a portrait MediaBox.
-                    if size_name != "original" and orientation == "auto":
-                        image_visual_w, image_visual_h = (
-                            (image_h, image_w) if rotation in (90, 270)
-                            else (image_w, image_h)
-                        )
-                        if image_visual_w > image_visual_h and target_w < target_h:
-                            target_w, target_h = target_h, target_w
-                        elif image_visual_w <= image_visual_h and target_w > target_h:
-                            target_w, target_h = target_h, target_w
+                    # Rendered pixmap dimensions include the effective page
+                    # rotation.  Use them only as a safety check; page.rect is
+                    # authoritative for selecting the output orientation.
+                    if image_w <= 0 or image_h <= 0:
+                        raise RuntimeError("Could not render PDF page.")
 
-                    # Rebuild single-raster pages from their intrinsic pixels.
-                    # This deliberately ignores a broken image placement matrix;
-                    # the raster itself contains the intended document page.
-                    # Use a temporary file rather than reusing the source image
-                    # xref, because reusing that xref can also retain the source
-                    # transform and reproduce the clipping/rotation bug.
-                    tmp_png = UPLOAD_DIR / f"{uuid.uuid4().hex}.png"
-                    pix.save(str(tmp_png))
-                    # Match PDF24-style orientation for malformed raster pages:
-                    # when the requested visual page is landscape, keep the
-                    # underlying A4 box portrait and use a 90-degree page
-                    # rotation, while rotating the raster into that coordinate
-                    # system. This preserves the full landscape page instead
-                    # of producing a portrait page with the content squeezed
-                    # into it.
-                    use_rotated_landscape = target_w > target_h and image_w > image_h
-                    if use_rotated_landscape:
-                        media_w, media_h = target_h, target_w
-                        new_page = dst.new_page(width=media_w, height=media_h)
-                        new_page.set_rotation(90)
-                        scale = min(media_w / image_h, media_h / image_w)
-                        draw_w, draw_h = image_w * scale, image_h * scale
-                        x0 = (media_w - draw_h) / 2
-                        y0 = (media_h - draw_w) / 2
-                        new_page.insert_image(
-                            fitz.Rect(x0, y0, x0 + draw_h, y0 + draw_w),
-                            filename=str(tmp_png),
-                            rotate=90,
-                        )
-                    else:
-                        new_page = dst.new_page(width=target_w, height=target_h)
-                        scale = min(target_w / image_w, target_h / image_h)
-                        draw_w, draw_h = image_w * scale, image_h * scale
-                        x0 = (target_w - draw_w) / 2
-                        y0 = (target_h - draw_h) / 2
-                        new_page.insert_image(fitz.Rect(x0, y0, x0 + draw_w, y0 + draw_h), filename=str(tmp_png))
-                    tmp_png.unlink(missing_ok=True)
-                    repaired = True
+                    new_page = dst.new_page(width=target_w, height=target_h)
+                    scale = min(target_w / image_w, target_h / image_h)
+                    draw_w = image_w * scale
+                    draw_h = image_h * scale
+                    x0 = (target_w - draw_w) / 2
+                    y0 = (target_h - draw_h) / 2
+                    new_page.insert_image(
+                        fitz.Rect(x0, y0, x0 + draw_w, y0 + draw_h),
+                        pixmap=pix,
+                    )
+                    continue
                 except Exception:
-                    try:
-                        tmp_png.unlink(missing_ok=True)
-                    except Exception:
-                        pass
-                    repaired = False
+                    # Fall through to the vector/text path if rasterization
+                    # is unavailable for an unusual PDF.
+                    pass
 
-            if repaired:
-                continue
-
-            # Normal vector/text pages: preserve their content and scale it to
-            # the new page rectangle. show_pdf_page respects the source page's
-            # own coordinate system and rotation better than manually embedding
-            # the raw page object.
+            # Normal vector/text pages: show_pdf_page works in the source
+            # page's effective coordinate system, including page rotation.
             new_page = dst.new_page(width=target_w, height=target_h)
             scale = min(target_w / visual_w, target_h / visual_h)
             draw_w, draw_h = visual_w * scale, visual_h * scale
             x0 = (target_w - draw_w) / 2
             y0 = (target_h - draw_h) / 2
-            new_page.show_pdf_page(fitz.Rect(x0, y0, x0 + draw_w, y0 + draw_h), src, page.number)
+            new_page.show_pdf_page(
+                fitz.Rect(x0, y0, x0 + draw_w, y0 + draw_h),
+                src,
+                page.number,
+            )
 
         dst.save(str(out), garbage=4, deflate=True)
         dst.close()
@@ -443,13 +407,17 @@ def change_pdf_page_size():
         return jsonify({"ok": True, "download_url": f"/api/download/{out.name}?filename={filename}", "filename": filename})
     except Exception as exc:
         try:
-            if 'src' in locals(): src.close()
-        except Exception: pass
+            if 'dst' in locals():
+                dst.close()
+        except Exception:
+            pass
         try:
-            if 'dst' in locals(): dst.close()
-        except Exception: pass
+            if 'src' in locals():
+                src.close()
+        except Exception:
+            pass
         out.unlink(missing_ok=True)
-        return jsonify({"ok": False, "error": str(exc) or "Could not change the PDF page size."}), 500
+        return jsonify({"ok": False, "error": str(exc)}), 500
     finally:
         source.unlink(missing_ok=True)
 
