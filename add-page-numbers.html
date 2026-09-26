@@ -1,0 +1,4833 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<!-- ========================================
+       THEME INITIALIZATION
+       Prevents light-mode flash on page load
+  ========================================= -->
+<script>
+
+    (function () {
+
+      const savedTheme =
+        localStorage.getItem("toolnest-theme");
+
+      if (savedTheme === "dark") {
+
+        document.documentElement.classList.add(
+          "dark-mode"
+        );
+
+      }
+
+      else if (savedTheme === "light") {
+
+        document.documentElement.classList.add(
+          "light-mode"
+        );
+
+      }
+
+    })();
+  </script>
+<title>Add Page Numbers - ToolNest</title>
+<style>
+    /* ========================================
+       RESET
+    ======================================== */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: #f3f5f7;
+      color: #263548;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       HEADER
+    ======================================== */
+
+    .top-header {
+      width: 100%;
+
+      background: #ffffff;
+
+      border-bottom: 0 !important;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .header-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        10px
+        24px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 24px;
+    }
+
+
+    /* ========================================
+       LOGO
+    ======================================== */
+
+    .logo {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      text-decoration: none;
+
+      white-space: nowrap;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 9px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #3d78b6,
+          #245b96
+        );
+
+      color: #ffffff;
+
+      font-size: 16px;
+      font-weight: 800;
+
+      box-shadow:
+        0 3px 8px
+        rgba(43, 92, 150, 0.18);
+    }
+
+    .logo-text {
+      font-size: 22px;
+      letter-spacing: -0.6px;
+    }
+
+    .logo-tool {
+      color: #334155;
+
+      font-family:
+        "Brush Script MT",
+        "Brush Script Std",
+        cursive;
+
+      font-size: 32px;
+
+      font-weight: 400;
+
+      letter-spacing: 0;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .logo-nest {
+      color: #059669;
+
+      font-weight: 800;
+    }
+
+
+    /* ========================================
+       HEADER RIGHT SIDE
+    ======================================== */
+
+    .header-right {
+      width: 100%;
+
+      max-width: 570px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: flex-end;
+
+      gap: 10px;
+    }
+
+
+    /* ========================================
+       SEARCH
+    ======================================== */
+
+    .header-search {
+      width: 100%;
+      max-width: 312px;
+      position: relative;
+    }
+
+    .header-search input {
+      width: 100%;
+      height: 40px;
+
+      padding:
+        0
+        44px
+        0
+        15px;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #344256;
+
+      font-size: 14px;
+
+      outline: none;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .header-search input::placeholder {
+      color: #8996a5;
+    }
+
+    .header-search input:focus {
+      background: #ffffff;
+
+      border-color: #7fa6cf;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.08);
+    }
+
+    .search-icon {
+      position: absolute;
+
+      right: 14px;
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      color: #718096;
+
+      font-size: 19px;
+
+      pointer-events: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       DARK MODE TOGGLE
+    ======================================== */
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 0;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #526273;
+
+      cursor: pointer;
+
+      font-size: 18px;
+
+      line-height: 1;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      background: #edf2f7;
+
+      border-color: #c7d3df;
+
+      color: #059669;
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.94);
+    }
+
+    .theme-toggle:focus-visible {
+      outline: none;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.15);
+    }
+
+
+    /* ========================================
+       CATEGORY NAVIGATION
+    ======================================== */
+
+    .category-nav {
+      background: #ffffff;
+
+      border-bottom:
+        1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .category-nav-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        0
+        24px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 30px;
+
+      overflow-x: auto;
+    }
+
+    .category-link {
+      position: relative;
+
+      display: flex;
+
+      align-items: center;
+
+      height: 46px;
+
+      padding: 0;
+
+      margin: 0;
+
+      border: 0;
+
+      background: transparent;
+
+      appearance: none;
+
+      font-family: inherit;
+
+      font-size: 14px;
+
+      font-weight: inherit;
+
+      line-height: normal;
+
+      color: #667588;
+
+      text-decoration: none;
+
+      white-space: nowrap;
+
+      cursor: pointer;
+
+      outline: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .category-link:focus-visible {
+      outline: 2px solid #059669;
+
+      outline-offset: 2px;
+    }
+
+    .category-link:hover {
+      color: #2f67a3;
+    }
+
+    .category-link.active {
+      color: #263548;
+
+      font-weight: 600;
+    }
+
+    .category-link.active::after {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      height: 3px;
+
+      background: #059669;
+
+      border-radius:
+        3px
+        3px
+        0
+        0;
+    }
+
+
+    /* ========================================
+       PDF TOOL CATEGORY BAR
+    ======================================== */
+
+    .tool-category-bar {
+      width: 100%;
+
+      margin-bottom: 20px;
+
+      overflow-x: auto;
+      overflow-y: hidden;
+
+      padding:
+        2px 0;
+
+      scrollbar-width: thin;
+    }
+
+    .tool-category-list {
+      display: grid;
+
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+
+      align-items: center;
+
+      width: 100%;
+
+      gap: 8px;
+    }
+
+
+    /* ========================================
+       COMPACT PDF TOOL BUTTONS
+    ======================================== */
+
+    
+    .tool-category-link {
+      position: relative;
+
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-height: 32px;
+
+      padding:
+        0 13px;
+
+      background: #059669;
+
+      /*
+        Slightly stronger outline so the
+        pill buttons are clearly visible.
+      */
+      border:
+        1px solid #cfd8e2;
+
+      border-radius:  999px;
+
+      color: #ffffff;
+
+      text-decoration: none;
+
+      /*
+        Increased slightly from 11px
+        for better readability.
+      */
+      font-size: 12px;
+
+      font-weight: 600;
+
+      white-space: nowrap;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    
+    .tool-category-link:hover {
+      color: #059669;
+
+      border-color: #b9c9d9;
+
+      background: #f7fafd;
+
+      transform:
+        translateY(-1px);
+
+      box-shadow:
+        0 2px 6px
+        rgba(50, 107, 168, 0.08);
+    }
+
+    
+    .tool-category-link.active {
+      background: #059669;
+
+      border-color: #059669;
+
+      color: #ffffff;
+
+      box-shadow:
+        0 2px 6px
+        rgba(50, 107, 168, 0.14);
+    }
+
+    
+    .tool-category-link.active:hover {
+      background: #285b91;
+
+      border-color: #285b91;
+
+      color: #ffffff;
+    }
+
+
+
+
+    /* ========================================
+       EMPTY PAGE AREA
+    ======================================== */
+
+    .page-content {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 28px 24px 60px;
+
+      flex: 1;
+    }
+
+
+    /* ========================================
+       ADVERTISEMENT
+    ======================================== */
+
+    .ad-column {
+      width: 200px;
+
+      position: sticky;
+
+      top: 20px;
+    }
+
+    .ad-box {
+      width: 200px;
+      height: 400px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 18px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #dce3ea;
+
+      border-radius: 10px;
+
+      text-align: center;
+
+      box-shadow:
+        0 4px 16px
+        rgba(31, 45, 61, 0.04);
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .ad-content {
+      width: 100%;
+    }
+
+    .ad-label {
+      margin-bottom: 14px;
+
+      color: #a0acb8;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      letter-spacing: 1.5px;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .sample-ad {
+      padding:
+        22px 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #f5f8fc,
+          #edf3f9
+        );
+
+      border:
+        1px solid #d8e3ed;
+
+      border-radius: 9px;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .sample-ad-badge {
+      display: inline-block;
+
+      margin-bottom: 12px;
+
+      padding:
+        5px 9px;
+
+      background: #059669;
+
+      border-radius: 20px;
+
+      color: #ffffff;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.5px;
+    }
+
+    .sample-ad h3 {
+      margin:
+        0 0 9px;
+
+      color: #344255;
+
+      font-size: 18px;
+
+      line-height: 1.3;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .sample-ad p {
+      margin:
+        0 0 16px;
+
+      color: #718096;
+
+      font-size: 12px;
+
+      line-height: 1.5;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .sample-ad-button {
+      display: inline-block;
+
+      padding:
+        9px 14px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #cbd8e4;
+
+      border-radius: 6px;
+
+      color: #059669;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+    }
+
+
+
+    /* ========================================
+       FOOTER
+    ======================================== */
+
+    footer {
+      background: #ffffff;
+
+      border-top:
+        1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .footer-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 24px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+
+      color: #7b8998;
+
+      font-size: 13px;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .footer-links {
+      display: flex;
+
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: #7b8998;
+
+      text-decoration: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: #059669;
+    }
+
+
+    /* ========================================
+       DARK MODE
+    ======================================== */
+
+    html.dark-mode body {
+      background: #11161d;
+      color: #e7edf4;
+    }
+
+    html.dark-mode .top-header {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .logo-tool {
+      color: #d7dee7;
+    }
+
+    html.dark-mode .logo-nest {
+      color: #5b95c9;
+    }
+
+    html.dark-mode .header-search input {
+      background: #202731;
+      border-color: #343f4c;
+      color: #edf2f7;
+    }
+
+    html.dark-mode .header-search input:focus {
+      background: #252d38;
+      border-color: #5f8fbd;
+    }
+
+    html.dark-mode .search-icon {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .theme-toggle {
+      background: #202731;
+      border-color: #343f4c;
+      color: #d7e1eb;
+    }
+
+    html.dark-mode .theme-toggle:hover {
+      background: #29323d;
+      border-color: #465463;
+      color: #7eb0df;
+    }
+
+    html.dark-mode .category-nav {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .category-link {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .category-link:hover {
+      color: #6fa2d2;
+    }
+
+    html.dark-mode .category-link.active {
+      color: #e8eef5;
+     background: transparent !important;}
+
+    html.dark-mode .ad-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 18px
+        rgba(0, 0, 0, 0.18);
+    }
+
+    html.dark-mode .ad-label {
+      color: #778493;
+    }
+
+    html.dark-mode .sample-ad {
+      background:
+        linear-gradient(
+          135deg,
+          #202934,
+          #18212b
+        );
+
+      border-color: #354352;
+    }
+
+    html.dark-mode .sample-ad h3 {
+      color: #dce4ec;
+    }
+
+    html.dark-mode .sample-ad p {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .sample-ad-button {
+      background: #202731;
+      border-color: #455361;
+      color: #6fa2d2;
+    }
+
+
+    html.dark-mode footer {
+      background: #171d25;
+      border-top-color: #293340;
+    }
+
+    html.dark-mode .footer-inner {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a:hover {
+      color: #6fa2d2;
+    }
+
+
+    /* ========================================
+       MANUAL DARK MODE
+    ======================================== */
+
+    html.dark-mode body {
+      background: #11161d;
+      color: #e7edf4;
+    }
+
+    html.dark-mode .top-header {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .logo-tool {
+      color: #d7dee7;
+    }
+
+    html.dark-mode .logo-nest {
+      color: #5b95c9;
+    }
+
+    html.dark-mode .header-search input {
+      background: #202731;
+      border-color: #343f4c;
+      color: #edf2f7;
+    }
+
+    html.dark-mode .header-search input::placeholder {
+      color: #8996a5;
+    }
+
+    html.dark-mode .header-search input:focus {
+      background: #252d38;
+      border-color: #5f8fbd;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(77, 138, 196, 0.14);
+    }
+
+    html.dark-mode .search-icon {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .theme-toggle {
+      background: #202731;
+      border-color: #343f4c;
+      color: #d7e1eb;
+    }
+
+    html.dark-mode .theme-toggle:hover {
+      background: #29323d;
+      border-color: #465463;
+      color: #7eb0df;
+    }
+
+    html.dark-mode .category-nav {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .category-link {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .category-link:hover {
+      color: #6fa2d2;
+    }
+
+    html.dark-mode .category-link.active {
+      color: #e8eef5;
+     background: transparent !important;}
+
+    html.dark-mode .tool-category-link {
+      background: #1b2735;
+      border-color: #354457;
+      color: #9aa7b6;
+    }
+
+    html.dark-mode .tool-category-link:hover {
+      color: #78a9d8;
+      border-color: #46627d;
+      background: #202f40;
+
+      box-shadow:
+        0 2px 6px
+        rgba(0, 0, 0, 0.20);
+    }
+
+    html.dark-mode .tool-category-link.active {
+      
+      border-color: #059669;
+      color: #ffffff;
+
+      box-shadow:
+        0 2px 6px
+        rgba(0, 0, 0, 0.28);
+     background: transparent !important;}
+
+    html.dark-mode .tool-category-link.active:hover {
+      
+      border-color: #3a78b8;
+      color: #ffffff;
+     background: transparent !important;}
+
+    html.dark-mode .heading h1 {
+      color: #edf2f7;
+    }
+
+    html.dark-mode .heading p {
+      color: #9ca9b8;
+    }
+
+    html.dark-mode .tool-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 16px
+        rgba(0, 0, 0, 0.22);
+    }
+
+    html.dark-mode .upload-area {
+      background: #131e2b;
+      border-color: #52789c;
+    }
+
+    html.dark-mode .upload-area:hover {
+      background: #18283a;
+      border-color: #6b9bc6;
+    }
+
+    html.dark-mode .floating-upload-button {
+      background: #059669;
+      color: #ffffff;
+
+      box-shadow:
+        0 10px 26px
+        rgba(0, 0, 0, 0.32);
+    }
+
+    html.dark-mode .floating-upload-button:hover {
+      background: #3a78b8;
+
+      box-shadow:
+        0 13px 30px
+        rgba(0, 0, 0, 0.38);
+    }
+
+    html.dark-mode .drag-hint {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .pdf-preview {
+      background: #263444;
+      border-color: #435366;
+    }
+
+    html.dark-mode .pdf-name {
+      color: #dbe4ee;
+    }
+
+    html.dark-mode .secondary-button {
+      background: #202c3b;
+      border-color: #3b4b5f;
+      color: #d6dee8;
+    }
+
+    html.dark-mode .secondary-button:hover:not(:disabled) {
+      background: #293849;
+    }
+
+    html.dark-mode .status {
+      background: #172b3d;
+      border-color: #31516e;
+      color: #9fc0dd;
+    }
+
+    html.dark-mode .ad-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 18px
+        rgba(0, 0, 0, 0.18);
+    }
+
+    html.dark-mode .ad-label {
+      color: #778493;
+    }
+
+    html.dark-mode .sample-ad {
+      background:
+        linear-gradient(
+          135deg,
+          #202934,
+          #18212b
+        );
+
+      border-color: #354352;
+    }
+
+    html.dark-mode .sample-ad h3 {
+      color: #dce4ec;
+    }
+
+    html.dark-mode .sample-ad p {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .sample-ad-button {
+      background: #202731;
+      border-color: #455361;
+      color: #6fa2d2;
+    }
+
+    html.dark-mode footer {
+      background: #171d25;
+      border-top-color: #293340;
+    }
+
+    html.dark-mode .footer-inner {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a:hover {
+      color: #6fa2d2;
+    }
+
+
+    
+
+    /* ========================================
+       SYSTEM DARK MODE
+    ======================================== */
+
+    @media (prefers-color-scheme: dark) {
+
+      html:not(.light-mode) footer {
+        background: #171d25;
+        border-top-color: #293340;
+      }
+
+      html:not(.light-mode) .footer-inner {
+        color: #8d9aaa;
+      }
+
+      html:not(.light-mode) .footer-links a {
+        color: #8d9aaa;
+      }
+
+      html:not(.light-mode) .footer-links a:hover {
+        color: #6fa2d2;
+      }
+    }
+
+
+    @media (max-width: 900px) {
+
+      .ad-column {
+        width: 100%;
+
+        position: static;
+      }
+
+      .ad-box {
+        width: 100%;
+
+        height: 180px;
+      }
+
+    }
+
+
+    @media (max-width: 900px) {
+      .page-content > div {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* ========================================
+       MOBILE
+    ======================================== */
+
+    @media (max-width: 700px) {
+
+      .header-inner {
+        padding:
+          9px 16px;
+      }
+
+      .header-search,
+      .theme-toggle {
+        display: none;
+      }
+
+      .header-right {
+        width: auto;
+        max-width: none;
+      }
+
+      .category-nav-inner {
+        padding:
+          0 16px;
+
+        gap: 22px;
+      }
+
+      .page-content {
+        padding:
+          30px 16px;
+      }
+    }
+
+
+    /* ========================================
+       MOBILE FOOTER
+    ======================================== */
+
+    @media (max-width: 550px) {
+
+      .footer-inner {
+        flex-direction: column;
+
+        text-align: center;
+      }
+    }
+
+    /* ========================================
+       TOOL CATEGORY BUTTONS — BLUE STYLE
+       Matched to the Merge PDF page.
+       All PDF tool pills use the same blue
+       as the active tool. The active tool is
+       slightly larger to make it distinct.
+    ========================================= */
+
+    .tool-category-link {
+      background: #059669;
+      border-color: #059669;
+      color: #ffffff;
+      border-radius: 999px;
+    }
+
+    .tool-category-link:hover {
+      background: #285b91;
+      border-color: #285b91;
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow:
+        0 3px 8px
+        rgba(50, 107, 168, 0.20);
+    }
+
+    .tool-category-link.active {
+      min-height: 38px;
+      padding: 0 16px;
+      background: #059669;
+      border-color: #059669;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow:
+        0 4px 10px
+        rgba(50, 107, 168, 0.24);
+      transform: none;
+    }
+
+    .tool-category-link.active:hover {
+      background: #285b91;
+      border-color: #285b91;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    html.dark-mode .tool-category-link,
+    html:not(.light-mode) .tool-category-link {
+      background: #059669;
+      border-color: #059669;
+      color: #ffffff;
+    }
+
+    html.dark-mode .tool-category-link:hover,
+    html:not(.light-mode) .tool-category-link:hover {
+      background: #3a78b8;
+      border-color: #3a78b8;
+      color: #ffffff;
+      box-shadow:
+        0 3px 8px
+        rgba(0, 0, 0, 0.28);
+    }
+
+    html.dark-mode .tool-category-link.active,
+    html:not(.light-mode) .tool-category-link.active {
+      min-height: 38px;
+      padding: 0 16px;
+      
+      border-color: #059669;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow:
+        0 4px 10px
+        rgba(0, 0, 0, 0.30);
+      transform: none;
+     background: transparent !important;}
+
+    html.dark-mode .tool-category-link.active:hover,
+    html:not(.light-mode) .tool-category-link.active:hover {
+      
+      border-color: #3a78b8;
+      color: #ffffff;
+      transform: translateY(-1px);
+     background: transparent !important;}
+
+    @media (max-width: 700px) {
+      .tool-category-bar {
+        display: none !important;
+      }
+    }
+
+  
+/* DESKTOP FOOTER ENHANCEMENT - mobile layout remains unchanged */
+.footer-desktop-only { display: none; }
+@media (min-width: 701px) {
+  .footer-inner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 30px 24px 22px;
+    gap: 24px;
+  }
+  .footer-main.footer-desktop-only {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e3e8ee;
+  }
+  .footer-brand-name {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+    color: #263548;
+    margin-bottom: 6px;
+  }
+  .footer-brand-name span { color: #263548; }
+  .footer-brand-name strong { color: #059669; }
+  .footer-brand p {
+    margin: 0;
+    color: #7b8998;
+    font-size: 13px;
+  }
+  .footer-quick { text-align: right; }
+  .footer-quick-title {
+    color: #344154;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 9px;
+  }
+  .footer-quick-links { display: flex; gap: 22px; }
+  .footer-quick-links a {
+    color: #7b8998;
+    font-size: 13px;
+    text-decoration: none;
+  }
+  .footer-quick-links a:hover { color: #059669; }
+  .footer-bottom { width: 100%; }
+}
+html.dark-mode .footer-main.footer-desktop-only { border-bottom-color: #293340; }
+html.dark-mode .footer-brand-name { color: #d7dee7; }
+html.dark-mode .footer-brand-name span { color: #d7dee7; }
+html.dark-mode .footer-brand-name strong { color: #6fa2d2; }
+html.dark-mode .footer-quick-title { color: #d7dee7; }
+html.dark-mode .footer-quick-links a { color: #8d9aaa; }
+html.dark-mode .footer-quick-links a:hover { color: #6fa2d2; }
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .footer-main.footer-desktop-only { border-bottom-color: #293340; }
+  html:not(.light-mode) .footer-brand-name { color: #d7dee7; }
+  html:not(.light-mode) .footer-brand-name span { color: #d7dee7; }
+  html:not(.light-mode) .footer-brand-name strong { color: #6fa2d2; }
+  html:not(.light-mode) .footer-quick-title { color: #d7dee7; }
+  html:not(.light-mode) .footer-quick-links a { color: #8d9aaa; }
+  html:not(.light-mode) .footer-quick-links a:hover { color: #6fa2d2; }
+}
+
+</style>
+<style>
+/* ToolNest: compact tool-category buttons only. Dimensions intentionally unchanged. */
+.tool-category-link {
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  background: linear-gradient(135deg, #ffffff 0%, #fbfdff 100%) !important;
+  border: 1px solid #dce7f0 !important;
+  border-radius: 9px !important;
+  color: #102c52 !important;
+  box-shadow: 0 3px 9px rgba(38, 67, 96, 0.08) !important;
+  text-decoration: none !important;
+  transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease !important;
+}
+
+.tool-category-link::after {
+  content: "" !important;
+  position: absolute !important;
+  width: 82px !important;
+  height: 82px !important;
+  right: -42px !important;
+  bottom: -55px !important;
+  border-radius: 50% !important;
+  background: #dcefe6 !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+.tool-category-link:hover {
+  background: #ffffff !important;
+  border-color: #c7d9e8 !important;
+  color: #102c52 !important;
+  box-shadow: 0 5px 12px rgba(38, 67, 96, 0.11) !important;
+  transform: translateY(-1px) !important;
+}
+
+.tool-category-link.active {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fbff 100%) !important;
+  border-color: #cfddea !important;
+  color: #102c52 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 10px rgba(38, 67, 96, 0.10) !important;
+}
+
+.tool-category-link.active::after {
+  background: linear-gradient(135deg, rgba(255, 90, 103, .10), rgba(125, 101, 255, .08)) !important;
+}
+
+/* Keep these compact buttons light in dark mode too. */
+html.dark-mode .tool-category-link,
+html.dark-mode .tool-category-link.active {
+  
+  border-color: #dce7f0 !important;
+  color: #102c52 !important;
+  box-shadow: 0 3px 9px rgba(38, 67, 96, 0.08) !important;
+ background: transparent !important;}
+
+html.dark-mode .tool-category-link:hover {
+  background: #ffffff !important;
+  border-color: #c7d9e8 !important;
+  color: #102c52 !important;
+}
+
+/* Pastel accents, matching the approved tool-card visual language. */
+.tool-category-link[href*="merge-pdf"],
+.tool-category-link[href*="remove-pdf-pages"],
+.tool-category-link[href*="image-to-png"] { }
+
+.tool-category-link[href*="merge-pdf"]::after,
+.tool-category-link[href*="remove-pdf-pages"]::after {
+  background: linear-gradient(135deg, rgba(255,90,103,.11), rgba(255,145,178,.09)) !important;
+}
+.tool-category-link[href*="split-pdf"]::after,
+.tool-category-link[href*="compress-pdf"]::after {
+  background: linear-gradient(135deg, rgba(255,158,70,.11), rgba(255,209,154,.09)) !important;
+}
+.tool-category-link[href*="edit-pdf"]::after,
+.tool-category-link[href*="extract-pdf-pages"]::after {
+  background: linear-gradient(135deg, rgba(126,92,255,.11), rgba(205,170,255,.09)) !important;
+}
+.tool-category-link[href*="convert-from-pdf"]::after,
+.tool-category-link[href*="image-compressor"]::after {
+  background: linear-gradient(135deg, rgba(52,213,150,.11), rgba(111,229,177,.09)) !important;
+}
+.tool-category-link[href*="convert-to-pdf"]::after,
+.tool-category-link[href*="image-converter"]::after {
+  background: linear-gradient(135deg, rgba(54,161,255,.10), rgba(154,194,255,.08)) !important;
+}
+.tool-category-link[href*="re-arrange-pdf-pages"]::after,
+.tool-category-link[href*="image-cropper"]::after {
+  background: linear-gradient(135deg, rgba(190,92,255,.10), rgba(228,176,255,.08)) !important;
+}
+.tool-category-link[href*="rotate-pdf"]::after,
+.tool-category-link[href*="image-rotator"]::after {
+  background: linear-gradient(135deg, rgba(54,137,255,.10), rgba(125,188,255,.08)) !important;
+}
+.tool-category-link[href*="image-resizer"]::after {
+  background: linear-gradient(135deg, rgba(255,178,35,.11), rgba(255,220,140,.09)) !important;
+}
+.tool-category-link[href*="blur-censorship-tool"]::after,
+.tool-category-link[href*="case-converter"]::after {
+  background: linear-gradient(135deg, rgba(218,72,255,.10), rgba(247,174,255,.08)) !important;
+}
+.tool-category-link[href*="image-upscaler"]::after,
+.tool-category-link[href*="reading-time-estimator"]::after {
+  background: linear-gradient(135deg, rgba(83,193,255,.10), rgba(173,218,255,.08)) !important;
+}
+.tool-category-link[href*="remove-background"]::after,
+.tool-category-link[href*="find-and-replace"]::after {
+  background: linear-gradient(135deg, rgba(255,77,155,.10), rgba(255,166,211,.08)) !important;
+}
+.tool-category-link[href*="remove-extra-spaces"]::after,
+.tool-category-link[href*="remove-duplicate-lines"]::after {
+  background: linear-gradient(135deg, rgba(33,205,189,.10), rgba(125,236,223,.08)) !important;
+}
+
+</style>
+<style>
+/* ToolNest: colored end accents for existing pill buttons only.
+   Dimensions are unchanged; tool cards are not modified. */
+.tool-category-link::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 6px !important;
+  bottom: 6px !important;
+  width: 3px !important;
+  border-radius: 0 4px 4px 0 !important;
+  background: #6b7cff !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+/* PDF tools */
+.tool-category-link[href*="merge-pdf"]::before,
+.tool-category-link[href*="remove-pdf-pages"]::before,
+.tool-category-link[href*="extract-pdf-pages"]::before,
+.tool-category-link[href*="edit-pdf"]::before,
+.tool-category-link[href*="rotate-pdf"]::before,
+.tool-category-link[href*="compress-pdf"]::before,
+.tool-category-link[href*="convert-to-pdf"]::before,
+.tool-category-link[href*="convert-from-pdf"]::before,
+.tool-category-link[href*="re-arrange-pdf-pages"]::before {
+  background: linear-gradient(#ff5a67, #ff8a9a) !important;
+}
+
+/* Text tools */
+.tool-category-link[href*="case-converter"]::before,
+.tool-category-link[href*="word-character-counter"]::before,
+.tool-category-link[href*="find-and-replace"]::before,
+.tool-category-link[href*="reading-time-estimator"]::before,
+.tool-category-link[href*="remove-extra-spaces"]::before,
+.tool-category-link[href*="remove-duplicate-lines"]::before {
+  background: linear-gradient(#b15cff, #6f8cff) !important;
+}
+
+/* Image tools */
+.tool-category-link[href*="image-compressor"]::before,
+.tool-category-link[href*="image-converter"]::before,
+.tool-category-link[href*="image-cropper"]::before,
+.tool-category-link[href*="image-resizer"]::before,
+.tool-category-link[href*="image-rotator"]::before,
+.tool-category-link[href*="image-upscaler"]::before,
+.tool-category-link[href*="background-remover"]::before,
+.tool-category-link[href*="remove-background"]::before,
+.tool-category-link[href*="blur-censorship-tool"]::before {
+  background: linear-gradient(#28cfa0, #48a9ff) !important;
+}
+</style>
+<style id="toolnest-new-logo">
+/* ToolNest new logo: blue-purple gradient wordmark + colorful utility mark */
+.logo-icon {
+  position: relative !important; overflow: hidden !important; flex: 0 0 46px !important;
+  width: 46px !important; height: 46px !important; border-radius: 13px !important;
+  background: #eef5ff !important; color: transparent !important;
+  box-shadow: 0 6px 16px rgba(55,105,180,.14) !important;
+}
+.logo-icon .logo-shape { position:absolute; display:block; }
+.logo-bar { width:27px; height:9px; left:10px; top:9px; border-radius:6px; background:linear-gradient(90deg,#059669 0%,#059669 100%); }
+.logo-stem { width:10px; height:19px; left:13px; top:20px; border-radius:3px 3px 5px 5px; background:linear-gradient(180deg,#059669 0%,#059669 100%); }
+.logo-dot { width:9px; height:9px; right:9px; top:21px; border-radius:50%; background:#27b96f; }
+.logo-block { width:10px; height:11px; right:9px; bottom:8px; border-radius:3px; background:linear-gradient(135deg,#ffb51b,#ff9f22); }
+.logo-nest {
+  background:linear-gradient(135deg,#059669 0%,#059669 55%,#059669 100%) !important;
+  -webkit-background-clip:text !important; background-clip:text !important;
+  -webkit-text-fill-color:transparent !important; color:transparent !important;
+}
+.logo-tool { color:#263548 !important; }
+</style>
+<!-- ToolNest logo font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<style id="toolnest-montserrat-logo">
+.logo-tool, .logo-nest {
+  font-family: "Montserrat", Arial, Helvetica, sans-serif !important;
+  font-style: normal !important;
+}
+.logo-tool { font-weight: 700 !important; }
+.logo-nest { font-weight: 800 !important; }
+</style>
+<style data-toolnest-home-header-sync="true">
+/* Exact header/category cascade from home.html */
+.top-header {
+      width: 100%;
+
+      background: #ffffff;
+
+      border-bottom: 0 !important;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+.header-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        10px
+        24px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 24px;
+    }
+
+.logo {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      text-decoration: none;
+
+      white-space: nowrap;
+    }
+
+.logo-icon {
+      width: 32px;
+      height: 32px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 9px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #3d78b6,
+          #245b96
+        );
+
+      color: #ffffff;
+
+      font-size: 16px;
+      font-weight: 800;
+
+      box-shadow:
+        0 3px 8px
+        rgba(43, 92, 150, 0.18);
+    }
+
+.logo-text {
+      font-size: 22px;
+      letter-spacing: -0.6px;
+    }
+
+.logo-tool {
+      color: #334155;
+
+      font-family:
+        "Brush Script MT",
+        "Brush Script Std",
+        cursive;
+
+      font-size: 32px;
+
+      font-weight: 400;
+
+      letter-spacing: 0;
+
+      transition:
+        color 0.2s ease;
+    }
+
+.logo-nest {
+      color: #059669;
+
+      font-weight: 800;
+    }
+
+.header-right {
+      width: 100%;
+
+      max-width: 570px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: flex-end;
+
+      gap: 10px;
+    }
+
+.header-search {
+      width: 100%;
+      max-width: 312px;
+      position: relative;
+    }
+
+.header-search input {
+      width: 100%;
+      height: 40px;
+
+      padding:
+        0
+        44px
+        0
+        15px;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #344256;
+
+      font-size: 14px;
+
+      outline: none;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+.header-search input::placeholder {
+      color: #8996a5;
+    }
+
+.header-search input:focus {
+      background: #ffffff;
+
+      border-color: #7fa6cf;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.08);
+    }
+
+.search-icon {
+      position: absolute;
+
+      right: 14px;
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      color: #718096;
+
+      font-size: 19px;
+
+      pointer-events: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+.theme-toggle {
+      width: 40px;
+      height: 40px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 0;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #526273;
+
+      cursor: pointer;
+
+      font-size: 18px;
+
+      line-height: 1;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+.theme-toggle:hover {
+      background: #edf2f7;
+
+      border-color: #c7d3df;
+
+      color: #059669;
+    }
+
+.theme-toggle:active {
+      transform: scale(0.94);
+    }
+
+.theme-toggle:focus-visible {
+      outline: none;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.15);
+    }
+
+.category-nav {
+      background: #ffffff;
+
+      border-bottom:
+        1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+.category-nav-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        0
+        24px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 30px;
+
+      overflow-x: auto;
+    }
+
+.category-link {
+      position: relative;
+
+      display: flex;
+
+      align-items: center;
+
+      height: 46px;
+
+      padding: 0;
+
+      margin: 0;
+
+      border: 0;
+
+      background: transparent;
+
+      appearance: none;
+
+      font-family: inherit;
+
+      font-size: 14px;
+
+      font-weight: inherit;
+
+      line-height: normal;
+
+      color: #667588;
+
+      text-decoration: none;
+
+      white-space: nowrap;
+
+      cursor: pointer;
+
+      outline: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+.category-link:focus-visible {
+      outline: 2px solid #059669;
+
+      outline-offset: 2px;
+    }
+
+.category-link:hover {
+      color: #2f67a3;
+    }
+
+.category-link.active {
+      color: #263548;
+
+      font-weight: 600;
+    }
+
+.category-link.active::after {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      height: 3px;
+
+      background: #059669;
+
+      border-radius:
+        3px
+        3px
+        0
+        0;
+    }
+
+html.dark-mode .top-header {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+html.dark-mode .logo-tool {
+      color: #d7dee7;
+    }
+
+html.dark-mode .logo-nest {
+      color: #5b95c9;
+    }
+
+html.dark-mode .header-search input {
+      background: #202731;
+      border-color: #343f4c;
+      color: #edf2f7;
+    }
+
+html.dark-mode .header-search input::placeholder {
+      color: #8996a5;
+    }
+
+html.dark-mode .header-search input:focus {
+      background: #252d38;
+      border-color: #5f8fbd;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(77, 138, 196, 0.14);
+    }
+
+html.dark-mode .search-icon {
+      color: #9aa8b7;
+    }
+
+html.dark-mode .theme-toggle {
+      background: #202731;
+      border-color: #343f4c;
+      color: #d7e1eb;
+    }
+
+html.dark-mode .theme-toggle:hover {
+      background: #29323d;
+      border-color: #465463;
+      color: #7eb0df;
+    }
+
+html.dark-mode .category-nav {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+html.dark-mode .category-link {
+      color: #9ba8b7;
+    }
+
+html.dark-mode .category-link:hover {
+      color: #6fa2d2;
+    }
+
+html.dark-mode .category-link.active {
+      color: #e8eef5;
+     background: transparent !important;}
+
+@media (prefers-color-scheme: dark) {
+html:not(.light-mode) .top-header {
+        background: #171d25;
+        border-bottom-color: #293340;
+      }
+
+html:not(.light-mode) .logo-tool {
+        color: #d7dee7;
+      }
+
+html:not(.light-mode) .logo-nest {
+        color: #5b95c9;
+      }
+
+html:not(.light-mode) .header-search input {
+        background: #202731;
+        border-color: #343f4c;
+        color: #edf2f7;
+      }
+
+html:not(.light-mode) .header-search input:focus {
+        background: #252d38;
+        border-color: #5f8fbd;
+      }
+
+html:not(.light-mode) .search-icon {
+        color: #9aa8b7;
+      }
+
+html:not(.light-mode) .theme-toggle {
+        background: #202731;
+        border-color: #343f4c;
+        color: #d7e1eb;
+      }
+
+html:not(.light-mode) .category-nav {
+        background: #171d25;
+        border-bottom-color: #293340;
+      }
+
+html:not(.light-mode) .category-link {
+        color: #9ba8b7;
+      }
+
+html:not(.light-mode) .category-link:hover {
+        color: #6fa2d2;
+      }
+
+html:not(.light-mode) .category-link.active {
+        color: #e8eef5;
+      }
+}
+
+@media (max-width: 700px) {
+.header-inner {
+        padding: 9px 16px;
+      }
+
+.header-right {
+        max-width: 260px;
+      }
+
+.header-search {
+        max-width: none;
+      }
+
+.category-nav-inner {
+        padding:
+          0
+          16px;
+
+        gap: 22px;
+      }
+}
+
+@media (max-width: 550px) {
+.header-inner {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 10px;
+
+        padding:
+          10px
+          16px;
+      }
+
+.logo {
+        align-self: flex-start;
+      }
+
+.header-right {
+        max-width: none;
+
+        width: 100%;
+      }
+
+.header-search {
+        max-width: none;
+      }
+}
+
+.top-header {
+  background: rgba(255,255,255,0.96);
+  border-bottom: 1px solid #dce6f0;
+  box-shadow: 0 2px 10px rgba(38,53,72,0.035);
+}
+
+.header-inner {
+  max-width: 1200px;
+  padding: 12px 24px;
+  gap: 28px;
+}
+
+.logo { gap: 10px; }
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #059669 0%, #059669 100%);
+  box-shadow: 0 5px 14px rgba(75,142,208,0.20);
+}
+
+.logo-text { line-height: 1; }
+
+.logo-tool { color: #263548; }
+
+.logo-nest {
+  color: #059669;
+  background: linear-gradient(135deg, #059669, #059669);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header-right {
+  max-width: 590px;
+  gap: 10px;
+}
+
+.header-search { max-width: 330px; }
+
+.header-search input {
+  height: 42px;
+  border-color: #d7e2ec;
+  border-radius: 11px;
+  background: #f8fafc;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.75);
+}
+
+.header-search input:focus {
+  background: #ffffff;
+  border-color: #91b3d5;
+  box-shadow: 0 0 0 3px rgba(75,142,208,0.09), 0 4px 12px rgba(38,53,72,0.05);
+}
+
+.theme-toggle {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  border-color: #d7e2ec;
+  background: #f8fafc;
+  box-shadow: 0 2px 8px rgba(38,53,72,0.04);
+}
+
+.theme-toggle:hover {
+  background: #f0f5fa;
+  border-color: #b9cce0;
+  color: #059669;
+}
+
+.category-nav {
+  background: rgba(255,255,255,0.94);
+  border-bottom: 1px solid #e1e8ef;
+}
+
+.category-nav-inner {
+  max-width: 1200px;
+  min-height: 58px;
+  padding: 8px 24px;
+  gap: 8px;
+}
+
+.category-link {
+  height: 38px;
+  padding: 0 15px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: #667588;
+  font-size: 13px;
+  font-weight: 600;
+  transition: color .2s ease, background .2s ease, border-color .2s ease, transform .2s ease;
+}
+
+.category-link:hover {
+  color: #059669;
+  background: #f3f7fb;
+  border-color: #e0e9f2;
+}
+
+.category-link.active {
+  color: #285b91;
+  font-weight: 700;
+  background: linear-gradient(135deg, #edf5fd 0%, #f2effc 100%);
+  border-color: #d8e4f1;
+  box-shadow: 0 2px 7px rgba(50,107,168,0.06);
+}
+
+.category-link.active::after { display: none; }
+
+.category-link:focus-visible {
+  outline: 2px solid #78a7d2;
+  outline-offset: 2px;
+}
+
+html.dark-mode .top-header,
+html.dark-mode .category-nav {
+  background: #151b23;
+  border-color: #2a3542;
+  box-shadow: none;
+}
+
+html.dark-mode .logo-tool { color: #edf2f7; }
+
+html.dark-mode .logo-nest {
+  color: #76a9d8;
+  background: none;
+  -webkit-text-fill-color: #76a9d8;
+}
+
+html.dark-mode .header-search input,
+html.dark-mode .theme-toggle {
+  background: #1d2631;
+  border-color: #344252;
+  color: #dce5ee;
+}
+
+html.dark-mode .header-search input:focus {
+  background: #202b37;
+  border-color: #5c86ad;
+  box-shadow: 0 0 0 3px rgba(111,162,210,0.10);
+}
+
+html.dark-mode .theme-toggle:hover {
+  background: #25313e;
+  border-color: #46586b;
+  color: #8db7dd;
+}
+
+html.dark-mode .category-link { color: #9aa9b8; }
+
+html.dark-mode .category-link:hover {
+  color: #9fc5e8;
+  background: #202a35;
+  border-color: #344252;
+}
+
+html.dark-mode .category-link.active {
+  color: #d6e7f6;
+  
+  border-color: #3c4e61;
+ background: transparent !important;}
+
+@media (max-width: 700px) {
+.header-inner { padding: 10px 16px; }
+
+.category-nav-inner {
+    min-height: 54px;
+    padding: 7px 16px;
+    gap: 6px;
+  }
+
+.category-link { height: 36px; padding: 0 13px; }
+}
+
+.top-header {
+  padding: 14px 24px !important;
+  background: rgba(255,255,255,.96) !important;
+}
+
+.header-inner {
+  min-height: 68px !important;
+  gap: 34px !important;
+}
+
+.logo {
+  gap: 12px !important;
+}
+
+.logo-icon {
+  width: 46px !important;
+  height: 46px !important;
+  border-radius: 13px !important;
+  font-size: 22px !important;
+  box-shadow: 0 7px 18px rgba(65,105,170,.20) !important;
+}
+
+.logo-text {
+  font-size: 21px !important;
+  letter-spacing: -.35px !important;
+}
+
+.header-right {
+  gap: 12px !important;
+}
+
+.header-search {
+  min-height: 46px !important;
+  border-radius: 12px !important;
+  border: 1px solid #d9e3ee !important;
+  box-shadow: 0 5px 16px rgba(43,72,105,.08) !important;
+  background: #fff !important;
+}
+
+.header-search input {
+  font-size: 14px !important;
+}
+
+.search-icon {
+  font-size: 21px !important;
+  color: #5f7fa2 !important;
+}
+
+.theme-toggle {
+  width: 46px !important;
+  height: 46px !important;
+  border-radius: 12px !important;
+  border: 1px solid #d9e3ee !important;
+  background: linear-gradient(145deg,#ffffff,#f4f7fb) !important;
+  box-shadow: 0 5px 16px rgba(43,72,105,.08) !important;
+  font-size: 18px !important;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(43,72,105,.12) !important;
+}
+
+html.dark-mode .top-header {
+  background: rgba(19,25,33,.97) !important;
+  border-bottom-color: #2d3947 !important;
+}
+
+html.dark-mode .header-search,
+html.dark-mode .theme-toggle {
+  background: #171e27 !important;
+  border-color: #344252 !important;
+  box-shadow: 0 5px 16px rgba(0,0,0,.18) !important;
+}
+
+html.dark-mode .search-icon { color: #86a8ca !important; }
+
+@media (max-width: 700px) {
+.top-header { padding: 10px 16px !important; }
+
+.header-inner { gap: 16px !important; }
+
+.logo-text { font-size: 19px !important; }
+
+.header-search { min-height: 42px !important; }
+
+.theme-toggle { width: 42px !important; height: 42px !important; }
+
+.logo-icon { width: 42px !important; height: 42px !important; }
+}
+
+.top-header {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border-bottom: 1px solid #dbe7f3;
+  box-shadow: 0 3px 16px rgba(55, 105, 160, .07);
+}
+
+.logo-icon {
+  background: linear-gradient(135deg, #059669, #059669) !important;
+  box-shadow: 0 7px 18px rgba(92, 96, 220, .22);
+}
+
+.header-search {
+  border: 1px solid #cfdff0 !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(67, 110, 160, .08);
+}
+
+.header-search:focus-within {
+  border-color: #8b7cf6 !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, .10), 0 5px 16px rgba(67, 110, 160, .10);
+}
+
+.theme-toggle {
+  background: linear-gradient(135deg, #eef5ff, #f4efff) !important;
+  border: 1px solid #d3ddf0 !important;
+  color: #5367a6 !important;
+  box-shadow: 0 4px 14px rgba(67, 110, 160, .08);
+}
+
+.theme-toggle:hover {
+  background: linear-gradient(135deg, #e5efff, #e8f8f1) !important;
+  border-color: #b9c8e6 !important;
+}
+
+.category-nav {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e1e8f0 !important;
+}
+
+.category-link {
+  border-radius: 9px !important;
+  color: #566477 !important;
+}
+
+.category-link:hover {
+  background: #f1f6fc !important;
+  color: #3f6fa7 !important;
+}
+
+.category-link.active {
+  background: linear-gradient(135deg, #edf5ff, #f3efff) !important;
+  color: #4b5fa4 !important;
+  box-shadow: inset 0 0 0 1px #d9e1f2;
+}
+
+html.dark-mode .top-header {
+  background: linear-gradient(180deg, #171d25 0%, #151c25 100%) !important;
+  border-bottom-color: #2d3948 !important;
+}
+
+html.dark-mode .header-search {
+  background: #1d2631 !important;
+  border-color: #3a4a5d !important;
+}
+
+html.dark-mode .theme-toggle {
+  background: linear-gradient(135deg, #24382f, #26352f) !important;
+  border-color: #43536a !important;
+  color: #b5c7f2 !important;
+}
+
+html.dark-mode .category-nav {
+  background: #171d25 !important;
+  border-bottom-color: #2d3948 !important;
+}
+
+html.dark-mode .category-link { color: #aab7c7 !important; }
+
+html.dark-mode .category-link:hover { background: #202b38 !important; color: #c4d5ed !important; }
+
+html.dark-mode .category-link.active {  color: #b8c9f1 !important; border-color: #43536a !important;  background: transparent !important;}
+
+.header-search input {
+  border: 1px solid #d8e0e8 !important;
+  border-bottom: 1px solid #d8e0e8 !important;
+  box-shadow: none;
+}
+
+.header-search input:focus {
+  border: 1px solid #7fa6cf !important;
+  border-bottom: 1px solid #7fa6cf !important;
+  box-shadow: 0 0 0 3px rgba(50,107,168,0.08) !important;
+}
+
+html.dark-mode .header-search input {
+  border: 1px solid #343f4c !important;
+  border-bottom: 1px solid #343f4c !important;
+}
+
+html.dark-mode .header-search input:focus {
+  border: 1px solid #5f8fbd !important;
+  border-bottom: 1px solid #5f8fbd !important;
+}
+
+.logo-icon {
+  position: relative !important;
+  overflow: hidden !important;
+  background: #eef5ff !important;
+  box-shadow: 0 6px 16px rgba(55, 105, 180, .14) !important;
+}
+
+.logo-shape { position:absolute; display:block; }
+
+.logo-bar { width: 26px; height: 9px; left: 10px; top: 8px; border-radius: 5px; background: linear-gradient(90deg,#059669 0%,#059669 100%); }
+
+.logo-stem { width: 9px; height: 18px; left: 13px; top: 19px; border-radius: 3px 3px 5px 5px; background: linear-gradient(180deg,#059669 0%,#059669 100%); }
+
+.logo-dot { width: 8px; height: 8px; right: 8px; top: 20px; border-radius: 50%; background: #27b96f; }
+
+.logo-block { width: 9px; height: 10px; right: 8px; bottom: 7px; border-radius: 3px; background: linear-gradient(135deg,#ffb51b,#ff9f22); }
+
+.logo-nest {
+  background: linear-gradient(135deg,#059669 0%,#059669 55%,#059669 100%) !important;
+  -webkit-background-clip:text !important; background-clip:text !important; -webkit-text-fill-color:transparent !important;
+}
+
+.logo-tool { color:#263548 !important; }
+
+.logo-icon {
+  position: relative !important; overflow: hidden !important; flex: 0 0 46px !important;
+  width: 46px !important; height: 46px !important; border-radius: 13px !important;
+  background: #eef5ff !important; color: transparent !important;
+  box-shadow: 0 6px 16px rgba(55,105,180,.14) !important;
+}
+
+.logo-icon .logo-shape { position:absolute; display:block; }
+
+.logo-bar { width:27px; height:9px; left:10px; top:9px; border-radius:6px; background:linear-gradient(90deg,#059669 0%,#059669 100%); }
+
+.logo-stem { width:10px; height:19px; left:13px; top:20px; border-radius:3px 3px 5px 5px; background:linear-gradient(180deg,#059669 0%,#059669 100%); }
+
+.logo-dot { width:9px; height:9px; right:9px; top:21px; border-radius:50%; background:#27b96f; }
+
+.logo-block { width:10px; height:11px; right:9px; bottom:8px; border-radius:3px; background:linear-gradient(135deg,#ffb51b,#ff9f22); }
+
+.logo-nest {
+  background:linear-gradient(135deg,#059669 0%,#059669 55%,#059669 100%) !important;
+  -webkit-background-clip:text !important; background-clip:text !important;
+  -webkit-text-fill-color:transparent !important; color:transparent !important;
+}
+
+.logo-tool { color:#263548 !important; }
+
+.logo-tool, .logo-nest {
+  font-family: "Montserrat", Arial, Helvetica, sans-serif !important;
+  font-style: normal !important;
+}
+
+.logo-tool { font-weight: 700 !important; }
+
+.logo-nest { font-weight: 800 !important; }
+
+.top-header {
+  padding: 0 !important;
+}
+
+.header-inner {
+  min-height: 62px !important;
+  padding: 7px 24px !important;
+  gap: 24px !important;
+}
+
+.logo {
+  padding: 2px 7px 2px 2px !important;
+  border-radius: 11px !important;
+  gap: 8px !important;
+}
+
+.logo-icon {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+  font-size: 18px !important;
+}
+
+.logo-tool {
+  font-size: 29px !important;
+}
+
+.logo-text {
+  font-size: 20px !important;
+}
+
+.header-right {
+  gap: 9px !important;
+}
+
+.header-search {
+  max-width: 300px !important;
+}
+
+.header-search input {
+  height: 38px !important;
+  border-radius: 9px !important;
+}
+
+.theme-toggle {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 9px !important;
+  font-size: 17px !important;
+}
+
+@media (max-width: 700px) {
+.header-inner { padding: 6px 16px !important; min-height: 58px !important; }
+
+.logo-icon { width: 36px !important; height: 36px !important; }
+
+.logo-tool { font-size: 27px !important; }
+
+.header-search input { height: 36px !important; }
+
+.theme-toggle { width: 36px !important; height: 36px !important; }
+}
+
+.top-header {
+  background: linear-gradient(135deg, #e7f8f1 0%, #e8f8f1 52%, #f1fbf6 100%);
+  border-bottom: 1px solid #c8d8eb;
+  box-shadow: 0 5px 22px rgba(65, 88, 135, 0.12);
+}
+
+.header-inner {
+  min-height: 82px;
+}
+
+.logo {
+  padding: 5px 9px 5px 5px;
+  border-radius: 14px;
+  transition: background 0.2s ease;
+}
+
+.logo:hover {
+  background: rgba(255,255,255,0.42);
+}
+
+.logo-icon {
+  background: linear-gradient(135deg, #059669 0%, #059669 52%, #059669 100%);
+  box-shadow: 0 8px 20px rgba(76, 91, 190, 0.28);
+}
+
+.header-search {
+  filter: drop-shadow(0 3px 9px rgba(67, 88, 132, 0.08));
+}
+
+.header-search input {
+  background: rgba(255,255,255,0.96);
+  border: 1px solid #bfd2e8;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.header-search input:focus {
+  border-color: #708fd0;
+  box-shadow: 0 0 0 3px rgba(92,113,201,0.15), 0 5px 16px rgba(66,88,135,0.12);
+}
+
+.theme-toggle {
+  background: linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%);
+  border: 1px solid #c1cde5;
+  box-shadow: 0 5px 14px rgba(69,84,139,0.12);
+  color: #5b57a5;
+}
+
+.theme-toggle:hover {
+  background: linear-gradient(135deg, #f7fbf9 0%, #e2f8ee 100%);
+  border-color: #9faed4;
+  transform: translateY(-1px);
+}
+
+.category-nav {
+  background: linear-gradient(90deg, #effcf6 0%, #ecfdf5 50%, #f1fbf6 100%);
+  border-bottom: 1px solid #d2ddec;
+  box-shadow: 0 2px 10px rgba(70, 89, 133, 0.06);
+}
+
+.category-nav-inner {
+  min-height: 58px;
+}
+
+.category-link {
+  border: 1px solid transparent;
+  border-radius: 9px;
+  padding: 8px 14px;
+  transition: all 0.2s ease;
+}
+
+.category-link:hover {
+  background: rgba(255,255,255,0.62);
+  border-color: #d0dced;
+}
+
+.category-link.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #059669 0%, #059669 55%, #059669 100%);
+  border-color: transparent;
+  box-shadow: 0 5px 14px rgba(76,91,183,0.23);
+}
+
+html.dark-mode .top-header {
+  background: linear-gradient(135deg, #183b2d 0%, #1d382f 52%, #21362f 100%);
+  border-bottom-color: #3a4d66;
+}
+
+html.dark-mode .logo:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+html.dark-mode .header-search input {
+  background: #101a26;
+  border-color: #465c74;
+}
+
+html.dark-mode .theme-toggle {
+  background: linear-gradient(135deg, #203b30 0%, #26372f 100%);
+  border-color: #50627b;
+  color: #c0baff;
+}
+
+html.dark-mode .category-nav {
+  background: linear-gradient(90deg, #132c21 0%, #192b24 52%, #202d28 100%);
+  border-bottom-color: #344457;
+}
+
+html.dark-mode .category-link:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: #40536a;
+}
+
+html.dark-mode .category-link.active {
+  
+ background: transparent !important;}
+
+@media (max-width: 700px) {
+.header-inner {
+    min-height: 74px;
+  }
+}
+
+.top-header {
+  border-bottom: 0 !important;
+}
+
+.header-search,
+.header-search input {
+  border-bottom: 0 !important;
+}
+
+.header-search input {
+  border: 1px solid #d8e0e8 !important;
+  box-shadow: none !important;
+}
+
+.header-search input:focus {
+  border: 1px solid #7fa6cf !important;
+  box-shadow: 0 0 0 3px rgba(50,107,168,0.08) !important;
+}
+
+html.dark-mode .header-search input {
+  border: 1px solid #343f4c !important;
+  box-shadow: none !important;
+}
+
+html.dark-mode .header-search input:focus {
+  border: 1px solid #5f8fbd !important;
+  box-shadow: 0 0 0 3px rgba(95,143,189,0.10) !important;
+}
+
+.header-search {
+  border: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  background: transparent !important;
+  min-height: 0 !important;
+}
+
+.header-search input {
+  border: 1px solid #d8e0e8 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: #f8fafc !important;
+}
+
+.header-search:focus-within {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.header-search input:focus {
+  border: 1px solid #7fa6cf !important;
+  box-shadow: none !important;
+}
+
+html.dark-mode .header-search {
+  border: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  background: transparent !important;
+}
+
+html.dark-mode .header-search input {
+  border: 1px solid #343f4c !important;
+  box-shadow: none !important;
+  background: #202731 !important;
+}
+
+html.dark-mode .header-search input:focus {
+  border: 1px solid #5f8fbd !important;
+  box-shadow: none !important;
+}
+</style>
+<style id="toolnest-dark-logo-fix">
+/* Ensure the "Tool" part of the ToolNest logo stays visible in dark mode. */
+html.dark-mode .logo-tool { color: #edf2f7 !important; }
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .logo-tool { color: #edf2f7 !important; }
+}
+</style>
+
+<style id="toolnest-unified-footer">
+/* ToolNest unified compact footer — matches home.html */
+footer {
+  background: #172333 !important;
+  border-top: 1px solid #263548 !important;
+}
+.footer-inner {
+  width: 100% !important;
+  max-width: 1240px !important;
+  margin: 0 auto !important;
+  padding: 14px 28px !important;
+  display: block !important;
+  color: #aeb9c7 !important;
+  font-size: 13px !important;
+  box-sizing: border-box !important;
+}
+.footer-bottom {
+  width: 100% !important;
+  padding-top: 0 !important;
+  border-top: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 24px !important;
+  color: #8f9cac !important;
+  box-sizing: border-box !important;
+}
+.footer-links {
+  display: flex !important;
+  align-items: center !important;
+  gap: 24px !important;
+}
+.footer-links a {
+  color: #aeb9c7 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+  white-space: nowrap !important;
+}
+.footer-links a:hover {
+  color: #ffffff !important;
+}
+@media (max-width: 700px) {
+  .footer-inner { padding: 14px 20px !important; }
+  .footer-bottom {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .footer-bottom-links {
+    flex-wrap: wrap !important;
+    gap: 7px 18px !important;
+  }
+}
+html.dark-mode footer {
+  background: #101821 !important;
+  border-top-color: #293340 !important;
+}
+html.dark-mode .footer-inner { color: #8d9aaa !important; }
+html.dark-mode .footer-links a { color: #8d9aaa !important; }
+html.dark-mode .footer-links a:hover { color: #ffffff !important; }
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) footer {
+    background: #101821 !important;
+    border-top-color: #293340 !important;
+  }
+  html:not(.light-mode) .footer-inner { color: #8d9aaa !important; }
+  html:not(.light-mode) .footer-links a { color: #8d9aaa !important; }
+}
+</style>
+
+<style>
+
+/* ToolNest desktop footer - vertical columns */
+@media (min-width: 651px) {
+  .footer-main {
+    display: grid !important;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr !important;
+    gap: 48px !important;
+    align-items: start !important;
+    text-align: left !important;
+  }
+
+  .footer-column {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .footer-column h3,
+  .footer-column h4 {
+    margin: 0 0 14px !important;
+  }
+
+  .footer-column a {
+    display: block !important;
+    margin: 6px 0 !important;
+  }
+
+  .footer-brand {
+    max-width: 300px !important;
+  }
+
+  .footer-bottom {
+    margin-top: 34px !important;
+    padding-top: 20px !important;
+  }
+}
+
+</style>
+<style>
+
+/* ToolNest footer concept #8 — desktop only. Mobile footer is untouched. */
+@media (min-width: 651px) {
+  .toolnest-hybrid-footer {
+    margin-top: 40px;
+    padding: 46px 28px 22px;
+    background: #ffffff;
+    border-top: 1px solid #e5e9ef;
+  }
+
+  .toolnest-hybrid-footer .footer-main {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: grid !important;
+    grid-template-columns: minmax(260px, 1.5fr) repeat(3, minmax(130px, 1fr));
+    gap: 56px;
+    align-items: start;
+    text-align: left;
+  }
+
+  .toolnest-hybrid-footer .footer-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .toolnest-hybrid-footer .footer-logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: #344154;
+    margin-bottom: 10px;
+  }
+
+  .toolnest-hybrid-footer .footer-brand p {
+    margin: 0 0 7px;
+    color: #344154;
+    line-height: 1.6;
+  }
+
+  .toolnest-hybrid-footer .footer-brand .footer-description {
+    color: #748094;
+    max-width: 280px;
+  }
+
+  .toolnest-hybrid-footer h4 {
+    margin: 3px 0 13px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #344154;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+
+  .toolnest-hybrid-footer .footer-column a {
+    margin: 0 0 9px;
+    color: #667085;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .toolnest-hybrid-footer .footer-column a:hover {
+    color: #344154;
+  }
+
+  .toolnest-hybrid-footer .footer-bottom {
+    max-width: 1240px;
+    margin: 36px auto 0;
+    padding-top: 18px;
+    border-top: 1px solid #e5e9ef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    color: #7a8494;
+    font-size: 13px;
+  }
+
+  .toolnest-hybrid-footer .footer-bottom-links {
+    display: flex;
+    gap: 18px;
+  }
+
+  .toolnest-hybrid-footer .footer-bottom-links a {
+    color: #7a8494;
+    text-decoration: none;
+  }
+}
+
+</style>
+<style>
+
+/* ToolNest hybrid footer — dark desktop version */
+@media (min-width: 651px) {
+  .toolnest-hybrid-footer {
+    background: #1f2937 !important;
+    border-top-color: #374151 !important;
+  }
+
+  .toolnest-hybrid-footer .footer-logo,
+  .toolnest-hybrid-footer .footer-brand p,
+  .toolnest-hybrid-footer h4 {
+    color: #f3f4f6 !important;
+  }
+
+  .toolnest-hybrid-footer .footer-brand .footer-description,
+  .toolnest-hybrid-footer .footer-column a,
+  .toolnest-hybrid-footer .footer-bottom {
+    color: #b8c0cc !important;
+  }
+
+  .toolnest-hybrid-footer .footer-column a:hover {
+    color: #ffffff !important;
+  }
+
+  .toolnest-hybrid-footer .footer-bottom {
+    border-top-color: #374151 !important;
+  }
+
+  .toolnest-hybrid-footer .footer-bottom-links a {
+    color: #b8c0cc !important;
+  }
+
+  .toolnest-hybrid-footer .footer-bottom-links a:hover {
+    color: #ffffff !important;
+  }
+}
+
+</style>
+<style>
+
+/* ToolNest mobile header cleanup — hide search and dark mode controls */
+@media (max-width: 650px) {
+  #toolSearch,
+  .search-area,
+  .search-container,
+  .search-box,
+  .dark-mode-toggle,
+  .dark-mode-button,
+  #darkModeToggle,
+  #darkModeBtn,
+  [aria-label*="dark" i],
+  [title*="dark" i] {
+    display: none !important;
+  }
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+
+<style id="mobile-header-hide-controls">
+@media screen and (max-width: 650px) {
+  .header-right {
+    display: none !important;
+  }
+}
+</style>
+<style>
+
+/* Mobile footer alignment and text color only */
+@media screen and (max-width: 650px) {
+  .footer,
+  .footer-content {
+    text-align: center !important;
+  }
+
+  .footer,
+  .footer p,
+  .footer a,
+  .footer-content,
+  .footer-content p,
+  .footer-content a {
+    color: #fff !important;
+  }
+}
+
+</style>
+<style>
+/* ToolNest PDF tool navigation — preview only.
+   Kept inside .content so the existing ad column/grid is untouched. */
+.tn-tool-category-bar {
+  width: 100%;
+  margin: 0 0 22px;
+}
+.tn-tool-category-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: 20px;
+  row-gap: 14px;
+  width: 100%;
+}
+.tn-tool-category-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 28px;
+  padding: 3px 6px 3px 18px;
+  color: #4d5a68;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  text-decoration: none;
+  white-space: normal;
+  transition: color .18s ease, background .18s ease;
+}
+.tn-tool-category-link::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c8d0d8;
+  transform: translateY(-50%);
+  transition: background .18s ease, transform .18s ease;
+}
+.tn-tool-category-link:hover {
+  color: #8f2630;
+  background: #fff7f7;
+  border-radius: 5px;
+}
+.tn-tool-category-link:hover::before {
+  background: #b52b38;
+  transform: translateY(-50%) scale(1.15);
+}
+.tn-tool-category-link.active {
+  color: #8f2630;
+  font-weight: 700;
+}
+.tn-tool-category-link.active::before {
+  width: 7px;
+  height: 7px;
+  background: #b52b38;
+}
+
+/* Dark mode: keep tool navigation text readable */
+html.dark-mode .tn-tool-category-link {
+  color: #d7dee7;
+}
+html.dark-mode .tn-tool-category-link:hover {
+  color: #f08a92;
+  background: #302326;
+}
+html.dark-mode .tn-tool-category-link.active {
+  color: #f08a92;
+ background: transparent !important;}
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .tn-tool-category-link {
+    color: #d7dee7;
+  }
+  html:not(.light-mode) .tn-tool-category-link:hover {
+    color: #f08a92;
+    background: #302326;
+  }
+  html:not(.light-mode) .tn-tool-category-link.active {
+    color: #f08a92;
+  }
+}
+@media (max-width: 700px) {
+  .tn-tool-category-bar { display: none; }
+}
+</style>
+
+<style>
+/* Ad position correction — desktop only. Keep the existing ad markup untouched. */
+@media (min-width: 701px) {
+  .page-layout > .content {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .page-layout > .ad-column {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+  }
+  .tn-ad-left-column {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+  .tn-ad-left-column + .ad-column {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+  }
+}
+</style>
+<style id="toolnest-category-link-color-reference">
+/* Match reference page: lighter link text under the second header */
+.tn-tool-category-link { color: #4d5a68 !important; }
+html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
+</style>
+
+<style id="desktop-footer-links-hidden">
+@media (min-width: 651px) {
+  .footer-content a,
+  .footer-links a,
+  .footer-navigation a,
+  .footer-nav a {
+    display: none !important;
+  }
+}
+</style>
+
+
+<style id="desktop-hide-duplicate-footer-links">
+@media (min-width: 651px) {
+  .footer-bottom-links {
+    display: none !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-mobile-footer-replacement">
+@media screen and (max-width: 650px) {
+  .mobile-footer {
+    display: block !important;
+    background: #111827;
+    color: #f3f4f6;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px 16px;
+  }
+
+  .mobile-footer-columns {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .mobile-footer-column {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mobile-footer-column h3 {
+    margin: 0 0 12px;
+    font-size: 14px;
+    line-height: 1.3;
+    font-weight: 700;
+  }
+
+  .mobile-footer-column a {
+    display: block;
+    margin: 4px 0;
+    color: #d1d5db;
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .mobile-footer-column a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+}
+
+@media screen and (min-width: 651px) {
+  .mobile-footer {
+    display: none !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-mobile-footer-link-alignment">
+@media screen and (max-width: 650px) {
+  .mobile-footer-column {
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .mobile-footer-column h3 {
+    text-align: center;
+  }
+
+  .mobile-footer-column a {
+    text-align: left;
+  }
+}
+</style>
+
+
+<style id="toolnest-mobile-footer-copyright">
+@media screen and (max-width: 650px) {
+  .mobile-footer-copyright {
+    
+    color: #9ca3af;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+}
+
+@media screen and (min-width: 651px) {
+  .mobile-footer-copyright {
+    display: none !important;
+  }
+}
+</style>
+
+
+
+
+
+<style id="toolnest-mobile-footer-last-fix">
+@media screen and (max-width: 650px) {
+  .mobile-footer-column h3 {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .mobile-footer-copyright {
+    background: #111827 !important;
+    color: #f3f4f6 !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-mobile-main-left-alignment">
+@media screen and (max-width: 650px) {
+  /* Main content only: keep the mobile footer and header behavior unchanged. */
+  .page-content {
+    text-align: left !important;
+  }
+
+  .page-content h1,
+  .page-content h2,
+  .page-content h3,
+  .page-content h4,
+  .page-content p,
+  .page-content li,
+  .page-content label {
+    text-align: left !important;
+  }
+
+  .page-content .tool-card,
+  .page-content .tool-card * {
+    text-align: left !important;
+  }
+
+  .page-content .tool-card {
+    align-items: flex-start !important;
+  }
+}
+</style>
+
+
+
+
+
+<style id="toolnest-clean-mobile-footer-background">
+@media screen and (max-width: 650px) {
+  .mobile-footer-copyright {
+    background: #111827;
+  }
+}
+</style>
+
+
+<style id="toolnest-desktop-tool-category-left">
+@media (min-width: 651px) {
+  .tn-tool-category-list {
+    justify-items: start !important;
+  }
+  .tn-tool-category-link {
+    justify-content: flex-start !important;
+    text-align: left !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-desktop-tool-category-neat-rows">
+@media (min-width: 651px) {
+  .tn-tool-category-list {
+    align-items: stretch !important;
+  }
+  .tn-tool-category-link {
+    min-height: 42px !important;
+    height: 42px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    line-height: 1.25 !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-desktop-category-align-dot">
+@media (min-width: 651px) {
+  .tn-tool-category-link {
+    align-items: flex-start !important;
+    padding-top: 0 !important;
+    line-height: 1.25 !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-desktop-category-first-line-dot">
+@media (min-width: 651px) {
+  .tn-tool-category-link {
+    display: grid !important;
+    grid-template-columns: 12px minmax(0, 1fr) !important;
+    align-items: start !important;
+    justify-content: start !important;
+    text-align: left !important;
+    column-gap: 8px !important;
+  }
+  .tn-tool-category-link .tn-tool-category-dot {
+    align-self: start !important;
+    margin-top: 0 !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-desktop-category-dot-first-line-correct">
+@media (min-width: 651px) {
+  .tn-tool-category-link {
+    display: grid !important;
+    grid-template-columns: 12px minmax(0, 1fr) !important;
+    align-items: start !important;
+    justify-content: start !important;
+    text-align: left !important;
+    column-gap: 8px !important;
+    line-height: 1.25 !important;
+  }
+  .tn-tool-category-link .tn-tool-category-dot {
+    align-self: start !important;
+    margin-top: 0.35em !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-desktop-category-dot-first-line-final">
+@media (min-width: 651px) {
+  .tn-tool-category-link {
+    display: block !important;
+    text-align: left !important;
+    padding-left: 18px !important;
+  }
+  .tn-tool-category-link::before {
+    top: 6px !important;
+    transform: none !important;
+  }
+  .tn-tool-category-link.active::before {
+    top: 5.5px !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-shared-upload-preview">
+.tn-shared-upload-area {
+  width: 100%;
+  min-height: 390px;
+  padding: 30px;
+  position: relative;
+  display: block;
+  text-align: center;
+  background: #f4f7fb;
+  border: 2px dashed #8da9c5;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+.tn-shared-upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 320px;
+  padding-top: 6px;
+}
+.tn-shared-upload-button {
+  position: sticky;
+  top: -26px;
+  margin-top: -30px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 280px;
+  min-height: 72px;
+  padding: 0 36px;
+  border: none;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #059669 0%, #059669 55%, #059669 100%);
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(50, 107, 168, 0.30);
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.tn-shared-upload-button:hover {
+  background: #285b91;
+  box-shadow: 0 13px 30px rgba(50, 107, 168, 0.36);
+}
+@media (max-width: 700px) {
+  .tn-shared-upload-area {
+    min-height: 390px;
+  }
+}
+</style>
+
+
+
+<style id="toolnest-desktop-category-dot-contrast">
+@media (min-width: 651px) {
+  html:not(.dark-mode) .tn-tool-category-link::before {
+    background: #6f7b88 !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-desktop-light-active-tool-red">
+/* Active tool: red link and dot in light mode on desktop only. Dark mode and mobile remain untouched. */
+@media (min-width: 651px) {
+  html.light-mode .tn-tool-category-link.active {
+    color: #e53935 !important;
+    text-decoration: none !important;
+  }
+  html.light-mode .tn-tool-category-link.active::before {
+    background: #e53935 !important;
+  }
+}
+</style>
+
+
+
+<style id="toolnest-preview-dot-texture">
+/* Preview texture: desktop light mode only. Dark mode and mobile remain untouched. */
+@media (min-width: 651px) {
+  html:not(.dark-mode) .tn-shared-upload-area,
+  html:not(.dark-mode) .upload-area {
+    background-color: #eef0f3 !important;
+    background-image: radial-gradient(circle, rgba(70, 80, 92, 0.46) 1.5px, transparent 1.5px) !important;
+    background-size: 18px 18px !important;
+  }
+}
+</style>
+
+
+
+<style id="toolnest-reference-tool-box">
+/* Match the Merge/Split PDF tool surface.
+   The upload area and upload button themselves are intentionally untouched. */
+.tn-shared-tool-box {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #dce3ea;
+  border-radius: 12px;
+  padding: 26px;
+  box-shadow: 0 4px 16px rgba(31, 45, 61, 0.05);
+  box-sizing: border-box;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tn-shared-upload-frame {
+  width: 100%;
+}
+
+html.dark-mode .tn-shared-tool-box {
+  background: #1a2533;
+  border-color: #33465b;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+}
+
+@media (max-width: 650px) {
+  .tn-shared-tool-box {
+    padding: 18px;
+  }
+}
+</style>
+
+<style id="toolnest-pdf-shared-upload-theme">
+/* Shared PDF upload area/button: one consistent implementation across PDF tools. */
+html.dark-mode .tn-shared-upload-area {
+  background-color: #131e2b !important;
+  background-image: none !important;
+  border-color: #52789c !important;
+}
+.tn-shared-upload-button:hover {
+  background: #059669 !important;
+}
+html.dark-mode .tn-shared-upload-button:hover {
+  background: #059669 !important;
+}
+</style>
+
+
+<style id="extract-pages-remove-heading-style">
+.extract-pages-remove-style-intro {
+    margin-bottom: 26px;
+}
+.extract-pages-remove-style-intro h1 {
+    margin: 0 0 10px;
+    color: #263548;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+}
+.extract-pages-remove-style-intro p {
+    margin: 0;
+    color: #718096;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    white-space: nowrap;
+}
+</style>
+
+
+
+
+<style id="toolnest-dark-background-only">
+/* STEP 1: Dark mode background only. Light mode is intentionally untouched. */
+html.dark-mode .top-header,
+html.dark-mode .category-nav,
+html.dark-mode footer,
+html.dark-mode .mobile-footer,
+html.dark-mode .mobile-footer-copyright,
+html.dark-mode .toolnest-hybrid-footer {
+  background: #121212 !important;
+}
+</style>
+
+<style id="toolnest-dark-main-background-only">
+/* STEP 2: Main page background only. Light mode remains untouched. */
+html.dark-mode body,
+html.dark-mode main,
+html.dark-mode .page-wrapper,
+html.dark-mode .page-content,
+html.dark-mode .home-page,
+html.dark-mode .about-page,
+html.dark-mode .privacy-page,
+html.dark-mode .contact-page {
+  background-color: #212324 !important;
+}
+</style>
+
+<style id="toolnest-dark-logo-background-fix">
+/* Dark Mode only: make the logo background blend with the dark header. */
+html.dark-mode .logo-icon {
+  background: #121212 !important;
+}
+</style>
+
+<style id="toolnest-dark-merge-heading-style">
+/* Dark mode only: match the Merge PDF heading/description treatment across tool pages. */
+html.dark-mode .remove-pages-merge-style-intro,
+html.dark-mode .extract-pages-remove-style-intro,
+html.dark-mode .edit-pdf-merge-style-intro,
+html.dark-mode .tool-intro {
+  margin-bottom: 26px !important;
+}
+
+html.dark-mode .remove-pages-merge-style-intro h1,
+html.dark-mode .extract-pages-remove-style-intro h1,
+html.dark-mode .edit-pdf-merge-style-intro h1,
+html.dark-mode .tool-intro h1 {
+  margin: 0 0 10px !important;
+  color: #edf2f7 !important;
+  font-size: 36px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.8px !important;
+  line-height: normal !important;
+}
+
+html.dark-mode .remove-pages-merge-style-intro p,
+html.dark-mode .extract-pages-remove-style-intro p,
+html.dark-mode .edit-pdf-merge-style-intro p,
+html.dark-mode .tool-intro p {
+  max-width: 720px !important;
+  margin: 0 !important;
+  color: #9ca9b8 !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+}
+
+@media (max-width: 950px) {
+  html.dark-mode .remove-pages-merge-style-intro h1,
+  html.dark-mode .extract-pages-remove-style-intro h1,
+  html.dark-mode .edit-pdf-merge-style-intro h1,
+  html.dark-mode .tool-intro h1 {
+    font-size: 31px !important;
+  }
+}
+
+@media (max-width: 650px) {
+  html.dark-mode .remove-pages-merge-style-intro h1,
+  html.dark-mode .extract-pages-remove-style-intro h1,
+  html.dark-mode .edit-pdf-merge-style-intro h1,
+  html.dark-mode .tool-intro h1 {
+    font-size: 29px !important;
+  }
+  html.dark-mode .remove-pages-merge-style-intro p,
+  html.dark-mode .extract-pages-remove-style-intro p,
+  html.dark-mode .edit-pdf-merge-style-intro p,
+  html.dark-mode .tool-intro p {
+    font-size: 15px !important;
+  }
+}
+</style>
+<style id="toolnest-mobile-preview-viewport-final">
+@media screen and (max-width:650px) {
+  /* Mobile only: keep the upload/preview surface inside the same viewport proportions as Merge PDF. */
+  .tn-shared-tool-box,
+  .tool-box:has(.tn-shared-upload-area),
+  .tool-box:has(.upload-area),
+  .tn-shared-upload-frame,
+  .tn-shared-upload-area,
+  .upload-area,
+  .tn-image-upload-area {
+    width: min(100%, calc(100vw - 76px)) !important;
+    max-width: calc(100vw - 76px) !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  .tn-shared-upload-placeholder,
+  .upload-placeholder {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .tn-shared-upload-button,
+  .floating-upload-button,
+  .upload-btn,
+  .upload-button,
+  #uploadButton,
+  .file-upload-button {
+    width: min(530px, calc(100vw - 76px)) !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .tn-image-preview,
+  .tn-canvas-wrap,
+  .change-page-size-preview,
+  .change-page-size-workspace {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+}
+</style>
+
+<style id="toolnest-mobile-description-wrap-final">
+@media screen and (max-width: 700px) {
+  .extract-pages-remove-style-intro p,
+  .remove-pages-merge-style-intro p {
+    white-space: normal !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-add-page-numbers-ad-position-final">
+/* Desktop: keep the advertisement in the same right column as the other PDF tools. */
+@media (min-width: 701px) {
+  .page-content > div[style*="grid-template-columns"] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 200px !important;
+    gap: 28px !important;
+    align-items: start !important;
+    width: 100% !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .tn-ad-left-column {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    min-width: 0 !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .ad-column {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    align-self: start !important;
+    width: 200px !important;
+    margin: 0 !important;
+  }
+}
+</style>
+</head>
+<body>
+<!-- ========================================
+       HEADER
+  ======================================== -->
+<header class="top-header">
+<div class="header-inner">
+<a class="logo" href="home.html">
+<div aria-hidden="true" class="logo-icon">
+<span class="logo-shape logo-bar"></span>
+<span class="logo-shape logo-stem"></span>
+<span class="logo-shape logo-dot"></span>
+<span class="logo-shape logo-block"></span>
+</div>
+<div class="logo-text">
+<span class="logo-tool">
+        Tool
+      </span>
+<span class="logo-nest">
+        Nest
+      </span>
+</div>
+</a>
+<div class="header-right">
+<div class="header-search">
+<input aria-label="Search tools" id="toolSearch" placeholder="Search tools..." type="text"/>
+<span class="search-icon">
+        ⌕
+      </span>
+</div>
+<button aria-label="Switch to dark mode" class="theme-toggle" id="themeToggle" title="Switch to dark mode" type="button">
+      🌙
+    </button>
+</div>
+</div>
+</header>
+<!-- ========================================
+       CATEGORY NAVIGATION
+  ========================================= -->
+<nav class="category-nav">
+<div class="category-nav-inner">
+<a class="category-link" href="home.html">Home</a>
+<a class="category-link active" href="index.html?category=pdf">PDF Tools</a>
+<a class="category-link" href="index.html?category=text">Text Tools</a>
+<a class="category-link" href="index.html?category=image">Image Tools</a>
+</div>
+</nav>
+<main class="page-content">
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 28px; align-items: start;"><div class="tn-ad-left-column"><!-- ========================================
+             PDF TOOL NAVIGATION
+        ========================================= -->
+<nav class="tn-tool-category-bar" aria-label="PDF tools">
+  <div class="tn-tool-category-list">
+    <a class="tn-tool-category-link" href="merge-pdf.html">Merge PDF</a>
+    <a class="tn-tool-category-link" href="split-pdf.html">Split PDF</a>
+    <a class="tn-tool-category-link" href="compress-pdf.html">Compress PDF</a>
+    <a class="tn-tool-category-link" href="rotate-pdf.html">Rotate PDF</a>
+    <a class="tn-tool-category-link" href="remove-pdf-pages.html">Remove PDF Pages</a>
+    <a class="tn-tool-category-link" href="extract-pdf-pages.html">Extract PDF Pages</a>
+    <a class="tn-tool-category-link" href="re-arrange-pdf-pages.html">Re-arrange PDF Pages</a>
+    <a class="tn-tool-category-link" href="change-pdf-page-size.html">Change PDF Page Size</a>
+    <a class="tn-tool-category-link active" href="add-page-numbers.html">Add Page Numbers</a>
+    <a class="tn-tool-category-link" href="convert-to-pdf.html">Convert to PDF</a>
+    <a class="tn-tool-category-link" href="convert-from-pdf.html">Convert from PDF</a>
+  </div>
+</nav>
+
+<!-- ========================================
+     TOOL HEADING
+========================================= -->
+<div class="extract-pages-remove-style-intro">
+    <h1>Add Page Numbers</h1>
+    <p>Add page numbers to your PDF quickly and easily.</p>
+</div>
+
+<!-- ========================================
+     SHARED UPLOAD / PREVIEW AREA
+========================================= -->
+<div class="tool-box tn-shared-tool-box">
+  <div class="tn-shared-upload-frame">
+    <div class="tn-shared-upload-area" id="addPageNumbersUploadArea">
+      <input id="addPageNumbersFileInput" type="file" accept="application/pdf,.pdf" hidden>
+      <div class="tn-shared-upload-placeholder" id="addPageNumbersPlaceholder">
+        <button class="tn-shared-upload-button" id="addPageNumbersUploadButton" type="button">Upload PDF File</button>
+      </div>
+
+      <div class="add-page-numbers-workspace" id="addPageNumbersWorkspace" hidden>
+        <div class="add-page-numbers-preview" id="addPageNumbersPreview" aria-live="polite"></div>
+
+        <div class="add-page-numbers-options" aria-label="Page number options">
+          <div class="add-page-numbers-field">
+            <label for="pageNumberPosition">Position</label>
+            <select id="pageNumberPosition">
+              <option value="bottom-center" selected>Bottom Center</option>
+              <option value="bottom-left">Bottom Left</option>
+              <option value="bottom-right">Bottom Right</option>
+              <option value="top-center">Top Center</option>
+              <option value="top-left">Top Left</option>
+              <option value="top-right">Top Right</option>
+            </select>
+          </div>
+          <div class="add-page-numbers-field">
+            <label for="pageNumberStart">Starting Number</label>
+            <input id="pageNumberStart" type="number" min="1" step="1" value="1">
+          </div>
+        </div>
+
+        <div class="add-page-numbers-actions" id="addPageNumbersActions">
+          <button type="button" class="add-page-numbers-download" id="addPageNumbersDownload">Download</button>
+          <button type="button" class="add-page-numbers-cancel" id="addPageNumbersCancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style id="add-page-numbers-functional">
+#addPageNumbersUploadArea { cursor: pointer; }
+#addPageNumbersUploadArea.has-pages { cursor: default; padding: 22px; background-image: none !important; background-color: #eef0f3 !important; }
+html.dark-mode #addPageNumbersUploadArea.has-pages { background-image: none !important; background-color: #212324 !important; }
+#addPageNumbersUploadArea.has-pages .tn-shared-upload-placeholder { display: none; }
+
+.add-page-numbers-workspace { width: 100%; }
+.add-page-numbers-preview { width: 100%; display: flex; justify-content: center; align-items: flex-start; text-align: center; }
+.add-page-numbers-card { width: max-content; max-width: 100%; min-width: 0; padding: 12px; background: #fff; border: 1px solid #d5dde6; border-radius: 10px; box-sizing: border-box; box-shadow: 0 2px 8px rgba(31,45,61,.06); }
+.add-page-numbers-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 9px; }
+.add-page-numbers-number { color: #526273; font-size: 13px; font-weight: 600; }
+.add-page-numbers-canvas-wrap { width: max-content; display: flex; align-items: flex-start; justify-content: center; overflow: hidden; background: #f4f6f8; border-radius: 6px; }
+.add-page-numbers-card canvas { display: block; width: 100%; height: auto; max-width: 100%; }
+
+.add-page-numbers-options { display: flex; justify-content: center; align-items: end; gap: 18px; flex-wrap: wrap; margin: 22px auto 0; }
+.add-page-numbers-field { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; }
+.add-page-numbers-field label { color: #526273; font: 600 13px Arial, Helvetica, sans-serif; }
+.add-page-numbers-field select, .add-page-numbers-field input { min-width: 190px; height: 42px; padding: 0 12px; border: 1px solid #cbd5df; border-radius: 8px; background: #fff; color: #344154; font: 500 14px Arial, Helvetica, sans-serif; box-sizing: border-box; }
+.add-page-numbers-field select { padding-right: 38px; cursor: pointer; }
+.add-page-numbers-field input { width: 190px; }
+.add-page-numbers-field select:focus, .add-page-numbers-field input:focus { outline: none; border-color: #059669; box-shadow: 0 0 0 2px rgba(5,150,105,.12); }
+
+.add-page-numbers-actions { width: 100%; display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 18px; }
+.add-page-numbers-download, .add-page-numbers-cancel { width: 180px; min-width: 180px; height: 54px; min-height: 54px; padding: 0 24px; border-radius: 12px; font: 600 16px Arial, Helvetica, sans-serif; cursor: pointer; box-sizing: border-box; transition: none; }
+.add-page-numbers-download { border: none; background: #059669; color: #fff; }
+.add-page-numbers-download:hover, .add-page-numbers-download:focus, .add-page-numbers-download:active { background: #059669; color: #fff; border: none; transform: none; }
+.add-page-numbers-download:disabled { opacity: .55; cursor: not-allowed; }
+.add-page-numbers-cancel { border: none; background: #d1d5db; color: #344154; }
+.add-page-numbers-cancel:hover, .add-page-numbers-cancel:focus, .add-page-numbers-cancel:active { background: #d1d5db; border: none; color: #344154; transform: none; }
+
+html.dark-mode .add-page-numbers-field label { color: #b8c4d2; }
+html.dark-mode .add-page-numbers-field select, html.dark-mode .add-page-numbers-field input { background: #1a2533; border-color: #3b4b5f; color: #d6dee8; }
+html.dark-mode .add-page-numbers-card { background: #1a2533; border-color: #33465b; }
+html.dark-mode .add-page-numbers-number { color: #b8c4d2; }
+html.dark-mode .add-page-numbers-canvas-wrap { background: #131e2b; }
+html.dark-mode .add-page-numbers-cancel { background: #202c3b; border: 1px solid #3b4b5f; color: #d6dee8; }
+html.dark-mode .add-page-numbers-cancel:hover, html.dark-mode .add-page-numbers-cancel:focus, html.dark-mode .add-page-numbers-cancel:active { background: #202c3b; border-color: #3b4b5f; color: #d6dee8; }
+
+@media (max-width: 650px) {
+  #addPageNumbersUploadArea.has-pages { padding: 14px; }
+  .add-page-numbers-preview { width: 100%; }
+  .add-page-numbers-card { width: 100%; max-width: 100%; }
+  .add-page-numbers-canvas-wrap { width: 100%; max-width: 100%; }
+  .add-page-numbers-card canvas { max-width: 100%; height: auto; }
+  .add-page-numbers-options { align-items: stretch; flex-direction: column; gap: 12px; }
+  .add-page-numbers-field select, .add-page-numbers-field input { width: 100%; min-width: 0; }
+  .add-page-numbers-actions { flex-direction: column; }
+  .add-page-numbers-download, .add-page-numbers-cancel { width: 100%; max-width: 320px; }
+}
+</style>
+
+<script id="add-page-numbers-functionality">
+(function () {
+  const PDFJS_VERSION = '3.11.174';
+  const uploadArea = document.getElementById('addPageNumbersUploadArea');
+  const uploadButton = document.getElementById('addPageNumbersUploadButton');
+  const fileInput = document.getElementById('addPageNumbersFileInput');
+  const workspace = document.getElementById('addPageNumbersWorkspace');
+  const placeholder = document.getElementById('addPageNumbersPlaceholder');
+  const preview = document.getElementById('addPageNumbersPreview');
+  const positionSelect = document.getElementById('pageNumberPosition');
+  const startInput = document.getElementById('pageNumberStart');
+  const downloadButton = document.getElementById('addPageNumbersDownload');
+  const cancelButton = document.getElementById('addPageNumbersCancel');
+  if (!uploadArea || !uploadButton || !fileInput || !workspace || !preview) return;
+
+  let sourceBytes = null;
+  let sourceFile = null;
+  let pdfDoc = null;
+
+  function loadScript(src, globalName) {
+    return new Promise((resolve, reject) => {
+      if (window[globalName]) return resolve();
+      const script = document.createElement('script');
+      script.src = src;
+      script.async = false;
+      script.onload = () => window[globalName] ? resolve() : reject(new Error(globalName + ' did not initialize.'));
+      script.onerror = () => reject(new Error('Could not load ' + globalName + '.'));
+      document.head.appendChild(script);
+    });
+  }
+
+  async function ensureLibraries() {
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.min.js', 'pdfjsLib');
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js', 'PDFLib');
+    if (window.pdfjsLib && window.pdfjsLib.GlobalWorkerOptions) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.worker.min.js';
+    }
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  async function renderPreview() {
+    const page = await pdfDoc.getPage(1);
+    const base = page.getViewport({ scale: 1 });
+    const maxWidth = Math.min(300, Math.max(180, uploadArea.clientWidth - 70));
+    const scale = Math.min(1.25, maxWidth / base.width);
+    const viewport = page.getViewport({ scale });
+    const card = document.createElement('div');
+    card.className = 'add-page-numbers-card';
+    card.innerHTML = '<div class="add-page-numbers-header"><span class="add-page-numbers-number">Page 1 of ' + pdfDoc.numPages + '</span></div><div class="add-page-numbers-canvas-wrap"></div>';
+    const wrap = card.querySelector('.add-page-numbers-canvas-wrap');
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.ceil(viewport.width);
+    canvas.height = Math.ceil(viewport.height);
+    wrap.appendChild(canvas);
+    preview.replaceChildren(card);
+    const ctx = canvas.getContext('2d');
+    await page.render({ canvasContext: ctx, viewport }).promise;
+  }
+
+  async function handleFile(file) {
+    if (!file || file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) return;
+    try {
+      await ensureLibraries();
+      sourceFile = file;
+      sourceBytes = new Uint8Array(await file.arrayBuffer());
+      pdfDoc = await window.pdfjsLib.getDocument({ data: sourceBytes.slice() }).promise;
+      uploadArea.classList.add('has-pages');
+      workspace.hidden = false;
+      await renderPreview();
+    } catch (err) {
+      console.error(err);
+      alert('Could not read this PDF. Please try another PDF file.');
+      reset();
+    }
+  }
+
+  function getPosition(page, textWidth, textHeight) {
+    const margin = 24;
+    const w = page.getWidth();
+    const h = page.getHeight();
+    const pos = positionSelect.value;
+    let x = margin;
+    let y = margin;
+    if (pos.includes('center')) x = (w - textWidth) / 2;
+    else if (pos.includes('right')) x = w - margin - textWidth;
+    if (pos.includes('top')) y = h - margin - textHeight;
+    return { x, y };
+  }
+
+  async function downloadPdf() {
+    if (!sourceBytes) return;
+    const start = Math.max(1, parseInt(startInput.value, 10) || 1);
+    downloadButton.disabled = true;
+    try {
+      await ensureLibraries();
+      const doc = await window.PDFLib.PDFDocument.load(sourceBytes);
+      const font = await doc.embedFont(window.PDFLib.StandardFonts.Helvetica);
+      const pages = doc.getPages();
+      const size = 12;
+      pages.forEach((page, index) => {
+        const label = String(start + index);
+        const textWidth = font.widthOfTextAtSize(label, size);
+        const textHeight = size;
+        const { x, y } = getPosition(page, textWidth, textHeight);
+        page.drawText(label, { x, y, size, font, color: window.PDFLib.rgb(0.18, 0.22, 0.28) });
+      });
+      const output = await doc.save();
+      const blob = new Blob([output], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const stem = (sourceFile?.name || 'document.pdf').replace(/\.pdf$/i, '');
+      a.href = url;
+      a.download = stem + '-numbered.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
+      // After the download is triggered, return the tool to its original upload state.
+      setTimeout(() => reset(), 350);
+    } catch (err) {
+      console.error(err);
+      alert('Could not add page numbers to this PDF. Please try again.');
+    } finally {
+      downloadButton.disabled = false;
+    }
+  }
+
+  function reset() {
+    sourceBytes = null; sourceFile = null; pdfDoc = null;
+    workspace.hidden = true;
+    preview.replaceChildren();
+    uploadArea.classList.remove('has-pages', 'drag-over');
+    placeholder.hidden = false;
+    uploadButton.hidden = false;
+    uploadArea.style.backgroundImage = '';
+    uploadArea.style.backgroundColor = '';
+    fileInput.value = '';
+    startInput.value = '1';
+    positionSelect.value = 'bottom-center';
+  }
+
+  uploadButton.addEventListener('click', e => { e.stopPropagation(); fileInput.click(); });
+  uploadArea.addEventListener('click', e => {
+    if (!uploadArea.classList.contains('has-pages') && !e.target.closest('button')) fileInput.click();
+  });
+  fileInput.addEventListener('change', () => handleFile(fileInput.files && fileInput.files[0]));
+  uploadArea.addEventListener('dragover', e => { if (!uploadArea.classList.contains('has-pages')) { e.preventDefault(); uploadArea.classList.add('drag-over'); } });
+  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+  uploadArea.addEventListener('drop', e => {
+    if (uploadArea.classList.contains('has-pages')) return;
+    e.preventDefault(); uploadArea.classList.remove('drag-over');
+    handleFile(e.dataTransfer.files && e.dataTransfer.files[0]);
+  });
+  downloadButton.addEventListener('click', downloadPdf);
+  cancelButton.addEventListener('click', reset);
+})();
+</script>
+</div>
+<!-- ADVERTISEMENT -->
+<aside aria-label="Advertisement" class="ad-column">
+<div class="ad-box">
+<div class="ad-content">
+<div class="ad-label">ADVERTISEMENT</div>
+<div class="sample-ad">
+<div class="sample-ad-badge">TOOLNEST</div>
+<h3>Simple Tools.<br/>Better Productivity.</h3>
+<p>Fast, free and easy-to-use online tools for everyday tasks.</p>
+<a class="sample-ad-button">Explore Tools</a>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- ========================================
+       FOOTER
+  ========================================= -->
+
+<footer class="mobile-footer" aria-label="Mobile footer">
+  <div class="mobile-footer-columns">
+    <div class="mobile-footer-column">
+      <h3>Popular Tools</h3>
+      <a href="merge-pdf.html">Merge PDF</a>
+      <a href="word-character-counter.html">Word Counter</a>
+      <a href="image-compressor.html">Image Compressor</a>
+    </div>
+
+    <div class="mobile-footer-column">
+      <h3>Categories</h3>
+      <a href="index.html">PDF Tools</a>
+      <a href="index.html">Text Tools</a>
+      <a href="index.html">Image Tools</a>
+    </div>
+
+    <div class="mobile-footer-column">
+      <h3>Company</h3>
+      <a href="about.html">About</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<div class="mobile-footer-copyright">
+  © 2026 ToolNest - Simple, Fast & Free
+</div>
+
+
+<footer class="site-footer toolnest-hybrid-footer">
+  <div class="footer-main">
+    <div class="footer-column footer-brand">
+      <div class="footer-logo">ToolNest</div>
+      <p>Smart Tools, Simple Tasks.</p>
+      <p class="footer-description">Free online tools for everyday tasks.</p>
+    </div>
+
+    <div class="footer-column">
+      <h4>Popular Tools</h4>
+      <a href="merge-pdf.html">Merge PDF</a>
+      <a href="word-character-counter.html">Word Counter</a>
+      <a href="image-compressor.html">Image Compressor</a>
+      <a href="compress-pdf.html">PDF Compressor</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Categories</h4>
+      <a href="index.html">PDF Tools</a>
+      <a href="index.html">Text Tools</a>
+      <a href="index.html">Image Tools</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Company</h4>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 ToolNest · Simple, Fast &amp; Free</span>
+    <span class="footer-bottom-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="contact.html">Contact</a>
+    </span>
+  </div>
+</footer>
+
+
+
+<!-- ========================================
+       THEME SCRIPT
+  ========================================= -->
+<script>
+    const themeToggle =
+      document.getElementById("themeToggle");
+
+    function updateThemeIcon() {
+      if (
+        document.documentElement.classList.contains(
+          "dark-mode"
+        )
+      ) {
+        themeToggle.textContent = "☀";
+      } else {
+        themeToggle.textContent = "🌙";
+      }
+    }
+
+    themeToggle.addEventListener(
+      "click",
+      function () {
+
+        const isDark =
+          document.documentElement.classList.toggle(
+            "dark-mode"
+          );
+
+        if (isDark) {
+
+          localStorage.setItem(
+            "toolnest-theme",
+            "dark"
+          );
+
+        } else {
+
+          localStorage.setItem(
+            "toolnest-theme",
+            "light"
+          );
+        }
+
+        updateThemeIcon();
+      }
+    );
+
+    updateThemeIcon();
+  </script>
+
+<style id="toolnest-second-header-dark-active">
+html.dark-mode nav.category-nav .category-link.active,
+html.dark-mode nav.category-nav .category-link.active:hover,
+html.dark-mode nav.category-nav .category-link.active:focus,
+html.dark-mode nav.category-nav .category-link.active:visited {
+  
+  
+  
+  color: #ffffff !important;
+  border-color: #059669 !important;
+  box-shadow: none !important;
+ background: transparent !important;}
+</style>
+
+<style id="toolnest-second-header-dark-active-neutral-final">
+html.dark-mode .category-nav .category-link.active,
+html.dark-mode .category-nav .category-link.active:hover,
+html.dark-mode .category-nav .category-link.active:focus {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+</style>
+
+<style id="toolnest-pdf-outer-box-match-merge-final">
+/* Match the Merge PDF outer tool box exactly in dark mode. */
+html.dark-mode .tool-box,
+html:not(.light-mode) .tool-box {
+  background: #171d25 !important;
+  border-color: #2e3946 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22) !important;
+}
+</style>
+
+
+<style id="toolnest-dark-upload-preview-exact-final">
+/* STEP 3: Dark-mode upload/preview surface. Light mode is untouched. */
+html.dark-mode .tn-shared-upload-area,
+html.dark-mode .upload-area {
+  background-color: #212324 !important;
+  background-image: radial-gradient(circle, rgba(70, 80, 92, 0.46) 1.5px, transparent 1.5px) !important;
+  background-size: 18px 18px !important;
+}
+
+/* Once an image is loaded, the preview surface stays #212324 and the dots disappear. */
+html.dark-mode .tn-shared-upload-area.tn-image-upload-area.has-image,
+html.dark-mode .tn-shared-upload-area.tn-image-upload-area.has-image .tn-image-preview,
+html.dark-mode .tn-shared-upload-area.tn-image-upload-area.has-image .tn-canvas-wrap,
+html.dark-mode .upload-area.has-files {
+  background-color: #212324 !important;
+  background-image: none !important;
+}
+</style>
+
+<style id="toolnest-dark-outer-preview-header-color-final">
+/* Dark mode only: outer tool/preview frame matches the header color. */
+html.dark-mode .tool-box {
+  background: #121212 !important;
+}
+</style>
+
+<style id="toolnest-dark-active-tool-red-final">
+/* Dark mode: match the light-mode active tool link exactly. */
+html.dark-mode .tn-tool-category-link.active {
+  color: #e53935 !important;
+  text-decoration: none !important;
+}
+html.dark-mode .tn-tool-category-link.active::before {
+  background: #e53935 !important;
+}
+</style>
+
+<style id="toolnest-dark-font-visibility-fix">
+/* Dark mode font visibility fix: restore readable text where an older light-mode rule was overriding the dark theme. */
+html.dark-mode .tool-category-link,
+html.dark-mode .tool-category-link:hover {
+  color: #d7dee7 !important;
+}
+html.dark-mode .tool-category-link.active {
+  color: #e53935 !important;
+}
+</style>
+
+
+<style id="toolnest-dark-all-main-text-visibility">
+/* Dark mode only: ensure page headings and descriptive text remain readable. */
+html.dark-mode .page-content h1,
+html.dark-mode .page-content h2,
+html.dark-mode .page-content h3,
+html.dark-mode main h1,
+html.dark-mode main h2,
+html.dark-mode main h3 {
+  color: #edf2f7 !important;
+}
+html.dark-mode .page-content .heading p,
+html.dark-mode .page-content .tool-info p,
+html.dark-mode .page-content .home-tool-info p,
+html.dark-mode .page-content .tool-description,
+html.dark-mode main .heading p,
+html.dark-mode main .tool-info p,
+html.dark-mode main .home-tool-info p,
+html.dark-mode main .tool-description {
+  color: #aebdcb !important;
+}
+</style>
+
+<!-- ToolNest download animation -->
+<style id="toolnest-download-animation">
+#toolnestDownloadPopup {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(.94);
+  z-index: 99999;
+  min-width: 250px;
+  padding: 22px 26px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 14px;
+  background: rgba(24,28,32,.97);
+  box-shadow: 0 18px 55px rgba(0,0,0,.35);
+  color: #fff;
+  font: 600 15px Arial, sans-serif;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease;
+}
+#toolnestDownloadPopup.tn-download-show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+#toolnestDownloadPopup .tn-download-spinner,
+#toolnestDownloadPopup .tn-download-check {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 11px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#toolnestDownloadPopup .tn-download-spinner {
+  border: 4px solid rgba(255,255,255,.22);
+  border-top-color: #10b981;
+  animation: tnDownloadSpin .75s linear infinite;
+}
+#toolnestDownloadPopup .tn-download-check {
+  background: #059669;
+  font-size: 24px;
+  font-weight: 700;
+}
+#toolnestDownloadPopup .tn-download-text { line-height: 1.35; }
+@keyframes tnDownloadSpin { to { transform: rotate(360deg); } }
+@media (max-width:650px) {
+  #toolnestDownloadPopup { min-width: 210px; max-width: calc(100vw - 40px); padding: 19px 22px; }
+}
+</style>
+<div id="toolnestDownloadPopup" aria-live="polite" aria-hidden="true">
+  <div class="tn-download-spinner" data-download-spinner></div>
+  <div class="tn-download-check" data-download-check style="display:none">✓</div>
+  <div class="tn-download-text" data-download-text>Preparing download…</div>
+</div>
+<script id="toolnest-download-animation-script">
+(function(){
+  if(window.__toolnestDownloadAnimationInstalled) return;
+  window.__toolnestDownloadAnimationInstalled = true;
+  var popup=document.getElementById('toolnestDownloadPopup');
+  if(!popup) return;
+  var spinner=popup.querySelector('[data-download-spinner]');
+  var check=popup.querySelector('[data-download-check]');
+  var text=popup.querySelector('[data-download-text]');
+  var hideTimer=null, fallbackTimer=null;
+  function show(){
+    clearTimeout(hideTimer); clearTimeout(fallbackTimer);
+    spinner.style.display='flex'; check.style.display='none';
+    text.textContent='Preparing download…';
+    popup.classList.add('tn-download-show');
+    popup.setAttribute('aria-hidden','false');
+    fallbackTimer=setTimeout(finish, 12000);
+  }
+  function finish(){
+    clearTimeout(hideTimer);
+    spinner.style.display='none'; check.style.display='flex';
+    text.textContent='Download Complete';
+    hideTimer=setTimeout(function(){
+      popup.classList.remove('tn-download-show');
+      popup.setAttribute('aria-hidden','true');
+    }, 850);
+  }
+  function isDownloadElement(el){
+    if(!el) return false;
+    if(el.hasAttribute && el.hasAttribute('download')) return true;
+    var s=((el.innerText||el.textContent||'')+'').replace(/\s+/g,' ').trim().toLowerCase();
+    return /\bdownload\b/.test(s) || /convert\s*(?:&|and)?\s*download/.test(s) || /merge\s*(?:&|and)?\s*download/.test(s);
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target && e.target.closest ? e.target.closest('button,a') : null;
+    if(isDownloadElement(el)) show();
+  },true);
+  var nativeAnchorClick=HTMLAnchorElement.prototype.click;
+  HTMLAnchorElement.prototype.click=function(){
+    var isDownload=this.hasAttribute('download') || /^blob:/i.test(this.href||'');
+    if(isDownload){ show(); setTimeout(finish,80); }
+    return nativeAnchorClick.apply(this,arguments);
+  };
+})();
+</script>
+
+<style id="toolnest-mobile-preview-width-ideal-final">
+/* Mobile only: make the upload/preview surface use the full tool content width. Desktop untouched. */
+@media screen and (max-width: 650px) {
+  .page-content > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+  .tn-ad-left-column {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+  .tn-shared-tool-box,
+  .tool-box:has(.tn-shared-upload-area),
+  .tool-box:has(.upload-area) {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .tn-shared-upload-frame,
+  .tn-shared-upload-area,
+  .upload-area,
+  .tn-image-upload-area {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
+</style>
+
+<style id="toolnest-mobile-ad-fit-final">
+/* Mobile only: compact advertisement space below the tool content. Desktop untouched. */
+@media screen and (max-width: 650px) {
+  .page-layout > .ad-column,
+  .ad-column {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 18px auto 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    box-sizing: border-box !important;
+  }
+  .page-layout > .ad-column .ad-box,
+  .ad-column .ad-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100px !important;
+    min-height: 100px !important;
+    margin: 0 !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+    position: static !important;
+    overflow: hidden !important;
+  }
+}
+</style>
+
+<style id="toolnest-mobile-pdf-upload-uniform-change-page-size">
+/* Mobile only: make every PDF upload button match Change PDF Page Size. */
+@media (max-width: 700px) {
+  .tn-shared-upload-button,
+  .floating-upload-button,
+  .upload-btn,
+  .upload-button,
+  #uploadButton,
+  #compressUploadButton,
+  #removePdfUploadButton,
+  #reArrangePdfUploadButton,
+  #changePageSizeUploadButton,
+  #convertToUploadButton,
+  #convertFromUploadButton,
+  #rotateUploadButton {
+    width: min(530px, calc(100vw - 76px)) !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 72px !important;
+    box-sizing: border-box !important;
+    padding: 0 36px !important;
+    border-radius: 18px !important;
+    font-size: 19px !important;
+    line-height: 1.2 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+</style>
+</body>
+</html>
+
+<style>
+
+/* Final category active-state consistency fix */
+nav.category-nav .category-link.active,
+nav.category-nav .category-link.active-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 15px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: linear-gradient(135deg,#059669 0%,#059669 55%,#059669 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 5px 14px rgba(76,91,183,.23) !important;
+  text-decoration: none !important;
+}
+
+nav.category-nav .category-link.active::after,
+nav.category-nav .category-link.active-button::after {
+  display: none !important;
+  content: none !important;
+}
+
+html.dark-mode nav.category-nav .category-link.active,
+html.dark-mode nav.category-nav .category-link.active-button {
+  
+  color: #b8c9f1 !important;
+  border: 1px solid #43536a !important;
+  box-shadow: none !important;
+ background: transparent !important;}
+
+</style>
+
+
+<style>
+/* Unified ToolNest logo typography across every page */
+.site-logo,
+.logo,
+.brand-logo,
+.logo-text,
+.logo-wordmark {
+  font-family: "Montserrat", Arial, Helvetica, sans-serif !important;
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+}
+
+.site-logo *,
+.logo *,
+.brand-logo *,
+.logo-text *,
+.logo-wordmark * {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+}
+</style>
+
+
+<style id="toolnest-mobile-original-footer-dark">
+/* Mobile footer: original compact footer, dark theme. Desktop Hybrid #8 remains unchanged. */
+.toolnest-mobile-original-footer {
+  display: none;
+}
+
+@media screen and (max-width: 650px) {
+  /* Hide the Hybrid #8 footer only on mobile. */
+  .toolnest-hybrid-footer {
+    display: none !important;
+  }
+
+  .toolnest-mobile-original-footer {
+    display: block !important;
+    width: 100%;
+    background: #1f2937 !important;
+    border-top: 1px solid #374151 !important;
+    color: #ffffff !important;
+  }
+
+  .toolnest-mobile-original-footer .footer-inner {
+    width: 100% !important;
+    max-width: 1240px !important;
+    margin: 0 auto !important;
+    padding: 14px 20px !important;
+    display: block !important;
+    box-sizing: border-box !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+  }
+
+  .toolnest-mobile-original-footer .footer-bottom {
+    width: 100% !important;
+    padding-top: 0 !important;
+    border-top: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    color: #ffffff !important;
+    box-sizing: border-box !important;
+  }
+
+  .toolnest-mobile-original-footer .footer-links {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 7px 18px !important;
+  }
+
+  .toolnest-mobile-original-footer .footer-links a {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+  }
+
+  .toolnest-mobile-original-footer .footer-links a:hover {
+    color: #ffffff !important;
+  }
+}
+</style>
+
+<style>
+/* Mobile category navigation: keep all four buttons fully in view */
+@media (max-width: 700px) {
+  .category-nav-inner {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    gap: 0 !important;
+    overflow-x: hidden !important;
+    justify-content: space-between !important;
+  }
+
+  .category-link {
+    flex: 1 1 0 !important;
+    justify-content: center !important;
+    text-align: center !important;
+    min-width: 0 !important;
+    font-size: 13px !important;
+  }
+}
+</style>
+
+<style id="verified-home-mobile-header">
+@media screen and (max-width: 650px) {
+  .category-nav {
+    width: 100% !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .category-nav-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    gap: 2px !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .category-nav-inner .category-link {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding-left: 3px !important;
+    padding-right: 3px !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+    font-size: 12px !important;
+  }
+}
+
+/* ToolNest corner accent — visible in both themes. */
+html.dark-mode .tool-category-link::after {
+  background: #29483b !important;
+}
+</style>
+
+<style id="toolnest-change-page-size-post-upload-preview-background-final">
+/* Post-upload preview: remove the upload-state dotted texture. */
+html.dark-mode #changePageSizeUploadArea.has-pages {
+  background-color: #212324 !important;
+  background-image: none !important;
+}
+</style>
