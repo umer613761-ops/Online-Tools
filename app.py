@@ -360,6 +360,23 @@ def change_pdf_page_size():
                     if pix.alpha:
                         pix = fitz.Pixmap(fitz.csRGB, pix)
                     image_w, image_h = pix.width, pix.height
+
+                    # For malformed/image-only PDFs, the page MediaBox can have
+                    # the wrong orientation even though the embedded raster has
+                    # the real document orientation.  In Auto mode, use the
+                    # raster orientation after accounting for the source page
+                    # rotation.  This is important for pages such as landscape
+                    # transcripts stored inside a portrait MediaBox.
+                    if size_name != "original" and orientation == "auto":
+                        image_visual_w, image_visual_h = (
+                            (image_h, image_w) if rotation in (90, 270)
+                            else (image_w, image_h)
+                        )
+                        if image_visual_w > image_visual_h and target_w < target_h:
+                            target_w, target_h = target_h, target_w
+                        elif image_visual_w <= image_visual_h and target_w > target_h:
+                            target_w, target_h = target_h, target_w
+
                     # Rebuild single-raster pages from their intrinsic pixels.
                     # This deliberately ignores a broken image placement matrix;
                     # the raster itself contains the intended document page.
