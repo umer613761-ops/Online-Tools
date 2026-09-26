@@ -5,36 +5,19 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Text Difference Checker - ToolNest</title>
-<!-- ========================================
-       THEME INITIALIZATION
-       Prevents light-mode flash on page load
-  ========================================= -->
+<!-- ToolNest theme initialization -->
 <script>
+(function () {
+  const savedTheme = localStorage.getItem("toolnest-theme");
 
-    (function () {
-
-      const savedTheme =
-        localStorage.getItem("toolnest-theme");
-
-      if (savedTheme === "dark") {
-
-        document.documentElement.classList.add(
-          "dark-mode"
-        );
-
-      }
-
-      else if (savedTheme === "light") {
-
-        document.documentElement.classList.add(
-          "light-mode"
-        );
-
-      }
-
-    })();
-  </script>
+  if (savedTheme === "dark") {
+    document.documentElement.classList.add("dark-mode");
+  } else if (savedTheme === "light") {
+    document.documentElement.classList.add("light-mode");
+  }
+})();
+</script>
+<title>Text Difference Checker - ToolNest</title>
 <style>
 
     /* ========================================
@@ -883,6 +866,76 @@
 
 
     /* ========================================
+       IMAGE TOOL CATEGORY BAR
+    ======================================== */
+
+    .tool-category-bar {
+      width: 100%;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 2px 0;
+      scrollbar-width: thin;
+    }
+
+    .tool-category-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: center;
+      justify-items: center;
+      width: 100%;
+      gap: 8px;
+    }
+
+    .tool-category-link {
+      width: 100%;
+      min-width: 0;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 32px;
+      padding: 0 13px;
+      background: #059669;
+      border: 1px solid #cfd8e2;
+      border-radius: 999px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .tool-category-link:hover {
+      color: #059669;
+      border-color: #b9c9d9;
+      background: #f7fafd;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(50, 107, 168, 0.08);
+    }
+
+    .tool-category-link.active {
+      background: #059669;
+      border-color: #059669;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(50, 107, 168, 0.14);
+    }
+
+    .tool-category-link.active:hover {
+      background: #285b91;
+      border-color: #285b91;
+      color: #ffffff;
+    }
+
+
+    /* ========================================
        MAIN CONTENT
     ======================================== */
 
@@ -891,7 +944,922 @@
     }
 
 
+/* ========================================
+       IMAGE TOOL CATEGORY BAR
+    ======================================== */
+
+    .tool-category-bar {
+      width: 100%;
+
+      margin-bottom: 20px;
+
+      overflow-x: auto;
+      overflow-y: hidden;
+
+      padding:
+        2px 0;
+
+      scrollbar-width: thin;
+    }
+
+    .tool-category-list {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-items: center;
+      justify-items: center;
+
+      width: 100%;
+
+      gap: 8px;
+    }
+
+    .tool-category-link {
+      width: 100%;
+      min-width: 0;
+    }
+
+
+    /* ========================================
+       COMPACT IMAGE TOOL BUTTONS
+    ======================================== */
+
+    
+    .tool-category-link {
+      position: relative;
+
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-height: 32px;
+
+      padding:
+        0 13px;
+
+      background: #059669;
+
+      /*
+        Slightly stronger outline so the
+        pill buttons are clearly visible.
+      */
+      border:
+        1px solid #cfd8e2;
+
+      border-radius:  999px;
+
+      color: #ffffff;
+
+      text-decoration: none;
+
+      /*
+        Increased slightly from 11px
+        for better readability.
+      */
+      font-size: 12px;
+
+      font-weight: 600;
+
+      white-space: nowrap;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    
+    .tool-category-link:hover {
+      color: #059669;
+
+      border-color: #b9c9d9;
+
+      background: #f7fafd;
+
+      transform:
+        translateY(-1px);
+
+      box-shadow:
+        0 2px 6px
+        rgba(50, 107, 168, 0.08);
+    }
+
+    
+    .tool-category-link.active {
+      background: #059669;
+
+      border-color: #059669;
+
+      color: #ffffff;
+
+      box-shadow:
+        0 2px 6px
+        rgba(50, 107, 168, 0.14);
+    }
+
+    
+    .tool-category-link.active:hover {
+      background: #285b91;
+
+      border-color: #285b91;
+
+      color: #ffffff;
+    }
+
+
+
+
+    /* ========================================
+       EMPTY PAGE AREA
+    ======================================== */
+
+    .page-content {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 28px 24px 60px;
+
+      flex: 1;
+    }
+
+
+    /* ========================================
+       ADVERTISEMENT
+    ======================================== */
+
+    .ad-column {
+      width: 200px;
+
+      position: sticky;
+
+      top: 20px;
+    }
+
+    .ad-box {
+      width: 200px;
+      height: 400px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 18px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #dce3ea;
+
+      border-radius: 10px;
+
+      text-align: center;
+
+      box-shadow:
+        0 4px 16px
+        rgba(31, 45, 61, 0.04);
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .ad-content {
+      width: 100%;
+    }
+
+    .ad-label {
+      margin-bottom: 14px;
+
+      color: #a0acb8;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      letter-spacing: 1.5px;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .sample-ad {
+      padding:
+        22px 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #f5f8fc,
+          #edf3f9
+        );
+
+      border:
+        1px solid #d8e3ed;
+
+      border-radius: 9px;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .sample-ad-badge {
+      display: inline-block;
+
+      margin-bottom: 12px;
+
+      padding:
+        5px 9px;
+
+      background: #059669;
+
+      border-radius: 20px;
+
+      color: #ffffff;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.5px;
+    }
+
+    .sample-ad h3 {
+      margin:
+        0 0 9px;
+
+      color: #344255;
+
+      font-size: 18px;
+
+      line-height: 1.3;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .sample-ad p {
+      margin:
+        0 0 16px;
+
+      color: #718096;
+
+      font-size: 12px;
+
+      line-height: 1.5;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .sample-ad-button {
+      display: inline-block;
+
+      padding:
+        9px 14px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #cbd8e4;
+
+      border-radius: 6px;
+
+      color: #059669;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+    }
+
+
+
+    /* ========================================
+       FOOTER
+    ======================================== */
+
+    footer {
+      background: #ffffff;
+
+      border-top:
+        1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .footer-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 24px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+
+      color: #7b8998;
+
+      font-size: 13px;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .footer-links {
+      display: flex;
+
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: #7b8998;
+
+      text-decoration: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: #059669;
+    }
+
+
+    /* ========================================
+       DARK MODE
+    ======================================== */
+
+    html.dark-mode body {
+      background: #11161d;
+      color: #e7edf4;
+    }
+
+    html.dark-mode .top-header {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .logo-tool {
+      color: #d7dee7;
+    }
+
+    html.dark-mode .logo-nest {
+      color: #5b95c9;
+    }
+
+    html.dark-mode .header-search input {
+      background: #202731;
+      border-color: #343f4c;
+      color: #edf2f7;
+    }
+
+    html.dark-mode .header-search input:focus {
+      background: #252d38;
+      border-color: #5f8fbd;
+    }
+
+    html.dark-mode .search-icon {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .theme-toggle {
+      background: #202731;
+      border-color: #343f4c;
+      color: #d7e1eb;
+    }
+
+    html.dark-mode .theme-toggle:hover {
+      background: #29323d;
+      border-color: #465463;
+      color: #7eb0df;
+    }
+
+    html.dark-mode .category-nav {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .category-link {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .category-link:hover {
+      color: #6fa2d2;
+    }
+
+    html.dark-mode .category-link.active {
+      color: #e8eef5;
+     background: transparent !important;}
+
+    html.dark-mode .ad-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 18px
+        rgba(0, 0, 0, 0.18);
+    }
+
+    html.dark-mode .ad-label {
+      color: #778493;
+    }
+
+    html.dark-mode .sample-ad {
+      background:
+        linear-gradient(
+          135deg,
+          #202934,
+          #18212b
+        );
+
+      border-color: #354352;
+    }
+
+    html.dark-mode .sample-ad h3 {
+      color: #dce4ec;
+    }
+
+    html.dark-mode .sample-ad p {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .sample-ad-button {
+      background: #202731;
+      border-color: #455361;
+      color: #6fa2d2;
+    }
+
+
+    html.dark-mode footer {
+      background: #171d25;
+      border-top-color: #293340;
+    }
+
+    html.dark-mode .footer-inner {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a:hover {
+      color: #6fa2d2;
+    }
+
+
+    /* ========================================
+       MANUAL DARK MODE
+    ======================================== */
+
+    html.dark-mode body {
+      background: #11161d;
+      color: #e7edf4;
+    }
+
+    html.dark-mode .top-header {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .logo-tool {
+      color: #d7dee7;
+    }
+
+    html.dark-mode .logo-nest {
+      color: #5b95c9;
+    }
+
+    html.dark-mode .header-search input {
+      background: #202731;
+      border-color: #343f4c;
+      color: #edf2f7;
+    }
+
+    html.dark-mode .header-search input::placeholder {
+      color: #8996a5;
+    }
+
+    html.dark-mode .header-search input:focus {
+      background: #252d38;
+      border-color: #5f8fbd;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(77, 138, 196, 0.14);
+    }
+
+    html.dark-mode .search-icon {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .theme-toggle {
+      background: #202731;
+      border-color: #343f4c;
+      color: #d7e1eb;
+    }
+
+    html.dark-mode .theme-toggle:hover {
+      background: #29323d;
+      border-color: #465463;
+      color: #7eb0df;
+    }
+
+    html.dark-mode .category-nav {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .category-link {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .category-link:hover {
+      color: #6fa2d2;
+    }
+
+    html.dark-mode .category-link.active {
+      color: #e8eef5;
+     background: transparent !important;}
+
+    html.dark-mode .tool-category-link {
+      background: #1b2735;
+      border-color: #354457;
+      color: #9aa7b6;
+    }
+
+    html.dark-mode .tool-category-link:hover {
+      color: #78a9d8;
+      border-color: #46627d;
+      background: #202f40;
+
+      box-shadow:
+        0 2px 6px
+        rgba(0, 0, 0, 0.20);
+    }
+
+    html.dark-mode .tool-category-link.active {
+      
+      border-color: #059669;
+      color: #ffffff;
+
+      box-shadow:
+        0 2px 6px
+        rgba(0, 0, 0, 0.28);
+     background: transparent !important;}
+
+    html.dark-mode .tool-category-link.active:hover {
+      
+      border-color: #3a78b8;
+      color: #ffffff;
+     background: transparent !important;}
+
+    html.dark-mode .heading h1 {
+      color: #edf2f7;
+    }
+
+    html.dark-mode .heading p {
+      color: #9ca9b8;
+    }
+
+    html.dark-mode .tool-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 16px
+        rgba(0, 0, 0, 0.22);
+    }
+
+    html.dark-mode .upload-area {
+      background: #131e2b;
+      border-color: #52789c;
+    }
+
+    html.dark-mode .upload-area:hover {
+      background: #18283a;
+      border-color: #6b9bc6;
+    }
+
+    html.dark-mode .floating-upload-button {
+      background: #059669;
+      color: #ffffff;
+
+      box-shadow:
+        0 10px 26px
+        rgba(0, 0, 0, 0.32);
+    }
+
+    html.dark-mode .floating-upload-button:hover {
+      background: #3a78b8;
+
+      box-shadow:
+        0 13px 30px
+        rgba(0, 0, 0, 0.38);
+    }
+
+    html.dark-mode .drag-hint {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .pdf-preview {
+      background: #edf2f6;
+      border-color: #435366;
+    }
+
+    html.dark-mode .pdf-name {
+      color: #dbe4ee;
+    }
+
+    html.dark-mode .secondary-button {
+      background: #202c3b;
+      border-color: #3b4b5f;
+      color: #d6dee8;
+    }
+
+    html.dark-mode .secondary-button:hover:not(:disabled) {
+      background: #293849;
+    }
+
+    html.dark-mode .status {
+      background: #172b3d;
+      border-color: #31516e;
+      color: #9fc0dd;
+    }
+
+    html.dark-mode .ad-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 18px
+        rgba(0, 0, 0, 0.18);
+    }
+
+    html.dark-mode .ad-label {
+      color: #778493;
+    }
+
+    html.dark-mode .sample-ad {
+      background:
+        linear-gradient(
+          135deg,
+          #202934,
+          #18212b
+        );
+
+      border-color: #354352;
+    }
+
+    html.dark-mode .sample-ad h3 {
+      color: #dce4ec;
+    }
+
+    html.dark-mode .sample-ad p {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .sample-ad-button {
+      background: #202731;
+      border-color: #455361;
+      color: #6fa2d2;
+    }
+
+    html.dark-mode footer {
+      background: #171d25;
+      border-top-color: #293340;
+    }
+
+    html.dark-mode .footer-inner {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a:hover {
+      color: #6fa2d2;
+    }
+
+
+    
+
+    /* ========================================
+       SYSTEM DARK MODE
+    ======================================== */
+
+    @media (prefers-color-scheme: dark) {
+
+      html:not(.light-mode) footer {
+        background: #171d25;
+        border-top-color: #293340;
+      }
+
+      html:not(.light-mode) .footer-inner {
+        color: #8d9aaa;
+      }
+
+      html:not(.light-mode) .footer-links a {
+        color: #8d9aaa;
+      }
+
+      html:not(.light-mode) .footer-links a:hover {
+        color: #6fa2d2;
+      }
+    }
+
+
+    @media (max-width: 900px) {
+
+      .ad-column {
+        width: 100%;
+
+        position: static;
+      }
+
+      .ad-box {
+        width: 100%;
+
+        height: 180px;
+      }
+
+    }
+
+
+    @media (max-width: 900px) {
+      .page-content > div {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* ========================================
+       MOBILE
+    ======================================== */
+
+    @media (max-width: 700px) {
+
+      .header-inner {
+        padding:
+          9px 16px;
+      }
+
+      .header-search,
+      .theme-toggle {
+        display: none;
+      }
+
+      .header-right {
+        width: auto;
+        max-width: none;
+      }
+
+      .category-nav-inner {
+        padding:
+          0 16px;
+
+        gap: 22px;
+      }
+
+      .page-content {
+        padding:
+          30px 16px;
+      }
+    }
+
+
+    /* ========================================
+       MOBILE FOOTER
+    ======================================== */
+
+    @media (max-width: 550px) {
+
+      .footer-inner {
+        flex-direction: column;
+
+        text-align: center;
+      }
+    }
+
+    /* ========================================
+       TOOL CATEGORY BUTTONS — BLUE STYLE
+       Matched to the Merge PDF page.
+       All image tool pills use the same blue
+       as the active tool. The active tool is
+       slightly larger to make it distinct.
+    ========================================= */
+
+    .tool-category-link {
+      background: #059669;
+      border-color: #059669;
+      color: #ffffff;
+      border-radius: 999px;
+    }
+
+    .tool-category-link:hover {
+      background: #285b91;
+      border-color: #285b91;
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow:
+        0 3px 8px
+        rgba(50, 107, 168, 0.20);
+    }
+
+    .tool-category-link.active {
+      min-height: 38px;
+      padding: 0 16px;
+      background: #059669;
+      border-color: #059669;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow:
+        0 4px 10px
+        rgba(50, 107, 168, 0.24);
+      transform: none;
+    }
+
+    .tool-category-link.active:hover {
+      background: #285b91;
+      border-color: #285b91;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    html.dark-mode .tool-category-link,
+    html:not(.light-mode) .tool-category-link {
+      background: #059669;
+      border-color: #059669;
+      color: #ffffff;
+    }
+
+    html.dark-mode .tool-category-link:hover,
+    html:not(.light-mode) .tool-category-link:hover {
+      background: #3a78b8;
+      border-color: #3a78b8;
+      color: #ffffff;
+      box-shadow:
+        0 3px 8px
+        rgba(0, 0, 0, 0.28);
+    }
+
+    html.dark-mode .tool-category-link.active,
+    html:not(.light-mode) .tool-category-link.active {
+      min-height: 38px;
+      padding: 0 16px;
+      
+      border-color: #059669;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow:
+        0 4px 10px
+        rgba(0, 0, 0, 0.30);
+      transform: none;
+     background: transparent !important;}
+
+    html.dark-mode .tool-category-link.active:hover,
+    html:not(.light-mode) .tool-category-link.active:hover {
+      
+      border-color: #3a78b8;
+      color: #ffffff;
+      transform: translateY(-1px);
+     background: transparent !important;}
+
+    @media (max-width: 700px) {
+      .tool-category-bar {
+        display: none !important;
+      }
+    }
+
   
+    /* TEXT TOOLS: EXACTLY 3 TOOLS PER ROW */
+    .tool-category-bar .tool-category-list {
+      display: grid !important;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      grid-auto-flow: row;
+    }
+
+
 /* DESKTOP FOOTER ENHANCEMENT - mobile layout remains unchanged */
 .footer-desktop-only { display: none; }
 @media (min-width: 701px) {
@@ -954,221 +1922,6 @@ html.dark-mode .footer-quick-links a:hover { color: #6fa2d2; }
   html:not(.light-mode) .footer-quick-title { color: #d7dee7; }
   html:not(.light-mode) .footer-quick-links a { color: #8d9aaa; }
   html:not(.light-mode) .footer-quick-links a:hover { color: #6fa2d2; }
-}
-
-
-/* ========================================
-   TEXT DIFFERENCE CHECKER
-======================================== */
-.tn-diff-tool {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.tn-diff-inputs {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-}
-
-.tn-diff-panel {
-  min-width: 0;
-}
-
-.tn-diff-panel label {
-  display: block;
-  margin: 0 0 9px;
-  color: #334155;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.tn-diff-panel textarea {
-  display: block;
-  width: 100%;
-  min-height: 230px;
-  box-sizing: border-box;
-  resize: vertical;
-  padding: 15px;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #1e293b;
-  font: 16px/1.6 Arial, Helvetica, sans-serif;
-  outline: none;
-  box-shadow: 0 2px 8px rgba(40, 91, 145, 0.08);
-}
-
-.tn-diff-panel textarea:focus {
-  border-color: #059669;
-  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12);
-}
-
-.tn-diff-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.tn-diff-actions .tn-text-btn {
-  min-height: 48px;
-}
-
-.tn-diff-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin: 18px 0 10px;
-  color: #64748b;
-  font-size: 14px;
-}
-
-.tn-diff-legend-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.tn-diff-swatch {
-  width: 13px;
-  height: 13px;
-  display: inline-block;
-  border-radius: 3px;
-}
-
-.tn-diff-swatch.added {
-  background: #bbf7d0;
-  border: 1px solid #86efac;
-}
-
-.tn-diff-swatch.removed {
-  background: #fecaca;
-  border: 1px solid #fca5a5;
-}
-
-.tn-diff-result {
-  margin-top: 8px;
-  border: 1px solid #d7dee7;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #ffffff;
-  box-shadow: 0 2px 8px rgba(40, 91, 145, 0.08);
-}
-
-.tn-diff-empty {
-  padding: 22px;
-  color: #64748b;
-  font-size: 15px;
-}
-
-.tn-diff-summary {
-  padding: 14px 16px;
-  border-bottom: 1px solid #e2e8f0;
-  background: #f8fafc;
-  color: #475569;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.tn-diff-row {
-  display: grid;
-  grid-template-columns: 54px minmax(0, 1fr);
-  border-bottom: 1px solid #eef2f6;
-}
-
-.tn-diff-row:last-child {
-  border-bottom: 0;
-}
-
-.tn-diff-line-no {
-  padding: 9px 8px;
-  background: #f8fafc;
-  color: #94a3b8;
-  text-align: right;
-  font: 13px/1.55 Arial, Helvetica, sans-serif;
-  user-select: none;
-}
-
-.tn-diff-line {
-  min-width: 0;
-  padding: 9px 12px;
-  color: #334155;
-  font: 15px/1.55 Arial, Helvetica, sans-serif;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
-.tn-diff-row.added .tn-diff-line {
-  background: #f0fdf4;
-  color: #166534;
-}
-
-.tn-diff-row.removed .tn-diff-line {
-  background: #fef2f2;
-  color: #991b1b;
-}
-
-.tn-diff-row.changed .tn-diff-line {
-  background: #fffbeb;
-}
-
-.tn-diff-inline-added {
-  background: #bbf7d0;
-  color: #166534;
-  border-radius: 3px;
-  padding: 1px 2px;
-}
-
-.tn-diff-inline-removed {
-  background: #fecaca;
-  color: #991b1b;
-  text-decoration: line-through;
-  border-radius: 3px;
-  padding: 1px 2px;
-}
-
-@media screen and (max-width: 700px) {
-  .tn-diff-inputs {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .tn-diff-panel textarea {
-    min-height: 190px;
-    max-height: 360px;
-    font-size: 16px;
-  }
-
-  .tn-diff-actions {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .tn-diff-actions .tn-text-btn {
-    width: 100%;
-    min-height: 48px;
-  }
-
-  .tn-diff-result {
-    border-radius: 9px;
-  }
-
-  .tn-diff-row {
-    grid-template-columns: 42px minmax(0, 1fr);
-  }
-
-  .tn-diff-line-no {
-    padding-left: 4px;
-    padding-right: 6px;
-  }
-
-  .tn-diff-line {
-    padding-left: 10px;
-    padding-right: 10px;
-    font-size: 14px;
-  }
 }
 
 </style>
@@ -2846,6 +3599,9 @@ html.dark-mode .footer-links a:hover { color: #ffffff !important; }
 
 
 
+
+
+
 <style id="mobile-header-hide-controls">
 @media screen and (max-width: 650px) {
   .header-right {
@@ -2946,18 +3702,6 @@ html.dark-mode .tn-tool-category-link:hover {
 html.dark-mode .tn-tool-category-link.active {
   color: #f08a92;
  background: transparent !important;}
-@media (prefers-color-scheme: dark) {
-  html:not(.light-mode) .tn-tool-category-link {
-    color: #d7dee7;
-  }
-  html:not(.light-mode) .tn-tool-category-link:hover {
-    color: #f08a92;
-    background: #302326;
-  }
-  html:not(.light-mode) .tn-tool-category-link.active {
-    color: #f08a92;
-  }
-}
 @media (max-width: 700px) {
   .tn-tool-category-bar { display: none; }
 }
@@ -3430,81 +4174,40 @@ html.dark-mode .heading p { color: #9ca9b8; }
 <a class="category-link" href="index.html?category=image">Image Tools</a>
 </div>
 </nav>
-<main>
-<div class="tn-mobile-stack-layout" style="display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 28px; align-items: start; width: 100%; max-width: 1200px; margin: 0 auto; padding: 28px 24px 60px;"><div class="tn-ad-left-column"><!-- ========================================
-             TEXT TOOL NAVIGATION
-        ========================================= -->
+<main class="page-content">
+<div class="tn-mobile-stack-layout" style="display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 28px; align-items: start;"><div class="tn-ad-left-column">
 <nav class="tn-tool-category-bar" aria-label="Text tools">
   <div class="tn-tool-category-list">
-    <a class="tn-tool-category-link" href="word-character-counter.html">Word & Character Counter</a>
+    <a class="tn-tool-category-link" href="word-character-counter.html">Word &amp; Character Counter</a>
     <a class="tn-tool-category-link" href="case-converter.html">Case Converter</a>
     <a class="tn-tool-category-link" href="remove-extra-spaces.html">Remove Extra Spaces</a>
     <a class="tn-tool-category-link" href="remove-duplicate-lines.html">Remove Duplicate Lines</a>
-    <a class="tn-tool-category-link" href="find-and-replace.html">Find & Replace</a>
+    <a class="tn-tool-category-link" href="find-and-replace.html">Find &amp; Replace</a>
     <a class="tn-tool-category-link" href="reading-time-estimator.html">Reading Time Estimator</a>
     <a class="tn-tool-category-link active" href="text-difference-checker.html">Text Difference Checker</a>
   </div>
 </nav>
-
-<div class="heading">
-  <h1>Text Difference Checker</h1>
-  <p>Compare two pieces of text and quickly see what was added, removed, or changed.</p>
-</div>
-
-<div class="tn-diff-tool" id="tnDiffTool">
-  <div class="tn-diff-inputs">
-    <div class="tn-diff-panel">
-      <label for="tnOriginalText">Original Text</label>
-      <textarea id="tnOriginalText" placeholder="Paste the original text here..."></textarea>
+<div class="heading"><h1>Text Difference Checker</h1><p>Compare two texts and see exactly what was added, removed or changed.</p></div>
+<div class="tn-text-tool tn-diff-tool" id="tnDiffTool">
+  <div class="tn-text-two tn-diff-inputs">
+    <div><label for="tnDiffA">Text 1</label><textarea id="tnDiffA" placeholder="Paste the first text here..."></textarea></div>
+    <div><label for="tnDiffB">Text 2</label><textarea id="tnDiffB" placeholder="Paste the second text here..."></textarea></div>
+  </div>
+  <div class="tn-text-actions tn-diff-actions">
+    <button class="tn-text-btn" id="tnCompare" type="button">Compare Texts</button>
+    <button class="tn-text-btn secondary" id="tnSwap" type="button">Swap</button>
+    <button class="tn-text-btn secondary" id="tnDiffClear" type="button">Clear</button>
+  </div>
+  <div class="tn-diff-result" id="tnDiffResult" hidden>
+    <div class="tn-diff-summary" id="tnDiffSummary"></div>
+    <div class="tn-diff-views">
+      <div class="tn-diff-view"><h3>Text 1</h3><div class="tn-diff-content" id="tnDiffViewA"></div></div>
+      <div class="tn-diff-view"><h3>Text 2</h3><div class="tn-diff-content" id="tnDiffViewB"></div></div>
     </div>
-    <div class="tn-diff-panel">
-      <label for="tnNewText">New Text</label>
-      <textarea id="tnNewText" placeholder="Paste the new text here..."></textarea>
-    </div>
-  </div>
-
-  <div class="tn-diff-actions">
-    <button class="tn-text-btn" id="tnCompare" type="button">Compare Text</button>
-    <button class="tn-text-btn secondary" id="tnSwap" type="button">Swap Text</button>
-    <button class="tn-text-btn secondary" id="tnClearDiff" type="button">Clear</button>
-  </div>
-
-  <div class="tn-diff-legend" aria-label="Difference legend">
-    <span class="tn-diff-legend-item"><i class="tn-diff-swatch added"></i>Added</span>
-    <span class="tn-diff-legend-item"><i class="tn-diff-swatch removed"></i>Removed</span>
-  </div>
-
-  <div class="tn-diff-result" id="tnDiffResult" aria-live="polite">
-    <div class="tn-diff-empty">Enter text in both boxes and click <strong>Compare Text</strong>.</div>
+    <div class="tn-diff-list-wrap"><h3>All Differences</h3><div class="tn-diff-list" id="tnDiffList"></div></div>
   </div>
 </div>
-
-<!-- ADVERTISEMENT -->
-</div><aside aria-label="Advertisement" class="ad-column">
-<div class="ad-box">
-<div class="ad-content">
-<div class="ad-label">
-              ADVERTISEMENT
-            </div>
-<div class="sample-ad">
-<div class="sample-ad-badge">
-                TOOLNEST
-              </div>
-<h3>
-                Simple Tools.<br/>
-                Better Productivity.
-              </h3>
-<p>
-                Fast, free and easy-to-use online tools for everyday tasks.
-              </p>
-<a class="sample-ad-button">
-                Explore Tools
-              </a>
-</div>
-</div>
-</div>
-</aside>
-</div>
+</div><aside aria-label="Advertisement" class="ad-column"><div class="ad-box"><div class="ad-content"><div class="ad-label">ADVERTISEMENT</div><div class="sample-ad"><div class="sample-ad-badge">TOOLNEST</div><h3>Simple Tools.<br/>Better Productivity.</h3><p>Fast, free and easy-to-use online tools for everyday tasks.</p><a class="sample-ad-button">Explore Tools</a></div></div></div></aside></div>
 </main>
 <!-- ========================================
        FOOTER
@@ -3589,29 +4292,20 @@ html.dark-mode .heading p { color: #9ca9b8; }
        THEME SCRIPT
   ========================================= -->
 <script>
-
     const themeToggle =
       document.getElementById("themeToggle");
 
-
     function updateThemeIcon() {
-
       if (
         document.documentElement.classList.contains(
           "dark-mode"
         )
       ) {
-
         themeToggle.textContent = "☀";
-
       } else {
-
         themeToggle.textContent = "🌙";
-
       }
-
     }
-
 
     themeToggle.addEventListener(
       "click",
@@ -3621,7 +4315,6 @@ html.dark-mode .heading p { color: #9ca9b8; }
           document.documentElement.classList.toggle(
             "dark-mode"
           );
-
 
         if (isDark) {
 
@@ -3636,18 +4329,13 @@ html.dark-mode .heading p { color: #9ca9b8; }
             "toolnest-theme",
             "light"
           );
-
         }
 
-
         updateThemeIcon();
-
       }
     );
 
-
     updateThemeIcon();
-
   </script>
 
 <style id="toolnest-second-header-dark-active">
@@ -3778,120 +4466,66 @@ html.dark-mode .tn-text-stat span,html.dark-mode .tn-text-help{color:#9ca9b8}
 @media(max-width:700px){.tn-text-grid{grid-template-columns:repeat(2,1fr)}.tn-text-two{grid-template-columns:1fr}.tn-text-row{flex-direction:column;align-items:stretch}}
 </style>
 
-<script id="toolnest-text-difference-checker">
-(() => {
-  const original = document.getElementById("tnOriginalText");
-  const newer = document.getElementById("tnNewText");
-  const compare = document.getElementById("tnCompare");
-  const swap = document.getElementById("tnSwap");
-  const clear = document.getElementById("tnClearDiff");
-  const result = document.getElementById("tnDiffResult");
-
-  function escapeHtml(value) {
-    return value.replace(/[&<>"']/g, ch => ({
-      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
-    }[ch]));
-  }
-
-  function tokenize(line) {
-    return line.match(/\s+|[A-Za-z0-9_]+|[^A-Za-z0-9_\s]/g) || [];
-  }
-
-  function inlineDiff(oldLine, newLine) {
-    const a = tokenize(oldLine);
-    const b = tokenize(newLine);
-    const dp = Array.from({length: a.length + 1}, () => Array(b.length + 1).fill(0));
-    for (let i = a.length - 1; i >= 0; i--) {
-      for (let j = b.length - 1; j >= 0; j--) {
-        dp[i][j] = a[i] === b[j] ? dp[i+1][j+1] + 1 : Math.max(dp[i+1][j], dp[i][j+1]);
-      }
-    }
-    let i = 0, j = 0, oldOut = "", newOut = "";
-    while (i < a.length || j < b.length) {
-      if (i < a.length && j < b.length && a[i] === b[j]) {
-        oldOut += escapeHtml(a[i]);
-        newOut += escapeHtml(b[j]);
-        i++; j++;
-      } else if (j < b.length && (i === a.length || dp[i][j+1] >= dp[i+1][j])) {
-        newOut += `<span class="tn-diff-inline-added">${escapeHtml(b[j])}</span>`;
-        j++;
-      } else {
-        oldOut += `<span class="tn-diff-inline-removed">${escapeHtml(a[i])}</span>`;
-        i++;
-      }
-    }
-    return {oldOut, newOut};
-  }
-
-  function compareText() {
-    const a = original.value.replace(/\r\n/g, "\n").split("\n");
-    const b = newer.value.replace(/\r\n/g, "\n").split("\n");
-    const rows = [];
-    const dp = Array.from({length: a.length + 1}, () => Array(b.length + 1).fill(0));
-
-    for (let i = a.length - 1; i >= 0; i--) {
-      for (let j = b.length - 1; j >= 0; j--) {
-        dp[i][j] = a[i] === b[j] ? dp[i+1][j+1] + 1 : Math.max(dp[i+1][j], dp[i][j+1]);
-      }
-    }
-
-    let i = 0, j = 0, added = 0, removed = 0;
-    while (i < a.length || j < b.length) {
-      if (i < a.length && j < b.length && a[i] === b[j]) {
-        rows.push({type:"same", oldNo:i+1, text:a[i]});
-        i++; j++;
-      } else if (j < b.length && (i === a.length || dp[i][j+1] >= dp[i+1][j])) {
-        rows.push({type:"added", oldNo:"", text:b[j]});
-        added++; j++;
-      } else {
-        rows.push({type:"removed", oldNo:i+1, text:a[i]});
-        removed++; i++;
-      }
-    }
-
-    const changedPairs = [];
-    for (let k = 0; k < rows.length - 1; k++) {
-      if (rows[k].type === "removed" && rows[k+1].type === "added") {
-        const d = inlineDiff(rows[k].text, rows[k+1].text);
-        rows[k].oldHtml = d.oldOut;
-        rows[k+1].newHtml = d.newOut;
-        rows[k].type = "changed";
-        rows[k+1].type = "changed";
-        changedPairs.push(k);
-      }
-    }
-
-    const totalChanges = added + removed;
-    const summary = totalChanges === 0
-      ? "No differences found."
-      : `${added} line${added === 1 ? "" : "s"} added · ${removed} line${removed === 1 ? "" : "s"} removed`;
-
-    let html = `<div class="tn-diff-summary">${summary}</div>`;
-    rows.forEach(row => {
-      const content = row.type === "removed" || row.type === "changed" && row.oldHtml !== undefined
-        ? (row.oldHtml ?? escapeHtml(row.text))
-        : row.newHtml ?? escapeHtml(row.text);
-      html += `<div class="tn-diff-row ${row.type}">
-        <div class="tn-diff-line-no">${row.oldNo ?? ""}</div>
-        <div class="tn-diff-line">${content || "&nbsp;"}</div>
-      </div>`;
-    });
-    result.innerHTML = html;
-  }
-
-  compare.addEventListener("click", compareText);
-  swap.addEventListener("click", () => {
-    const temp = original.value;
-    original.value = newer.value;
-    newer.value = temp;
-    compareText();
-  });
-  clear.addEventListener("click", () => {
-    original.value = "";
-    newer.value = "";
-    result.innerHTML = '<div class="tn-diff-empty">Enter text in both boxes and click <strong>Compare Text</strong>.</div>';
-    original.focus();
-  });
+<script id="toolnest-text-wordcounter">
+(()=>{const t=document.getElementById("tnTextInput"),w=document.getElementById("tnWords"),c=document.getElementById("tnChars"),n=document.getElementById("tnCharsNoSpaces"),s=document.getElementById("tnSentences"),cl=document.getElementById("tnClear");function u(){const x=t.value;w.textContent=(x.trim().match(/\S+/g)||[]).length;c.textContent=x.length;n.textContent=x.replace(/\s/g,"").length;s.textContent=(x.match(/[.!?]+(?=\s|$)/g)||[]).length}t.addEventListener("input",u);cl.addEventListener("click",()=>{t.value="";u();t.focus()});u()})();
+</script>
+<style id="toolnest-text-difference-checker-css">
+.tn-diff-tool{margin-top:24px}
+.tn-diff-inputs{align-items:start}
+.tn-diff-inputs>div{min-width:0}
+.tn-diff-inputs textarea{min-height:250px;resize:vertical}
+.tn-diff-actions{align-items:center}
+.tn-diff-result{margin-top:20px}
+.tn-diff-summary{padding:14px 16px;border:1px solid #dfe6ee;border-radius:9px;background:#f5f7fa;color:#344154;font-weight:600}
+.tn-diff-views{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.tn-diff-view{min-width:0;border:1px solid #e1e7ee;border-radius:10px;overflow:hidden;background:#fff}
+.tn-diff-view h3,.tn-diff-list-wrap h3{margin:0;padding:11px 14px;font-size:15px;color:#344154;background:#f5f7fa;border-bottom:1px solid #e1e7ee}
+.tn-diff-content{padding:14px;min-height:150px;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;line-height:1.6;color:#263548}
+.tn-diff-content .diff-added{background:#d9f7df;border-radius:3px;padding:1px 2px}
+.tn-diff-content .diff-removed{background:#ffe0e0;text-decoration:line-through;border-radius:3px;padding:1px 2px}
+.tn-diff-list-wrap{margin-top:16px;border:1px solid #e1e7ee;border-radius:10px;overflow:hidden;background:#fff}
+.tn-diff-list{padding:8px 14px}
+.tn-diff-item{padding:10px 0;border-bottom:1px solid #edf0f4;display:flex;gap:10px;align-items:flex-start;line-height:1.5}
+.tn-diff-item:last-child{border-bottom:0}
+.tn-diff-badge{flex:0 0 auto;font-size:11px;font-weight:700;text-transform:uppercase;padding:3px 7px;border-radius:5px}
+.tn-diff-badge.added{background:#d9f7df;color:#17652a}.tn-diff-badge.removed{background:#ffe0e0;color:#9b2222}
+.tn-diff-empty{padding:18px 0;color:#718096}
+html.dark-mode .tn-diff-summary,html.dark-mode .tn-diff-view,html.dark-mode .tn-diff-list-wrap{background:#202934;border-color:#35435a}
+html.dark-mode .tn-diff-summary,html.dark-mode .tn-diff-content,html.dark-mode .tn-diff-view h3,html.dark-mode .tn-diff-list-wrap h3{color:#edf2f7}
+html.dark-mode .tn-diff-view h3,html.dark-mode .tn-diff-list-wrap h3{background:#18212b;border-color:#35435a}
+html.dark-mode .tn-diff-content{color:#edf2f7}.tn-diff-item{border-color:#35435a}
+@media(max-width:700px){
+  .tn-diff-inputs{grid-template-columns:1fr!important;gap:14px}
+  .tn-diff-inputs textarea{min-height:210px}
+  .tn-diff-actions{flex-direction:column;align-items:stretch}
+  .tn-diff-actions .tn-text-btn{width:100%}
+  .tn-diff-views{grid-template-columns:1fr;gap:12px}
+  .tn-diff-content{min-height:120px}
+}
+</style>
+<script id="toolnest-text-difference-checker-script">
+(()=>{
+ const A=document.getElementById('tnDiffA'),B=document.getElementById('tnDiffB'),compare=document.getElementById('tnCompare'),swap=document.getElementById('tnSwap'),clear=document.getElementById('tnDiffClear');
+ const result=document.getElementById('tnDiffResult'),summary=document.getElementById('tnDiffSummary'),viewA=document.getElementById('tnDiffViewA'),viewB=document.getElementById('tnDiffViewB'),list=document.getElementById('tnDiffList');
+ const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+ const tok=s=>s.match(/\s+|[\p{L}\p{N}_]+|[^\s\p{L}\p{N}_]/gu)||[];
+ function diff(a,b){
+   const n=a.length,m=b.length;let prev=new Uint32Array(m+1),cur=new Uint32Array(m+1);
+   const rows=new Array(n+1);rows[0]=new Uint32Array(m+1);
+   for(let i=1;i<=n;i++){cur=new Uint32Array(m+1);for(let j=1;j<=m;j++)cur[j]=a[i-1]===b[j-1]?prev[j-1]+1:Math.max(prev[j],cur[j-1]);rows[i]=cur;prev=cur}
+   const ops=[];let i=n,j=m;
+   while(i||j){if(i&&j&&a[i-1]===b[j-1]){ops.push({t:'same',v:a[i-1]});i--;j--}else if(j&&(i===0||rows[i][j-1]>=rows[i-1][j])){ops.push({t:'add',v:b[j-1]});j--}else{ops.push({t:'remove',v:a[i-1]});i--}}
+   return ops.reverse();
+ }
+ function merge(ops,type){let out='';for(const o of ops){if(o.t==='same')out+=esc(o.v);else if(o.t===type)out+='<span class="diff-'+type+'">'+esc(o.v)+'</span>';}return out||'<span class="tn-diff-empty">No content</span>'}
+ function compareTexts(){
+   const a=tok(A.value),b=tok(B.value),ops=diff(a,b);let adds=0,rems=0;ops.forEach(o=>o.t==='add'?adds++:o.t==='remove'&&rems++);
+   result.hidden=false;viewA.innerHTML=merge(ops,'remove');viewB.innerHTML=merge(ops,'add');
+   const changes=[];for(let k=0;k<ops.length;k++){if(ops[k].t==='same')continue;const t=ops[k].t,v=ops[k].v;let text=v;while(k+1<ops.length&&ops[k+1].t===t){text+=ops[++k].v}changes.push({t,text})}
+   summary.textContent=changes.length?`${adds} addition${adds===1?'':'s'} and ${rems} removal${rems===1?'':'s'} found.`:'No differences found — the two texts are identical.';
+   list.innerHTML=changes.length?changes.map((x,i)=>`<div class="tn-diff-item"><span class="tn-diff-badge ${x.t==='add'?'added':'removed'}">${x.t==='add'?'Added':'Removed'}</span><span>${esc(x.text).replace(/\n/g,'↵\n')}</span></div>`).join(''):'<div class="tn-diff-empty">The two texts are identical.</div>';
+ }
+ compare.addEventListener('click',compareTexts);swap.addEventListener('click',()=>{const x=A.value;A.value=B.value;B.value=x});clear.addEventListener('click',()=>{A.value='';B.value='';result.hidden=true;A.focus()});
 })();
 </script>
 </body>
@@ -4081,6 +4715,24 @@ html.dark-mode nav.category-nav .category-link.active-button {
     text-align: center !important;
     font-size: 12px !important;
   }
+}
+</style>
+<style id="toolnest-logo-final-fix">
+/* FINAL: ToolNest "Tool" color */
+html:not(.dark-mode) .logo-tool {
+  color: #334155 !important;
+  -webkit-text-fill-color: #334155 !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+}
+
+html.dark-mode .logo-tool {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
 }
 
 /* ToolNest corner accent — visible in both themes. */
