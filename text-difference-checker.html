@@ -4187,28 +4187,20 @@ html.dark-mode .heading p { color: #9ca9b8; }
     <a class="tn-tool-category-link active" href="text-difference-checker.html">Text Difference Checker</a>
   </div>
 </nav>
-<div class="heading"><h1>Text Difference Checker</h1><p>Compare two texts and see exactly what was added, removed or changed.</p></div>
+<div class="heading"><h1>Text Difference Checker</h1><p>Compare two texts and highlight the differences directly in each text box.</p></div>
 <div class="tn-text-tool tn-diff-tool" id="tnDiffTool">
   <div class="tn-text-two tn-diff-inputs">
-    <div><label for="tnDiffA">Text 1</label><textarea id="tnDiffA" placeholder="Paste the first text here..."></textarea></div>
-    <div><label for="tnDiffB">Text 2</label><textarea id="tnDiffB" placeholder="Paste the second text here..."></textarea></div>
+    <div><label for="tnDiffA">Text 1</label><div id="tnDiffA" class="tn-diff-editor" contenteditable="true" spellcheck="false" data-placeholder="Paste the first text here..."></div></div>
+    <div><label for="tnDiffB">Text 2</label><div id="tnDiffB" class="tn-diff-editor" contenteditable="true" spellcheck="false" data-placeholder="Paste the second text here..."></div></div>
   </div>
   <div class="tn-text-actions tn-diff-actions">
     <button class="tn-text-btn" id="tnCompare" type="button">Compare Texts</button>
     <button class="tn-text-btn secondary" id="tnSwap" type="button">Swap</button>
     <button class="tn-text-btn secondary" id="tnDiffClear" type="button">Clear</button>
   </div>
-  <div class="tn-diff-result" id="tnDiffResult" hidden>
-    <div class="tn-diff-summary" id="tnDiffSummary"></div>
-    <div class="tn-diff-views">
-      <div class="tn-diff-view"><h3>Text 1</h3><div class="tn-diff-content" id="tnDiffViewA"></div></div>
-      <div class="tn-diff-view"><h3>Text 2</h3><div class="tn-diff-content" id="tnDiffViewB"></div></div>
-    </div>
-    <div class="tn-diff-list-wrap"><h3>All Differences</h3><div class="tn-diff-list" id="tnDiffList"></div></div>
-  </div>
+  <div class="tn-diff-summary" id="tnDiffSummary" hidden></div>
 </div>
-</div><aside aria-label="Advertisement" class="ad-column"><div class="ad-box"><div class="ad-content"><div class="ad-label">ADVERTISEMENT</div><div class="sample-ad"><div class="sample-ad-badge">TOOLNEST</div><h3>Simple Tools.<br/>Better Productivity.</h3><p>Fast, free and easy-to-use online tools for everyday tasks.</p><a class="sample-ad-button">Explore Tools</a></div></div></div></aside></div>
-</main>
+
 <!-- ========================================
        FOOTER
   ========================================= -->
@@ -4473,59 +4465,52 @@ html.dark-mode .tn-text-stat span,html.dark-mode .tn-text-help{color:#9ca9b8}
 .tn-diff-tool{margin-top:24px}
 .tn-diff-inputs{align-items:start}
 .tn-diff-inputs>div{min-width:0}
-.tn-diff-inputs textarea{min-height:250px;resize:vertical}
-.tn-diff-actions{align-items:center}
-.tn-diff-result{margin-top:20px}
-.tn-diff-summary{padding:14px 16px;border:1px solid #dfe6ee;border-radius:9px;background:#f5f7fa;color:#344154;font-weight:600}
-.tn-diff-views{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
-.tn-diff-view{min-width:0;border:1px solid #e1e7ee;border-radius:10px;overflow:hidden;background:#fff}
-.tn-diff-view h3,.tn-diff-list-wrap h3{margin:0;padding:11px 14px;font-size:15px;color:#344154;background:#f5f7fa;border-bottom:1px solid #e1e7ee}
-.tn-diff-content{padding:14px;min-height:150px;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;line-height:1.6;color:#263548}
-.tn-diff-content .diff-added{background:#d9f7df;border-radius:3px;padding:1px 2px}
-.tn-diff-content .diff-removed{background:#ffe0e0;text-decoration:line-through;border-radius:3px;padding:1px 2px}
-.tn-diff-list-wrap{margin-top:16px;border:1px solid #e1e7ee;border-radius:10px;overflow:hidden;background:#fff}
-.tn-diff-list{padding:8px 14px}
-.tn-diff-item{padding:10px 0;border-bottom:1px solid #edf0f4;display:flex;gap:10px;align-items:flex-start;line-height:1.5}
-.tn-diff-item:last-child{border-bottom:0}
-.tn-diff-badge{flex:0 0 auto;font-size:11px;font-weight:700;text-transform:uppercase;padding:3px 7px;border-radius:5px}
-.tn-diff-badge.added{background:#d9f7df;color:#17652a}.tn-diff-badge.removed{background:#ffe0e0;color:#9b2222}
-.tn-diff-empty{padding:18px 0;color:#718096}
-html.dark-mode .tn-diff-summary,html.dark-mode .tn-diff-view,html.dark-mode .tn-diff-list-wrap{background:#202934;border-color:#35435a}
-html.dark-mode .tn-diff-summary,html.dark-mode .tn-diff-content,html.dark-mode .tn-diff-view h3,html.dark-mode .tn-diff-list-wrap h3{color:#edf2f7}
-html.dark-mode .tn-diff-view h3,html.dark-mode .tn-diff-list-wrap h3{background:#18212b;border-color:#35435a}
-html.dark-mode .tn-diff-content{color:#edf2f7}.tn-diff-item{border-color:#35435a}
+.tn-diff-editor{min-height:250px;resize:vertical;overflow:auto;box-sizing:border-box;width:100%;border:1px solid #d7dee7;border-radius:9px;background:#fff;color:#263548;font:inherit;padding:13px 14px;outline:none;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;line-height:1.55;cursor:text}
+.tn-diff-editor:focus{border-color:#6b9bc6;box-shadow:0 0 0 3px rgba(107,155,198,.12)}
+.tn-diff-editor:empty:before{content:attr(data-placeholder);color:#8a96a5;pointer-events:none}
+.tn-diff-editor .diff-difference{background:#fff0a8;border-radius:3px;padding:1px 2px}
+.tn-diff-summary{margin-top:16px;padding:12px 14px;border:1px solid #dfe6ee;border-radius:9px;background:#f5f7fa;color:#344154;font-weight:600}
+html.dark-mode .tn-diff-editor{background:#303236;border-color:#4a4d52;color:#edf2f7}
+html.dark-mode .tn-diff-summary{background:#202934;border-color:#35435a;color:#edf2f7}
 @media(max-width:700px){
   .tn-diff-inputs{grid-template-columns:1fr!important;gap:14px}
-  .tn-diff-inputs textarea{min-height:210px}
+  .tn-diff-editor{min-height:210px}
   .tn-diff-actions{flex-direction:column;align-items:stretch}
   .tn-diff-actions .tn-text-btn{width:100%}
-  .tn-diff-views{grid-template-columns:1fr;gap:12px}
-  .tn-diff-content{min-height:120px}
 }
 </style>
 <script id="toolnest-text-difference-checker-script">
 (()=>{
- const A=document.getElementById('tnDiffA'),B=document.getElementById('tnDiffB'),compare=document.getElementById('tnCompare'),swap=document.getElementById('tnSwap'),clear=document.getElementById('tnDiffClear');
- const result=document.getElementById('tnDiffResult'),summary=document.getElementById('tnDiffSummary'),viewA=document.getElementById('tnDiffViewA'),viewB=document.getElementById('tnDiffViewB'),list=document.getElementById('tnDiffList');
+ const A=document.getElementById('tnDiffA'),B=document.getElementById('tnDiffB'),compare=document.getElementById('tnCompare'),swap=document.getElementById('tnSwap'),clear=document.getElementById('tnDiffClear'),summary=document.getElementById('tnDiffSummary');
  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
  const tok=s=>s.match(/\s+|[\p{L}\p{N}_]+|[^\s\p{L}\p{N}_]/gu)||[];
  function diff(a,b){
-   const n=a.length,m=b.length;let prev=new Uint32Array(m+1),cur=new Uint32Array(m+1);
-   const rows=new Array(n+1);rows[0]=new Uint32Array(m+1);
+   const n=a.length,m=b.length;let prev=new Uint32Array(m+1),cur;
+   const rows=new Array(n+1);rows[0]=prev;
    for(let i=1;i<=n;i++){cur=new Uint32Array(m+1);for(let j=1;j<=m;j++)cur[j]=a[i-1]===b[j-1]?prev[j-1]+1:Math.max(prev[j],cur[j-1]);rows[i]=cur;prev=cur}
    const ops=[];let i=n,j=m;
    while(i||j){if(i&&j&&a[i-1]===b[j-1]){ops.push({t:'same',v:a[i-1]});i--;j--}else if(j&&(i===0||rows[i][j-1]>=rows[i-1][j])){ops.push({t:'add',v:b[j-1]});j--}else{ops.push({t:'remove',v:a[i-1]});i--}}
    return ops.reverse();
  }
- function merge(ops,type){let out='';for(const o of ops){if(o.t==='same')out+=esc(o.v);else if(o.t===type)out+='<span class="diff-'+type+'">'+esc(o.v)+'</span>';}return out||'<span class="tn-diff-empty">No content</span>'}
- function compareTexts(){
-   const a=tok(A.value),b=tok(B.value),ops=diff(a,b);let adds=0,rems=0;ops.forEach(o=>o.t==='add'?adds++:o.t==='remove'&&rems++);
-   result.hidden=false;viewA.innerHTML=merge(ops,'remove');viewB.innerHTML=merge(ops,'add');
-   const changes=[];for(let k=0;k<ops.length;k++){if(ops[k].t==='same')continue;const t=ops[k].t,v=ops[k].v;let text=v;while(k+1<ops.length&&ops[k+1].t===t){text+=ops[++k].v}changes.push({t,text})}
-   summary.textContent=changes.length?`${adds} addition${adds===1?'':'s'} and ${rems} removal${rems===1?'':'s'} found.`:'No differences found — the two texts are identical.';
-   list.innerHTML=changes.length?changes.map((x,i)=>`<div class="tn-diff-item"><span class="tn-diff-badge ${x.t==='add'?'added':'removed'}">${x.t==='add'?'Added':'Removed'}</span><span>${esc(x.text).replace(/\n/g,'↵\n')}</span></div>`).join(''):'<div class="tn-diff-empty">The two texts are identical.</div>';
+ function render(ops,side){
+   let out='';
+   for(const o of ops){
+     if(o.t==='same') out+=esc(o.v);
+     else if((side==='a'&&o.t==='remove')||(side==='b'&&o.t==='add')) out+='<span class="diff-difference">'+esc(o.v)+'</span>'; 
+   }
+   return out;
  }
- compare.addEventListener('click',compareTexts);swap.addEventListener('click',()=>{const x=A.value;A.value=B.value;B.value=x});clear.addEventListener('click',()=>{A.value='';B.value='';result.hidden=true;A.focus()});
+ function plain(el){return el.innerText.replace(/\u00a0/g,' ')}
+ function compareTexts(){
+   const a=plain(A),b=plain(B),ops=diff(tok(a),tok(b));
+   const changes=ops.filter(o=>o.t!=='same').length;
+   A.innerHTML=render(ops,'a');B.innerHTML=render(ops,'b');
+   summary.hidden=false;summary.textContent=changes?`${changes} difference${changes===1?'':'s'} highlighted.`:'No differences — the texts are identical.';
+ }
+ compare.addEventListener('click',compareTexts);
+ swap.addEventListener('click',()=>{const x=plain(A),y=plain(B);A.textContent=y;B.textContent=x;summary.hidden=true;});
+ clear.addEventListener('click',()=>{A.innerHTML='';B.innerHTML='';summary.hidden=true;A.focus();});
+ [A,B].forEach(el=>el.addEventListener('paste',()=>setTimeout(()=>{summary.hidden=true},0)));
 })();
 </script>
 </body>
