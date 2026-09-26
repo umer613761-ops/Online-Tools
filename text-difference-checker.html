@@ -4127,6 +4127,8 @@ html.dark-mode .heading p { color: #9ca9b8; }
   }
 }
 </style>
+
+
 </head>
 <body>
 <!-- ========================================
@@ -4175,8 +4177,7 @@ html.dark-mode .heading p { color: #9ca9b8; }
 </div>
 </nav>
 <main class="page-content">
-<div class="tn-mobile-stack-layout" style="display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 28px; align-items: start;"><div class="tn-ad-left-column">
-<nav class="tn-tool-category-bar" aria-label="Text tools">
+<div class="tn-mobile-stack-layout" style="display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 28px; align-items: start;"><div class="tn-ad-left-column"><nav class="tn-tool-category-bar" aria-label="Text tools">
   <div class="tn-tool-category-list">
     <a class="tn-tool-category-link" href="word-character-counter.html">Word &amp; Character Counter</a>
     <a class="tn-tool-category-link" href="case-converter.html">Case Converter</a>
@@ -4200,7 +4201,8 @@ html.dark-mode .heading p { color: #9ca9b8; }
   </div>
   <div class="tn-diff-summary" id="tnDiffSummary" hidden></div>
 </div>
-<aside aria-label="Advertisement" class="ad-column">
+<!-- ADVERTISEMENT -->
+</div><aside aria-label="Advertisement" class="ad-column">
 <div class="ad-box">
 <div class="ad-content">
 <div class="ad-label">ADVERTISEMENT</div>
@@ -4212,8 +4214,9 @@ html.dark-mode .heading p { color: #9ca9b8; }
 </div>
 </div>
 </div>
-</aside></div>
-
+</aside>
+</div>
+</main>
 <!-- ========================================
        FOOTER
   ========================================= -->
@@ -4496,13 +4499,13 @@ html.dark-mode .tn-diff-summary{background:#202934;border-color:#35435a;color:#e
 (()=>{
  const A=document.getElementById('tnDiffA'),B=document.getElementById('tnDiffB'),compare=document.getElementById('tnCompare'),swap=document.getElementById('tnSwap'),clear=document.getElementById('tnDiffClear'),summary=document.getElementById('tnDiffSummary');
  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
- const tok=s=>s.match(/\s+|[\p{L}\p{N}_]+|[^\s\p{L}\p{N}_]/gu)||[];
+ const tok=s=>(s.match(/\s+|[\p{L}\p{N}_]+|[^\s\p{L}\p{N}_]/gu)||[]).map(v=>({k:/^\s+$/.test(v)?' ':v,v}));
  function diff(a,b){
    const n=a.length,m=b.length;let prev=new Uint32Array(m+1),cur;
    const rows=new Array(n+1);rows[0]=prev;
-   for(let i=1;i<=n;i++){cur=new Uint32Array(m+1);for(let j=1;j<=m;j++)cur[j]=a[i-1]===b[j-1]?prev[j-1]+1:Math.max(prev[j],cur[j-1]);rows[i]=cur;prev=cur}
+   for(let i=1;i<=n;i++){cur=new Uint32Array(m+1);for(let j=1;j<=m;j++)cur[j]=a[i-1].k===b[j-1].k?prev[j-1]+1:Math.max(prev[j],cur[j-1]);rows[i]=cur;prev=cur}
    const ops=[];let i=n,j=m;
-   while(i||j){if(i&&j&&a[i-1]===b[j-1]){ops.push({t:'same',v:a[i-1]});i--;j--}else if(j&&(i===0||rows[i][j-1]>=rows[i-1][j])){ops.push({t:'add',v:b[j-1]});j--}else{ops.push({t:'remove',v:a[i-1]});i--}}
+   while(i||j){if(i&&j&&a[i-1].k===b[j-1].k){ops.push({t:'same',v:a[i-1].v});i--;j--}else if(j&&(i===0||rows[i][j-1]>=rows[i-1][j])){ops.push({t:'add',v:b[j-1].v});j--}else{ops.push({t:'remove',v:a[i-1].v});i--}}
    return ops.reverse();
  }
  function render(ops,side){
