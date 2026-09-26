@@ -6409,6 +6409,8 @@ html.dark-mode .logo-icon {
   function setSplitMode(mode) {
     splitMode = mode === "custom" ? "custom" : "entire";
 
+    if (splitButton) splitButton.classList.toggle("custom-floating", splitMode === "custom");
+
     const entire = splitMode === "entire";
     if (splitEntireButton) {
       splitEntireButton.classList.toggle("active", entire);
@@ -7030,8 +7032,75 @@ html.dark-mode main .tool-description {
   }
 }
 </style>
+<style id="tn-split-custom-final-red-and-centered">
+/* Final custom split styling: red split strips and button centered to the preview/content area. */
+.visual-split-divider {
+  background: #dc2626 !important;
+  color: #ffffff !important;
+  border-color: #dc2626 !important;
+}
+.visual-split-divider.selected {
+  background: #b91c1c !important;
+  color: #ffffff !important;
+  border-color: #b91c1c !important;
+}
+@media (min-width: 551px) {
+  .editor-controls .primary-button#splitButton.custom-floating {
+    left: var(--split-button-center, 50%) !important;
+  }
+}
+</style>
+<script>
+(function(){
+  function centerCustomSplitButton(){
+    var btn=document.getElementById('splitButton');
+    if(!btn || !btn.classList.contains('custom-floating')) return;
+    var area=document.querySelector('.page-layout > .content');
+    if(!area) return;
+    var r=area.getBoundingClientRect();
+    btn.style.setProperty('--split-button-center', (r.left + r.width/2) + 'px');
+  }
+  window.addEventListener('resize', centerCustomSplitButton);
+  window.addEventListener('scroll', centerCustomSplitButton, {passive:true});
+  setTimeout(centerCustomSplitButton, 0);
+  setTimeout(centerCustomSplitButton, 300);
+})();
+</script>
 </body>
 </html>
+<style id="tn-custom-split-floating-button">
+/* Custom split: keep Split and Download readily available at the bottom of the page. */
+@media (min-width: 551px) {
+  .editor-controls .primary-button#splitButton.custom-floating {
+    position: fixed !important;
+    left: var(--split-button-center, 50%) !important;
+    bottom: 22px !important;
+    transform: translateX(-50%) !important;
+    z-index: 9998 !important;
+    min-width: 280px !important;
+    box-shadow: 0 10px 28px rgba(0,0,0,.24) !important;
+  }
+  .editor-controls .primary-button#splitButton.custom-floating:hover:not(:disabled) {
+    transform: translateX(-50%) translateY(-3px) !important;
+  }
+  .editor-controls .primary-button#splitButton.custom-floating:active:not(:disabled) {
+    transform: translateX(-50%) !important;
+  }
+}
+
+@media (max-width: 550px) {
+  .editor-controls .primary-button#splitButton.custom-floating {
+    position: fixed !important;
+    left: 14px !important;
+    right: 14px !important;
+    bottom: 14px !important;
+    width: auto !important;
+    min-width: 0 !important;
+    z-index: 9998 !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,.24) !important;
+  }
+}
+</style>
 <style id="split-button-pill-final">
 /* Split button: match the Upload PDF File button */
 .editor-controls .primary-button {
