@@ -1,24 +1,3771 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fill PDF - ToolNest</title>
-<meta name="description" content="Fill any PDF online by adding text, signatures, images, checkmarks and more. Free with ToolNest.">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<!-- ========================================
+       THEME INITIALIZATION
+       Prevents light-mode flash on page load
+  ========================================= -->
 <script>
-(function(){const t=localStorage.getItem('toolnest-theme');if(t==='dark')document.documentElement.classList.add('dark-mode');else if(t==='light')document.documentElement.classList.add('light-mode');})();
-</script>
+
+    (function () {
+
+      const savedTheme =
+        localStorage.getItem("toolnest-theme");
+
+      if (savedTheme === "dark") {
+
+        document.documentElement.classList.add(
+          "dark-mode"
+        );
+
+      }
+
+      else if (savedTheme === "light") {
+
+        document.documentElement.classList.add(
+          "light-mode"
+        );
+
+      }
+
+    })();
+  </script>
+<title>Fill PDF - ToolNest</title>
 <style>
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;background:#f3f5f7;color:#263548;transition:.2s ease}a{text-decoration:none}
-.top-header{background:#fff}.header-inner{width:100%;max-width:1200px;margin:auto;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}.logo{display:flex;align-items:center;gap:8px;white-space:nowrap}.logo-icon{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#3d78b6,#245b96);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}.logo-text{font-size:28px;font-weight:700;letter-spacing:-.4px}.logo-tool{color:#334155}.logo-nest{color:#059669}.header-right{display:flex;align-items:center;gap:10px;width:100%;max-width:570px;justify-content:flex-end}.header-search{width:100%;max-width:312px;position:relative}.header-search input{width:100%;height:40px;padding:0 44px 0 15px;border:1px solid #d8e0e8;border-radius:7px;background:#f7f9fb;color:#344256;font-size:14px;outline:none}.search-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#718096;font-size:19px}.theme-toggle{width:40px;height:40px;border:1px solid #d8e0e8;border-radius:7px;background:#f7f9fb;color:#526273;cursor:pointer;font-size:18px}
-.category-nav{background:#fff;border-bottom:1px solid #dfe5eb}.category-nav-inner{max-width:1200px;margin:auto;padding:0 24px;display:flex;align-items:center;gap:30px}.category-link{height:46px;display:flex;align-items:center;color:#667588;font-size:14px;white-space:nowrap}.category-link.active{height:38px;margin:4px 0;padding:0 15px;border-radius:10px;background:#059669;color:#fff;box-shadow:0 5px 14px rgba(76,91,183,.23)}
-.page-wrapper{max-width:1200px;margin:auto;padding:28px 24px 60px}.page-layout{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:28px;align-items:start}.content{min-width:0}.tool-category-bar{margin-bottom:20px}.tool-category-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.tool-category-link{min-height:32px;padding:0 13px;display:flex;align-items:center;justify-content:center;border:1px solid #cfd8e2;border-radius:7px;background:#fff;color:#667588;font-size:12px;font-weight:600;white-space:nowrap}.tool-category-link.active{background:#059669;border-color:#059669;color:#fff}.heading{margin-bottom:24px}.heading h1{margin:0 0 8px;color:#263548;font-size:36px;letter-spacing:-.8px}.heading p{max-width:720px;margin:0;color:#718096;font-size:16px;line-height:1.6}
-.tool-box{background:#fff;border:1px solid #dce3ea;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(32,54,74,.06)}.upload-panel{min-height:300px;padding:28px;background:#eef0f3;background-image:radial-gradient(circle,rgba(70,80,92,.46) 1.5px,transparent 1.5px);background-size:18px 18px;display:flex;align-items:center;justify-content:center}.upload-panel.has-file{background-image:none}.upload-inner{text-align:center}.upload-title{font-size:18px;font-weight:700;margin-bottom:8px}.upload-subtitle{color:#718096;font-size:13px;margin-bottom:18px}.upload-btn,.download-btn{border:0;border-radius:7px;background:#059669;color:#fff;font-weight:700;padding:12px 20px;cursor:pointer}.upload-btn:hover,.download-btn:hover{background:#047857}.workspace{display:none;background:#dfe4e9;padding:18px}.workspace.active{display:block}.workspace-toolbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;background:#fff;border:1px solid #d2d9e1;border-radius:8px;padding:9px;margin-bottom:14px;position:sticky;top:8px;z-index:20;box-shadow:0 2px 8px rgba(0,0,0,.06)}.tool-btn{border:1px solid #ccd5de;background:#f7f9fb;color:#46576a;border-radius:6px;padding:8px 11px;cursor:pointer;font-size:13px;font-weight:600}.tool-btn:hover,.tool-btn.active{background:#059669;border-color:#059669;color:#fff}.toolbar-sep{width:1px;height:28px;background:#d7dee5;margin:0 3px}.page-list{display:flex;flex-direction:column;gap:18px;align-items:center}.pdf-page-wrap{position:relative;background:#fff;box-shadow:0 3px 12px rgba(0,0,0,.18);max-width:100%;line-height:0}.pdf-page-wrap canvas{display:block;max-width:100%;height:auto}.overlay-layer{position:absolute;inset:0;overflow:hidden}.overlay-item{position:absolute;min-width:28px;min-height:22px;cursor:move;user-select:none;line-height:1.2;resize:both;overflow:auto}.overlay-item.selected{outline:1px dashed #059669}.text-item{padding:3px 5px;white-space:pre-wrap;color:#111;background:transparent}.check-item{font-size:28px;font-weight:700;color:#059669;padding:1px}.date-item{padding:3px 5px;color:#111;background:transparent}.image-item{display:block;object-fit:contain}.signature-item{display:block}.draw-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.page-number{font-size:11px;color:#718096;text-align:center;margin-top:-10px}.workspace-actions{display:flex;justify-content:center;gap:10px;margin-top:16px}.status{min-height:22px;text-align:center;color:#718096;font-size:13px;padding:10px}.ad-column{width:200px}.ad-box{width:200px;height:612px;background:#fff;border:1px solid #dce3ea;border-radius:10px;display:flex;align-items:center;justify-content:center;padding:18px;position:sticky;top:20px}.ad-content{text-align:center}.ad-label{font-size:10px;color:#9aa5b1;letter-spacing:.8px;margin-bottom:15px}.sample-ad-badge{display:inline-block;padding:5px 8px;border-radius:5px;background:#eef2f6;color:#526273;font-size:10px;font-weight:700;margin-bottom:12px}.sample-ad h3{font-size:17px;line-height:1.25;color:#334155;margin:0 0 10px}.sample-ad p{font-size:11px;line-height:1.45;color:#718096}.sample-ad-button{display:inline-block;margin-top:10px;padding:7px 12px;border-radius:6px;background:#059669;color:#fff;font-size:10px;font-weight:700}.hidden{display:none!important}
-.signature-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:100}.signature-modal.active{display:flex}.signature-dialog{width:min(520px,calc(100% - 30px));background:#fff;border-radius:10px;padding:18px}.signature-dialog h3{margin:0 0 12px}.sig-canvas{width:100%;height:180px;border:1px solid #ccd5de;border-radius:7px;background:#fff;touch-action:none}.sig-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}.secondary-btn{border:1px solid #ccd5de;background:#f7f9fb;color:#46576a;border-radius:7px;padding:9px 14px;cursor:pointer}
-html.dark-mode body{background:#212324;color:#edf2f7}html.dark-mode .top-header,html.dark-mode .category-nav,html.dark-mode .tool-box,html.dark-mode .tool-category-link,html.dark-mode .workspace-toolbar,html.dark-mode .ad-box,html.dark-mode .signature-dialog{background:#121212;border-color:#303942}html.dark-mode .category-link,html.dark-mode .tool-category-link{color:#d7dee7}html.dark-mode .category-link.active,html.dark-mode .tool-category-link.active{color:#fff}html.dark-mode .heading h1{color:#edf2f7}html.dark-mode .heading p,html.dark-mode .upload-subtitle,html.dark-mode .status,.page-number{color:#aebdcb}html.dark-mode .upload-panel{background:#131e2b;background-image:none}html.dark-mode .workspace{background:#17191b}html.dark-mode .tool-btn,.dark-mode .secondary-btn{background:#1d252d;color:#d7dee7;border-color:#40505f}
-@media(max-width:950px){.page-layout{grid-template-columns:1fr}.ad-column{display:none}.tool-category-list{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.header-inner{padding:10px 12px}.header-search{max-width:none}.logo-text{font-size:24px}.category-nav-inner{padding:0 6px;gap:2px;justify-content:space-between}.category-link{flex:1;justify-content:center;font-size:12px}.page-wrapper{padding:20px 12px 40px}.heading h1{font-size:30px}.tool-category-list{grid-template-columns:repeat(2,minmax(0,1fr))}.workspace{padding:8px}.workspace-toolbar{position:relative;top:auto}.upload-panel{min-height:240px}}
+    /* ========================================
+       RESET
+    ======================================== */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: #f3f5f7;
+      color: #263548;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       HEADER
+    ======================================== */
+
+    .top-header {
+      width: 100%;
+
+      background: #ffffff;
+
+      border-bottom: 0 !important;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .header-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        10px
+        24px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 24px;
+    }
+
+
+    /* ========================================
+       LOGO
+    ======================================== */
+
+    .logo {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      text-decoration: none;
+
+      white-space: nowrap;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 9px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #3d78b6,
+          #245b96
+        );
+
+      color: #ffffff;
+
+      font-size: 16px;
+      font-weight: 800;
+
+      box-shadow:
+        0 3px 8px
+        rgba(43, 92, 150, 0.18);
+    }
+
+    .logo-text {
+      font-size: 22px;
+      letter-spacing: -0.6px;
+    }
+
+    .logo-tool {
+      color: #334155;
+
+      font-family:
+        "Brush Script MT",
+        "Brush Script Std",
+        cursive;
+
+      font-size: 32px;
+
+      font-weight: 400;
+
+      letter-spacing: 0;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .logo-nest {
+      color: #059669;
+
+      font-weight: 800;
+    }
+
+
+    /* ========================================
+       HEADER RIGHT SIDE
+    ======================================== */
+
+    .header-right {
+      width: 100%;
+
+      max-width: 570px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: flex-end;
+
+      gap: 10px;
+    }
+
+
+    /* ========================================
+       SEARCH
+    ======================================== */
+
+    .header-search {
+      width: 100%;
+      max-width: 312px;
+      position: relative;
+    }
+
+    .header-search input {
+      width: 100%;
+      height: 40px;
+
+      padding:
+        0
+        44px
+        0
+        15px;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #344256;
+
+      font-size: 14px;
+
+      outline: none;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .header-search input::placeholder {
+      color: #8996a5;
+    }
+
+    .header-search input:focus {
+      background: #ffffff;
+
+      border-color: #7fa6cf;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.08);
+    }
+
+    .search-icon {
+      position: absolute;
+
+      right: 14px;
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      color: #718096;
+
+      font-size: 19px;
+
+      pointer-events: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+
+    /* ========================================
+       DARK MODE TOGGLE
+    ======================================== */
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 0;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #526273;
+
+      cursor: pointer;
+
+      font-size: 18px;
+
+      line-height: 1;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      background: #edf2f7;
+
+      border-color: #c7d3df;
+
+      color: #059669;
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.94);
+    }
+
+    .theme-toggle:focus-visible {
+      outline: none;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.15);
+    }
+
+
+    /* ========================================
+       CATEGORY NAVIGATION
+    ======================================== */
+
+    .category-nav {
+      background: #ffffff;
+
+      border-bottom:
+        1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .category-nav-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        0
+        24px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 30px;
+
+      overflow-x: auto;
+    }
+
+    .category-link {
+      position: relative;
+
+      display: flex;
+
+      align-items: center;
+
+      height: 46px;
+
+      padding: 0;
+
+      margin: 0;
+
+      border: 0;
+
+      background: transparent;
+
+      appearance: none;
+
+      font-family: inherit;
+
+      font-size: 14px;
+
+      font-weight: inherit;
+
+      line-height: normal;
+
+      color: #667588;
+
+      text-decoration: none;
+
+      white-space: nowrap;
+
+      cursor: pointer;
+
+      outline: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .category-link:focus-visible {
+      outline: 2px solid #059669;
+
+      outline-offset: 2px;
+    }
+
+    .category-link:hover {
+      color: #2f67a3;
+    }
+
+    .category-link.active {
+      color: #263548;
+
+      font-weight: 600;
+    }
+
+    .category-link.active::after {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      height: 3px;
+
+      background: #059669;
+
+      border-radius:
+        3px
+        3px
+        0
+        0;
+    }
+
+
+    /* ========================================
+       PDF TOOL CATEGORY BAR
+    ======================================== */
+
+    .tool-category-bar {
+      width: 100%;
+
+      margin-bottom: 20px;
+
+      overflow-x: auto;
+      overflow-y: hidden;
+
+      padding:
+        2px 0;
+
+      scrollbar-width: thin;
+    }
+
+    .tool-category-list {
+      display: grid;
+
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+
+      align-items: center;
+
+      width: 100%;
+
+      gap: 8px;
+    }
+
+
+    /* ========================================
+       COMPACT PDF TOOL BUTTONS
+    ======================================== */
+
+    
+    .tool-category-link {
+      position: relative;
+
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-height: 32px;
+
+      padding:
+        0 13px;
+
+      background: #059669;
+
+      /*
+        Slightly stronger outline so the
+        pill buttons are clearly visible.
+      */
+      border:
+        1px solid #cfd8e2;
+
+      border-radius:  999px;
+
+      color: #ffffff;
+
+      text-decoration: none;
+
+      /*
+        Increased slightly from 11px
+        for better readability.
+      */
+      font-size: 12px;
+
+      font-weight: 600;
+
+      white-space: nowrap;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    
+    .tool-category-link:hover {
+      color: #059669;
+
+      border-color: #b9c9d9;
+
+      background: #f7fafd;
+
+      transform:
+        translateY(-1px);
+
+      box-shadow:
+        0 2px 6px
+        rgba(50, 107, 168, 0.08);
+    }
+
+    
+    .tool-category-link.active {
+      background: #059669;
+
+      border-color: #059669;
+
+      color: #ffffff;
+
+      box-shadow:
+        0 2px 6px
+        rgba(50, 107, 168, 0.14);
+    }
+
+    
+    .tool-category-link.active:hover {
+      background: #285b91;
+
+      border-color: #285b91;
+
+      color: #ffffff;
+    }
+
+
+
+
+    /* ========================================
+       EMPTY PAGE AREA
+    ======================================== */
+
+    .page-content {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 28px 24px 60px;
+
+      flex: 1;
+    }
+
+
+    /* ========================================
+       ADVERTISEMENT
+    ======================================== */
+
+    .ad-column {
+      width: 200px;
+
+      position: sticky;
+
+      top: 20px;
+    }
+
+    .ad-box {
+      width: 200px;
+      height: 400px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 18px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #dce3ea;
+
+      border-radius: 10px;
+
+      text-align: center;
+
+      box-shadow:
+        0 4px 16px
+        rgba(31, 45, 61, 0.04);
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .ad-content {
+      width: 100%;
+    }
+
+    .ad-label {
+      margin-bottom: 14px;
+
+      color: #a0acb8;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      letter-spacing: 1.5px;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .sample-ad {
+      padding:
+        22px 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #f5f8fc,
+          #edf3f9
+        );
+
+      border:
+        1px solid #d8e3ed;
+
+      border-radius: 9px;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .sample-ad-badge {
+      display: inline-block;
+
+      margin-bottom: 12px;
+
+      padding:
+        5px 9px;
+
+      background: #059669;
+
+      border-radius: 20px;
+
+      color: #ffffff;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.5px;
+    }
+
+    .sample-ad h3 {
+      margin:
+        0 0 9px;
+
+      color: #344255;
+
+      font-size: 18px;
+
+      line-height: 1.3;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .sample-ad p {
+      margin:
+        0 0 16px;
+
+      color: #718096;
+
+      font-size: 12px;
+
+      line-height: 1.5;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .sample-ad-button {
+      display: inline-block;
+
+      padding:
+        9px 14px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #cbd8e4;
+
+      border-radius: 6px;
+
+      color: #059669;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+    }
+
+
+
+    /* ========================================
+       FOOTER
+    ======================================== */
+
+    footer {
+      background: #ffffff;
+
+      border-top:
+        1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .footer-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 24px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+
+      color: #7b8998;
+
+      font-size: 13px;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .footer-links {
+      display: flex;
+
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: #7b8998;
+
+      text-decoration: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: #059669;
+    }
+
+
+    /* ========================================
+       DARK MODE
+    ======================================== */
+
+    html.dark-mode body {
+      background: #11161d;
+      color: #e7edf4;
+    }
+
+    html.dark-mode .top-header {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .logo-tool {
+      color: #d7dee7;
+    }
+
+    html.dark-mode .logo-nest {
+      color: #5b95c9;
+    }
+
+    html.dark-mode .header-search input {
+      background: #202731;
+      border-color: #343f4c;
+      color: #edf2f7;
+    }
+
+    html.dark-mode .header-search input:focus {
+      background: #252d38;
+      border-color: #5f8fbd;
+    }
+
+    html.dark-mode .search-icon {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .theme-toggle {
+      background: #202731;
+      border-color: #343f4c;
+      color: #d7e1eb;
+    }
+
+    html.dark-mode .theme-toggle:hover {
+      background: #29323d;
+      border-color: #465463;
+      color: #7eb0df;
+    }
+
+    html.dark-mode .category-nav {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .category-link {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .category-link:hover {
+      color: #6fa2d2;
+    }
+
+    html.dark-mode .category-link.active {
+      color: #e8eef5;
+     background: transparent !important;}
+
+    html.dark-mode .ad-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 18px
+        rgba(0, 0, 0, 0.18);
+    }
+
+    html.dark-mode .ad-label {
+      color: #778493;
+    }
+
+    html.dark-mode .sample-ad {
+      background:
+        linear-gradient(
+          135deg,
+          #202934,
+          #18212b
+        );
+
+      border-color: #354352;
+    }
+
+    html.dark-mode .sample-ad h3 {
+      color: #dce4ec;
+    }
+
+    html.dark-mode .sample-ad p {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .sample-ad-button {
+      background: #202731;
+      border-color: #455361;
+      color: #6fa2d2;
+    }
+
+
+    html.dark-mode footer {
+      background: #171d25;
+      border-top-color: #293340;
+    }
+
+    html.dark-mode .footer-inner {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a:hover {
+      color: #6fa2d2;
+    }
+
+
+    /* ========================================
+       MANUAL DARK MODE
+    ======================================== */
+
+    html.dark-mode body {
+      background: #11161d;
+      color: #e7edf4;
+    }
+
+    html.dark-mode .top-header {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .logo-tool {
+      color: #d7dee7;
+    }
+
+    html.dark-mode .logo-nest {
+      color: #5b95c9;
+    }
+
+    html.dark-mode .header-search input {
+      background: #202731;
+      border-color: #343f4c;
+      color: #edf2f7;
+    }
+
+    html.dark-mode .header-search input::placeholder {
+      color: #8996a5;
+    }
+
+    html.dark-mode .header-search input:focus {
+      background: #252d38;
+      border-color: #5f8fbd;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(77, 138, 196, 0.14);
+    }
+
+    html.dark-mode .search-icon {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .theme-toggle {
+      background: #202731;
+      border-color: #343f4c;
+      color: #d7e1eb;
+    }
+
+    html.dark-mode .theme-toggle:hover {
+      background: #29323d;
+      border-color: #465463;
+      color: #7eb0df;
+    }
+
+    html.dark-mode .category-nav {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+    html.dark-mode .category-link {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .category-link:hover {
+      color: #6fa2d2;
+    }
+
+    html.dark-mode .category-link.active {
+      color: #e8eef5;
+     background: transparent !important;}
+
+    html.dark-mode .tool-category-link {
+      background: #1b2735;
+      border-color: #354457;
+      color: #9aa7b6;
+    }
+
+    html.dark-mode .tool-category-link:hover {
+      color: #78a9d8;
+      border-color: #46627d;
+      background: #202f40;
+
+      box-shadow:
+        0 2px 6px
+        rgba(0, 0, 0, 0.20);
+    }
+
+    html.dark-mode .tool-category-link.active {
+      
+      border-color: #059669;
+      color: #ffffff;
+
+      box-shadow:
+        0 2px 6px
+        rgba(0, 0, 0, 0.28);
+     background: transparent !important;}
+
+    html.dark-mode .tool-category-link.active:hover {
+      
+      border-color: #3a78b8;
+      color: #ffffff;
+     background: transparent !important;}
+
+    html.dark-mode .heading h1 {
+      color: #edf2f7;
+    }
+
+    html.dark-mode .heading p {
+      color: #9ca9b8;
+    }
+
+    html.dark-mode .tool-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 16px
+        rgba(0, 0, 0, 0.22);
+    }
+
+    html.dark-mode .upload-area {
+      background: #131e2b;
+      border-color: #52789c;
+    }
+
+    html.dark-mode .upload-area:hover {
+      background: #18283a;
+      border-color: #6b9bc6;
+    }
+
+    html.dark-mode .floating-upload-button {
+      background: #059669;
+      color: #ffffff;
+
+      box-shadow:
+        0 10px 26px
+        rgba(0, 0, 0, 0.32);
+    }
+
+    html.dark-mode .floating-upload-button:hover {
+      background: #3a78b8;
+
+      box-shadow:
+        0 13px 30px
+        rgba(0, 0, 0, 0.38);
+    }
+
+    html.dark-mode .drag-hint {
+      color: #9aa8b7;
+    }
+
+    html.dark-mode .pdf-preview {
+      background: #263444;
+      border-color: #435366;
+    }
+
+    html.dark-mode .pdf-name {
+      color: #dbe4ee;
+    }
+
+    html.dark-mode .secondary-button {
+      background: #202c3b;
+      border-color: #3b4b5f;
+      color: #d6dee8;
+    }
+
+    html.dark-mode .secondary-button:hover:not(:disabled) {
+      background: #293849;
+    }
+
+    html.dark-mode .status {
+      background: #172b3d;
+      border-color: #31516e;
+      color: #9fc0dd;
+    }
+
+    html.dark-mode .ad-box {
+      background: #171d25;
+      border-color: #2e3946;
+
+      box-shadow:
+        0 4px 18px
+        rgba(0, 0, 0, 0.18);
+    }
+
+    html.dark-mode .ad-label {
+      color: #778493;
+    }
+
+    html.dark-mode .sample-ad {
+      background:
+        linear-gradient(
+          135deg,
+          #202934,
+          #18212b
+        );
+
+      border-color: #354352;
+    }
+
+    html.dark-mode .sample-ad h3 {
+      color: #dce4ec;
+    }
+
+    html.dark-mode .sample-ad p {
+      color: #9ba8b7;
+    }
+
+    html.dark-mode .sample-ad-button {
+      background: #202731;
+      border-color: #455361;
+      color: #6fa2d2;
+    }
+
+    html.dark-mode footer {
+      background: #171d25;
+      border-top-color: #293340;
+    }
+
+    html.dark-mode .footer-inner {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a {
+      color: #8d9aaa;
+    }
+
+    html.dark-mode .footer-links a:hover {
+      color: #6fa2d2;
+    }
+
+
+    
+
+    /* ========================================
+       SYSTEM DARK MODE
+    ======================================== */
+
+    @media (prefers-color-scheme: dark) {
+
+      html:not(.light-mode) footer {
+        background: #171d25;
+        border-top-color: #293340;
+      }
+
+      html:not(.light-mode) .footer-inner {
+        color: #8d9aaa;
+      }
+
+      html:not(.light-mode) .footer-links a {
+        color: #8d9aaa;
+      }
+
+      html:not(.light-mode) .footer-links a:hover {
+        color: #6fa2d2;
+      }
+    }
+
+
+    @media (max-width: 900px) {
+
+      .ad-column {
+        width: 100%;
+
+        position: static;
+      }
+
+      .ad-box {
+        width: 100%;
+
+        height: 180px;
+      }
+
+    }
+
+
+    @media (max-width: 900px) {
+      .page-content > div {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* ========================================
+       MOBILE
+    ======================================== */
+
+    @media (max-width: 700px) {
+
+      .header-inner {
+        padding:
+          9px 16px;
+      }
+
+      .header-search,
+      .theme-toggle {
+        display: none;
+      }
+
+      .header-right {
+        width: auto;
+        max-width: none;
+      }
+
+      .category-nav-inner {
+        padding:
+          0 16px;
+
+        gap: 22px;
+      }
+
+      .page-content {
+        padding:
+          30px 16px;
+      }
+    }
+
+
+    /* ========================================
+       MOBILE FOOTER
+    ======================================== */
+
+    @media (max-width: 550px) {
+
+      .footer-inner {
+        flex-direction: column;
+
+        text-align: center;
+      }
+    }
+
+    /* ========================================
+       TOOL CATEGORY BUTTONS — BLUE STYLE
+       Matched to the Merge PDF page.
+       All PDF tool pills use the same blue
+       as the active tool. The active tool is
+       slightly larger to make it distinct.
+    ========================================= */
+
+    .tool-category-link {
+      background: #059669;
+      border-color: #059669;
+      color: #ffffff;
+      border-radius: 999px;
+    }
+
+    .tool-category-link:hover {
+      background: #285b91;
+      border-color: #285b91;
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow:
+        0 3px 8px
+        rgba(50, 107, 168, 0.20);
+    }
+
+    .tool-category-link.active {
+      min-height: 38px;
+      padding: 0 16px;
+      background: #059669;
+      border-color: #059669;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow:
+        0 4px 10px
+        rgba(50, 107, 168, 0.24);
+      transform: none;
+    }
+
+    .tool-category-link.active:hover {
+      background: #285b91;
+      border-color: #285b91;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    html.dark-mode .tool-category-link,
+    html:not(.light-mode) .tool-category-link {
+      background: #059669;
+      border-color: #059669;
+      color: #ffffff;
+    }
+
+    html.dark-mode .tool-category-link:hover,
+    html:not(.light-mode) .tool-category-link:hover {
+      background: #3a78b8;
+      border-color: #3a78b8;
+      color: #ffffff;
+      box-shadow:
+        0 3px 8px
+        rgba(0, 0, 0, 0.28);
+    }
+
+    html.dark-mode .tool-category-link.active,
+    html:not(.light-mode) .tool-category-link.active {
+      min-height: 38px;
+      padding: 0 16px;
+      
+      border-color: #059669;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow:
+        0 4px 10px
+        rgba(0, 0, 0, 0.30);
+      transform: none;
+     background: transparent !important;}
+
+    html.dark-mode .tool-category-link.active:hover,
+    html:not(.light-mode) .tool-category-link.active:hover {
+      
+      border-color: #3a78b8;
+      color: #ffffff;
+      transform: translateY(-1px);
+     background: transparent !important;}
+
+    @media (max-width: 700px) {
+      .tool-category-bar {
+        display: none !important;
+      }
+    }
+
+  
+/* DESKTOP FOOTER ENHANCEMENT - mobile layout remains unchanged */
+.footer-desktop-only { display: none; }
+@media (min-width: 701px) {
+  .footer-inner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 30px 24px 22px;
+    gap: 24px;
+  }
+  .footer-main.footer-desktop-only {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e3e8ee;
+  }
+  .footer-brand-name {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+    color: #263548;
+    margin-bottom: 6px;
+  }
+  .footer-brand-name span { color: #263548; }
+  .footer-brand-name strong { color: #059669; }
+  .footer-brand p {
+    margin: 0;
+    color: #7b8998;
+    font-size: 13px;
+  }
+  .footer-quick { text-align: right; }
+  .footer-quick-title {
+    color: #344154;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 9px;
+  }
+  .footer-quick-links { display: flex; gap: 22px; }
+  .footer-quick-links a {
+    color: #7b8998;
+    font-size: 13px;
+    text-decoration: none;
+  }
+  .footer-quick-links a:hover { color: #059669; }
+  .footer-bottom { width: 100%; }
+}
+html.dark-mode .footer-main.footer-desktop-only { border-bottom-color: #293340; }
+html.dark-mode .footer-brand-name { color: #d7dee7; }
+html.dark-mode .footer-brand-name span { color: #d7dee7; }
+html.dark-mode .footer-brand-name strong { color: #6fa2d2; }
+html.dark-mode .footer-quick-title { color: #d7dee7; }
+html.dark-mode .footer-quick-links a { color: #8d9aaa; }
+html.dark-mode .footer-quick-links a:hover { color: #6fa2d2; }
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .footer-main.footer-desktop-only { border-bottom-color: #293340; }
+  html:not(.light-mode) .footer-brand-name { color: #d7dee7; }
+  html:not(.light-mode) .footer-brand-name span { color: #d7dee7; }
+  html:not(.light-mode) .footer-brand-name strong { color: #6fa2d2; }
+  html:not(.light-mode) .footer-quick-title { color: #d7dee7; }
+  html:not(.light-mode) .footer-quick-links a { color: #8d9aaa; }
+  html:not(.light-mode) .footer-quick-links a:hover { color: #6fa2d2; }
+}
+
+</style>
+<style>
+/* ToolNest: compact tool-category buttons only. Dimensions intentionally unchanged. */
+.tool-category-link {
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  background: linear-gradient(135deg, #ffffff 0%, #fbfdff 100%) !important;
+  border: 1px solid #dce7f0 !important;
+  border-radius: 9px !important;
+  color: #102c52 !important;
+  box-shadow: 0 3px 9px rgba(38, 67, 96, 0.08) !important;
+  text-decoration: none !important;
+  transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease !important;
+}
+
+.tool-category-link::after {
+  content: "" !important;
+  position: absolute !important;
+  width: 82px !important;
+  height: 82px !important;
+  right: -42px !important;
+  bottom: -55px !important;
+  border-radius: 50% !important;
+  background: #dcefe6 !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+.tool-category-link:hover {
+  background: #ffffff !important;
+  border-color: #c7d9e8 !important;
+  color: #102c52 !important;
+  box-shadow: 0 5px 12px rgba(38, 67, 96, 0.11) !important;
+  transform: translateY(-1px) !important;
+}
+
+.tool-category-link.active {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fbff 100%) !important;
+  border-color: #cfddea !important;
+  color: #102c52 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 10px rgba(38, 67, 96, 0.10) !important;
+}
+
+.tool-category-link.active::after {
+  background: linear-gradient(135deg, rgba(255, 90, 103, .10), rgba(125, 101, 255, .08)) !important;
+}
+
+/* Keep these compact buttons light in dark mode too. */
+html.dark-mode .tool-category-link,
+html.dark-mode .tool-category-link.active {
+  
+  border-color: #dce7f0 !important;
+  color: #102c52 !important;
+  box-shadow: 0 3px 9px rgba(38, 67, 96, 0.08) !important;
+ background: transparent !important;}
+
+html.dark-mode .tool-category-link:hover {
+  background: #ffffff !important;
+  border-color: #c7d9e8 !important;
+  color: #102c52 !important;
+}
+
+/* Pastel accents, matching the approved tool-card visual language. */
+.tool-category-link[href*="merge-pdf"],
+.tool-category-link[href*="remove-pdf-pages"],
+.tool-category-link[href*="image-to-png"] { }
+
+.tool-category-link[href*="merge-pdf"]::after,
+.tool-category-link[href*="remove-pdf-pages"]::after {
+  background: linear-gradient(135deg, rgba(255,90,103,.11), rgba(255,145,178,.09)) !important;
+}
+.tool-category-link[href*="split-pdf"]::after,
+.tool-category-link[href*="compress-pdf"]::after {
+  background: linear-gradient(135deg, rgba(255,158,70,.11), rgba(255,209,154,.09)) !important;
+}
+.tool-category-link[href*="edit-pdf"]::after,
+.tool-category-link[href*="extract-pdf-pages"]::after {
+  background: linear-gradient(135deg, rgba(126,92,255,.11), rgba(205,170,255,.09)) !important;
+}
+.tool-category-link[href*="convert-from-pdf"]::after,
+.tool-category-link[href*="image-compressor"]::after {
+  background: linear-gradient(135deg, rgba(52,213,150,.11), rgba(111,229,177,.09)) !important;
+}
+.tool-category-link[href*="convert-to-pdf"]::after,
+.tool-category-link[href*="image-converter"]::after {
+  background: linear-gradient(135deg, rgba(54,161,255,.10), rgba(154,194,255,.08)) !important;
+}
+.tool-category-link[href*="re-arrange-pdf-pages"]::after,
+.tool-category-link[href*="image-cropper"]::after {
+  background: linear-gradient(135deg, rgba(190,92,255,.10), rgba(228,176,255,.08)) !important;
+}
+.tool-category-link[href*="rotate-pdf"]::after,
+.tool-category-link[href*="image-rotator"]::after {
+  background: linear-gradient(135deg, rgba(54,137,255,.10), rgba(125,188,255,.08)) !important;
+}
+.tool-category-link[href*="image-resizer"]::after {
+  background: linear-gradient(135deg, rgba(255,178,35,.11), rgba(255,220,140,.09)) !important;
+}
+.tool-category-link[href*="blur-censorship-tool"]::after,
+.tool-category-link[href*="case-converter"]::after {
+  background: linear-gradient(135deg, rgba(218,72,255,.10), rgba(247,174,255,.08)) !important;
+}
+.tool-category-link[href*="image-upscaler"]::after,
+.tool-category-link[href*="reading-time-estimator"]::after {
+  background: linear-gradient(135deg, rgba(83,193,255,.10), rgba(173,218,255,.08)) !important;
+}
+.tool-category-link[href*="remove-background"]::after,
+.tool-category-link[href*="find-and-replace"]::after {
+  background: linear-gradient(135deg, rgba(255,77,155,.10), rgba(255,166,211,.08)) !important;
+}
+.tool-category-link[href*="remove-extra-spaces"]::after,
+.tool-category-link[href*="remove-duplicate-lines"]::after {
+  background: linear-gradient(135deg, rgba(33,205,189,.10), rgba(125,236,223,.08)) !important;
+}
+
+</style>
+<style>
+/* ToolNest: colored end accents for existing pill buttons only.
+   Dimensions are unchanged; tool cards are not modified. */
+.tool-category-link::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 6px !important;
+  bottom: 6px !important;
+  width: 3px !important;
+  border-radius: 0 4px 4px 0 !important;
+  background: #6b7cff !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+/* PDF tools */
+.tool-category-link[href*="merge-pdf"]::before,
+.tool-category-link[href*="remove-pdf-pages"]::before,
+.tool-category-link[href*="extract-pdf-pages"]::before,
+.tool-category-link[href*="edit-pdf"]::before,
+.tool-category-link[href*="rotate-pdf"]::before,
+.tool-category-link[href*="compress-pdf"]::before,
+.tool-category-link[href*="convert-to-pdf"]::before,
+.tool-category-link[href*="convert-from-pdf"]::before,
+.tool-category-link[href*="re-arrange-pdf-pages"]::before {
+  background: linear-gradient(#ff5a67, #ff8a9a) !important;
+}
+
+/* Text tools */
+.tool-category-link[href*="case-converter"]::before,
+.tool-category-link[href*="word-character-counter"]::before,
+.tool-category-link[href*="find-and-replace"]::before,
+.tool-category-link[href*="reading-time-estimator"]::before,
+.tool-category-link[href*="remove-extra-spaces"]::before,
+.tool-category-link[href*="remove-duplicate-lines"]::before {
+  background: linear-gradient(#b15cff, #6f8cff) !important;
+}
+
+/* Image tools */
+.tool-category-link[href*="image-compressor"]::before,
+.tool-category-link[href*="image-converter"]::before,
+.tool-category-link[href*="image-cropper"]::before,
+.tool-category-link[href*="image-resizer"]::before,
+.tool-category-link[href*="image-rotator"]::before,
+.tool-category-link[href*="image-upscaler"]::before,
+.tool-category-link[href*="background-remover"]::before,
+.tool-category-link[href*="remove-background"]::before,
+.tool-category-link[href*="blur-censorship-tool"]::before {
+  background: linear-gradient(#28cfa0, #48a9ff) !important;
+}
+</style>
+<style id="toolnest-new-logo">
+/* ToolNest new logo: blue-purple gradient wordmark + colorful utility mark */
+.logo-icon {
+  position: relative !important; overflow: hidden !important; flex: 0 0 46px !important;
+  width: 46px !important; height: 46px !important; border-radius: 13px !important;
+  background: #eef5ff !important; color: transparent !important;
+  box-shadow: 0 6px 16px rgba(55,105,180,.14) !important;
+}
+.logo-icon .logo-shape { position:absolute; display:block; }
+.logo-bar { width:27px; height:9px; left:10px; top:9px; border-radius:6px; background:linear-gradient(90deg,#059669 0%,#059669 100%); }
+.logo-stem { width:10px; height:19px; left:13px; top:20px; border-radius:3px 3px 5px 5px; background:linear-gradient(180deg,#059669 0%,#059669 100%); }
+.logo-dot { width:9px; height:9px; right:9px; top:21px; border-radius:50%; background:#27b96f; }
+.logo-block { width:10px; height:11px; right:9px; bottom:8px; border-radius:3px; background:linear-gradient(135deg,#ffb51b,#ff9f22); }
+.logo-nest {
+  background:linear-gradient(135deg,#059669 0%,#059669 55%,#059669 100%) !important;
+  -webkit-background-clip:text !important; background-clip:text !important;
+  -webkit-text-fill-color:transparent !important; color:transparent !important;
+}
+.logo-tool { color:#263548 !important; }
+</style>
+<!-- ToolNest logo font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<style id="toolnest-montserrat-logo">
+.logo-tool, .logo-nest {
+  font-family: "Montserrat", Arial, Helvetica, sans-serif !important;
+  font-style: normal !important;
+}
+.logo-tool { font-weight: 700 !important; }
+.logo-nest { font-weight: 800 !important; }
+</style>
+<style data-toolnest-home-header-sync="true">
+/* Exact header/category cascade from home.html */
+.top-header {
+      width: 100%;
+
+      background: #ffffff;
+
+      border-bottom: 0 !important;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+.header-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        10px
+        24px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 24px;
+    }
+
+.logo {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      text-decoration: none;
+
+      white-space: nowrap;
+    }
+
+.logo-icon {
+      width: 32px;
+      height: 32px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 9px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #3d78b6,
+          #245b96
+        );
+
+      color: #ffffff;
+
+      font-size: 16px;
+      font-weight: 800;
+
+      box-shadow:
+        0 3px 8px
+        rgba(43, 92, 150, 0.18);
+    }
+
+.logo-text {
+      font-size: 22px;
+      letter-spacing: -0.6px;
+    }
+
+.logo-tool {
+      color: #334155;
+
+      font-family:
+        "Brush Script MT",
+        "Brush Script Std",
+        cursive;
+
+      font-size: 32px;
+
+      font-weight: 400;
+
+      letter-spacing: 0;
+
+      transition:
+        color 0.2s ease;
+    }
+
+.logo-nest {
+      color: #059669;
+
+      font-weight: 800;
+    }
+
+.header-right {
+      width: 100%;
+
+      max-width: 570px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: flex-end;
+
+      gap: 10px;
+    }
+
+.header-search {
+      width: 100%;
+      max-width: 312px;
+      position: relative;
+    }
+
+.header-search input {
+      width: 100%;
+      height: 40px;
+
+      padding:
+        0
+        44px
+        0
+        15px;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #344256;
+
+      font-size: 14px;
+
+      outline: none;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+.header-search input::placeholder {
+      color: #8996a5;
+    }
+
+.header-search input:focus {
+      background: #ffffff;
+
+      border-color: #7fa6cf;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.08);
+    }
+
+.search-icon {
+      position: absolute;
+
+      right: 14px;
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      color: #718096;
+
+      font-size: 19px;
+
+      pointer-events: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+.theme-toggle {
+      width: 40px;
+      height: 40px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 0;
+
+      border:
+        1px solid #d8e0e8;
+
+      border-radius: 7px;
+
+      background: #f7f9fb;
+
+      color: #526273;
+
+      cursor: pointer;
+
+      font-size: 18px;
+
+      line-height: 1;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+.theme-toggle:hover {
+      background: #edf2f7;
+
+      border-color: #c7d3df;
+
+      color: #059669;
+    }
+
+.theme-toggle:active {
+      transform: scale(0.94);
+    }
+
+.theme-toggle:focus-visible {
+      outline: none;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(50, 107, 168, 0.15);
+    }
+
+.category-nav {
+      background: #ffffff;
+
+      border-bottom:
+        1px solid #dfe5eb;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+.category-nav-inner {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding:
+        0
+        24px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 30px;
+
+      overflow-x: auto;
+    }
+
+.category-link {
+      position: relative;
+
+      display: flex;
+
+      align-items: center;
+
+      height: 46px;
+
+      padding: 0;
+
+      margin: 0;
+
+      border: 0;
+
+      background: transparent;
+
+      appearance: none;
+
+      font-family: inherit;
+
+      font-size: 14px;
+
+      font-weight: inherit;
+
+      line-height: normal;
+
+      color: #667588;
+
+      text-decoration: none;
+
+      white-space: nowrap;
+
+      cursor: pointer;
+
+      outline: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+.category-link:focus-visible {
+      outline: 2px solid #059669;
+
+      outline-offset: 2px;
+    }
+
+.category-link:hover {
+      color: #2f67a3;
+    }
+
+.category-link.active {
+      color: #263548;
+
+      font-weight: 600;
+    }
+
+.category-link.active::after {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      height: 3px;
+
+      background: #059669;
+
+      border-radius:
+        3px
+        3px
+        0
+        0;
+    }
+
+html.dark-mode .top-header {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+html.dark-mode .logo-tool {
+      color: #d7dee7;
+    }
+
+html.dark-mode .logo-nest {
+      color: #5b95c9;
+    }
+
+html.dark-mode .header-search input {
+      background: #202731;
+      border-color: #343f4c;
+      color: #edf2f7;
+    }
+
+html.dark-mode .header-search input::placeholder {
+      color: #8996a5;
+    }
+
+html.dark-mode .header-search input:focus {
+      background: #252d38;
+      border-color: #5f8fbd;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(77, 138, 196, 0.14);
+    }
+
+html.dark-mode .search-icon {
+      color: #9aa8b7;
+    }
+
+html.dark-mode .theme-toggle {
+      background: #202731;
+      border-color: #343f4c;
+      color: #d7e1eb;
+    }
+
+html.dark-mode .theme-toggle:hover {
+      background: #29323d;
+      border-color: #465463;
+      color: #7eb0df;
+    }
+
+html.dark-mode .category-nav {
+      background: #171d25;
+      border-bottom-color: #293340;
+    }
+
+html.dark-mode .category-link {
+      color: #9ba8b7;
+    }
+
+html.dark-mode .category-link:hover {
+      color: #6fa2d2;
+    }
+
+html.dark-mode .category-link.active {
+      color: #e8eef5;
+     background: transparent !important;}
+
+@media (prefers-color-scheme: dark) {
+html:not(.light-mode) .top-header {
+        background: #171d25;
+        border-bottom-color: #293340;
+      }
+
+html:not(.light-mode) .logo-tool {
+        color: #d7dee7;
+      }
+
+html:not(.light-mode) .logo-nest {
+        color: #5b95c9;
+      }
+
+html:not(.light-mode) .header-search input {
+        background: #202731;
+        border-color: #343f4c;
+        color: #edf2f7;
+      }
+
+html:not(.light-mode) .header-search input:focus {
+        background: #252d38;
+        border-color: #5f8fbd;
+      }
+
+html:not(.light-mode) .search-icon {
+        color: #9aa8b7;
+      }
+
+html:not(.light-mode) .theme-toggle {
+        background: #202731;
+        border-color: #343f4c;
+        color: #d7e1eb;
+      }
+
+html:not(.light-mode) .category-nav {
+        background: #171d25;
+        border-bottom-color: #293340;
+      }
+
+html:not(.light-mode) .category-link {
+        color: #9ba8b7;
+      }
+
+html:not(.light-mode) .category-link:hover {
+        color: #6fa2d2;
+      }
+
+html:not(.light-mode) .category-link.active {
+        color: #e8eef5;
+      }
+}
+
+@media (max-width: 700px) {
+.header-inner {
+        padding: 9px 16px;
+      }
+
+.header-right {
+        max-width: 260px;
+      }
+
+.header-search {
+        max-width: none;
+      }
+
+.category-nav-inner {
+        padding:
+          0
+          16px;
+
+        gap: 22px;
+      }
+}
+
+@media (max-width: 550px) {
+.header-inner {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 10px;
+
+        padding:
+          10px
+          16px;
+      }
+
+.logo {
+        align-self: flex-start;
+      }
+
+.header-right {
+        max-width: none;
+
+        width: 100%;
+      }
+
+.header-search {
+        max-width: none;
+      }
+}
+
+.top-header {
+  background: rgba(255,255,255,0.96);
+  border-bottom: 1px solid #dce6f0;
+  box-shadow: 0 2px 10px rgba(38,53,72,0.035);
+}
+
+.header-inner {
+  max-width: 1200px;
+  padding: 12px 24px;
+  gap: 28px;
+}
+
+.logo { gap: 10px; }
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #059669 0%, #059669 100%);
+  box-shadow: 0 5px 14px rgba(75,142,208,0.20);
+}
+
+.logo-text { line-height: 1; }
+
+.logo-tool { color: #263548; }
+
+.logo-nest {
+  color: #059669;
+  background: linear-gradient(135deg, #059669, #059669);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header-right {
+  max-width: 590px;
+  gap: 10px;
+}
+
+.header-search { max-width: 330px; }
+
+.header-search input {
+  height: 42px;
+  border-color: #d7e2ec;
+  border-radius: 11px;
+  background: #f8fafc;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.75);
+}
+
+.header-search input:focus {
+  background: #ffffff;
+  border-color: #91b3d5;
+  box-shadow: 0 0 0 3px rgba(75,142,208,0.09), 0 4px 12px rgba(38,53,72,0.05);
+}
+
+.theme-toggle {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  border-color: #d7e2ec;
+  background: #f8fafc;
+  box-shadow: 0 2px 8px rgba(38,53,72,0.04);
+}
+
+.theme-toggle:hover {
+  background: #f0f5fa;
+  border-color: #b9cce0;
+  color: #059669;
+}
+
+.category-nav {
+  background: rgba(255,255,255,0.94);
+  border-bottom: 1px solid #e1e8ef;
+}
+
+.category-nav-inner {
+  max-width: 1200px;
+  min-height: 58px;
+  padding: 8px 24px;
+  gap: 8px;
+}
+
+.category-link {
+  height: 38px;
+  padding: 0 15px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: #667588;
+  font-size: 13px;
+  font-weight: 600;
+  transition: color .2s ease, background .2s ease, border-color .2s ease, transform .2s ease;
+}
+
+.category-link:hover {
+  color: #059669;
+  background: #f3f7fb;
+  border-color: #e0e9f2;
+}
+
+.category-link.active {
+  color: #285b91;
+  font-weight: 700;
+  background: linear-gradient(135deg, #edf5fd 0%, #f2effc 100%);
+  border-color: #d8e4f1;
+  box-shadow: 0 2px 7px rgba(50,107,168,0.06);
+}
+
+.category-link.active::after { display: none; }
+
+.category-link:focus-visible {
+  outline: 2px solid #78a7d2;
+  outline-offset: 2px;
+}
+
+html.dark-mode .top-header,
+html.dark-mode .category-nav {
+  background: #151b23;
+  border-color: #2a3542;
+  box-shadow: none;
+}
+
+html.dark-mode .logo-tool { color: #edf2f7; }
+
+html.dark-mode .logo-nest {
+  color: #76a9d8;
+  background: none;
+  -webkit-text-fill-color: #76a9d8;
+}
+
+html.dark-mode .header-search input,
+html.dark-mode .theme-toggle {
+  background: #1d2631;
+  border-color: #344252;
+  color: #dce5ee;
+}
+
+html.dark-mode .header-search input:focus {
+  background: #202b37;
+  border-color: #5c86ad;
+  box-shadow: 0 0 0 3px rgba(111,162,210,0.10);
+}
+
+html.dark-mode .theme-toggle:hover {
+  background: #25313e;
+  border-color: #46586b;
+  color: #8db7dd;
+}
+
+html.dark-mode .category-link { color: #9aa9b8; }
+
+html.dark-mode .category-link:hover {
+  color: #9fc5e8;
+  background: #202a35;
+  border-color: #344252;
+}
+
+html.dark-mode .category-link.active {
+  color: #d6e7f6;
+  
+  border-color: #3c4e61;
+ background: transparent !important;}
+
+@media (max-width: 700px) {
+.header-inner { padding: 10px 16px; }
+
+.category-nav-inner {
+    min-height: 54px;
+    padding: 7px 16px;
+    gap: 6px;
+  }
+
+.category-link { height: 36px; padding: 0 13px; }
+}
+
+.top-header {
+  padding: 14px 24px !important;
+  background: rgba(255,255,255,.96) !important;
+}
+
+.header-inner {
+  min-height: 68px !important;
+  gap: 34px !important;
+}
+
+.logo {
+  gap: 12px !important;
+}
+
+.logo-icon {
+  width: 46px !important;
+  height: 46px !important;
+  border-radius: 13px !important;
+  font-size: 22px !important;
+  box-shadow: 0 7px 18px rgba(65,105,170,.20) !important;
+}
+
+.logo-text {
+  font-size: 21px !important;
+  letter-spacing: -.35px !important;
+}
+
+.header-right {
+  gap: 12px !important;
+}
+
+.header-search {
+  min-height: 46px !important;
+  border-radius: 12px !important;
+  border: 1px solid #d9e3ee !important;
+  box-shadow: 0 5px 16px rgba(43,72,105,.08) !important;
+  background: #fff !important;
+}
+
+.header-search input {
+  font-size: 14px !important;
+}
+
+.search-icon {
+  font-size: 21px !important;
+  color: #5f7fa2 !important;
+}
+
+.theme-toggle {
+  width: 46px !important;
+  height: 46px !important;
+  border-radius: 12px !important;
+  border: 1px solid #d9e3ee !important;
+  background: linear-gradient(145deg,#ffffff,#f4f7fb) !important;
+  box-shadow: 0 5px 16px rgba(43,72,105,.08) !important;
+  font-size: 18px !important;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(43,72,105,.12) !important;
+}
+
+html.dark-mode .top-header {
+  background: rgba(19,25,33,.97) !important;
+  border-bottom-color: #2d3947 !important;
+}
+
+html.dark-mode .header-search,
+html.dark-mode .theme-toggle {
+  background: #171e27 !important;
+  border-color: #344252 !important;
+  box-shadow: 0 5px 16px rgba(0,0,0,.18) !important;
+}
+
+html.dark-mode .search-icon { color: #86a8ca !important; }
+
+@media (max-width: 700px) {
+.top-header { padding: 10px 16px !important; }
+
+.header-inner { gap: 16px !important; }
+
+.logo-text { font-size: 19px !important; }
+
+.header-search { min-height: 42px !important; }
+
+.theme-toggle { width: 42px !important; height: 42px !important; }
+
+.logo-icon { width: 42px !important; height: 42px !important; }
+}
+
+.top-header {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border-bottom: 1px solid #dbe7f3;
+  box-shadow: 0 3px 16px rgba(55, 105, 160, .07);
+}
+
+.logo-icon {
+  background: linear-gradient(135deg, #059669, #059669) !important;
+  box-shadow: 0 7px 18px rgba(92, 96, 220, .22);
+}
+
+.header-search {
+  border: 1px solid #cfdff0 !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(67, 110, 160, .08);
+}
+
+.header-search:focus-within {
+  border-color: #8b7cf6 !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, .10), 0 5px 16px rgba(67, 110, 160, .10);
+}
+
+.theme-toggle {
+  background: linear-gradient(135deg, #eef5ff, #f4efff) !important;
+  border: 1px solid #d3ddf0 !important;
+  color: #5367a6 !important;
+  box-shadow: 0 4px 14px rgba(67, 110, 160, .08);
+}
+
+.theme-toggle:hover {
+  background: linear-gradient(135deg, #e5efff, #e8f8f1) !important;
+  border-color: #b9c8e6 !important;
+}
+
+.category-nav {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e1e8f0 !important;
+}
+
+.category-link {
+  border-radius: 9px !important;
+  color: #566477 !important;
+}
+
+.category-link:hover {
+  background: #f1f6fc !important;
+  color: #3f6fa7 !important;
+}
+
+.category-link.active {
+  background: linear-gradient(135deg, #edf5ff, #f3efff) !important;
+  color: #4b5fa4 !important;
+  box-shadow: inset 0 0 0 1px #d9e1f2;
+}
+
+html.dark-mode .top-header {
+  background: linear-gradient(180deg, #171d25 0%, #151c25 100%) !important;
+  border-bottom-color: #2d3948 !important;
+}
+
+html.dark-mode .header-search {
+  background: #1d2631 !important;
+  border-color: #3a4a5d !important;
+}
+
+html.dark-mode .theme-toggle {
+  background: linear-gradient(135deg, #24382f, #26352f) !important;
+  border-color: #43536a !important;
+  color: #b5c7f2 !important;
+}
+
+html.dark-mode .category-nav {
+  background: #171d25 !important;
+  border-bottom-color: #2d3948 !important;
+}
+
+html.dark-mode .category-link { color: #aab7c7 !important; }
+
+html.dark-mode .category-link:hover { background: #202b38 !important; color: #c4d5ed !important; }
+
+html.dark-mode .category-link.active {  color: #b8c9f1 !important; border-color: #43536a !important;  background: transparent !important;}
+
+.header-search input {
+  border: 1px solid #d8e0e8 !important;
+  border-bottom: 1px solid #d8e0e8 !important;
+  box-shadow: none;
+}
+
+.header-search input:focus {
+  border: 1px solid #7fa6cf !important;
+  border-bottom: 1px solid #7fa6cf !important;
+  box-shadow: 0 0 0 3px rgba(50,107,168,0.08) !important;
+}
+
+html.dark-mode .header-search input {
+  border: 1px solid #343f4c !important;
+  border-bottom: 1px solid #343f4c !important;
+}
+
+html.dark-mode .header-search input:focus {
+  border: 1px solid #5f8fbd !important;
+  border-bottom: 1px solid #5f8fbd !important;
+}
+
+.logo-icon {
+  position: relative !important;
+  overflow: hidden !important;
+  background: #eef5ff !important;
+  box-shadow: 0 6px 16px rgba(55, 105, 180, .14) !important;
+}
+
+.logo-shape { position:absolute; display:block; }
+
+.logo-bar { width: 26px; height: 9px; left: 10px; top: 8px; border-radius: 5px; background: linear-gradient(90deg,#059669 0%,#059669 100%); }
+
+.logo-stem { width: 9px; height: 18px; left: 13px; top: 19px; border-radius: 3px 3px 5px 5px; background: linear-gradient(180deg,#059669 0%,#059669 100%); }
+
+.logo-dot { width: 8px; height: 8px; right: 8px; top: 20px; border-radius: 50%; background: #27b96f; }
+
+.logo-block { width: 9px; height: 10px; right: 8px; bottom: 7px; border-radius: 3px; background: linear-gradient(135deg,#ffb51b,#ff9f22); }
+
+.logo-nest {
+  background: linear-gradient(135deg,#059669 0%,#059669 55%,#059669 100%) !important;
+  -webkit-background-clip:text !important; background-clip:text !important; -webkit-text-fill-color:transparent !important;
+}
+
+.logo-tool { color:#263548 !important; }
+
+.logo-icon {
+  position: relative !important; overflow: hidden !important; flex: 0 0 46px !important;
+  width: 46px !important; height: 46px !important; border-radius: 13px !important;
+  background: #eef5ff !important; color: transparent !important;
+  box-shadow: 0 6px 16px rgba(55,105,180,.14) !important;
+}
+
+.logo-icon .logo-shape { position:absolute; display:block; }
+
+.logo-bar { width:27px; height:9px; left:10px; top:9px; border-radius:6px; background:linear-gradient(90deg,#059669 0%,#059669 100%); }
+
+.logo-stem { width:10px; height:19px; left:13px; top:20px; border-radius:3px 3px 5px 5px; background:linear-gradient(180deg,#059669 0%,#059669 100%); }
+
+.logo-dot { width:9px; height:9px; right:9px; top:21px; border-radius:50%; background:#27b96f; }
+
+.logo-block { width:10px; height:11px; right:9px; bottom:8px; border-radius:3px; background:linear-gradient(135deg,#ffb51b,#ff9f22); }
+
+.logo-nest {
+  background:linear-gradient(135deg,#059669 0%,#059669 55%,#059669 100%) !important;
+  -webkit-background-clip:text !important; background-clip:text !important;
+  -webkit-text-fill-color:transparent !important; color:transparent !important;
+}
+
+.logo-tool { color:#263548 !important; }
+
+.logo-tool, .logo-nest {
+  font-family: "Montserrat", Arial, Helvetica, sans-serif !important;
+  font-style: normal !important;
+}
+
+.logo-tool { font-weight: 700 !important; }
+
+.logo-nest { font-weight: 800 !important; }
+
+.top-header {
+  padding: 0 !important;
+}
+
+.header-inner {
+  min-height: 62px !important;
+  padding: 7px 24px !important;
+  gap: 24px !important;
+}
+
+.logo {
+  padding: 2px 7px 2px 2px !important;
+  border-radius: 11px !important;
+  gap: 8px !important;
+}
+
+.logo-icon {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+  font-size: 18px !important;
+}
+
+.logo-tool {
+  font-size: 29px !important;
+}
+
+.logo-text {
+  font-size: 20px !important;
+}
+
+.header-right {
+  gap: 9px !important;
+}
+
+.header-search {
+  max-width: 300px !important;
+}
+
+.header-search input {
+  height: 38px !important;
+  border-radius: 9px !important;
+}
+
+.theme-toggle {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 9px !important;
+  font-size: 17px !important;
+}
+
+@media (max-width: 700px) {
+.header-inner { padding: 6px 16px !important; min-height: 58px !important; }
+
+.logo-icon { width: 36px !important; height: 36px !important; }
+
+.logo-tool { font-size: 27px !important; }
+
+.header-search input { height: 36px !important; }
+
+.theme-toggle { width: 36px !important; height: 36px !important; }
+}
+
+.top-header {
+  background: linear-gradient(135deg, #e7f8f1 0%, #e8f8f1 52%, #f1fbf6 100%);
+  border-bottom: 1px solid #c8d8eb;
+  box-shadow: 0 5px 22px rgba(65, 88, 135, 0.12);
+}
+
+.header-inner {
+  min-height: 82px;
+}
+
+.logo {
+  padding: 5px 9px 5px 5px;
+  border-radius: 14px;
+  transition: background 0.2s ease;
+}
+
+.logo:hover {
+  background: rgba(255,255,255,0.42);
+}
+
+.logo-icon {
+  background: linear-gradient(135deg, #059669 0%, #059669 52%, #059669 100%);
+  box-shadow: 0 8px 20px rgba(76, 91, 190, 0.28);
+}
+
+.header-search {
+  filter: drop-shadow(0 3px 9px rgba(67, 88, 132, 0.08));
+}
+
+.header-search input {
+  background: rgba(255,255,255,0.96);
+  border: 1px solid #bfd2e8;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.header-search input:focus {
+  border-color: #708fd0;
+  box-shadow: 0 0 0 3px rgba(92,113,201,0.15), 0 5px 16px rgba(66,88,135,0.12);
+}
+
+.theme-toggle {
+  background: linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%);
+  border: 1px solid #c1cde5;
+  box-shadow: 0 5px 14px rgba(69,84,139,0.12);
+  color: #5b57a5;
+}
+
+.theme-toggle:hover {
+  background: linear-gradient(135deg, #f7fbf9 0%, #e2f8ee 100%);
+  border-color: #9faed4;
+  transform: translateY(-1px);
+}
+
+.category-nav {
+  background: linear-gradient(90deg, #effcf6 0%, #ecfdf5 50%, #f1fbf6 100%);
+  border-bottom: 1px solid #d2ddec;
+  box-shadow: 0 2px 10px rgba(70, 89, 133, 0.06);
+}
+
+.category-nav-inner {
+  min-height: 58px;
+}
+
+.category-link {
+  border: 1px solid transparent;
+  border-radius: 9px;
+  padding: 8px 14px;
+  transition: all 0.2s ease;
+}
+
+.category-link:hover {
+  background: rgba(255,255,255,0.62);
+  border-color: #d0dced;
+}
+
+.category-link.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #059669 0%, #059669 55%, #059669 100%);
+  border-color: transparent;
+  box-shadow: 0 5px 14px rgba(76,91,183,0.23);
+}
+
+html.dark-mode .top-header {
+  background: linear-gradient(135deg, #183b2d 0%, #1d382f 52%, #21362f 100%);
+  border-bottom-color: #3a4d66;
+}
+
+html.dark-mode .logo:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+html.dark-mode .header-search input {
+  background: #101a26;
+  border-color: #465c74;
+}
+
+html.dark-mode .theme-toggle {
+  background: linear-gradient(135deg, #203b30 0%, #26372f 100%);
+  border-color: #50627b;
+  color: #c0baff;
+}
+
+html.dark-mode .category-nav {
+  background: linear-gradient(90deg, #132c21 0%, #192b24 52%, #202d28 100%);
+  border-bottom-color: #344457;
+}
+
+html.dark-mode .category-link:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: #40536a;
+}
+
+html.dark-mode .category-link.active {
+  
+ background: transparent !important;}
+
+@media (max-width: 700px) {
+.header-inner {
+    min-height: 74px;
+  }
+}
+
+.top-header {
+  border-bottom: 0 !important;
+}
+
+.header-search,
+.header-search input {
+  border-bottom: 0 !important;
+}
+
+.header-search input {
+  border: 1px solid #d8e0e8 !important;
+  box-shadow: none !important;
+}
+
+.header-search input:focus {
+  border: 1px solid #7fa6cf !important;
+  box-shadow: 0 0 0 3px rgba(50,107,168,0.08) !important;
+}
+
+html.dark-mode .header-search input {
+  border: 1px solid #343f4c !important;
+  box-shadow: none !important;
+}
+
+html.dark-mode .header-search input:focus {
+  border: 1px solid #5f8fbd !important;
+  box-shadow: 0 0 0 3px rgba(95,143,189,0.10) !important;
+}
+
+.header-search {
+  border: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  background: transparent !important;
+  min-height: 0 !important;
+}
+
+.header-search input {
+  border: 1px solid #d8e0e8 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: #f8fafc !important;
+}
+
+.header-search:focus-within {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.header-search input:focus {
+  border: 1px solid #7fa6cf !important;
+  box-shadow: none !important;
+}
+
+html.dark-mode .header-search {
+  border: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  background: transparent !important;
+}
+
+html.dark-mode .header-search input {
+  border: 1px solid #343f4c !important;
+  box-shadow: none !important;
+  background: #202731 !important;
+}
+
+html.dark-mode .header-search input:focus {
+  border: 1px solid #5f8fbd !important;
+  box-shadow: none !important;
+}
+</style>
+<style id="toolnest-dark-logo-fix">
+/* Ensure the "Tool" part of the ToolNest logo stays visible in dark mode. */
+html.dark-mode .logo-tool { color: #edf2f7 !important; }
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .logo-tool { color: #edf2f7 !important; }
+}
+</style>
+
+<style id="toolnest-unified-footer">
+/* ToolNest unified compact footer — matches home.html */
+footer {
+  background: #172333 !important;
+  border-top: 1px solid #263548 !important;
+}
+.footer-inner {
+  width: 100% !important;
+  max-width: 1240px !important;
+  margin: 0 auto !important;
+  padding: 14px 28px !important;
+  display: block !important;
+  color: #aeb9c7 !important;
+  font-size: 13px !important;
+  box-sizing: border-box !important;
+}
+.footer-bottom {
+  width: 100% !important;
+  padding-top: 0 !important;
+  border-top: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 24px !important;
+  color: #8f9cac !important;
+  box-sizing: border-box !important;
+}
+.footer-links {
+  display: flex !important;
+  align-items: center !important;
+  gap: 24px !important;
+}
+.footer-links a {
+  color: #aeb9c7 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+  white-space: nowrap !important;
+}
+.footer-links a:hover {
+  color: #ffffff !important;
+}
+@media (max-width: 700px) {
+  .footer-inner { padding: 14px 20px !important; }
+  .footer-bottom {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .footer-bottom-links {
+    flex-wrap: wrap !important;
+    gap: 7px 18px !important;
+  }
+}
+html.dark-mode footer {
+  background: #101821 !important;
+  border-top-color: #293340 !important;
+}
+html.dark-mode .footer-inner { color: #8d9aaa !important; }
+html.dark-mode .footer-links a { color: #8d9aaa !important; }
+html.dark-mode .footer-links a:hover { color: #ffffff !important; }
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) footer {
+    background: #101821 !important;
+    border-top-color: #293340 !important;
+  }
+  html:not(.light-mode) .footer-inner { color: #8d9aaa !important; }
+  html:not(.light-mode) .footer-links a { color: #8d9aaa !important; }
+}
+</style>
+
+<style>
+
+/* ToolNest desktop footer - vertical columns */
+@media (min-width: 651px) {
+  .footer-main {
+    display: grid !important;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr !important;
+    gap: 48px !important;
+    align-items: start !important;
+    text-align: left !important;
+  }
+
+  .footer-column {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .footer-column h3,
+  .footer-column h4 {
+    margin: 0 0 14px !important;
+  }
+
+  .footer-column a {
+    display: block !important;
+    margin: 6px 0 !important;
+  }
+
+  .footer-brand {
+    max-width: 300px !important;
+  }
+
+  .footer-bottom {
+    margin-top: 34px !important;
+    padding-top: 20px !important;
+  }
+}
+
+</style>
+<style>
+
+/* ToolNest footer concept #8 — desktop only. Mobile footer is untouched. */
+@media (min-width: 651px) {
+  .toolnest-hybrid-footer {
+    margin-top: 40px;
+    padding: 46px 28px 22px;
+    background: #ffffff;
+    border-top: 1px solid #e5e9ef;
+  }
+
+  .toolnest-hybrid-footer .footer-main {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: grid !important;
+    grid-template-columns: minmax(260px, 1.5fr) repeat(3, minmax(130px, 1fr));
+    gap: 56px;
+    align-items: start;
+    text-align: left;
+  }
+
+  .toolnest-hybrid-footer .footer-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .toolnest-hybrid-footer .footer-logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: #344154;
+    margin-bottom: 10px;
+  }
+
+  .toolnest-hybrid-footer .footer-brand p {
+    margin: 0 0 7px;
+    color: #344154;
+    line-height: 1.6;
+  }
+
+  .toolnest-hybrid-footer .footer-brand .footer-description {
+    color: #748094;
+    max-width: 280px;
+  }
+
+  .toolnest-hybrid-footer h4 {
+    margin: 3px 0 13px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #344154;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+
+  .toolnest-hybrid-footer .footer-column a {
+    margin: 0 0 9px;
+    color: #667085;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .toolnest-hybrid-footer .footer-column a:hover {
+    color: #344154;
+  }
+
+  .toolnest-hybrid-footer .footer-bottom {
+    max-width: 1240px;
+    margin: 36px auto 0;
+    padding-top: 18px;
+    border-top: 1px solid #e5e9ef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    color: #7a8494;
+    font-size: 13px;
+  }
+
+  .toolnest-hybrid-footer .footer-bottom-links {
+    display: flex;
+    gap: 18px;
+  }
+
+  .toolnest-hybrid-footer .footer-bottom-links a {
+    color: #7a8494;
+    text-decoration: none;
+  }
+}
+
+</style>
+<style>
+
+/* ToolNest hybrid footer — dark desktop version */
+@media (min-width: 651px) {
+  .toolnest-hybrid-footer {
+    background: #1f2937 !important;
+    border-top-color: #374151 !important;
+  }
+
+  .toolnest-hybrid-footer .footer-logo,
+  .toolnest-hybrid-footer .footer-brand p,
+  .toolnest-hybrid-footer h4 {
+    color: #f3f4f6 !important;
+  }
+
+  .toolnest-hybrid-footer .footer-brand .footer-description,
+  .toolnest-hybrid-footer .footer-column a,
+  .toolnest-hybrid-footer .footer-bottom {
+    color: #b8c0cc !important;
+  }
+
+  .toolnest-hybrid-footer .footer-column a:hover {
+    color: #ffffff !important;
+  }
+
+  .toolnest-hybrid-footer .footer-bottom {
+    border-top-color: #374151 !important;
+  }
+
+  .toolnest-hybrid-footer .footer-bottom-links a {
+    color: #b8c0cc !important;
+  }
+
+  .toolnest-hybrid-footer .footer-bottom-links a:hover {
+    color: #ffffff !important;
+  }
+}
+
+</style>
+<style>
+
+/* ToolNest mobile header cleanup — hide search and dark mode controls */
+@media (max-width: 650px) {
+  #toolSearch,
+  .search-area,
+  .search-container,
+  .search-box,
+  .dark-mode-toggle,
+  .dark-mode-button,
+  #darkModeToggle,
+  #darkModeBtn,
+  [aria-label*="dark" i],
+  [title*="dark" i] {
+    display: none !important;
+  }
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+
+<style id="mobile-header-hide-controls">
+@media screen and (max-width: 650px) {
+  .header-right {
+    display: none !important;
+  }
+}
+</style>
+<style>
+
+/* Mobile footer alignment and text color only */
+@media screen and (max-width: 650px) {
+  .footer,
+  .footer-content {
+    text-align: center !important;
+  }
+
+  .footer,
+  .footer p,
+  .footer a,
+  .footer-content,
+  .footer-content p,
+  .footer-content a {
+    color: #fff !important;
+  }
+}
+
+</style>
+<style>
+/* ToolNest PDF tool navigation — preview only.
+   Kept inside .content so the existing ad column/grid is untouched. */
+.tn-tool-category-bar {
+  width: 100%;
+  margin: 0 0 22px;
+}
+.tn-tool-category-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: 20px;
+  row-gap: 14px;
+  width: 100%;
+}
+.tn-tool-category-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 28px;
+  padding: 3px 6px 3px 18px;
+  color: #4d5a68;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  text-decoration: none;
+  white-space: normal;
+  transition: color .18s ease, background .18s ease;
+}
+.tn-tool-category-link::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c8d0d8;
+  transform: translateY(-50%);
+  transition: background .18s ease, transform .18s ease;
+}
+.tn-tool-category-link:hover {
+  color: #8f2630;
+  background: #fff7f7;
+  border-radius: 5px;
+}
+.tn-tool-category-link:hover::before {
+  background: #b52b38;
+  transform: translateY(-50%) scale(1.15);
+}
+.tn-tool-category-link.active {
+  color: #8f2630;
+  font-weight: 700;
+}
+.tn-tool-category-link.active::before {
+  width: 7px;
+  height: 7px;
+  background: #b52b38;
+}
+
+/* Dark mode: keep tool navigation text readable */
+html.dark-mode .tn-tool-category-link {
+  color: #d7dee7;
+}
+html.dark-mode .tn-tool-category-link:hover {
+  color: #f08a92;
+  background: #302326;
+}
+html.dark-mode .tn-tool-category-link.active {
+  color: #f08a92;
+ background: transparent !important;}
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .tn-tool-category-link {
+    color: #d7dee7;
+  }
+  html:not(.light-mode) .tn-tool-category-link:hover {
+    color: #f08a92;
+    background: #302326;
+  }
+  html:not(.light-mode) .tn-tool-category-link.active {
+    color: #f08a92;
+  }
+}
+@media (max-width: 700px) {
+  .tn-tool-category-bar { display: none; }
+}
+</style>
+
+<style>
+/* Ad position correction — desktop only. Keep the existing ad markup untouched. */
+@media (min-width: 701px) {
+  .page-layout > .content {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .page-layout > .ad-column {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+  }
+  .tn-ad-left-column {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+  .tn-ad-left-column + .ad-column {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+  }
+}
+</style>
+<style id="toolnest-category-link-color-reference">
+/* Match reference page: lighter link text under the second header */
+.tn-tool-category-link { color: #4d5a68 !important; }
+html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
+</style>
+
+<style id="desktop-footer-links-hidden">
+@media (min-width: 651px) {
+  .footer-content a,
+  .footer-links a,
+  .footer-navigation a,
+  .footer-nav a {
+    display: none !important;
+  }
+}
+</style>
+
+
+<style id="desktop-hide-duplicate-footer-links">
+@media (min-width: 651px) {
+  .footer-bottom-links {
+    display: none !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-mobile-footer-replacement">
+@media screen and (max-width: 650px) {
+  .mobile-footer {
+    display: block !important;
+    background: #111827;
+    color: #f3f4f6;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px 16px;
+  }
+
+  .mobile-footer-columns {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .mobile-footer-column {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mobile-footer-column h3 {
+    margin: 0 0 12px;
+    font-size: 14px;
+    line-height: 1.3;
+    font-weight: 700;
+  }
+
+  .mobile-footer-column a {
+    display: block;
+    margin: 4px 0;
+    color: #d1d5db;
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .mobile-footer-column a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+}
+
+@media screen and (min-width: 651px) {
+  .mobile-footer {
+    display: none !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-mobile-footer-link-alignment">
+@media screen and (max-width: 650px) {
+  .mobile-footer-column {
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .mobile-footer-column h3 {
+    text-align: center;
+  }
+
+  .mobile-footer-column a {
+    text-align: left;
+  }
+}
+</style>
+
+
+<style id="toolnest-mobile-footer-copyright">
+@media screen and (max-width: 650px) {
+  .mobile-footer-copyright {
+    
+    color: #9ca3af;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+}
+
+@media screen and (min-width: 651px) {
+  .mobile-footer-copyright {
+    display: none !important;
+  }
+}
+</style>
+
+
+
+
+
+<style id="toolnest-mobile-footer-last-fix">
+@media screen and (max-width: 650px) {
+  .mobile-footer-column h3 {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .mobile-footer-copyright {
+    background: #111827 !important;
+    color: #f3f4f6 !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-mobile-main-left-alignment">
+@media screen and (max-width: 650px) {
+  /* Main content only: keep the mobile footer and header behavior unchanged. */
+  .page-content {
+    text-align: left !important;
+  }
+
+  .page-content h1,
+  .page-content h2,
+  .page-content h3,
+  .page-content h4,
+  .page-content p,
+  .page-content li,
+  .page-content label {
+    text-align: left !important;
+  }
+
+  .page-content .tool-card,
+  .page-content .tool-card * {
+    text-align: left !important;
+  }
+
+  .page-content .tool-card {
+    align-items: flex-start !important;
+  }
+}
+</style>
+
+
+
+
+
+<style id="toolnest-clean-mobile-footer-background">
+@media screen and (max-width: 650px) {
+  .mobile-footer-copyright {
+    background: #111827;
+  }
+}
+</style>
+
+
+<style id="toolnest-desktop-tool-category-left">
+@media (min-width: 651px) {
+  .tn-tool-category-list {
+    justify-items: start !important;
+  }
+  .tn-tool-category-link {
+    justify-content: flex-start !important;
+    text-align: left !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-desktop-tool-category-neat-rows">
+@media (min-width: 651px) {
+  .tn-tool-category-list {
+    align-items: stretch !important;
+  }
+  .tn-tool-category-link {
+    min-height: 42px !important;
+    height: 42px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    line-height: 1.25 !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-desktop-category-align-dot">
+@media (min-width: 651px) {
+  .tn-tool-category-link {
+    align-items: flex-start !important;
+    padding-top: 0 !important;
+    line-height: 1.25 !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-desktop-category-first-line-dot">
+@media (min-width: 651px) {
+  .tn-tool-category-link {
+    display: grid !important;
+    grid-template-columns: 12px minmax(0, 1fr) !important;
+    align-items: start !important;
+    justify-content: start !important;
+    text-align: left !important;
+    column-gap: 8px !important;
+  }
+  .tn-tool-category-link .tn-tool-category-dot {
+    align-self: start !important;
+    margin-top: 0 !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-desktop-category-dot-first-line-correct">
+@media (min-width: 651px) {
+  .tn-tool-category-link {
+    display: grid !important;
+    grid-template-columns: 12px minmax(0, 1fr) !important;
+    align-items: start !important;
+    justify-content: start !important;
+    text-align: left !important;
+    column-gap: 8px !important;
+    line-height: 1.25 !important;
+  }
+  .tn-tool-category-link .tn-tool-category-dot {
+    align-self: start !important;
+    margin-top: 0.35em !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-desktop-category-dot-first-line-final">
+@media (min-width: 651px) {
+  .tn-tool-category-link {
+    display: block !important;
+    text-align: left !important;
+    padding-left: 18px !important;
+  }
+  .tn-tool-category-link::before {
+    top: 6px !important;
+    transform: none !important;
+  }
+  .tn-tool-category-link.active::before {
+    top: 5.5px !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-shared-upload-preview">
+.tn-shared-upload-area {
+  width: 100%;
+  min-height: 390px;
+  padding: 30px;
+  position: relative;
+  display: block;
+  text-align: center;
+  background: #f4f7fb;
+  border: 2px dashed #8da9c5;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+.tn-shared-upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 320px;
+  padding-top: 6px;
+}
+.tn-shared-upload-button {
+  position: sticky;
+  top: -26px;
+  margin-top: -30px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 280px;
+  min-height: 72px;
+  padding: 0 36px;
+  border: none;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #059669 0%, #059669 55%, #059669 100%);
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(50, 107, 168, 0.30);
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.tn-shared-upload-button:hover {
+  background: #285b91;
+  box-shadow: 0 13px 30px rgba(50, 107, 168, 0.36);
+}
+@media (max-width: 700px) {
+  .tn-shared-upload-area {
+    min-height: 390px;
+  }
+}
+</style>
+
+
+
+<style id="toolnest-desktop-category-dot-contrast">
+@media (min-width: 651px) {
+  html:not(.dark-mode) .tn-tool-category-link::before {
+    background: #6f7b88 !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-desktop-light-active-tool-red">
+/* Active tool: red link and dot in light mode on desktop only. Dark mode and mobile remain untouched. */
+@media (min-width: 651px) {
+  html.light-mode .tn-tool-category-link.active {
+    color: #e53935 !important;
+    text-decoration: none !important;
+  }
+  html.light-mode .tn-tool-category-link.active::before {
+    background: #e53935 !important;
+  }
+}
+</style>
+
+
+
+<style id="toolnest-preview-dot-texture">
+/* Preview texture: desktop light mode only. Dark mode and mobile remain untouched. */
+@media (min-width: 651px) {
+  html:not(.dark-mode) .tn-shared-upload-area,
+  html:not(.dark-mode) .upload-area {
+    background-color: #eef0f3 !important;
+    background-image: radial-gradient(circle, rgba(70, 80, 92, 0.46) 1.5px, transparent 1.5px) !important;
+    background-size: 18px 18px !important;
+  }
+}
+</style>
+
+
+
+<style id="toolnest-reference-tool-box">
+/* Match the Merge/Split PDF tool surface.
+   The upload area and upload button themselves are intentionally untouched. */
+.tn-shared-tool-box {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #dce3ea;
+  border-radius: 12px;
+  padding: 26px;
+  box-shadow: 0 4px 16px rgba(31, 45, 61, 0.05);
+  box-sizing: border-box;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tn-shared-upload-frame {
+  width: 100%;
+}
+
+html.dark-mode .tn-shared-tool-box {
+  background: #1a2533;
+  border-color: #33465b;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+}
+
+@media (max-width: 650px) {
+  .tn-shared-tool-box {
+    padding: 18px;
+  }
+}
+</style>
+
+<style id="toolnest-pdf-shared-upload-theme">
+/* Shared PDF upload area/button: one consistent implementation across PDF tools. */
+html.dark-mode .tn-shared-upload-area {
+  background-color: #131e2b !important;
+  background-image: none !important;
+  border-color: #52789c !important;
+}
+.tn-shared-upload-button:hover {
+  background: #059669 !important;
+}
+html.dark-mode .tn-shared-upload-button:hover {
+  background: #059669 !important;
+}
+</style>
+
+
+<style id="extract-pages-remove-heading-style">
+.extract-pages-remove-style-intro {
+    margin-bottom: 26px;
+}
+.extract-pages-remove-style-intro h1 {
+    margin: 0 0 10px;
+    color: #263548;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+}
+.extract-pages-remove-style-intro p {
+    margin: 0;
+    color: #718096;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    white-space: nowrap;
+}
+</style>
+
+
+
+
+<style id="toolnest-dark-background-only">
+/* STEP 1: Dark mode background only. Light mode is intentionally untouched. */
+html.dark-mode .top-header,
+html.dark-mode .category-nav,
+html.dark-mode footer,
+html.dark-mode .mobile-footer,
+html.dark-mode .mobile-footer-copyright,
+html.dark-mode .toolnest-hybrid-footer {
+  background: #121212 !important;
+}
+</style>
+
+<style id="toolnest-dark-main-background-only">
+/* STEP 2: Main page background only. Light mode remains untouched. */
+html.dark-mode body,
+html.dark-mode main,
+html.dark-mode .page-wrapper,
+html.dark-mode .page-content,
+html.dark-mode .home-page,
+html.dark-mode .about-page,
+html.dark-mode .privacy-page,
+html.dark-mode .contact-page {
+  background-color: #212324 !important;
+}
+</style>
+
+<style id="toolnest-dark-logo-background-fix">
+/* Dark Mode only: make the logo background blend with the dark header. */
+html.dark-mode .logo-icon {
+  background: #121212 !important;
+}
+</style>
+
+<style id="toolnest-dark-merge-heading-style">
+/* Dark mode only: match the Merge PDF heading/description treatment across tool pages. */
+html.dark-mode .remove-pages-merge-style-intro,
+html.dark-mode .extract-pages-remove-style-intro,
+html.dark-mode .edit-pdf-merge-style-intro,
+html.dark-mode .tool-intro {
+  margin-bottom: 26px !important;
+}
+
+html.dark-mode .remove-pages-merge-style-intro h1,
+html.dark-mode .extract-pages-remove-style-intro h1,
+html.dark-mode .edit-pdf-merge-style-intro h1,
+html.dark-mode .tool-intro h1 {
+  margin: 0 0 10px !important;
+  color: #edf2f7 !important;
+  font-size: 36px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.8px !important;
+  line-height: normal !important;
+}
+
+html.dark-mode .remove-pages-merge-style-intro p,
+html.dark-mode .extract-pages-remove-style-intro p,
+html.dark-mode .edit-pdf-merge-style-intro p,
+html.dark-mode .tool-intro p {
+  max-width: 720px !important;
+  margin: 0 !important;
+  color: #9ca9b8 !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+}
+
+@media (max-width: 950px) {
+  html.dark-mode .remove-pages-merge-style-intro h1,
+  html.dark-mode .extract-pages-remove-style-intro h1,
+  html.dark-mode .edit-pdf-merge-style-intro h1,
+  html.dark-mode .tool-intro h1 {
+    font-size: 31px !important;
+  }
+}
+
+@media (max-width: 650px) {
+  html.dark-mode .remove-pages-merge-style-intro h1,
+  html.dark-mode .extract-pages-remove-style-intro h1,
+  html.dark-mode .edit-pdf-merge-style-intro h1,
+  html.dark-mode .tool-intro h1 {
+    font-size: 29px !important;
+  }
+  html.dark-mode .remove-pages-merge-style-intro p,
+  html.dark-mode .extract-pages-remove-style-intro p,
+  html.dark-mode .edit-pdf-merge-style-intro p,
+  html.dark-mode .tool-intro p {
+    font-size: 15px !important;
+  }
+}
 </style>
 <style id="toolnest-mobile-preview-viewport-final">
 @media screen and (max-width:650px) {
@@ -70,68 +3817,662 @@ html.dark-mode body{background:#212324;color:#edf2f7}html.dark-mode .top-header,
   }
 }
 </style>
+
+<style id="toolnest-mobile-description-wrap-final">
+@media screen and (max-width: 700px) {
+  .extract-pages-remove-style-intro p,
+  .remove-pages-merge-style-intro p {
+    white-space: normal !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+  }
+}
+</style>
+
+
+<style id="toolnest-add-page-numbers-ad-position-final">
+/* Desktop: keep the advertisement in the same right column as the other PDF tools. */
+@media (min-width: 701px) {
+  .page-content > div[style*="grid-template-columns"] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 200px !important;
+    gap: 28px !important;
+    align-items: start !important;
+    width: 100% !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .tn-ad-left-column {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    min-width: 0 !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .ad-column {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    align-self: start !important;
+    width: 200px !important;
+    margin: 0 !important;
+  }
+}
+</style>
 </head>
 <body>
-<header class="top-header"><div class="header-inner"><a class="logo" href="home.html"><div class="logo-icon">T</div><div class="logo-text"><span class="logo-tool">Tool</span><span class="logo-nest">Nest</span></div></a><div class="header-right"><div class="header-search"><input id="toolSearch" placeholder="Search tools..." aria-label="Search tools"><span class="search-icon">⌕</span></div><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode">🌙</button></div></div></header>
-<nav class="category-nav"><div class="category-nav-inner"><a class="category-link" href="home.html">Home</a><a class="category-link active" href="index.html?category=pdf">PDF Tools</a><a class="category-link" href="index.html?category=text">Text Tools</a><a class="category-link" href="index.html?category=image">Image Tools</a></div></nav>
-<main class="page-wrapper"><div class="page-layout"><section class="content">
-<nav class="tool-category-bar" aria-label="PDF tools"><div class="tool-category-list">
-<a class="tool-category-link" href="merge-pdf.html">Merge PDF</a><a class="tool-category-link" href="split-pdf.html">Split PDF</a><a class="tool-category-link" href="compress-pdf.html">Compress PDF</a><a class="tool-category-link" href="rotate-pdf.html">Rotate PDF</a><a class="tool-category-link" href="remove-pdf-pages.html">Remove PDF Pages</a><a class="tool-category-link" href="extract-pdf-pages.html">Extract PDF Pages</a><a class="tool-category-link" href="re-arrange-pdf-pages.html">Re-arrange PDF Pages</a><a class="tool-category-link" href="change-pdf-page-size.html">Change PDF Page Size</a><a class="tool-category-link" href="add-page-numbers.html">Add Page Numbers</a>
+<!-- ========================================
+       HEADER
+  ======================================== -->
+<header class="top-header">
+<div class="header-inner">
+<a class="logo" href="home.html">
+<div aria-hidden="true" class="logo-icon">
+<span class="logo-shape logo-bar"></span>
+<span class="logo-shape logo-stem"></span>
+<span class="logo-shape logo-dot"></span>
+<span class="logo-shape logo-block"></span>
+</div>
+<div class="logo-text">
+<span class="logo-tool">
+        Tool
+      </span>
+<span class="logo-nest">
+        Nest
+      </span>
+</div>
+</a>
+<div class="header-right">
+<div class="header-search">
+<input aria-label="Search tools" id="toolSearch" placeholder="Search tools..." type="text"/>
+<span class="search-icon">
+        ⌕
+      </span>
+</div>
+<button aria-label="Switch to dark mode" class="theme-toggle" id="themeToggle" title="Switch to dark mode" type="button">
+      🌙
+    </button>
+</div>
+</div>
+</header>
+<!-- ========================================
+       CATEGORY NAVIGATION
+  ========================================= -->
+<nav class="category-nav">
+<div class="category-nav-inner">
+<a class="category-link" href="home.html">Home</a>
+<a class="category-link active" href="index.html?category=pdf">PDF Tools</a>
+<a class="category-link" href="index.html?category=text">Text Tools</a>
+<a class="category-link" href="index.html?category=image">Image Tools</a>
+</div>
+</nav>
+<main class="page-content">
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 28px; align-items: start;"><div class="tn-ad-left-column">
+<nav class="tn-tool-category-bar" aria-label="PDF tools">
+  <div class="tn-tool-category-list">
+    <a class="tn-tool-category-link" href="merge-pdf.html">Merge PDF</a>
+    <a class="tn-tool-category-link" href="split-pdf.html">Split PDF</a>
+    <a class="tn-tool-category-link" href="compress-pdf.html">Compress PDF</a>
+    <a class="tn-tool-category-link" href="rotate-pdf.html">Rotate PDF</a>
+    <a class="tn-tool-category-link" href="remove-pdf-pages.html">Remove PDF Pages</a>
+    <a class="tn-tool-category-link" href="extract-pdf-pages.html">Extract PDF Pages</a>
+    <a class="tn-tool-category-link" href="re-arrange-pdf-pages.html">Re-arrange PDF Pages</a>
+    <a class="tn-tool-category-link" href="change-pdf-page-size.html">Change PDF Page Size</a>
+    <a class="tn-tool-category-link" href="add-page-numbers.html">Add Page Numbers</a>
     <a class="tn-tool-category-link" href="add-watermark.html">Add Watermark</a>
-    <a class="tn-tool-category-link" href="lock-unlock-pdf.html">Lock / Unlock PDF</a><a class="tool-category-link" href="convert-to-pdf.html">Convert to PDF</a><a class="tool-category-link active" href="fill-pdf.html">Fill PDF</a>
-</div></nav>
-<div class="heading"><h1>Fill PDF</h1><p>Add text, signatures, images, checkmarks and more anywhere on your PDF.</p></div>
-<div class="tool-box">
-<input id="pdfInput" class="hidden" type="file" accept="application/pdf,.pdf">
-<div class="upload-panel" id="uploadPanel"><div class="upload-inner"><div class="upload-title">Fill any PDF</div><div class="upload-subtitle">Upload a PDF and place your information directly on the page.</div><button class="upload-btn" id="uploadButton" type="button">Upload PDF File</button></div></div>
-<div class="workspace" id="workspace">
-<div class="workspace-toolbar" id="toolbar"><button class="tool-btn" data-tool="select">Select</button><button class="tool-btn" data-tool="text">Text</button><button class="tool-btn" data-tool="signature">Signature</button><button class="tool-btn" data-tool="image">Image</button><button class="tool-btn" data-tool="check">✓ Check</button><button class="tool-btn" data-tool="date">Date</button><button class="tool-btn" data-tool="draw">Draw</button><span class="toolbar-sep"></span><button class="tool-btn" id="deleteBtn" type="button">Delete</button><button class="tool-btn" id="clearBtn" type="button">Clear All</button></div>
-<input id="imageInput" class="hidden" type="file" accept="image/*">
-<div class="page-list" id="pageList"></div>
-<div class="workspace-actions"><button class="download-btn" id="downloadBtn" type="button">Download Filled PDF</button></div><div class="status" id="status"></div>
-</div></div>
-</section><aside class="ad-column"><div class="ad-box"><div class="ad-content"><div class="ad-label">ADVERTISEMENT</div><div class="sample-ad"><div class="sample-ad-badge">TOOLNEST</div><h3>Simple Tools.<br>Better Productivity.</h3><p>Fast, free and easy-to-use online tools for everyday tasks.</p><div class="sample-ad-button">Explore Tools</div></div></div></div></aside></div></main>
-<div class="signature-modal" id="signatureModal"><div class="signature-dialog"><h3>Add Signature</h3><canvas class="sig-canvas" id="sigCanvas"></canvas><div class="sig-actions"><button class="secondary-btn" id="sigClear">Clear</button><button class="secondary-btn" id="sigCancel">Cancel</button><button class="upload-btn" id="sigDone">Use Signature</button></div></div></div>
-<script>
-pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-const $=id=>document.getElementById(id); const pdfInput=$('pdfInput'), uploadButton=$('uploadButton'), uploadPanel=$('uploadPanel'), workspace=$('workspace'), pageList=$('pageList'), status=$('status'), imageInput=$('imageInput');
-let pdfBytes=null, pdfDoc=null, pages=[], activeTool='select', selected=null, activePage=null, nextId=1;
-const themeToggle=$('themeToggle'); function updateTheme(){const dark=document.documentElement.classList.contains('dark-mode');themeToggle.textContent=dark?'☀':'🌙';themeToggle.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode')} function setTheme(t){document.documentElement.classList.toggle('dark-mode',t==='dark');document.documentElement.classList.toggle('light-mode',t==='light');localStorage.setItem('toolnest-theme',t);updateTheme()} themeToggle.onclick=()=>setTheme(document.documentElement.classList.contains('dark-mode')?'light':'dark'); updateTheme();
-function setStatus(s){status.textContent=s||''}
-function setTool(t){activeTool=t;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('active',b.dataset.tool===t));}
-setTool('select');
-document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{const t=b.dataset.tool; if(t==='signature'){openSignature();return} if(t==='image'){imageInput.click();return} setTool(t);});
-uploadButton.onclick=()=>pdfInput.click(); pdfInput.onchange=async e=>{const f=e.target.files[0];if(!f)return;await loadPDF(f)};
-async function loadPDF(file){try{setStatus('Loading PDF...');pdfBytes=new Uint8Array(await file.arrayBuffer());pdfDoc=await pdfjsLib.getDocument({data:pdfBytes}).promise;pageList.innerHTML='';pages=[];for(let i=1;i<=pdfDoc.numPages;i++){await renderPage(i)}uploadPanel.classList.add('has-file');uploadPanel.classList.add('hidden');workspace.classList.add('active');setStatus('');}catch(e){console.error(e);setStatus('Could not load this PDF.')}}
-async function renderPage(num){const p=await pdfDoc.getPage(num);const base=p.getViewport({scale:1.35});const wrap=document.createElement('div');wrap.className='pdf-page-wrap';wrap.dataset.page=num;const canvas=document.createElement('canvas');const ctx=canvas.getContext('2d');canvas.width=base.width;canvas.height=base.height;canvas.style.width=base.width+'px';canvas.style.height=base.height+'px';wrap.appendChild(canvas);const layer=document.createElement('div');layer.className='overlay-layer';wrap.appendChild(layer);const n=document.createElement('div');n.className='page-number';n.textContent='Page '+num;pageList.appendChild(wrap);pageList.appendChild(n);await p.render({canvasContext:ctx,viewport:base}).promise;pages.push({num,wrap,layer,width:base.width,height:base.height,items:[]});layer.addEventListener('click',e=>handlePageClick(e,pages.find(x=>x.num===num)));}
-function pageFromLayer(el){return pages.find(p=>p.layer===el)}
-function handlePageClick(e,page){activePage=page;if(e.target!==page.layer)return;if(activeTool==='text'){addText(page,e.offsetX,e.offsetY);setTool('select')}else if(activeTool==='check'){addCheck(page,e.offsetX,e.offsetY);setTool('select')}else if(activeTool==='date'){addDate(page,e.offsetX,e.offsetY);setTool('select')}else if(activeTool==='draw'){startDraw(page,e);}}
-function selectItem(el){if(selected)selected.classList.remove('selected');selected=el;if(selected)selected.classList.add('selected')}
-function makeDraggable(el,page){let sx,sy,ox,oy;el.addEventListener('pointerdown',e=>{if(activeTool!=='select')return;e.stopPropagation();selectItem(el);sx=e.clientX;sy=e.clientY;ox=el.offsetLeft;oy=el.offsetTop;el.setPointerCapture(e.pointerId);const move=q=>{el.style.left=Math.max(0,Math.min(page.width-el.offsetWidth,ox+q.clientX-sx))+'px';el.style.top=Math.max(0,Math.min(page.height-el.offsetHeight,oy+q.clientY-sy))+'px'};const up=()=>{el.removeEventListener('pointermove',move);el.removeEventListener('pointerup',up)};el.addEventListener('pointermove',move);el.addEventListener('pointerup',up);});el.addEventListener('click',e=>{e.stopPropagation();selectItem(el)})}
-function addText(page,x,y){const el=document.createElement('div');el.className='overlay-item text-item';el.contentEditable='true';el.textContent='Type here';el.style.left=x+'px';el.style.top=y+'px';el.style.fontSize='18px';el.dataset.type='text';el.dataset.id=nextId++;page.layer.appendChild(el);page.items.push(el);makeDraggable(el,page);selectItem(el);el.focus();document.execCommand('selectAll',false,null)}
-function addCheck(page,x,y){const el=document.createElement('div');el.className='overlay-item check-item';el.textContent='✓';el.style.left=x+'px';el.style.top=y+'px';el.dataset.type='check';el.dataset.id=nextId++;page.layer.appendChild(el);page.items.push(el);makeDraggable(el,page);selectItem(el)}
-function addDate(page,x,y){const el=document.createElement('div');el.className='overlay-item date-item';el.textContent=new Date().toLocaleDateString();el.style.left=x+'px';el.style.top=y+'px';el.style.fontSize='18px';el.dataset.type='date';el.dataset.id=nextId++;page.layer.appendChild(el);page.items.push(el);makeDraggable(el,page);selectItem(el)}
-function startDraw(page,e){
- const canvas=document.createElement('canvas');
- canvas.className='draw-canvas'; canvas.width=page.width; canvas.height=page.height; canvas.style.pointerEvents='auto';
- page.layer.appendChild(canvas);
- const ctx=canvas.getContext('2d'); ctx.strokeStyle='#e53935'; ctx.lineWidth=2; ctx.lineCap='round';
- let drawing=true; let last={x:e.offsetX,y:e.offsetY}; ctx.beginPath(); ctx.moveTo(last.x,last.y);
- const move=q=>{if(!drawing)return;const r=canvas.getBoundingClientRect();const x=q.clientX-r.left,y=q.clientY-r.top;ctx.lineTo(x,y);ctx.stroke()};
- const up=()=>{drawing=false;canvas.removeEventListener('pointermove',move);canvas.removeEventListener('pointerup',up)};
- canvas.addEventListener('pointermove',move); canvas.addEventListener('pointerup',up); canvas.addEventListener('click',q=>q.stopPropagation());
- page.items.push(canvas); setTool('select');
+    <a class="tn-tool-category-link" href="lock-unlock-pdf.html">Lock / Unlock PDF</a>
+    <a class="tn-tool-category-link active" href="fill-pdf.html">Fill PDF</a>
+    <a class="tn-tool-category-link" href="convert-to-pdf.html">Convert to PDF</a>
+    <a class="tn-tool-category-link" href="convert-from-pdf.html">Convert from PDF</a>
+  </div>
+</nav>
+
+<div class="extract-pages-remove-style-intro">
+  <h1>Fill PDF</h1>
+  <p>Fill the form fields in your PDF, including text, numbers, choices and signatures.</p>
+</div>
+
+<div class="tool-box tn-shared-tool-box">
+  <div class="tn-shared-upload-frame">
+    <div class="tn-shared-upload-area" id="fillPdfUploadArea">
+      <input id="fillPdfFileInput" type="file" accept="application/pdf,.pdf" hidden>
+      <div class="tn-shared-upload-placeholder" id="fillPdfPlaceholder">
+        <button class="tn-shared-upload-button" id="fillPdfUploadButton" type="button">Upload PDF File</button>
+      </div>
+      <div class="fill-pdf-workspace" id="fillPdfWorkspace" hidden>
+        <div class="fill-pdf-notice" id="fillPdfNotice">Fill the highlighted fields. Required fields are marked <strong>*</strong>.</div>
+        <div class="fill-pdf-preview" id="fillPdfPreview" aria-live="polite"></div>
+        <div class="fill-pdf-actions" id="fillPdfActions">
+          <button type="button" class="fill-pdf-download" id="fillPdfDownload">Download Filled PDF</button>
+          <button type="button" class="fill-pdf-cancel" id="fillPdfCancel">Cancel</button>
+        </div>
+        <div class="fill-pdf-status" id="fillPdfStatus" role="status"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style id="fill-pdf-form-functional">
+#fillPdfUploadArea { cursor:pointer; }
+#fillPdfUploadArea.has-file { cursor:default; padding:22px; background-image:none !important; background-color:#eef0f3 !important; }
+html.dark-mode #fillPdfUploadArea.has-file { background-image:none !important; background-color:#212324 !important; }
+#fillPdfUploadArea.has-file .tn-shared-upload-placeholder { display:none; }
+.fill-pdf-workspace{width:100%;}
+.fill-pdf-notice{margin:0 auto 18px;max-width:760px;padding:11px 14px;border:1px solid #d7e3ec;border-radius:9px;background:#f7fafc;color:#526273;font:500 13px/1.45 Arial,Helvetica,sans-serif;text-align:center;}
+.fill-pdf-notice strong{color:#059669;}
+.fill-pdf-preview{width:100%;display:flex;flex-direction:column;align-items:center;gap:18px;}
+.fill-pdf-page{position:relative;width:100%;max-width:100%;background:#fff;box-shadow:0 3px 12px rgba(31,45,61,.18);line-height:0;}
+.fill-pdf-page canvas{display:block;width:100%;height:auto;}
+.fill-pdf-overlay{position:absolute;left:0;top:0;width:100%;height:100%;}
+.fill-pdf-field{position:absolute;z-index:2;box-sizing:border-box;}
+.fill-pdf-control{width:100%;height:100%;box-sizing:border-box;border:1px solid #059669;border-radius:4px;background:rgba(255,255,255,.93);color:#243447;padding:2px 6px;font:500 13px/1.2 Arial,Helvetica,sans-serif;outline:none;box-shadow:0 0 0 1px rgba(5,150,105,.08);}
+.fill-pdf-control:focus{border-color:#047857;box-shadow:0 0 0 2px rgba(5,150,105,.15);}
+.fill-pdf-control.required-empty{border-color:#e59a17;background:#fffaf0;}
+.fill-pdf-label{display:none !important;}
+.fill-pdf-label.required::after{content:' *';color:#d97706;}
+.fill-pdf-checkbox{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:rgba(255,255,255,.88);border:1px solid #059669;border-radius:4px;cursor:pointer;}
+.fill-pdf-checkbox input{width:18px;height:18px;accent-color:#059669;cursor:pointer;}
+.fill-pdf-radio{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:rgba(255,255,255,.88);border:1px solid #059669;border-radius:50%;cursor:pointer;}
+.fill-pdf-radio input{width:16px;height:16px;accent-color:#059669;cursor:pointer;}
+.fill-pdf-signature-button{width:100%;height:100%;border:1px dashed #059669;border-radius:5px;background:rgba(236,253,245,.94);color:#047857;font:700 12px Arial,Helvetica,sans-serif;cursor:pointer;}
+.fill-pdf-signature-button.signed{background:rgba(255,255,255,.94);border-style:solid;overflow:hidden;}
+.fill-pdf-signature-button img{display:block;width:100%;height:100%;object-fit:contain;}
+.fill-pdf-select{padding-right:24px;cursor:pointer;}
+.fill-pdf-page-label{margin-top:-10px;color:#718096;font:500 11px Arial,Helvetica,sans-serif;}
+.fill-pdf-actions{width:100%;display:flex;justify-content:center;align-items:center;gap:12px;margin-top:18px;}
+.fill-pdf-download,.fill-pdf-cancel{width:190px;min-width:190px;height:54px;min-height:54px;padding:0 20px;border-radius:12px;font:600 16px Arial,Helvetica,sans-serif;cursor:pointer;box-sizing:border-box;}
+.fill-pdf-download{border:none;background:#059669;color:#fff;}
+.fill-pdf-download:disabled{opacity:.55;cursor:not-allowed;}
+.fill-pdf-cancel{border:none;background:#d1d5db;color:#344154;}
+.fill-pdf-status{min-height:20px;padding:9px 0 0;text-align:center;color:#718096;font:500 13px Arial,Helvetica,sans-serif;}
+.fill-pdf-modal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.52);display:none;align-items:center;justify-content:center;padding:15px;}
+.fill-pdf-modal.active{display:flex;}
+.fill-pdf-dialog{width:min(540px,100%);background:#fff;border-radius:12px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.25);}
+.fill-pdf-dialog h3{margin:0 0 6px;color:#263548;font:700 20px Arial,Helvetica,sans-serif;}
+.fill-pdf-dialog p{margin:0 0 12px;color:#718096;font:400 12px/1.45 Arial,Helvetica,sans-serif;}
+.fill-pdf-sign-canvas{display:block;width:100%;height:180px;border:1px solid #ccd5de;border-radius:8px;background:#fff;touch-action:none;}
+.fill-pdf-modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px;}
+.fill-pdf-modal-actions button{height:42px;padding:0 16px;border-radius:8px;font:600 13px Arial,Helvetica,sans-serif;cursor:pointer;}
+.fill-pdf-modal-clear,.fill-pdf-modal-cancel{border:1px solid #ccd5de;background:#f7f9fb;color:#46576a;}
+.fill-pdf-modal-use{border:none;background:#059669;color:#fff;}
+html.dark-mode .fill-pdf-notice{background:#17212c;border-color:#33465b;color:#b8c4d2;}
+html.dark-mode .fill-pdf-control{background:rgba(24,34,46,.96);color:#e2e8f0;border-color:#2dbb8a;}
+html.dark-mode .fill-pdf-checkbox,html.dark-mode .fill-pdf-radio{background:rgba(24,34,46,.96);}
+html.dark-mode .fill-pdf-signature-button{background:rgba(20,55,44,.95);color:#75d8b0;}
+html.dark-mode .fill-pdf-page-label,html.dark-mode .fill-pdf-status{color:#9eacba;}
+html.dark-mode .fill-pdf-cancel{background:#202c3b;border:1px solid #3b4b5f;color:#d6dee8;}
+html.dark-mode .fill-pdf-dialog{background:#121212;}
+html.dark-mode .fill-pdf-dialog h3{color:#edf2f7;}
+html.dark-mode .fill-pdf-dialog p{color:#9eacba;}
+html.dark-mode .fill-pdf-modal-clear,html.dark-mode .fill-pdf-modal-cancel{background:#1d252d;border-color:#40505f;color:#d7dee7;}
+@media(max-width:650px){
+  #fillPdfUploadArea.has-file{padding:14px;}
+  .fill-pdf-preview{width:100%;gap:14px;}
+  .fill-pdf-page{width:100%;max-width:100%;overflow:hidden;}
+  .fill-pdf-page canvas{width:100%;height:100%;}
+  .fill-pdf-actions{flex-direction:column;gap:10px;}
+  .fill-pdf-download,.fill-pdf-cancel{width:100%;max-width:320px;min-width:0;}
+  .fill-pdf-control{font-size:12px;padding:1px 4px;}
+  .fill-pdf-modal-actions{flex-wrap:wrap;}
 }
-function addImage(page,src,x=40,y=40){const el=document.createElement('img');el.className='overlay-item image-item';el.src=src;el.style.left=x+'px';el.style.top=y+'px';el.style.width='180px';el.dataset.type='image';el.dataset.id=nextId++;page.layer.appendChild(el);page.items.push(el);makeDraggable(el,page);selectItem(el)}
-imageInput.onchange=e=>{const f=e.target.files[0];if(!f)return;const reader=new FileReader();reader.onload=()=>{const page=activePage || pages[0];if(page)addImage(page,reader.result);setTool('select');imageInput.value=''};reader.readAsDataURL(f)};
-function openSignature(){if(!activePage){setStatus('Click a PDF page first.');return}$('signatureModal').classList.add('active');setupSigCanvas()}
-const sigCanvas=$('sigCanvas');let sigCtx,sigDrawing=false;function setupSigCanvas(){const r=sigCanvas.getBoundingClientRect();sigCanvas.width=r.width*2;sigCanvas.height=r.height*2;sigCtx=sigCanvas.getContext('2d');sigCtx.scale(2,2);sigCtx.lineWidth=2;sigCtx.lineCap='round';sigCtx.strokeStyle='#111'}function sigPos(e){const r=sigCanvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}sigCanvas.addEventListener('pointerdown',e=>{sigDrawing=true;const p=sigPos(e);sigCtx.beginPath();sigCtx.moveTo(p.x,p.y)});sigCanvas.addEventListener('pointermove',e=>{if(!sigDrawing)return;const p=sigPos(e);sigCtx.lineTo(p.x,p.y);sigCtx.stroke()});['pointerup','pointerleave'].forEach(x=>sigCanvas.addEventListener(x,()=>sigDrawing=false));$('sigClear').onclick=()=>{sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height)};$('sigCancel').onclick=()=>{$('signatureModal').classList.remove('active')};$('sigDone').onclick=()=>{const page=activePage || pages[0];if(page){const src=sigCanvas.toDataURL('image/png');addImage(page,src,40,40)}$('signatureModal').classList.remove('active');setTool('select')};
-$('deleteBtn').onclick=()=>{if(!selected)return;const p=pages.find(x=>x.items.includes(selected));if(p){p.items=p.items.filter(x=>x!==selected);selected.remove();selected=null}};$('clearBtn').onclick=()=>{pages.forEach(p=>{p.items.forEach(x=>x.remove());p.items=[]});selected=null};
-async function dataUrlToBytes(url){const res=await fetch(url);return new Uint8Array(await res.arrayBuffer())}
-$('downloadBtn').onclick=async()=>{if(!pdfBytes)return;try{setStatus('Creating PDF...');const doc=await PDFLib.PDFDocument.load(pdfBytes);const font=await doc.embedFont(PDFLib.StandardFonts.Helvetica);for(const p of pages){const pdfPage=doc.getPage(p.num-1);const pw=pdfPage.getWidth(),ph=pdfPage.getHeight();const sx=pw/p.width,sy=ph/p.height;for(const el of p.items){const x=el.offsetLeft*sx;const y=ph-(el.offsetTop+el.offsetHeight)*sy;const type=el.dataset.type;if(type==='text'||type==='date'){pdfPage.drawText(el.textContent,{x,y,size:parseFloat(getComputedStyle(el).fontSize)*sy*0.75,font,color:PDFLib.rgb(.05,.05,.05),maxWidth:pw-x-5})}else if(type==='check'){pdfPage.drawText('✓',{x,y,size:28*sy,font,color:PDFLib.rgb(0.02,.59,.41)})}else if(type==='image'){const bytes=await dataUrlToBytes(el.src);let img;if(el.src.startsWith('data:image/png'))img=await doc.embedPng(bytes);else img=await doc.embedJpg(bytes);pdfPage.drawImage(img,{x,y,width:el.offsetWidth*sx,height:el.offsetHeight*sy})}else if(el.classList.contains('draw-canvas')){const bytes=await dataUrlToBytes(el.toDataURL('image/png'));const img=await doc.embedPng(bytes);pdfPage.drawImage(img,{x:0,y:0,width:pw,height:ph})}}}const out=await doc.save();const blob=new Blob([out],{type:'application/pdf'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='filled-pdf.pdf';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);setStatus('PDF downloaded.');}catch(e){console.error(e);setStatus('Could not create the PDF.')}};
-$('toolSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){const q=e.target.value.trim().toLowerCase();if(q.includes('merge'))location.href='merge-pdf.html';else if(q.includes('fill'))return;}});
+</style>
+
+<div class="fill-pdf-modal" id="fillPdfSignatureModal" aria-hidden="true">
+  <div class="fill-pdf-dialog">
+    <h3>Add Signature</h3>
+    <p>Draw your signature below, then place it into the signature field.</p>
+    <canvas class="fill-pdf-sign-canvas" id="fillPdfSignatureCanvas"></canvas>
+    <div class="fill-pdf-modal-actions">
+      <button type="button" class="fill-pdf-modal-clear" id="fillPdfSigClear">Clear</button>
+      <button type="button" class="fill-pdf-modal-cancel" id="fillPdfSigCancel">Cancel</button>
+      <button type="button" class="fill-pdf-modal-use" id="fillPdfSigUse">Use Signature</button>
+    </div>
+  </div>
+</div>
+
+<script id="fill-pdf-form-functionality">
+(function(){
+  const PDFJS_VERSION='3.11.174';
+  const area=document.getElementById('fillPdfUploadArea');
+  const upload=document.getElementById('fillPdfUploadButton');
+  const input=document.getElementById('fillPdfFileInput');
+  const placeholder=document.getElementById('fillPdfPlaceholder');
+  const workspace=document.getElementById('fillPdfWorkspace');
+  const preview=document.getElementById('fillPdfPreview');
+  const notice=document.getElementById('fillPdfNotice');
+  const download=document.getElementById('fillPdfDownload');
+  const cancel=document.getElementById('fillPdfCancel');
+  const status=document.getElementById('fillPdfStatus');
+  const modal=document.getElementById('fillPdfSignatureModal');
+  const sigCanvas=document.getElementById('fillPdfSignatureCanvas');
+  const sigClear=document.getElementById('fillPdfSigClear');
+  const sigCancel=document.getElementById('fillPdfSigCancel');
+  const sigUse=document.getElementById('fillPdfSigUse');
+  if(!area||!upload||!input||!workspace)return;
+
+  let sourceBytes=null, sourceFile=null, pdfDoc=null, fields=[], signatureTarget=null, signatureData=null;
+  let sigCtx=null,sigDrawing=false;
+
+  function setStatus(s){status.textContent=s||'';}
+  function loadScript(src,name){return new Promise((resolve,reject)=>{if(window[name])return resolve();const s=document.createElement('script');s.src=src;s.async=false;s.onload=()=>window[name]?resolve():reject(new Error(name+' did not initialize.'));s.onerror=()=>reject(new Error('Could not load '+name+'.'));document.head.appendChild(s);});}
+  async function libs(){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/'+PDFJS_VERSION+'/pdf.min.js','pdfjsLib');await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js','PDFLib');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/'+PDFJS_VERSION+'/pdf.worker.min.js';}
+  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function required(a){return !!(a.fieldFlags && (a.fieldFlags & 2));}
+  function annotationLabel(a){return a.alternativeText||a.fieldName||a.id||'Field';}
+  function isNumberField(a){const s=(annotationLabel(a)+' '+(a.fieldValue||'')).toLowerCase();return /(^|[^a-z])(number|amount|age|quantity|qty|count|zip|postal|phone|mobile|year|price|salary|total|score|id)($|[^a-z])/.test(s);}
+  function fieldRect(a,viewport){const r=viewport.convertToViewportRectangle(a.rect||[0,0,0,0]);let left=Math.min(r[0],r[2]),top=Math.min(r[1],r[3]),width=Math.abs(r[2]-r[0]),height=Math.abs(r[3]-r[1]);left=Math.max(0,Math.min(left,viewport.width-4));top=Math.max(0,Math.min(top,viewport.height-4));width=Math.min(width,Math.max(4,viewport.width-left));height=Math.min(height,Math.max(4,viewport.height-top));return {left,top,width,height};}
+  function makeLabel(parent,label,req){if(!label)return;const l=document.createElement('span');l.className='fill-pdf-label'+(req?' required':'');l.textContent=label;parent.appendChild(l);}
+  function visualRectToBox(rect,viewport){const r=viewport.convertToViewportRectangle([rect[0],rect[1],rect[0]+rect[2],rect[1]+rect[3]]);return {left:Math.min(r[0],r[2]),top:Math.min(r[1],r[3]),width:Math.abs(r[2]-r[0]),height:Math.abs(r[3]-r[1])};}
+  function textNearRect(items,rect){
+    const hits=[];
+    for(const item of items||[]){
+      const tr=item.transform||[]; const x=Number(tr[4]||0), y=Number(tr[5]||0);
+      const w=Number(item.width||0), h=Math.abs(Number(tr[3]||0))||Number(item.height||0)||8;
+      if(x+w>=rect[0] && x<=rect[0]+rect[2] && y>=rect[1]+rect[3]-2 && y<=rect[1]+rect[3]+38) hits.push(String(item.str||''));
+    }
+    return hits.join(' ').trim();
+  }
+  async function detectVisualFields(page,viewport,overlay){
+    const out=[];
+    if(!pdfjsLib.OPS || !page.getOperatorList) return out;
+    const [ops,textContent]=await Promise.all([page.getOperatorList(),page.getTextContent()]);
+    const rectFn=pdfjsLib.OPS.rectangle;
+    const constructFn=pdfjsLib.OPS.constructPath;
+    const pathRectOp=pdfjsLib.OPS.rectangle;
+    const painted=new Set([pdfjsLib.OPS.fill,pdfjsLib.OPS.eoFill,pdfjsLib.OPS.stroke,pdfjsLib.OPS.closeStroke,pdfjsLib.OPS.fillStroke,pdfjsLib.OPS.eoFillStroke,pdfjsLib.OPS.closeFillStroke,pdfjsLib.OPS.closeEOFillStroke]);
+    const pageW=viewport.viewBox[2],pageH=viewport.viewBox[3];
+    const candidates=[];
+    for(let i=0;i<ops.fnArray.length;i++){
+      const fn=ops.fnArray[i], a=ops.argsArray[i]||[];
+      if(fn===rectFn && a.length>=4){
+        candidates.push({i,x:Number(a[0]),y:Number(a[1]),w:Math.abs(Number(a[2])),h:Math.abs(Number(a[3]))});
+      } else if(fn===constructFn && Array.isArray(a[0]) && Array.isArray(a[1])){
+        const pathOps=a[0], vals=a[1]; let vi=0;
+        for(const op of pathOps){
+          if(op===pathRectOp && vi+3<vals.length){
+            candidates.push({i,x:Number(vals[vi]),y:Number(vals[vi+1]),w:Math.abs(Number(vals[vi+2])),h:Math.abs(Number(vals[vi+3]))}); vi+=4;
+          } else if(op===pdfjsLib.OPS.moveTo || op===pdfjsLib.OPS.lineTo){vi+=2;}
+          else if(op===pdfjsLib.OPS.curveTo){vi+=6;}
+          else if(op===pdfjsLib.OPS.quadraticCurveTo){vi+=4;}
+        }
+      }
+    }
+    for(const c of candidates){
+      const {i}=c, x=c.x,y=c.y,w=c.w,h=c.h;
+      if(!Number.isFinite(x)||!Number.isFinite(y)||w<14||h<10||w>pageW*.97||h>pageH*.80) continue;
+      if(x<8||y<8||x+w>pageW-8||y+h>pageH-8) continue;
+      let isPainted=false; for(let j=i+1;j<Math.min(i+7,ops.fnArray.length);j++){if(painted.has(ops.fnArray[j])){isPainted=true;break;} if(ops.fnArray[j]===rectFn||ops.fnArray[j]===constructFn)break;}
+      if(!isPainted) continue;
+      const nearby=textNearRect(textContent.items,[x,y,w,h]);
+      const rectArea=w*h;
+      const textInside=(textContent.items||[]).filter(item=>{const tr=item.transform||[];const ix=Number(tr[4]||0),iy=Number(tr[5]||0);return ix>=x+3&&ix<=x+w-3&&iy>=y+3&&iy<=y+h-3;}).length;
+      if(textInside>0 && h>80 && w>pageW*.75) { /* large answer boxes can contain placeholder text */ }
+      // Avoid tiny decorative rules; treat small square/near-square rectangles as checkboxes.
+      const kind=/signature|sign here|signed by|counsellor signature|counselor signature/i.test(nearby)?'signature':(w<=24&&h<=24?'checkbox':'visual-text');
+      const r=visualRectToBox([x,y,w,h],viewport); if(r.width<10||r.height<8) continue;
+      if(out.some(f=>Math.abs(f.rect[0]-x)<1&&Math.abs(f.rect[1]-y)<1&&Math.abs(f.rect[2]-w)<1&&Math.abs(f.rect[3]-h)<1)) continue;
+      out.push({rect:[x,y,w,h],box:r,kind,nearby});
+    }
+    return out;
+  }
+  function addVisualField(v,page,viewport,overlay){
+    const r=v.box; const box=document.createElement('div'); box.className='fill-pdf-field fill-pdf-visual-field';
+    box.style.left=(r.left/viewport.width*100)+'%';box.style.top=(r.top/viewport.height*100)+'%';box.style.width=(r.width/viewport.width*100)+'%';box.style.height=(r.height/viewport.height*100)+'%';
+    if(v.kind==='signature'){
+      const b=document.createElement('button');b.type='button';b.className='fill-pdf-signature-button';b.textContent='Add Signature';
+      b.addEventListener('click',e=>{e.stopPropagation();signatureTarget={annotation:{rect:v.rect,fieldName:'visual_signature_'+page.pageNumber+'_'+Math.round(v.rect[1])},box,button:b,page};openSignature();});
+      box.appendChild(b);overlay.appendChild(box);return {annotation:{rect:v.rect,fieldName:'visual_signature_'+page.pageNumber+'_'+Math.round(v.rect[1]),fieldType:'Sig'},box,control:b,kind:'signature',page,visual:true,pdfRect:v.rect};
+    }
+    if(v.kind==='checkbox'){
+      const wrap=document.createElement('label');wrap.className='fill-pdf-checkbox';const cb=document.createElement('input');cb.type='checkbox';wrap.appendChild(cb);box.appendChild(wrap);overlay.appendChild(box);return {annotation:{rect:v.rect,fieldName:'visual_checkbox_'+page.pageNumber+'_'+Math.round(v.rect[1]),fieldType:'Btn'},box,control:cb,kind:'checkbox',page,visual:true,pdfRect:v.rect};
+    }
+    const ctl=document.createElement(r.height>32?'textarea':'input');ctl.className='fill-pdf-control';if(ctl.tagName==='TEXTAREA'){ctl.rows=4;ctl.style.resize='none';ctl.style.padding='6px';}else ctl.type='text';box.appendChild(ctl);overlay.appendChild(box);return {annotation:{rect:v.rect,fieldName:'visual_text_'+page.pageNumber+'_'+Math.round(v.rect[1]),fieldType:'Tx'},box,control:ctl,kind:'visual-text',page,visual:true,pdfRect:v.rect};
+  }
+  function addFieldControl(annotation,page,viewport,overlay){
+    const r=fieldRect(annotation,viewport); if(r.width<4||r.height<4)return null;
+    const box=document.createElement('div');box.className='fill-pdf-field';box.style.left=(r.left/viewport.width*100)+'%';box.style.top=(r.top/viewport.height*100)+'%';box.style.width=(r.width/viewport.width*100)+'%';box.style.height=(r.height/viewport.height*100)+'%';
+    const req=required(annotation), label=annotationLabel(annotation);
+    box.dataset.name=annotation.fieldName||'';box.dataset.type=annotation.fieldType||'';box.dataset.required=req?'1':'0';
+    const signatureField = annotation.fieldType==='Sig' || /(^|[^a-z])(signature|sign here|signed by|counsellor signature|counselor signature)([^a-z]|$)/i.test(annotationLabel(annotation));
+    if(signatureField){
+      const b=document.createElement('button');b.type='button';b.className='fill-pdf-signature-button';b.textContent='Add Signature';
+      b.addEventListener('click',e=>{e.stopPropagation();signatureTarget={annotation,box,button:b,page};openSignature();});
+      box.appendChild(b); makeLabel(box,label,req); overlay.appendChild(box); return {annotation,box,control:b,kind:'signature',page};
+    }
+    if(annotation.fieldType==='Btn'){
+      const flags=annotation.fieldFlags||0;
+      const radio=!!annotation.radioButton || !!(flags & 32768);
+      if(radio){
+        const wrap=document.createElement('label');wrap.className='fill-pdf-radio';const radioInput=document.createElement('input');radioInput.type='radio';radioInput.name='radio_'+(annotation.fieldName||annotation.id);radioInput.value=annotation.buttonValue||annotation.exportValue||'';radioInput.checked=!!annotation.fieldValue&&String(annotation.fieldValue)===String(radioInput.value);radioInput.addEventListener('change',()=>{box.dataset.value=radioInput.value;});wrap.appendChild(radioInput);box.appendChild(wrap);makeLabel(box,label,req);overlay.appendChild(box);return {annotation,box,control:radioInput,kind:'radio',page};
+      }
+      const wrap=document.createElement('label');wrap.className='fill-pdf-checkbox';const cb=document.createElement('input');cb.type='checkbox';cb.checked=!!annotation.fieldValue && annotation.fieldValue!=='Off';cb.addEventListener('change',()=>{box.dataset.value=cb.checked?'Yes':'Off';});wrap.appendChild(cb);box.appendChild(wrap);makeLabel(box,label,req);overlay.appendChild(box);return {annotation,box,control:cb,kind:'checkbox',page};
+    }
+    if(annotation.fieldType==='Ch'){
+      const select=document.createElement('select');select.className='fill-pdf-control fill-pdf-select';const opts=annotation.options||[];if(opts.length){opts.forEach(o=>{const value=typeof o==='string'?o:(o.exportValue!=null?o.exportValue:(o.displayValue!=null?o.displayValue:''));const text=typeof o==='string'?o:(o.displayValue!=null?o.displayValue:value);const op=document.createElement('option');op.value=value;op.textContent=text;select.appendChild(op);});}else{const op=document.createElement('option');op.value=annotation.fieldValue||'';op.textContent=annotation.fieldValue||'Select';select.appendChild(op);}if(annotation.fieldValue!=null)select.value=String(annotation.fieldValue);box.appendChild(select);makeLabel(box,label,req);overlay.appendChild(box);return {annotation,box,control:select,kind:'choice',page};
+    }
+    const ctl=document.createElement('input');ctl.className='fill-pdf-control';ctl.type=(annotation.fieldType==='Tx'&&isNumberField(annotation))?'number':'text';ctl.value=annotation.fieldValue==null?'':String(annotation.fieldValue);if(annotation.fieldType==='Tx'&&annotation.fieldFlags&&((annotation.fieldFlags & 4096)!==0))ctl.style.textAlign='left';if(annotation.fieldType==='Tx'&&annotation.fieldFlags&&((annotation.fieldFlags & 4096)!==0))ctl.multiple=true;box.appendChild(ctl);makeLabel(box,label,req);overlay.appendChild(box);return {annotation,box,control:ctl,kind:'text',page};
+  }
+  async function render(){
+    preview.replaceChildren();fields=[];let total=0;
+    for(let num=1;num<=pdfDoc.numPages;num++){
+      const page=await pdfDoc.getPage(num);const viewport=page.getViewport({scale:1.35});
+      const wrap=document.createElement('div');wrap.className='fill-pdf-page';wrap.style.aspectRatio=viewport.width+'/'+viewport.height;
+      const canvas=document.createElement('canvas');canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);canvas.style.width='100%';canvas.style.height='100%';wrap.appendChild(canvas);
+      const overlay=document.createElement('div');overlay.className='fill-pdf-overlay';wrap.appendChild(overlay);
+      const ctx=canvas.getContext('2d');await page.render({canvasContext:ctx,viewport}).promise;
+      const annotations=await page.getAnnotations({intent:'display'});
+      annotations.filter(a=>a.subtype==='Widget'||a.annotationType===20).forEach(a=>{const f=addFieldControl(a,page,viewport,overlay);if(f){fields.push(f);total++;}});
+      if(!annotations.some(a=>a.subtype==='Widget'||a.annotationType===20)){
+        const visualFields=await detectVisualFields(page,viewport,overlay);
+        visualFields.forEach(v=>{const f=addVisualField(v,page,viewport,overlay);if(f){fields.push(f);total++;}});
+      }
+      preview.appendChild(wrap);const pl=document.createElement('div');pl.className='fill-pdf-page-label';pl.textContent='Page '+num+' of '+pdfDoc.numPages;preview.appendChild(pl);
+    }
+    if(!total){
+      notice.innerHTML='<strong>No fillable areas were detected.</strong> This PDF may not contain detectable form boxes.';
+      setStatus('No fillable fields found.');
+      return false;
+    }
+    notice.innerHTML='Fill the highlighted fields. Existing PDF fields and detected blank form boxes are supported. Signature fields use the <strong>Add Signature</strong> button.';
+    setStatus(total+' fillable field'+(total===1?'':'s')+' found.');return true;
+  }
+  async function loadFile(file){if(!file)return;try{await libs();setStatus('Loading PDF form...');sourceFile=file;sourceBytes=new Uint8Array(await file.arrayBuffer());pdfDoc=await pdfjsLib.getDocument({data:sourceBytes.slice()}).promise;area.classList.add('has-file');placeholder.hidden=true;workspace.hidden=false;const ok=await render();if(!ok){download.disabled=true;}else download.disabled=false;}catch(e){console.error(e);setStatus(e.message||'Could not load this PDF.');}}
+  function setupSig(){const r=sigCanvas.getBoundingClientRect();const d=window.devicePixelRatio||2;sigCanvas.width=Math.max(1,Math.floor(r.width*d));sigCanvas.height=Math.max(1,Math.floor(r.height*d));sigCtx=sigCanvas.getContext('2d');sigCtx.setTransform(d,0,0,d,0,0);sigCtx.lineWidth=2;sigCtx.lineCap='round';sigCtx.lineJoin='round';sigCtx.strokeStyle='#111';}
+  function sigPos(e){const r=sigCanvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
+  sigCanvas.addEventListener('pointerdown',e=>{if(!sigCtx)return;sigDrawing=true;sigCanvas.setPointerCapture(e.pointerId);const p=sigPos(e);sigCtx.beginPath();sigCtx.moveTo(p.x,p.y);});
+  sigCanvas.addEventListener('pointermove',e=>{if(!sigDrawing)return;const p=sigPos(e);sigCtx.lineTo(p.x,p.y);sigCtx.stroke();});
+  ['pointerup','pointercancel','pointerleave'].forEach(ev=>sigCanvas.addEventListener(ev,()=>sigDrawing=false));
+  function openSignature(){modal.classList.add('active');modal.setAttribute('aria-hidden','false');setTimeout(setupSig,20);}
+  function closeSignature(){modal.classList.remove('active');modal.setAttribute('aria-hidden','true');}
+  sigClear.onclick=()=>{if(sigCtx){const r=sigCanvas.getBoundingClientRect();sigCtx.clearRect(0,0,r.width,r.height);}};
+  sigCancel.onclick=closeSignature;
+  sigUse.onclick=()=>{if(!signatureTarget)return;signatureData=sigCanvas.toDataURL('image/png');const b=signatureTarget.button;b.classList.add('signed');b.textContent='';const img=document.createElement('img');img.src=signatureData;b.appendChild(img);signatureTarget.box.dataset.signature='1';signatureTarget.box.dataset.signatureData=signatureData;closeSignature();};
+  async function bytesFromDataUrl(data){const res=await fetch(data);return new Uint8Array(await res.arrayBuffer());}
+  function validate(){const missing=[];fields.forEach(f=>{if(!required(f.annotation))return;if(f.kind==='text'||f.kind==='choice'){if(!String(f.control.value||'').trim())missing.push(annotationLabel(f.annotation));}else if(f.kind==='checkbox'){if(!f.control.checked)missing.push(annotationLabel(f.annotation));}else if(f.kind==='radio'){const group=fields.filter(x=>x.kind==='radio'&&x.annotation.fieldName===f.annotation.fieldName);if(!group.some(x=>x.control.checked))missing.push(annotationLabel(f.annotation));}else if(f.kind==='signature'&&!f.box.dataset.signature)missing.push(annotationLabel(f.annotation));});return [...new Set(missing)];}
+  async function save(){if(!sourceBytes)return;const missing=validate();if(missing.length){missing.forEach(n=>{const f=fields.find(x=>annotationLabel(x.annotation)===n);if(f)f.box.classList.add('required-empty');});setStatus('Please complete: '+missing.slice(0,5).join(', ')+(missing.length>5?'…':''));return;}
+    download.disabled=true;setStatus('Creating filled PDF...');try{
+      const doc=await PDFLib.PDFDocument.load(sourceBytes.slice());const form=doc.getForm();
+      const byName={};fields.forEach(f=>{const n=f.annotation.fieldName;if(n)byName[n]=byName[n]||[];if(n)byName[n].push(f);});
+      for(const [name,group] of Object.entries(byName)){
+        const first=group[0], value=first.control && first.control.value!=null?String(first.control.value):'';
+        try{
+          if(first.kind==='text'){const tf=form.getTextField(name);tf.setText(value);}
+          else if(first.kind==='choice'){let field;try{field=form.getDropdown(name);}catch(_){field=form.getOptionList(name);}field.select(value);}
+          else if(first.kind==='checkbox'){const cb=form.getCheckBox(name);group[0].control.checked?cb.check():cb.uncheck();}
+          else if(first.kind==='radio'){const rg=form.getRadioGroup(name);const checked=group.find(x=>x.control.checked);if(checked)rg.select(String(checked.control.value));}
+        }catch(err){console.warn('Could not set form field',name,err);}
+      }
+      // Flat visual fields are not PDF widgets, so write their values directly into the detected boxes.
+      const font=await doc.embedFont(PDFLib.StandardFonts.Helvetica);
+      function wrapPdfText(text,size,maxWidth){const words=String(text||'').split(/\s+/);const lines=[];let line='';for(const word of words){if(!word)continue;const test=line?line+' '+word:word;if(font.widthOfTextAtSize(test,size)<=maxWidth){line=test;}else{if(line)lines.push(line);line=word;}}if(line)lines.push(line);return lines;}
+      for(const f of fields){if(!f.visual||f.kind!=='visual-text')continue;const value=String(f.control.value||'').trim();if(!value)continue;const pdfPage=doc.getPage(f.page.pageNumber-1);const [x,y,w,h]=f.pdfRect;const size=Math.max(9,Math.min(12,h>40?11:12));const maxWidth=Math.max(10,w-10);const lines=[];for(const part of value.split(/\r?\n/)){lines.push(...wrapPdfText(part,size,maxWidth));}const lineH=size*1.25;let yy=y+h-size-5;for(const line of lines){if(yy<y+3)break;pdfPage.drawText(line,{x:x+5,y:yy,size,font,color:PDFLib.rgb(0.10,0.14,0.18)});yy-=lineH;}}
+      for(const f of fields){if(!f.visual||f.kind!=='checkbox'||!f.control.checked)continue;const pdfPage=doc.getPage(f.page.pageNumber-1);const [x,y,w,h]=f.pdfRect;pdfPage.drawText('✓',{x:x+2,y:y+2,size:Math.max(10,Math.min(16,h-3)),font,color:PDFLib.rgb(0.05,0.59,0.40)});}
+      // Signature widgets are drawn onto their original PDF field rectangles.
+      for(const f of fields){if(f.kind!=='signature'||!f.box.dataset.signatureData)continue;const pdfPage=doc.getPage(f.page.pageNumber-1);const rect=f.annotation.rect||[0,0,0,0];const x=Math.min(rect[0],rect[2]),y=Math.min(rect[1],rect[3]),w=Math.abs(rect[2]-rect[0]),h=Math.abs(rect[3]-rect[1]);const img=await doc.embedPng(await bytesFromDataUrl(f.box.dataset.signatureData));const dims=img.scale(1);const scale=Math.min(w/dims.width,h/dims.height);const iw=dims.width*scale,ih=dims.height*scale;pdfPage.drawImage(img,{x:x+(w-iw)/2,y:y+(h-ih)/2,width:iw,height:ih});}
+      const out=await doc.save();const blob=new Blob([out],{type:'application/pdf'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=(sourceFile?.name||'document.pdf').replace(/\.pdf$/i,'')+'-filled.pdf';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);setTimeout(reset,350);setStatus('PDF downloaded.');
+    }catch(e){console.error(e);setStatus('Could not create the filled PDF. '+(e.message||''));}finally{download.disabled=false;}
+  }
+  function reset(){sourceBytes=null;sourceFile=null;pdfDoc=null;fields=[];signatureTarget=null;signatureData=null;preview.replaceChildren();workspace.hidden=true;placeholder.hidden=false;area.classList.remove('has-file','drag-over');input.value='';download.disabled=false;setStatus('');notice.innerHTML='Fill the highlighted fields. Required fields are marked <strong>*</strong>.';}
+  upload.addEventListener('click',e=>{e.stopPropagation();input.click();});
+  area.addEventListener('click',e=>{if(!area.classList.contains('has-file')&&!e.target.closest('button'))input.click();});
+  input.addEventListener('change',()=>loadFile(input.files&&input.files[0]));
+  area.addEventListener('dragover',e=>{if(!area.classList.contains('has-file')){e.preventDefault();area.classList.add('drag-over');}});
+  area.addEventListener('dragleave',()=>area.classList.remove('drag-over'));
+  area.addEventListener('drop',e=>{if(area.classList.contains('has-file'))return;e.preventDefault();area.classList.remove('drag-over');loadFile(e.dataTransfer.files&&e.dataTransfer.files[0]);});
+  download.addEventListener('click',save);cancel.addEventListener('click',reset);
+})();
 </script>
-<footer class="site-footer" style="background:#fff;border-top:1px solid #dfe5eb;padding:30px 24px;text-align:center;color:#718096;font-size:13px"><div>© 2026 ToolNest - Simple, Fast &amp; Free</div><div style="margin-top:8px"><a href="about.html" style="color:inherit;margin:0 8px">About</a><a href="privacy.html" style="color:inherit;margin:0 8px">Privacy</a><a href="terms.html" style="color:inherit;margin:0 8px">Terms</a><a href="contact.html" style="color:inherit;margin:0 8px">Contact</a></div></footer>
+</div>
+<!-- ADVERTISEMENT -->
+<aside aria-label="Advertisement" class="ad-column">
+<div class="ad-box">
+<div class="ad-content">
+<div class="ad-label">ADVERTISEMENT</div>
+<div class="sample-ad">
+<div class="sample-ad-badge">TOOLNEST</div>
+<h3>Simple Tools.<br/>Better Productivity.</h3>
+<p>Fast, free and easy-to-use online tools for everyday tasks.</p>
+<a class="sample-ad-button">Explore Tools</a>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- ========================================
+       FOOTER
+  ========================================= -->
+
+<footer class="mobile-footer" aria-label="Mobile footer">
+  <div class="mobile-footer-columns">
+    <div class="mobile-footer-column">
+      <h3>Popular Tools</h3>
+      <a href="merge-pdf.html">Merge PDF</a>
+      <a href="word-character-counter.html">Word Counter</a>
+      <a href="image-compressor.html">Image Compressor</a>
+    </div>
+
+    <div class="mobile-footer-column">
+      <h3>Categories</h3>
+      <a href="index.html">PDF Tools</a>
+      <a href="index.html">Text Tools</a>
+      <a href="index.html">Image Tools</a>
+    </div>
+
+    <div class="mobile-footer-column">
+      <h3>Company</h3>
+      <a href="about.html">About</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<div class="mobile-footer-copyright">
+  © 2026 ToolNest - Simple, Fast & Free
+</div>
+
+
+<footer class="site-footer toolnest-hybrid-footer">
+  <div class="footer-main">
+    <div class="footer-column footer-brand">
+      <div class="footer-logo">ToolNest</div>
+      <p>Smart Tools, Simple Tasks.</p>
+      <p class="footer-description">Free online tools for everyday tasks.</p>
+    </div>
+
+    <div class="footer-column">
+      <h4>Popular Tools</h4>
+      <a href="merge-pdf.html">Merge PDF</a>
+      <a href="word-character-counter.html">Word Counter</a>
+      <a href="image-compressor.html">Image Compressor</a>
+      <a href="compress-pdf.html">PDF Compressor</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Categories</h4>
+      <a href="index.html">PDF Tools</a>
+      <a href="index.html">Text Tools</a>
+      <a href="index.html">Image Tools</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Company</h4>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 ToolNest · Simple, Fast &amp; Free</span>
+    <span class="footer-bottom-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="contact.html">Contact</a>
+    </span>
+  </div>
+</footer>
+
+
+
+<!-- ========================================
+       THEME SCRIPT
+  ========================================= -->
+<script>
+    const themeToggle =
+      document.getElementById("themeToggle");
+
+    function updateThemeIcon() {
+      if (
+        document.documentElement.classList.contains(
+          "dark-mode"
+        )
+      ) {
+        themeToggle.textContent = "☀";
+      } else {
+        themeToggle.textContent = "🌙";
+      }
+    }
+
+    themeToggle.addEventListener(
+      "click",
+      function () {
+
+        const isDark =
+          document.documentElement.classList.toggle(
+            "dark-mode"
+          );
+
+        if (isDark) {
+
+          localStorage.setItem(
+            "toolnest-theme",
+            "dark"
+          );
+
+        } else {
+
+          localStorage.setItem(
+            "toolnest-theme",
+            "light"
+          );
+        }
+
+        updateThemeIcon();
+      }
+    );
+
+    updateThemeIcon();
+  </script>
+
+<style id="toolnest-second-header-dark-active">
+html.dark-mode nav.category-nav .category-link.active,
+html.dark-mode nav.category-nav .category-link.active:hover,
+html.dark-mode nav.category-nav .category-link.active:focus,
+html.dark-mode nav.category-nav .category-link.active:visited {
+  
+  
+  
+  color: #ffffff !important;
+  border-color: #059669 !important;
+  box-shadow: none !important;
+ background: transparent !important;}
+</style>
+
+<style id="toolnest-second-header-dark-active-neutral-final">
+html.dark-mode .category-nav .category-link.active,
+html.dark-mode .category-nav .category-link.active:hover,
+html.dark-mode .category-nav .category-link.active:focus {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+</style>
+
+<style id="toolnest-pdf-outer-box-match-merge-final">
+/* Match the Merge PDF outer tool box exactly in dark mode. */
+html.dark-mode .tool-box,
+html:not(.light-mode) .tool-box {
+  background: #171d25 !important;
+  border-color: #2e3946 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22) !important;
+}
+</style>
+
+
+<style id="toolnest-dark-upload-preview-exact-final">
+/* STEP 3: Dark-mode upload/preview surface. Light mode is untouched. */
+html.dark-mode .tn-shared-upload-area,
+html.dark-mode .upload-area {
+  background-color: #212324 !important;
+  background-image: radial-gradient(circle, rgba(70, 80, 92, 0.46) 1.5px, transparent 1.5px) !important;
+  background-size: 18px 18px !important;
+}
+
+/* Once an image is loaded, the preview surface stays #212324 and the dots disappear. */
+html.dark-mode .tn-shared-upload-area.tn-image-upload-area.has-image,
+html.dark-mode .tn-shared-upload-area.tn-image-upload-area.has-image .tn-image-preview,
+html.dark-mode .tn-shared-upload-area.tn-image-upload-area.has-image .tn-canvas-wrap,
+html.dark-mode .upload-area.has-files {
+  background-color: #212324 !important;
+  background-image: none !important;
+}
+</style>
+
+<style id="toolnest-dark-outer-preview-header-color-final">
+/* Dark mode only: outer tool/preview frame matches the header color. */
+html.dark-mode .tool-box {
+  background: #121212 !important;
+}
+</style>
+
+<style id="toolnest-dark-active-tool-red-final">
+/* Dark mode: match the light-mode active tool link exactly. */
+html.dark-mode .tn-tool-category-link.active {
+  color: #e53935 !important;
+  text-decoration: none !important;
+}
+html.dark-mode .tn-tool-category-link.active::before {
+  background: #e53935 !important;
+}
+</style>
+
+<style id="toolnest-dark-font-visibility-fix">
+/* Dark mode font visibility fix: restore readable text where an older light-mode rule was overriding the dark theme. */
+html.dark-mode .tool-category-link,
+html.dark-mode .tool-category-link:hover {
+  color: #d7dee7 !important;
+}
+html.dark-mode .tool-category-link.active {
+  color: #e53935 !important;
+}
+</style>
+
+
+<style id="toolnest-dark-all-main-text-visibility">
+/* Dark mode only: ensure page headings and descriptive text remain readable. */
+html.dark-mode .page-content h1,
+html.dark-mode .page-content h2,
+html.dark-mode .page-content h3,
+html.dark-mode main h1,
+html.dark-mode main h2,
+html.dark-mode main h3 {
+  color: #edf2f7 !important;
+}
+html.dark-mode .page-content .heading p,
+html.dark-mode .page-content .tool-info p,
+html.dark-mode .page-content .home-tool-info p,
+html.dark-mode .page-content .tool-description,
+html.dark-mode main .heading p,
+html.dark-mode main .tool-info p,
+html.dark-mode main .home-tool-info p,
+html.dark-mode main .tool-description {
+  color: #aebdcb !important;
+}
+</style>
+
 <!-- ToolNest download animation -->
 <style id="toolnest-download-animation">
 #toolnestDownloadPopup {
@@ -267,6 +4608,34 @@ $('toolSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){const q=e.tar
 }
 </style>
 
+<style id="toolnest-mobile-ad-fit-final">
+/* Mobile only: compact advertisement space below the tool content. Desktop untouched. */
+@media screen and (max-width: 650px) {
+  .page-layout > .ad-column,
+  .ad-column {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 18px auto 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    box-sizing: border-box !important;
+  }
+  .page-layout > .ad-column .ad-box,
+  .ad-column .ad-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100px !important;
+    min-height: 100px !important;
+    margin: 0 !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+    position: static !important;
+    overflow: hidden !important;
+  }
+}
+</style>
+
 <style id="toolnest-mobile-pdf-upload-uniform-change-page-size">
 /* Mobile only: make every PDF upload button match Change PDF Page Size. */
 @media (max-width: 700px) {
@@ -296,4 +4665,205 @@ $('toolSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){const q=e.tar
   }
 }
 </style>
-</body></html>
+</body>
+</html>
+
+<style>
+
+/* Final category active-state consistency fix */
+nav.category-nav .category-link.active,
+nav.category-nav .category-link.active-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 15px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: linear-gradient(135deg,#059669 0%,#059669 55%,#059669 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 5px 14px rgba(76,91,183,.23) !important;
+  text-decoration: none !important;
+}
+
+nav.category-nav .category-link.active::after,
+nav.category-nav .category-link.active-button::after {
+  display: none !important;
+  content: none !important;
+}
+
+html.dark-mode nav.category-nav .category-link.active,
+html.dark-mode nav.category-nav .category-link.active-button {
+  
+  color: #b8c9f1 !important;
+  border: 1px solid #43536a !important;
+  box-shadow: none !important;
+ background: transparent !important;}
+
+</style>
+
+
+<style>
+/* Unified ToolNest logo typography across every page */
+.site-logo,
+.logo,
+.brand-logo,
+.logo-text,
+.logo-wordmark {
+  font-family: "Montserrat", Arial, Helvetica, sans-serif !important;
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+}
+
+.site-logo *,
+.logo *,
+.brand-logo *,
+.logo-text *,
+.logo-wordmark * {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+}
+</style>
+
+
+<style id="toolnest-mobile-original-footer-dark">
+/* Mobile footer: original compact footer, dark theme. Desktop Hybrid #8 remains unchanged. */
+.toolnest-mobile-original-footer {
+  display: none;
+}
+
+@media screen and (max-width: 650px) {
+  /* Hide the Hybrid #8 footer only on mobile. */
+  .toolnest-hybrid-footer {
+    display: none !important;
+  }
+
+  .toolnest-mobile-original-footer {
+    display: block !important;
+    width: 100%;
+    background: #1f2937 !important;
+    border-top: 1px solid #374151 !important;
+    color: #ffffff !important;
+  }
+
+  .toolnest-mobile-original-footer .footer-inner {
+    width: 100% !important;
+    max-width: 1240px !important;
+    margin: 0 auto !important;
+    padding: 14px 20px !important;
+    display: block !important;
+    box-sizing: border-box !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+  }
+
+  .toolnest-mobile-original-footer .footer-bottom {
+    width: 100% !important;
+    padding-top: 0 !important;
+    border-top: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    color: #ffffff !important;
+    box-sizing: border-box !important;
+  }
+
+  .toolnest-mobile-original-footer .footer-links {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 7px 18px !important;
+  }
+
+  .toolnest-mobile-original-footer .footer-links a {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+  }
+
+  .toolnest-mobile-original-footer .footer-links a:hover {
+    color: #ffffff !important;
+  }
+}
+</style>
+
+<style>
+/* Mobile category navigation: keep all four buttons fully in view */
+@media (max-width: 700px) {
+  .category-nav-inner {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    gap: 0 !important;
+    overflow-x: hidden !important;
+    justify-content: space-between !important;
+  }
+
+  .category-link {
+    flex: 1 1 0 !important;
+    justify-content: center !important;
+    text-align: center !important;
+    min-width: 0 !important;
+    font-size: 13px !important;
+  }
+}
+</style>
+
+<style id="verified-home-mobile-header">
+@media screen and (max-width: 650px) {
+  .category-nav {
+    width: 100% !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .category-nav-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    gap: 2px !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .category-nav-inner .category-link {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding-left: 3px !important;
+    padding-right: 3px !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+    font-size: 12px !important;
+  }
+}
+
+/* ToolNest corner accent — visible in both themes. */
+html.dark-mode .tool-category-link::after {
+  background: #29483b !important;
+}
+</style>
+
+<style id="toolnest-change-page-size-post-upload-preview-background-final">
+/* Post-upload preview: remove the upload-state dotted texture. */
+html.dark-mode #changePageSizeUploadArea.has-pages {
+  background-color: #212324 !important;
+  background-image: none !important;
+}
+</style>
