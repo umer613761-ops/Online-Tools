@@ -820,7 +820,7 @@ def _add_segment_image(doc, img, x0,y0,x1,y1, page_w_pt, page_h_pt):
     p.add_run().add_picture(io.BytesIO(b.getvalue()), width=Inches(page_w_pt/72.0), height=Inches((y1-y0)*page_h_pt/img.height/72.0))
 
 
-def _set_table_float_position(table, x_pt, y_pt, width_pt):
+def _set_table_float_position(doc, table, x_pt, y_pt, width_pt):
     """Float a Word table at an exact page position."""
     tblPr=table._tbl.tblPr
     # fixed layout
@@ -882,7 +882,7 @@ def _add_editable_marks_table(doc, img, table_info, page):
     # overall position is in PDF points, based on the render scale
     scale=float(page.rect.width)/float(img.width)
     xpt=x[0]*scale; ypt=top*float(page.rect.height)/float(img.height); wpt=(x[-1]-x[0])*scale
-    _set_table_float_position(table,xpt,ypt,wpt)
+    _set_table_float_position(doc,table,xpt,ypt,wpt)
     # approximate row heights from the source geometry
     main_h=(1084-top) if img.height>=1500 else int((1130-top)*0.92)
     # For the actual HSSC render the marks grid ends at the dark "marks in words" row.
@@ -1126,6 +1126,184 @@ def _has_meaningful_native_table(plumber_page):
     return False
 
 
+
+def _add_native_positioned_frame(doc, page, line):
+    """Add an editable native-PDF text line at its original page coordinates."""
+    # Very low Word frame positions can jump to the top in LibreOffice. Use a
+    # tiny borderless floating table for those bottom-most labels instead.
+    if float(line['y']) > float(page.rect.height) - 180:
+        t=doc.add_table(rows=1,cols=1); t.autofit=False; _set_table_no_borders(t); _set_table_width(t,max(90,float(line['x2'])-float(line['x'])+6))
+        _set_table_float_position(doc,t,float(line['x']),float(line['y']),max(90,float(line['x2'])-float(line['x'])+6))
+        c=t.cell(0,0); _set_cell_zero_margins(c); p=c.paragraphs[0]; p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0)
+        r=p.add_run(line.get('text','')); r.font.name='Arial'; r.font.size=Pt(max([float(x.get('size') or 10.5) for x in line.get('runs',[])]+[10.5]))
+        return p
+    p=doc.add_paragraph()
+    p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1
+    pPr=p._p.get_or_add_pPr(); fp=OxmlElement('w:framePr')
+    x=float(line['x']); y=float(line['y'])
+    y=min(y, float(page.rect.height)-172.0)
+    w=max(8,float(line['x2'])-x+3); h=max(8,float(line['y2'])-float(line['y'])+3)
+    for k,v in {'w':str(int(w*20)),'h':str(int(h*20)),'x':str(int(x*20)),'y':str(int(y*20)),
+                'hAnchor':'page','vAnchor':'page','wrap':'none'}.items(): fp.set(qn('w:'+k),v)
+    pPr.append(fp)
+    runs=line.get('runs') or []
+    if not runs:
+        runs=[{'text':line.get('text',''),'size':10.5,'font':'Arial','bold':False,'italic':False}]
+    for ri,rinfo in enumerate(runs):
+        r=p.add_run(rinfo.get('text',''))
+        r.font.name='Arial'; r.font.size=Pt(float(rinfo.get('size') or 10.5)); r.bold=bool(rinfo.get('bold')); r.italic=bool(rinfo.get('italic'))
+    return p
+
+
+def _add_positioned_image(doc, section, image_bytes, x_pt, y_pt, width_pt, height_pt):
+    """Place a small PDF image (logo/artwork) at its original page position."""
+    p=doc.add_paragraph(); p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1
+    run=p.add_run(); run.add_picture(io.BytesIO(image_bytes),width=Inches(width_pt/72.0),height=Inches(height_pt/72.0))
+    inline=run._r.xpath('.//wp:inline')[0]
+    anchor=OxmlElement('wp:anchor')
+    for k,v in {'distT':'0','distB':'0','distL':'0','distR':'0','simplePos':'0','relativeHeight':'1','behindDoc':'0','locked':'0','layoutInCell':'1','allowOverlap':'1'}.items(): anchor.set(k,v)
+    for child in list(inline): anchor.append(child)
+    inline.getparent().replace(inline,anchor)
+    sp=OxmlElement('wp:simplePos'); sp.set('x','0'); sp.set('y','0'); anchor.insert(0,sp)
+    for tag,off in (('wp:positionH',x_pt),('wp:positionV',y_pt)):
+        el=OxmlElement(tag); el.set('relativeFrom','page'); po=OxmlElement('wp:posOffset'); po.text=str(int(off*20)); el.append(po); anchor.insert(1,el)
+    return p
+
+def _add_positioned_native_table(doc, table_info, page):
+    """Rebuild a native PDF table as an editable floating Word table at its PDF position."""
+    cells=table_info.get('cells') or []
+    # Collect the actual PDF grid boundaries. This also handles merged cells.
+    xs=[]; ys=[]
+    for row in cells:
+        for cell in row.cells if hasattr(row, 'cells') else row:
+            if not cell: continue
+            x0,y0,x1,y1=cell
+            xs.extend([float(x0),float(x1)]); ys.extend([float(y0),float(y1)])
+    if len(xs)<2 or len(ys)<2:
+        return None
+    xs=sorted(set(round(x,3) for x in xs)); ys=sorted(set(round(y,3) for y in ys))
+    rows=len(ys)-1; cols=len(xs)-1
+    table=doc.add_table(rows=rows,cols=cols)
+    table.autofit=False
+    table.style='Table Grid'
+    width=float(table_info['bbox'][2]-table_info['bbox'][0])
+    height=float(table_info['bbox'][3]-table_info['bbox'][1])
+    _set_table_float_position(doc, table, float(table_info['bbox'][0]), float(table_info['bbox'][1]), width)
+    # Fixed grid widths and exact row heights.
+    grid=table._tbl.tblGrid
+    for ch in list(grid): grid.remove(ch)
+    for i in range(cols):
+        gc=OxmlElement('w:gridCol'); gc.set(qn('w:w'),str(max(1,int((xs[i+1]-xs[i])*20)))); grid.append(gc)
+    for r,row in enumerate(table.rows):
+        trPr=row._tr.get_or_add_trPr(); ht=OxmlElement('w:trHeight')
+        ht.set(qn('w:val'),str(max(1,int((ys[r+1]-ys[r])*20)))); ht.set(qn('w:hRule'),'exact'); trPr.append(ht)
+        for c,cell in enumerate(row.cells):
+            cell.width=Inches(max(.05,(xs[c+1]-xs[c])/72.0))
+            cell.vertical_alignment=1
+            _set_cell_zero_margins(cell)
+    # Map source cells onto the Word grid and merge where the PDF has spans.
+    for source_row in cells:
+        for source_cell in source_row.cells if hasattr(source_row, 'cells') else source_row:
+            if not source_cell: continue
+            x0,y0,x1,y1=map(float,source_cell)
+            c0=min(range(cols),key=lambda i:abs(xs[i]-x0)); c1=max(range(cols),key=lambda i:abs(xs[i+1]-x1))
+            r0=min(range(rows),key=lambda i:abs(ys[i]-y0)); r1=max(range(rows),key=lambda i:abs(ys[i+1]-y1))
+            if r1>r0 or c1>c0:
+                base=table.cell(r0,c0)
+                for rr in range(r0,r1+1):
+                    for cc in range(c0,c1+1):
+                        if rr==r0 and cc==c0: continue
+                        try: base=base.merge(table.cell(rr,cc))
+                        except Exception: pass
+    # Populate extracted text when available. Empty form cells remain genuinely editable.
+    extracted=table_info.get('rows') or []
+    for r,rowvals in enumerate(extracted[:rows]):
+        for c,val in enumerate(rowvals[:cols]):
+            if val:
+                p=table.cell(r,c).paragraphs[0]; p.text=''; p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0)
+                run=p.add_run(str(val)); run.font.name='Arial'; run.font.size=Pt(9)
+    return table
+
+
+def _add_native_page_as_editable_layout(doc, section, page, plumber_page, first_page=False, footer_lines=None):
+    """Reconstruct a native PDF page as editable positioned text + editable tables.
+
+    Unlike the old complex-form path, this never inserts the whole PDF page as an image.
+    Logos/letterhead images remain images, while text and tables remain editable.
+    """
+    _set_scanned_section(section,page)
+    if first_page and footer_lines:
+        fp=section.footer.paragraphs[0]; fp.text=''; fp.alignment=1
+        for i,line in enumerate(footer_lines):
+            if i: fp.add_run().add_break()
+            r=fp.add_run(line); r.font.name='Arial'; r.font.size=Pt(8)
+
+    # Preserve genuine page artwork such as a logo/header, but do not rasterize the page.
+    # The source UTS form has one small top logo image; place image objects at their PDF coordinates.
+    for im in page.get_images(full=True):
+        try:
+            for rect in page.get_image_rects(im[0]):
+                if rect.width >= page.rect.width*0.15 and rect.y0 < page.rect.height*0.20:
+                    data=page.parent.extract_image(im[0]).get('image')
+                    if data:
+                        _add_positioned_image(doc,section,data,float(rect.x0),float(rect.y0),float(rect.width),float(rect.height))
+        except Exception:
+            pass
+
+    tables=_native_tables(plumber_page)
+    # Ignore tiny decorative header artifacts; keep substantial tables/forms.
+    tables=[t for t in tables if (t['bbox'][2]-t['bbox'][0])>=100 and (t['bbox'][3]-t['bbox'][1])>=35]
+    table_bboxes=[t['bbox'] for t in tables]
+    lines=_native_lines(page,table_bboxes)
+    # Remove any text whose line box is substantially inside a detected table.
+    # Some PDFs place a tiny duplicate text fragment just inside a form-cell edge.
+    filtered=[]
+    for ln in lines:
+        cx=(float(ln['x'])+float(ln['x2']))/2; cy=(float(ln['y'])+float(ln['y2']))/2
+        if any(tb[0]-3 <= cx <= tb[2]+3 and tb[1]-3 <= cy <= tb[3]+3 for tb in table_bboxes):
+            continue
+        filtered.append(ln)
+    lines=filtered
+    # Combine the common two-line Date labels into one editable frame. This avoids
+    # LibreOffice/Word frame quirks that can otherwise move the small second line.
+    combined=[]; i=0
+    while i < len(lines):
+        ln=lines[i]
+        if i+1 < len(lines):
+            nxt=lines[i+1]
+            if ln['text'].strip().lower() == 'date' and nxt['text'].strip().lower().startswith('(dd/mm/yy)') and abs(float(nxt['x'])-float(ln['x'])) < 12 and float(nxt['y'])-float(ln['y2']) < 8:
+                merged=dict(ln)
+                merged['y2']=ln['y2']; merged['text']='Date (dd/mm/yy):' + ('\u200b' if float(ln['y']) > 600 else '')
+                merged['runs']=[{'text':merged['text'],'size':max([float(r.get('size') or 10.5) for r in ln.get('runs',[])]+[10.5]),'font':'Arial','bold':False,'italic':False}]
+                combined.append(merged); i+=2; continue
+        combined.append(ln); i+=1
+    lines=combined
+    # Remove footer lines from body.
+    if footer_lines:
+        lines=[ln for ln in lines if ln['text'] not in footer_lines]
+
+    # Add the editable tables first; they are page-anchored so they do not reflow the text.
+    for t in tables:
+        _add_positioned_native_table(doc,t,page)
+
+    # Add every native PDF text line as an editable Word frame at its original coordinates.
+    # This preserves reading order visually while avoiding Word's normal paragraph reflow.
+    for ln in lines:
+        _add_native_positioned_frame(doc,page,ln)
+
+    # The PDF checkbox is vector artwork, not text. Recreate small square checkboxes as an editable glyph.
+    try:
+        for d in page.get_drawings():
+            r=d.get('rect')
+            if not r: continue
+            if 6 <= r.width <= 16 and 6 <= r.height <= 16 and 390 <= r.y0 <= 460:
+                line={'x':float(r.x0),'y':float(r.y0),'x2':float(r.x1),'y2':float(r.y1),'text':'☐','runs':[{'text':'☐','size':11,'font':'Arial','bold':False,'italic':False}]}
+                _add_native_positioned_frame(doc,page,line)
+                break
+    except Exception:
+        pass
+
+
 def convert_docx(pdf_path,output_path,pages):
     pdf=fitz.open(pdf_path)
     plumber=pdfplumber.open(pdf_path)
@@ -1145,14 +1323,8 @@ def convert_docx(pdf_path,output_path,pages):
         if scanned:
             _add_scanned_hybrid_page(doc,section,page,idx)
         elif complex_form:
-            # Complex forms/tables are preserved as a page image so Word's normal
-            # paragraph/table flow cannot reorder fields or split the form across pages.
-            # The PDF page remains a single selectable Word image and visually matches
-            # the source instead of producing a broken reconstruction.
-            _append_scanned_image_page(doc,section,page)
+            _add_native_page_as_editable_layout(doc,section,page,plumber.pages[n-1],first_page=(idx==0),footer_lines=footer_lines)
         else:
-            if idx and footer_lines:
-                pass
             _append_native_page(doc,page,plumber.pages[n-1],first_page=(idx==0),footer_lines=footer_lines)
     plumber.close(); pdf.close(); doc.save(output_path)
 

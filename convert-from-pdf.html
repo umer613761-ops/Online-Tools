@@ -4613,7 +4613,6 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
         reset(); return;
       }
       if(fmt.value==='txt' || fmt.value==='docx' || fmt.value==='html-text' || fmt.value==='html-image' || fmt.value==='xlsx'){
-        window.__toolnestSkipXlsxDownloadPopup = (fmt.value==='xlsx');
         try{
           download.disabled=true;
           download.textContent='Converting...';
@@ -4656,7 +4655,6 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
             alert(message||'Unable to convert this PDF. Please try again.');
           }
         }finally{
-          window.__toolnestSkipXlsxDownloadPopup = false;
           download.disabled=false;
           download.textContent='Convert & Download';
         }
@@ -4967,13 +4965,16 @@ html.dark-mode main .tool-description {
     var el=e.target && e.target.closest ? e.target.closest('button,a') : null;
     // XLSX conversion can legitimately return an error such as "no table found".
     // Do not show the download animation before that server-side result is known.
-    if(el && el.id==='download' && window.__toolnestSkipXlsxDownloadPopup) return;
+    if(el && el.id==='convertFromDownloadButton'){
+      var f=document.getElementById('convertFromFormat');
+      if(f && f.value==='xlsx') return;
+    }
     if(isDownloadElement(el)) show();
   },true);
   var nativeAnchorClick=HTMLAnchorElement.prototype.click;
   HTMLAnchorElement.prototype.click=function(){
     var isDownload=this.hasAttribute('download') || /^blob:/i.test(this.href||'');
-    if(isDownload && !window.__toolnestSkipXlsxDownloadPopup){ show(); setTimeout(finish,80); }
+    if(isDownload){ show(); setTimeout(finish,80); }
     return nativeAnchorClick.apply(this,arguments);
   };
 })();
