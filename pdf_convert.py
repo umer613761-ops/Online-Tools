@@ -1410,7 +1410,8 @@ def _add_positioned_image(doc, section, image_bytes, x_pt, y_pt, width_pt, heigh
 
 def _add_positioned_native_table(doc, table_info, page):
     """Rebuild a native PDF table as an editable floating Word table at its PDF position."""
-    cells=table_info.get('cells') or []
+    raw_cells=table_info.get('cells') or []
+    cells=[list(row.cells) if hasattr(row,'cells') else list(row) for row in raw_cells]
     # Collect the actual PDF grid boundaries. This also handles merged cells.
     xs=[]; ys=[]
     for row in cells:
@@ -1557,6 +1558,300 @@ def _add_native_page_as_editable_layout(doc, section, page, plumber_page, first_
         pass
 
 
+
+def _native_text_blocks(page, table_bboxes=None, footer_lines=None):
+    """Extract native PDF text as editable paragraph-sized blocks with coordinates."""
+    table_bboxes=table_bboxes or []
+    footer_lines=set(footer_lines or [])
+    out=[]
+    for block in page.get_text('dict').get('blocks',[]):
+        if block.get('type') != 0:
+            continue
+        bbox=block.get('bbox',[0,0,0,0])
+        bx0,by0,bx1,by1=map(float,bbox)
+        if footer_lines and by0 > page.rect.height*0.86:
+            text0=' '.join(str(s.get('text','')).strip() for ln in block.get('lines',[]) for s in ln.get('spans',[]) if s.get('text')).strip()
+            if any(f and (f in text0 or text0 in f) for f in footer_lines):
+                continue
+        # Exclude blocks that substantially overlap a real extracted table.
+        area=max(1.0,(bx1-bx0)*(by1-by0))
+        if any(max(0,min(bx1,t[2])-max(bx0,t[0]))*max(0,min(by1,t[3])-max(by0,t[1]))/area > .12 for t in table_bboxes):
+            continue
+        lines=[]
+        for line in block.get('lines',[]):
+            runs=[]
+            for span in line.get('spans',[]):
+                text=str(span.get('text',''))
+                if not text: continue
+                flags=int(span.get('flags',0))
+                runs.append({
+                    'text':text,
+                    'size':float(span.get('size') or 10.5),
+                    'bold':bool(flags & 16),
+                    'italic':bool(flags & 2),
+                })
+            line_text=''.join(r['text'] for r in runs).strip()
+            # PDF form fonts sometimes expose checkbox glyphs as a bare 'I' or 'n'.
+            # Repair only when the surrounding wording clearly indicates a checkbox.
+            normalized=_normalize_form_cell_text(line_text)
+            if normalized != line_text:
+                runs=[{'text':normalized,'size':max((r['size'] for r in runs),default=10.5),'bold':any(r['bold'] for r in runs),'italic':any(r['italic'] for r in runs)}]
+                line_text=normalized
+            if line_text:
+                lb=line.get('bbox',bbox)
+                lines.append({'text':line_text,'runs':runs,'bbox':tuple(map(float,lb))})
+        if not lines: continue
+        out.append({
+            'x':bx0,'y':by0,'x2':bx1,'y2':by1,
+            'lines':lines,
+            'text':'\n'.join(x['text'] for x in lines),
+            'size':max((r['size'] for x in lines for r in x['runs']),default=10.5),
+            'bold':any(r['bold'] for x in lines for r in x['runs']),
+        })
+    return sorted(out,key=lambda b:(b['y'],b['x']))
+
+
+def _detect_text_columns(blocks,page):
+    """Detect a genuine two-column text layout without mistaking right-aligned totals for a column."""
+    if len(blocks) < 5:
+        return None
+    width=float(page.rect.width)
+    candidates=[]
+    xs=sorted(set([b['x'] for b in blocks]+[b['x2'] for b in blocks]))
+    for split in xs:
+        left=[b for b in blocks if b['x2'] <= split+8 and b['x'] < split]
+        right=[b for b in blocks if b['x'] >= split-8 and b['x2'] > split]
+        cross=[b for b in blocks if b['x'] < split-8 and b['x2'] > split+8]
+        if len(left)<2 or len(right)<2 or len(cross)>1:
+            continue
+        if split < width*.40 or split > width*.60:
+            continue
+        left_span=sum(max(0,b['y2']-b['y']) for b in left)
+        right_span=sum(max(0,b['y2']-b['y']) for b in right)
+        if left_span < 35 or right_span < 35:
+            continue
+        gap=min([max(0,split-b['x2']) for b in left]+[max(0,b['x']-split) for b in right])
+        score=min(left_span,right_span)*max(1,gap+10)
+        candidates.append((score,split,left,right,cross))
+    if not candidates:
+        return None
+    candidates.sort(key=lambda x:x[0],reverse=True)
+    _,split,left,right,cross=candidates[0]
+    return {'split':split,'left':sorted(left,key=lambda b:(b['y'],b['x'])),'right':sorted(right,key=lambda b:(b['y'],b['x'])),'cross':sorted(cross,key=lambda b:(b['y'],b['x']))}
+
+
+def _remove_table_borders(table):
+    tblPr=table._tbl.tblPr
+    borders=tblPr.first_child_found_in('w:tblBorders')
+    if borders is None:
+        borders=OxmlElement('w:tblBorders'); tblPr.append(borders)
+    for edge in ('top','left','bottom','right','insideH','insideV'):
+        el=OxmlElement('w:'+edge); el.set(qn('w:val'),'nil'); borders.append(el)
+
+
+def _format_native_paragraph(p, block, scale=1.0):
+    p.paragraph_format.space_after=Pt(0)
+    p.paragraph_format.line_spacing=1.0
+    for li,line in enumerate(block['lines']):
+        if li:
+            p.add_run().add_break()
+        for rinfo in line['runs']:
+            r=p.add_run(rinfo['text'])
+            r.font.name='Arial'
+            r.font.size=Pt(max(7.0,min(24.0,rinfo['size']*scale)))
+            r.bold=rinfo['bold']; r.italic=rinfo['italic']
+
+
+
+def _normalize_form_cell_text(value):
+    text=str(value or '')
+    normalized=re.sub(r'(?<!\w)[In]\s+(?=(?:Standard|Priority|Other)\b)', '☐ ', text)
+    if re.match(r'^[In]\s+confirm\b', normalized, flags=re.I):
+        normalized=re.sub(r'^[In]\s+', '☐ ', normalized, count=1, flags=re.I)
+    return normalized
+
+def _add_native_flow_table(container, table_info, font_scale=1.0):
+    """Add an editable table in normal Word flow. No absolute positioning."""
+    rows=table_info.get('rows') or []
+    if not rows: return None
+    cols=max(len(r) for r in rows)
+    table=container.add_table(rows=len(rows),cols=cols)
+    table.style='Table Grid'; table.autofit=False
+    bbox=table_info.get('bbox')
+    total_width=float(bbox[2]-bbox[0]) if bbox else 500.0
+    # Use the PDF cell geometry when available, otherwise distribute evenly.
+    widths=[total_width/cols]*cols
+    raw_cells=table_info.get('cells') or []
+    cells=[list(row.cells) if hasattr(row,'cells') else list(row) for row in raw_cells]
+    if cells:
+        sample=next((row for row in cells if len(row)>=cols and all(row)), None)
+        if sample:
+            for c in range(cols):
+                if sample[c]: widths[c]=max(25.0,float(sample[c][2]-sample[c][0]))
+    total=sum(widths) or total_width
+    widths=[w*total_width/total for w in widths]
+    grid=table._tbl.tblGrid
+    for child in list(grid): grid.remove(child)
+    for w in widths:
+        gc=OxmlElement('w:gridCol'); gc.set(qn('w:w'),str(max(1,int(w*20)))); grid.append(gc)
+    for r,row in enumerate(table.rows):
+        vals=rows[r]
+        for c,cell in enumerate(row.cells):
+            cell.width=Inches(max(.35,widths[c]/72.0))
+            cell.vertical_alignment=1
+            _set_cell_zero_margins(cell)
+            p=cell.paragraphs[0]; p.text=''; p.paragraph_format.space_after=Pt(0)
+            if c < len(vals) and vals[c]:
+                cell_text=_normalize_form_cell_text(vals[c])
+                run=p.add_run(cell_text); run.font.name='Arial'; run.font.size=Pt(10*font_scale)
+                if r==0: run.bold=True
+    # Preserve source row heights so merged title rows do not become huge.
+    if cells:
+        ys=sorted(set(round(float(v),3) for row in cells for cell in row if cell for v in (cell[1],cell[3])))
+        if len(ys)==len(rows)+1:
+            for r,row in enumerate(table.rows):
+                trPr=row._tr.get_or_add_trPr()
+                ht=OxmlElement('w:trHeight'); ht.set(qn('w:val'),str(max(1,int((ys[r+1]-ys[r])*20)))); ht.set(qn('w:hRule'),'exact'); trPr.append(ht)
+    # Recreate only genuine merged cells after all values are populated.
+    if cells:
+        xs=sorted(set(round(float(v),3) for row in cells for cell in row if cell for v in (cell[0],cell[2])))
+        ys=sorted(set(round(float(v),3) for row in cells for cell in row if cell for v in (cell[1],cell[3])))
+        if len(xs)>=2 and len(ys)>=2:
+            for sr in cells:
+                for source in sr:
+                    if not source: continue
+                    x0,y0,x1,y1=map(float,source)
+                    c0=min(range(cols),key=lambda i:abs(xs[i]-x0)); c1=min(range(cols),key=lambda i:abs(xs[i+1]-x1)) if len(xs)>1 else c0
+                    r0=min(range(len(rows)),key=lambda i:abs(ys[i]-y0)); r1=min(range(len(rows)),key=lambda i:abs(ys[i+1]-y1)) if len(ys)>1 else r0
+                    if r1>r0 or c1>c0:
+                        try: table.cell(r0,c0).merge(table.cell(r1,c1))
+                        except Exception: pass
+    # Repeat a light header treatment without depending on a specific document.
+    for c in range(cols):
+        cell=table.cell(0,c);
+        if cell.text.strip():
+            for run in cell.paragraphs[0].runs: run.bold=True
+    return table
+
+
+def _add_blocks_to_cell(cell, blocks, page_width, start_y=None, font_scale=1.0, tables=None):
+    """Populate a layout cell with text blocks and tables in vertical order."""
+    items=[]
+    for b in blocks: items.append(('text',b['y'],b))
+    for t in (tables or []): items.append(('table',t['bbox'][1],t))
+    items.sort(key=lambda x:(x[1],0 if x[0]=='text' else 1))
+    first=True; prev=None
+    for kind,y,obj in items:
+        if kind=='table':
+            _add_native_flow_table(cell,obj,font_scale)
+            cell.add_paragraph()
+            prev=obj['bbox'][3]; first=False; continue
+        p=cell.paragraphs[0] if first and not cell.paragraphs[0].text else cell.add_paragraph()
+        gap=0 if prev is None else max(0,float(obj['y'])-float(prev))
+        p.paragraph_format.space_before=Pt(min(gap,30))
+        _format_native_paragraph(p,obj,font_scale)
+        prev=obj['y2']; first=False
+
+
+
+def _add_top_native_artwork(doc, page):
+    """Preserve small genuine top-of-page artwork such as logos without rasterizing the page."""
+    added=False
+    for im in page.get_images(full=True):
+        try:
+            for rect in page.get_image_rects(im[0]):
+                if rect.y0 < page.rect.height*0.20 and rect.width >= 60 and rect.height >= 8 and rect.width < page.rect.width*0.70:
+                    data=page.parent.extract_image(im[0]).get('image')
+                    if not data: continue
+                    p=doc.add_paragraph(); p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(4)
+                    p.add_run().add_picture(io.BytesIO(data),width=Inches(float(rect.width)/72.0),height=Inches(float(rect.height)/72.0))
+                    added=True
+        except Exception:
+            pass
+    return added
+
+def _append_native_flow_page(doc, section, page, plumber_page, first_page=False, footer_lines=None):
+    """General native-PDF reconstruction using normal editable Word flow."""
+    _set_section_geometry(section,page)
+    # Derive margins from the actual PDF content instead of assuming every document
+    # uses the same page inset. This keeps ordinary letters, forms, invoices and
+    # government forms aligned without hard-coding a particular document.
+    prelim_tables=_native_tables(plumber_page)
+    prelim_bboxes=[t['bbox'] for t in prelim_tables]
+    prelim_blocks=_native_text_blocks(page,prelim_bboxes,footer_lines)
+    min_x=min([b['x'] for b in prelim_blocks]+[t['bbox'][0] for t in prelim_tables]+[40.0])
+    max_x=max([b['x2'] for b in prelim_blocks]+[t['bbox'][2] for t in prelim_tables]+[page.rect.width-40.0])
+    section.left_margin=Inches(max(28,min(90,min_x))/72.0)
+    section.right_margin=Inches(max(28,min(90,page.rect.width-max_x))/72.0)
+    top_y=min([b['y'] for b in prelim_blocks]+[55.0])
+    try:
+        if any(rect.y0 < page.rect.height*0.20 and rect.width >= 60 and rect.height >= 8 and rect.width < page.rect.width*0.70
+               for im in page.get_images(full=True) for rect in page.get_image_rects(im[0])):
+            top_y=min(top_y,20.0)
+    except Exception:
+        pass
+    section.top_margin=Inches(max(20,min(72,top_y))/72.0)
+    section.bottom_margin=Inches(40/72.0)
+    if first_page and footer_lines:
+        fp=section.footer.paragraphs[0]; fp.text=''; fp.alignment=1
+        for i,line in enumerate(footer_lines):
+            if i: fp.add_run().add_break()
+            r=fp.add_run(line); r.font.name='Arial'; r.font.size=Pt(8)
+    tables=_native_tables(plumber_page)
+    tables=[t for t in tables if _table_is_meaningful(t.get('rows')) and (t['bbox'][2]-t['bbox'][0])>=80 and (t['bbox'][3]-t['bbox'][1])>=20]
+    _add_top_native_artwork(doc,page)
+    table_bboxes=[t['bbox'] for t in tables]
+    blocks=_native_text_blocks(page,table_bboxes,footer_lines)
+    columns=_detect_text_columns(blocks,page)
+    if columns:
+        cross=columns['cross']
+        # Full-width title/header blocks remain above the columns.
+        for b in cross:
+            p=doc.add_paragraph(); p.paragraph_format.space_after=Pt(0); _format_native_paragraph(p,b,1.0)
+        first_col_y=min([b['y'] for b in columns['left']+columns['right']] + [page.rect.height])
+        cross_bottom=max([b['y2'] for b in cross] + [0])
+        top_gap=max(0.0,first_col_y-cross_bottom)
+        if top_gap>2:
+            sp=doc.add_paragraph(); sp.paragraph_format.space_after=Pt(0); sp.add_run('\u200b').font.size=Pt(min(18,top_gap))
+        outer=doc.add_table(rows=1,cols=2); outer.autofit=False; _remove_table_borders(outer)
+        gap=16.0; usable=float(page.rect.width)-80-gap
+        left_w=usable*0.5; right_w=usable-left_w
+        outer.cell(0,0).width=Inches(left_w/72.0); outer.cell(0,1).width=Inches(right_w/72.0)
+        for c in outer.rows[0].cells:
+            _set_cell_zero_margins(c)
+        # Tables belong to the column whose bbox contains their centre.
+        left_tables=[]; right_tables=[]; other_tables=[]
+        split=columns['split']
+        for t in tables:
+            cx=(t['bbox'][0]+t['bbox'][2])/2
+            (left_tables if cx<split else right_tables).append(t)
+        _add_blocks_to_cell(outer.cell(0,0),columns['left'],float(page.rect.width),font_scale=1.0,tables=left_tables)
+        _add_blocks_to_cell(outer.cell(0,1),columns['right'],float(page.rect.width),font_scale=1.0,tables=right_tables)
+        return
+    # Single-column flow. Tables and text share one ordered stream.
+    items=[('text',b['y'],b) for b in blocks]+[('table',t['bbox'][1],t) for t in tables]
+    items.sort(key=lambda x:(x[1],0 if x[0]=='text' else 1))
+    prev_y=None
+    for kind,y,obj in items:
+        gap=0 if prev_y is None else max(0,float(y)-float(prev_y))
+        if kind=='table':
+            if gap>2:
+                sp=doc.add_paragraph(); sp.paragraph_format.space_after=Pt(min(gap,24))
+            _add_native_flow_table(doc,obj,1.0)
+            prev_y=obj['bbox'][3]
+            continue
+        p=doc.add_paragraph()
+        p.paragraph_format.space_before=Pt(min(gap,24)) if prev_y is not None else Pt(0)
+        # Scale very small source text slightly upward while retaining hierarchy.
+        scale=1.0
+        _format_native_paragraph(p,obj,scale)
+        if obj['size']>=18:
+            for r in p.runs: r.bold=True
+            center=(float(obj['x'])+float(obj['x2']))/2.0
+            if abs(center-float(page.rect.width)/2.0) < float(page.rect.width)*0.10 and (obj['x2']-obj['x']) < page.rect.width*0.70:
+                p.alignment=1
+        prev_y=obj['y2']
+
 def convert_docx(pdf_path,output_path,pages):
     pdf=fitz.open(pdf_path)
     plumber=pdfplumber.open(pdf_path)
@@ -1568,17 +1863,14 @@ def convert_docx(pdf_path,output_path,pages):
     for idx,n in enumerate(pages):
         page=pdf[n-1]
         scanned=_has_large_page_image(page)
-        complex_form=_has_meaningful_native_table(plumber.pages[n-1])
         if idx:
             section=doc.add_section(WD_SECTION.NEW_PAGE)
         else:
             section=doc.sections[0]
         if scanned:
             _add_scanned_hybrid_page(doc,section,page,idx)
-        elif complex_form:
-            _add_native_page_as_editable_layout(doc,section,page,plumber.pages[n-1],first_page=(idx==0),footer_lines=footer_lines)
         else:
-            _append_native_page(doc,page,plumber.pages[n-1],first_page=(idx==0),footer_lines=footer_lines)
+            _append_native_flow_page(doc,section,page,plumber.pages[n-1],first_page=(idx==0),footer_lines=footer_lines)
     plumber.close(); pdf.close(); doc.save(output_path)
 
 def _html_style_for_span(span):
