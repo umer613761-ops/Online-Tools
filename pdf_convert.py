@@ -3,6 +3,7 @@ import html
 import io
 import re
 from pathlib import Path
+from collections import Counter
 
 import fitz
 from PIL import Image, ImageOps
@@ -1589,6 +1590,7 @@ def _native_text_blocks(page, table_bboxes=None, footer_lines=None):
                     'size':float(span.get('size') or 10.5),
                     'bold':bool(flags & 16),
                     'italic':bool(flags & 2),
+                    'color':span.get('color',0),
                 })
             line_text=''.join(r['text'] for r in runs).strip()
             # PDF form fonts sometimes expose checkbox glyphs as a bare 'I' or 'n'.
@@ -1649,6 +1651,25 @@ def _remove_table_borders(table):
         el=OxmlElement('w:'+edge); el.set(qn('w:val'),'nil'); borders.append(el)
 
 
+def _pdf_rgb_hex(value, default=None):
+    """Convert PyMuPDF's packed RGB integer to an uppercase Word hex color."""
+    try:
+        n=int(value)
+        if n < 0 or n > 0xFFFFFF:
+            return default
+        return f'{n:06X}'
+    except Exception:
+        return default
+
+
+def _set_run_pdf_color(run, color):
+    hex_color=_pdf_rgb_hex(color) if color is not None else None
+    if hex_color and hex_color not in ('000000','FFFFFF'):
+        run.font.color.rgb=__import__('docx').shared.RGBColor.from_string(hex_color)
+    elif hex_color == '000000':
+        run.font.color.rgb=__import__('docx').shared.RGBColor(0,0,0)
+
+
 def _format_native_paragraph(p, block, scale=1.0):
     p.paragraph_format.space_after=Pt(0)
     p.paragraph_format.line_spacing=1.0
@@ -1660,7 +1681,114 @@ def _format_native_paragraph(p, block, scale=1.0):
             r.font.name='Arial'
             r.font.size=Pt(max(7.0,min(24.0,rinfo['size']*scale)))
             r.bold=rinfo['bold']; r.italic=rinfo['italic']
+            _set_run_pdf_color(r, rinfo.get('color'))
 
+
+def _page_text_spans(page):
+    """Return native PDF spans with geometry/color for mapping table-cell styling."""
+    out=[]
+    try:
+        for block in page.get_text('dict').get('blocks',[]):
+            if block.get('type') != 0:
+                continue
+            for line in block.get('lines',[]):
+                for span in line.get('spans',[]):
+                    text=str(span.get('text',''))
+                    if not text.strip():
+                        continue
+                    b=span.get('bbox',[0,0,0,0])
+                    out.append({
+                        'bbox':tuple(map(float,b)),
+                        'text':text,
+                        'color':span.get('color',0),
+                        'size':float(span.get('size') or 10.5),
+                        'bold':bool(int(span.get('flags',0)) & 16),
+                        'italic':bool(int(span.get('flags',0)) & 2),
+                    })
+    except Exception:
+        pass
+    return out
+
+
+def _cell_text_style(page_spans, bbox):
+    """Find the dominant native PDF text color/style inside a table cell."""
+    x0,y0,x1,y1=map(float,bbox)
+    matches=[]
+    for sp in page_spans:
+        sx0,sy0,sx1,sy1=sp['bbox']
+        ix=max(0.0,min(x1,sx1)-max(x0,sx0)); iy=max(0.0,min(y1,sy1)-max(y0,sy0))
+        if ix*iy > 0.1 or (x0 <= (sx0+sx1)/2 <= x1 and y0 <= (sy0+sy1)/2 <= y1):
+            matches.append(sp)
+    if not matches:
+        return {}
+    colors=Counter(sp.get('color',0) for sp in matches)
+    color=colors.most_common(1)[0][0]
+    return {
+        'color':color,
+        'bold':any(sp.get('bold') for sp in matches),
+        'italic':any(sp.get('italic') for sp in matches),
+    }
+
+
+def _pdf_fill_rects(page):
+    """Collect filled PDF drawing rectangles, used to reproduce cell/header fills."""
+    fills=[]
+    try:
+        for d in page.get_drawings():
+            rect=d.get('rect')
+            fill=d.get('fill')
+            if not rect or fill is None:
+                continue
+            if rect.width < 2 or rect.height < 2:
+                continue
+            # Ignore page-sized backgrounds and tiny decorative marks.
+            if rect.width*rect.height > page.rect.width*page.rect.height*.90:
+                continue
+            if isinstance(fill,(tuple,list)) and len(fill)>=3:
+                rgb=tuple(max(0,min(255,round(float(v)*255))) for v in fill[:3])
+                fills.append((tuple(map(float,rect)), (rgb[0]<<16)|(rgb[1]<<8)|rgb[2]))
+    except Exception:
+        pass
+    return fills
+
+
+def _cell_fill_color(fill_rects, bbox):
+    """Return the fill color of the drawing covering most of a table cell."""
+    x0,y0,x1,y1=map(float,bbox); area=max(1.0,(x1-x0)*(y1-y0))
+    best=None; best_ratio=0.0
+    for rect,color in fill_rects:
+        rx0,ry0,rx1,ry1=rect
+        overlap=max(0.0,min(x1,rx1)-max(x0,rx0))*max(0.0,min(y1,ry1)-max(y0,ry0))
+        ratio=overlap/area
+        if ratio > best_ratio and ratio >= .45:
+            best_ratio=ratio; best=color
+    return best
+
+
+def _set_cell_fill(cell, color):
+    hex_color=_pdf_rgb_hex(color) if color is not None else None
+    if not hex_color or hex_color == 'FFFFFF':
+        return
+    tcPr=cell._tc.get_or_add_tcPr()
+    shd=tcPr.find(qn('w:shd'))
+    if shd is None:
+        shd=OxmlElement('w:shd'); tcPr.append(shd)
+    shd.set(qn('w:val'),'clear'); shd.set(qn('w:color'),'auto'); shd.set(qn('w:fill'),hex_color)
+
+
+def _set_cell_border_color(cell, color):
+    hex_color=_pdf_rgb_hex(color) if color is not None else None
+    if not hex_color:
+        return
+    tcPr=cell._tc.get_or_add_tcPr()
+    borders=tcPr.first_child_found_in('w:tcBorders')
+    if borders is None:
+        borders=OxmlElement('w:tcBorders'); tcPr.append(borders)
+    for edge in ('top','left','bottom','right'):
+        el=borders.find(qn('w:'+edge))
+        if el is None:
+            el=OxmlElement('w:'+edge); borders.append(el)
+        el.set(qn('w:val'),'single'); el.set(qn('w:sz'),'4'); el.set(qn('w:space'),'0'); el.set(qn('w:color'),hex_color)
 
 
 def _normalize_form_cell_text(value):
@@ -1670,7 +1798,32 @@ def _normalize_form_cell_text(value):
         normalized=re.sub(r'^[In]\s+', '☐ ', normalized, count=1, flags=re.I)
     return normalized
 
-def _add_native_flow_table(container, table_info, font_scale=1.0):
+def _source_bbox_for_grid(cells, row_idx, col_idx, cols, row_count, bbox):
+    if not cells:
+        return None
+    xs=[]; ys=[]
+    for sr in cells:
+        for source in sr:
+            if not source: continue
+            sx0,sy0,sx1,sy1=map(float,source)
+            xs.extend((sx0,sx1)); ys.extend((sy0,sy1))
+    xs=sorted(set(round(v,3) for v in xs)); ys=sorted(set(round(v,3) for v in ys))
+    if col_idx >= len(xs)-1 or row_idx >= len(ys)-1:
+        return None
+    cx=(xs[col_idx]+xs[col_idx+1])/2.0; cy=(ys[row_idx]+ys[row_idx+1])/2.0
+    best=None; best_area=0.0
+    for sr in cells:
+        for source in sr:
+            if not source: continue
+            sx0,sy0,sx1,sy1=map(float,source)
+            if sx0-1 <= cx <= sx1+1 and sy0-1 <= cy <= sy1+1:
+                area=max(0,(sx1-sx0)*(sy1-sy0))
+                if area > best_area:
+                    best=source; best_area=area
+    return best
+
+
+def _add_native_flow_table(container, table_info, font_scale=1.0, page=None):
     """Add an editable table in normal Word flow. No absolute positioning."""
     rows=table_info.get('rows') or []
     if not rows: return None
@@ -1683,6 +1836,8 @@ def _add_native_flow_table(container, table_info, font_scale=1.0):
     widths=[total_width/cols]*cols
     raw_cells=table_info.get('cells') or []
     cells=[list(row.cells) if hasattr(row,'cells') else list(row) for row in raw_cells]
+    page_spans=_page_text_spans(page) if page is not None else []
+    fill_rects=_pdf_fill_rects(page) if page is not None else []
     if cells:
         sample=next((row for row in cells if len(row)>=cols and all(row)), None)
         if sample:
@@ -1701,10 +1856,18 @@ def _add_native_flow_table(container, table_info, font_scale=1.0):
             cell.vertical_alignment=1
             _set_cell_zero_margins(cell)
             p=cell.paragraphs[0]; p.text=''; p.paragraph_format.space_after=Pt(0)
+            source_bbox=_source_bbox_for_grid(cells, r, c, cols, len(rows), bbox)
+            if source_bbox:
+                _set_cell_fill(cell,_cell_fill_color(fill_rects,source_bbox))
+                style=_cell_text_style(page_spans,source_bbox)
+            else:
+                style={}
             if c < len(vals) and vals[c]:
                 cell_text=_normalize_form_cell_text(vals[c])
                 run=p.add_run(cell_text); run.font.name='Arial'; run.font.size=Pt(10*font_scale)
-                if r==0: run.bold=True
+                if r==0 or style.get('bold'): run.bold=True
+                if style.get('italic'): run.italic=True
+                _set_run_pdf_color(run,style.get('color'))
     # Preserve source row heights so merged title rows do not become huge.
     if cells:
         ys=sorted(set(round(float(v),3) for row in cells for cell in row if cell for v in (cell[1],cell[3])))
@@ -1734,7 +1897,7 @@ def _add_native_flow_table(container, table_info, font_scale=1.0):
     return table
 
 
-def _add_blocks_to_cell(cell, blocks, page_width, start_y=None, font_scale=1.0, tables=None):
+def _add_blocks_to_cell(cell, blocks, page_width, start_y=None, font_scale=1.0, tables=None, page=None):
     """Populate a layout cell with text blocks and tables in vertical order."""
     items=[]
     for b in blocks: items.append(('text',b['y'],b))
@@ -1743,7 +1906,7 @@ def _add_blocks_to_cell(cell, blocks, page_width, start_y=None, font_scale=1.0, 
     first=True; prev=None
     for kind,y,obj in items:
         if kind=='table':
-            _add_native_flow_table(cell,obj,font_scale)
+            _add_native_flow_table(cell,obj,font_scale,page=page)
             cell.add_paragraph()
             prev=obj['bbox'][3]; first=False; continue
         p=cell.paragraphs[0] if first and not cell.paragraphs[0].text else cell.add_paragraph()
@@ -1825,8 +1988,8 @@ def _append_native_flow_page(doc, section, page, plumber_page, first_page=False,
         for t in tables:
             cx=(t['bbox'][0]+t['bbox'][2])/2
             (left_tables if cx<split else right_tables).append(t)
-        _add_blocks_to_cell(outer.cell(0,0),columns['left'],float(page.rect.width),font_scale=1.0,tables=left_tables)
-        _add_blocks_to_cell(outer.cell(0,1),columns['right'],float(page.rect.width),font_scale=1.0,tables=right_tables)
+        _add_blocks_to_cell(outer.cell(0,0),columns['left'],float(page.rect.width),font_scale=1.0,tables=left_tables,page=page)
+        _add_blocks_to_cell(outer.cell(0,1),columns['right'],float(page.rect.width),font_scale=1.0,tables=right_tables,page=page)
         return
     # Single-column flow. Tables and text share one ordered stream.
     items=[('text',b['y'],b) for b in blocks]+[('table',t['bbox'][1],t) for t in tables]
@@ -1837,7 +2000,7 @@ def _append_native_flow_page(doc, section, page, plumber_page, first_page=False,
         if kind=='table':
             if gap>2:
                 sp=doc.add_paragraph(); sp.paragraph_format.space_after=Pt(min(gap,24))
-            _add_native_flow_table(doc,obj,1.0)
+            _add_native_flow_table(doc,obj,1.0,page=page)
             prev_y=obj['bbox'][3]
             continue
         p=doc.add_paragraph()
