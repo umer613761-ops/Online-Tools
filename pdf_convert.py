@@ -2446,12 +2446,12 @@ def _append_native_flow_page(doc, section, page, plumber_page, first_page=False,
         gap=0 if prev_y is None else max(0,float(y)-float(prev_y))
         if kind=='table':
             if gap>2:
-                sp=doc.add_paragraph(); sp.paragraph_format.space_after=Pt(min(gap,24))
+                sp=doc.add_paragraph(); sp.paragraph_format.space_after=Pt(min(gap,300))
             _add_native_flow_table(doc,obj,1.0,page=page)
             prev_y=obj['bbox'][3]
             continue
         p=doc.add_paragraph()
-        p.paragraph_format.space_before=Pt(min(gap,24)) if prev_y is not None else Pt(0)
+        p.paragraph_format.space_before=Pt(min(gap,300)) if prev_y is not None else Pt(0)
         # Scale very small source text slightly upward while retaining hierarchy.
         scale=1.0
         _format_native_paragraph(p,obj,scale)
