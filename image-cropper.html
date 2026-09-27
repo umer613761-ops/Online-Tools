@@ -3656,6 +3656,22 @@ html.dark-mode .logo-icon {
     border-radius:7px !important;
   }
 }
+<style id="toolnest-mobile-crop-reset-order-final">
+/* Mobile cropper only: Reset Crop above Download, same button size. Desktop untouched. */
+@media (max-width:650px){
+  .tn-image-actions.tn-crop-actions .tn-image-reset{
+    order:1 !important;
+    width:220px !important;
+    min-width:220px !important;
+    max-width:220px !important;
+    height:46px !important;
+    min-height:46px !important;
+    max-height:46px !important;
+    box-sizing:border-box !important;
+  }
+  .tn-image-actions.tn-crop-actions .tn-image-download{order:2 !important;}
+  .tn-image-actions.tn-crop-actions .tn-image-cancel{order:3 !important;}
+}
 </style>
 </head>
 <body>
@@ -4128,8 +4144,10 @@ function buildCropper(){
  help("Drag on the image to select a crop area. After the crop is selected, use the 8 handles to adjust it.");
  const r=row();
  const a=actionRow();
- const d=btn("Download Cropped Image","tn-image-download");a.appendChild(d);
- addActionButton(a,"Reset Crop",()=>{delete c.dataset.crop;cropFinalized=false;sel=null;drawEditor();updateHandles();});
+ a.classList.add("tn-crop-actions");
+ const d=btn("Download Cropped Image","tn-image-download");
+ const resetBtn=addActionButton(a,"Reset Crop",()=>{delete c.dataset.crop;cropFinalized=false;sel=null;drawEditor();updateHandles();});
+ a.appendChild(d);
  addCancelButton(a);
 
  const c=state.canvas,wrap=c.parentElement;
