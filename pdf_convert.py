@@ -1146,6 +1146,262 @@ def _xlsx_page_title(page, table_bbox, fallback):
     return fallback
 
 
+
+def _xlsx_rgb_from_fitz(color):
+    """Convert a PyMuPDF RGB tuple or integer color to an openpyxl RGB string."""
+    if color is None:
+        return None
+    try:
+        if isinstance(color, int):
+            r = (color >> 16) & 255
+            g = (color >> 8) & 255
+            b = color & 255
+        else:
+            r, g, b = [max(0, min(255, int(round(float(v) * 255)))) for v in color[:3]]
+        return f"{r:02X}{g:02X}{b:02X}"
+    except Exception:
+        return None
+
+
+def _xlsx_rect_overlap(a, b):
+    """Return intersection area / area of a, for PDF rectangles."""
+    try:
+        ax0, ay0, ax1, ay1 = a
+        bx0, by0, bx1, by1 = b
+        iw = max(0.0, min(ax1, bx1) - max(ax0, bx0))
+        ih = max(0.0, min(ay1, by1) - max(ay0, by0))
+        area = max(1e-9, (ax1 - ax0) * (ay1 - ay0))
+        return (iw * ih) / area
+    except Exception:
+        return 0.0
+
+
+def _xlsx_pdf_cell_styles(page, table_rows, table_bbox, cell_bboxes=None):
+    """Extract source PDF fills/text colors for each table cell.
+
+    Vector PDF fills are preferred because they preserve exact source colors.
+    Text span colors are then associated with the cell containing the span's
+    center. This is deliberately content-agnostic and works for arbitrary
+    tables rather than relying on known invoice colors.
+    """
+    max_rows = len(table_rows)
+    max_cols = max((len(r) for r in table_rows), default=0)
+    styles = [[{} for _ in range(max_cols)] for _ in range(max_rows)]
+    if not table_bbox or not max_rows or not max_cols:
+        return styles
+
+    # pdfplumber gives exact cell rectangles, including None entries for merged
+    # cells. Build a row/column matrix where possible.
+    if cell_bboxes:
+        for r, row_cells in enumerate(cell_bboxes[:max_rows]):
+            for c, rect in enumerate(row_cells[:max_cols]):
+                if rect:
+                    styles[r][c]['bbox'] = rect
+    else:
+        x0, y0, x1, y1 = table_bbox
+        row_h = (y1 - y0) / max_rows
+        col_w = (x1 - x0) / max_cols
+        for r in range(max_rows):
+            for c in range(max_cols):
+                styles[r][c]['bbox'] = (x0 + c * col_w, y0 + r * row_h,
+                                         x0 + (c + 1) * col_w, y0 + (r + 1) * row_h)
+
+    # Fill rectangles: only consider actual filled PDF drawings. A fill that
+    # covers most of a cell is treated as that cell's source background.
+    try:
+        drawings = page.get_drawings()
+        for drawing in drawings:
+            fill = drawing.get('fill')
+            rect = drawing.get('rect')
+            if fill is None or not rect:
+                continue
+            rgb = _xlsx_rgb_from_fitz(fill)
+            if not rgb:
+                continue
+            for r in range(max_rows):
+                for c in range(max_cols):
+                    bbox = styles[r][c].get('bbox')
+                    if not bbox:
+                        continue
+                    overlap = _xlsx_rect_overlap(bbox, tuple(rect))
+                    if overlap >= 0.80:
+                        styles[r][c]['fill'] = rgb
+    except Exception:
+        pass
+
+    # Border color: use the source PDF stroke color when a table line is
+    # actually present. This keeps spreadsheet borders visually aligned with
+    # the source instead of using a synthetic gray.
+    try:
+        strokes = []
+        for drawing in page.get_drawings():
+            stroke = drawing.get('color')
+            rect = drawing.get('rect')
+            if stroke is None or not rect:
+                continue
+            rgb = _xlsx_rgb_from_fitz(stroke)
+            if rgb:
+                strokes.append((tuple(rect), rgb))
+        for r in range(max_rows):
+            for c in range(max_cols):
+                cb = styles[r][c].get('bbox')
+                if not cb:
+                    continue
+                candidates = []
+                for rect, rgb in strokes:
+                    rx0, ry0, rx1, ry1 = rect
+                    # A PDF table border is usually a zero-width/zero-height
+                    # line. Match it to any side of the cell within a small
+                    # geometric tolerance.
+                    tol = 1.5
+                    sides = (
+                        abs(rx0-cb[0]) <= tol and abs(rx1-cb[0]) <= tol,
+                        abs(rx0-cb[2]) <= tol and abs(rx1-cb[2]) <= tol,
+                        abs(ry0-cb[1]) <= tol and abs(ry1-cb[1]) <= tol,
+                        abs(ry0-cb[3]) <= tol and abs(ry1-cb[3]) <= tol,
+                    )
+                    if any(sides):
+                        candidates.append(rgb)
+                if candidates:
+                    styles[r][c]['border_color'] = candidates[0]
+    except Exception:
+        pass
+
+    # Text color/bold: use native PDF spans, associated by center point.
+    try:
+        for block in page.get_text('dict').get('blocks', []):
+            if block.get('type') != 0:
+                continue
+            for line in block.get('lines', []):
+                for span in line.get('spans', []):
+                    text = str(span.get('text', '') or '').strip()
+                    bbox = span.get('bbox')
+                    if not text or not bbox:
+                        continue
+                    sx = (bbox[0] + bbox[2]) / 2
+                    sy = (bbox[1] + bbox[3]) / 2
+                    for r in range(max_rows):
+                        for c in range(max_cols):
+                            cb = styles[r][c].get('bbox')
+                            if not cb or not (cb[0] <= sx <= cb[2] and cb[1] <= sy <= cb[3]):
+                                continue
+                            rgb = _xlsx_rgb_from_fitz(span.get('color'))
+                            if rgb:
+                                # Prefer non-default colors when multiple spans
+                                # occur in one cell, otherwise keep the first.
+                                old = styles[r][c].get('font_color')
+                                if old is None or rgb != '000000':
+                                    styles[r][c]['font_color'] = rgb
+                            flags = int(span.get('flags') or 0)
+                            if flags & 16:
+                                styles[r][c]['bold'] = True
+                            if flags & 2:
+                                styles[r][c]['italic'] = True
+                            break
+    except Exception:
+        pass
+    return styles
+
+
+def _xlsx_apply_pdf_colors(ws, start_row, rows, page, table_bbox, cell_bboxes=None):
+    """Apply source PDF cell fills and text colors without changing structure."""
+    styles = _xlsx_pdf_cell_styles(page, rows, table_bbox, cell_bboxes)
+    for r in range(len(rows)):
+        for c in range(len(rows[r])):
+            cell = ws.cell(start_row + r, c + 1)
+            st = styles[r][c] if r < len(styles) and c < len(styles[r]) else {}
+            # Remove the converter's synthetic fill unless the source PDF has a
+            # real fill for this cell.
+            if st.get('fill'):
+                cell.fill = PatternFill(fill_type='solid', fgColor=st['fill'])
+            else:
+                cell.fill = PatternFill(fill_type=None)
+            border_color = st.get('border_color')
+            if border_color:
+                side = Side(style='thin', color=border_color)
+                cell.border = Border(left=side, right=side, top=side, bottom=side)
+            color = st.get('font_color')
+            kwargs = {
+                'name': cell.font.name,
+                'sz': cell.font.sz,
+                'b': cell.font.bold or st.get('bold', False),
+                'i': cell.font.italic or st.get('italic', False),
+                'u': cell.font.underline,
+                'strike': cell.font.strike,
+                'vertAlign': cell.font.vertAlign,
+                'charset': cell.font.charset,
+                'family': cell.font.family,
+                'scheme': cell.font.scheme,
+            }
+            if color:
+                kwargs['color'] = color
+            cell.font = Font(**kwargs)
+
+
+def _xlsx_find_text_bbox(page, target_text):
+    """Find the bbox of a native PDF text block matching target text."""
+    target = re.sub(r"\s+", " ", str(target_text or "")).strip().lower()
+    if not target:
+        return None
+    try:
+        for block in page.get_text('dict').get('blocks', []):
+            if block.get('type') != 0:
+                continue
+            parts = []
+            boxes = []
+            for line in block.get('lines', []):
+                for span in line.get('spans', []):
+                    text = str(span.get('text', '') or '').strip()
+                    if text:
+                        parts.append(text)
+                    if span.get('bbox'):
+                        boxes.append(span['bbox'])
+            joined = re.sub(r"\s+", " ", " ".join(parts)).strip().lower()
+            if joined == target or target in joined or joined in target:
+                if boxes:
+                    return (min(b[0] for b in boxes), min(b[1] for b in boxes),
+                            max(b[2] for b in boxes), max(b[3] for b in boxes))
+    except Exception:
+        pass
+    return None
+
+
+def _xlsx_apply_pdf_text_color(cell, page, bbox):
+    """Apply source text color to a non-table cell such as a title/metadata row."""
+    if not bbox:
+        return
+    colors = []
+    bold = False
+    italic = False
+    try:
+        for block in page.get_text('dict').get('blocks', []):
+            if block.get('type') != 0:
+                continue
+            for line in block.get('lines', []):
+                for span in line.get('spans', []):
+                    sb = span.get('bbox')
+                    if not sb:
+                        continue
+                    cx = (sb[0] + sb[2]) / 2; cy = (sb[1] + sb[3]) / 2
+                    if bbox[0] <= cx <= bbox[2] and bbox[1] <= cy <= bbox[3]:
+                        rgb = _xlsx_rgb_from_fitz(span.get('color'))
+                        if rgb: colors.append(rgb)
+                        flags = int(span.get('flags') or 0)
+                        bold = bold or bool(flags & 16); italic = italic or bool(flags & 2)
+    except Exception:
+        return
+    color = next((x for x in colors if x != '000000'), colors[0] if colors else None)
+    kwargs = {
+        'name': cell.font.name, 'sz': cell.font.sz,
+        'b': cell.font.bold or bold, 'i': cell.font.italic or italic,
+        'u': cell.font.underline, 'strike': cell.font.strike,
+        'vertAlign': cell.font.vertAlign, 'charset': cell.font.charset,
+        'family': cell.font.family, 'scheme': cell.font.scheme,
+    }
+    if color: kwargs['color'] = color
+    cell.font = Font(**kwargs)
+
+
 def _xlsx_apply_table_format(ws, start_row, rows):
     """Apply conservative Excel formatting based on detected table structure."""
     max_col=max((len(r) for r in rows), default=1)
@@ -1239,7 +1495,8 @@ def convert_xlsx(pdf_path, output_path, pages):
                 if _table_is_meaningful(rows):
                     bbox=t.bbox
                     normalized=_normalize_table(rows)
-                    page_tables.append({'page':n,'bbox':bbox,'rows':normalized})
+                    cell_matrix = [list(getattr(row, 'cells', []) or []) for row in getattr(t, 'rows', [])]
+                    page_tables.append({'page':n,'bbox':bbox,'rows':normalized,'cells':cell_matrix})
                     tables.append(page_tables[-1])
 
             # Scanned PDFs: retain the existing OCR table path.
@@ -1305,7 +1562,9 @@ def convert_xlsx(pdf_path, output_path, pages):
             ws.merge_cells(start_row=row_cursor,start_column=1,end_row=row_cursor,end_column=table_width)
             ws.cell(row_cursor,1).font=Font(bold=True,size=14)
             ws.cell(row_cursor,1).alignment=Alignment(horizontal='center')
-            ws.cell(row_cursor,1).fill=PatternFill('solid', fgColor='DCE6F1')
+            ws.cell(row_cursor,1).fill=PatternFill(fill_type=None)
+            title_bbox = _xlsx_find_text_bbox(page, title)
+            _xlsx_apply_pdf_text_color(ws.cell(row_cursor,1), page, title_bbox)
             row_cursor += 1
             if pre:
                 row_cursor += 1
@@ -1313,11 +1572,13 @@ def convert_xlsx(pdf_path, output_path, pages):
                     ws.cell(row_cursor,1,text)
                     ws.merge_cells(start_row=row_cursor,start_column=1,end_row=row_cursor,end_column=table_width)
                     ws.cell(row_cursor,1).font=Font(bold=False)
+                    _xlsx_apply_pdf_text_color(ws.cell(row_cursor,1), page, _xlsx_find_text_bbox(page, text))
                     row_cursor+=1
                 row_cursor += 1
             for r,row in enumerate(rows,row_cursor):
                 for c,value in enumerate(row,1): ws.cell(r,c,value)
             _xlsx_apply_table_format(ws,row_cursor,rows)
+            _xlsx_apply_pdf_colors(ws,row_cursor,rows,page,t.get('bbox'),t.get('cells'))
             _xlsx_add_inferred_formulas(ws,row_cursor)
             ws.freeze_panes=ws.cell(row_cursor+1,1).coordinate if len(rows)>1 else None
             for c in range(1,ws.max_column+1):
