@@ -1113,6 +1113,19 @@ def convert_xlsx(pdf_path, output_path, pages):
         plumber.close()
         pdf.close()
 
+def _has_meaningful_native_table(plumber_page):
+    """Detect real PDF tables/forms that should not be reflowed by Word."""
+    try:
+        for table in plumber_page.find_tables():
+            rows=table.extract() or []
+            x0,y0,x1,y1=table.bbox
+            if (x1-x0) >= 100 and (y1-y0) >= 35 and len(rows) >= 2 and max((len(r) for r in rows), default=0) >= 2:
+                return True
+    except Exception:
+        pass
+    return False
+
+
 def convert_docx(pdf_path,output_path,pages):
     pdf=fitz.open(pdf_path)
     plumber=pdfplumber.open(pdf_path)
@@ -1124,12 +1137,19 @@ def convert_docx(pdf_path,output_path,pages):
     for idx,n in enumerate(pages):
         page=pdf[n-1]
         scanned=_has_large_page_image(page)
+        complex_form=_has_meaningful_native_table(plumber.pages[n-1])
         if idx:
             section=doc.add_section(WD_SECTION.NEW_PAGE)
         else:
             section=doc.sections[0]
         if scanned:
             _add_scanned_hybrid_page(doc,section,page,idx)
+        elif complex_form:
+            # Complex forms/tables are preserved as a page image so Word's normal
+            # paragraph/table flow cannot reorder fields or split the form across pages.
+            # The PDF page remains a single selectable Word image and visually matches
+            # the source instead of producing a broken reconstruction.
+            _append_scanned_image_page(doc,section,page)
         else:
             if idx and footer_lines:
                 pass
