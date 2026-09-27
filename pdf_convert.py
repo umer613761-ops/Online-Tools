@@ -2275,6 +2275,69 @@ def _add_blocks_to_cell(cell, blocks, page_width, start_y=None, font_scale=1.0, 
 
 
 
+def _anchor_header_picture(run):
+    """Turn an inline header picture into a page-positioned, non-flowing drawing.
+
+    Anchoring prevents the letterhead artwork from consuming body-flow height,
+    while keeping it editable/repositionable in Word and avoiding overlap with
+    the reconstructed text.
+    """
+    drawing=run._r.find(qn('w:drawing'))
+    if drawing is None: return
+    inline=drawing.find(qn('wp:inline'))
+    if inline is None: return
+    extent=inline.find(qn('wp:extent'))
+    docPr=inline.find(qn('wp:docPr'))
+    cNv=inline.find(qn('wp:cNvGraphicFramePr'))
+    graphic=inline.find(qn('a:graphic'))
+    anchor=OxmlElement('wp:anchor')
+    for k,v in {
+        'distT':'0','distB':'0','distL':'0','distR':'0',
+        'simplePos':'0','relativeHeight':'251658240','behindDoc':'1',
+        'locked':'0','layoutInCell':'1','allowOverlap':'1'
+    }.items(): anchor.set(qn('wp:'+k),v)
+    sp=OxmlElement('wp:simplePos'); sp.set('x','0'); sp.set('y','0'); anchor.append(sp)
+    ph=OxmlElement('wp:positionH'); ph.set('relativeFrom','page'); po=OxmlElement('wp:posOffset'); po.text='0'; ph.append(po); anchor.append(ph)
+    pv=OxmlElement('wp:positionV'); pv.set('relativeFrom','page'); po=OxmlElement('wp:posOffset'); po.text='0'; pv.append(po); anchor.append(pv)
+    if extent is not None: anchor.append(extent)
+    ee=OxmlElement('wp:effectExtent')
+    for k in ('l','t','r','b'): ee.set(k,'0')
+    anchor.append(ee)
+    anchor.append(OxmlElement('wp:wrapNone'))
+    if docPr is not None: anchor.append(docPr)
+    if cNv is not None: anchor.append(cNv)
+    if graphic is not None: anchor.append(graphic)
+    drawing.replace(inline,anchor)
+
+
+def _wide_top_header_image(page):
+    """Return the most likely native letterhead/header image on this page.
+
+    This is deliberately based on geometry rather than a particular document: a
+    wide image near the top of a native-text PDF is treated as page artwork when
+    it is clearly shorter than a full-page scan. Full-page/scanned images are
+    handled by the scanned-page path instead.
+    """
+    best=None
+    ph=float(page.rect.height); pw=float(page.rect.width)
+    for im in page.get_images(full=True):
+        try:
+            data=page.parent.extract_image(im[0]).get('image')
+            if not data:
+                continue
+            for rect in page.get_image_rects(im[0]):
+                # Wide, top-anchored artwork: supports letterheads, banners and
+                # branded headers without depending on a particular logo/image size.
+                if (rect.width >= pw*0.70 and rect.y0 <= ph*0.05 and
+                    rect.height >= 12 and rect.height <= ph*0.30):
+                    score=(rect.width/pw, -rect.y0, -rect.height)
+                    if best is None or score > best[0]:
+                        best=(score,data,float(rect.width),float(rect.height))
+        except Exception:
+            pass
+    return None if best is None else best[1:]
+
+
 def _add_top_native_artwork(doc, page):
     """Preserve small genuine top-of-page artwork such as logos without rasterizing the page."""
     added=False
@@ -2311,8 +2374,34 @@ def _append_native_flow_page(doc, section, page, plumber_page, first_page=False,
             top_y=min(top_y,20.0)
     except Exception:
         pass
-    section.top_margin=Inches(max(20,min(72,top_y))/72.0)
-    section.bottom_margin=Inches(40/72.0)
+    header_info=_wide_top_header_image(page)
+    if header_info:
+        # Keep the editable text below the detected letterhead rather than
+        # letting the header image overlap the first text block.
+        _, _, header_height = header_info
+        top_y=max(top_y, header_height + 8.0)
+    section.top_margin=Inches(max(20,min(117,top_y if not header_info else 117))/72.0)
+    section.bottom_margin=Inches(0/72.0)
+    # Preserve wide native letterheads/banners as real Word header artwork on
+    # the pages where they actually occur. Unlink every section so a header on
+    # one page does not accidentally propagate to unrelated pages.
+    section.header.is_linked_to_previous=False
+    hp=section.header.paragraphs[0]
+    hp.text=''
+    header_info=_wide_top_header_image(page)
+    if header_info:
+        data, width, _ = header_info
+        hp.alignment=0
+        hp.paragraph_format.space_before=Pt(0); hp.paragraph_format.space_after=Pt(0)
+        try:
+            hp.paragraph_format.left_indent=Inches(-float(section.left_margin)/914400.0)
+        except Exception:
+            pass
+        run=hp.add_run()
+        run.add_picture(io.BytesIO(data), width=Inches(float(page.rect.width)/72.0))
+        _anchor_header_picture(run)
+        section.header_distance=Inches(0)
+
     if first_page and footer_lines:
         fp=section.footer.paragraphs[0]; fp.text=''; fp.alignment=1
         for i,line in enumerate(footer_lines):
