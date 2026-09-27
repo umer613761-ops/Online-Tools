@@ -16,6 +16,8 @@ from docx.oxml.ns import qn
 from lxml import etree
 import pdfplumber
 from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+from openpyxl.utils import get_column_letter
 
 V_NS='urn:schemas-microsoft-com:vml'
 O_NS='urn:schemas-microsoft-com:office:office'
@@ -1055,32 +1057,192 @@ def _normalize_table(rows):
     return out
 
 
+def _xlsx_cell_value(value):
+    """Convert common PDF table strings into useful Excel values."""
+    if value is None:
+        return None
+    text=re.sub(r"\s+", " ", str(value)).strip()
+    if not text:
+        return None
+    # Currency / accounting values. Keep the currency marker separately via
+    # number formatting so Excel can calculate with the value.
+    m=re.fullmatch(r"\(?\s*([$€£])\s*([+-]?[\d,]+(?:\.\d+)?)\s*\)?", text)
+    if m:
+        num=float(m.group(2).replace(',', ''))
+        if text.startswith('('): num=-num
+        return num
+    # Plain integers / decimals.
+    if re.fullmatch(r"[+-]?[\d,]+", text):
+        try: return int(text.replace(',', ''))
+        except Exception: pass
+    if re.fullmatch(r"[+-]?(?:\d+\.\d+|\.\d+)", text):
+        try: return float(text)
+        except Exception: pass
+    return text
+
+
+def _xlsx_is_number(v):
+    return isinstance(v, (int, float)) and not isinstance(v, bool)
+
+
+def _xlsx_currency_format(symbol='$'):
+    return f'{symbol}#,##0.00;[Red]-{symbol}#,##0.00'
+
+
+def _xlsx_table_rows_with_numbers(rows):
+    return [[_xlsx_cell_value(v) for v in row] for row in rows]
+
+
+def _xlsx_outside_text(page, table_bbox):
+    """Return meaningful text blocks outside a detected table, in reading order."""
+    x0,y0,x1,y1=table_bbox
+    blocks=[]
+    try:
+        for b in page.get_text('blocks'):
+            bx0,by0,bx1,by1=b[:4]
+            text=re.sub(r"\s+", " ", str(b[4] or '')).strip()
+            if not text:
+                continue
+            # Ignore anything that overlaps the table rectangle.
+            overlap=max(0, min(bx1,x1)-max(bx0,x0))*max(0, min(by1,y1)-max(by0,y0))
+            area=max(1,(bx1-bx0)*(by1-by0))
+            if overlap/area > 0.15:
+                continue
+            blocks.append({'x':bx0,'y':by0,'text':text,'w':bx1-bx0,'h':by1-by0})
+    except Exception:
+        return []
+    return sorted(blocks, key=lambda b:(round(b['y'],1), b['x']))
+
+
+def _xlsx_page_title(page, table_bbox, fallback):
+    """Choose a nearby prominent heading for a worksheet without hard-coding content."""
+    x0,y0,x1,y1=table_bbox
+    candidates=[]
+    try:
+        d=page.get_text('dict')
+        for block in d.get('blocks',[]):
+            if block.get('type') != 0: continue
+            text=[]; max_size=0
+            bx0=by0=bx1=by1=None
+            for line in block.get('lines',[]):
+                for span in line.get('spans',[]):
+                    t=str(span.get('text','')).strip()
+                    if t: text.append(t)
+                    max_size=max(max_size,float(span.get('size') or 0))
+                    bb=span.get('bbox')
+                    if bb:
+                        bx0=bb[0] if bx0 is None else min(bx0,bb[0]); by0=bb[1] if by0 is None else min(by0,bb[1])
+                        bx1=bb[2] if bx1 is None else max(bx1,bb[2]); by1=bb[3] if by1 is None else max(by1,bb[3])
+            text=' '.join(text).strip()
+            if not text or by1 is None or by1 > y0+2: continue
+            if len(text)>80: continue
+            candidates.append((max_size, y0-by1, text))
+    except Exception:
+        pass
+    if candidates:
+        candidates.sort(key=lambda x:(-x[0], x[1]))
+        return candidates[0][2]
+    return fallback
+
+
+def _xlsx_apply_table_format(ws, start_row, rows):
+    """Apply conservative Excel formatting based on detected table structure."""
+    max_col=max((len(r) for r in rows), default=1)
+    header_row=start_row + (1 if len(rows)>1 and any(rows[0][1:] if rows[0] else []) else 0)
+    # Header rows: bold + light fill. A single-cell first row is treated as a title.
+    from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+    thin=Side(style='thin', color='B7B7B7')
+    for r_idx,row in enumerate(rows, start_row):
+        for c_idx,_ in enumerate(row,1):
+            cell=ws.cell(r_idx,c_idx)
+            cell.alignment=Alignment(vertical='center')
+            cell.border=Border(left=thin,right=thin,top=thin,bottom=thin)
+    if rows and len(rows[0]) and sum(v is not None and v!='' for v in rows[0])==1 and max_col>1:
+        ws.merge_cells(start_row=start_row,start_column=1,end_row=start_row,end_column=max_col)
+        c=ws.cell(start_row,1); c.font=Font(bold=True,size=14); c.alignment=Alignment(horizontal='center',vertical='center')
+        c.fill=PatternFill('solid', fgColor='DCE6F1')
+        data_start=start_row+1
+    else:
+        data_start=start_row
+    # The first conventional header row is the row containing mostly text labels.
+    if data_start <= start_row+2 and start_row <= ws.max_row:
+        for c in range(1,max_col+1):
+            cell=ws.cell(data_start,c)
+            if isinstance(cell.value,str) and cell.value.strip():
+                cell.font=Font(bold=True)
+                cell.fill=PatternFill('solid', fgColor='EAF0F6')
+    # Numeric alignment and currency formatting.
+    for row in ws.iter_rows(min_row=start_row,max_row=ws.max_row,min_col=1,max_col=max_col):
+        for cell in row:
+            if _xlsx_is_number(cell.value):
+                cell.alignment=Alignment(horizontal='right',vertical='center')
+    # Infer currency columns from header and values.
+    for c in range(1,max_col+1):
+        header=str(ws.cell(data_start,c).value or '').lower()
+        vals=[ws.cell(r,c).value for r in range(data_start+1,ws.max_row+1)]
+        if any(k in header for k in ('price','total','amount','cost','tax','subtotal')):
+            if any(k in header for k in ('price','total','amount','cost','tax','subtotal')):
+                for r in range(data_start+1,ws.max_row+1):
+                    if _xlsx_is_number(ws.cell(r,c).value): ws.cell(r,c).number_format=_xlsx_currency_format('$')
+
+
+def _xlsx_add_inferred_formulas(ws, start_row):
+    """Add only high-confidence subtotal/grand-total formulas to extracted tables."""
+    label_col=None; value_col=None
+    for r in range(start_row,ws.max_row+1):
+        for c in range(1,ws.max_column+1):
+            v=ws.cell(r,c).value
+            if isinstance(v,str) and v.strip().lower() in ('subtotal','grand total','total'):
+                label_col=c
+                if value_col is None: value_col=min(ws.max_column,c+1)
+    if not label_col or not value_col: return
+    # Prefer the rightmost numeric column as the total/value column.
+    for c in range(ws.max_column,0,-1):
+        if any(_xlsx_is_number(ws.cell(r,c).value) for r in range(start_row+1,ws.max_row+1)):
+            value_col=c; break
+    subtotal_row=None; tax_row=None; grand_row=None
+    for r in range(start_row,ws.max_row+1):
+        label=str(ws.cell(r,label_col).value or '').strip().lower()
+        if label=='subtotal': subtotal_row=r
+        elif label=='tax': tax_row=r
+        elif label in ('grand total','total'): grand_row=r
+    if subtotal_row and subtotal_row>start_row+1:
+        ws.cell(subtotal_row,value_col).value=f'=SUM({ws.cell(start_row+2,value_col).coordinate}:{ws.cell(subtotal_row-1,value_col).coordinate})'
+    if grand_row and subtotal_row and tax_row:
+        ws.cell(grand_row,value_col).value=f'={ws.cell(subtotal_row,value_col).coordinate}+{ws.cell(tax_row,value_col).coordinate}'
+
+
 def convert_xlsx(pdf_path, output_path, pages):
-    """Create an XLSX containing only detected tables/tabular data.
-    Raises ValueError when no meaningful table is found, so the API does not
-    create a meaningless workbook for ordinary/non-tabular PDFs.
+    """Create a structured XLSX from detected PDF tables.
+
+    The converter intentionally extracts only tabular data, but reconstructs
+    useful spreadsheet semantics: numeric/currency cells, header/title styling,
+    high-confidence subtotal formulas, nearby document text, and separate text
+    content. Ordinary PDFs with no meaningful table still raise ValueError.
     """
     pdf=fitz.open(pdf_path)
     plumber=pdfplumber.open(pdf_path)
     tables=[]
+    page_text_blocks=[]
     try:
         for n in pages:
             page=pdf[n-1]
-            # Native PDFs: use pdfplumber's table extraction.
+            page_tables=[]
             try:
                 ppage=plumber.pages[n-1]
-                native_tables=ppage.extract_tables() or []
+                native_tables=ppage.find_tables() or []
             except Exception:
                 native_tables=[]
-            for rows in native_tables:
+            for t in native_tables:
+                rows=t.extract() or []
                 if _table_is_meaningful(rows):
-                    tables.append((n, _normalize_table(rows)))
+                    bbox=t.bbox
+                    normalized=_normalize_table(rows)
+                    page_tables.append({'page':n,'bbox':bbox,'rows':normalized})
+                    tables.append(page_tables[-1])
 
-            # Scanned PDFs: detect ruled tables from the rendered page image
-            # and OCR the cells.  _scan_table_region is intentionally used first
-            # because it handles scanned certificate/marks tables whose faint
-            # grid lines do not survive the stricter native-resolution detector.
-            if _has_large_page_image(page):
+            # Scanned PDFs: retain the existing OCR table path.
+            if not page_tables and _has_large_page_image(page):
                 try:
                     img=_scan_image(page)
                     table=_scan_table_region(img)
@@ -1089,29 +1251,106 @@ def convert_xlsx(pdf_path, output_path, pages):
                         table=_detect_table(page,img)
                         rows=_ocr_table_words(img,table) if table else []
                     if _table_is_meaningful(rows):
-                        tables.append((n, _normalize_table(rows)))
+                        # Scanned detector coordinates are image-based; no reliable
+                        # PDF bbox is available, so omit surrounding text reconstruction.
+                        tables.append({'page':n,'bbox':None,'rows':_normalize_table(rows)})
                 except Exception:
                     pass
+
+            if page_tables:
+                used=[]
+                for t in page_tables: used.append(t['bbox'])
+                outside=[]
+                for b in page.get_text('blocks'):
+                    bx0,by0,bx1,by1=b[:4]; text=re.sub(r"\s+"," ",str(b[4] or '')).strip()
+                    if not text: continue
+                    if any(max(0,min(bx1,x1)-max(bx0,x0))*max(0,min(by1,y1)-max(by0,y0)) / max(1,(bx1-bx0)*(by1-by0)) > .15 for x0,y0,x1,y1 in used):
+                        continue
+                    outside.append((by0,bx0,text))
+                page_text_blocks.append((n, sorted(outside)))
 
         if not tables:
             raise ValueError("No tables or tabular data were found in this PDF. XLSX was not created.")
 
-        wb=Workbook()
-        wb.remove(wb.active)
-        for index,(page_num,rows) in enumerate(tables,1):
-            ws=wb.create_sheet(title=f"Page {page_num} Table {index}"[:31])
-            for r,row in enumerate(rows,1):
-                for c,value in enumerate(row,1):
-                    ws.cell(r,c,value)
-            ws.freeze_panes='A2' if len(rows)>1 else None
-            for col in ws.columns:
-                letter=col[0].column_letter
-                max_len=max((len(str(cell.value)) if cell.value is not None else 0) for cell in col)
-                ws.column_dimensions[letter].width=min(max(max_len+2,10),50)
+        wb=Workbook(); wb.remove(wb.active)
+        all_outside=[]
+        used_sheet_names=set()
+        for index,t in enumerate(tables,1):
+            page_num=t['page']; rows=_xlsx_table_rows_with_numbers(t['rows'])
+            page=pdf[page_num-1]
+            title=_xlsx_page_title(page,t['bbox'],f'Table {index}') if t['bbox'] else f'Table {index}'
+            base=re.sub(r'[:\\/?*\[\]]','',title).strip() or f'Table {index}'
+            name=base[:31]; k=2
+            while name in used_sheet_names:
+                name=(base[:27]+f' {k}')[:31]; k+=1
+            used_sheet_names.add(name)
+            ws=wb.create_sheet(title=name)
+
+            # Add nearby text before the table when it is clearly document metadata.
+            pre=[]
+            if t['bbox']:
+                for n,blocks in page_text_blocks:
+                    if n==page_num:
+                        for y,x,text in blocks:
+                            if y < t['bbox'][1]-2 and y > max(0,t['bbox'][1]-90):
+                                pre.append(text)
+                        break
+            row_cursor=1
+            selected_title = title.strip().lower()
+            pre = [text for text in pre if text.strip().lower() != selected_title]
+            table_width=max(2,max((len(r) for r in rows), default=2))
+            # Preserve a nearby prominent heading above the table.
+            ws.cell(row_cursor,1,title)
+            ws.merge_cells(start_row=row_cursor,start_column=1,end_row=row_cursor,end_column=table_width)
+            ws.cell(row_cursor,1).font=Font(bold=True,size=14)
+            ws.cell(row_cursor,1).alignment=Alignment(horizontal='center')
+            ws.cell(row_cursor,1).fill=PatternFill('solid', fgColor='DCE6F1')
+            row_cursor += 1
+            if pre:
+                row_cursor += 1
+                for text in pre:
+                    ws.cell(row_cursor,1,text)
+                    ws.merge_cells(start_row=row_cursor,start_column=1,end_row=row_cursor,end_column=table_width)
+                    ws.cell(row_cursor,1).font=Font(bold=False)
+                    row_cursor+=1
+                row_cursor += 1
+            for r,row in enumerate(rows,row_cursor):
+                for c,value in enumerate(row,1): ws.cell(r,c,value)
+            _xlsx_apply_table_format(ws,row_cursor,rows)
+            _xlsx_add_inferred_formulas(ws,row_cursor)
+            ws.freeze_panes=ws.cell(row_cursor+1,1).coordinate if len(rows)>1 else None
+            for c in range(1,ws.max_column+1):
+                letter=get_column_letter(c)
+                max_len=max((len(str(ws.cell(r,c).value)) if ws.cell(r,c).value is not None else 0) for r in range(1,ws.max_row+1))
+                ws.column_dimensions[letter].width=min(max(max_len+2,10),45)
+
+        # Any text outside detected tables is preserved separately rather than lost.
+        text_sheet=wb.create_sheet('Text')
+        seen=set(); rr=1
+        # Keep text that is genuinely outside the table(s), but avoid duplicating
+        # headings/metadata already placed on the corresponding table sheet.
+        consumed_global=set()
+        for t in tables:
+            if not t['bbox']: continue
+            page=pdf[t['page']-1]
+            title=_xlsx_page_title(page,t['bbox'],'') or ''
+            if title: consumed_global.add((t['page'],title.strip().lower()))
+            for n,blocks in page_text_blocks:
+                if n != t['page']: continue
+                for y,x,text in blocks:
+                    if t['bbox'][1]-90 <= y < t['bbox'][1]-2:
+                        consumed_global.add((n,text.strip().lower()))
+        for page_num,blocks in page_text_blocks:
+            for y,x,text in blocks:
+                key=(page_num,text)
+                if key in seen or (page_num,text.strip().lower()) in consumed_global: continue
+                seen.add(key); text_sheet.cell(rr,1,text); rr+=1
+        if rr==1:
+            wb.remove(text_sheet)
+
         wb.save(output_path)
     finally:
-        plumber.close()
-        pdf.close()
+        plumber.close(); pdf.close()
 
 def _has_meaningful_native_table(plumber_page):
     """Detect real PDF tables/forms that should not be reflowed by Word."""
