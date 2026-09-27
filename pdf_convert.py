@@ -1239,16 +1239,30 @@ def _add_native_page_as_editable_layout(doc, section, page, plumber_page, first_
             r=fp.add_run(line); r.font.name='Arial'; r.font.size=Pt(8)
 
     # Preserve genuine page artwork such as a logo/header, but do not rasterize the page.
-    # The source UTS form has one small top logo image; place image objects at their PDF coordinates.
-    for im in page.get_images(full=True):
-        try:
-            for rect in page.get_image_rects(im[0]):
-                if rect.width >= page.rect.width*0.15 and rect.y0 < page.rect.height*0.20:
-                    data=page.parent.extract_image(im[0]).get('image')
-                    if data:
-                        _add_positioned_image(doc,section,data,float(rect.x0),float(rect.y0),float(rect.width),float(rect.height))
-        except Exception:
-            pass
+    # If the PDF has a wide colored header drawing, render only that small strip so
+    # vector backgrounds and transparent logos retain their original appearance.
+    header_rendered=False
+    try:
+        for d in page.get_drawings():
+            r=d.get('rect')
+            if not r: continue
+            if r.y0 < 80 and r.width >= page.rect.width*0.75 and r.height <= 90:
+                pix=page.get_pixmap(matrix=fitz.Matrix(2,2), clip=r, alpha=False, colorspace=fitz.csRGB)
+                _add_positioned_image(doc,section,pix.tobytes('png'),float(r.x0),float(r.y0),float(r.width),float(r.height))
+                header_rendered=True
+                break
+    except Exception:
+        pass
+    if not header_rendered:
+        for im in page.get_images(full=True):
+            try:
+                for rect in page.get_image_rects(im[0]):
+                    if rect.width >= page.rect.width*0.15 and rect.y0 < page.rect.height*0.20:
+                        data=page.parent.extract_image(im[0]).get('image')
+                        if data:
+                            _add_positioned_image(doc,section,data,float(rect.x0),float(rect.y0),float(rect.width),float(rect.height))
+            except Exception:
+                pass
 
     tables=_native_tables(plumber_page)
     # Ignore tiny decorative header artifacts; keep substantial tables/forms.
