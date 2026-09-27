@@ -1443,6 +1443,98 @@ def _xlsx_apply_table_format(ws, start_row, rows):
                     if _xlsx_is_number(ws.cell(r,c).value): ws.cell(r,c).number_format=_xlsx_currency_format('$')
 
 
+def _xlsx_source_font_size(page, bbox, fallback=11.0):
+    """Return the dominant native PDF font size for text inside a bbox."""
+    if not bbox:
+        return fallback
+    sizes=[]
+    try:
+        for block in page.get_text('dict').get('blocks', []):
+            if block.get('type') != 0:
+                continue
+            for line in block.get('lines', []):
+                for span in line.get('spans', []):
+                    sb=span.get('bbox')
+                    if not sb:
+                        continue
+                    cx=(sb[0]+sb[2])/2; cy=(sb[1]+sb[3])/2
+                    if bbox[0] <= cx <= bbox[2] and bbox[1] <= cy <= bbox[3]:
+                        try:
+                            sizes.append(float(span.get('size') or fallback))
+                        except Exception:
+                            pass
+    except Exception:
+        pass
+    return max(sizes) if sizes else fallback
+
+
+def _xlsx_apply_source_dimensions(ws, rows, table_bbox, cell_bboxes=None, start_row=1):
+    """Scale Excel columns/rows from the PDF's real table geometry.
+
+    Excel column widths are not measured in points, so use a calibrated
+    points-to-character conversion. This keeps the extracted spreadsheet from
+    appearing noticeably smaller than the source PDF while remaining usable.
+    """
+    if not table_bbox or not rows:
+        return
+    max_cols=max((len(r) for r in rows), default=0)
+    if not max_cols:
+        return
+
+    # Prefer actual PDF cell boundaries. For merged/title rows, fall back to
+    # the table's evenly spaced columns only when a boundary is unavailable.
+    col_widths=[0.0]*max_cols
+    x0,y0,x1,y1=table_bbox
+    fallback_width=(x1-x0)/max_cols
+    if cell_bboxes:
+        for row_index, row_cells in enumerate(cell_bboxes):
+            for c, rect in enumerate(row_cells[:max_cols]):
+                if not rect or rect[2] <= rect[0]:
+                    continue
+                # A merged title/header cell can span the entire table. It must
+                # not be used as the width of column A (or every column).
+                if row_index == 0 and (rect[2]-rect[0]) > fallback_width * 1.5:
+                    continue
+                col_widths[c]=max(col_widths[c], float(rect[2]-rect[0]))
+    for c in range(max_cols):
+        if col_widths[c] <= 0:
+            col_widths[c]=fallback_width
+
+    # 0.19 Excel characters per PDF point gives a close visual match to the
+    # source page at normal spreadsheet zoom. Keep a sensible upper bound.
+    for c,width_pt in enumerate(col_widths,1):
+        width=max(9.0, min(50.0, width_pt*0.19))
+        ws.column_dimensions[get_column_letter(c)].width=width
+
+    # Source table rows are 26pt in the test invoice; preserve those actual
+    # heights instead of Excel's much smaller default row height.
+    if cell_bboxes:
+        for r,row_cells in enumerate(cell_bboxes, start=start_row):
+            heights=[]
+            for rect in row_cells[:max_cols]:
+                if rect and rect[3] > rect[1]:
+                    heights.append(float(rect[3]-rect[1]))
+            if heights:
+                ws.row_dimensions[r].height=max(18.0, min(60.0, max(heights)))
+    else:
+        row_h=(y1-y0)/max(1,len(rows))
+        for r in range(start_row,start_row+len(rows)):
+            ws.row_dimensions[r].height=max(18.0, min(60.0,row_h))
+
+
+def _xlsx_apply_source_title_size(ws, cell, page, bbox, fallback=14.0):
+    """Use the source PDF title size rather than shrinking it to a fixed 14pt."""
+    source_size=_xlsx_source_font_size(page,bbox,fallback)
+    # Excel/Calibri and PDF fonts render differently; a small floor keeps titles
+    # visually comparable without making long headings excessive.
+    size=max(fallback, min(24.0, source_size))
+    f=cell.font
+    cell.font=Font(name=f.name, size=size, bold=f.bold, italic=f.italic,
+                   underline=f.underline, strike=f.strike, color=f.color,
+                   vertAlign=f.vertAlign, charset=f.charset, family=f.family,
+                   scheme=f.scheme)
+
+
 def _xlsx_add_inferred_formulas(ws, start_row):
     """Add only high-confidence subtotal/grand-total formulas to extracted tables."""
     label_col=None; value_col=None
@@ -1564,6 +1656,7 @@ def convert_xlsx(pdf_path, output_path, pages):
             ws.cell(row_cursor,1).alignment=Alignment(horizontal='center')
             ws.cell(row_cursor,1).fill=PatternFill(fill_type=None)
             title_bbox = _xlsx_find_text_bbox(page, title)
+            _xlsx_apply_source_title_size(ws, ws.cell(row_cursor,1), page, title_bbox, fallback=14.0)
             _xlsx_apply_pdf_text_color(ws.cell(row_cursor,1), page, title_bbox)
             row_cursor += 1
             if pre:
@@ -1581,10 +1674,14 @@ def convert_xlsx(pdf_path, output_path, pages):
             _xlsx_apply_pdf_colors(ws,row_cursor,rows,page,t.get('bbox'),t.get('cells'))
             _xlsx_add_inferred_formulas(ws,row_cursor)
             ws.freeze_panes=ws.cell(row_cursor+1,1).coordinate if len(rows)>1 else None
+            _xlsx_apply_source_dimensions(ws, rows, t.get('bbox'), t.get('cells'), start_row=row_cursor)
+            # Keep text outside the source table readable without allowing a
+            # long metadata string to determine the table's geometry.
             for c in range(1,ws.max_column+1):
                 letter=get_column_letter(c)
+                current=ws.column_dimensions[letter].width or 10
                 max_len=max((len(str(ws.cell(r,c).value)) if ws.cell(r,c).value is not None else 0) for r in range(1,ws.max_row+1))
-                ws.column_dimensions[letter].width=min(max(max_len+2,10),45)
+                ws.column_dimensions[letter].width=max(current, min(max(max_len+2,9),50))
 
         # Any text outside detected tables is preserved separately rather than lost.
         text_sheet=wb.create_sheet('Text')
