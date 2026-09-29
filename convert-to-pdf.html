@@ -4651,6 +4651,7 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
             link.download=f.name.replace(/\.[^.]+$/i,'')+'-converted.pdf';
             document.body.appendChild(link);
             link.click();
+            window.dispatchEvent(new Event('toolnest-download-finished'));
             link.remove();
             URL.revokeObjectURL(url);
             resetToUpload();
@@ -4669,6 +4670,7 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
       }
       const baseName=(files[0]?.name||'converted-to-pdf').replace(/\.[^.]+$/,'').replace(/[\\/:*?"<>|]+/g,'-').trim()||'converted-to-pdf';
       doc.save(baseName+'-converted.pdf');
+      window.dispatchEvent(new Event('toolnest-download-finished'));
       resetToUpload();
     };
   }
@@ -4955,15 +4957,15 @@ html.dark-mode main .tool-description {
     var s=((el.innerText||el.textContent||'')+'').replace(/\s+/g,' ').trim().toLowerCase();
     return /\bdownload\b/.test(s) || /convert\s*(?:&|and)?\s*download/.test(s) || /merge\s*(?:&|and)?\s*download/.test(s);
   }
+  window.addEventListener('toolnest-download-finished', function(){ finish(); });
   document.addEventListener('click',function(e){
     var el=e.target && e.target.closest ? e.target.closest('button,a') : null;
     if(isDownloadElement(el)) {
       show();
       /* Some tools (including Convert to PDF) generate the file directly with
          jsPDF.doc.save(), so no anchor click occurs for the animation to detect. */
-      if(el && (el.id==='convertToDownloadButton' || el.id==='convertFromDownloadButton')) {
-        setTimeout(finish,80);
-      }
+      /* Convert to PDF generates the file asynchronously; finish is signalled
+         by the conversion code only after the download has been triggered. */
     }
   },true);
   var nativeAnchorClick=HTMLAnchorElement.prototype.click;
