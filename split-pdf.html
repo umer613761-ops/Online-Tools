@@ -6546,24 +6546,36 @@ html.dark-mode .logo-icon {
         for (let p = 0; p < pageCount; p++) groups.push([p]);
       }
 
+      if (typeof JSZip === "undefined") {
+        throw new Error("ZIP support is unavailable. Please refresh the page and try again.");
+      }
+
+      // Package every generated PDF into one ZIP so browsers cannot block
+      // later files after multiple automatic downloads (commonly around 10).
+      const zip = new JSZip();
+      const baseName = pdfFile.name.replace(/\.pdf$/i, "");
+
       for (let i = 0; i < groups.length; i++) {
         const out = await PDFLib.PDFDocument.create();
         const copied = await out.copyPages(source, groups[i]);
         copied.forEach(page => out.addPage(page));
 
         const outBytes = await out.save();
-        const blob = new Blob([outBytes], { type: "application/pdf" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = pdfFile.name.replace(/\.pdf$/i, "") + "-part-" + (i + 1) + ".pdf";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
+        zip.file(baseName + "-part-" + (i + 1) + ".pdf", outBytes);
       }
 
-      setStatus("PDF split successfully.", true);
+      setStatus("Preparing ZIP download...", true);
+      const zipBlob = await zip.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 6 } });
+      const zipUrl = URL.createObjectURL(zipBlob);
+      const downloadLink = document.createElement("a");
+      downloadLink.href = zipUrl;
+      downloadLink.download = baseName + "-split.zip";
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      downloadLink.remove();
+      setTimeout(() => URL.revokeObjectURL(zipUrl), 1000);
+
+      setStatus("PDF split successfully. ZIP download started.", true);
 
       resetInterface();
 
