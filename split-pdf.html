@@ -6266,6 +6266,7 @@ html.dark-mode .logo-icon {
   const visualSplitPages = document.getElementById("visualSplitPages");
 
   let pdfFile = null;
+  let loadedPdf = null;
   let splitMode = "entire";
   let customSplitPoints = new Set();
 
@@ -6279,6 +6280,7 @@ html.dark-mode .logo-icon {
     if (pdfInput) pdfInput.value = "";
 
     pdfFile = null;
+    loadedPdf = null;
     customSplitPoints.clear();
 
     if (pdfGrid) {
@@ -6324,8 +6326,11 @@ html.dark-mode .logo-icon {
   }
 
   async function loadPDF(file) {
+    if (loadedPdf && pdfFile === file) return loadedPdf;
     const bytes = await file.arrayBuffer();
-    return await pdfjsLib.getDocument({ data: bytes.slice(0) }).promise;
+    const task = pdfjsLib.getDocument({ data: new Uint8Array(bytes) });
+    loadedPdf = await task.promise;
+    return loadedPdf;
   }
 
   async function renderPreview(file, canvas) {
@@ -6419,7 +6424,12 @@ html.dark-mode .logo-icon {
     if (!visualSplitPages || !pdfFile || splitMode !== "custom") return;
 
     visualSplitPages.innerHTML = "";
-    const pdf = await loadPDF(pdfFile);
+    try {
+      if (pageNumberPanel) {
+        pageNumberPanel.hidden = false;
+        pageNumberPanel.style.display = "block";
+      }
+      const pdf = await loadPDF(pdfFile);
 
     for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
       const wrap = document.createElement("div");
@@ -6475,6 +6485,11 @@ html.dark-mode .logo-icon {
         wrap.appendChild(divider);
       }
     }
+    } catch (error) {
+      console.error("Custom split preview error:", error);
+      visualSplitPages.innerHTML = "";
+      setStatus("Could not load the custom PDF preview. Please try again.", true);
+    }
   }
 
   function setSplitMode(mode) {
@@ -6497,8 +6512,11 @@ html.dark-mode .logo-icon {
       const customOption = document.getElementById("splitByPageOption");
       if (customOption) customOption.classList.toggle("is-selected", !entire);
     }
-    if (pageNumberPanel) pageNumberPanel.hidden = entire;
-    if (!entire) renderVisualSplitPages().catch(console.error);
+    if (pageNumberPanel) {
+      pageNumberPanel.hidden = entire;
+      pageNumberPanel.style.display = entire ? "none" : "block";
+    }
+    if (!entire) renderVisualSplitPages();
   }
 
   async function splitAndDownload() {
