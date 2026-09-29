@@ -4957,7 +4957,14 @@ html.dark-mode main .tool-description {
   }
   document.addEventListener('click',function(e){
     var el=e.target && e.target.closest ? e.target.closest('button,a') : null;
-    if(isDownloadElement(el)) show();
+    if(isDownloadElement(el)) {
+      show();
+      /* Some tools (including Convert to PDF) generate the file directly with
+         jsPDF.doc.save(), so no anchor click occurs for the animation to detect. */
+      if(el && (el.id==='convertToDownloadButton' || el.id==='convertFromDownloadButton')) {
+        setTimeout(finish,80);
+      }
+    }
   },true);
   var nativeAnchorClick=HTMLAnchorElement.prototype.click;
   HTMLAnchorElement.prototype.click=function(){
