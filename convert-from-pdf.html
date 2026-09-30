@@ -4684,7 +4684,6 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
       }
       if(fmt.value==='txt' || fmt.value==='docx' || fmt.value==='html-text' || fmt.value==='html-image' || fmt.value==='xlsx'){
         try{
-          if(fmt.value==='xlsx') window.dispatchEvent(new Event('toolnest-show-download'));
           download.disabled=true;
           download.textContent='Converting...';
           const apiFormat = fmt.value==='html-text' ? 'html-text' : (fmt.value==='html-image' ? 'html-image' : fmt.value);
@@ -4951,14 +4950,14 @@ html.dark-mode main .tool-description {
   top: 50%;
   transform: translate(-50%, -50%) scale(.94);
   z-index: 99999;
-  min-width: 420px;
-  padding: 34px 42px;
+  min-width: 250px;
+  padding: 22px 26px;
   border: 1px solid rgba(255,255,255,.12);
   border-radius: 14px;
   background: rgba(24,28,32,.97);
   box-shadow: 0 18px 55px rgba(0,0,0,.35);
   color: #fff;
-  font: 700 22px Arial, sans-serif;
+  font: 600 15px Arial, sans-serif;
   text-align: center;
   opacity: 0;
   pointer-events: none;
@@ -4970,28 +4969,28 @@ html.dark-mode main .tool-description {
 }
 #toolnestDownloadPopup .tn-download-spinner,
 #toolnestDownloadPopup .tn-download-check {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 18px;
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 11px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 #toolnestDownloadPopup .tn-download-spinner {
-  border: 6px solid rgba(255,255,255,.22);
+  border: 4px solid rgba(255,255,255,.22);
   border-top-color: #10b981;
   animation: tnDownloadSpin .75s linear infinite;
 }
 #toolnestDownloadPopup .tn-download-check {
   background: #059669;
-  font-size: 34px;
+  font-size: 24px;
   font-weight: 700;
 }
 #toolnestDownloadPopup .tn-download-text { line-height: 1.35; }
 @keyframes tnDownloadSpin { to { transform: rotate(360deg); } }
 @media (max-width:650px) {
-  #toolnestDownloadPopup { min-width: 210px; min-width: 0; width: min(420px, calc(100vw - 32px)); max-width: calc(100vw - 32px); padding: 28px 24px; }
+  #toolnestDownloadPopup { min-width: 210px; max-width: calc(100vw - 40px); padding: 19px 22px; }
 }
 </style>
 <div id="toolnestDownloadPopup" aria-live="polite" aria-hidden="true">
@@ -5032,15 +5031,8 @@ html.dark-mode main .tool-description {
     var s=((el.innerText||el.textContent||'')+'').replace(/\s+/g,' ').trim().toLowerCase();
     return /\bdownload\b/.test(s) || /convert\s*(?:&|and)?\s*download/.test(s) || /merge\s*(?:&|and)?\s*download/.test(s);
   }
-  window.addEventListener('toolnest-show-download',function(){ show(); });
   document.addEventListener('click',function(e){
     var el=e.target && e.target.closest ? e.target.closest('button,a') : null;
-    // XLSX conversion can legitimately return an error such as "no table found".
-    // Do not show the download animation before that server-side result is known.
-    if(el && el.id==='convertFromDownloadButton'){
-      var f=document.getElementById('convertFromFormat');
-      if(f && f.value==='xlsx') return;
-    }
     if(isDownloadElement(el)) show();
   },true);
   var nativeAnchorClick=HTMLAnchorElement.prototype.click;
