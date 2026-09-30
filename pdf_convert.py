@@ -645,7 +645,7 @@ def _clean_scanned_background(img, data, extra_lines=None):
         if c < 45: continue
         x=int(data['left'][i]); y=int(data['top'][i]); w=int(data['width'][i]); h=int(data['height'][i])
         if w<2 or h<2: continue
-        pad=1
+        pad=6
         xa=max(0,x-pad); xb=min(arr.shape[1],x+w+pad)
         ya=max(0,y-pad); yb=min(arr.shape[0],y+h+pad)
         mask[ya:yb,xa:xb]=255
@@ -657,11 +657,11 @@ def _clean_scanned_background(img, data, extra_lines=None):
         if c < 45: continue
         x=int(ln['x']); y=int(ln['y']); x2=int(ln['x2']); y2=int(ln['y2'])
         if x2-x<2 or y2-y<2: continue
-        xa=max(0,x-1); xb=min(arr.shape[1],x2+1); ya=max(0,y-1); yb=min(arr.shape[0],y2+1)
+        xa=max(0,x-10); xb=min(arr.shape[1],x2+10); ya=max(0,y-7); yb=min(arr.shape[0],y2+7)
         mask[ya:yb,xa:xb]=255
     # Inpaint text, then restore long document/table rules so the editable text
     # sits on top of the original form/certificate geometry.
-    cleaned=cv2.inpaint(arr,mask,2,cv2.INPAINT_TELEA)
+    cleaned=cv2.inpaint(arr,mask,5,cv2.INPAINT_TELEA)
     gray=np.array(img.convert('L'))
     bw=cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY_INV,31,10)
     hker=cv2.getStructuringElement(cv2.MORPH_RECT,(max(30,gray.shape[1]//25),1))
@@ -746,8 +746,8 @@ def _add_scanned_frame(doc, page, line, img_scale):
     pPr=p._p.get_or_add_pPr()
     fp=OxmlElement('w:framePr')
     x=line['x']/img_scale; y=line['y']/img_scale
-    w=max(8,(line['x2']-line['x'])/img_scale+3)
-    h=max(8,(line['y2']-line['y'])/img_scale+3)
+    w=max(8,(line['x2']-line['x'])/img_scale+16)
+    h=max(10,(line['y2']-line['y'])/img_scale+5)
     # Word frame coordinates are twentieths of a point (twips).
     for k,v in {'w':str(int(w*20)),'h':str(int(h*20)),
                 'x':str(int(x*20)),'y':str(int(y*20)),
@@ -756,7 +756,7 @@ def _add_scanned_frame(doc, page, line, img_scale):
     pPr.append(fp)
     r=p.add_run(line['text'])
     r.font.name='Arial'
-    r.font.size=Pt(max(6,min(18,(line['y2']-line['y'])/img_scale*0.55)))
+    r.font.size=Pt(max(7,min(16,(line['y2']-line['y'])/img_scale*0.55)))
     return p
 
 
@@ -1043,56 +1043,26 @@ def _add_scanned_hybrid_page(doc, section, page, page_index):
     iw,ih=img.size; pw=float(page.rect.width); ph=float(page.rect.height)
     table_info=_scan_table_region(img)
     if not table_info:
-        # Scanned/image-only page: preserve the scan as page artwork, but replace
-        # OCR-recognised text with native editable Word text in the header. Using a
-        # header table keeps every text box at a fixed page position without adding
-        # extra pages or reflowing the certificate.
-        _set_scanned_section(section,page)
+        # Scanned/image-only page: preserve the non-text artwork as a page-sized
+        # background image, but put OCR text into the DOCUMENT BODY as ordinary
+        # Word paragraphs.  This is important: header text is technically editable
+        # but is not what users expect when they click text in the document.
         scan=_scan_image(page)
         lines, data = _scan_ocr_items(scan,page_index)
         scale=scan.width/float(page.rect.width)
         usable_lines=[ln for ln in lines if ln['conf'] >= (52 if page_index else 58)]
-        # Blank/near-blank scanned pages often contain specks, scan borders or
-        # compression artifacts that OCR mistakes for one-character text. Only
-        # create editable overlays when the page has a meaningful amount of OCR text.
         meaningful_words=[ln for ln in usable_lines if len(re.findall(r'[A-Za-z]{3,}',ln['text'])) >= 1]
         if len(meaningful_words) < 4 and sum(len(ln['text']) for ln in usable_lines) < 25:
             usable_lines=[]
         cleaned=_clean_scanned_background(scan,data,usable_lines)
         buf=io.BytesIO(); cleaned.save(buf,'PNG',optimize=True)
         _put_page_image_in_header(section,buf.getvalue(),page)
-        if usable_lines:
-            header=section.header
-            # Use spacer rows + text rows so each editable line starts at its
-            # original Y coordinate. A text row itself begins at the desired Y;
-            # this avoids the first-row-at-top behavior of Word header tables.
-            rows=[]
-            cursor_pt=0.0
-            for line in usable_lines:
-                y_pt=float(line['y'])/scale
-                font_size=max(7,min(18,(float(line['y2'])-float(line['y']))/scale*1.0))
-                if line['text'].strip().upper() == line['text'].strip() and len(line['text'].strip())>12:
-                    font_size=min(18,font_size*1.15)
-                text_h=max(10.0,font_size*1.35)
-                rows.append(('gap',max(0.0,y_pt-cursor_pt),None,None))
-                rows.append(('text',text_h,line,font_size))
-                cursor_pt=y_pt+text_h
-            rows.append(('gap',max(8.0,ph-cursor_pt),None,None))
-            table=header.add_table(rows=len(rows),cols=1,width=Inches(pw/72.0))
-            table.autofit=False
-            _set_table_no_borders(table)
-            for ri,(kind,row_h,line,font_size) in enumerate(rows):
-                row=table.rows[ri]
-                trPr=row._tr.get_or_add_trPr(); ht=OxmlElement('w:trHeight')
-                ht.set(qn('w:val'),str(max(1,int(row_h*20)))); ht.set(qn('w:hRule'),'exact'); trPr.append(ht)
-                cell=row.cells[0]; cell.width=Inches(pw/72.0); cell.vertical_alignment=0; _set_cell_zero_margins(cell)
-                p=cell.paragraphs[0]; p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1
-                if kind != 'text':
-                    p.text=''
-                    continue
-                p.paragraph_format.left_indent=Inches(max(0,float(line['x'])/scale)/72.0)
-                p.paragraph_format.keep_together=True
-                r=p.add_run(line['text']); r.font.name='Arial'; r.font.size=Pt(font_size)
+
+        # Put each OCR line in the document BODY as an anchored Word frame.
+        # These are normal body paragraphs (not header text) and are directly
+        # editable in Word while retaining the PDF coordinates.
+        for line in usable_lines:
+            _add_scanned_frame(doc,page,line,scale)
         return
     x0,x1=table_info['x'][0],table_info['x'][-1]; top=table_info['top']; bottom=table_info['bottom']
     # White out only the table rectangle in the surrounding scan; all other artwork stays exact.
