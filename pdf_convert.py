@@ -1,6 +1,9 @@
 import base64
 import html
 import io
+import math
+import os
+import tempfile
 import re
 from pathlib import Path
 from collections import Counter
@@ -19,8 +22,14 @@ import pdfplumber
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
+from openpyxl.drawing.image import Image as XLImage
+from openpyxl.drawing.spreadsheet_drawing import AnchorMarker, TwoCellAnchor
+from openpyxl.cell.cell import MergedCell
 
 V_NS='urn:schemas-microsoft-com:vml'
+GRID_PT = 5.0
+PX_PER_PT = 96.0 / 72.0
+
 O_NS='urn:schemas-microsoft-com:office:office'
 
 
@@ -1561,155 +1570,443 @@ def _xlsx_add_inferred_formulas(ws, start_row):
         ws.cell(grand_row,value_col).value=f'={ws.cell(subtotal_row,value_col).coordinate}+{ws.cell(tax_row,value_col).coordinate}'
 
 
-def convert_xlsx(pdf_path, output_path, pages):
-    """Create a structured XLSX from detected PDF tables.
+def _safe_sheet_name(name, used):
+    name = re.sub(r'[\[\]:*?/\\]', ' ', name).strip() or "Page"
+    name = name[:31]
+    base = name
+    n = 2
+    while name in used:
+        suffix = f" ({n})"
+        name = base[:31-len(suffix)] + suffix
+        n += 1
+    used.add(name)
+    return name
 
-    The converter intentionally extracts only tabular data, but reconstructs
-    useful spreadsheet semantics: numeric/currency cells, header/title styling,
-    high-confidence subtotal formulas, nearby document text, and separate text
-    content. Ordinary PDFs with no meaningful table still raise ValueError.
-    """
-    pdf=fitz.open(pdf_path)
-    plumber=pdfplumber.open(pdf_path)
-    tables=[]
-    page_text_blocks=[]
+
+def _numeric_value(value):
+    if value is None:
+        return None
+    s = str(value).strip()
+    if not s:
+        return ""
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", s):
+        return s
+    m = re.fullmatch(r'(-?[\d,]+(?:\.\d+)?)\s*%', s)
+    if m:
+        return float(m.group(1).replace(',', '')) / 100.0
+    cleaned = s.replace(',', '')
+    if re.fullmatch(r'\$[-+]?\d+(?:\.\d+)?', cleaned):
+        try:
+            return float(cleaned[1:])
+        except ValueError:
+            return s
+    if re.fullmatch(r'[-+]?\d+(?:\.\d+)?', cleaned):
+        try:
+            n = float(cleaned)
+            return int(n) if n.is_integer() else n
+        except ValueError:
+            pass
+    return s
+
+
+def _extract_images(doc, page, page_index, temp_dir):
+    records = []
+    seen = set()
+    for img in page.get_images(full=True):
+        xref = img[0]
+        if xref in seen:
+            continue
+        seen.add(xref)
+        rects = page.get_image_rects(xref)
+        if not rects:
+            continue
+        try:
+            data = doc.extract_image(xref)
+            ext = data.get('ext', 'png')
+            path = os.path.join(temp_dir, f"p{page_index+1}_img{xref}.{ext}")
+            with open(path, 'wb') as f:
+                f.write(data['image'])
+        except Exception:
+            continue
+        for rect in rects:
+            records.append({
+                'path': path,
+                'x0': max(0.0, float(rect.x0)),
+                'y0': max(0.0, float(rect.y0)),
+                'x1': min(float(page.rect.width), float(rect.x1)),
+                'y1': min(float(page.rect.height), float(rect.y1)),
+            })
+    return records
+
+
+def _rect_center(r):
+    return ((r['x0'] + r['x1']) / 2.0, (r['y0'] + r['y1']) / 2.0)
+
+
+def _inside(rect, bbox, margin=0):
+    cx, cy = _rect_center(rect)
+    return (bbox[0] - margin <= cx <= bbox[2] + margin and
+            bbox[1] - margin <= cy <= bbox[3] + margin)
+
+
+def _grid_col(x):
+    return max(1, int(math.floor(x / GRID_PT)) + 1)
+
+
+def _grid_row(y):
+    return max(1, int(math.floor(y / GRID_PT)) + 1)
+
+
+def _grid_range(x0, y0, x1, y1):
+    # Snap both edges to the nearest 5pt canvas boundary. Using the same
+    # boundary for the end of one PDF cell and the start of the next avoids
+    # overlapping Excel merged ranges while retaining page geometry closely.
+    c1 = max(1, int(round(x0 / GRID_PT)) + 1)
+    r1 = max(1, int(round(y0 / GRID_PT)) + 1)
+    c2 = max(c1, int(round(x1 / GRID_PT)))
+    r2 = max(r1, int(round(y1 / GRID_PT)))
+    return r1, c1, r2, c2
+
+
+def _set_border_rect(ws, r1, c1, r2, c2, side):
+    # Apply borders to the actual canvas cells without drawing an artificial
+    # 5-point grid over the entire worksheet.
+    for c in range(c1, c2 + 1):
+        top = ws.cell(r1, c)
+        bottom = ws.cell(r2, c)
+        top.border = Border(top=side, left=top.border.left, right=top.border.right, bottom=top.border.bottom)
+        bottom.border = Border(bottom=side, left=bottom.border.left, right=bottom.border.right, top=bottom.border.top)
+    for r in range(r1, r2 + 1):
+        left = ws.cell(r, c1)
+        right = ws.cell(r, c2)
+        left.border = Border(left=side, top=left.border.top, bottom=left.border.bottom, right=left.border.right)
+        right.border = Border(right=side, top=right.border.top, bottom=right.border.bottom, left=right.border.left)
+
+
+def _anchor_for_rect(x0, y0, x1, y1):
+    r1, c1, r2, c2 = _grid_range(x0, y0, x1, y1)
+    # openpyxl's offsets are EMU; using zero offsets is deliberate. The 5pt
+    # canvas resolution is fine enough for normal PDF business documents.
+    return TwoCellAnchor(
+        _from=AnchorMarker(col=c1 - 1, colOff=0, row=r1 - 1, rowOff=0),
+        to=AnchorMarker(col=c2, colOff=0, row=r2, rowOff=0),
+        editAs='twoCell',
+    )
+
+
+def _add_image_exact(ws, img_record, max_box=None):
+    x0, y0, x1, y1 = img_record['x0'], img_record['y0'], img_record['x1'], img_record['y1']
+    if max_box:
+        bx0, by0, bx1, by1 = max_box
+        x0 = max(x0, bx0); y0 = max(y0, by0)
+        x1 = min(x1, bx1); y1 = min(y1, by1)
+    if x1 <= x0 or y1 <= y0:
+        return
+    ximg = XLImage(img_record['path'])
+    ximg.width = max(8, (x1 - x0) * PX_PER_PT)
+    ximg.height = max(8, (y1 - y0) * PX_PER_PT)
+    ximg.anchor = _anchor_for_rect(x0, y0, x1, y1)
+    ws.add_image(ximg)
+
+
+def _table_cell_bboxes(table):
+    return [[tuple(cell) if cell else None for cell in row.cells] for row in table.rows]
+
+
+def _words_to_lines(page, table_bboxes):
     try:
-        for n in pages:
-            page=pdf[n-1]
-            page_tables=[]
-            try:
-                ppage=plumber.pages[n-1]
-                native_tables=ppage.find_tables() or []
-            except Exception:
-                native_tables=[]
-            for t in native_tables:
-                rows=t.extract() or []
-                if _table_is_meaningful(rows):
-                    bbox=t.bbox
-                    normalized=_normalize_table(rows)
-                    cell_matrix = [list(getattr(row, 'cells', []) or []) for row in getattr(t, 'rows', [])]
-                    page_tables.append({'page':n,'bbox':bbox,'rows':normalized,'cells':cell_matrix})
-                    tables.append(page_tables[-1])
+        words = page.extract_words(use_text_flow=True, keep_blank_chars=False, extra_attrs=['size', 'fontname'])
+    except Exception:
+        return []
+    usable = []
+    for w in words:
+        x0, top, x1, bottom = map(float, (w['x0'], w['top'], w['x1'], w['bottom']))
+        cx, cy = (x0+x1)/2, (top+bottom)/2
+        if any(b[0] <= cx <= b[2] and b[1] <= cy <= b[3] for b in table_bboxes):
+            continue
+        usable.append(w)
+    lines = []
+    for w in sorted(usable, key=lambda z: (float(z['top']), float(z['x0']))):
+        placed = False
+        wt = float(w['top'])
+        for line in reversed(lines[-5:]):
+            if abs(line['top'] - wt) <= 2.5:
+                line['words'].append(w)
+                line['x0'] = min(line['x0'], float(w['x0']))
+                line['x1'] = max(line['x1'], float(w['x1']))
+                line['bottom'] = max(line['bottom'], float(w['bottom']))
+                line['size'] = max(line['size'], float(w.get('size') or 10))
+                placed = True
+                break
+        if not placed:
+            lines.append({'top': wt, 'bottom': float(w['bottom']), 'x0': float(w['x0']), 'x1': float(w['x1']), 'size': float(w.get('size') or 10), 'words': [w]})
+    out = []
+    for line in sorted(lines, key=lambda z: z['top']):
+        text = ' '.join(w['text'] for w in sorted(line['words'], key=lambda z: float(z['x0']))).strip()
+        if text:
+            out.append({**line, 'text': text})
+    return out
 
-            # Scanned PDFs: retain the existing OCR table path.
-            if not page_tables and _has_large_page_image(page):
+
+def _render_vector_regions(doc_page, table_bboxes, image_records, temp_dir, page_no):
+    # Preserve substantial vector-only graphics (charts, diagrams, shapes) as
+    # images. Table borders are explicitly ignored. This is intentionally
+    # conservative so ordinary text does not become a page screenshot.
+    rects = []
+    for d in doc_page.get_drawings():
+        r = d.get('rect')
+        if not r or r.width < 8 or r.height < 8:
+            continue
+        bbox = (float(r.x0), float(r.y0), float(r.x1), float(r.y1))
+        if any(_bbox_overlap(bbox, tb) > 0.80 for tb in table_bboxes):
+            continue
+        if any(_bbox_overlap(bbox, (im['x0'], im['y0'], im['x1'], im['y1'])) > 0.80 for im in image_records):
+            continue
+        # Ignore tiny rules; keep larger vector objects.
+        if bbox[2]-bbox[0] < 30 and bbox[3]-bbox[1] < 30:
+            continue
+        rects.append(bbox)
+    if not rects:
+        return []
+
+    # Merge nearby vector rectangles into graphic regions.
+    merged = []
+    for r in sorted(rects, key=lambda z: (z[1], z[0])):
+        hit = None
+        for i, m in enumerate(merged):
+            if _bbox_gap(m, r) <= 12:
+                hit = i; break
+        if hit is None:
+            merged.append(list(r))
+        else:
+            m = merged[hit]
+            m[0] = min(m[0], r[0]); m[1] = min(m[1], r[1]); m[2] = max(m[2], r[2]); m[3] = max(m[3], r[3])
+    out = []
+    for idx, r in enumerate(merged):
+        area = max(0, r[2]-r[0]) * max(0, r[3]-r[1])
+        if area < 1800:
+            continue
+        clip = fitz.Rect(*r)
+        pix = doc_page.get_pixmap(matrix=fitz.Matrix(1.6, 1.6), clip=clip, alpha=False)
+        path = os.path.join(temp_dir, f'p{page_no}_vector{idx}.png')
+        pix.save(path)
+        out.append({'path': path, 'x0': r[0], 'y0': r[1], 'x1': r[2], 'y1': r[3]})
+    return out
+
+
+def _bbox_overlap(a, b):
+    x0=max(a[0],b[0]); y0=max(a[1],b[1]); x1=min(a[2],b[2]); y1=min(a[3],b[3])
+    inter=max(0,x1-x0)*max(0,y1-y0)
+    area=max(1,(a[2]-a[0])*(a[3]-a[1]))
+    return inter/area
+
+
+def _bbox_gap(a, b):
+    dx=max(0, max(a[0],b[0])-min(a[2],b[2]))
+    dy=max(0, max(a[1],b[1])-min(a[3],b[3]))
+    return math.hypot(dx,dy)
+
+
+def _style_table_cell(cell, value, header=False):
+    cell.value = _numeric_value(value)
+    cell.alignment = Alignment(vertical='center', horizontal='center' if header else 'left', wrap_text=True)
+    if header:
+        cell.fill = PatternFill('solid', fgColor='263B5A')
+        cell.font = Font(color='FFFFFF', bold=True, size=10)
+    else:
+        cell.font = Font(size=10)
+
+
+
+def _scanned_fallback(wb, doc_page, page_no, temp_dir, used):
+    """Fallback for scanned/image-only pages: preserve the page image and
+    expose OCR text below it when Tesseract is available."""
+    title = f"Page {page_no} - Scanned"
+    ws = wb.create_sheet(_safe_sheet_name(title, used))
+    ws.sheet_view.showGridLines = False
+    pix = doc_page.get_pixmap(matrix=fitz.Matrix(1.5, 1.5), alpha=False)
+    path = os.path.join(temp_dir, f"p{page_no}_scanned.png")
+    pix.save(path)
+    img = XLImage(path)
+    target_w = 800
+    scale = target_w / max(1, img.width)
+    img.width = target_w
+    img.height = max(1, img.height * scale)
+    img.anchor = 'A1'
+    ws.add_image(img)
+    ws.column_dimensions['A'].width = 18
+
+    if pytesseract is not None and cv2 is not None and np is not None:
+        try:
+            arr = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.height, pix.width, pix.n)
+            if pix.n == 4:
+                arr = cv2.cvtColor(arr, cv2.COLOR_RGBA2GRAY)
+            else:
+                arr = cv2.cvtColor(arr, cv2.COLOR_RGB2GRAY)
+            threshold = cv2.threshold(arr, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+            data = pytesseract.image_to_data(threshold, config='--oem 3 --psm 6', output_type=pytesseract.Output.DICT)
+            row = max(60, int(img.height / 18) + 5)
+            ws.cell(row, 1, 'EDITABLE OCR TEXT').font = Font(size=12, bold=True)
+            row += 1
+            for i, raw in enumerate(data.get('text', [])):
+                raw = _numeric_value(raw)
+                if raw in ('', None):
+                    continue
                 try:
-                    img=_scan_image(page)
-                    table=_scan_table_region(img)
-                    rows=_scan_table_cells(img,table) if table else []
-                    if not _table_is_meaningful(rows):
-                        table=_detect_table(page,img)
-                        rows=_ocr_table_words(img,table) if table else []
-                    if _table_is_meaningful(rows):
-                        # Scanned detector coordinates are image-based; no reliable
-                        # PDF bbox is available, so omit surrounding text reconstruction.
-                        tables.append({'page':n,'bbox':None,'rows':_normalize_table(rows)})
+                    conf = float(data['conf'][i])
                 except Exception:
-                    pass
+                    conf = 0
+                if conf < 20:
+                    continue
+                ws.cell(row, 1, str(raw)).alignment = Alignment(wrap_text=True, vertical='top')
+                row += 1
+        except Exception:
+            pass
+    return ws
 
-            if page_tables:
-                used=[]
-                for t in page_tables: used.append(t['bbox'])
-                outside=[]
-                for b in page.get_text('blocks'):
-                    bx0,by0,bx1,by1=b[:4]; text=re.sub(r"\s+"," ",str(b[4] or '')).strip()
-                    if not text: continue
-                    if any(max(0,min(bx1,x1)-max(bx0,x0))*max(0,min(by1,y1)-max(by0,y0)) / max(1,(bx1-bx0)*(by1-by0)) > .15 for x0,y0,x1,y1 in used):
-                        continue
-                    outside.append((by0,bx0,text))
-                page_text_blocks.append((n, sorted(outside)))
+def _convert_xlsx_layout_engine(input_path, output_path, selected_pages=None):
+    input_path = str(input_path)
+    output_path = str(output_path)
+    wb = Workbook()
+    wb.remove(wb.active)
+    used = set()
+    table_count = 0
+    thin = Side(style='thin', color='9AA4AE')
 
-        if not tables:
-            raise ValueError("No tables or tabular data were found in this PDF. XLSX was not created.")
+    with tempfile.TemporaryDirectory() as temp_dir, pdfplumber.open(input_path) as pdf, fitz.open(input_path) as doc:
+        for page_no, (pl_page, doc_page) in enumerate(zip(pdf.pages, doc), 1):
+            if selected_pages is not None and page_no not in selected_pages:
+                continue
+            width, height = float(pl_page.width), float(pl_page.height)
+            text = pl_page.extract_text() or ''
+            lines = [s.strip() for s in text.splitlines() if s.strip()]
+            tables = pl_page.find_tables()
+            if not text.strip() and not tables:
+                _scanned_fallback(wb, doc_page, page_no, temp_dir, used)
+                continue
+            title = lines[0] if lines else f'Page {page_no}'
+            ws = wb.create_sheet(_safe_sheet_name(f'Page {page_no} - {title}', used))
+            ws.sheet_view.showGridLines = False
+            ws.freeze_panes = 'A1'
 
-        wb=Workbook(); wb.remove(wb.active)
-        all_outside=[]
-        used_sheet_names=set()
-        for index,t in enumerate(tables,1):
-            page_num=t['page']; rows=_xlsx_table_rows_with_numbers(t['rows'])
-            page=pdf[page_num-1]
-            title=_xlsx_page_title(page,t['bbox'],f'Table {index}') if t['bbox'] else f'Table {index}'
-            base=re.sub(r'[:\\/?*\[\]]','',title).strip() or f'Table {index}'
-            name=base[:31]; k=2
-            while name in used_sheet_names:
-                name=(base[:27]+f' {k}')[:31]; k+=1
-            used_sheet_names.add(name)
-            ws=wb.create_sheet(title=name)
+            # A fixed page canvas: one Excel sheet corresponds to one PDF page.
+            total_cols = int(math.ceil(width / GRID_PT)) + 1
+            total_rows = int(math.ceil(height / GRID_PT)) + 1
+            for c in range(1, total_cols + 1):
+                ws.column_dimensions[get_column_letter(c)].width = 0.72
+            for r in range(1, total_rows + 1):
+                ws.row_dimensions[r].height = GRID_PT
 
-            # Add nearby text before the table when it is clearly document metadata.
-            pre=[]
-            if t['bbox']:
-                for n,blocks in page_text_blocks:
-                    if n==page_num:
-                        for y,x,text in blocks:
-                            if y < t['bbox'][1]-2 and y > max(0,t['bbox'][1]-90):
-                                pre.append(text)
-                        break
-            row_cursor=1
-            selected_title = title.strip().lower()
-            pre = [text for text in pre if text.strip().lower() != selected_title]
-            table_width=max(2,max((len(r) for r in rows), default=2))
-            # Preserve a nearby prominent heading above the table.
-            ws.cell(row_cursor,1,title)
-            ws.merge_cells(start_row=row_cursor,start_column=1,end_row=row_cursor,end_column=table_width)
-            ws.cell(row_cursor,1).font=Font(bold=True,size=14)
-            ws.cell(row_cursor,1).alignment=Alignment(horizontal='center')
-            ws.cell(row_cursor,1).fill=PatternFill(fill_type=None)
-            title_bbox = _xlsx_find_text_bbox(page, title)
-            _xlsx_apply_source_title_size(ws, ws.cell(row_cursor,1), page, title_bbox, fallback=14.0)
-            _xlsx_apply_pdf_text_color(ws.cell(row_cursor,1), page, title_bbox)
-            row_cursor += 1
-            if pre:
-                row_cursor += 1
-                for text in pre:
-                    ws.cell(row_cursor,1,text)
-                    ws.merge_cells(start_row=row_cursor,start_column=1,end_row=row_cursor,end_column=table_width)
-                    ws.cell(row_cursor,1).font=Font(bold=False)
-                    _xlsx_apply_pdf_text_color(ws.cell(row_cursor,1), page, _xlsx_find_text_bbox(page, text))
-                    row_cursor+=1
-                row_cursor += 1
-            for r,row in enumerate(rows,row_cursor):
-                for c,value in enumerate(row,1): ws.cell(r,c,value)
-            _xlsx_apply_table_format(ws,row_cursor,rows)
-            _xlsx_apply_pdf_colors(ws,row_cursor,rows,page,t.get('bbox'),t.get('cells'))
-            _xlsx_add_inferred_formulas(ws,row_cursor)
-            ws.freeze_panes=ws.cell(row_cursor+1,1).coordinate if len(rows)>1 else None
-            _xlsx_apply_source_dimensions(ws, rows, t.get('bbox'), t.get('cells'), start_row=row_cursor)
-            # Keep text outside the source table readable without allowing a
-            # long metadata string to determine the table's geometry.
-            for c in range(1,ws.max_column+1):
-                letter=get_column_letter(c)
-                current=ws.column_dimensions[letter].width or 10
-                max_len=max((len(str(ws.cell(r,c).value)) if ws.cell(r,c).value is not None else 0) for r in range(1,ws.max_row+1))
-                ws.column_dimensions[letter].width=max(current, min(max(max_len+2,9),50))
+            table_bboxes = [tuple(t.bbox) for t in tables]
+            images = _extract_images(doc, doc_page, page_no - 1, temp_dir)
+            vector_images = _render_vector_regions(doc_page, table_bboxes, images, temp_dir, page_no)
 
-        # Any text outside detected tables is preserved separately rather than lost.
-        text_sheet=wb.create_sheet('Text')
-        seen=set(); rr=1
-        # Keep text that is genuinely outside the table(s), but avoid duplicating
-        # headings/metadata already placed on the corresponding table sheet.
-        consumed_global=set()
-        for t in tables:
-            if not t['bbox']: continue
-            page=pdf[t['page']-1]
-            title=_xlsx_page_title(page,t['bbox'],'') or ''
-            if title: consumed_global.add((t['page'],title.strip().lower()))
-            for n,blocks in page_text_blocks:
-                if n != t['page']: continue
-                for y,x,text in blocks:
-                    if t['bbox'][1]-90 <= y < t['bbox'][1]-2:
-                        consumed_global.add((n,text.strip().lower()))
-        for page_num,blocks in page_text_blocks:
-            for y,x,text in blocks:
-                key=(page_num,text)
-                if key in seen or (page_num,text.strip().lower()) in consumed_global: continue
-                seen.add(key); text_sheet.cell(rr,1,text); rr+=1
-        if rr==1:
-            wb.remove(text_sheet)
+            # Editable text outside tables, placed at its PDF coordinates.
+            for line in _words_to_lines(pl_page, table_bboxes):
+                r1, c1, r2, c2 = _grid_range(line['x0'], line['top'], line['x1'], max(line['bottom'], line['top'] + line['size'] + 1))
+                if r1 == r2 and c1 == c2:
+                    c2 += 2
+                # Do not let one extracted text line collide with another
+                # line's merged canvas range. PDF word boxes occasionally
+                # overlap by a fraction of a point.
+                target = ws.cell(r1, c1)
+                if isinstance(target, MergedCell):
+                    continue
+                try:
+                    ws.merge_cells(start_row=r1, start_column=c1, end_row=r2, end_column=c2)
+                except ValueError:
+                    continue
+                cell = ws.cell(r1, c1)
+                if isinstance(cell, MergedCell):
+                    continue
+                cell.value = line['text']
+                size = max(7, min(18, line['size']))
+                cell.font = Font(size=size, bold=(r1 <= 10 and size >= 13))
+                cell.alignment = Alignment(vertical='center', wrap_text=True)
+
+            # Every detected table is placed at its original page coordinates.
+            table_count += len(tables)
+            for table in tables:
+                rows = table.extract()
+                if not rows:
+                    continue
+                for r_idx, row_obj in enumerate(table.rows):
+                    values = rows[r_idx] if r_idx < len(rows) else []
+                    for c_idx, cell_bbox in enumerate(row_obj.cells):
+                        if not cell_bbox:
+                            continue
+                        x0, y0, x1, y1 = map(float, cell_bbox)
+                        rr1, cc1, rr2, cc2 = _grid_range(x0, y0, x1, y1)
+                        # Keep table cell as one editable Excel cell.
+                        # Apply borders before merging so edge cells remain styled.
+                        _set_border_rect(ws, rr1, cc1, rr2, cc2, thin)
+                        if rr2 > rr1 or cc2 > cc1:
+                            try:
+                                ws.merge_cells(start_row=rr1, start_column=cc1, end_row=rr2, end_column=cc2)
+                            except ValueError:
+                                continue
+                        value = values[c_idx] if c_idx < len(values) else ''
+                        cell = ws.cell(rr1, cc1)
+                        if isinstance(cell, MergedCell):
+                            continue
+                        _style_table_cell(cell, value, header=(r_idx == 0))
+                        target_h = max(GRID_PT, (y1-y0) * 0.95)
+                        per_row = target_h / max(1, rr2-rr1+1)
+                        for rr in range(rr1, rr2+1):
+                            ws.row_dimensions[rr].height = max(ws.row_dimensions[rr].height or GRID_PT, per_row)
+
+                # Images whose centers fall inside table cells stay inside those cells.
+                for im in images:
+                    cx, cy = _rect_center(im)
+                    hit = None
+                    for row_obj in table.rows:
+                        for cell_bbox in row_obj.cells:
+                            if cell_bbox and cell_bbox[0] <= cx <= cell_bbox[2] and cell_bbox[1] <= cy <= cell_bbox[3]:
+                                hit = tuple(cell_bbox); break
+                        if hit: break
+                    if hit:
+                        pad = 2
+                        _add_image_exact(ws, im, (hit[0]+pad, hit[1]+pad, hit[2]-pad, hit[3]-pad))
+
+            # Standalone raster images remain exactly where they appeared.
+            for im in images:
+                if not any(_inside(im, tb) for tb in table_bboxes):
+                    _add_image_exact(ws, im)
+
+            # Vector charts/diagrams are preserved as positioned images.
+            for vim in vector_images:
+                _add_image_exact(ws, vim)
+
+            # Page setup: the worksheet prints as one physical page, matching the source page.
+            ws.print_area = f'A1:{get_column_letter(total_cols)}{total_rows}'
+            ws.sheet_properties.pageSetUpPr.fitToPage = True
+            ws.page_setup.fitToWidth = 1
+            ws.page_setup.fitToHeight = 1
+            ws.page_setup.orientation = 'portrait' if height >= width else 'landscape'
+            ws.page_setup.paperSize = ws.PAPERSIZE_A4 if abs(width-height) > 0 else ws.PAPERSIZE_A4
+            ws.page_margins.left = 0
+            ws.page_margins.right = 0
+            ws.page_margins.top = 0
+            ws.page_margins.bottom = 0
+            ws.sheet_properties.outlinePr.summaryBelow = True
 
         wb.save(output_path)
-    finally:
-        plumber.close(); pdf.close()
+    return {
+        'mode': 'layout-aware-page-canvas',
+        'sheets': len(wb.worksheets),
+        'tables': table_count,
+    }
+
+
+def convert_xlsx(pdf_path, output_path, pages):
+    """PDF -> XLSX using a page-layout reconstruction engine.
+
+    This is deliberately isolated to the XLSX converter. The main app, Docker
+    configuration, PDF/DOCX/HTML converters and all UI files remain untouched.
+    """
+    selected = list(pages) if pages else None
+    return _convert_xlsx_layout_engine(pdf_path, output_path, selected)
+
 
 def _has_meaningful_native_table(plumber_page):
     """Detect real PDF tables/forms that should not be reflowed by Word."""
@@ -1753,26 +2050,6 @@ def _add_native_positioned_frame(doc, page, line):
     return p
 
 
-def _add_positioned_header_image(section, image_bytes, x_pt, y_pt, width_pt, height_pt):
-    """Place a PDF image in the current section header at page coordinates.
-    Header anchoring keeps the image out of Word body flow while preserving its
-    original page position, so images do not push editable tables/text onto new pages.
-    """
-    hp=section.header.paragraphs[0]
-    hp.paragraph_format.space_before=Pt(0); hp.paragraph_format.space_after=Pt(0); hp.paragraph_format.line_spacing=1
-    run=hp.add_run()
-    run.add_picture(io.BytesIO(image_bytes),width=Inches(width_pt/72.0),height=Inches(height_pt/72.0))
-    inline=run._r.xpath('.//wp:inline')[0]
-    anchor=OxmlElement('wp:anchor')
-    for k,v in {'distT':'0','distB':'0','distL':'0','distR':'0','simplePos':'0','relativeHeight':'1','behindDoc':'1','locked':'0','layoutInCell':'1','allowOverlap':'1'}.items(): anchor.set(k,v)
-    for child in list(inline): anchor.append(child)
-    sp=OxmlElement('wp:simplePos'); sp.set('x','0'); sp.set('y','0'); anchor.insert(0,sp)
-    for tag,off in (('wp:positionH',x_pt),('wp:positionV',y_pt)):
-        el=OxmlElement(tag); el.set('relativeFrom','page'); po=OxmlElement('wp:posOffset'); po.text=str(int(off*12700)); el.append(po); anchor.insert(1,el)
-    inline.getparent().replace(inline,anchor)
-    return run
-
-
 def _add_positioned_image(doc, section, image_bytes, x_pt, y_pt, width_pt, height_pt):
     """Place a small PDF image (logo/artwork) at its original page position."""
     p=doc.add_paragraph(); p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1
@@ -1784,7 +2061,7 @@ def _add_positioned_image(doc, section, image_bytes, x_pt, y_pt, width_pt, heigh
     inline.getparent().replace(inline,anchor)
     sp=OxmlElement('wp:simplePos'); sp.set('x','0'); sp.set('y','0'); anchor.insert(0,sp)
     for tag,off in (('wp:positionH',x_pt),('wp:positionV',y_pt)):
-        el=OxmlElement(tag); el.set('relativeFrom','page'); po=OxmlElement('wp:posOffset'); po.text=str(int(off*12700)); el.append(po); anchor.insert(1,el)
+        el=OxmlElement(tag); el.set('relativeFrom','page'); po=OxmlElement('wp:posOffset'); po.text=str(int(off*20)); el.append(po); anchor.insert(1,el)
     return p
 
 def _add_positioned_native_table(doc, table_info, page):
@@ -1879,7 +2156,7 @@ def _add_native_page_as_editable_layout(doc, section, page, plumber_page, first_
                     if rect.width >= page.rect.width*0.15 and rect.y0 < page.rect.height*0.20:
                         data=page.parent.extract_image(im[0]).get('image')
                         if data:
-                            _add_positioned_header_image(section,data,float(rect.x0),float(rect.y0),float(rect.width),float(rect.height))
+                            _add_positioned_image(doc,section,data,float(rect.x0),float(rect.y0),float(rect.width),float(rect.height))
             except Exception:
                 pass
 
@@ -2374,134 +2651,6 @@ def _add_top_native_artwork(doc, page):
             pass
     return added
 
-
-
-def _add_native_page_background(section, page):
-    """Place the PDF's full-page artwork image behind the editable Word text.
-
-    Many branded PDFs store the logo, watermark, QR code and footer as one image
-    while keeping the actual document text as native PDF text. Reusing that image
-    as page artwork preserves all visual elements without turning the text into an image.
-    """
-    best=None
-    for im in page.get_images(full=True):
-        try:
-            data=page.parent.extract_image(im[0]).get('image')
-            if not data:
-                continue
-            for rect in page.get_image_rects(im[0]):
-                area=float(rect.width*rect.height)
-                if area >= float(page.rect.width*page.rect.height)*0.70:
-                    score=area
-                    if best is None or score>best[0]:
-                        best=(score,data,float(rect.x0),float(rect.y0),float(rect.width),float(rect.height))
-        except Exception:
-            pass
-    if best is None:
-        return False
-    _,data,x,y,w,h=best
-    hp=section.header.paragraphs[0]
-    hp.text=''
-    hp.paragraph_format.space_before=Pt(0); hp.paragraph_format.space_after=Pt(0)
-    run=hp.add_run()
-    run.add_picture(io.BytesIO(data),width=Inches(w/72.0),height=Inches(h/72.0))
-    drawing=run._r.find(qn('w:drawing'))
-    if drawing is None: return False
-    inline=drawing.find(qn('wp:inline'))
-    if inline is None: return False
-    extent=inline.find(qn('wp:extent')); docPr=inline.find(qn('wp:docPr')); cNv=inline.find(qn('wp:cNvGraphicFramePr')); graphic=inline.find(qn('a:graphic'))
-    anchor=OxmlElement('wp:anchor')
-    for k,v in {'distT':'0','distB':'0','distL':'0','distR':'0','simplePos':'0','relativeHeight':'-1','behindDoc':'1','locked':'0','layoutInCell':'1','allowOverlap':'1'}.items():
-        anchor.set(qn('wp:'+k),v)
-    sp=OxmlElement('wp:simplePos'); sp.set('x','0'); sp.set('y','0'); anchor.append(sp)
-    ph=OxmlElement('wp:positionH'); ph.set('relativeFrom','page'); po=OxmlElement('wp:posOffset'); po.text=str(int(x*12700)); ph.append(po); anchor.append(ph)
-    pv=OxmlElement('wp:positionV'); pv.set('relativeFrom','page'); po=OxmlElement('wp:posOffset'); po.text=str(int(y*12700)); pv.append(po)
-    anchor.append(pv)
-    if extent is not None: anchor.append(extent)
-    ee=OxmlElement('wp:effectExtent')
-    for k in ('l','t','r','b'): ee.set(k,'0')
-    anchor.append(ee); anchor.append(OxmlElement('wp:wrapNone'))
-    if docPr is not None: anchor.append(docPr)
-    if cNv is not None: anchor.append(cNv)
-    if graphic is not None: anchor.append(graphic)
-    drawing.replace(inline,anchor)
-    return True
-
-
-def _native_text_confidence(page):
-    """Estimate whether a PDF page contains genuine native text worth reconstructing.
-
-    This deliberately looks at the PDF text layer itself. It does not treat the presence
-    of a large page image as proof that the page is scanned: many branded PDFs use one
-    large image for letterhead/background artwork while keeping the document text native.
-    """
-    try:
-        blocks=[b for b in page.get_text('blocks') if len((b[4] or '').strip()) >= 2]
-    except Exception:
-        blocks=[]
-    text=' '.join((b[4] or '') for b in blocks).strip()
-    if not text:
-        return 0.0, 0
-    compact=re.sub(r'\s+',' ',text)
-    alpha=sum(ch.isalnum() for ch in compact)/max(1,len(compact))
-    words=len(re.findall(r'[A-Za-z]{2,}',compact))
-    quality=max(0.0,min(1.0,alpha*0.45 + min(1.0,words/max(8,len(compact.split())))*0.55))
-    return quality, len(blocks)
-
-
-def _add_native_page_visual_elements(doc, section, page, background_added=False):
-    """Preserve non-background PDF image objects as positioned Word images.
-
-    A large page-sized image is treated as artwork/background. Other image objects
-    (logos, signatures, photos, stamps, diagrams, etc.) are retained independently
-    so a mixed PDF is never reduced to either 'all text' or 'one page image'.
-    """
-    pw,ph=float(page.rect.width),float(page.rect.height)
-    page_area=max(1.0,pw*ph)
-    seen=set()
-    for im in page.get_images(full=True):
-        try:
-            data=page.parent.extract_image(im[0]).get('image')
-            if not data: continue
-            for rect in page.get_image_rects(im[0]):
-                area=float(rect.width*rect.height)
-                # Skip the page artwork already placed in the header/background.
-                if background_added and area >= page_area*0.70:
-                    continue
-                key=(im[0],round(rect.x0,2),round(rect.y0,2),round(rect.width,2),round(rect.height,2))
-                if key in seen: continue
-                seen.add(key)
-                # Ignore microscopic tracking/decorative images.
-                if rect.width < 8 or rect.height < 8: continue
-                _add_positioned_header_image(section,data,float(rect.x0),float(rect.y0),float(rect.width),float(rect.height))
-        except Exception:
-            continue
-
-
-def _add_native_vector_visuals(doc, section, page, background_added=False):
-    """Preserve substantial vector artwork on native-text pages when no page artwork covers it."""
-    if background_added:
-        return
-    try:
-        text_blocks=page.get_text('blocks')
-        for d in page.get_drawings():
-            r=d.get('rect')
-            if not r: continue
-            w,h=float(r.width),float(r.height)
-            if w < 12 or h < 8 or w*h < 250: continue
-            # Do not rasterize ordinary text underlines/boxes as standalone artwork.
-            overlaps=False
-            for b in text_blocks:
-                bx0,by0,bx1,by1=map(float,b[:4])
-                inter=max(0,min(r.x1,bx1)-max(r.x0,bx0))*max(0,min(r.y1,by1)-max(r.y0,by0))
-                if inter/(w*h) > 0.65:
-                    overlaps=True; break
-            if overlaps: continue
-            pix=page.get_pixmap(matrix=fitz.Matrix(2,2),clip=r,alpha=True,colorspace=fitz.csRGB)
-            _add_positioned_header_image(section,pix.tobytes('png'),float(r.x0),float(r.y0),w,h)
-    except Exception:
-        pass
-
 def _append_native_flow_page(doc, section, page, plumber_page, first_page=False, footer_lines=None):
     """General native-PDF reconstruction using normal editable Word flow."""
     _set_section_geometry(section,page)
@@ -2530,29 +2679,34 @@ def _append_native_flow_page(doc, section, page, plumber_page, first_page=False,
         top_y=max(top_y, header_height + 8.0)
     section.top_margin=Inches(max(20,min(117,top_y if not header_info else 117))/72.0)
     section.bottom_margin=Inches(0/72.0)
-    # Preserve the complete branded page artwork (logo, watermark, QR code and footer)
-    # as a page-positioned background. The actual PDF text remains editable Word text.
+    # Preserve wide native letterheads/banners as real Word header artwork on
+    # the pages where they actually occur. Unlink every section so a header on
+    # one page does not accidentally propagate to unrelated pages.
     section.header.is_linked_to_previous=False
-    background_added=_add_native_page_background(section,page)
-    # Preserve any additional image objects independently of the page background.
-    # This is the key mixed-content path: the background is visual artwork, while
-    # native PDF text/tables remain editable and standalone images remain images.
-    _add_native_page_visual_elements(doc,section,page,background_added=background_added)
-    _add_native_vector_visuals(doc,section,page,background_added=background_added)
-    section.header_distance=Inches(0)
-    # The page artwork already contains the printed footer, so do not add a second
-    # editable footer copy. We still pass footer_lines to text extraction so footer
-    # text is excluded from the reconstructed body.
-    if background_added and prelim_blocks:
-        # Word/LibreOffice may start body flow beneath a header differently than
-        # the PDF coordinate system. Add only the missing top offset so the first
-        # editable text starts where it appears in the source page artwork.
-        target_top=float(prelim_blocks[0]['y'])
-        spacer=max(0.0,target_top-58.0)
-        if spacer>8:
-            sp=doc.add_paragraph(); sp.paragraph_format.space_before=Pt(0); sp.paragraph_format.space_after=Pt(spacer); sp.add_run('\u200b')
+    hp=section.header.paragraphs[0]
+    hp.text=''
+    header_info=_wide_top_header_image(page)
+    if header_info:
+        data, width, _ = header_info
+        hp.alignment=0
+        hp.paragraph_format.space_before=Pt(0); hp.paragraph_format.space_after=Pt(0)
+        try:
+            hp.paragraph_format.left_indent=Inches(-float(section.left_margin)/914400.0)
+        except Exception:
+            pass
+        run=hp.add_run()
+        run.add_picture(io.BytesIO(data), width=Inches(float(page.rect.width)/72.0))
+        _anchor_header_picture(run)
+        section.header_distance=Inches(0)
+
+    if first_page and footer_lines:
+        fp=section.footer.paragraphs[0]; fp.text=''; fp.alignment=1
+        for i,line in enumerate(footer_lines):
+            if i: fp.add_run().add_break()
+            r=fp.add_run(line); r.font.name='Arial'; r.font.size=Pt(8)
     tables=_native_tables(plumber_page)
     tables=[t for t in tables if _table_is_meaningful(t.get('rows')) and (t['bbox'][2]-t['bbox'][0])>=80 and (t['bbox'][3]-t['bbox'][1])>=20]
+    _add_top_native_artwork(doc,page)
     table_bboxes=[t['bbox'] for t in tables]
     blocks=_native_text_blocks(page,table_bboxes,footer_lines)
     columns=_detect_text_columns(blocks,page)
@@ -2615,12 +2769,7 @@ def convert_docx(pdf_path,output_path,pages):
     footer_lines=_common_footer_lines(pdf)
     for idx,n in enumerate(pages):
         page=pdf[n-1]
-        # Classify from the PDF's actual text layer, not from image coverage alone.
-        # A large image may simply be a letterhead/background. Mixed pages therefore
-        # stay on the native reconstruction path whenever meaningful native text exists.
-        text_quality, text_blocks=_native_text_confidence(page)
-        has_large_image=_has_large_page_image(page)
-        scanned=(text_blocks == 0 or text_quality < 0.28) and has_large_image
+        scanned=_has_large_page_image(page)
         if idx:
             section=doc.add_section(WD_SECTION.NEW_PAGE)
         else:
