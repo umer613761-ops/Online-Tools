@@ -1753,6 +1753,26 @@ def _add_native_positioned_frame(doc, page, line):
     return p
 
 
+def _add_positioned_header_image(section, image_bytes, x_pt, y_pt, width_pt, height_pt):
+    """Place a PDF image in the current section header at page coordinates.
+    Header anchoring keeps the image out of Word body flow while preserving its
+    original page position, so images do not push editable tables/text onto new pages.
+    """
+    hp=section.header.paragraphs[0]
+    hp.paragraph_format.space_before=Pt(0); hp.paragraph_format.space_after=Pt(0); hp.paragraph_format.line_spacing=1
+    run=hp.add_run()
+    run.add_picture(io.BytesIO(image_bytes),width=Inches(width_pt/72.0),height=Inches(height_pt/72.0))
+    inline=run._r.xpath('.//wp:inline')[0]
+    anchor=OxmlElement('wp:anchor')
+    for k,v in {'distT':'0','distB':'0','distL':'0','distR':'0','simplePos':'0','relativeHeight':'1','behindDoc':'1','locked':'0','layoutInCell':'1','allowOverlap':'1'}.items(): anchor.set(k,v)
+    for child in list(inline): anchor.append(child)
+    sp=OxmlElement('wp:simplePos'); sp.set('x','0'); sp.set('y','0'); anchor.insert(0,sp)
+    for tag,off in (('wp:positionH',x_pt),('wp:positionV',y_pt)):
+        el=OxmlElement(tag); el.set('relativeFrom','page'); po=OxmlElement('wp:posOffset'); po.text=str(int(off*12700)); el.append(po); anchor.insert(1,el)
+    inline.getparent().replace(inline,anchor)
+    return run
+
+
 def _add_positioned_image(doc, section, image_bytes, x_pt, y_pt, width_pt, height_pt):
     """Place a small PDF image (logo/artwork) at its original page position."""
     p=doc.add_paragraph(); p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1
@@ -1764,7 +1784,7 @@ def _add_positioned_image(doc, section, image_bytes, x_pt, y_pt, width_pt, heigh
     inline.getparent().replace(inline,anchor)
     sp=OxmlElement('wp:simplePos'); sp.set('x','0'); sp.set('y','0'); anchor.insert(0,sp)
     for tag,off in (('wp:positionH',x_pt),('wp:positionV',y_pt)):
-        el=OxmlElement(tag); el.set('relativeFrom','page'); po=OxmlElement('wp:posOffset'); po.text=str(int(off*20)); el.append(po); anchor.insert(1,el)
+        el=OxmlElement(tag); el.set('relativeFrom','page'); po=OxmlElement('wp:posOffset'); po.text=str(int(off*12700)); el.append(po); anchor.insert(1,el)
     return p
 
 def _add_positioned_native_table(doc, table_info, page):
@@ -1859,7 +1879,7 @@ def _add_native_page_as_editable_layout(doc, section, page, plumber_page, first_
                     if rect.width >= page.rect.width*0.15 and rect.y0 < page.rect.height*0.20:
                         data=page.parent.extract_image(im[0]).get('image')
                         if data:
-                            _add_positioned_image(doc,section,data,float(rect.x0),float(rect.y0),float(rect.width),float(rect.height))
+                            _add_positioned_header_image(section,data,float(rect.x0),float(rect.y0),float(rect.width),float(rect.height))
             except Exception:
                 pass
 
@@ -2429,7 +2449,7 @@ def _native_text_confidence(page):
     return quality, len(blocks)
 
 
-def _add_native_page_visual_elements(section, page, background_added=False):
+def _add_native_page_visual_elements(doc, section, page, background_added=False):
     """Preserve non-background PDF image objects as positioned Word images.
 
     A large page-sized image is treated as artwork/background. Other image objects
@@ -2453,12 +2473,12 @@ def _add_native_page_visual_elements(section, page, background_added=False):
                 seen.add(key)
                 # Ignore microscopic tracking/decorative images.
                 if rect.width < 8 or rect.height < 8: continue
-                _add_positioned_image(section.document,section,data,float(rect.x0),float(rect.y0),float(rect.width),float(rect.height))
+                _add_positioned_header_image(section,data,float(rect.x0),float(rect.y0),float(rect.width),float(rect.height))
         except Exception:
             continue
 
 
-def _add_native_vector_visuals(section, page, background_added=False):
+def _add_native_vector_visuals(doc, section, page, background_added=False):
     """Preserve substantial vector artwork on native-text pages when no page artwork covers it."""
     if background_added:
         return
@@ -2478,7 +2498,7 @@ def _add_native_vector_visuals(section, page, background_added=False):
                     overlaps=True; break
             if overlaps: continue
             pix=page.get_pixmap(matrix=fitz.Matrix(2,2),clip=r,alpha=True,colorspace=fitz.csRGB)
-            _add_positioned_image(section.document,section,pix.tobytes('png'),float(r.x0),float(r.y0),w,h)
+            _add_positioned_header_image(section,pix.tobytes('png'),float(r.x0),float(r.y0),w,h)
     except Exception:
         pass
 
@@ -2517,8 +2537,8 @@ def _append_native_flow_page(doc, section, page, plumber_page, first_page=False,
     # Preserve any additional image objects independently of the page background.
     # This is the key mixed-content path: the background is visual artwork, while
     # native PDF text/tables remain editable and standalone images remain images.
-    _add_native_page_visual_elements(section,page,background_added=background_added)
-    _add_native_vector_visuals(section,page,background_added=background_added)
+    _add_native_page_visual_elements(doc,section,page,background_added=background_added)
+    _add_native_vector_visuals(doc,section,page,background_added=background_added)
     section.header_distance=Inches(0)
     # The page artwork already contains the printed footer, so do not add a second
     # editable footer copy. We still pass footer_lines to text extraction so footer
