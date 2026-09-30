@@ -10,6 +10,7 @@ import fitz
 from flask_cors import CORS
 
 from pdf_convert import convert_txt, convert_docx, convert_html, convert_html_text, convert_html_image, convert_xlsx, parse_pages, safe_stem
+from pdf_to_xlsx import convert_pdf_to_xlsx as convert_pdf_to_xlsx_layout
 
 UPLOAD_DIR = Path(os.environ.get("TOOLNEST_TEMP_DIR", tempfile.gettempdir())) / "toolnest"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -465,7 +466,42 @@ def pdf_to_docx():
 
 @app.post("/api/pdf-to-xlsx")
 def pdf_to_xlsx():
-    return serve_pdf_conversion("xlsx", convert_xlsx, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    # PDF -> XLSX uses the dedicated layout-aware engine.  Do not route this
+    # through pdf_convert.convert_xlsx: that older path is table-extraction
+    # oriented and is not responsible for preserving positioned PDF images.
+    setup, error, code = pdf_request_setup("xlsx")
+    if error:
+        return error, code
+    uploaded, original, input_path, output_path, job_id = setup
+    try:
+        result = convert_pdf_to_xlsx_layout(input_path, output_path)
+        if not output_path.exists() or output_path.stat().st_size == 0:
+            raise RuntimeError("The converter did not produce an Excel file.")
+        response = send_file(
+            output_path,
+            as_attachment=True,
+            download_name=f"{Path(original).stem}.xlsx",
+            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
+        response.headers["X-ToolNest-Mode"] = str(result.get("mode", "layout-aware-page-canvas"))
+        response.headers["X-ToolNest-Tables"] = str(result.get("tables", 0))
+        return response
+    except Exception as exc:
+        return jsonify({
+            "ok": False,
+            "error": "Unable to convert this PDF to XLSX.",
+            "details": str(exc) or exc.__class__.__name__,
+            "exception": exc.__class__.__name__,
+        }), 500
+    finally:
+        try:
+            input_path.unlink(missing_ok=True)
+        except Exception:
+            pass
+        try:
+            output_path.unlink(missing_ok=True)
+        except Exception:
+            pass
 
 @app.post("/api/pdf-to-html-text")
 def pdf_to_html_text():

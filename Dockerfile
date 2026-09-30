@@ -4,7 +4,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
 # Force a fresh Railway image build for the Change PDF Page Size backend fix.
-ARG TOOLNEST_BUILD=2026-09-26-page-size-fix
+ARG TOOLNEST_BUILD=2026-09-30-pdf-xlsx-layout-engine-v3
 LABEL toolnest.build="${TOOLNEST_BUILD}"
 
 RUN apt-get update \
