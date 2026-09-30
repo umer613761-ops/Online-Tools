@@ -2472,7 +2472,11 @@ def convert_docx(pdf_path,output_path,pages):
     footer_lines=_common_footer_lines(pdf)
     for idx,n in enumerate(pages):
         page=pdf[n-1]
-        scanned=_has_large_page_image(page)
+        # A full-page image can be a letterhead/background rather than a scan.
+        # If substantial native text is present, reconstruct that text as editable
+        # Word content instead of placing the entire PDF page into the DOCX as an image.
+        extracted_text=page_text(page)
+        scanned=_has_large_page_image(page) and len(extracted_text.strip()) < 120
         if idx:
             section=doc.add_section(WD_SECTION.NEW_PAGE)
         else:
