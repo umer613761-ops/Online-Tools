@@ -2354,6 +2354,134 @@ def _add_top_native_artwork(doc, page):
             pass
     return added
 
+
+
+def _add_native_page_background(section, page):
+    """Place the PDF's full-page artwork image behind the editable Word text.
+
+    Many branded PDFs store the logo, watermark, QR code and footer as one image
+    while keeping the actual document text as native PDF text. Reusing that image
+    as page artwork preserves all visual elements without turning the text into an image.
+    """
+    best=None
+    for im in page.get_images(full=True):
+        try:
+            data=page.parent.extract_image(im[0]).get('image')
+            if not data:
+                continue
+            for rect in page.get_image_rects(im[0]):
+                area=float(rect.width*rect.height)
+                if area >= float(page.rect.width*page.rect.height)*0.70:
+                    score=area
+                    if best is None or score>best[0]:
+                        best=(score,data,float(rect.x0),float(rect.y0),float(rect.width),float(rect.height))
+        except Exception:
+            pass
+    if best is None:
+        return False
+    _,data,x,y,w,h=best
+    hp=section.header.paragraphs[0]
+    hp.text=''
+    hp.paragraph_format.space_before=Pt(0); hp.paragraph_format.space_after=Pt(0)
+    run=hp.add_run()
+    run.add_picture(io.BytesIO(data),width=Inches(w/72.0),height=Inches(h/72.0))
+    drawing=run._r.find(qn('w:drawing'))
+    if drawing is None: return False
+    inline=drawing.find(qn('wp:inline'))
+    if inline is None: return False
+    extent=inline.find(qn('wp:extent')); docPr=inline.find(qn('wp:docPr')); cNv=inline.find(qn('wp:cNvGraphicFramePr')); graphic=inline.find(qn('a:graphic'))
+    anchor=OxmlElement('wp:anchor')
+    for k,v in {'distT':'0','distB':'0','distL':'0','distR':'0','simplePos':'0','relativeHeight':'-1','behindDoc':'1','locked':'0','layoutInCell':'1','allowOverlap':'1'}.items():
+        anchor.set(qn('wp:'+k),v)
+    sp=OxmlElement('wp:simplePos'); sp.set('x','0'); sp.set('y','0'); anchor.append(sp)
+    ph=OxmlElement('wp:positionH'); ph.set('relativeFrom','page'); po=OxmlElement('wp:posOffset'); po.text=str(int(x*12700)); ph.append(po); anchor.append(ph)
+    pv=OxmlElement('wp:positionV'); pv.set('relativeFrom','page'); po=OxmlElement('wp:posOffset'); po.text=str(int(y*12700)); pv.append(po)
+    anchor.append(pv)
+    if extent is not None: anchor.append(extent)
+    ee=OxmlElement('wp:effectExtent')
+    for k in ('l','t','r','b'): ee.set(k,'0')
+    anchor.append(ee); anchor.append(OxmlElement('wp:wrapNone'))
+    if docPr is not None: anchor.append(docPr)
+    if cNv is not None: anchor.append(cNv)
+    if graphic is not None: anchor.append(graphic)
+    drawing.replace(inline,anchor)
+    return True
+
+
+def _native_text_confidence(page):
+    """Estimate whether a PDF page contains genuine native text worth reconstructing.
+
+    This deliberately looks at the PDF text layer itself. It does not treat the presence
+    of a large page image as proof that the page is scanned: many branded PDFs use one
+    large image for letterhead/background artwork while keeping the document text native.
+    """
+    try:
+        blocks=[b for b in page.get_text('blocks') if len((b[4] or '').strip()) >= 2]
+    except Exception:
+        blocks=[]
+    text=' '.join((b[4] or '') for b in blocks).strip()
+    if not text:
+        return 0.0, 0
+    compact=re.sub(r'\s+',' ',text)
+    alpha=sum(ch.isalnum() for ch in compact)/max(1,len(compact))
+    words=len(re.findall(r'[A-Za-z]{2,}',compact))
+    quality=max(0.0,min(1.0,alpha*0.45 + min(1.0,words/max(8,len(compact.split())))*0.55))
+    return quality, len(blocks)
+
+
+def _add_native_page_visual_elements(section, page, background_added=False):
+    """Preserve non-background PDF image objects as positioned Word images.
+
+    A large page-sized image is treated as artwork/background. Other image objects
+    (logos, signatures, photos, stamps, diagrams, etc.) are retained independently
+    so a mixed PDF is never reduced to either 'all text' or 'one page image'.
+    """
+    pw,ph=float(page.rect.width),float(page.rect.height)
+    page_area=max(1.0,pw*ph)
+    seen=set()
+    for im in page.get_images(full=True):
+        try:
+            data=page.parent.extract_image(im[0]).get('image')
+            if not data: continue
+            for rect in page.get_image_rects(im[0]):
+                area=float(rect.width*rect.height)
+                # Skip the page artwork already placed in the header/background.
+                if background_added and area >= page_area*0.70:
+                    continue
+                key=(im[0],round(rect.x0,2),round(rect.y0,2),round(rect.width,2),round(rect.height,2))
+                if key in seen: continue
+                seen.add(key)
+                # Ignore microscopic tracking/decorative images.
+                if rect.width < 8 or rect.height < 8: continue
+                _add_positioned_image(section.document,section,data,float(rect.x0),float(rect.y0),float(rect.width),float(rect.height))
+        except Exception:
+            continue
+
+
+def _add_native_vector_visuals(section, page, background_added=False):
+    """Preserve substantial vector artwork on native-text pages when no page artwork covers it."""
+    if background_added:
+        return
+    try:
+        text_blocks=page.get_text('blocks')
+        for d in page.get_drawings():
+            r=d.get('rect')
+            if not r: continue
+            w,h=float(r.width),float(r.height)
+            if w < 12 or h < 8 or w*h < 250: continue
+            # Do not rasterize ordinary text underlines/boxes as standalone artwork.
+            overlaps=False
+            for b in text_blocks:
+                bx0,by0,bx1,by1=map(float,b[:4])
+                inter=max(0,min(r.x1,bx1)-max(r.x0,bx0))*max(0,min(r.y1,by1)-max(r.y0,by0))
+                if inter/(w*h) > 0.65:
+                    overlaps=True; break
+            if overlaps: continue
+            pix=page.get_pixmap(matrix=fitz.Matrix(2,2),clip=r,alpha=True,colorspace=fitz.csRGB)
+            _add_positioned_image(section.document,section,pix.tobytes('png'),float(r.x0),float(r.y0),w,h)
+    except Exception:
+        pass
+
 def _append_native_flow_page(doc, section, page, plumber_page, first_page=False, footer_lines=None):
     """General native-PDF reconstruction using normal editable Word flow."""
     _set_section_geometry(section,page)
@@ -2382,34 +2510,29 @@ def _append_native_flow_page(doc, section, page, plumber_page, first_page=False,
         top_y=max(top_y, header_height + 8.0)
     section.top_margin=Inches(max(20,min(117,top_y if not header_info else 117))/72.0)
     section.bottom_margin=Inches(0/72.0)
-    # Preserve wide native letterheads/banners as real Word header artwork on
-    # the pages where they actually occur. Unlink every section so a header on
-    # one page does not accidentally propagate to unrelated pages.
+    # Preserve the complete branded page artwork (logo, watermark, QR code and footer)
+    # as a page-positioned background. The actual PDF text remains editable Word text.
     section.header.is_linked_to_previous=False
-    hp=section.header.paragraphs[0]
-    hp.text=''
-    header_info=_wide_top_header_image(page)
-    if header_info:
-        data, width, _ = header_info
-        hp.alignment=0
-        hp.paragraph_format.space_before=Pt(0); hp.paragraph_format.space_after=Pt(0)
-        try:
-            hp.paragraph_format.left_indent=Inches(-float(section.left_margin)/914400.0)
-        except Exception:
-            pass
-        run=hp.add_run()
-        run.add_picture(io.BytesIO(data), width=Inches(float(page.rect.width)/72.0))
-        _anchor_header_picture(run)
-        section.header_distance=Inches(0)
-
-    if first_page and footer_lines:
-        fp=section.footer.paragraphs[0]; fp.text=''; fp.alignment=1
-        for i,line in enumerate(footer_lines):
-            if i: fp.add_run().add_break()
-            r=fp.add_run(line); r.font.name='Arial'; r.font.size=Pt(8)
+    background_added=_add_native_page_background(section,page)
+    # Preserve any additional image objects independently of the page background.
+    # This is the key mixed-content path: the background is visual artwork, while
+    # native PDF text/tables remain editable and standalone images remain images.
+    _add_native_page_visual_elements(section,page,background_added=background_added)
+    _add_native_vector_visuals(section,page,background_added=background_added)
+    section.header_distance=Inches(0)
+    # The page artwork already contains the printed footer, so do not add a second
+    # editable footer copy. We still pass footer_lines to text extraction so footer
+    # text is excluded from the reconstructed body.
+    if background_added and prelim_blocks:
+        # Word/LibreOffice may start body flow beneath a header differently than
+        # the PDF coordinate system. Add only the missing top offset so the first
+        # editable text starts where it appears in the source page artwork.
+        target_top=float(prelim_blocks[0]['y'])
+        spacer=max(0.0,target_top-58.0)
+        if spacer>8:
+            sp=doc.add_paragraph(); sp.paragraph_format.space_before=Pt(0); sp.paragraph_format.space_after=Pt(spacer); sp.add_run('\u200b')
     tables=_native_tables(plumber_page)
     tables=[t for t in tables if _table_is_meaningful(t.get('rows')) and (t['bbox'][2]-t['bbox'][0])>=80 and (t['bbox'][3]-t['bbox'][1])>=20]
-    _add_top_native_artwork(doc,page)
     table_bboxes=[t['bbox'] for t in tables]
     blocks=_native_text_blocks(page,table_bboxes,footer_lines)
     columns=_detect_text_columns(blocks,page)
@@ -2472,11 +2595,12 @@ def convert_docx(pdf_path,output_path,pages):
     footer_lines=_common_footer_lines(pdf)
     for idx,n in enumerate(pages):
         page=pdf[n-1]
-        # A full-page image can be a letterhead/background rather than a scan.
-        # If substantial native text is present, reconstruct that text as editable
-        # Word content instead of placing the entire PDF page into the DOCX as an image.
-        extracted_text=page_text(page)
-        scanned=_has_large_page_image(page) and len(extracted_text.strip()) < 120
+        # Classify from the PDF's actual text layer, not from image coverage alone.
+        # A large image may simply be a letterhead/background. Mixed pages therefore
+        # stay on the native reconstruction path whenever meaningful native text exists.
+        text_quality, text_blocks=_native_text_confidence(page)
+        has_large_image=_has_large_page_image(page)
+        scanned=(text_blocks == 0 or text_quality < 0.28) and has_large_image
         if idx:
             section=doc.add_section(WD_SECTION.NEW_PAGE)
         else:
