@@ -582,6 +582,33 @@ def _scan_ocr_items(img, page_index=0):
                     lines.append(candidate)
         except Exception:
             pass
+    # Remove duplicate OCR candidates. Secondary OCR passes can rediscover a
+    # short header token (for example "HR/026/KWL") that is already contained
+    # in a longer primary-pass line ("Ref: HR/026/KWL"). Keep the longer line so
+    # the reconstructed DOCX does not display the same text twice.
+    def _norm_ocr_text(v):
+        return re.sub(r'[^a-z0-9]+','',str(v or '').lower())
+    dedup=[]
+    for ln in sorted(lines,key=lambda z:(z['y'],z['x'])):
+        n=_norm_ocr_text(ln.get('text',''))
+        if not n:
+            continue
+        duplicate=False
+        for prev in dedup:
+            pn=_norm_ocr_text(prev.get('text',''))
+            if not pn:
+                continue
+            if (n in pn or pn in n) and max(len(n),len(pn)) >= 6:
+                # Treat repeated short header/reference tokens as duplicates even
+                # when two OCR passes place them a little apart vertically.
+                if min(ln.get('x',0),prev.get('x',0)) >= img.width*0.55 and min(ln.get('y',0),prev.get('y',0)) <= img.height*0.25:
+                    if len(n) <= len(pn):
+                        duplicate=True; break
+                    else:
+                        dedup.remove(prev); break
+        if not duplicate:
+            dedup.append(ln)
+    lines=dedup
     # Merge OCR fragments that are actually on the same physical line (common in
     # faint scanned headers such as "Ref: HR/026/KWL"). Do not merge distant columns.
     merged=[]
