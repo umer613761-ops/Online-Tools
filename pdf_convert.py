@@ -556,10 +556,56 @@ def _scan_ocr_items(img, page_index=0):
                           'y2':max(z['y2'] for z in ch),
                           'text':txt,
                           'conf':sum(z['conf'] for z in ch)/len(ch)})
-    return sorted(lines,key=lambda z:(z['y'],z['x'])), data
+    # A light secondary pass catches faint header/reference tokens that PSM 3 can miss.
+    # Restrict it to the upper-right header zone so signatures/logos are not turned into
+    # editable garbage.
+    if page_index == 0 and img.width > 1500:
+        try:
+            _, _, hd = _ocr_data(img, 11)
+            for i,t in enumerate(hd.get('text',[])):
+                t=(t or '').strip()
+                if not t: continue
+                try: c=float(hd['conf'][i])
+                except Exception: c=0
+                x=int(hd['left'][i]); y=int(hd['top'][i]); w=int(hd['width'][i]); h=int(hd['height'][i])
+                if x < int(img.width*0.68) or y > int(img.height*0.20) or c < 55 or w < 2 or h < 2:
+                    continue
+                candidate={'x':x,'y':y,'x2':x+w,'y2':y+h,'text':t,'conf':c}
+                # Add only if it is not already represented by an existing OCR line.
+                overlap=False
+                for ln in lines:
+                    oy=max(0,min(ln['y2'],candidate['y2'])-max(ln['y'],candidate['y']))
+                    ox=max(0,min(ln['x2'],candidate['x2'])-max(ln['x'],candidate['x']))
+                    if oy >= min(ln['y2']-ln['y'], candidate['y2']-candidate['y'])*0.5 and ox > 0:
+                        overlap=True; break
+                if not overlap:
+                    lines.append(candidate)
+        except Exception:
+            pass
+    # Merge OCR fragments that are actually on the same physical line (common in
+    # faint scanned headers such as "Ref: HR/026/KWL"). Do not merge distant columns.
+    merged=[]
+    for ln in sorted(lines,key=lambda z:(z['y'],z['x'])):
+        if merged:
+            prev=merged[-1]
+            ph=max(1,prev['y2']-prev['y']); lh=max(1,ln['y2']-ln['y'])
+            overlap=max(0,min(prev['y2'],ln['y2'])-max(prev['y'],ln['y']))
+            if ln['x'] >= prev['x2']:
+                gap=ln['x']-prev['x2']
+            elif prev['x'] >= ln['x2']:
+                gap=prev['x']-ln['x2']
+            else:
+                gap=0
+            if overlap >= min(ph,lh)*0.55 and gap <= 180:
+                parts=sorted([prev,ln],key=lambda z:z['x'])
+                prev['x']=min(prev['x'],ln['x']); prev['x2']=max(prev['x2'],ln['x2']); prev['y']=min(prev['y'],ln['y']); prev['y2']=max(prev['y2'],ln['y2'])
+                prev['text']=' '.join(z['text'] for z in parts).strip(); prev['conf']=(prev['conf']+ln['conf'])/2.0
+                continue
+        merged.append(dict(ln))
+    return merged, data
 
 
-def _clean_scanned_background(img, data):
+def _clean_scanned_background(img, data, extra_lines=None):
     """Remove OCR-recognised text while retaining the scan's artwork, photos and lines."""
     import cv2, numpy as np
     arr=np.array(img.convert('RGB')).copy()
@@ -575,6 +621,16 @@ def _clean_scanned_background(img, data):
         pad=1
         xa=max(0,x-pad); xb=min(arr.shape[1],x+w+pad)
         ya=max(0,y-pad); yb=min(arr.shape[0],y+h+pad)
+        mask[ya:yb,xa:xb]=255
+    # Include supplementary OCR tokens in the cleanup mask so they are not duplicated
+    # by the original scan underneath the editable overlay.
+    for ln in (extra_lines or []):
+        try: c=float(ln.get('conf',0))
+        except Exception: c=0
+        if c < 45: continue
+        x=int(ln['x']); y=int(ln['y']); x2=int(ln['x2']); y2=int(ln['y2'])
+        if x2-x<2 or y2-y<2: continue
+        xa=max(0,x-1); xb=min(arr.shape[1],x2+1); ya=max(0,y-1); yb=min(arr.shape[0],y2+1)
         mask[ya:yb,xa:xb]=255
     # Inpaint text, then restore long document/table rules so the editable text
     # sits on top of the original form/certificate geometry.
@@ -960,8 +1016,56 @@ def _add_scanned_hybrid_page(doc, section, page, page_index):
     iw,ih=img.size; pw=float(page.rect.width); ph=float(page.rect.height)
     table_info=_scan_table_region(img)
     if not table_info:
-        outer=doc.add_table(rows=1,cols=1); _set_table_no_borders(outer); _set_table_width(outer,pw); _set_cell_zero_margins(outer.cell(0,0))
-        _add_crop_to_cell(outer.cell(0,0),img,(0,0,iw,ih),pw,ph)
+        # Scanned/image-only page: preserve the scan as page artwork, but replace
+        # OCR-recognised text with native editable Word text in the header. Using a
+        # header table keeps every text box at a fixed page position without adding
+        # extra pages or reflowing the certificate.
+        _set_scanned_section(section,page)
+        scan=_scan_image(page)
+        lines, data = _scan_ocr_items(scan,page_index)
+        scale=scan.width/float(page.rect.width)
+        usable_lines=[ln for ln in lines if ln['conf'] >= (52 if page_index else 58)]
+        # Blank/near-blank scanned pages often contain specks, scan borders or
+        # compression artifacts that OCR mistakes for one-character text. Only
+        # create editable overlays when the page has a meaningful amount of OCR text.
+        meaningful_words=[ln for ln in usable_lines if len(re.findall(r'[A-Za-z]{3,}',ln['text'])) >= 1]
+        if len(meaningful_words) < 4 and sum(len(ln['text']) for ln in usable_lines) < 25:
+            usable_lines=[]
+        cleaned=_clean_scanned_background(scan,data,usable_lines)
+        buf=io.BytesIO(); cleaned.save(buf,'PNG',optimize=True)
+        _put_page_image_in_header(section,buf.getvalue(),page)
+        if usable_lines:
+            header=section.header
+            # Use spacer rows + text rows so each editable line starts at its
+            # original Y coordinate. A text row itself begins at the desired Y;
+            # this avoids the first-row-at-top behavior of Word header tables.
+            rows=[]
+            cursor_pt=0.0
+            for line in usable_lines:
+                y_pt=float(line['y'])/scale
+                font_size=max(7,min(18,(float(line['y2'])-float(line['y']))/scale*1.0))
+                if line['text'].strip().upper() == line['text'].strip() and len(line['text'].strip())>12:
+                    font_size=min(18,font_size*1.15)
+                text_h=max(10.0,font_size*1.35)
+                rows.append(('gap',max(0.0,y_pt-cursor_pt),None,None))
+                rows.append(('text',text_h,line,font_size))
+                cursor_pt=y_pt+text_h
+            rows.append(('gap',max(8.0,ph-cursor_pt),None,None))
+            table=header.add_table(rows=len(rows),cols=1,width=Inches(pw/72.0))
+            table.autofit=False
+            _set_table_no_borders(table)
+            for ri,(kind,row_h,line,font_size) in enumerate(rows):
+                row=table.rows[ri]
+                trPr=row._tr.get_or_add_trPr(); ht=OxmlElement('w:trHeight')
+                ht.set(qn('w:val'),str(max(1,int(row_h*20)))); ht.set(qn('w:hRule'),'exact'); trPr.append(ht)
+                cell=row.cells[0]; cell.width=Inches(pw/72.0); cell.vertical_alignment=0; _set_cell_zero_margins(cell)
+                p=cell.paragraphs[0]; p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1
+                if kind != 'text':
+                    p.text=''
+                    continue
+                p.paragraph_format.left_indent=Inches(max(0,float(line['x'])/scale)/72.0)
+                p.paragraph_format.keep_together=True
+                r=p.add_run(line['text']); r.font.name='Arial'; r.font.size=Pt(font_size)
         return
     x0,x1=table_info['x'][0],table_info['x'][-1]; top=table_info['top']; bottom=table_info['bottom']
     # White out only the table rectangle in the surrounding scan; all other artwork stays exact.
