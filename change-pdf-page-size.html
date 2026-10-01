@@ -4269,7 +4269,7 @@ html.dark-mode .change-page-size-cancel:hover, html.dark-mode .change-page-size-
       fd.append('file', currentFile);
       fd.append('size', sizeSelect.value);
       fd.append('orientation', orientationSelect.value);
-      const r = await fetch('https://toolnest-api-production-dda7.up.railway.app/api/change-pdf-page-size', {
+      const r = await fetch('https://wrenchoo.com/api/change-pdf-page-size', {
         method: 'POST',
         body: fd
       });
@@ -4280,7 +4280,7 @@ html.dark-mode .change-page-size-cancel:hover, html.dark-mode .change-page-size-
         throw new Error(data.error || ('Server error (' + r.status + ') while processing the PDF.'));
       }
       const a = document.createElement('a');
-      a.href = data.download_url.startsWith('http') ? data.download_url : 'https://toolnest-api-production-dda7.up.railway.app' + data.download_url;
+      a.href = data.download_url.startsWith('http') ? data.download_url : 'https://wrenchoo.com' + data.download_url;
       a.download = data.filename || 'page-size.pdf';
       document.body.appendChild(a);
       a.click();
