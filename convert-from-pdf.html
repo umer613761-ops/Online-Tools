@@ -4292,6 +4292,17 @@ html.dark-mode .tool-intro p {
         <button class="convert-download-button" id="convertFromDownloadButton" type="button">Convert &amp; Download</button>
         <button class="convert-cancel-button" id="convertFromCancelButton" type="button">Cancel</button>
       </div>
+      <div class="tn-scanned-warning" id="tnScannedWarning" hidden aria-hidden="true">
+        <div class="tn-scanned-warning-card" role="dialog" aria-modal="true" aria-labelledby="tnScannedWarningTitle">
+          <div class="tn-scanned-warning-icon">!</div>
+          <div class="tn-scanned-warning-title" id="tnScannedWarningTitle">Scanned PDF Detected</div>
+          <div class="tn-scanned-warning-text" id="tnScannedWarningText">This PDF appears to be scanned. It can only be converted as an image. The text will not be editable.</div>
+          <div class="tn-scanned-warning-actions">
+            <button type="button" class="tn-scanned-cancel" id="tnScannedCancel">Cancel</button>
+            <button type="button" class="tn-scanned-ok" id="tnScannedOk">OK, Convert as Image</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -4583,7 +4594,10 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
     const fmt=document.getElementById('convertFromFormat');
     const modeWhole=document.getElementById('convertFromWholePdf');
     const modeIndividual=document.getElementById('convertFromIndividualPages');
-    if(!area || !input || !btn || !grid || !actions || !cancel || !download || !toolbar || !fmt || !modeWhole || !modeIndividual) return;
+    const scannedWarning=document.getElementById('tnScannedWarning');
+    const scannedCancel=document.getElementById('tnScannedCancel');
+    const scannedOk=document.getElementById('tnScannedOk');
+    if(!area || !input || !btn || !grid || !actions || !cancel || !download || !toolbar || !fmt || !modeWhole || !modeIndividual || !scannedWarning || !scannedCancel || !scannedOk) return;
 
     let pdf=null;
     let pdfBytes=null;
@@ -4648,7 +4662,7 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
 
     function reset(){
       pdf=null; pdfBytes=null; selectedPages=new Set(); input.value=''; grid.innerHTML=''; grid.classList.remove('convert-individual-grid');
-      area.classList.remove('has-files'); actions.hidden=true; toolbar.hidden=true;
+      area.classList.remove('has-files'); actions.hidden=true; toolbar.hidden=true; closeScannedWarning();
       mode='whole'; modeWhole.checked=true; modeIndividual.checked=false;
     }
 
@@ -4674,6 +4688,101 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
       const a=document.createElement('a'); a.href=canvas.toDataURL(mime,0.92); a.download=sourceFileName+'-page-'+pageNum+'.'+ext; a.click();
     }
 
+    function closeScannedWarning(){
+      scannedWarning.hidden=true;
+      scannedWarning.setAttribute('aria-hidden','true');
+    }
+    function openScannedWarning(){
+      scannedWarning.hidden=false;
+      scannedWarning.setAttribute('aria-hidden','false');
+    }
+    scannedCancel.onclick=()=>closeScannedWarning();
+
+    async function looksLikeScannedPage(pageNum){
+      const p=await pdf.getPage(pageNum);
+      try{
+        const tc=await p.getTextContent({disableCombine:true});
+        const text=(tc.items||[]).map(x=>x.str||'').join('').replace(/\s+/g,'').trim();
+        if(text.length>=25) return false;
+        // A page with virtually no PDF text is treated as scanned when it also
+        // contains an image object. Vector-only image scans still fall through
+        // as scan-like when text is effectively absent.
+        let hasImage=false;
+        try{
+          const ops=await p.getOperatorList();
+          const imageOps=new Set([
+            pdfjsLib.OPS.paintImageMaskXObject,
+            pdfjsLib.OPS.paintImageXObject,
+            pdfjsLib.OPS.paintJpegXObject
+          ].filter(v=>typeof v==='number'));
+          hasImage=(ops.fnArray||[]).some(fn=>imageOps.has(fn));
+        }catch(_){}
+        return hasImage || text.length===0;
+      }finally{
+        if(p.cleanup) p.cleanup();
+      }
+    }
+
+    async function selectionIsScanned(pages){
+      let scanned=0;
+      for(const pageNum of pages){
+        if(await looksLikeScannedPage(pageNum)) scanned++;
+      }
+      return scanned>0 && scanned>=Math.ceil(pages.length/2);
+    }
+
+    scannedOk.onclick=()=>{
+      closeScannedWarning();
+      startConversion();
+    };
+
+    async function startConversion(){
+      const pages=mode==='individual' ? Array.from(selectedPages).sort((a,b)=>a-b) : Array.from({length:pdf.numPages},(_,i)=>i+1);
+      try{
+        download.disabled=true;
+        download.textContent='Converting...';
+        const apiFormat = fmt.value==='html-text' ? 'html-text' : (fmt.value==='html-image' ? 'html-image' : fmt.value);
+        const API_URL='https://toolnest-api-production-dda7.up.railway.app/api/pdf-to-'+apiFormat;
+        const formData=new FormData();
+        formData.append('file',input.files[0],input.files[0].name);
+        if(mode==='individual') formData.append('pages',pages.join(','));
+
+        const response=await fetch(API_URL,{method:'POST',body:formData,cache:'no-store'});
+        if(!response.ok){
+          let message='Unable to convert this PDF.';
+          try{
+            const data=await response.json();
+            if(data && data.error) message=data.error+(data.details?'\n\n'+data.details:'');
+          }catch(_){}
+          throw new Error(message);
+        }
+        const blob=await response.blob();
+        if(!blob.size) throw new Error('The server returned an empty file.');
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a');
+        a.href=url;
+        const disposition=response.headers.get('Content-Disposition')||'';
+        const match=disposition.match(/filename[^;=]*=(?:UTF-8''|\")?([^;\"]+)/i);
+        const ext=(fmt.value==='html-text' || fmt.value==='html-image') ? 'html' : fmt.value;
+        const fallbackName=sourceFileName.replace(/\.[^.]+$/,'')+'.'+ext;
+        a.download=match?decodeURIComponent(match[1].replace(/^\"|\"$/g,'')):fallbackName;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(()=>URL.revokeObjectURL(url),5000);
+        reset();
+      }catch(e){
+        console.error('Wrenchoo PDF conversion error:', e);
+        const message=e&&e.message?e.message:'';
+        if(e instanceof TypeError && /fetch|network|load failed/i.test(message)){
+          alert('Could not connect to the PDF conversion server. Check that the Railway deployment is running and try again.');
+        }else{
+          alert(message||'Unable to convert this PDF. Please try again.');
+        }
+      }finally{
+        download.disabled=false;
+        download.textContent='Convert & Download';
+      }
+    }
+
     download.onclick=async()=>{
       if(!pdf) return;
       const pages=mode==='individual' ? Array.from(selectedPages).sort((a,b)=>a-b) : Array.from({length:pdf.numPages},(_,i)=>i+1);
@@ -4683,51 +4792,19 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
         reset(); return;
       }
       if(fmt.value==='txt' || fmt.value==='docx' || fmt.value==='html-text' || fmt.value==='html-image' || fmt.value==='xlsx'){
-        try{
-          download.disabled=true;
-          download.textContent='Converting...';
-          const apiFormat = fmt.value==='html-text' ? 'html-text' : (fmt.value==='html-image' ? 'html-image' : fmt.value);
-          const API_URL='https://toolnest-api-production-dda7.up.railway.app/api/pdf-to-'+apiFormat;
-          const formData=new FormData();
-          formData.append('file',input.files[0],input.files[0].name);
-          if(mode==='individual') formData.append('pages',pages.join(','));
-
-          const response=await fetch(API_URL,{method:'POST',body:formData,cache:'no-store'});
-          if(!response.ok){
-            let message='Unable to convert this PDF.';
-            try{
-              const data=await response.json();
-              if(data && data.error) message=data.error+(data.details?'\n\n'+data.details:'');
-            }catch(_){}
-            throw new Error(message);
+        // JPG/PNG are inherently image outputs. For document formats, warn before
+        // conversion when the selected PDF appears to be scanned.
+        if(fmt.value==='docx' || fmt.value==='xlsx'){
+          try{
+            if(await selectionIsScanned(pages)){
+              openScannedWarning();
+              return;
+            }
+          }catch(e){
+            console.warn('Scanned PDF detection failed; continuing with conversion.',e);
           }
-          const blob=await response.blob();
-          if(!blob.size) throw new Error('The server returned an empty file.');
-          const url=URL.createObjectURL(blob);
-          const a=document.createElement('a');
-          a.href=url;
-          const disposition=response.headers.get('Content-Disposition')||'';
-          const match=disposition.match(/filename[^;=]*=(?:UTF-8''|\")?([^;\"]+)/i);
-          const ext=(fmt.value==='html-text' || fmt.value==='html-image') ? 'html' : fmt.value;
-          const fallbackName=sourceFileName.replace(/\.[^.]+$/,'')+'.'+ext;
-          a.download=match?decodeURIComponent(match[1].replace(/^\"|\"$/g,'')):fallbackName;
-          document.body.appendChild(a); a.click(); a.remove();
-          setTimeout(()=>URL.revokeObjectURL(url),5000);
-          reset();
-        }catch(e){
-          console.error('ToolNest PDF conversion error:', e);
-          const message=e&&e.message?e.message:'';
-          if(e instanceof TypeError && /fetch|network|load failed/i.test(message)){
-            alert('Could not connect to the PDF conversion server. Check that the Railway deployment is running and try again.');
-          }else{
-            // HTTP errors from the API already contain the server's real
-            // error/details, so show them directly instead of masking them.
-            alert(message||'Unable to convert this PDF. Please try again.');
-          }
-        }finally{
-          download.disabled=false;
-          download.textContent='Convert & Download';
         }
+        await startConversion();
         return;
       }
 
@@ -4940,6 +5017,26 @@ html.dark-mode main .home-tool-info p,
 html.dark-mode main .tool-description {
   color: #aebdcb !important;
 }
+</style>
+
+
+<style id="tn-scanned-warning-style">
+.tn-scanned-warning{position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.58);display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;}
+.tn-scanned-warning[hidden]{display:none;}
+.tn-scanned-warning-card{width:min(500px,calc(100vw - 32px));box-sizing:border-box;background:#fff;color:#17202a;border-radius:20px;padding:30px 30px 26px;text-align:center;box-shadow:0 28px 90px rgba(0,0,0,.45);border:1px solid rgba(0,0,0,.08);animation:tnScanWarnIn .18s ease-out;}
+.tn-scanned-warning-icon{width:54px;height:54px;margin:0 auto 16px;border-radius:50%;background:#fff3cd;color:#9a6700;border:2px solid #e5b84b;display:flex;align-items:center;justify-content:center;font:800 30px Arial,sans-serif;}
+.tn-scanned-warning-title{font:800 24px Arial,sans-serif;margin-bottom:12px;}
+.tn-scanned-warning-text{font:400 16px/1.5 Arial,sans-serif;color:#52606d;margin:0 auto;max-width:430px;}
+.tn-scanned-warning-actions{display:flex;justify-content:center;gap:12px;margin-top:24px;flex-wrap:wrap;}
+.tn-scanned-warning-actions button{min-height:48px;padding:0 20px;border-radius:11px;font:700 15px Arial,sans-serif;cursor:pointer;}
+.tn-scanned-cancel{background:#fff;color:#d33;border:1px solid #d33;}
+.tn-scanned-ok{background:#111;color:#fff;border:1px solid #111;}
+html.dark-mode .tn-scanned-warning-card{background:#1c232b;color:#f4f7fa;border-color:#394655;}
+html.dark-mode .tn-scanned-warning-text{color:#b8c3ce;}
+html.dark-mode .tn-scanned-cancel{background:#1c232b;color:#ff8d8d;border-color:#ff6b6b;}
+html.dark-mode .tn-scanned-ok{background:#f4f7fa;color:#17202a;border-color:#f4f7fa;}
+@keyframes tnScanWarnIn{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:none}}
+@media(max-width:650px){.tn-scanned-warning-card{padding:26px 20px 22px;border-radius:18px}.tn-scanned-warning-title{font-size:21px}.tn-scanned-warning-text{font-size:15px}.tn-scanned-warning-actions{flex-direction:column}.tn-scanned-warning-actions button{width:100%;}}
 </style>
 
 <!-- ToolNest download animation -->
