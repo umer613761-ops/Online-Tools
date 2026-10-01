@@ -2,6 +2,7 @@ import base64
 import html
 import io
 import re
+import math
 from pathlib import Path
 from collections import Counter
 
@@ -1662,6 +1663,121 @@ def _xlsx_add_inferred_formulas(ws, start_row):
         ws.cell(grand_row,value_col).value=f'={ws.cell(subtotal_row,value_col).coordinate}+{ws.cell(tax_row,value_col).coordinate}'
 
 
+
+def _xlsx_scanned_ocr_lines(page, page_index=0):
+    """OCR a scanned page into clean, user-editable line regions for Excel."""
+    scan=_scan_image(page)
+    lines, data=_scan_ocr_items(scan, page_index)
+    usable=[]
+    for ln in lines:
+        conf=float(ln.get('conf',0) or 0)
+        text=str(ln.get('text','')).strip()
+        alpha=len(re.findall(r'[A-Za-z]{2,}', text))
+        if conf < 68 or alpha == 0:
+            continue
+        # Keep logos, stamps and signatures as artwork. The OCR engine often
+        # mistakes these graphics for short words; don't turn those into cells.
+        if ln['y'] < scan.height*0.18 and ln['x'] < scan.width*0.52 and len(text) < 35:
+            continue
+        if ln['y'] > scan.height*0.48 and ln['y'] < scan.height*0.75 and conf < 82:
+            # Mid-page handwritten/signature noise is especially prone to false OCR.
+            continue
+        usable.append(ln)
+    return scan, usable
+
+
+def _xlsx_write_scanned_page(workbook, page, page_index, title=None):
+    """Create an Excel sheet that behaves like an editable scanned page.
+
+    The original scan is the worksheet background image, so logos, photos,
+    signatures, charts and decorative artwork remain visible. OCR lines are
+    written into normal Excel cells over the background, making the printed
+    text directly editable. White cell fills cover the corresponding source
+    text so edits do not leave the old scan text showing underneath.
+    """
+    import xlsxwriter
+    scan, lines=_xlsx_scanned_ocr_lines(page, page_index)
+    name=(title or f'Page {page_index+1}')[:31]
+    ws=workbook.add_worksheet(name)
+    ws.hide_gridlines(2)
+    ws.set_zoom(85)
+    # A4-ish pages need a fine grid to position OCR text without making the
+    # workbook unwieldy. 80 columns x 72 rows gives ~7.5pt cells vertically.
+    COLS=47; ROWS=100
+    ws.set_column(0,COLS-1,1.55)
+    ws.set_default_row(8.4)
+    # Keep the sheet printable as a page and preserve the source page ratio.
+    ws.set_landscape() if float(page.rect.width) > float(page.rect.height) else ws.set_portrait()
+    ws.set_paper(9)  # A4
+    ws.fit_to_pages(1,1)
+    ws.set_margins(0,0,0,0)
+    ws.print_area(0,0,ROWS-1,COLS-1)
+    # Use the untouched scan as the actual sheet background. This is important:
+    # it preserves the original visual artwork, including colorful graphs/charts.
+    pix=page.get_pixmap(dpi=96,alpha=False,colorspace=fitz.csRGB)
+    bg=io.BytesIO(pix.tobytes('png'))
+    ws.set_background(bg)
+
+    pw=float(page.rect.width); ph=float(page.rect.height)
+    for ln in lines:
+        x0=max(0,min(pw, (float(ln['x'])-8)*pw/scan.width))
+        x1=max(x0+1,min(pw, (float(ln['x2'])+10)*pw/scan.width))
+        y0=max(0,min(ph, (float(ln['y'])-7)*ph/scan.height))
+        y1=max(y0+1,min(ph, (float(ln['y2'])+8)*ph/scan.height))
+        c0=min(COLS-1,max(0,int(x0/pw*COLS)))
+        c1=min(COLS-1,max(c0,int(math.ceil(x1/pw*COLS))-1))
+        r0=min(ROWS-1,max(0,int(y0/ph*ROWS)))
+        r1=min(ROWS-1,max(r0,int(math.ceil(y1/ph*ROWS))-1))
+        # Avoid overlapping merged ranges by collapsing to a single row when
+        # OCR boxes collide. The visible text remains fully editable.
+        text=str(ln['text']).strip()
+        hpt=max(7.0,min(20.0,(float(ln['y2'])-float(ln['y']))*72.0/144.0*0.90))
+        bold=(text.isupper() and len(text)>8) or ('certificate' in text.lower() and len(text)<70)
+        fmt=workbook.add_format({
+            'font_name':'Arial','font_size':hpt,'bold':bold,
+            'font_color':'#111111','bg_color':'#FFFFFF','pattern':1,
+            'align':'left','valign':'vcenter','text_wrap':False,
+            'border':0,'shrink':True
+        })
+        try:
+            if c1>c0 or r1>r0:
+                ws.merge_range(r0,c0,r1,c1,text,fmt)
+            else:
+                ws.write(r0,c0,text,fmt)
+        except Exception:
+            # Overlapping OCR regions are uncommon; fall back to the top-left cell.
+            try: ws.write(r0,c0,text,fmt)
+            except Exception: pass
+    # Put a tiny note outside the printable page only when there is no OCR text.
+    if not lines:
+        ws.write(0,0,'Scanned page — no reliable OCR text detected.')
+    return ws
+
+
+def _convert_xlsx_scanned(pdf_path, output_path, pages, native_tables=None):
+    """Build an XLSX for scanned PDFs with editable OCR cells + page artwork."""
+    import xlsxwriter
+    pdf=fitz.open(pdf_path)
+    try:
+        wb=xlsxwriter.Workbook(output_path)
+        wb.set_properties({'title':'Wrenchoo PDF to XLSX — OCR editable scanned pages'})
+        made=False
+        for idx,n in enumerate(pages):
+            page=pdf[n-1]
+            if not _has_large_page_image(page):
+                continue
+            scan, lines=_xlsx_scanned_ocr_lines(page, idx)
+            # Only create a scanned sheet when OCR found meaningful text or the
+            # page is still useful as an image/chart/photo page.
+            if lines or _has_large_page_image(page):
+                _xlsx_write_scanned_page(wb,page,idx,f'Page {n}')
+                made=True
+        if not made:
+            wb.add_worksheet('Page 1')
+        wb.close()
+    finally:
+        pdf.close()
+
 def convert_xlsx(pdf_path, output_path, pages):
     """Create a structured XLSX from detected PDF tables.
 
@@ -1671,6 +1787,21 @@ def convert_xlsx(pdf_path, output_path, pages):
     content. Ordinary PDFs with no meaningful table still raise ValueError.
     """
     pdf=fitz.open(pdf_path)
+    # Scanned/image-only PDFs need a different spreadsheet representation: the
+    # scan stays as worksheet background artwork while OCR text becomes normal
+    # editable Excel cells. Native PDFs continue through the existing structured
+    # table engine below, preserving all of the work already done for XLSX.
+    scanned_requested=[]
+    for n in pages:
+        try:
+            if _has_large_page_image(pdf[n-1]) and len(page_text(pdf[n-1])) < 80:
+                scanned_requested.append(n)
+        except Exception:
+            pass
+    if scanned_requested:
+        pdf.close()
+        _convert_xlsx_scanned(pdf_path, output_path, pages)
+        return
     plumber=pdfplumber.open(pdf_path)
     tables=[]
     page_text_blocks=[]
