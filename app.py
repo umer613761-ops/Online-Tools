@@ -5,7 +5,7 @@ import tempfile
 import subprocess
 from pathlib import Path
 
-from flask import Flask, jsonify, request, send_file
+from flask import Flask, jsonify, request, send_file, send_from_directory
 import fitz
 from flask_cors import CORS
 
@@ -28,7 +28,21 @@ def safe_filename(name: str) -> str:
 
 @app.get("/")
 def root():
-    return jsonify({"ok": True, "service": "ToolNest conversion API", "status": "running"})
+    # Serve the Wrenchoo frontend from the same Railway service as the API.
+    # This keeps the custom domain as the public website while /api/* remains
+    # the conversion backend.
+    return send_from_directory(Path(__file__).resolve().parent, "index.html")
+
+
+@app.get("/<path:filename>")
+def frontend_files(filename):
+    # Serve the existing HTML pages and bundled assets without changing them.
+    # API routes are declared above and therefore remain handled by Flask.
+    base = Path(__file__).resolve().parent
+    requested = base / filename
+    if requested.is_file():
+        return send_from_directory(base, filename)
+    return jsonify({"ok": False, "error": "Page not found."}), 404
 
 
 
