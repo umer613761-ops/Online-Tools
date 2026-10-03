@@ -1770,6 +1770,35 @@ html.dark-mode .why-icon,
 html.dark-mode .home-category-icon { color: #218739; }
 html.dark-mode .sample-ad-button { color: #218739; }
 
+<style id="wrenchoo-mobile-pdf-layout-fix">
+/* Mobile PDF tool grid: keep every PDF card full-width and remove desktop-only positioning. */
+@media (max-width: 700px) {
+  .tools-grid.pdf-tools-three-columns {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  .tools-grid.pdf-tools-three-columns .tool-card,
+  .tools-grid.pdf-tools-three-columns .tool-card[data-category="pdf"],
+  .tools-grid.pdf-tools-three-columns .tool-card[data-category="pdf"]:nth-child(10) {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .tools-grid.pdf-tools-three-columns .tool-info {
+    min-width: 0 !important;
+  }
+
+  .tools-grid.pdf-tools-three-columns .tool-info h2,
+  .tools-grid.pdf-tools-three-columns .tool-info p {
+    overflow-wrap: anywhere;
+  }
+}
+</style>
 </style>
 <!-- ========================================
        THEME INITIALIZATION
