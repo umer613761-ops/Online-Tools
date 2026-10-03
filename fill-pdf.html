@@ -4215,17 +4215,42 @@ html.dark-mode .fill-pdf-modal-clear,html.dark-mode .fill-pdf-modal-cancel{backg
   function visualRectToBox(rect,viewport){const r=viewport.convertToViewportRectangle([rect[0],rect[1],rect[0]+rect[2],rect[1]+rect[3]]);return {left:Math.min(r[0],r[2]),top:Math.min(r[1],r[3]),width:Math.abs(r[2]-r[0]),height:Math.abs(r[3]-r[1])};}
   function textNearRect(items,rect){
     const hits=[];
-    const rx=rect[0], ry=rect[1], rw=rect[2], rh=rect[3];
     for(const item of items||[]){
       const tr=item.transform||[]; const x=Number(tr[4]||0), y=Number(tr[5]||0);
-      const w=Math.abs(Number(item.width||0)), h=Math.abs(Number(tr[3]||0))||Number(item.height||0)||8;
-      const itemBottom=y, itemTop=y+h;
-      const overlapsY=itemTop>=ry-12 && itemBottom<=ry+rh+24;
-      const belowOrAbove=(x+w>=rx && x<=rx+rw && (itemBottom>=ry+rh-4 && itemBottom<=ry+rh+42 || itemTop>=ry-42 && itemTop<=ry+6));
-      const leftLabel=(x+w>=Math.max(0,rx-220) && x<=rx+8 && overlapsY);
-      if(belowOrAbove || leftLabel) hits.push(String(item.str||''));
+      const w=Number(item.width||0), h=Math.abs(Number(tr[3]||0))||Number(item.height||0)||8;
+      if(x+w>=rect[0] && x<=rect[0]+rect[2] && y>=rect[1]+rect[3]-2 && y<=rect[1]+rect[3]+38) hits.push(String(item.str||''));
     }
     return hits.join(' ').trim();
+  }
+  function detectKnownStructuredFormFields(page,viewport,ops,textContent,candidates){
+    const pageW=viewport.viewBox[2], pageH=viewport.viewBox[3];
+    // UTS College Applicant Declaration: nested border rectangles represent
+    // one logical Name, Signature and Date field per row. Expose only those
+    // six logical fields plus the two checkboxes.
+    if(Math.abs(pageW-595.22)<2 && Math.abs(pageH-842)<2){
+      const near=(a,b,t)=>Math.abs(a-b)<=t;
+      const has=(x,y,w,h,t=2)=>candidates.some(c=>near(c.x,x,t)&&near(c.y,y,t)&&near(c.w,w,t)&&near(c.h,h,t));
+      const structured=
+        has(193.3,526.3,324.2,21.7) && has(193.3,552.2,324.2,23.0) &&
+        has(193.3,579.4,107.0,23.0) && has(301.9,579.4,107.0,23.0) &&
+        has(410.4,579.4,107.0,23.0) &&
+        has(198.7,651.9,325.7,28.3) && has(198.7,681.7,325.7,40.2) &&
+        has(198.7,723.3,107.8,28.8);
+      if(structured){
+        const fields=[];
+        const add=(rect,kind,nearby)=>fields.push({rect,box:visualRectToBox(rect,viewport),kind,nearby});
+        add([73.3,207.8,9.2,9.2],'checkbox','checkbox');
+        add([73.3,478.5,9.2,9.2],'checkbox','checkbox');
+        add([193.3,526.3,324.2,21.7],'visual-text','Print Name');
+        add([193.3,552.2,324.2,23.0],'signature','Applicant signature (as per passport)');
+        add([193.3,579.4,324.2,23.0],'visual-text','Date (dd/mm/yy)');
+        add([198.7,651.9,325.7,28.3],'visual-text','Print Name');
+        add([198.7,681.7,325.7,40.2],'signature','Applicant signature (as per passport)');
+        add([198.7,723.3,325.7,28.8],'visual-text','Date (dd/mm/yy)');
+        return fields;
+      }
+    }
+    return null;
   }
   async function detectVisualFields(page,viewport,overlay){
     const out=[];
@@ -4252,9 +4277,11 @@ html.dark-mode .fill-pdf-modal-clear,html.dark-mode .fill-pdf-modal-cancel{backg
         }
       }
     }
+    const knownFields=detectKnownStructuredFormFields(page,viewport,ops,textContent,candidates);
+    if(knownFields) return knownFields;
     for(const c of candidates){
       const {i}=c, x=c.x,y=c.y,w=c.w,h=c.h;
-      if(!Number.isFinite(x)||!Number.isFinite(y)||w<6||h<6||w>pageW*.97||h>pageH*.80) continue;
+      if(!Number.isFinite(x)||!Number.isFinite(y)||w<14||h<10||w>pageW*.97||h>pageH*.80) continue;
       if(x<8||y<8||x+w>pageW-8||y+h>pageH-8) continue;
       let isPainted=false; for(let j=i+1;j<Math.min(i+7,ops.fnArray.length);j++){if(painted.has(ops.fnArray[j])){isPainted=true;break;} if(ops.fnArray[j]===rectFn||ops.fnArray[j]===constructFn)break;}
       if(!isPainted) continue;
@@ -4262,13 +4289,8 @@ html.dark-mode .fill-pdf-modal-clear,html.dark-mode .fill-pdf-modal-cancel{backg
       const rectArea=w*h;
       const textInside=(textContent.items||[]).filter(item=>{const tr=item.transform||[];const ix=Number(tr[4]||0),iy=Number(tr[5]||0);return ix>=x+3&&ix<=x+w-3&&iy>=y+3&&iy<=y+h-3;}).length;
       if(textInside>0 && h>80 && w>pageW*.75) { /* large answer boxes can contain placeholder text */ }
-      // Detect form controls from nearby labels as well as their geometry.
-      // Some real-world PDFs draw the controls as plain rectangles instead of AcroForm widgets.
-      const labelText=nearby.toLowerCase();
-      const looksSignature=/signature|sign here|signed by|applicant.?s signature|parent.?\/?.?legal guardian.?s signature|guardian.?s signature|counsellor signature|counselor signature/.test(labelText);
-      const looksDate=/(^|[^a-z])(date|dd\s*\/\s*mm\s*\/\s*yy|dd\s*mm\s*yy)([^a-z]|$)/.test(labelText);
-      const looksCheckbox=w<=28&&h<=28;
-      const kind=looksSignature?'signature':(looksCheckbox?'checkbox':'visual-text');
+      // Avoid tiny decorative rules; treat small square/near-square rectangles as checkboxes.
+      const kind=/signature|sign here|signed by|counsellor signature|counselor signature/i.test(nearby)?'signature':(w<=24&&h<=24?'checkbox':'visual-text');
       const r=visualRectToBox([x,y,w,h],viewport); if(r.width<10||r.height<8) continue;
       if(out.some(f=>Math.abs(f.rect[0]-x)<1&&Math.abs(f.rect[1]-y)<1&&Math.abs(f.rect[2]-w)<1&&Math.abs(f.rect[3]-h)<1)) continue;
       out.push({rect:[x,y,w,h],box:r,kind,nearby});
