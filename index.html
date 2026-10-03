@@ -4729,6 +4729,25 @@ html.dark-mode .home-tool-card::after {
 </style>
 
 </body>
+
+<style id="wrenchoo-final-pdf-mobile-fix">
+/* FINAL OVERRIDE: PDF tools must always be one column on phones. */
+@media screen and (max-width: 700px) {
+  .tools-grid.pdf-tools-three-columns {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-auto-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+  }
+  .tools-grid.pdf-tools-three-columns > .tool-card[data-category="pdf"],
+  .tools-grid.pdf-tools-three-columns > .tool-card[data-category="pdf"]:nth-child(10) {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+</style>
 </html>
 
 <style>
