@@ -2956,10 +2956,11 @@ def convert_docx(pdf_path,output_path,pages):
             _append_scanned_image_page(doc,section,page)
         elif _native_text_is_corrupted(page):
             # A PDF can contain a native text layer whose font encoding is broken.
-            # In that case PyMuPDF may return glyph codes/garbage even though the page
-            # visibly contains normal text. Recover only those pages with OCR, while
-            # retaining the existing native image/vector artwork path for everything else.
-            _append_ocr_recovered_native_page(doc,section,page,idx)
+            # OCR recovery is intentionally NOT used for DOCX here: when the PDF's
+            # character mapping is unreliable, guessed OCR/layout can produce a
+            # visibly damaged document. Preserve the affected page as a high-quality
+            # Word image instead, exactly as we do for scanned pages.
+            _append_scanned_image_page(doc,section,page)
         else:
             _append_native_flow_page(doc,section,page,plumber.pages[n-1],first_page=(idx==0),footer_lines=footer_lines)
     plumber.close(); pdf.close(); doc.save(output_path)
