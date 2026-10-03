@@ -2711,6 +2711,59 @@ def _native_text_confidence(page):
     return quality, len(blocks)
 
 
+def _native_text_is_corrupted(page):
+    """Detect a native PDF text layer that is present but visibly mis-decoded.
+
+    Some PDFs contain a custom font encoding where PyMuPDF returns glyph codes rather
+    than the characters a reader sees. Those pages are not truly scanned, so treating
+    them as ordinary native text produces garbage in DOCX. This conservative detector
+    routes only suspicious text layers through the existing OCR reconstruction path.
+    """
+    try:
+        text=' '.join((b[4] or '') for b in page.get_text('blocks')).strip()
+    except Exception:
+        return False
+    compact=re.sub(r'\s+',' ',text)
+    if len(compact) < 120:
+        return False
+    if re.search(r'\(cid:\d+\)', compact, flags=re.I):
+        return True
+    alpha=sum(ch.isalnum() for ch in compact)/max(1,len(compact))
+    letters=''.join(re.findall(r'[A-Za-z]+',compact))
+    vowel_ratio=sum(ch.lower() in 'aeiou' for ch in letters)/max(1,len(letters))
+    suspicious_symbols=sum(ch in '?=^_`~[]{}\\' for ch in compact)/max(1,len(compact))
+    # Require multiple signals so ordinary numeric forms, equations and punctuation-heavy
+    # documents are not unnecessarily OCR'd.
+    signals=(alpha < 0.68) + (vowel_ratio < 0.30) + (suspicious_symbols > 0.025)
+    return signals >= 2
+
+
+def _ocr_render_image(page, dpi=144):
+    """Render a native PDF page at a higher resolution for recovery OCR."""
+    pix=page.get_pixmap(dpi=dpi, alpha=False, colorspace=fitz.csRGB)
+    return Image.open(io.BytesIO(pix.tobytes('png'))).convert('RGB')
+
+
+def _append_ocr_recovered_native_page(doc, section, page, page_index):
+    """Recover a corrupted native text layer with OCR while preserving PDF artwork.
+
+    The original page remains visually represented by its native images/vector artwork;
+    OCR supplies editable Word text at the original PDF coordinates. This is used only
+    when the PDF's own text encoding is demonstrably corrupted.
+    """
+    _set_scanned_section(section,page)
+    _add_native_page_visual_elements(doc,section,page,background_added=False,table_bboxes=[])
+    _add_native_vector_visuals(doc,section,page,background_added=False,table_bboxes=[])
+    img=_ocr_render_image(page,144)
+    lines,_=_scan_ocr_items(img,page_index)
+    scale=img.width/float(page.rect.width)
+    threshold=55 if page_index else 60
+    for line in lines:
+        if float(line.get('conf',0)) < threshold:
+            continue
+        _add_scanned_frame(doc,page,line,scale)
+
+
 def _add_native_page_visual_elements(doc, section, page, background_added=False, table_bboxes=None):
     """Preserve non-background PDF image objects as positioned Word images.
 
@@ -2901,6 +2954,12 @@ def convert_docx(pdf_path,output_path,pages):
             # remains available in the codebase for future use, but is not the default
             # conversion path so users are never given a misleading 'editable' result.
             _append_scanned_image_page(doc,section,page)
+        elif _native_text_is_corrupted(page):
+            # A PDF can contain a native text layer whose font encoding is broken.
+            # In that case PyMuPDF may return glyph codes/garbage even though the page
+            # visibly contains normal text. Recover only those pages with OCR, while
+            # retaining the existing native image/vector artwork path for everything else.
+            _append_ocr_recovered_native_page(doc,section,page,idx)
         else:
             _append_native_flow_page(doc,section,page,plumber.pages[n-1],first_page=(idx==0),footer_lines=footer_lines)
     plumber.close(); pdf.close(); doc.save(output_path)
