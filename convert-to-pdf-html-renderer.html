@@ -4580,7 +4580,69 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
       if(fmt.value==='html'){
         let out='<html><body>';
         for(let i=1;i<=pdf.numPages;i++){const p=await pdf.getPage(i),c=await p.getTextContent();out+='<h2>Page '+i+'</h2><p>'+esc(c.items.map(x=>x.str).join(' '))+'</p>'; }
-        out+='</body></html>';;
+        out+='
+<style id="wrenchoo-tool-page-ad-layout-final">
+/* Keep the tool page content and advertisement in separate columns when there is enough room.
+   Below 1200px, including when desktop is zoomed in, the ad moves below the tool.
+   Do not apply this layout to home.html or index.html. */
+@media (min-width: 1201px) {
+  .page-content > div[style*="grid-template-columns"] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 200px !important;
+    gap: 28px !important;
+    align-items: start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .tn-ad-left-column {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: auto !important;
+    min-width: 0 !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .ad-column {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    width: 200px !important;
+    min-width: 200px !important;
+    max-width: 200px !important;
+    position: sticky !important;
+    top: 20px !important;
+    margin: 0 !important;
+    align-self: start !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .ad-column .ad-box {
+    width: 200px !important;
+    max-width: 200px !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .page-content > div[style*="grid-template-columns"] {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 24px !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .tn-ad-left-column,
+  .page-content > div[style*="grid-template-columns"] > .ad-column {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    position: static !important;
+    margin: 0 !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .ad-column .ad-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+</style>
+
+</body></html>';;
         const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out],{type:'text/html'}));a.download='converted-from-pdf.html';a.click();URL.revokeObjectURL(a.href);resetFromUpload();return;
       }
       alert('The selected format requires an advanced document converter.');
@@ -4922,6 +4984,67 @@ html.dark-mode main .tool-description {
   }
 }
 </style>
+
+<style id="wrenchoo-tool-page-ad-layout-final">
+/* Keep the tool page content and advertisement in separate columns.
+   Do not apply this layout to home.html or index.html. */
+@media (min-width: 1001px) {
+  .page-content > div[style*="grid-template-columns"] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 200px !important;
+    gap: 28px !important;
+    align-items: start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .tn-ad-left-column {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: auto !important;
+    min-width: 0 !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .ad-column {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    width: 200px !important;
+    min-width: 200px !important;
+    max-width: 200px !important;
+    position: sticky !important;
+    top: 20px !important;
+    margin: 0 !important;
+    align-self: start !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .ad-column .ad-box {
+    width: 200px !important;
+    max-width: 200px !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 1000px) {
+  .page-content > div[style*="grid-template-columns"] {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 24px !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .tn-ad-left-column,
+  .page-content > div[style*="grid-template-columns"] > .ad-column {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    position: static !important;
+    margin: 0 !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .ad-column .ad-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+</style>
+
 </body>
 </html>
 
