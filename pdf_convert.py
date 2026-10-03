@@ -25,6 +25,26 @@ V_NS='urn:schemas-microsoft-com:vml'
 O_NS='urn:schemas-microsoft-com:office:office'
 
 
+def _xml_safe_text(value):
+    """Return text that is valid in XML 1.0 / DOCX strings.
+
+    PDFs can contain hidden control characters or invalid Unicode code points
+    in their text layer. WordprocessingML stores text inside XML, so those
+    characters must be removed before python-docx writes the document.
+    Normal Unicode, tabs, newlines, and carriage returns are preserved.
+    """
+    if value is None:
+        return ''
+    text=str(value)
+    return ''.join(
+        ch for ch in text
+        if ch in ('\t', '\n', '\r')
+        or 0x20 <= ord(ch) <= 0xD7FF
+        or 0xE000 <= ord(ch) <= 0xFFFD
+        or 0x10000 <= ord(ch) <= 0x10FFFF
+    )
+
+
 def parse_pages(value,page_count):
     if not value: return list(range(1,page_count+1))
     pages=[]
@@ -249,7 +269,7 @@ def _vml(paragraph,kind,x,y,w,h,rid=None,text='',font_size=10,bold=False):
         tb=etree.Element(f'{{{V_NS}}}textbox'); tb.set('style','mso-fit-shape-to-text:t;margin:0;padding:0')
         tx=OxmlElement('w:txbxContent'); wp=OxmlElement('w:p'); wr=OxmlElement('w:r'); rpr=OxmlElement('w:rPr'); sz=OxmlElement('w:sz'); sz.set(qn('w:val'),str(max(10,int(round(font_size*2))))); rpr.append(sz)
         if bold: rpr.append(OxmlElement('w:b'))
-        wr.append(rpr); wt=OxmlElement('w:t'); wt.text=text; wr.append(wt); wp.append(wr); tx.append(wp); tb.append(tx); shape.append(tb)
+        wr.append(rpr); wt=OxmlElement('w:t'); wt.text=_xml_safe_text(text); wr.append(wt); wp.append(wr); tx.append(wp); tb.append(tx); shape.append(tb)
     pict.append(shape); paragraph._p.append(pict)
 
 
@@ -272,10 +292,10 @@ def _insert_paragraph_after(parent, text='', runs=None):
     parent._element.addnext(p) if hasattr(parent, '_element') else parent.addnext(p)
     para = Paragraph(p, parent._parent if hasattr(parent, '_parent') else parent)
     if runs is None:
-        para.add_run(text)
+        para.add_run(_xml_safe_text(text))
     else:
         for r in runs:
-            run = para.add_run(r.get('text',''))
+            run = para.add_run(_xml_safe_text(r.get('text','')))
             run.bold = bool(r.get('bold'))
             run.italic = bool(r.get('italic'))
             run.font.size = Pt(r.get('size', 10.5))
@@ -294,7 +314,7 @@ def _add_table_after(doc, anchor, rows, col_widths=None):
             _set_cell_borders(cell)
             if ci < len(row):
                 cell.paragraphs[0].paragraph_format.space_after = Pt(0)
-                run = cell.paragraphs[0].add_run(row[ci] or '')
+                run = cell.paragraphs[0].add_run(_xml_safe_text(row[ci] or ''))
                 run.font.name = 'Arial'; run.font.size = Pt(10.5)
             if col_widths and ci < len(col_widths):
                 cell.width = Inches(max(0.25, col_widths[ci] / 72.0))
@@ -439,7 +459,7 @@ def _append_native_page(doc, page, plumber_page, first_page=False, footer_lines=
         fp.alignment=1
         for i,line in enumerate(footer_lines):
             if i: fp.add_run().add_break()
-            r=fp.add_run(line); r.font.name='Arial'; r.font.size=Pt(8)
+            r=fp.add_run(_xml_safe_text(line)); r.font.name='Arial'; r.font.size=Pt(8)
 
     # Recreate a repeated full-width header image (e.g. an official letterhead)
     # as a real editable Word header image instead of losing it during text extraction.
@@ -497,7 +517,7 @@ def _append_native_page(doc, page, plumber_page, first_page=False, footer_lines=
             from docx.shared import Inches as _Inches
             p.paragraph_format.tab_stops.add_tab_stop(_Inches(max(0, tab_xs[0]-ln['x'])/72.0), WD_TAB_ALIGNMENT.LEFT)
         for rinfo in ln['runs']:
-            r=p.add_run(rinfo['text'])
+            r=p.add_run(_xml_safe_text(rinfo['text']))
             r.font.name='Arial'; r.font.size=Pt(9); r.bold=rinfo['bold']; r.italic=rinfo['italic']
         cursor=p
         prev_y=ln['y2']
@@ -755,7 +775,7 @@ def _add_scanned_frame(doc, page, line, img_scale):
                 'hAnchor':'page','vAnchor':'page','wrap':'none'}.items():
         fp.set(qn('w:'+k),v)
     pPr.append(fp)
-    r=p.add_run(line['text'])
+    r=p.add_run(_xml_safe_text(line['text']))
     r.font.name='Arial'
     r.font.size=Pt(max(7,min(16,(line['y2']-line['y'])/img_scale*0.55)))
     return p
@@ -996,7 +1016,7 @@ def _add_editable_marks_table(doc, img, table_info, page):
             p=cell.paragraphs[0]; p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1
             p.alignment=1 if ci>0 else 0
             p.clear()
-            r=p.add_run(cells[ri][ci]); r.font.name='Arial'; r.font.size=Pt(7.1 if ri else 6.8); r.bold=(ri==0)
+            r=p.add_run(_xml_safe_text(cells[ri][ci])); r.font.name='Arial'; r.font.size=Pt(7.1 if ri else 6.8); r.bold=(ri==0)
     # merge the final "marks in words" row across the grid
     merged=table.rows[23].cells[0]
     for ci in range(1,5): merged=merged.merge(table.rows[23].cells[ci])
@@ -1117,7 +1137,7 @@ def _add_scanned_hybrid_page(doc, section, page, page_index):
             if ri==0 or ri==23:
                 shd=OxmlElement('w:shd'); shd.set(qn('w:fill'),'B7B7B7'); tcPr.append(shd)
             p=cell.paragraphs[0]; p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1; p.alignment=1 if j>0 else 0
-            r=p.add_run(data[ri][j]); r.font.name='Arial'; r.font.size=Pt(6.8 if ri==0 else 7.0); r.bold=(ri==0)
+            r=p.add_run(_xml_safe_text(data[ri][j])); r.font.name='Arial'; r.font.size=Pt(6.8 if ri==0 else 7.0); r.bold=(ri==0)
     # Merge the final row's five center cells.
     merged=pos.rows[23].cells[1]
     for ci in range(2,6): merged=merged.merge(pos.rows[23].cells[ci])
@@ -1920,7 +1940,7 @@ def _add_native_positioned_frame(doc, page, line):
         t=doc.add_table(rows=1,cols=1); t.autofit=False; _set_table_no_borders(t); _set_table_width(t,max(90,float(line['x2'])-float(line['x'])+6))
         _set_table_float_position(doc,t,float(line['x']),float(line['y']),max(90,float(line['x2'])-float(line['x'])+6))
         c=t.cell(0,0); _set_cell_zero_margins(c); p=c.paragraphs[0]; p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0)
-        r=p.add_run(line.get('text','')); r.font.name='Arial'; r.font.size=Pt(max([float(x.get('size') or 10.5) for x in line.get('runs',[])]+[10.5]))
+        r=p.add_run(_xml_safe_text(line.get('text',''))); r.font.name='Arial'; r.font.size=Pt(max([float(x.get('size') or 10.5) for x in line.get('runs',[])]+[10.5]))
         return p
     p=doc.add_paragraph()
     p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1
@@ -1935,7 +1955,7 @@ def _add_native_positioned_frame(doc, page, line):
     if not runs:
         runs=[{'text':line.get('text',''),'size':10.5,'font':'Arial','bold':False,'italic':False}]
     for ri,rinfo in enumerate(runs):
-        r=p.add_run(rinfo.get('text',''))
+        r=p.add_run(_xml_safe_text(rinfo.get('text','')))
         r.font.name='Arial'; r.font.size=Pt(float(rinfo.get('size') or 10.5)); r.bold=bool(rinfo.get('bold')); r.italic=bool(rinfo.get('italic'))
     return p
 
@@ -2027,7 +2047,7 @@ def _add_positioned_native_table(doc, table_info, page):
         for c,val in enumerate(rowvals[:cols]):
             if val:
                 p=table.cell(r,c).paragraphs[0]; p.text=''; p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0)
-                run=p.add_run(str(val)); run.font.name='Arial'; run.font.size=Pt(9)
+                run=p.add_run(_xml_safe_text(val)); run.font.name='Arial'; run.font.size=Pt(9)
     return table
 
 
@@ -2042,7 +2062,7 @@ def _add_native_page_as_editable_layout(doc, section, page, plumber_page, first_
         fp=section.footer.paragraphs[0]; fp.text=''; fp.alignment=1
         for i,line in enumerate(footer_lines):
             if i: fp.add_run().add_break()
-            r=fp.add_run(line); r.font.name='Arial'; r.font.size=Pt(8)
+            r=fp.add_run(_xml_safe_text(line)); r.font.name='Arial'; r.font.size=Pt(8)
 
     # Preserve genuine page artwork such as a logo/header, but do not rasterize the page.
     # If the PDF has a wide colored header drawing, render only that small strip so
@@ -2147,7 +2167,7 @@ def _native_text_blocks(page, table_bboxes=None, footer_lines=None):
         for line in block.get('lines',[]):
             runs=[]
             for span in line.get('spans',[]):
-                text=str(span.get('text',''))
+                text=_xml_safe_text(span.get('text',''))
                 if not text: continue
                 flags=int(span.get('flags',0))
                 runs.append({
@@ -2242,7 +2262,7 @@ def _format_native_paragraph(p, block, scale=1.0):
         if li:
             p.add_run().add_break()
         for rinfo in line['runs']:
-            r=p.add_run(rinfo['text'])
+            r=p.add_run(_xml_safe_text(rinfo['text']))
             r.font.name='Arial'
             r.font.size=Pt(max(7.0,min(24.0,rinfo['size']*scale)))
             r.bold=rinfo['bold']; r.italic=rinfo['italic']
@@ -2258,7 +2278,7 @@ def _page_text_spans(page):
                 continue
             for line in block.get('lines',[]):
                 for span in line.get('spans',[]):
-                    text=str(span.get('text',''))
+                    text=_xml_safe_text(span.get('text',''))
                     if not text.strip():
                         continue
                     b=span.get('bbox',[0,0,0,0])
@@ -2484,7 +2504,7 @@ def _add_native_flow_table(container, table_info, font_scale=1.0, page=None):
             if c < len(vals) and vals[c]:
                 cell_text=_normalize_form_cell_text(vals[c])
                 base_font=8.0 if cols>=9 else 10.0
-                run=p.add_run(cell_text); run.font.name='Arial'; run.font.size=Pt(base_font*font_scale)
+                run=p.add_run(_xml_safe_text(cell_text)); run.font.name='Arial'; run.font.size=Pt(base_font*font_scale)
                 if r==0 or style.get('bold'): run.bold=True
                 if style.get('italic'): run.italic=True
                 _set_run_pdf_color(run,style.get('color'))

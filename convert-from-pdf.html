@@ -4232,14 +4232,6 @@ html:not(.dark-mode) main .tool-description {
   color: #344054 !important;
 }
 </style>
-
-<style id="wrenchoo-tool-links-under-second-header-contrast">
-/* Light mode: tool links directly UNDER the second/category header */
-html:not(.dark-mode) .tool-category-link:not(.active) {
-  color: #344054 !important;
-}
-</style>
-
 </head>
 <body>
 <!-- ========================================
@@ -4804,6 +4796,11 @@ html.dark-mode #convertFromToolbar .convert-mode-box{
         reset();
       }catch(e){
         console.error('Wrenchoo PDF conversion error:', e);
+        // A failed conversion must close the download overlay instead of leaving
+        // "Preparing download…" stuck behind the browser error dialog.
+        if(typeof window.__toolnestDownloadCancel === 'function'){
+          window.__toolnestDownloadCancel();
+        }
         const message=e&&e.message?e.message:'';
         if(e instanceof TypeError && /fetch|network|load failed/i.test(message)){
           alert('Could not connect to the PDF conversion server. Check that the Railway deployment is running and try again.');
@@ -5142,62 +5139,6 @@ html.dark-mode .tn-scanned-ok{background:#f4f7fa;color:#17202a;border-color:#f4f
   #toolnestDownloadPopup .tn-download-check { font-size: 36px; }
 }
 </style>
-
-<style id="wrenchoo-download-fullscreen-overlay">
-/* Full-screen download modal overlay */
-#toolnestDownloadOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 99998;
-  background: rgba(55, 62, 68, 0.62);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .18s ease;
-}
-#toolnestDownloadOverlay.tn-download-overlay-show {
-  opacity: 1;
-  pointer-events: auto;
-}
-#toolnestDownloadPopup {
-  min-width: 390px !important;
-  max-width: min(520px, calc(100vw - 40px)) !important;
-  min-height: 190px !important;
-  padding: 38px 44px !important;
-  border-radius: 18px !important;
-  font-size: 20px !important;
-  z-index: 99999 !important;
-}
-#toolnestDownloadPopup .tn-download-spinner,
-#toolnestDownloadPopup .tn-download-check {
-  width: 58px !important;
-  height: 58px !important;
-  margin-bottom: 18px !important;
-}
-#toolnestDownloadPopup .tn-download-spinner {
-  border-width: 4px !important;
-}
-#toolnestDownloadPopup .tn-download-check {
-  font-size: 32px !important;
-}
-#toolnestDownloadPopup .tn-download-text {
-  line-height: 1.4 !important;
-  font-size: 20px !important;
-  font-weight: 700 !important;
-}
-@media (max-width:650px) {
-  #toolnestDownloadPopup {
-    min-width: 0 !important;
-    width: min(88vw, 390px) !important;
-    min-height: 175px !important;
-    padding: 32px 24px !important;
-  }
-  #toolnestDownloadPopup .tn-download-text {
-    font-size: 18px !important;
-  }
-}
-</style>
-
-<div id="toolnestDownloadOverlay" aria-hidden="true"></div>
 <div id="toolnestDownloadPopup" aria-live="polite" aria-hidden="true">
   <div class="tn-download-spinner" data-download-spinner></div>
   <div class="tn-download-check" data-download-check style="display:none">✓</div>
@@ -5208,7 +5149,6 @@ html.dark-mode .tn-scanned-ok{background:#f4f7fa;color:#17202a;border-color:#f4f
   if(window.__toolnestDownloadAnimationInstalled) return;
   window.__toolnestDownloadAnimationInstalled = true;
   var popup=document.getElementById('toolnestDownloadPopup');
-  var overlay=document.getElementById('toolnestDownloadOverlay');
   if(!popup) return;
   var spinner=popup.querySelector('[data-download-spinner]');
   var check=popup.querySelector('[data-download-check]');
@@ -5224,7 +5164,6 @@ html.dark-mode .tn-scanned-ok{background:#f4f7fa;color:#17202a;border-color:#f4f
     clearTimeout(hideTimer); clearTimeout(fallbackTimer);
     spinner.style.display='flex'; check.style.display='none';
     text.textContent='Preparing download…';
-    if(overlay) { overlay.classList.add('tn-download-overlay-show'); overlay.setAttribute('aria-hidden','false'); }
     popup.classList.add('tn-download-show');
     popup.setAttribute('aria-hidden','false');
     fallbackTimer=setTimeout(finish, 12000);
@@ -5238,11 +5177,18 @@ html.dark-mode .tn-scanned-ok{background:#f4f7fa;color:#17202a;border-color:#f4f
     hideTimer=setTimeout(function(){
       popup.classList.remove('tn-download-show');
       popup.setAttribute('aria-hidden','true');
-      if(overlay) { overlay.classList.remove('tn-download-overlay-show'); overlay.setAttribute('aria-hidden','true'); }
       downloadCycleActive=false;
       downloadCycleFinished=false;
     }, 850);
   }
+  function cancel(){
+    clearTimeout(hideTimer); clearTimeout(fallbackTimer);
+    popup.classList.remove('tn-download-show');
+    popup.setAttribute('aria-hidden','true');
+    downloadCycleActive=false;
+    downloadCycleFinished=false;
+  }
+  window.__toolnestDownloadCancel=cancel;
   function isDownloadElement(el){
     if(!el) return false;
     if(el.hasAttribute && el.hasAttribute('download')) return true;
