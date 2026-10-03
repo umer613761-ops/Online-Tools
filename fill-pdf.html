@@ -4215,10 +4215,15 @@ html.dark-mode .fill-pdf-modal-clear,html.dark-mode .fill-pdf-modal-cancel{backg
   function visualRectToBox(rect,viewport){const r=viewport.convertToViewportRectangle([rect[0],rect[1],rect[0]+rect[2],rect[1]+rect[3]]);return {left:Math.min(r[0],r[2]),top:Math.min(r[1],r[3]),width:Math.abs(r[2]-r[0]),height:Math.abs(r[3]-r[1])};}
   function textNearRect(items,rect){
     const hits=[];
+    const rx=rect[0], ry=rect[1], rw=rect[2], rh=rect[3];
     for(const item of items||[]){
       const tr=item.transform||[]; const x=Number(tr[4]||0), y=Number(tr[5]||0);
-      const w=Number(item.width||0), h=Math.abs(Number(tr[3]||0))||Number(item.height||0)||8;
-      if(x+w>=rect[0] && x<=rect[0]+rect[2] && y>=rect[1]+rect[3]-2 && y<=rect[1]+rect[3]+38) hits.push(String(item.str||''));
+      const w=Math.abs(Number(item.width||0)), h=Math.abs(Number(tr[3]||0))||Number(item.height||0)||8;
+      const itemBottom=y, itemTop=y+h;
+      const overlapsY=itemTop>=ry-12 && itemBottom<=ry+rh+24;
+      const belowOrAbove=(x+w>=rx && x<=rx+rw && (itemBottom>=ry+rh-4 && itemBottom<=ry+rh+42 || itemTop>=ry-42 && itemTop<=ry+6));
+      const leftLabel=(x+w>=Math.max(0,rx-220) && x<=rx+8 && overlapsY);
+      if(belowOrAbove || leftLabel) hits.push(String(item.str||''));
     }
     return hits.join(' ').trim();
   }
@@ -4249,7 +4254,7 @@ html.dark-mode .fill-pdf-modal-clear,html.dark-mode .fill-pdf-modal-cancel{backg
     }
     for(const c of candidates){
       const {i}=c, x=c.x,y=c.y,w=c.w,h=c.h;
-      if(!Number.isFinite(x)||!Number.isFinite(y)||w<14||h<10||w>pageW*.97||h>pageH*.80) continue;
+      if(!Number.isFinite(x)||!Number.isFinite(y)||w<6||h<6||w>pageW*.97||h>pageH*.80) continue;
       if(x<8||y<8||x+w>pageW-8||y+h>pageH-8) continue;
       let isPainted=false; for(let j=i+1;j<Math.min(i+7,ops.fnArray.length);j++){if(painted.has(ops.fnArray[j])){isPainted=true;break;} if(ops.fnArray[j]===rectFn||ops.fnArray[j]===constructFn)break;}
       if(!isPainted) continue;
@@ -4257,8 +4262,13 @@ html.dark-mode .fill-pdf-modal-clear,html.dark-mode .fill-pdf-modal-cancel{backg
       const rectArea=w*h;
       const textInside=(textContent.items||[]).filter(item=>{const tr=item.transform||[];const ix=Number(tr[4]||0),iy=Number(tr[5]||0);return ix>=x+3&&ix<=x+w-3&&iy>=y+3&&iy<=y+h-3;}).length;
       if(textInside>0 && h>80 && w>pageW*.75) { /* large answer boxes can contain placeholder text */ }
-      // Avoid tiny decorative rules; treat small square/near-square rectangles as checkboxes.
-      const kind=/signature|sign here|signed by|counsellor signature|counselor signature/i.test(nearby)?'signature':(w<=24&&h<=24?'checkbox':'visual-text');
+      // Detect form controls from nearby labels as well as their geometry.
+      // Some real-world PDFs draw the controls as plain rectangles instead of AcroForm widgets.
+      const labelText=nearby.toLowerCase();
+      const looksSignature=/signature|sign here|signed by|applicant.?s signature|parent.?\/?.?legal guardian.?s signature|guardian.?s signature|counsellor signature|counselor signature/.test(labelText);
+      const looksDate=/(^|[^a-z])(date|dd\s*\/\s*mm\s*\/\s*yy|dd\s*mm\s*yy)([^a-z]|$)/.test(labelText);
+      const looksCheckbox=w<=28&&h<=28;
+      const kind=looksSignature?'signature':(looksCheckbox?'checkbox':'visual-text');
       const r=visualRectToBox([x,y,w,h],viewport); if(r.width<10||r.height<8) continue;
       if(out.some(f=>Math.abs(f.rect[0]-x)<1&&Math.abs(f.rect[1]-y)<1&&Math.abs(f.rect[2]-w)<1&&Math.abs(f.rect[3]-h)<1)) continue;
       out.push({rect:[x,y,w,h],box:r,kind,nearby});
