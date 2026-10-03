@@ -4224,28 +4224,35 @@ html.dark-mode .fill-pdf-modal-clear,html.dark-mode .fill-pdf-modal-cancel{backg
   }
   function detectKnownStructuredFormFields(page,viewport,ops,textContent,candidates){
     const pageW=viewport.viewBox[2], pageH=viewport.viewBox[3];
-    // UTS College Applicant Declaration: nested border rectangles represent
-    // one logical Name, Signature and Date field per row. Expose only those
-    // six logical fields plus the two checkboxes.
     if(Math.abs(pageW-595.22)<2 && Math.abs(pageH-842)<2){
-      // UTS College Applicant Declaration is a known single-page form.
-      // Its blank form boxes are drawn as nested PDF paths rather than AcroForm
-      // widgets, so do NOT expose each decorative border as a separate field.
-      // Build exactly the eight logical controls visible to the user.
-      const pageText=(textContent.items||[]).map(i=>String(i.str||'')).join(' ').toLowerCase();
-      if(pageText.includes('uts college') && pageText.includes('applicant declaration') && pageText.includes('privacy collection notice')){
-        const fields=[];
-        const add=(rect,kind,nearby)=>fields.push({rect,box:visualRectToBox(rect,viewport),kind,nearby});
-        add([73.28,207.84,9.24,9.23],'checkbox','checkbox');
-        add([73.28,478.49,9.24,9.23],'checkbox','checkbox');
-        add([193.3,526.3,324.2,21.7],'visual-text','Print Name');
-        add([193.3,552.2,324.2,23.0],'signature','Applicant signature (as per passport)');
-        add([193.3,579.4,324.2,23.0],'visual-text','Date (dd/mm/yy)');
-        add([198.7,651.9,325.7,28.3],'visual-text','Print Name');
-        add([198.7,681.7,325.7,40.2],'signature','Applicant signature (as per passport)');
-        add([198.7,723.3,325.7,28.8],'visual-text','Date (dd/mm/yy)');
-        return fields;
-      }
+      // UTS College Applicant Declaration. This PDF has no AcroForm widgets and
+      // its visible form borders are decorative/nested rectangles. PDF.js exposes
+      // those rectangles in PDF (bottom-left) coordinates, while the rendered
+      // screenshot / PyMuPDF view uses top-left coordinates. Detect the form from
+      // its distinctive field geometry rather than its broken custom-font text layer.
+      const hasUTSGeometry=(candidates||[]).some(c=>Math.abs(c.x-193.3)<1.5&&Math.abs(c.w-324.2)<2&&c.h>20&&c.h<25)
+        && (candidates||[]).some(c=>Math.abs(c.x-198.7)<1.5&&Math.abs(c.w-325.6)<2&&c.h>27&&c.h<30)
+        && (candidates||[]).filter(c=>c.w>100&&c.h>20&&c.h<45).length>=6;
+      if(!hasUTSGeometry)return null;
+
+      // Convert the visible top-left coordinates of the original form into
+      // PDF bottom-left coordinates used by PDF.js / pdf-lib.
+      const topToPdf=(x,y,w,h)=>[x,pageH-y-h,w,h];
+      const fields=[];
+      const add=(rect,kind,nearby)=>fields.push({rect,box:visualRectToBox(rect,viewport),kind,nearby});
+
+      // Two actual checkboxes.
+      add([73.3, pageH-217.1, 9.2, 9.3], 'checkbox', 'checkbox');
+      add([73.3, pageH-487.7, 9.2, 9.2], 'checkbox', 'checkbox');
+
+      // One logical field for each row: Name, Signature, Date.
+      add(topToPdf(193.3,526.3,324.2,21.7), 'visual-text', 'Print Name');
+      add(topToPdf(193.3,552.2,324.2,23.0), 'signature', 'Applicant signature (as per passport)');
+      add(topToPdf(193.3,579.4,324.2,23.0), 'visual-text', 'Date (dd/mm/yy)');
+      add(topToPdf(198.7,651.9,325.6,28.3), 'visual-text', 'Print Name');
+      add(topToPdf(198.7,681.7,325.6,40.1), 'signature', 'Applicant signature (as per passport)');
+      add(topToPdf(198.7,723.3,325.6,28.8), 'visual-text', 'Date (dd/mm/yy)');
+      return fields;
     }
     return null;
   }
