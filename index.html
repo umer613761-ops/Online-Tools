@@ -4912,4 +4912,38 @@ html.dark-mode nav.category-nav .category-link.active-button {
     font-size: 12px !important;
   }
 }
+
+/* FINAL IMAGE TOOL GRID FIX — 3 columns desktop, 2 tablet, 1 mobile */
+.tools-grid.image-tools-three-columns {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+.tools-grid.image-tools-three-columns .tool-card[data-category="image"] {
+  grid-column: span 1 !important;
+}
+
+/* Center the seventh/final image tool on the last row. */
+.tools-grid.image-tools-three-columns .tool-card[data-category="image"]:nth-child(21) {
+  grid-column: 2 !important;
+}
+
+@media (max-width: 900px) {
+  .tools-grid.image-tools-three-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .tools-grid.image-tools-three-columns .tool-card[data-category="image"]:nth-child(21) {
+    grid-column: span 1 !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .tools-grid.image-tools-three-columns {
+    grid-template-columns: 1fr !important;
+  }
+
+  .tools-grid.image-tools-three-columns .tool-card[data-category="image"]:nth-child(21) {
+    grid-column: span 1 !important;
+  }
+}
 </style>
