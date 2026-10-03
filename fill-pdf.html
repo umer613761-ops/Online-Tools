@@ -4228,19 +4228,16 @@ html.dark-mode .fill-pdf-modal-clear,html.dark-mode .fill-pdf-modal-cancel{backg
     // one logical Name, Signature and Date field per row. Expose only those
     // six logical fields plus the two checkboxes.
     if(Math.abs(pageW-595.22)<2 && Math.abs(pageH-842)<2){
-      const near=(a,b,t)=>Math.abs(a-b)<=t;
-      const has=(x,y,w,h,t=2)=>candidates.some(c=>near(c.x,x,t)&&near(c.y,y,t)&&near(c.w,w,t)&&near(c.h,h,t));
-      const structured=
-        has(193.3,526.3,324.2,21.7) && has(193.3,552.2,324.2,23.0) &&
-        has(193.3,579.4,107.0,23.0) && has(301.9,579.4,107.0,23.0) &&
-        has(410.4,579.4,107.0,23.0) &&
-        has(198.7,651.9,325.7,28.3) && has(198.7,681.7,325.7,40.2) &&
-        has(198.7,723.3,107.8,28.8);
-      if(structured){
+      // UTS College Applicant Declaration is a known single-page form.
+      // Its blank form boxes are drawn as nested PDF paths rather than AcroForm
+      // widgets, so do NOT expose each decorative border as a separate field.
+      // Build exactly the eight logical controls visible to the user.
+      const pageText=(textContent.items||[]).map(i=>String(i.str||'')).join(' ').toLowerCase();
+      if(pageText.includes('uts college') && pageText.includes('applicant declaration') && pageText.includes('privacy collection notice')){
         const fields=[];
         const add=(rect,kind,nearby)=>fields.push({rect,box:visualRectToBox(rect,viewport),kind,nearby});
-        add([73.3,207.8,9.2,9.2],'checkbox','checkbox');
-        add([73.3,478.5,9.2,9.2],'checkbox','checkbox');
+        add([73.28,207.84,9.24,9.23],'checkbox','checkbox');
+        add([73.28,478.49,9.24,9.23],'checkbox','checkbox');
         add([193.3,526.3,324.2,21.7],'visual-text','Print Name');
         add([193.3,552.2,324.2,23.0],'signature','Applicant signature (as per passport)');
         add([193.3,579.4,324.2,23.0],'visual-text','Date (dd/mm/yy)');
@@ -4306,7 +4303,11 @@ html.dark-mode .fill-pdf-modal-clear,html.dark-mode .fill-pdf-modal-cancel{backg
       box.appendChild(b);overlay.appendChild(box);return {annotation:{rect:v.rect,fieldName:'visual_signature_'+page.pageNumber+'_'+Math.round(v.rect[1]),fieldType:'Sig'},box,control:b,kind:'signature',page,visual:true,pdfRect:v.rect};
     }
     if(v.kind==='checkbox'){
-      const wrap=document.createElement('label');wrap.className='fill-pdf-checkbox';const cb=document.createElement('input');cb.type='checkbox';wrap.appendChild(cb);box.appendChild(wrap);overlay.appendChild(box);return {annotation:{rect:v.rect,fieldName:'visual_checkbox_'+page.pageNumber+'_'+Math.round(v.rect[1]),fieldType:'Btn'},box,control:cb,kind:'checkbox',page,visual:true,pdfRect:v.rect};
+      const wrap=document.createElement('label');wrap.className='fill-pdf-checkbox';
+      wrap.style.background='transparent';wrap.style.border='0';wrap.style.borderRadius='0';
+      const cb=document.createElement('input');cb.type='checkbox';cb.style.width='13px';cb.style.height='13px';cb.style.margin='0';
+      wrap.appendChild(cb);box.appendChild(wrap);overlay.appendChild(box);
+      return {annotation:{rect:v.rect,fieldName:'visual_checkbox_'+page.pageNumber+'_'+Math.round(v.rect[1]),fieldType:'Btn'},box,control:cb,kind:'checkbox',page,visual:true,pdfRect:v.rect};
     }
     const ctl=document.createElement(r.height>32?'textarea':'input');ctl.className='fill-pdf-control';if(ctl.tagName==='TEXTAREA'){ctl.rows=4;ctl.style.resize='none';ctl.style.padding='6px';}else ctl.type='text';box.appendChild(ctl);overlay.appendChild(box);return {annotation:{rect:v.rect,fieldName:'visual_text_'+page.pageNumber+'_'+Math.round(v.rect[1]),fieldType:'Tx'},box,control:ctl,kind:'visual-text',page,visual:true,pdfRect:v.rect};
   }
