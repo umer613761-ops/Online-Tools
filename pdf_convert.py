@@ -2074,7 +2074,7 @@ def _add_native_page_as_editable_layout(doc, section, page, plumber_page, first_
             if not r: continue
             if r.y0 < 80 and r.width >= page.rect.width*0.75 and r.height <= 90:
                 pix=page.get_pixmap(matrix=fitz.Matrix(2,2), clip=r, alpha=False, colorspace=fitz.csRGB)
-                _add_positioned_image(doc,section,pix.tobytes('png'),float(r.x0),float(r.y0),float(r.width),float(r.height))
+                _add_positioned_header_image(section,pix.tobytes('png'),float(r.x0),float(r.y0),float(r.width),float(r.height))
                 header_rendered=True
                 break
     except Exception:
@@ -2826,6 +2826,139 @@ def _add_native_vector_visuals(doc, section, page, background_added=False, table
     except Exception:
         pass
 
+def _form_rectangles(page):
+    """Return large white form-entry rectangles drawn on a PDF page."""
+    rects=[]
+    try:
+        pw,ph=float(page.rect.width),float(page.rect.height)
+        for d in page.get_drawings():
+            r=d.get('rect')
+            if not r: continue
+            w,h=float(r.width),float(r.height)
+            fill=d.get('fill'); stroke=d.get('color')
+            if w < pw*0.55 or h < 80: continue
+            # Typical form answer boxes: white fill, dark stroke, substantial area.
+            if fill is not None and all(abs(float(v)-1.0) < 0.02 for v in fill[:3]) and stroke is not None:
+                if w*h >= pw*ph*0.05:
+                    rects.append((float(r.x0),float(r.y0),float(r.x1),float(r.y1)))
+    except Exception:
+        pass
+    return sorted(rects,key=lambda r:(r[1],r[0]))
+
+
+def _add_form_box_flow(doc, rect, page_width, left_margin):
+    """Recreate a large PDF form-entry rectangle as a fixed-height Word table."""
+    x0,y0,x1,y1=map(float,rect)
+    width=max(40.0,x1-x0)
+    height=max(24.0,y1-y0)
+    table=doc.add_table(rows=1,cols=1)
+    table.autofit=False
+    cell=table.cell(0,0)
+    _set_cell_zero_margins(cell)
+    cell.width=Inches(width/72.0)
+    # Match the source rectangle with a simple black outline.
+    tcPr=cell._tc.get_or_add_tcPr()
+    borders=tcPr.first_child_found_in('w:tcBorders')
+    if borders is None:
+        borders=OxmlElement('w:tcBorders'); tcPr.append(borders)
+    for edge in ('top','left','bottom','right'):
+        el=borders.find(qn('w:'+edge))
+        if el is None:
+            el=OxmlElement('w:'+edge); borders.append(el)
+        el.set(qn('w:val'),'single'); el.set(qn('w:sz'),'6'); el.set(qn('w:space'),'0'); el.set(qn('w:color'),'000000')
+    trPr=table.rows[0]._tr.get_or_add_trPr()
+    ht=OxmlElement('w:trHeight'); ht.set(qn('w:val'),str(max(1,int(height*20)))); ht.set(qn('w:hRule'),'exact'); trPr.append(ht)
+    tablePr=table._tbl.tblPr
+    tblW=tablePr.first_child_found_in('w:tblW')
+    if tblW is None:
+        tblW=OxmlElement('w:tblW'); tablePr.append(tblW)
+    tblW.set(qn('w:w'),str(max(1,int(width*20)))); tblW.set(qn('w:type'),'dxa')
+    # Source form boxes are almost always aligned with the text column.
+    indent=OxmlElement('w:tblInd'); indent.set(qn('w:w'),str(max(0,int((x0-left_margin)*20)))); indent.set(qn('w:type'),'dxa'); tablePr.append(indent)
+    p=cell.paragraphs[0]
+    p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1
+    tablePr=table._tbl.tblPr
+    tblCellMar=tablePr.first_child_found_in('w:tblCellMar')
+    if tblCellMar is None:
+        tblCellMar=OxmlElement('w:tblCellMar'); tablePr.append(tblCellMar)
+    for edge in ('top','left','bottom','right'):
+        el=OxmlElement('w:'+edge); el.set(qn('w:w'),'0'); el.set(qn('w:type'),'dxa'); tblCellMar.append(el)
+    return table
+
+
+def _add_form_footer(section, page):
+    """Put a repeated form footer into the real Word footer so it never creates an extra body page."""
+    footer=section.footer
+    footer.is_linked_to_previous=False
+    for p in list(footer.paragraphs):
+        if p._element.getparent() is not None:
+            p._element.getparent().remove(p._element)
+    lines=[]
+    try:
+        for block in page.get_text('dict').get('blocks',[]):
+            if block.get('type') != 0 or block.get('bbox',[0,0,0,0])[1] < page.rect.height*0.88:
+                continue
+            for line in block.get('lines',[]):
+                spans=[sp for sp in line.get('spans',[]) if (sp.get('text') or '').strip()]
+                if spans:
+                    lines.append((min(float(sp['bbox'][0]) for sp in spans), ''.join(sp.get('text','').strip() for sp in spans)))
+    except Exception:
+        pass
+    if not lines:
+        return
+    table=footer.add_table(rows=1,cols=min(3,max(1,len(lines))),width=Inches(max(1.0,float(page.rect.width)-80)/72.0))
+    table.autofit=False; _remove_table_borders(table)
+    cells=table.rows[0].cells
+    for i,(x,textv) in enumerate(sorted(lines,key=lambda x:x[0])[:3]):
+        cell=cells[i]; _set_cell_zero_margins(cell)
+        p=cell.paragraphs[0]; p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1
+        p.alignment=0 if i==0 else 1 if i==1 else 2
+        r=p.add_run(_xml_safe_text(textv)); r.font.name='Arial'; r.font.size=Pt(7)
+    section.footer_distance=Inches(0)
+
+def _append_form_flow_page(doc, section, page, blocks, form_rects):
+    """Reconstruct simple form pages with editable questions and fixed answer boxes."""
+    pw,ph=float(page.rect.width),float(page.rect.height)
+    min_x=min([b['x'] for b in blocks]+[r[0] for r in form_rects]+[40.0])
+    max_x=max([b['x2'] for b in blocks]+[r[2] for r in form_rects]+[pw-40.0])
+    section.top_margin=Inches(0); section.bottom_margin=Inches(0)
+    section.left_margin=Inches(max(28,min(90,min_x))/72.0)
+    section.right_margin=Inches(max(28,min(90,pw-max_x))/72.0)
+    section.header_distance=Inches(0); section.footer_distance=Inches(0)
+
+    items=[]
+    # Preserve wide top artwork as normal inline content so the header itself does not
+    # consume vertical space in Word.
+    for im in page.get_images(full=True):
+        try:
+            data=page.parent.extract_image(im[0]).get('image')
+            if not data: continue
+            for rect in page.get_image_rects(im[0]):
+                if rect.y0 <= ph*0.20 and rect.width >= pw*0.60:
+                    items.append(('image',float(rect.y0),float(rect.y1),(data,float(rect.x0),float(rect.width),float(rect.height))))
+        except Exception:
+            continue
+    for b in blocks: items.append(('text',b['y'],b['y2'],b))
+    for r in form_rects: items.append(('box',r[1],r[3],r))
+    items.sort(key=lambda x:(x[1], 0 if x[0]=='image' else 1 if x[0]=='text' else 2))
+    cursor=0.0
+    for kind,y,y2,obj in items:
+        gap=max(0.0,float(y)-cursor)
+        if gap>0.5:
+            sp=doc.add_paragraph(); sp.paragraph_format.space_before=Pt(0); sp.paragraph_format.space_after=Pt(0); sp.paragraph_format.line_spacing=1
+            run=sp.add_run('\u200b'); run.font.size=Pt(max(1.0,gap))
+        if kind=='image':
+            p=doc.add_paragraph(); p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1
+            p.paragraph_format.left_indent=Inches((float(obj[1])-float(min_x))/72.0)
+            run=p.add_run(); run.font.size=Pt(1)
+            run.add_picture(io.BytesIO(obj[0]),width=Inches(obj[2]/72.0),height=Inches(obj[3]/72.0))
+        elif kind=='text':
+            p=doc.add_paragraph(); p.paragraph_format.space_before=Pt(0); p.paragraph_format.space_after=Pt(0); p.paragraph_format.line_spacing=1
+            _format_native_paragraph(p,obj,1.0)
+        else:
+            _add_form_box_flow(doc,obj,pw,min_x)
+        cursor=float(y2)
+
 def _append_native_flow_page(doc, section, page, plumber_page, first_page=False, footer_lines=None):
     """General native-PDF reconstruction using normal editable Word flow."""
     _set_section_geometry(section,page)
@@ -2835,6 +2968,11 @@ def _append_native_flow_page(doc, section, page, plumber_page, first_page=False,
     prelim_tables=_native_tables(plumber_page)
     prelim_bboxes=[t['bbox'] for t in prelim_tables]
     prelim_blocks=_native_text_blocks(page,prelim_bboxes,footer_lines)
+    form_rects=_form_rectangles(page)
+    if form_rects and not prelim_tables and len(prelim_blocks) <= 12:
+        _add_form_footer(section,page)
+        _append_form_flow_page(doc,section,page,prelim_blocks,form_rects)
+        return
     min_x=min([b['x'] for b in prelim_blocks]+[t['bbox'][0] for t in prelim_tables]+[40.0])
     max_x=max([b['x2'] for b in prelim_blocks]+[t['bbox'][2] for t in prelim_tables]+[page.rect.width-40.0])
     section.left_margin=Inches(max(28,min(90,min_x))/72.0)
