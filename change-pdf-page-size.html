@@ -3982,6 +3982,83 @@ html:not(.dark-mode) .tool-category-link:not(.active) {
 }
 </style>
 
+
+<style id="wrenchoo-ad-final-layout">
+/* Final desktop ad behavior: keep the ad beside the tool normally; stack it only when browser zoom increases. */
+@media (min-width: 701px) {
+  body:not(.wrenchoo-ad-zoom-stack) .page-content > div[style*="grid-template-columns"] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 200px !important;
+    gap: 28px !important;
+    align-items: start !important;
+  }
+  body:not(.wrenchoo-ad-zoom-stack) .page-content > div[style*="grid-template-columns"] > .tn-ad-left-column {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    position: static !important;
+  }
+  body:not(.wrenchoo-ad-zoom-stack) .page-content > div[style*="grid-template-columns"] > .ad-column {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    width: 200px !important;
+    min-width: 200px !important;
+    max-width: 200px !important;
+    position: sticky !important;
+    top: 20px !important;
+    margin: 0 !important;
+    align-self: start !important;
+  }
+  body:not(.wrenchoo-ad-zoom-stack) .page-content > div[style*="grid-template-columns"] > .ad-column .ad-box {
+    width: 200px !important;
+    max-width: 200px !important;
+  }
+
+  body.wrenchoo-ad-zoom-stack .page-content > div[style*="grid-template-columns"] {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 24px !important;
+  }
+  body.wrenchoo-ad-zoom-stack .page-content > div[style*="grid-template-columns"] > .tn-ad-left-column,
+  body.wrenchoo-ad-zoom-stack .page-content > div[style*="grid-template-columns"] > .ad-column {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    position: static !important;
+    margin: 0 !important;
+  }
+  body.wrenchoo-ad-zoom-stack .page-content > div[style*="grid-template-columns"] > .ad-column .ad-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+</style>
+<script id="wrenchoo-ad-final-zoom">
+(function () {
+  function update() {
+    if (window.innerWidth <= 700) {
+      document.body.classList.remove('wrenchoo-ad-zoom-stack');
+      return;
+    }
+    var dpr = window.devicePixelRatio || 1;
+    var key = 'wrenchooBaseDPR';
+    var base = parseFloat(sessionStorage.getItem(key) || '');
+    if (!base || !isFinite(base)) {
+      base = dpr;
+      sessionStorage.setItem(key, String(base));
+    }
+    document.body.classList.toggle('wrenchoo-ad-zoom-stack', dpr / base >= 1.20);
+  }
+  update();
+  window.addEventListener('resize', update);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', update);
+})();
+</script>
 </head>
 <body>
 <!-- ========================================
@@ -4829,6 +4906,107 @@ html.dark-mode main .tool-description {
 }
 </style>
 
+<style id="wrenchoo-tool-page-ad-layout-final">
+/* Keep the tool page content and advertisement in separate columns when there is enough room.
+   Below 1200px, including when desktop is zoomed in, the ad moves below the tool.
+   Do not apply this layout to home.html or index.html. */
+@media (min-width: 1201px) {
+  .page-content > div[style*="grid-template-columns"] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 200px !important;
+    gap: 28px !important;
+    align-items: start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .tn-ad-left-column {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: auto !important;
+    min-width: 0 !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .ad-column {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    width: 200px !important;
+    min-width: 200px !important;
+    max-width: 200px !important;
+    position: sticky !important;
+    top: 20px !important;
+    margin: 0 !important;
+    align-self: start !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .ad-column .ad-box {
+    width: 200px !important;
+    max-width: 200px !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .page-content > div[style*="grid-template-columns"] {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 24px !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .tn-ad-left-column,
+  .page-content > div[style*="grid-template-columns"] > .ad-column {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    position: static !important;
+    margin: 0 !important;
+  }
+  .page-content > div[style*="grid-template-columns"] > .ad-column .ad-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+</style>
+
+
+<style id="wrenchoo-desktop-zoom-ad-stack-final">
+/* Desktop browser zoom only: beside the tool through 110%; below it from 125%+. */
+@media (min-width: 701px) {
+  body.tn-zoom-stacked .page-layout,
+  body.tn-zoom-stacked .page-content > div[style*="grid-template-columns"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  body.tn-zoom-stacked .page-layout > .ad-column,
+  body.tn-zoom-stacked .page-content > div[style*="grid-template-columns"] > .ad-column {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    position: static !important;
+    margin: 28px 0 0 !important;
+  }
+  body.tn-zoom-stacked .page-layout > .ad-column .ad-box,
+  body.tn-zoom-stacked .page-content > div[style*="grid-template-columns"] > .ad-column .ad-box {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+</style>
+<script id="wrenchoo-desktop-zoom-ad-stack-final-script">
+(function () {
+  function updateZoomAdLayout() {
+    if (window.matchMedia('(max-width: 700px)').matches) {
+      document.body.classList.remove('tn-zoom-stacked');
+      return;
+    }
+    var ratio = window.outerWidth / Math.max(window.innerWidth, 1);
+    document.body.classList.toggle('tn-zoom-stacked', ratio >= 1.18);
+  }
+  updateZoomAdLayout();
+  window.addEventListener('resize', updateZoomAdLayout, { passive: true });
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', updateZoomAdLayout, { passive: true });
+})();
+</script>
 </body>
 </html>
 
