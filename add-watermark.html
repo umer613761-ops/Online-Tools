@@ -4204,6 +4204,43 @@ html.dark-mode #wrenchoo-ratings .wr-rating-review {
 }
 html.dark-mode #wrenchoo-ratings .wr-rating-review::placeholder { color:#AEB7BF !important; }
 </style>
+
+<style id="wrenchoo-faq-and-preview-spacing-final">
+/* Keep the preview border slightly below the bottom row of dots. */
+@media (min-width: 701px) {
+  .upload-area,
+  .tn-shared-upload-area.tn-image-upload-area,
+  .tn-shared-upload-area {
+    min-height: 404px !important;
+  }
+  .tn-shared-upload-area.has-image {
+    min-height: 0 !important;
+  }
+}
+
+/* Give FAQs their own clearly separated section below the rating card. */
+.wr-faq {
+  margin-top: 48px !important;
+  margin-bottom: 42px !important;
+  padding: 28px 30px 30px !important;
+  background: #ffffff !important;
+  border: 1px solid #dfe5eb !important;
+  border-radius: 12px !important;
+  box-shadow: 0 5px 16px rgba(31,45,61,.08) !important;
+}
+html.dark-mode .wr-faq {
+  background: #171d25 !important;
+  border-color: #2e3946 !important;
+  box-shadow: 0 5px 16px rgba(0,0,0,.18) !important;
+}
+@media (max-width: 700px) {
+  .wr-faq {
+    margin-top: 36px !important;
+    margin-bottom: 32px !important;
+    padding: 22px 20px 24px !important;
+  }
+}
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -4323,6 +4360,108 @@ html.dark-mode #wrenchoo-ratings .wr-rating-review::placeholder { color:#AEB7BF 
     <div class="wr-rating-message" aria-live="polite"></div>
   </div>
   <div class="wr-reviews" aria-live="polite"></div>
+
+<style id="wrenchoo-faq-accordion">
+/* Wrenchoo FAQ — clean expandable accordion */
+.wr-faq {
+  width: 100%;
+  max-width: none;
+  margin: 0 0 42px;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+.wr-faq-title {
+  margin: 0 0 14px;
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: #24354b;
+}
+.wr-faq-list {
+  border-top: 1px solid rgba(36,53,75,.18);
+}
+.wr-faq-item {
+  margin: 0;
+  border-bottom: 1px solid rgba(36,53,75,.18);
+}
+.wr-faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  position: relative;
+  padding: 16px 42px 16px 0;
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: #24354b;
+}
+.wr-faq-item summary::-webkit-details-marker { display:none; }
+.wr-faq-item summary::after {
+  content: "+";
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 400;
+  color: #667789;
+}
+.wr-faq-item[open] summary::after { content: "−"; }
+.wr-faq-answer {
+  margin: -2px 0 0;
+  padding: 0 42px 17px 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #536579;
+}
+html.dark-mode .wr-faq-title,
+html.dark-mode .wr-faq-item summary {
+  color: #eef3f7;
+}
+html.dark-mode .wr-faq-list,
+html.dark-mode .wr-faq-item {
+  border-color: rgba(255,255,255,.16);
+}
+html.dark-mode .wr-faq-item summary::after {
+  color: #aeb8c2;
+}
+html.dark-mode .wr-faq-answer {
+  color: #c3ccd5;
+}
+@media (max-width:700px) {
+  .wr-faq { margin-bottom: 32px; }
+  .wr-faq-title { font-size: 21px; }
+  .wr-faq-item summary { padding: 14px 36px 14px 0; font-size: 15px; }
+  .wr-faq-answer { padding-right: 36px; font-size: 14px; }
+}
+</style>
+
+<section class="wr-faq" aria-labelledby="wr-faq-title">
+  <h2 id="wr-faq-title" class="wr-faq-title">Frequently Asked Questions</h2>
+  <div class="wr-faq-list">
+    <details class="wr-faq-item">
+      <summary>What does this tool do?</summary>
+      <div class="wr-faq-answer">Add a text watermark to your PDF to help identify, label, or protect your document.</div>
+    </details>
+    <details class="wr-faq-item">
+      <summary>How do I add a watermark?</summary>
+      <div class="wr-faq-answer">Upload your PDF, enter your watermark text, adjust the available settings, and create the watermarked PDF.</div>
+    </details>
+    <details class="wr-faq-item">
+      <summary>Can I customize the watermark?</summary>
+      <div class="wr-faq-answer">Yes. The tool provides settings for the watermark appearance and placement.</div>
+    </details>
+    <details class="wr-faq-item">
+      <summary>Will the original PDF be changed?</summary>
+      <div class="wr-faq-answer">No. Wrenchoo creates a new processed PDF.</div>
+    </details>
+    <details class="wr-faq-item">
+      <summary>Is this tool free to use?</summary>
+      <div class="wr-faq-answer">Yes. The tool is free to use.</div>
+    </details>
+  </div>
+</section>
 </section>
 <aside aria-label="Advertisement" class="ad-column">
 <div class="ad-box">
