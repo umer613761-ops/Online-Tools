@@ -8,6 +8,7 @@ from pathlib import Path
 from flask import Flask, jsonify, request, send_file, send_from_directory
 import fitz
 from flask_cors import CORS
+from ratings_store import init_ratings_db, save_rating, get_rating_summary
 
 from pdf_convert import convert_txt, convert_docx, convert_html, convert_html_text, convert_html_image, convert_xlsx, parse_pages, safe_stem
 from pdf_to_xlsx import convert_pdf_to_xlsx as convert_pdf_to_xlsx_layout
@@ -25,6 +26,51 @@ def safe_filename(name: str) -> str:
     stem = re.sub(r"[^A-Za-z0-9._-]+", "_", Path(name).stem).strip("._") or "document"
     return stem + ".pdf"
 
+
+# -----------------------------
+# Anonymous tool ratings/reviews
+# -----------------------------
+RATING_SLUG_RE = re.compile(r"^[a-z0-9-]{1,100}$")
+VISITOR_ID_RE = re.compile(r"^[A-Za-z0-9_-]{16,128}$")
+
+try:
+    init_ratings_db()
+except Exception as exc:
+    app.logger.warning("Ratings database initialization failed: %s", exc)
+
+@app.get("/api/ratings/<tool_slug>")
+def get_tool_ratings(tool_slug):
+    if not RATING_SLUG_RE.fullmatch(tool_slug):
+        return jsonify({"ok": False, "error": "Invalid tool."}), 400
+    try:
+        return jsonify({"ok": True, **get_rating_summary(tool_slug)})
+    except Exception:
+        app.logger.exception("Could not load ratings")
+        return jsonify({"ok": False, "error": "Ratings are temporarily unavailable."}), 503
+
+@app.post("/api/ratings/<tool_slug>")
+def post_tool_rating(tool_slug):
+    if not RATING_SLUG_RE.fullmatch(tool_slug):
+        return jsonify({"ok": False, "error": "Invalid tool."}), 400
+    data = request.get_json(silent=True) or {}
+    visitor_id = str(data.get("visitor_id") or "").strip()
+    review = str(data.get("review") or "").strip()
+    try:
+        rating = int(data.get("rating"))
+    except (TypeError, ValueError):
+        rating = 0
+    if not VISITOR_ID_RE.fullmatch(visitor_id):
+        return jsonify({"ok": False, "error": "Please refresh and try again."}), 400
+    if rating not in (1, 2, 3, 4, 5):
+        return jsonify({"ok": False, "error": "Please choose a rating from 1 to 5."}), 400
+    if len(review) > 500:
+        return jsonify({"ok": False, "error": "Review must be 500 characters or less."}), 400
+    try:
+        save_rating(tool_slug, visitor_id, rating, review)
+        return jsonify({"ok": True, **get_rating_summary(tool_slug)})
+    except Exception:
+        app.logger.exception("Could not save rating")
+        return jsonify({"ok": False, "error": "Your feedback could not be saved right now."}), 503
 
 @app.get("/")
 def root():

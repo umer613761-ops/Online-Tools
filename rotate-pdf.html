@@ -4619,6 +4619,95 @@ html:not(.dark-mode) main .tool-description {
   padding: 0 !important;
 }
 </style>
+<link rel="stylesheet" href="wrenchoo-ratings.css">
+<style id="wrenchoo-ratings-inline-style">
+ { box-sizing:border-box; }
+.wr-ratings {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 28px 0 42px !important;
+  padding: 26px 30px 28px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  border-radius: 12px !important;
+  background: #181b1d !important;
+  box-shadow: 0 5px 16px rgba(0,0,0,.12) !important;
+  text-align: left !important;
+  font-family: inherit !important;
+}
+ .wr-ratings-head { margin:0 !important; }
+#wrenchoo-ratings .wr-ratings-title {
+  margin:0 !important; font-size:24px !important; line-height:1.2 !important;
+  font-weight:700 !important; color:#f1f4f7 !important;
+}
+#wrenchoo-ratings .wr-ratings-subtitle {
+  margin:6px 0 18px !important; font-size:15px !important; line-height:1.35 !important;
+  color:#aeb7bf !important;
+}
+#wrenchoo-ratings .wr-rating-main {
+  display:flex !important; align-items:center !important; gap:28px !important;
+  flex-wrap:nowrap !important;
+}
+#wrenchoo-ratings .wr-rating-stars {
+  display:flex !important; align-items:center !important; gap:4px !important;
+  flex:0 0 auto !important; margin:0 !important;
+}
+#wrenchoo-ratings .wr-rating-star {
+  appearance:none !important; border:0 !important; background:transparent !important;
+  padding:0 1px !important; margin:0 !important; width:auto !important; height:auto !important;
+  min-width:0 !important; min-height:0 !important; border-radius:0 !important;
+  color:#737b82 !important; font-family:Arial,sans-serif !important;
+  font-size:38px !important; line-height:1 !important; cursor:pointer !important;
+  box-shadow:none !important; transform:none !important;
+}
+#wrenchoo-ratings .wr-rating-star:hover,
+#wrenchoo-ratings .wr-rating-star:focus-visible,
+#wrenchoo-ratings .wr-rating-star.is-selected,
+#wrenchoo-ratings .wr-rating-star.is-preview { color:#218739 !important; }
+#wrenchoo-ratings .wr-rating-write {
+  appearance:none !important; border:0 !important; border-radius:6px !important;
+  background:#218739 !important; color:#fff !important; padding:12px 22px !important;
+  width:auto !important; min-width:150px !important; height:auto !important;
+  font:inherit !important; font-size:15px !important; font-weight:700 !important;
+  line-height:1.2 !important; cursor:pointer !important; white-space:nowrap !important;
+  box-shadow:none !important;
+}
+#wrenchoo-ratings .wr-ratings-summary { margin:8px 0 0 !important; min-height:0 !important; font-size:11px !important; color:#9da8b1 !important; }
+#wrenchoo-ratings .wr-rating-form { display:none !important; width:100% !important; margin-top:12px !important; }
+#wrenchoo-ratings .wr-rating-form.is-open { display:block !important; }
+#wrenchoo-ratings .wr-rating-review {
+  display:block !important; width:100% !important; min-height:76px !important; box-sizing:border-box !important;
+  border:1px solid rgba(255,255,255,.16) !important; border-radius:6px !important;
+  background:#111416 !important; color:#eef3f7 !important; padding:9px 10px !important;
+  font:inherit !important; font-size:12px !important; line-height:1.4 !important;
+}
+#wrenchoo-ratings .wr-rating-actions { display:flex !important; gap:8px !important; margin-top:8px !important; }
+#wrenchoo-ratings .wr-rating-submit { border:0 !important; border-radius:6px !important; background:#218739 !important; color:#fff !important; padding:8px 14px !important; font-size:14px !important; font-weight:700 !important; }
+#wrenchoo-ratings .wr-rating-cancel { border:0 !important; background:transparent !important; color:#8e99a2 !important; padding:7px 4px !important; font-size:12px !important; }
+#wrenchoo-ratings .wr-rating-message { min-height:14px !important; margin-top:6px !important; font-size:11px !important; }
+#wrenchoo-ratings .wr-reviews { width:100% !important; margin:16px 0 0 !important; }
+
+html:not(.dark-mode) #wrenchoo-ratings.wr-ratings, body:not(.dark-mode) #wrenchoo-ratings.wr-ratings {
+  border-color:rgba(255,255,255,.10) !important; background:#f1f3f5 !important; box-shadow:0 5px 16px rgba(0,0,0,.12) !important;
+}
+html:not(.dark-mode) #wrenchoo-ratings .wr-ratings-title, body:not(.dark-mode) #wrenchoo-ratings .wr-ratings-title { color:#263548 !important; }
+html:not(.dark-mode) #wrenchoo-ratings .wr-ratings-subtitle, body:not(.dark-mode) #wrenchoo-ratings .wr-ratings-subtitle { color:#5f7185 !important; }
+html:not(.dark-mode) #wrenchoo-ratings .wr-rating-star, body:not(.dark-mode) #wrenchoo-ratings .wr-rating-star { color:#c8cdd1 !important; }
+html:not(.dark-mode) #wrenchoo-ratings .wr-rating-star.is-selected,
+html:not(.dark-mode) #wrenchoo-ratings .wr-rating-star.is-preview,
+html:not(.dark-mode) #wrenchoo-ratings .wr-rating-star:hover,
+body:not(.dark-mode) #wrenchoo-ratings .wr-rating-star.is-selected,
+body:not(.dark-mode) #wrenchoo-ratings .wr-rating-star.is-preview,
+body:not(.dark-mode) #wrenchoo-ratings .wr-rating-star:hover { color:#218739 !important; }
+html:not(.dark-mode) #wrenchoo-ratings .wr-rating-review, body:not(.dark-mode) #wrenchoo-ratings .wr-rating-review { background:#111416 !important; color:#eef3f7 !important; border-color:rgba(255,255,255,.16) !important; }
+
+@media (max-width:700px) {
+  #wrenchoo-ratings.wr-ratings { width:100% !important; max-width:none !important; margin:24px 0 40px !important; padding:20px !important; }
+  #wrenchoo-ratings .wr-rating-main { gap:10px !important; }
+  #wrenchoo-ratings .wr-rating-star { font-size:30px !important; }
+  #wrenchoo-ratings .wr-rating-write { min-width:132px !important; padding:10px 14px !important; }
+}
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -4708,7 +4797,34 @@ html:not(.dark-mode) main .tool-description {
         ========================================= -->
 </div>
 <!-- ADVERTISEMENT -->
-</div><aside aria-label="Advertisement" class="ad-column">
+</div><section id="wrenchoo-ratings" class="wr-ratings" data-tool-slug="rotate-pdf" aria-labelledby="wrenchoo-ratings-title">
+  <div class="wr-ratings-head">
+    <h2 id="wrenchoo-ratings-title" class="wr-ratings-title">Rate this tool</h2>
+    <p class="wr-ratings-subtitle">Tell others what you think.</p>
+  </div>
+  <div class="wr-rating-main">
+    <div class="wr-rating-stars" role="group" aria-label="Rate this tool from 1 to 5 stars">
+      <button class="wr-rating-star" type="button" data-rating="1" aria-label="1 star" aria-pressed="false">★</button>
+      <button class="wr-rating-star" type="button" data-rating="2" aria-label="2 stars" aria-pressed="false">★</button>
+      <button class="wr-rating-star" type="button" data-rating="3" aria-label="3 stars" aria-pressed="false">★</button>
+      <button class="wr-rating-star" type="button" data-rating="4" aria-label="4 stars" aria-pressed="false">★</button>
+      <button class="wr-rating-star" type="button" data-rating="5" aria-label="5 stars" aria-pressed="false">★</button>
+    </div>
+    <button class="wr-rating-write" type="button" aria-expanded="false">Write a review</button>
+  </div>
+  <div class="wr-ratings-summary" aria-live="polite"></div>
+  <div class="wr-rating-form">
+    <label class="sr-only" for="wrenchoo-review-rotate-pdf">Optional review</label>
+    <textarea id="wrenchoo-review-rotate-pdf" class="wr-rating-review" maxlength="500" placeholder="Write your review (optional)"></textarea>
+    <div class="wr-rating-actions">
+      <button class="wr-rating-submit" type="button">Submit review</button>
+      <button class="wr-rating-cancel" type="button">Cancel</button>
+    </div>
+    <div class="wr-rating-message" aria-live="polite"></div>
+  </div>
+  <div class="wr-reviews" aria-live="polite"></div>
+</section>
+<aside aria-label="Advertisement" class="ad-column">
 <div class="ad-box">
 <div class="ad-content">
 <div class="ad-label">ADVERTISEMENT</div>
@@ -5813,6 +5929,7 @@ html.dark-mode .tn-image-cancel:active {
   }
 }
 </style>
+<script src="wrenchoo-ratings.js" defer></script>
 </body>
 </html>
 
