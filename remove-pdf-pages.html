@@ -5705,6 +5705,55 @@ html.dark-mode main .tool-description {
 }
 </style>
 <script src="wrenchoo-ratings.js" defer></script>
+
+<style id="wrenchoo-floating-preview-actions">
+/* Floating Download/Cancel controls: desktop only.
+   They appear only after the PDF previews load and stay centered to the preview area. */
+@media screen and (min-width: 651px) {
+  #removePdfActions,
+  .extract-pages-actions {
+    position: fixed !important;
+    left: var(--wrenchoo-actions-center, 50vw) !important;
+    bottom: 20px !important;
+    transform: translateX(-50%) !important;
+    z-index: 10050 !important;
+    margin: 0 !important;
+    width: max-content !important;
+    max-width: calc(100vw - 40px) !important;
+    box-sizing: border-box !important;
+  }
+}
+</style>
+<script id="wrenchoo-floating-preview-actions-script">
+(function () {
+  function setupFloatingActions(actionsId, previewId) {
+    var actions = document.getElementById(actionsId);
+    var preview = document.getElementById(previewId);
+    if (!actions || !preview) return;
+
+    function positionActions() {
+      if (window.innerWidth < 651 || actions.hidden) return;
+      var rect = preview.getBoundingClientRect();
+      if (!rect.width) return;
+      actions.style.setProperty('--wrenchoo-actions-center', (rect.left + rect.width / 2) + 'px');
+    }
+
+    var observer = new MutationObserver(function () {
+      if (!actions.hidden) {
+        requestAnimationFrame(positionActions);
+      }
+    });
+    observer.observe(actions, { attributes: true, attributeFilter: ['hidden', 'style'] });
+
+    window.addEventListener('resize', positionActions);
+    requestAnimationFrame(positionActions);
+  }
+
+  setupFloatingActions('removePdfActions', 'removePdfPreview');
+  setupFloatingActions('extractPdfActions', 'extractPdfPreview');
+})();
+</script>
+
 </body>
 </html>
 
