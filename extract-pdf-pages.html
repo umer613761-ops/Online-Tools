@@ -5742,8 +5742,29 @@ html.dark-mode .tn-image-cancel:active {
     requestAnimationFrame(positionActions);
   }
 
+  // Remove PDF Pages uses static action/preview elements.
   setupFloatingActions('removePdfActions', 'removePdfPreview');
-  setupFloatingActions('extractPdfActions', 'extractPdfPreview');
+
+  // Extract PDF Pages creates its preview/actions dynamically after upload.
+  // Watch for those elements so the controls are centered to the preview area,
+  // not to the browser window.
+  function setupExtractWhenReady() {
+    var actions = document.querySelector('.extract-pages-actions');
+    var preview = document.querySelector('.extract-pages-preview');
+    if (!actions || !preview) return false;
+
+    actions.id = 'extractPdfActions';
+    preview.id = 'extractPdfPreview';
+    setupFloatingActions('extractPdfActions', 'extractPdfPreview');
+    return true;
+  }
+
+  if (!setupExtractWhenReady()) {
+    var extractObserver = new MutationObserver(function () {
+      if (setupExtractWhenReady()) extractObserver.disconnect();
+    });
+    extractObserver.observe(document.body, { childList: true, subtree: true });
+  }
 })();
 </script>
 
