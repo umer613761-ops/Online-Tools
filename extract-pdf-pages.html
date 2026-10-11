@@ -3170,7 +3170,7 @@ html.dark-mode .footer-links a:hover { color: #ffffff !important; }
 }
 .tn-tool-category-list {
   display: grid;
-  grid-template-columns: repeat(7, max-content);
+  grid-template-columns: repeat(8, max-content);
   justify-content: space-between;
   column-gap: 0;
   row-gap: 14px;
@@ -4010,7 +4010,7 @@ html:not(.dark-mode) .tool-category-link:not(.active) {
     max-width: 200px !important;
     position: sticky !important;
     top: 20px !important;
-    margin: 0 !important;
+    margin: 88px 0 0 !important;
     align-self: start !important;
   }
   body:not(.wrenchoo-ad-zoom-stack) .page-content > div[style*="grid-template-columns"] > .ad-column .ad-box {
@@ -4039,6 +4039,14 @@ html:not(.dark-mode) .tool-category-link:not(.active) {
     box-sizing: border-box !important;
   }
 }
+
+
+  /* Reserve vertical space above the desktop ad for the upcoming extra tool links. */
+  @media (min-width: 701px) {
+    body:not(.wrenchoo-ad-zoom-stack) .page-content > div[style*="grid-template-columns"] > .ad-column {
+      margin-top: 76px !important;
+    }
+  }
 </style>
 <script id="wrenchoo-ad-final-zoom">
 (function () {
@@ -4240,6 +4248,83 @@ html.dark-mode .wr-faq {
 }
 </style>
 
+
+<style id="wrenchoo-ad-vertical-offset-fix">
+/* Explicitly move the desktop ad down to align with the tool heading. */
+@media (min-width: 701px) {
+  .page-content .ad-column {
+    transform: translateY(88px) !important;
+  }
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="wrenchoo-nav-match-reference-layout">
+@media (min-width: 651px) {
+  .tn-tool-category-bar {
+    width: calc(100vw - 80px) !important;
+    max-width: none !important;
+  }
+  .tn-tool-category-list {
+    display: grid !important;
+    grid-template-columns: repeat(8, max-content) !important;
+    justify-content: space-between !important;
+    column-gap: 16px !important;
+    row-gap: 14px !important;
+    width: 100% !important;
+  }
+}
+</style>
+
+
+<style id="wr-security-report-shared-styles">
+/* Consistent, polished security and support controls across all tools. */
+.tn-shared-upload-frame{position:relative!important;}
+.wr-file-security{position:absolute;right:10px;top:-16px;z-index:20;margin:0;transform:translateY(-100%);}
+.wr-file-security button{display:inline-flex;align-items:center;gap:7px;min-height:30px;padding:6px 11px;border:1px solid #c8e6cf;border-radius:999px;background:#f3fbf5;color:#216b36;font-family:inherit;font-size:12px;font-weight:600;line-height:1.2;letter-spacing:.01em;cursor:pointer;white-space:nowrap;box-shadow:0 1px 2px rgba(22,101,52,.05);transition:background .16s ease,border-color .16s ease,box-shadow .16s ease;}
+.wr-file-security button:hover{background:#e8f7ec;border-color:#9ed5ac;box-shadow:0 2px 7px rgba(22,101,52,.10);}
+.wr-file-security button:active{background:#def1e3;}
+.wr-file-security button span{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;flex:none;}
+.wr-file-security button svg{display:block;width:15px;height:15px;}
+.wr-file-security button:focus-visible,.wr-report-issue a:focus-visible,.wr-security-dialog-close:focus-visible{outline:2px solid #278344;outline-offset:3px;}
+.wr-report-issue{display:flex;justify-content:flex-end;width:100%;margin:7px 0 0;position:relative;z-index:2;}
+.wr-report-issue a{display:inline-flex;align-items:center;gap:6px;color:#6b7280;font-family:inherit;font-size:12px;font-weight:500;line-height:1.3;text-decoration:none;padding:5px 8px;border:1px solid transparent;border-radius:7px;transition:color .16s ease,background .16s ease,border-color .16s ease;}
+.wr-report-issue a span{display:inline-flex;align-items:center;justify-content:center;font-size:13px;line-height:1;color:#9b4a4a;}
+.wr-report-issue a:hover{color:#a52828;background:#fff5f5;border-color:#f3d7d7;}
+.wr-report-issue a:hover span{color:#b42323;}
+.wr-security-dialog{position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.52);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:20px;}
+.wr-security-dialog[aria-hidden="false"]{display:flex;}
+.wr-security-dialog-card{width:min(440px,100%);box-sizing:border-box;background:var(--card-bg,#fff);color:var(--text-color,#222);border:1px solid rgba(148,163,184,.25);border-radius:16px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.22);}
+.wr-security-dialog-card h2{margin:0 0 10px;font-size:20px;line-height:1.3;font-weight:700;letter-spacing:-.02em;}
+.wr-security-dialog-card p{font-size:14px;line-height:1.65;margin:0 0 18px;color:inherit;}
+.wr-security-dialog-close{border:0;border-radius:8px;background:#238636;color:#fff;padding:10px 16px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .16s ease;}
+.wr-security-dialog-close:hover{background:#1b742d;}
+html.dark-mode .wr-file-security button{background:#17281d;border-color:#315b3b;color:#b9e7c3;box-shadow:none;}
+html.dark-mode .wr-file-security button:hover{background:#1c3524;border-color:#477c53;}
+html.dark-mode .wr-report-issue a{color:#aeb5bf;}
+html.dark-mode .wr-report-issue a span{color:#e18a8a;}
+html.dark-mode .wr-report-issue a:hover{color:#ffb4b4;background:rgba(153,27,27,.16);border-color:rgba(248,113,113,.24);}
+@media(max-width:700px){
+ .wr-file-security{right:6px;top:-10px;}
+ .wr-file-security button{min-height:28px;font-size:11px;padding:5px 9px;gap:6px;}
+ .wr-file-security button svg{width:14px;height:14px;}
+ .wr-report-issue{margin-top:6px;}
+ .wr-report-issue a{font-size:11px;padding:5px 7px;}
+ .wr-security-dialog-card{padding:20px;border-radius:14px;}
+}
+@media(prefers-reduced-motion:reduce){.wr-file-security button,.wr-report-issue a,.wr-security-dialog-close{transition:none;}}
+</style>
+
 </head>
 <body>
 <!-- ========================================
@@ -4282,11 +4367,11 @@ html.dark-mode .wr-faq {
 
     <a class="tn-tool-category-link" href="merge-pdf.html">Merge</a>
     <a class="tn-tool-category-link" href="remove-pdf-pages.html">Remove Pages</a>
-    <a class="tn-tool-category-link" href="fill-pdf.html">Fill Pdf</a>
+    <a class="tn-tool-category-link" href="fill-pdf.html">Fill PDF</a>
     <a class="tn-tool-category-link" href="convert-to-pdf.html">Convert To</a>
     <a class="tn-tool-category-link" href="compress-pdf.html">Compress</a>
     <a class="tn-tool-category-link" href="change-pdf-page-size.html">Change Page size</a>
-    <a class="tn-tool-category-link" href="re-arrange-pdf-pages.html">Re-arrange</a>
+    <a class="tn-tool-category-link" href="re-arrange-pdf-pages.html">Re-arrange</a><a class="tn-tool-category-link" href="pdf-crop.html">Crop PDF</a>
     <a class="tn-tool-category-link" href="split-pdf.html">Split</a>
     <a class="tn-tool-category-link active" href="extract-pdf-pages.html">Extract Pages</a>
     <a class="tn-tool-category-link" href="add-watermark.html">Watermark</a>
@@ -4294,6 +4379,8 @@ html.dark-mode .wr-faq {
     <a class="tn-tool-category-link" href="rotate-pdf.html">Rotate</a>
     <a class="tn-tool-category-link" href="add-page-numbers.html">Add Page Numbers</a>
     <a class="tn-tool-category-link" href="lock-unlock-pdf.html">Lock/Unlock</a>
+    <a class="tn-tool-category-link" href="redact-pdf.html">Redact PDF</a>
+    
   </div>
 </nav>
 
@@ -4306,6 +4393,8 @@ html.dark-mode .wr-faq {
 </div>
 <div class="tool-box tn-shared-tool-box">
   <div class="tn-shared-upload-frame">
+<div class="wr-file-security"><button type="button" class="wr-file-security-trigger" aria-haspopup="dialog" aria-controls="wrSecurityDialog"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 20 6v5c0 5-3.4 8.3-8 10-4.6-1.7-8-5-8-10V6l8-3Z"/><path d="m8.5 12 2.2 2.2 4.8-4.8"/></svg></span> Your files stay secure</button></div>
+
     <div class="tn-shared-upload-area">
   <div class="tn-shared-upload-placeholder">
     <button class="tn-shared-upload-button" type="button">
@@ -4314,6 +4403,8 @@ html.dark-mode .wr-faq {
   </div>
     </div>
   </div>
+<div class="wr-report-issue"><a href="mailto:support@wrenchoo.com?subject=Report%20an%20issue" class="wr-report-issue-link"><span aria-hidden="true">⚑</span> Report an Issue</a></div>
+
 </div>
 
 <div>
@@ -4476,7 +4567,7 @@ html.dark-mode .wr-faq-answer {
       <h3>Popular Tools</h3>
       <a href="merge-pdf.html">Merge PDF</a>
       <a href="split-pdf.html">Split PDF</a>
-      <a href="fill-pdf.html">Fill PDF</a>
+      <a class="tn-tool-category-link" href="fill-pdf.html">Fill PDF</a>
       <a href="blur-censorship-tool.html">Blur Censorship Tool</a>
     </div>
 
@@ -4513,7 +4604,7 @@ html.dark-mode .wr-faq-answer {
       <h4>Popular Tools</h4>
       <a href="merge-pdf.html">Merge PDF</a>
       <a href="split-pdf.html">Split PDF</a>
-      <a href="fill-pdf.html">Fill PDF</a>
+      <a class="tn-tool-category-link" href="fill-pdf.html">Fill PDF</a>
       <a href="blur-censorship-tool.html">Blur Censorship Tool</a>
     </div>
 
@@ -5768,6 +5859,20 @@ html.dark-mode .tn-image-cancel:active {
 })();
 </script>
 
+
+<style id="wrenchoo-align-ad-with-tool-heading">
+/* Align the desktop ad with the tool heading below the two-row tool navigation. */
+@media (min-width: 1201px) {
+  .page-content > div[style*="grid-template-columns"] > .ad-column {
+    margin-top: 92px !important;
+    top: 123px !important;
+  }
+}
+</style>
+
+<div class="wr-security-dialog" id="wrSecurityDialog" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="wrSecurityTitle"><div class="wr-security-dialog-card"><h2 id="wrSecurityTitle">Your files stay secure</h2><p>Your files are processed in your browser on your device and are not uploaded to Wrenchoo’s servers for this tool. Please make sure you have permission to use and process the files you upload.</p><button type="button" class="wr-security-dialog-close">Got it</button></div></div>
+<script id="wr-security-report-interactions">(function(){var d=document.getElementById('wrSecurityDialog');if(!d)return;function close(){d.setAttribute('aria-hidden','true')}document.querySelectorAll('.wr-file-security-trigger').forEach(function(b){b.addEventListener('click',function(){d.setAttribute('aria-hidden','false');var c=d.querySelector('button');if(c)c.focus()})});var x=d.querySelector('.wr-security-dialog-close');if(x)x.addEventListener('click',close);d.addEventListener('click',function(e){if(e.target===d)close()});document.addEventListener('keydown',function(e){if(e.key==='Escape')close()})})();</script>
+
 </body>
 </html>
 
@@ -5968,5 +6073,53 @@ html.dark-mode .tool-category-link::after {
 html.dark-mode #extractPdfUploadArea.has-pages {
   background-color: #212324 !important;
   background-image: none !important;
+}
+</style>
+
+<style id="wr-report-issue-prominent">
+/* Make Report an Issue easier to notice without adding a background strip under the preview. */
+.wr-report-issue a,
+.wr-report-issue-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 10px 15px !important;
+  min-height: 40px !important;
+  border-radius: 9px !important;
+  border: 1px solid #d98b8b !important;
+  background: #fff0f0 !important;
+  color: #922222 !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: .1px !important;
+  box-shadow: 0 2px 5px rgba(127, 29, 29, .12) !important;
+  text-decoration: none !important;
+}
+.wr-report-issue a:hover,
+.wr-report-issue-link:hover {
+  background: #ffe0e0 !important;
+  border-color: #c96c6c !important;
+  box-shadow: 0 3px 8px rgba(127, 29, 29, .18) !important;
+}
+.wr-report-issue a:focus-visible,
+.wr-report-issue-link:focus-visible {
+  outline: 3px solid #268a43 !important;
+  outline-offset: 3px !important;
+}
+html.dark-mode .wr-report-issue a,
+body.dark-mode .wr-report-issue a,
+html.dark-mode .wr-report-issue-link,
+body.dark-mode .wr-report-issue-link {
+  background: #382326 !important;
+  border-color: #9a555b !important;
+  color: #ffd0d0 !important;
+}
+html.dark-mode .wr-report-issue a:hover,
+body.dark-mode .wr-report-issue a:hover,
+html.dark-mode .wr-report-issue-link:hover,
+body.dark-mode .wr-report-issue-link:hover {
+  background: #49292d !important;
+  border-color: #c16d75 !important;
 }
 </style>

@@ -1900,10 +1900,7 @@ html.dark-mode .sample-ad-button { color: #218739; }
 .tool-info p, .home-tool-info p {
   color: #63748a !important;
 }
-.tool-card[data-category="pdf"]::before {
-  content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 0 4px 4px 0;
-  background: #218739; opacity: .75;
-}
+/* PDF card accent stripe intentionally omitted; green border belongs on its icon image. */
 .tool-card[data-category="image"]::before {
   content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 0 4px 4px 0;
   background: #218739; opacity: .75;
@@ -1933,6 +1930,14 @@ html.dark-mode .tool-card::after, html.dark-mode .home-tool-card::after {
 <style>
 /* Image card fix */
 .tool-icon img, .home-tool-icon img { display:block !important; width:100% !important; height:100% !important; max-width:none !important; max-height:none !important; object-fit:contain !important; visibility:visible !important; opacity:1 !important; position:relative !important; z-index:2 !important; }
+
+/* PDF tool-card icon images: green border to match image-tool icon images. */
+.tool-card[data-category="pdf"] .tool-icon img {
+  border: 2px solid #218739 !important;
+  border-radius: 11px !important;
+  box-sizing: border-box !important;
+}
+
 </style>
 <style id="toolnest-new-logo">
 /* ToolNest new logo: blue-purple gradient wordmark + colorful utility mark */
