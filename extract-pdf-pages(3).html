@@ -5870,7 +5870,7 @@ html.dark-mode .tn-image-cancel:active {
 }
 </style>
 
-<div class="wr-security-dialog" id="wrSecurityDialog" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="wrSecurityTitle"><div class="wr-security-dialog-card"><h2 id="wrSecurityTitle">Your files stay secure</h2><p>Your files are processed directly in your browser on your device. They are not uploaded to Wrenchoo’s servers for this tool, so your files stay under your control. Use only files you have permission to process.</p><button type="button" class="wr-security-dialog-close">Got it</button></div></div>
+<div class="wr-security-dialog" id="wrSecurityDialog" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="wrSecurityTitle"><div class="wr-security-dialog-card"><h2 id="wrSecurityTitle">Your files stay secure</h2><p>Your files are processed in your browser on your device and are not uploaded to Wrenchoo’s servers for this tool. Please make sure you have permission to use and process the files you upload.</p><button type="button" class="wr-security-dialog-close">Got it</button></div></div>
 <script id="wr-security-report-interactions">(function(){var d=document.getElementById('wrSecurityDialog');if(!d)return;function close(){d.setAttribute('aria-hidden','true')}document.querySelectorAll('.wr-file-security-trigger').forEach(function(b){b.addEventListener('click',function(){d.setAttribute('aria-hidden','false');var c=d.querySelector('button');if(c)c.focus()})});var x=d.querySelector('.wr-security-dialog-close');if(x)x.addEventListener('click',close);d.addEventListener('click',function(e){if(e.target===d)close()});document.addEventListener('keydown',function(e){if(e.key==='Escape')close()})})();</script>
 
 </body>
@@ -6076,61 +6076,50 @@ html.dark-mode #extractPdfUploadArea.has-pages {
 }
 </style>
 
-
-<style id="wr-report-issue-no-strip-final">
-/* Keep Report Issue outside the preview without creating a dark footer strip. */
-.wr-report-issue {
-  background: transparent !important;
-  background-color: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-  margin: 7px 0 0 !important;
-  display: flex !important;
-  justify-content: flex-end !important;
-  width: 100% !important;
-}
-.wr-report-issue a {
+<style id="wr-report-issue-prominent">
+/* Make Report an Issue easier to notice without adding a background strip under the preview. */
+.wr-report-issue a,
+.wr-report-issue-link {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 7px !important;
-  color: #a52828 !important;
-  background: #fff4f4 !important;
-  border: 1px solid #efcaca !important;
-  border-radius: 8px !important;
-  padding: 8px 12px !important;
-  font-family: inherit !important;
-  font-size: 13px !important;
-  font-weight: 650 !important;
-  line-height: 1.25 !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 10px 15px !important;
+  min-height: 40px !important;
+  border-radius: 9px !important;
+  border: 1px solid #d98b8b !important;
+  background: #fff0f0 !important;
+  color: #922222 !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: .1px !important;
+  box-shadow: 0 2px 5px rgba(127, 29, 29, .12) !important;
   text-decoration: none !important;
-  box-shadow: 0 1px 2px rgba(0,0,0,.06) !important;
 }
-.wr-report-issue a span { color: #b42323 !important; }
-.wr-report-issue a:hover {
-  color: #8f1d1d !important;
-  background: #ffe7e7 !important;
-  border-color: #dfa4a4 !important;
+.wr-report-issue a:hover,
+.wr-report-issue-link:hover {
+  background: #ffe0e0 !important;
+  border-color: #c96c6c !important;
+  box-shadow: 0 3px 8px rgba(127, 29, 29, .18) !important;
 }
-.wr-report-issue a:focus-visible {
-  outline: 2px solid #278344 !important;
+.wr-report-issue a:focus-visible,
+.wr-report-issue-link:focus-visible {
+  outline: 3px solid #268a43 !important;
   outline-offset: 3px !important;
 }
 html.dark-mode .wr-report-issue a,
-body.dark-mode .wr-report-issue a {
-  color: #ffb4b4 !important;
-  background: #2b2022 !important;
-  border-color: #664044 !important;
+body.dark-mode .wr-report-issue a,
+html.dark-mode .wr-report-issue-link,
+body.dark-mode .wr-report-issue-link {
+  background: #382326 !important;
+  border-color: #9a555b !important;
+  color: #ffd0d0 !important;
 }
-html.dark-mode .wr-report-issue a span,
-body.dark-mode .wr-report-issue a span { color: #ff8b8b !important; }
 html.dark-mode .wr-report-issue a:hover,
-body.dark-mode .wr-report-issue a:hover {
-  background: #382629 !important;
-  border-color: #8b5057 !important;
-}
-@media (prefers-reduced-motion: reduce) {
-  .wr-report-issue a { transition: none !important; }
+body.dark-mode .wr-report-issue a:hover,
+html.dark-mode .wr-report-issue-link:hover,
+body.dark-mode .wr-report-issue-link:hover {
+  background: #49292d !important;
+  border-color: #c16d75 !important;
 }
 </style>
