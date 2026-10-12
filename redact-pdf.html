@@ -4838,6 +4838,17 @@ html.dark-mode .wr-report-issue a:hover { background-color: #b91c1c !important; 
 .wr-report-issue a:hover span,
 html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
 </style>
+
+<style id="wrenchoo-report-issue-dark-strip-fix">
+/* Remove the dark background strip behind the Report an Issue area only. */
+@supports selector(.tool-box:has(.wr-report-issue)) {
+  html.dark-mode .tool-box:has(.wr-report-issue),
+  body.dark-mode .tool-box:has(.wr-report-issue) {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+}
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -4890,7 +4901,7 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
           <a class="tn-tool-category-link" href="rotate-pdf.html">Rotate</a>
           <a class="tn-tool-category-link" href="add-page-numbers.html">Add Page Numbers</a>
           <a class="tn-tool-category-link" href="lock-unlock-pdf.html">Lock/Unlock</a>
-    <a class="tn-tool-category-link" href="redact-pdf.html">Redact PDF</a>
+    <a class="tn-tool-category-link active" href="redact-pdf.html">Redact PDF</a>
     
         </div>
       </nav>
@@ -5886,6 +5897,35 @@ html.dark-mode .wr-report-modal-card input[readonly], body.dark-mode .wr-report-
   });
 })();
 </script>
+
+
+<style id="wrenchoo-report-strip-root-cause-fix">
+/* The unwanted strip is the dark .tool-box background behind the report row.
+   Make only the tool container holding this row transparent in dark mode. */
+@supports selector(.tool-box:has(.wr-report-issue)) {
+  html.dark-mode .tool-box:has(.wr-report-issue),
+  body.dark-mode .tool-box:has(.wr-report-issue),
+  html:not(.light-mode) .tool-box:has(.wr-report-issue) {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+  }
+}
+</style>
+
+<style id="wrenchoo-redact-pdf-html-active-link-red">
+/* Match the working PDF tool pages: the current tool's category link is explicitly active. */
+.tn-tool-category-link.active[href="redact-pdf.html"],
+html.dark-mode .tn-tool-category-link.active[href="redact-pdf.html"],
+html.light-mode .tn-tool-category-link.active[href="redact-pdf.html"] {
+  color: #e53935 !important;
+  font-weight: 700 !important;
+}
+.tn-tool-category-link.active[href="redact-pdf.html"]::before {
+  background: #e53935 !important;
+}
+</style>
 
 </body>
 </html>
