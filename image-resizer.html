@@ -3713,7 +3713,7 @@ html.dark-mode .wr-faq {
 /* Consistent, polished security and support controls across all tools. */
 .tn-shared-upload-frame{position:relative!important;}
 .wr-file-security{position:absolute;right:10px;top:-16px;z-index:20;margin:0;transform:translateY(-100%);}
-.wr-file-security button{display:inline-flex;align-items:center;gap:7px;min-height:30px;padding:6px 11px;border:1px solid #c8e6cf;border-radius:999px;background:#f3fbf5;color:#216b36;font-family:inherit;font-size:12px;font-weight:600;line-height:1.2;letter-spacing:.01em;cursor:pointer;white-space:nowrap;box-shadow:0 1px 2px rgba(22,101,52,.05);transition:background .16s ease,border-color .16s ease,box-shadow .16s ease;}
+.wr-file-security button{display:inline-flex;align-items:center;gap:7px;min-height:30px;padding:6px 11px;border:1px solid #c8e6cf;border-radius:6px;background:#f3fbf5;color:#216b36;font-family:inherit;font-size:12px;font-weight:600;line-height:1.2;letter-spacing:.01em;cursor:pointer;white-space:nowrap;box-shadow:0 1px 2px rgba(22,101,52,.05);transition:background .16s ease,border-color .16s ease,box-shadow .16s ease;}
 .wr-file-security button:hover{background:#e8f7ec;border-color:#9ed5ac;box-shadow:0 2px 7px rgba(22,101,52,.10);}
 .wr-file-security button:active{background:#def1e3;}
 .wr-file-security button span{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;flex:none;}
@@ -3747,6 +3747,22 @@ html.dark-mode .wr-report-issue a:hover{color:#ffb4b4;background:rgba(153,27,27,
 @media(prefers-reduced-motion:reduce){.wr-file-security button,.wr-report-issue a,.wr-security-dialog-close{transition:none;}}
 </style>
 
+
+<style id="wrenchoo-report-security-colours-only">
+/* Colour-only update: preserve existing dimensions, spacing, borders, and positioning. */
+.wr-file-security button,
+html.dark-mode .wr-file-security button { background-color: #278344 !important; color: #ffffff !important; }
+.wr-file-security button:hover,
+html.dark-mode .wr-file-security button:hover { background-color: #216e38 !important; color: #ffffff !important; }
+.wr-report-issue a,
+html.dark-mode .wr-report-issue a { background-color: #dc2626 !important; color: #ffffff !important; }
+.wr-report-issue a span,
+html.dark-mode .wr-report-issue a span { color: #ffffff !important; }
+.wr-report-issue a:hover,
+html.dark-mode .wr-report-issue a:hover { background-color: #b91c1c !important; color: #ffffff !important; }
+.wr-report-issue a:hover span,
+html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -4931,6 +4947,36 @@ html.dark-mode .tn-resizer-lock{color:#e7edf5;}
 <div class="wr-security-dialog" id="wrSecurityDialog" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="wrSecurityTitle"><div class="wr-security-dialog-card"><h2 id="wrSecurityTitle">Your files stay secure</h2><p>Your files are processed in your browser on your device and are not uploaded to Wrenchoo’s servers for this tool. Please make sure you have permission to use and process the files you upload.</p><button type="button" class="wr-security-dialog-close">Got it</button></div></div>
 <script id="wr-security-report-interactions">(function(){var d=document.getElementById('wrSecurityDialog');if(!d)return;function close(){d.setAttribute('aria-hidden','true')}document.querySelectorAll('.wr-file-security-trigger').forEach(function(b){b.addEventListener('click',function(){d.setAttribute('aria-hidden','false');var c=d.querySelector('button');if(c)c.focus()})});var x=d.querySelector('.wr-security-dialog-close');if(x)x.addEventListener('click',close);d.addEventListener('click',function(e){if(e.target===d)close()});document.addEventListener('keydown',function(e){if(e.key==='Escape')close()})})();</script>
 
+
+<style id="wrenchoo-report-issue-red-final">
+/* Colour-only correction: keep Report an Issue red with white text in both themes. */
+.wr-report-issue a,
+html.dark-mode .wr-report-issue a,
+body.dark-mode .wr-report-issue a,
+.wr-report-issue-link,
+html.dark-mode .wr-report-issue-link,
+body.dark-mode .wr-report-issue-link {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+.wr-report-issue a span,
+html.dark-mode .wr-report-issue a span,
+body.dark-mode .wr-report-issue a span,
+.wr-report-issue-link span { color: #ffffff !important; }
+.wr-report-issue a:hover,
+html.dark-mode .wr-report-issue a:hover,
+body.dark-mode .wr-report-issue a:hover,
+.wr-report-issue-link:hover,
+html.dark-mode .wr-report-issue-link:hover,
+body.dark-mode .wr-report-issue-link:hover {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+.wr-report-issue a:hover span,
+html.dark-mode .wr-report-issue a:hover span,
+body.dark-mode .wr-report-issue a:hover span,
+.wr-report-issue-link:hover span { color: #ffffff !important; }
+</style>
 </body>
 
 </html>
@@ -5225,15 +5271,23 @@ html.dark-mode .wr-report-issue a,
 body.dark-mode .wr-report-issue a,
 html.dark-mode .wr-report-issue-link,
 body.dark-mode .wr-report-issue-link {
-  background: #382326 !important;
-  border-color: #9a555b !important;
+  background: transparent !important;
+  border-color: transparent !important;
   color: #ffd0d0 !important;
+  box-shadow: none !important;
 }
 html.dark-mode .wr-report-issue a:hover,
 body.dark-mode .wr-report-issue a:hover,
 html.dark-mode .wr-report-issue-link:hover,
 body.dark-mode .wr-report-issue-link:hover {
-  background: #49292d !important;
-  border-color: #c16d75 !important;
+  background: rgba(153, 27, 27, .12) !important;
+  border-color: rgba(193, 109, 117, .35) !important;
 }
+</style>
+<style id="wrenchoo-report-issue-final-colour-only">
+/* Colour-only fix: override later dark-mode background rules without changing layout. */
+html.dark-mode .wr-report-issue a, body.dark-mode .wr-report-issue a, html.dark-mode .wr-report-issue .wr-report-issue-link, body.dark-mode .wr-report-issue .wr-report-issue-link, .wr-report-issue a, .wr-report-issue .wr-report-issue-link { background: #dc2626 !important; background-color: #dc2626 !important; color: #ffffff !important; }
+html.dark-mode .wr-report-issue a span, body.dark-mode .wr-report-issue a span, .wr-report-issue a span, .wr-report-issue .wr-report-issue-link span { color: #ffffff !important; }
+html.dark-mode .wr-report-issue a:hover, body.dark-mode .wr-report-issue a:hover, .wr-report-issue a:hover, .wr-report-issue .wr-report-issue-link:hover { background: #b91c1c !important; background-color: #b91c1c !important; color: #ffffff !important; }
+html.dark-mode .wr-report-issue a:hover span, body.dark-mode .wr-report-issue a:hover span, .wr-report-issue a:hover span, .wr-report-issue .wr-report-issue-link:hover span { color: #ffffff !important; }
 </style>
