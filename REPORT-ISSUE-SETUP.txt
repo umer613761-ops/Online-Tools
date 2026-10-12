@@ -1,0 +1,29 @@
+Wrenchoo Report an Issue — deployment setup
+=============================================
+
+The form and API endpoint are implemented, but email delivery requires SMTP credentials.
+No credentials are included in the source code.
+
+In Railway, open the service that runs app.py, then Variables, and add:
+
+  SMTP_HOST       SMTP server hostname supplied by your email provider
+  SMTP_PORT       587 for STARTTLS, or 465 if using implicit SSL
+  SMTP_USERNAME   SMTP login username
+  SMTP_PASSWORD   SMTP login password / app password
+  SMTP_FROM       A sender address verified with your email provider
+  SMTP_USE_TLS    true (for port 587 / STARTTLS)
+  SMTP_USE_SSL    false (for port 587; set true if using port 465)
+  ISSUE_REPORT_TO support@wrenchoo.com
+
+Use the values from the mailbox/email provider that will send the message. Do not commit
+SMTP credentials to GitHub or put them in any HTML/JavaScript file.
+
+After saving the Railway variables, redeploy/restart the service. Then test:
+1. Open any tool page and click Report an Issue.
+2. Confirm the Tool field is filled automatically.
+3. Enter only an issue description and submit.
+4. Confirm the message arrives at support@wrenchoo.com.
+
+If SMTP variables are missing or delivery fails, the form displays an error instead of
+claiming the report was sent. Reports contain the tool name and the visitor's description;
+the form does not request an email address or category.

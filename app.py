@@ -72,6 +72,76 @@ def post_tool_rating(tool_slug):
         app.logger.exception("Could not save rating")
         return jsonify({"ok": False, "error": "Your feedback could not be saved right now."}), 503
 
+
+
+# -----------------------------
+# Anonymous issue reports
+# -----------------------------
+@app.post("/api/report-issue")
+def submit_issue_report():
+    """Email a visitor's issue report to Wrenchoo support."""
+    import smtplib
+    from email.message import EmailMessage
+
+    data = request.get_json(silent=True) or {}
+    # Honeypot field used to discourage simple automated spam.
+    if str(data.get("website") or "").strip():
+        return jsonify({"ok": True}), 200
+
+    tool_name = re.sub(r"\s+", " ", str(data.get("tool_name") or "")).strip()
+    issue = str(data.get("issue") or "").strip()
+
+    if not tool_name or len(tool_name) > 120:
+        return jsonify({"ok": False, "error": "The tool name could not be identified. Please refresh the page and try again."}), 400
+    if not issue:
+        return jsonify({"ok": False, "error": "Please describe the issue."}), 400
+    if len(issue) > 3000:
+        return jsonify({"ok": False, "error": "Please keep the issue description under 3,000 characters."}), 400
+
+    smtp_host = os.environ.get("SMTP_HOST", "").strip()
+    smtp_port = int(os.environ.get("SMTP_PORT", "587"))
+    smtp_username = os.environ.get("SMTP_USERNAME", "").strip()
+    smtp_password = os.environ.get("SMTP_PASSWORD", "")
+    smtp_from = os.environ.get("SMTP_FROM", smtp_username).strip()
+    recipient = os.environ.get("ISSUE_REPORT_TO", "support@wrenchoo.com").strip()
+    use_ssl = os.environ.get("SMTP_USE_SSL", "false").strip().lower() in {"1", "true", "yes"}
+    use_tls = os.environ.get("SMTP_USE_TLS", "true").strip().lower() in {"1", "true", "yes"}
+
+    # Do not pretend a report was delivered when mail delivery isn't configured.
+    if not smtp_host or not smtp_from or not smtp_username or not smtp_password:
+        app.logger.error("Issue report delivery is not configured: SMTP environment variables are missing.")
+        return jsonify({"ok": False, "error": "Issue reporting is temporarily unavailable. Please try again later."}), 503
+
+    message = EmailMessage()
+    message["Subject"] = f"Wrenchoo issue report — {tool_name}"
+    message["From"] = smtp_from
+    message["To"] = recipient
+    message.set_content(
+        "A visitor submitted an issue report on Wrenchoo.\n\n"
+        f"Tool: {tool_name}\n\n"
+        "Issue description:\n"
+        f"{issue}\n"
+    )
+
+    try:
+        if use_ssl:
+            with smtplib.SMTP_SSL(smtp_host, smtp_port, timeout=15) as server:
+                server.login(smtp_username, smtp_password)
+                server.send_message(message)
+        else:
+            with smtplib.SMTP(smtp_host, smtp_port, timeout=15) as server:
+                server.ehlo()
+                if use_tls:
+                    server.starttls()
+                    server.ehlo()
+                server.login(smtp_username, smtp_password)
+                server.send_message(message)
+        return jsonify({"ok": True, "message": "Your report has been sent. Thank you for helping us improve Wrenchoo."}), 200
+    except Exception:
+        app.logger.exception("Could not deliver Wrenchoo issue report")
+        return jsonify({"ok": False, "error": "We couldn't send your report right now. Please try again later."}), 502
+
+
 @app.get("/")
 def root():
     # Serve the Wrenchoo frontend from the same Railway service as the API.
