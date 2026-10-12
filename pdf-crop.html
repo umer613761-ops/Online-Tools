@@ -6063,6 +6063,17 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
 /* Match Secure Files button height to the other tool pages; size only. */
 .wr-file-security button { height:30px !important; min-height:30px !important; padding:6px 11px !important; line-height:1.2 !important; box-sizing:border-box !important; }
 </style>
+
+<style id="wrenchoo-report-issue-dark-strip-fix">
+/* Remove the dark background strip behind the Report an Issue area only. */
+@supports selector(.tool-box:has(.wr-report-issue)) {
+  html.dark-mode .tool-box:has(.wr-report-issue),
+  body.dark-mode .tool-box:has(.wr-report-issue) {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+}
+</style>
 </head>
 <body>
 <header class="top-header">
@@ -6098,8 +6109,10 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
 </div></nav>
 <div class="heading"><h1>PDF Crop</h1><p>Crop PDF pages by selecting the area you want to keep.</p></div>
 <div class="tool-box"><input accept=".pdf,application/pdf" id="pdfInput" type="file"/>
-<div class="upload-area" id="uploadArea">
+<div class="tn-shared-upload-frame">
 <div class="wr-file-security"><button type="button" class="wr-file-security-trigger" aria-haspopup="dialog" aria-controls="wrSecurityDialog"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 20 6v5c0 5-3.4 8.3-8 10-4.6-1.7-8-5-8-10V6l8-3Z"/><path d="m8.5 12 2.2 2.2 4.8-4.8"/></svg></span> Your files stay secure</button></div>
+<div class="upload-area" id="uploadArea">
+
 
   <div class="upload-placeholder" id="uploadPlaceholder"><button class="floating-upload-button" id="uploadButton" type="button">Upload PDF File</button></div>
   <div class="crop-editor" id="cropEditor">
@@ -6113,6 +6126,7 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
     <div class="crop-bottom-actions"><button class="crop-download" type="button" id="downloadCropped">Download Cropped PDF</button><button class="crop-cancel" type="button" id="cancelCrop">Cancel</button></div>
     <div class="crop-status" id="cropStatus" role="status" aria-live="polite"></div>
   </div>
+</div>
 </div>
 <div class="wr-report-issue"><a href="#wrenchoo-report-modal" class="wr-report-issue-link"><span aria-hidden="true">⚑</span> Report an Issue</a></div>
 </div>
@@ -6523,6 +6537,21 @@ html.dark-mode .wr-report-modal-card input[readonly], body.dark-mode .wr-report-
 })();
 </script>
 
+
+<style id="wrenchoo-report-strip-root-cause-fix">
+/* The unwanted strip is the dark .tool-box background behind the report row.
+   Make only the tool container holding this row transparent in dark mode. */
+@supports selector(.tool-box:has(.wr-report-issue)) {
+  html.dark-mode .tool-box:has(.wr-report-issue),
+  body.dark-mode .tool-box:has(.wr-report-issue),
+  html:not(.light-mode) .tool-box:has(.wr-report-issue) {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+  }
+}
+</style>
 </body>
 </html>
 <style id="wr-report-issue-prominent">
