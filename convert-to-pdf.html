@@ -5014,6 +5014,50 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
 @media(max-width:650px){.convert-preview-grid{grid-template-columns:1fr;gap:14px;}#convertToUploadArea.has-files,#convertFromUploadArea.has-files{padding:14px;}.convert-actions{gap:12px;flex-wrap:wrap;}.convert-download-button{width:220px;min-width:220px;}}
 </style>
 
+<style id="wrenchoo-align-ad-with-tool-heading">
+/* Align the desktop ad with the tool heading below the two-row tool navigation. */
+@media (min-width: 1201px) {
+  .page-content > div[style*="grid-template-columns"] > .ad-column {
+    margin-top: 92px !important;
+    top: 123px !important;
+  }
+}
+</style>
+
+<div class="wr-security-dialog" id="wrSecurityDialog" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="wrSecurityTitle"><div class="wr-security-dialog-card"><h2 id="wrSecurityTitle">Your files stay secure</h2><p>Wrenchoo processes your files to provide the tool you selected. Use only files you have permission to process, and review our Privacy Policy for details about file handling.</p><button type="button" class="wr-security-dialog-close">Got it</button></div></div>
+<script id="wr-security-report-interactions">(function(){var d=document.getElementById('wrSecurityDialog');if(!d)return;function close(){d.setAttribute('aria-hidden','true')}document.querySelectorAll('.wr-file-security-trigger').forEach(function(b){b.addEventListener('click',function(){d.setAttribute('aria-hidden','false');var c=d.querySelector('button');if(c)c.focus()})});var x=d.querySelector('.wr-security-dialog-close');if(x)x.addEventListener('click',close);d.addEventListener('click',function(e){if(e.target===d)close()});document.addEventListener('keydown',function(e){if(e.key==='Escape')close()})})();</script>
+
+
+<style id="wrenchoo-report-issue-red-final">
+/* Colour-only correction: keep Report an Issue red with white text in both themes. */
+.wr-report-issue a,
+html.dark-mode .wr-report-issue a,
+body.dark-mode .wr-report-issue a,
+.wr-report-issue-link,
+html.dark-mode .wr-report-issue-link,
+body.dark-mode .wr-report-issue-link {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+.wr-report-issue a span,
+html.dark-mode .wr-report-issue a span,
+body.dark-mode .wr-report-issue a span,
+.wr-report-issue-link span { color: #ffffff !important; }
+.wr-report-issue a:hover,
+html.dark-mode .wr-report-issue a:hover,
+body.dark-mode .wr-report-issue a:hover,
+.wr-report-issue-link:hover,
+html.dark-mode .wr-report-issue-link:hover,
+body.dark-mode .wr-report-issue-link:hover {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+.wr-report-issue a:hover span,
+html.dark-mode .wr-report-issue a:hover span,
+body.dark-mode .wr-report-issue a:hover span,
+.wr-report-issue-link:hover span { color: #ffffff !important; }
+</style>
+
 <script id="convert-pages-functionality">
 (function(){
   const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -5226,51 +5270,7 @@ html.dark-mode .convert-from-toolbar select{background:#202a36;border-color:#3b4
       if(fmt.value==='html'){
         let out='<html><body>';
         for(let i=1;i<=pdf.numPages;i++){const p=await pdf.getPage(i),c=await p.getTextContent();out+='<h2>Page '+i+'</h2><p>'+esc(c.items.map(x=>x.str).join(' '))+'</p>'; }
-        out+='
-<style id="wrenchoo-align-ad-with-tool-heading">
-/* Align the desktop ad with the tool heading below the two-row tool navigation. */
-@media (min-width: 1201px) {
-  .page-content > div[style*="grid-template-columns"] > .ad-column {
-    margin-top: 92px !important;
-    top: 123px !important;
-  }
-}
-</style>
-
-<div class="wr-security-dialog" id="wrSecurityDialog" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="wrSecurityTitle"><div class="wr-security-dialog-card"><h2 id="wrSecurityTitle">Your files stay secure</h2><p>Wrenchoo processes your files to provide the tool you selected. Use only files you have permission to process, and review our Privacy Policy for details about file handling.</p><button type="button" class="wr-security-dialog-close">Got it</button></div></div>
-<script id="wr-security-report-interactions">(function(){var d=document.getElementById('wrSecurityDialog');if(!d)return;function close(){d.setAttribute('aria-hidden','true')}document.querySelectorAll('.wr-file-security-trigger').forEach(function(b){b.addEventListener('click',function(){d.setAttribute('aria-hidden','false');var c=d.querySelector('button');if(c)c.focus()})});var x=d.querySelector('.wr-security-dialog-close');if(x)x.addEventListener('click',close);d.addEventListener('click',function(e){if(e.target===d)close()});document.addEventListener('keydown',function(e){if(e.key==='Escape')close()})})();</script>
-
-
-<style id="wrenchoo-report-issue-red-final">
-/* Colour-only correction: keep Report an Issue red with white text in both themes. */
-.wr-report-issue a,
-html.dark-mode .wr-report-issue a,
-body.dark-mode .wr-report-issue a,
-.wr-report-issue-link,
-html.dark-mode .wr-report-issue-link,
-body.dark-mode .wr-report-issue-link {
-  background-color: #dc2626 !important;
-  color: #ffffff !important;
-}
-.wr-report-issue a span,
-html.dark-mode .wr-report-issue a span,
-body.dark-mode .wr-report-issue a span,
-.wr-report-issue-link span { color: #ffffff !important; }
-.wr-report-issue a:hover,
-html.dark-mode .wr-report-issue a:hover,
-body.dark-mode .wr-report-issue a:hover,
-.wr-report-issue-link:hover,
-html.dark-mode .wr-report-issue-link:hover,
-body.dark-mode .wr-report-issue-link:hover {
-  background-color: #dc2626 !important;
-  color: #ffffff !important;
-}
-.wr-report-issue a:hover span,
-html.dark-mode .wr-report-issue a:hover span,
-body.dark-mode .wr-report-issue a:hover span,
-.wr-report-issue-link:hover span { color: #ffffff !important; }
-</style>
-</body></html>';
+        out+='</body></html>';
         const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out],{type:'text/html'}));a.download='converted-from-pdf.html';a.click();URL.revokeObjectURL(a.href);resetFromUpload();return;
       }
       alert('The selected format requires an advanced document converter.');
