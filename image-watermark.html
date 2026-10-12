@@ -5147,6 +5147,26 @@ html.dark-mode .wr-report-issue a:hover { background-color: #b91c1c !important; 
 .wr-report-issue a:hover span,
 html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
 </style>
+
+<style id="wrenchoo-active-image-tool-red-final">
+/* Match the existing image tools: the current tool link under the second header is red in both themes. */
+html.light-mode .tn-tool-category-link.active,
+html:not(.dark-mode) .tn-tool-category-link.active {
+  color: #e53935 !important;
+  text-decoration: none !important;
+}
+html.light-mode .tn-tool-category-link.active::before,
+html:not(.dark-mode) .tn-tool-category-link.active::before {
+  background: #e53935 !important;
+}
+html.dark-mode .tn-tool-category-link.active {
+  color: #e53935 !important;
+  text-decoration: none !important;
+}
+html.dark-mode .tn-tool-category-link.active::before {
+  background: #e53935 !important;
+}
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -5655,13 +5675,15 @@ html.dark-mode .wm-tool-actions .wr-action-btn.secondary {
     const rating = document.getElementById('wrenchoo-ratings');
     const tool = document.querySelector('.wr-image-tool');
     const uploadFrame = tool && tool.querySelector('.tn-shared-upload-frame');
-    if (!panel || !editor || !controls || !rating || !uploadFrame) return;
+    const toolBox = tool && tool.querySelector('.tn-shared-tool-box');
+    if (!panel || !editor || !controls || !rating || !uploadFrame || !toolBox) return;
 
     function placeSections() {
       if (panel.classList.contains('has-image')) {
         controls.insertAdjacentElement('afterend', rating);
       } else {
-        uploadFrame.insertAdjacentElement('afterend', rating);
+        /* Keep Report an Issue inside the upload card and place ratings after the whole card. */
+        toolBox.insertAdjacentElement('afterend', rating);
       }
     }
     placeSections();
@@ -5864,6 +5886,56 @@ html.dark-mode .wr-report-modal-card input[readonly], body.dark-mode .wr-report-
 })();
 </script>
 
+
+<style id="wrenchoo-watermark-report-position-fix">
+/* Match Image Watermark's Report an Issue alignment to the other image tools.
+   The watermark page's tool-box reset removes the normal inner padding, so
+   inset the report row to the same right edge as the shared image tools. */
+.wr-image-tool .tn-shared-tool-box > .wr-report-issue {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  margin: 7px 0 0 !important;
+  padding: 0 18px 0 0 !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+@media (max-width: 700px) {
+  .wr-image-tool .tn-shared-tool-box > .wr-report-issue {
+    padding-right: 0 !important;
+  }
+}
+</style>
+<style id="wrenchoo-watermark-report-position-final-fix">
+/* Keep the report button attached to the upload/preview card, aligned at its lower-right edge. */
+.wr-image-tool .tn-shared-tool-box > .wr-report-issue {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin: 7px 0 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+}
+.wr-image-tool .tn-shared-tool-box > .wr-report-issue .wr-report-issue-link {
+  min-height: 40px !important;
+  padding: 10px 15px !important;
+  font-size: 14px !important;
+  border-radius: 9px !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 700px) {
+  .wr-image-tool .tn-shared-tool-box > .wr-report-issue .wr-report-issue-link {
+    min-height: 40px !important;
+    padding: 10px 15px !important;
+    font-size: 13px !important;
+  }
+}
+</style>
 </body>
 </html>
 <style id="wr-report-issue-prominent">

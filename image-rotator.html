@@ -3863,8 +3863,6 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
 
 </div>
 
-<div>
-</div>
 <!-- ADVERTISEMENT -->
 </div><section id="wrenchoo-ratings" class="wr-ratings" data-tool-slug="image-rotator" aria-labelledby="wrenchoo-ratings-title">
   <div class="wr-ratings-head">
@@ -5097,6 +5095,25 @@ html.dark-mode .wr-report-modal-card input[readonly], body.dark-mode .wr-report-
 })();
 </script>
 
+
+
+<style id="wrenchoo-image-preview-dark-strip-fix">
+/* Dark mode only: keep the area below the image preview continuous with the preview surface. */
+html.dark-mode .tn-shared-tool-box,
+html.dark-mode .tn-shared-tool-box > .wr-report-issue,
+html.dark-mode .tn-shared-tool-box .wr-report-issue {
+  background-color: #212324 !important;
+}
+html.dark-mode .tn-shared-tool-box {
+  background-image: none !important;
+}
+</style>
+<style id="wrenchoo-hide-empty-image-controls-fix">
+/* Keep the generated controls panel completely absent until a file is loaded.
+   Some legacy layout rules force display:flex and create an empty outlined card. */
+.tn-image-controls:not(.show) { display: none !important; }
+.tn-image-controls.show { display: flex !important; flex-direction: column !important; align-items: center !important; }
+</style>
 </body>
 
 </html>
