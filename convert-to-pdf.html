@@ -4585,6 +4585,17 @@ html.dark-mode .wr-report-issue a:hover { background-color: #b91c1c !important; 
 .wr-report-issue a:hover span,
 html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
 </style>
+
+<style id="wrenchoo-preview-strip-darkmode-root-fix">
+/* Dark mode: remove the parent tool-box slab beneath the preview; preserve the upload area and report button. */
+html.dark-mode .tool-box:has(.wr-report-issue),
+html.dark-mode .tool-box:has(.wr-report-issue) > div,
+html.dark-mode .tool-box:has(.wr-report-issue) .wr-report-issue {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+html.dark-mode .tool-box:has(.wr-report-issue) { border-color: transparent !important; }
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -5270,7 +5281,21 @@ body.dark-mode .wr-report-issue a:hover span,
       if(fmt.value==='html'){
         let out='<html><body>';
         for(let i=1;i<=pdf.numPages;i++){const p=await pdf.getPage(i),c=await p.getTextContent();out+='<h2>Page '+i+'</h2><p>'+esc(c.items.map(x=>x.str).join(' '))+'</p>'; }
-        out+='</body></html>';
+        out+='
+
+<style id="remove-unwanted-pdf-preview-bottom-strip">
+/* Keep the upload/preview frame transparent so the dark tool-box background
+   cannot show as a black strip beneath the preview. */
+.tn-shared-upload-frame {
+  background: transparent !important;
+}
+html.dark-mode .tn-shared-upload-frame,
+body.dark-mode .tn-shared-upload-frame {
+  background: transparent !important;
+}
+</style>
+
+</body></html>';
         const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out],{type:'text/html'}));a.download='converted-from-pdf.html';a.click();URL.revokeObjectURL(a.href);resetFromUpload();return;
       }
       alert('The selected format requires an advanced document converter.');

@@ -4890,6 +4890,17 @@ html.dark-mode .wr-report-issue a:hover { background-color: #b91c1c !important; 
 .wr-report-issue a:hover span,
 html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
 </style>
+
+<style id="wrenchoo-preview-strip-darkmode-root-fix">
+/* Dark mode: remove the parent tool-box slab beneath the preview; preserve the upload area and report button. */
+html.dark-mode .tool-box:has(.wr-report-issue),
+html.dark-mode .tool-box:has(.wr-report-issue) > div,
+html.dark-mode .tool-box:has(.wr-report-issue) .wr-report-issue {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+html.dark-mode .tool-box:has(.wr-report-issue) { border-color: transparent !important; }
+</style>
 </head>
 <body>
 <!-- ========================================
@@ -6418,6 +6429,20 @@ html.dark-mode nav.category-nav .category-link.active::after {
   border-color: #218739 !important;
 }
 </style>
+
+
+<style id="remove-unwanted-pdf-preview-bottom-strip">
+/* Keep the upload/preview frame transparent so the dark tool-box background
+   cannot show as a black strip beneath the preview. */
+.tn-shared-upload-frame {
+  background: transparent !important;
+}
+html.dark-mode .tn-shared-upload-frame,
+body.dark-mode .tn-shared-upload-frame {
+  background: transparent !important;
+}
+</style>
+
 </body>
 </html>
 
