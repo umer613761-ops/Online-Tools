@@ -3756,6 +3756,25 @@ html.dark-mode .wr-faq {
   }
 }
 </style>
+
+<style id="wrenchoo-index-footer-bottom-gap-fix">
+/* Index page: prevent the page background from showing as a strip below the footer. */
+html, body { min-height: 100%; }
+body { min-height: 100vh !important; display: flex !important; flex-direction: column !important; }
+body > main { flex: 1 0 auto !important; width: 100%; }
+body > footer.site-footer, body > footer.mobile-footer { flex-shrink: 0 !important; margin-bottom: 0 !important; }
+body > .mobile-footer-copyright { flex-shrink: 0 !important; margin-bottom: 0 !important; }
+html.dark-mode body { background-color: #1f2937 !important; }
+@media (prefers-color-scheme: dark) { html:not(.light-mode):not(.dark-mode) body { background-color: #1f2937 !important; } }
+</style>
+
+<style id="wrenchoo-index-remove-blue-footer-strip">
+/* Index page: remove the colored strip immediately above the footer in dark mode. */
+html.dark-mode body > main { background: #212324 !important; border-bottom: 0 !important; box-shadow: none !important; }
+html.dark-mode body > main::after, html.dark-mode body > main::before { background: transparent !important; box-shadow: none !important; }
+html.dark-mode .site-footer, html.dark-mode .toolnest-hybrid-footer { margin-top: 0 !important; border-top: 0 !important; box-shadow: none !important; }
+</style>
+
 </head>
 <body>
 <!-- ========================================
@@ -5053,9 +5072,11 @@ html.dark-mode nav.category-nav .category-link.active-button {
 </style>
 
 
+<style id="wrenchoo-pdf-tool-icon-colors">
 /* PDF tool icons match the green-tinted Image Tools icon tiles */
 .tools-grid .tool-card[data-category="pdf"] .tool-icon { background: #e8f5e9 !important; color: #238636 !important; }
 html.dark-mode .tools-grid .tool-card[data-category="pdf"] .tool-icon { background: #e8f5e9 !important; color: #238636 !important; }
+</style>
 
 <style id="wrenchoo-home-index-dark-active-category-green-final">
 /* Dark mode only: keep the active second-header button green, matching the tool pages.
