@@ -5703,8 +5703,8 @@ html.dark-mode .crop-mode { color:#c5cfda; }
 .crop-mode select { min-height:36px; border:1px solid #ccd7e1; border-radius:7px; padding:0 30px 0 10px; color:#344256; background:#fff; font:13px Arial,Helvetica,sans-serif; }
 html.dark-mode .crop-mode select { background:#202c3b; color:#e1e8f0; border-color:#3b4b5f; }
 .crop-canvas-stage { min-height:290px; width:100%; display:flex; align-items:center; justify-content:center; padding:20px; overflow:auto; border:1px solid #cbd6e0; border-radius:8px; background:transparent; }
-html.dark-mode .crop-canvas-stage { background:#263444; border-color:#435366; }
-html:not(.light-mode) .crop-canvas-stage { background:#263444; border-color:#435366; }
+html.dark-mode .crop-canvas-stage { background:#212324; border-color:#435366; }
+html:not(.light-mode) .crop-canvas-stage { background:#212324; border-color:#435366; }
 .crop-page-wrap { position:relative; display:inline-block; flex:none; max-width:100%; line-height:0; box-shadow:0 3px 14px rgba(0,0,0,.18); touch-action:pan-x pan-y; }
 #cropCanvas { display:block; max-width:100%; height:auto; }
 .crop-selection { position:absolute; left:12%; top:12%; width:76%; height:76%; border:2px solid #218739; background:rgba(33,135,57,.12); box-shadow:0 0 0 9999px rgba(18,25,32,.40); cursor:move; touch-action:none; box-sizing:border-box; }
@@ -5801,18 +5801,19 @@ html.dark-mode .wr-faq-answer { color: #c3ccd5; }
 </style>
 
 <style id="wrenchoo-pdf-crop-preview-dark-background-fix">
-/* Apply the dark preview background to the full loaded preview area, not just the canvas stage. */
+/* Match Merge PDF's dark preview surface and remove the blue panel behind a loaded PDF. */
 html.dark-mode .upload-area.has-files,
 html:not(.light-mode) .upload-area.has-files {
-  background: #263444 !important;
-  background-color: #263444 !important;
+  background: #212324 !important;
+  background-color: #212324 !important;
   background-image: none !important;
-  border-color: #435366 !important;
+  border-color: #52789c !important;
 }
 html.dark-mode .crop-canvas-stage,
 html:not(.light-mode) .crop-canvas-stage {
-  background: #263444 !important;
-  background-color: #263444 !important;
+  background: #212324 !important;
+  background-color: #212324 !important;
+  background-image: none !important;
   border-color: #435366 !important;
 }
 </style>
@@ -6074,6 +6075,19 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
   }
 }
 </style>
+
+<style id="wrenchoo-remove-inner-wide-preview-rectangle">
+/* Remove only the wide inner stage outline; preserve the outer upload-area border and PDF/crop UI. */
+#cropCanvasStage { border: 0 !important; border-radius: 0 !important; }
+</style>
+
+<style id="wrenchoo-pdf-crop-white-page-background-final">
+/* PDF pages have a white paper background; transparency in the rendered canvas
+   must reveal white paper rather than the dark preview-stage surface. */
+#cropPageWrap { background: #ffffff !important; }
+#cropCanvas { background: #ffffff !important; background-color: #ffffff !important; opacity: 1 !important; filter: none !important; }
+</style>
+
 </head>
 <body>
 <header class="top-header">
@@ -6663,5 +6677,38 @@ html.dark-mode nav.category-nav .category-link.active:visited {
 html.dark-mode nav.category-nav .category-link.active::after {
   display: none !important;
   content: none !important;
+}
+</style>
+
+<!-- Merge PDF dark-mode upload/preview background copied exactly for Crop PDF -->
+<style id="toolnest-dark-upload-preview-exact-final">
+/* STEP 3: Dark-mode upload/preview surface. Light mode is untouched. */
+html.dark-mode .tn-shared-upload-area,
+html.dark-mode .upload-area {
+  background-color: #212324 !important;
+  background-image: radial-gradient(circle, rgba(70, 80, 92, 0.46) 1.5px, transparent 1.5px) !important;
+  background-size: 18px 18px !important;
+}
+
+/* Once an image is loaded, the preview surface stays #212324 and the dots disappear. */
+html.dark-mode .tn-shared-upload-area.tn-image-upload-area.has-image,
+html.dark-mode .tn-shared-upload-area.tn-image-upload-area.has-image .tn-image-preview,
+html.dark-mode .tn-shared-upload-area.tn-image-upload-area.has-image .tn-canvas-wrap,
+html.dark-mode .upload-area.has-files {
+  background-color: #212324 !important;
+  background-image: none !important;
+}
+</style>
+
+<style id="wrenchoo-pdf-crop-preserve-original-page-colors">
+/* Do not tint or dim the rendered PDF itself. Keep the crop grid and handles,
+   but remove the selection overlay's green wash and oversized darkening shadow. */
+#cropSelection {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#cropCanvas {
+  opacity: 1 !important;
+  filter: none !important;
 }
 </style>
