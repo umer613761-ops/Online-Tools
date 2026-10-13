@@ -5011,6 +5011,15 @@ html.dark-mode .wm-compact-type{color:#eef3f7}
   color:#263548;font:inherit;font-size:14px;font-weight:500;outline:none;
 }
 html.dark-mode .wm-compact-input input:not(.wm-mode-radio){background:#343a40 !important;color:#f1f4f7;border-color:rgba(255,255,255,.15) !important}
+/* Make the inactive watermark choice visibly disabled in both themes. */
+.wm-compact-input input#wmText:disabled{background:#e5e7eb !important;color:#9ca3af !important;border-color:#d1d5db !important;cursor:not-allowed;opacity:1}
+.wm-compact-input input#wmText:disabled::placeholder{color:#9ca3af;opacity:1}
+html.dark-mode .wm-compact-input input#wmText:disabled{background:#454b52 !important;color:#858d96 !important;border-color:#555d66 !important}
+html.dark-mode .wm-compact-input input#wmText:disabled::placeholder{color:#858d96}
+.wm-compact-file.is-disabled{background:#e5e7eb !important;color:#9ca3af !important;border-color:#d1d5db !important;cursor:not-allowed;box-shadow:none !important}
+.wm-compact-file.is-disabled:hover{background:#e5e7eb !important;border-color:#d1d5db !important;box-shadow:none !important}
+.wm-compact-file.is-disabled input{cursor:not-allowed}
+html.dark-mode .wm-compact-file.is-disabled,html.dark-mode .wm-compact-file.is-disabled:hover{background:#454b52 !important;color:#858d96 !important;border-color:#555d66 !important}
 .wm-compact-input input::placeholder{color:#718295;opacity:1}
 html.dark-mode .wm-compact-input input::placeholder{color:#aeb8c2}
 .wm-compact-control{
@@ -5598,11 +5607,23 @@ html.dark-mode .wr-faq-answer {
 const input=document.getElementById('fileInput'), panel=document.getElementById('uploadPanel'), preview=document.getElementById('imagePreview'), placeholder=panel?.querySelector('.tn-image-upload-placeholder'), editor=document.getElementById('editor'); if(!input||!panel||!preview||!editor)return;
 let c=null, ctx=null, img=new Image(), wmImg=new Image(), hasWmImg=false;
 const text=document.getElementById('wmText'), textMode=document.getElementById('wmTextMode'), imageMode=document.getElementById('wmImageMode'), pos=document.getElementById('position'), opacity=document.getElementById('opacity'), size=document.getElementById('size'), rot=document.getElementById('rotation');
+function syncWatermarkMode(){
+  const imageSelected=imageMode.checked;
+  const imageInput=document.getElementById('wmImage');
+  const imageButton=imageInput.closest('.wm-compact-file');
+  text.disabled=imageSelected;
+  imageInput.disabled=!imageSelected;
+  text.setAttribute('aria-disabled',String(imageSelected));
+  imageInput.setAttribute('aria-disabled',String(!imageSelected));
+  imageButton.classList.toggle('is-disabled',!imageSelected);
+  imageButton.setAttribute('aria-disabled',String(!imageSelected));
+}
 function draw(){if(!img.naturalWidth||!c)return; c.width=img.naturalWidth;c.height=img.naturalHeight;ctx.clearRect(0,0,c.width,c.height);ctx.drawImage(img,0,0);const a=+opacity.value/100;let x=c.width/2,y=c.height/2,align='center',base='middle';const pad=Math.max(20,c.width*.035); if(pos.value.includes('left')){x=pad;align='left'} if(pos.value.includes('right')){x=c.width-pad;align='right'} if(pos.value.includes('top')){y=pad;base='top'} if(pos.value.includes('bottom')){y=c.height-pad;base='bottom'} ctx.save();ctx.globalAlpha=a;ctx.translate(x,y);ctx.rotate(+rot.value*Math.PI/180); if(imageMode.checked&&hasWmImg){let w=Math.min(+size.value*4,c.width*.45),h=w*wmImg.naturalHeight/wmImg.naturalWidth;ctx.drawImage(wmImg,align==='left'?0:align==='right'?-w:-w/2,base==='top'?0:base==='bottom'?-h:-h/2,w,h)} else if(textMode.checked&&text.value.trim()){ctx.font=`700 ${+size.value}px Arial,sans-serif`;ctx.textAlign=align;ctx.textBaseline=base;ctx.fillStyle='#fff';ctx.strokeStyle='rgba(0,0,0,.5)';ctx.lineWidth=Math.max(2,+size.value/10);ctx.strokeText(text.value,0,0);ctx.fillText(text.value,0,0)}ctx.restore()}
-function reset(){input.value='';document.getElementById('wmImage').value='';text.value='';textMode.checked=true;imageMode.checked=false;panel.classList.remove('has-image');placeholder.style.display='';preview.innerHTML='';editor.classList.add('wr-hidden');c=null;ctx=null;img=new Image();wmImg=new Image();hasWmImg=false}
+function reset(){input.value='';document.getElementById('wmImage').value='';text.value='';textMode.checked=true;imageMode.checked=false;syncWatermarkMode();panel.classList.remove('has-image');placeholder.style.display='';preview.innerHTML='';editor.classList.add('wr-hidden');c=null;ctx=null;img=new Image();wmImg=new Image();hasWmImg=false}
 input.onchange=()=>{const f=input.files[0];if(!f)return;const u=URL.createObjectURL(f);img.onload=()=>{placeholder.style.display='none';panel.classList.add('has-image');preview.innerHTML='';c=document.createElement('canvas');c.className='tn-edit-canvas';preview.appendChild(c);ctx=c.getContext('2d');editor.classList.remove('wr-hidden');draw();URL.revokeObjectURL(u)};img.src=u};
-['wmText','position','opacity','size','rotation'].forEach(id=>document.getElementById(id).addEventListener(id==='wmText'?'input':'change',draw)); textMode.addEventListener('change',draw); imageMode.addEventListener('change',draw);
+['wmText','position','opacity','size','rotation'].forEach(id=>document.getElementById(id).addEventListener(id==='wmText'?'input':'change',draw)); textMode.addEventListener('change',()=>{syncWatermarkMode();draw()}); imageMode.addEventListener('change',()=>{syncWatermarkMode();draw()});
 opacity.oninput=()=>{document.getElementById('opacityVal').textContent=opacity.value+'%';draw()}; size.oninput=()=>{document.getElementById('sizeVal').textContent=size.value;draw()};rot.oninput=()=>{document.getElementById('rotationVal').textContent=rot.value+'°';draw()}; document.getElementById('sizePlus').onclick=()=>{size.value=Math.min(+size.max,+size.value+5);document.getElementById('sizeVal').textContent=size.value;draw()}; document.getElementById('sizeMinus').onclick=()=>{size.value=Math.max(+size.min,+size.value-5);document.getElementById('sizeVal').textContent=size.value;draw()};
+syncWatermarkMode();
 document.getElementById('wmImage').onchange=e=>{const f=e.target.files[0];if(!f)return;const u=URL.createObjectURL(f);wmImg.onload=()=>{hasWmImg=true;URL.revokeObjectURL(u);draw()};wmImg.src=u};
 document.getElementById('download').onclick=()=>{if(!c)return;c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='watermarked-image.png';a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);reset()},1000)},'image/png')};document.getElementById('reset').onclick=reset;
 panel.addEventListener('dragover',e=>{e.preventDefault();panel.classList.add('dragover')});panel.addEventListener('dragleave',()=>panel.classList.remove('dragover'));panel.addEventListener('drop',e=>{e.preventDefault();panel.classList.remove('dragover');input.files=e.dataTransfer.files;input.dispatchEvent(new Event('change'))});
