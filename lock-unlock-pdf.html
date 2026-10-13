@@ -4625,7 +4625,7 @@ html.dark-mode .wr-faq-answer {
       <h3>Popular Tools</h3>
       <a href="merge-pdf.html">Merge PDF</a>
       <a href="split-pdf.html">Split PDF</a>
-      <a class="tn-tool-category-link" href="fill-pdf.html">Fill PDF</a>
+      <a href="fill-pdf.html">Fill PDF</a>
       <a href="blur-censorship-tool.html">Blur Censorship Tool</a>
     </div>
 
@@ -4662,7 +4662,7 @@ html.dark-mode .wr-faq-answer {
       <h4>Popular Tools</h4>
       <a href="merge-pdf.html">Merge PDF</a>
       <a href="split-pdf.html">Split PDF</a>
-      <a class="tn-tool-category-link" href="fill-pdf.html">Fill PDF</a>
+      <a href="fill-pdf.html">Fill PDF</a>
       <a href="blur-censorship-tool.html">Blur Censorship Tool</a>
     </div>
 
@@ -5448,6 +5448,23 @@ body.dark-mode .tn-shared-upload-frame {
 }
 </style>
 
+
+<style id="wrenchoo-dark-preview-report-strip-final-fix">
+/* Dark mode only: remove the background band immediately behind the Report an Issue row. */
+@supports selector(*:has(> .wr-report-issue)) {
+  html.dark-mode body *:has(> .wr-report-issue),
+  body.dark-mode *:has(> .wr-report-issue) {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+}
+html.dark-mode .wr-report-issue,
+body.dark-mode .wr-report-issue {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+</style>
 </body>
 </html>
 
