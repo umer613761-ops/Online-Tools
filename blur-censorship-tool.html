@@ -3936,6 +3936,41 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
 }
 </style>
 
+
+<style id="wrenchoo-mobile-controls-under-preview-final">
+@media (max-width: 650px) {
+  /* Keep each tool's preview first, then its settings and actions immediately below. */
+  .change-page-size-workspace, .fill-pdf-workspace, .lock-unlock-workspace,
+  .compress-workspace, .convert-from-workspace, .convert-to-workspace,
+  .add-page-numbers-workspace, .watermark-workspace, .remove-pdf-workspace,
+  .rearrange-pdf-workspace, .extract-pdf-workspace, .redact-pdf-workspace {
+    display: flex !important; flex-direction: column !important; align-items: stretch !important; gap: 10px !important;
+  }
+  .change-page-size-preview, .fill-pdf-preview, .lock-unlock-preview,
+  .compress-preview, .convert-preview-grid, .convert-from-preview,
+  .add-page-numbers-preview, .re-arrange-pdf-preview, .remove-pdf-preview,
+  .redact-preview, .extract-pdf-preview, .rotate-pdf-preview-wrap, .rotate-pdf-pages,
+  .tn-image-preview, #imagePreview, #image-preview, .wr-preview, .image-preview {
+    margin-bottom: 0 !important;
+  }
+  .change-page-size-options, .fill-pdf-actions, .lock-unlock-options,
+  #compressOptions, .convert-from-toolbar, .convert-to-options,
+  .add-page-numbers-options, .watermark-page-controls, #watermarkPageControls,
+  .editor-controls, #editorControls, .wr-controls, .wr-tool-actions,
+  .new-image-tool-controls, .wm-settings, .image-resizer-controls,
+  .image-converter-controls, .rotate-pdf-bottom-controls, #rotateBottomControls,
+  .button-row, .tool-controls, .tool-options {
+    margin-top: 0 !important;
+    align-self: stretch;
+  }
+  /* Image tools keep their settings/actions immediately after the preview/upload frame. */
+  .tn-shared-upload-area + #editor, #uploadPanel + #editor,
+  .tn-image-preview + .wr-controls, .tn-image-preview + .wr-tool-actions {
+    margin-top: 8px !important;
+  }
+}
+</style>
+
 </head>
 <body class="wrenchoo-blur-censorship-page">
 <!-- ========================================
@@ -5303,6 +5338,44 @@ html.dark-mode .wr-report-modal-card input[readonly], body.dark-mode .wr-report-
   }
 }
 </style>
+
+<style id="wrenchoo-mobile-download-cancel-uniform-final">
+/* Mobile only: all PDF/image download and cancel controls are compact, equal-sized, and side by side. Desktop is untouched. */
+@media (max-width: 650px) {
+  button[id*="download" i], a[id*="download" i],
+  button[class*="download" i], a[class*="download" i],
+  button[id*="cancel" i], button[id*="reset" i],
+  button[class*="cancel" i], button[class*="reset" i],
+  .download-btn, .download-button, .btn-download, .download-file-btn,
+  .cancel-btn, .cancel-button, .btn-cancel, .reset-btn, .tn-image-cancel {
+    width: 52px !important; min-width: 52px !important; max-width: 52px !important;
+    height: 52px !important; min-height: 52px !important; max-height: 52px !important;
+    padding: 0 !important; margin: 0 !important;
+    box-sizing: border-box !important; flex: 0 0 52px !important;
+    display: inline-flex !important; align-items: center !important; justify-content: center !important;
+    border-radius: 12px !important; font-size: 0 !important; line-height: 0 !important;
+  }
+  button[id*="download" i], a[id*="download" i], button[class*="download" i], a[class*="download" i],
+  .download-btn, .download-button, .btn-download, .download-file-btn {
+    background: #218739 !important; background-color: #218739 !important; border-color: #218739 !important; color: transparent !important;
+  }
+  button[id*="cancel" i], button[id*="reset" i], button[class*="cancel" i], button[class*="reset" i],
+  .cancel-btn, .cancel-button, .btn-cancel, .reset-btn, .tn-image-cancel {
+    background: #dc2626 !important; background-color: #dc2626 !important; border-color: #dc2626 !important; color: transparent !important;
+  }
+  div:has(> button[id*="download" i]):has(> button[id*="cancel" i]),
+  div:has(> button[id*="download" i]):has(> button[id*="reset" i]),
+  div:has(> button[class*="download" i]):has(> button[class*="cancel" i]),
+  div:has(> button[class*="download" i]):has(> button[class*="reset" i]),
+  div:has(> button[id*="download" i]):has(> .tn-image-cancel),
+  div:has(> .download-btn):has(> .tn-image-cancel),
+  .add-page-numbers-actions, .add-watermark-actions {
+    display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important;
+    justify-content: center !important; align-items: center !important; gap: 10px !important;
+  }
+}
+</style>
+
 </body>
 
 <style id="toolnest-final-image-cancel-desktop">
