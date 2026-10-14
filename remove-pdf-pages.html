@@ -3761,12 +3761,12 @@ html.dark-mode .tn-shared-upload-button:hover {
   position: relative;
   width: 100%;
   min-width: 0;
-  padding: 12px;
-  background: #ffffff;
-  border: 1px solid #d5dde6;
-  border-radius: 10px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
   box-sizing: border-box;
-  box-shadow: 0 2px 8px rgba(31, 45, 61, 0.06);
+  box-shadow: none;
 }
 
 .remove-pages-page.removed {
@@ -3817,8 +3817,8 @@ html.dark-mode .tn-shared-upload-button:hover {
   align-items: flex-start;
   justify-content: center;
   overflow: hidden;
-  background: #f4f6f8;
-  border-radius: 6px;
+  background: transparent;
+  border-radius: 0;
 }
 
 .remove-pages-page canvas {
@@ -6101,6 +6101,22 @@ body.dark-mode .wr-report-issue {
   background-color: transparent !important;
 }
 </style>
+
+<style id="wrenchoo-remove-pages-larger-previews-final">
+/* Use the available horizontal space for the PDF pages instead of leaving wide gutters. */
+.remove-pages-preview {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  column-gap: 10px !important;
+  row-gap: 18px !important;
+  width: 100% !important;
+}
+.remove-pages-page,
+.remove-pages-page-canvas-wrap { width: 100% !important; min-width: 0 !important; }
+.remove-pages-page-canvas-wrap { justify-content: stretch !important; }
+.remove-pages-page canvas { width: 100% !important; max-width: none !important; height: auto !important; }
+@media (max-width: 650px) { .remove-pages-preview { grid-template-columns: 1fr !important; } }
+</style>
+
 </body>
 </html>
 
@@ -6373,4 +6389,27 @@ html.dark-mode nav.category-nav .category-link.active::after {
   display: none !important;
   content: none !important;
 }
+</style>
+
+<style id="remove-pages-cardless-dark-mode-and-controls-fix">
+html.dark-mode .remove-pages-page,
+html.dark-mode .remove-pages-page-canvas-wrap,
+html.dark-mode .remove-pages-page.removed {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.remove-pages-page-header {
+  width: 100%;
+  min-height: 30px;
+  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-sizing: border-box;
+}
+.remove-pages-page-number { margin: 0; line-height: 1.2; }
+.remove-pages-remove-button { margin: 0; line-height: 1.2; }
 </style>

@@ -4786,12 +4786,12 @@ html.dark-mode #extractPdfUploadArea.has-pages {
   position: relative;
   width: 100%;
   min-width: 0;
-  padding: 12px;
-  background: #ffffff;
-  border: 1px solid #d5dde6;
-  border-radius: 10px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
   box-sizing: border-box;
-  box-shadow: 0 2px 8px rgba(31, 45, 61, 0.06);
+  box-shadow: none;
 }
 
 .extract-page-header {
@@ -4843,8 +4843,8 @@ html.dark-mode #extractPdfUploadArea.has-pages {
   align-items: flex-start;
   justify-content: center;
   overflow: hidden;
-  background: #f4f6f8;
-  border-radius: 6px;
+  background: transparent;
+  border-radius: 0;
 }
 
 .extract-page-card canvas {
@@ -6115,6 +6115,22 @@ body.dark-mode .wr-report-issue {
   background-color: transparent !important;
 }
 </style>
+
+<style id="wrenchoo-extract-pages-larger-previews-final">
+/* Use the available horizontal space for the PDF pages instead of leaving wide gutters. */
+.extract-pages-preview {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  column-gap: 10px !important;
+  row-gap: 18px !important;
+  width: 100% !important;
+}
+.extract-page-card,
+.extract-page-canvas-wrap { width: 100% !important; min-width: 0 !important; }
+.extract-page-canvas-wrap { justify-content: stretch !important; }
+.extract-page-card canvas { width: 100% !important; max-width: none !important; height: auto !important; }
+@media (max-width: 650px) { .extract-pages-preview { grid-template-columns: 1fr !important; } }
+</style>
+
 </body>
 </html>
 
@@ -6395,4 +6411,27 @@ html.dark-mode nav.category-nav .category-link.active::after {
   display: none !important;
   content: none !important;
 }
+</style>
+
+<style id="extract-pages-cardless-dark-mode-and-controls-fix">
+html.dark-mode .extract-page-card,
+html.dark-mode .extract-page-canvas-wrap,
+html.dark-mode .extract-page-card.is-selected {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.extract-page-header {
+  width: 100%;
+  min-height: 30px;
+  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-sizing: border-box;
+}
+.extract-page-number { margin: 0; line-height: 1.2; }
+.extract-page-button { margin: 0; line-height: 1.2; }
 </style>
