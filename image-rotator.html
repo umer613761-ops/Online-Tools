@@ -5419,9 +5419,7 @@ html.dark-mode .tn-shared-tool-box {
   }
 }
 </style>
-</body>
 
-</html>
 
 <style>
 
@@ -5756,3 +5754,46 @@ html.dark-mode nav.category-nav .category-link.active::after {
   content: none !important;
 }
 </style>
+
+<style id="wrenchoo-mobile-image-buttons-verified-fix">
+/* Final verified mobile-only override: the upload label and actual Reset/Cancel controls are compact squares. */
+@media screen and (max-width: 650px) {
+  html body .tn-shared-upload-area .tn-shared-upload-placeholder > label.tn-shared-upload-button,
+  html body .tn-shared-upload-area label.tn-shared-upload-button,
+  html body label.tn-shared-upload-button[for="tnImageFileInput"],
+  html body label.tn-shared-upload-button[for="fileInput"],
+  html body label.tn-shared-upload-button[for="imageInput"],
+  html body .tn-image-upload-area .tn-shared-upload-button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 52px !important; min-width: 52px !important; max-width: 52px !important;
+    height: 52px !important; min-height: 52px !important; max-height: 52px !important;
+    flex: 0 0 52px !important; flex-grow: 0 !important; flex-shrink: 0 !important;
+    box-sizing: border-box !important; padding: 0 !important;
+    border-radius: 12px !important; overflow: hidden !important;
+    font-size: 0 !important; line-height: 0 !important;
+  }
+  /* Real image-tool Cancel/Reset actions (not review-dialog Cancel buttons). */
+  html body .tn-image-upload-area button#reset,
+  html body button#reset.wr-action-btn,
+  html body .tn-image-upload-area .wr-action-btn.secondary[id="reset"] {
+    display: inline-flex !important;
+    align-items: center !important; justify-content: center !important;
+    width: 52px !important; min-width: 52px !important; max-width: 52px !important;
+    height: 52px !important; min-height: 52px !important; max-height: 52px !important;
+    flex: 0 0 52px !important; flex-grow: 0 !important; flex-shrink: 0 !important;
+    box-sizing: border-box !important; padding: 0 !important; margin: 0 !important;
+    border-radius: 12px !important; overflow: hidden !important;
+    font-size: 0 !important; line-height: 0 !important;
+  }
+  html body .tn-image-upload-area button#reset::before,
+  html body button#reset.wr-action-btn::before {
+    content: "×" !important; display: block !important;
+    font-size: 28px !important; line-height: 1 !important; color: #ffffff !important;
+  }
+}
+</style>
+
+</body>
+</html>
