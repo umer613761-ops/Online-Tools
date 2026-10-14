@@ -2501,8 +2501,25 @@ def _add_native_flow_table(container, table_info, font_scale=1.0, page=None):
                 _embed_table_images(cell, source_bbox, page)
             else:
                 style={}
-            if c < len(vals) and vals[c]:
-                cell_text=_normalize_form_cell_text(vals[c])
+            cell_text = vals[c] if c < len(vals) else ''
+            # pdfplumber can detect a table grid but fail to assign native PDF
+            # text to its cells (common with form fields and narrow colon columns).
+            # Recover missing cell values from the PDF text layer using the actual
+            # cell rectangle, instead of later dropping all text inside the table.
+            if not cell_text and page is not None and source_bbox:
+                x0, y0, x1, y1 = map(float, source_bbox)
+                found=[]
+                for span in page_spans:
+                    sx0, sy0, sx1, sy1 = span['bbox']
+                    overlap_x=max(0.0, min(x1, sx1)-max(x0, sx0))
+                    overlap_y=max(0.0, min(y1, sy1)-max(y0, sy0))
+                    span_area=max(0.01, (sx1-sx0)*(sy1-sy0))
+                    if overlap_x*overlap_y/span_area >= 0.45:
+                        found.append((sy0, sx0, span['text']))
+                if found:
+                    cell_text=' '.join(t.strip() for _,_,t in sorted(found) if t.strip())
+            if cell_text:
+                cell_text=_normalize_form_cell_text(cell_text)
                 base_font=8.0 if cols>=9 else 10.0
                 run=p.add_run(_xml_safe_text(cell_text)); run.font.name='Arial'; run.font.size=Pt(base_font*font_scale)
                 if r==0 or style.get('bold'): run.bold=True
