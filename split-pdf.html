@@ -6771,6 +6771,71 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
   }
 }
 </style>
+
+<!-- Wrenchoo mobile workflow redesign v1: step-by-step layout; desktop untouched -->
+<style id="wrenchoo-mobile-step-workflow">
+@media (max-width: 650px) {
+  /* Keep the existing site header/footer, simplify the working area only. */
+  main.page-content { padding: 14px 12px 24px !important; }
+  main.page-content > div[style*="grid-template-columns"] {
+    display: block !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+  }
+  .category-nav, .tn-tool-category-bar { display: none !important; }
+  .tool-intro { margin: 0 0 14px !important; padding: 0 !important; }
+  .tool-intro h1 { font-size: clamp(22px, 6vw, 28px) !important; line-height: 1.2 !important; margin: 0 0 6px !important; }
+  .tool-intro p { font-size: 14px !important; line-height: 1.45 !important; margin: 0 !important; }
+  .tn-shared-tool-box, .tool-box {
+    width: 100% !important; max-width: none !important; min-width: 0 !important;
+    margin: 0 !important; padding: 14px !important; border-radius: 16px !important;
+    box-sizing: border-box !important;
+  }
+  .tn-shared-tool-box::before, .tool-box::before {
+    content: "1  CHOOSE FILE     ›     2  SET OPTIONS     ›     3  DOWNLOAD";
+    display: block !important; width: 100% !important; box-sizing: border-box !important;
+    margin: 0 0 14px !important; padding: 10px 8px !important;
+    border-radius: 10px !important; background: #eef7f0 !important; color: #218739 !important;
+    font: 700 10px/1.4 system-ui, sans-serif !important; letter-spacing: .25px !important;
+    text-align: center !important; white-space: normal !important;
+  }
+  .tn-shared-upload-frame, .tn-shared-upload-area { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; }
+  .tn-shared-upload-area { margin-top: 0 !important; }
+  .tn-shared-upload-placeholder {
+    min-height: 118px !important; padding: 18px 12px !important; box-sizing: border-box !important;
+    display: flex !important; flex-direction: column !important; align-items: center !important;
+    justify-content: center !important; gap: 10px !important; border-radius: 12px !important;
+  }
+  .tn-shared-upload-button {
+    background: #218739 !important; color: #fff !important; border-radius: 10px !important;
+    min-height: 44px !important; max-width: 100% !important; padding: 11px 18px !important;
+    font-size: 15px !important; font-weight: 700 !important; line-height: 1.2 !important;
+    box-sizing: border-box !important;
+  }
+  .tn-shared-upload-area canvas, .tn-shared-upload-area img, .tn-shared-upload-area video {
+    max-width: 100% !important; height: auto !important;
+  }
+  .tn-shared-upload-area [id$="Preview"], .tn-shared-upload-area .compress-preview,
+  .tn-shared-upload-area .image-preview, .tn-shared-upload-area .preview-container {
+    max-width: 100% !important; box-sizing: border-box !important;
+  }
+  .tn-shared-upload-area label, .tn-shared-upload-area .compress-level,
+  .tn-shared-upload-area .option-group, .tn-shared-upload-area .settings-group {
+    max-width: 100% !important; box-sizing: border-box !important;
+  }
+  .tn-shared-upload-area input:not([type="file"]):not([type="checkbox"]):not([type="radio"]),
+  .tn-shared-upload-area select, .tn-shared-upload-area textarea {
+    max-width: 100% !important; box-sizing: border-box !important;
+  }
+  .tn-shared-upload-area button:not(.tn-shared-upload-button) {
+    max-width: 100% !important; box-sizing: border-box !important;
+  }
+  .wr-file-security, .wr-report-issue { display: none !important; }
+  .tn-ad-left-column { min-width: 0 !important; width: 100% !important; }
+  #wrenchoo-ratings { margin-top: 18px !important; }
+}
+</style>
+
 </head>
 <body>
 <!-- ========================================
