@@ -6771,71 +6771,113 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
   }
 }
 </style>
-
-<!-- Wrenchoo mobile workflow redesign v1: step-by-step layout; desktop untouched -->
 <style id="wrenchoo-mobile-step-workflow">
+/* Mobile-only workflow redesign. Desktop, site header and footer are intentionally untouched. */
 @media (max-width: 650px) {
-  /* Keep the existing site header/footer, simplify the working area only. */
-  main.page-content { padding: 14px 12px 24px !important; }
-  main.page-content > div[style*="grid-template-columns"] {
-    display: block !important;
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 0 !important;
+  html { -webkit-text-size-adjust: 100%; }
+  body { overflow-x: hidden; }
+  main.page-content, main.page-wrapper {
+    width: 100% !important; max-width: 100% !important; min-width: 0 !important;
+    box-sizing: border-box !important; padding: 16px 12px 30px !important;
+  }
+  main.page-content > div[style*="grid-template-columns"],
+  main.page-wrapper > div[style*="grid-template-columns"] {
+    display: block !important; grid-template-columns: minmax(0,1fr) !important;
+    gap: 0 !important; width: 100% !important; min-width: 0 !important;
   }
   .category-nav, .tn-tool-category-bar { display: none !important; }
-  .tool-intro { margin: 0 0 14px !important; padding: 0 !important; }
-  .tool-intro h1 { font-size: clamp(22px, 6vw, 28px) !important; line-height: 1.2 !important; margin: 0 0 6px !important; }
-  .tool-intro p { font-size: 14px !important; line-height: 1.45 !important; margin: 0 !important; }
+  .tool-intro { margin: 0 0 16px !important; padding: 0 !important; }
+  .tool-intro h1, main.page-content h1, main.page-wrapper h1 {
+    font-size: clamp(25px, 7vw, 32px) !important; line-height: 1.12 !important;
+    letter-spacing: -.7px !important; margin: 0 0 8px !important;
+  }
+  .tool-intro p, main.page-content .tool-description, main.page-wrapper .tool-description {
+    font-size: 14px !important; line-height: 1.55 !important;
+  }
   .tn-shared-tool-box, .tool-box {
-    width: 100% !important; max-width: none !important; min-width: 0 !important;
-    margin: 0 !important; padding: 14px !important; border-radius: 16px !important;
-    box-sizing: border-box !important;
+    display: block !important; width: 100% !important; max-width: 100% !important;
+    min-width: 0 !important; margin: 0 !important; padding: 14px !important;
+    border-radius: 20px !important; box-sizing: border-box !important;
+    background: var(--tool-card-bg, #fff) !important;
+    border: 1px solid #e3e9e5 !important;
+    box-shadow: 0 8px 26px rgba(20, 48, 30, .07) !important;
+    overflow: hidden !important;
   }
   .tn-shared-tool-box::before, .tool-box::before {
-    content: "1  CHOOSE FILE     ›     2  SET OPTIONS     ›     3  DOWNLOAD";
+    content: "WORKFLOW     1  FILES     ·     2  SETTINGS     ·     3  DOWNLOAD";
     display: block !important; width: 100% !important; box-sizing: border-box !important;
-    margin: 0 0 14px !important; padding: 10px 8px !important;
-    border-radius: 10px !important; background: #eef7f0 !important; color: #218739 !important;
-    font: 700 10px/1.4 system-ui, sans-serif !important; letter-spacing: .25px !important;
-    text-align: center !important; white-space: normal !important;
+    margin: 0 0 16px !important; padding: 11px 10px !important;
+    border-radius: 12px !important; background: #edf7ef !important; color: #176c2c !important;
+    border: 1px solid #d6eadb !important; font: 800 10px/1.45 system-ui, sans-serif !important;
+    letter-spacing: .25px !important; text-align: center !important; white-space: normal !important;
   }
-  .tn-shared-upload-frame, .tn-shared-upload-area { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; }
-  .tn-shared-upload-area { margin-top: 0 !important; }
-  .tn-shared-upload-placeholder {
-    min-height: 118px !important; padding: 18px 12px !important; box-sizing: border-box !important;
-    display: flex !important; flex-direction: column !important; align-items: center !important;
-    justify-content: center !important; gap: 10px !important; border-radius: 12px !important;
+  .tn-shared-upload-frame, .tn-shared-upload-area, .upload-area {
+    width: 100% !important; max-width: 100% !important; min-width: 0 !important;
+    margin: 0 !important; box-sizing: border-box !important;
   }
-  .tn-shared-upload-button {
-    background: #218739 !important; color: #fff !important; border-radius: 10px !important;
-    min-height: 44px !important; max-width: 100% !important; padding: 11px 18px !important;
-    font-size: 15px !important; font-weight: 700 !important; line-height: 1.2 !important;
-    box-sizing: border-box !important;
+  .tn-shared-upload-placeholder, .upload-placeholder {
+    min-height: 176px !important; width: 100% !important; padding: 22px 12px !important;
+    box-sizing: border-box !important; display: flex !important; flex-direction: column !important;
+    align-items: center !important; justify-content: center !important; gap: 12px !important;
+    border: 2px dashed #a8d5b2 !important; border-radius: 16px !important;
+    background: #f6fbf7 !important; text-align: center !important;
   }
-  .tn-shared-upload-area canvas, .tn-shared-upload-area img, .tn-shared-upload-area video {
-    max-width: 100% !important; height: auto !important;
+  .tn-shared-upload-placeholder::before, .upload-placeholder::before {
+    content: "↑"; display: flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px; border-radius: 15px; background: #e1f2e5; color: #218739;
+    font: 800 30px/1 system-ui, sans-serif;
   }
+  .tn-shared-upload-button, .floating-upload-button, .upload-btn {
+    background: #218739 !important; color: #fff !important; border: 0 !important;
+    border-radius: 12px !important; min-height: 46px !important; max-width: 100% !important;
+    padding: 12px 18px !important; font-size: 15px !important; font-weight: 750 !important;
+    line-height: 1.2 !important; box-shadow: 0 3px 0 #176b2b !important;
+    box-sizing: border-box !important; cursor: pointer !important;
+  }
+  .tn-shared-upload-placeholder p, .upload-placeholder p { margin: 0 !important; font-size: 13px !important; line-height: 1.45 !important; }
+  .tn-shared-upload-area canvas, .tn-shared-upload-area img, .tn-shared-upload-area video,
+  .upload-area canvas, .upload-area img, .upload-area video { max-width: 100% !important; height: auto !important; }
   .tn-shared-upload-area [id$="Preview"], .tn-shared-upload-area .compress-preview,
-  .tn-shared-upload-area .image-preview, .tn-shared-upload-area .preview-container {
-    max-width: 100% !important; box-sizing: border-box !important;
-  }
+  .tn-shared-upload-area .image-preview, .tn-shared-upload-area .preview-container,
+  .upload-area .preview-container { max-width: 100% !important; box-sizing: border-box !important; }
   .tn-shared-upload-area label, .tn-shared-upload-area .compress-level,
-  .tn-shared-upload-area .option-group, .tn-shared-upload-area .settings-group {
+  .tn-shared-upload-area .option-group, .tn-shared-upload-area .settings-group,
+  .tool-box label, .tool-box .settings, .tool-box .options, .tool-box .option-group {
     max-width: 100% !important; box-sizing: border-box !important;
   }
   .tn-shared-upload-area input:not([type="file"]):not([type="checkbox"]):not([type="radio"]),
-  .tn-shared-upload-area select, .tn-shared-upload-area textarea {
-    max-width: 100% !important; box-sizing: border-box !important;
+  .tn-shared-upload-area select, .tn-shared-upload-area textarea,
+  .tool-box input:not([type="file"]):not([type="checkbox"]):not([type="radio"]),
+  .tool-box select, .tool-box textarea {
+    width: 100% !important; max-width: 100% !important; min-height: 44px !important;
+    box-sizing: border-box !important; border-radius: 10px !important;
   }
-  .tn-shared-upload-area button:not(.tn-shared-upload-button) {
-    max-width: 100% !important; box-sizing: border-box !important;
+  .tn-shared-upload-area button:not(.tn-shared-upload-button), .tool-box button {
+    max-width: 100% !important; box-sizing: border-box !important; overflow-wrap: anywhere !important;
+  }
+  .tn-shared-upload-area button, .tool-box button.primary-button,
+  .tool-box button[class*="action"], .tool-box button[id*="Download"],
+  .tool-box button[id*="download"], .tool-box button[id*="Button"] {
+    min-height: 46px !important; border-radius: 12px !important; font-weight: 750 !important;
+  }
+  .tool-box button.primary-button, .tool-box button[class*="action"],
+  .tool-box button[id*="Download"], .tool-box button[id*="download"],
+  .tn-shared-tool-box button[class*="action"] {
+    background: #218739 !important; color: #fff !important; border-color: #218739 !important;
+  }
+  .tool-box > *, .tn-shared-tool-box > * { min-width: 0 !important; }
+  .tool-box [style*="display: grid"], .tool-box [style*="display:grid"],
+  .tn-shared-tool-box [style*="display: grid"], .tn-shared-tool-box [style*="display:grid"] {
+    max-width: 100% !important; grid-template-columns: minmax(0,1fr) !important;
   }
   .wr-file-security, .wr-report-issue { display: none !important; }
   .tn-ad-left-column { min-width: 0 !important; width: 100% !important; }
-  #wrenchoo-ratings { margin-top: 18px !important; }
+  #wrenchoo-ratings { margin-top: 20px !important; }
+  .uploaded-files, .uploaded-files-header, .file-list, .preview-grid { max-width: 100% !important; min-width: 0 !important; }
+  .uploaded-files > *, .file-list > * { max-width: 100% !important; box-sizing: border-box !important; }
+  img, canvas, video, iframe { max-width: 100%; }
 }
 </style>
-
 </head>
 <body>
 <!-- ========================================
