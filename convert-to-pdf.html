@@ -5434,69 +5434,7 @@ body.dark-mode .wr-report-issue a:hover span,
       if(fmt.value==='html'){
         let out='<html><body>';
         for(let i=1;i<=pdf.numPages;i++){const p=await pdf.getPage(i),c=await p.getTextContent();out+='<h2>Page '+i+'</h2><p>'+esc(c.items.map(x=>x.str).join(' '))+'</p>'; }
-        out+='\n
-<style id="wrenchoo-mobile-upload-button-size-unified-final">
-/* Mobile only: consistent compact upload icon button on all PDF and image tools. */
-@media (max-width: 650px) {
-  .tn-shared-upload-button, .floating-upload-button, .upload-btn, .upload-button, .file-upload-button,
-  button[id*="upload" i], label[id*="upload" i],
-  #uploadButton, #compressUploadButton, #removePdfUploadButton, #reArrangePdfUploadButton,
-  #changePageSizeUploadButton, #convertToUploadButton, #convertFromUploadButton, #rotateUploadButton {
-    width: 52px !important; min-width: 52px !important; max-width: 52px !important;
-    height: 52px !important; min-height: 52px !important; max-height: 52px !important;
-    padding: 0 !important; margin-left: auto !important; margin-right: auto !important;
-    box-sizing: border-box !important; border-radius: 12px !important;
-    display: inline-flex !important; align-items: center !important; justify-content: center !important;
-    background: #218739 !important; background-color: #218739 !important;
-    border-color: #218739 !important; color: transparent !important;
-    font-size: 0 !important; line-height: 0 !important;
-  }
-  .tn-shared-upload-button::before, .floating-upload-button::before, .upload-btn::before,
-  .upload-button::before, .file-upload-button::before, button[id*="upload" i]::before, label[id*="upload" i]::before {
-    width: 24px !important; height: 24px !important; flex: 0 0 24px !important;
-  }
-}
-</style>
-
-
-<style id="wrenchoo-mobile-download-cancel-uniform-final">
-/* Mobile only: all PDF/image download and cancel controls are compact, equal-sized, and side by side. Desktop is untouched. */
-@media (max-width: 650px) {
-  button[id*="download" i], a[id*="download" i],
-  button[class*="download" i], a[class*="download" i],
-  button[id*="cancel" i], button[id*="reset" i],
-  button[class*="cancel" i], button[class*="reset" i],
-  .download-btn, .download-button, .btn-download, .download-file-btn,
-  .cancel-btn, .cancel-button, .btn-cancel, .reset-btn, .tn-image-cancel {
-    width: 52px !important; min-width: 52px !important; max-width: 52px !important;
-    height: 52px !important; min-height: 52px !important; max-height: 52px !important;
-    padding: 0 !important; margin: 0 !important;
-    box-sizing: border-box !important; flex: 0 0 52px !important;
-    display: inline-flex !important; align-items: center !important; justify-content: center !important;
-    border-radius: 12px !important; font-size: 0 !important; line-height: 0 !important;
-  }
-  button[id*="download" i], a[id*="download" i], button[class*="download" i], a[class*="download" i],
-  .download-btn, .download-button, .btn-download, .download-file-btn {
-    background: #218739 !important; background-color: #218739 !important; border-color: #218739 !important; color: transparent !important;
-  }
-  button[id*="cancel" i], button[id*="reset" i], button[class*="cancel" i], button[class*="reset" i],
-  .cancel-btn, .cancel-button, .btn-cancel, .reset-btn, .tn-image-cancel {
-    background: #dc2626 !important; background-color: #dc2626 !important; border-color: #dc2626 !important; color: transparent !important;
-  }
-  div:has(> button[id*="download" i]):has(> button[id*="cancel" i]),
-  div:has(> button[id*="download" i]):has(> button[id*="reset" i]),
-  div:has(> button[class*="download" i]):has(> button[class*="cancel" i]),
-  div:has(> button[class*="download" i]):has(> button[class*="reset" i]),
-  div:has(> button[id*="download" i]):has(> .tn-image-cancel),
-  div:has(> .download-btn):has(> .tn-image-cancel),
-  .add-page-numbers-actions, .add-watermark-actions {
-    display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important;
-    justify-content: center !important; align-items: center !important; gap: 10px !important;
-  }
-}
-</style>
-
-</body></html>';
+        out+='</body></html>';
         const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out],{type:'text/html'}));a.download='converted-from-pdf.html';a.click();URL.revokeObjectURL(a.href);resetFromUpload();return;
       }
       alert('The selected format requires an advanced document converter.');
