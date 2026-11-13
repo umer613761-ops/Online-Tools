@@ -5349,30 +5349,71 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
   }
 }
 </style>
+
 <script id="mobile-file-security-placement-controller">
 (function(){
   var mq=window.matchMedia('(max-width:700px)');
+  var records=[];
   function visible(el){
     if(!el || el.hidden) return false;
-    var cs=getComputedStyle(el);
+    var cs=window.getComputedStyle(el);
     return cs.display!=='none' && cs.visibility!=='hidden' && el.getClientRects().length>0;
   }
-  function apply(){
-    if(!mq.matches) return;
+  function uploaded(frame,area){
+    var cls=(' '+area.className+' ').toLowerCase();
+    if(/(has-file|has-files|file-loaded|files-loaded|has-upload|uploaded|is-uploaded)/.test(cls)) return true;
+    var inputs=frame.querySelectorAll('input[type="file"]');
+    for(var i=0;i<inputs.length;i++){
+      if(inputs[i].files && inputs[i].files.length) return true;
+    }
+    var previews=area.querySelectorAll('.tn-upload-preview,.upload-preview,.file-preview,[data-uploaded="true"],.tn-file-preview');
+    for(var j=0;j<previews.length;j++) if(visible(previews[j])) return true;
+    var placeholders=area.querySelectorAll('.tn-shared-upload-placeholder,.upload-placeholder');
+    if(placeholders.length){
+      var anyPlaceholder=Array.prototype.some.call(placeholders,visible);
+      if(!anyPlaceholder) return true;
+    }
+    return false;
+  }
+  function init(){
     document.querySelectorAll('.tn-shared-upload-frame').forEach(function(frame){
       var security=frame.querySelector(':scope > .wr-file-security') || frame.querySelector('.wr-file-security');
-      var area=frame.querySelector(':scope > .tn-shared-upload-area, :scope > .upload-area');
+      var area=frame.querySelector(':scope > .tn-shared-upload-area, :scope > .upload-area') || frame.querySelector('.tn-shared-upload-area,.upload-area');
       if(!security || !area) return;
-      if(area.nextElementSibling!==security) area.insertAdjacentElement('afterend',security);
-      security.classList.add('mobile-security-below-upload');
-      var placeholders=area.querySelectorAll('.tn-shared-upload-placeholder, .upload-placeholder');
-      var hasPreUpload=Array.prototype.some.call(placeholders,visible);
-      security.style.setProperty('display',hasPreUpload?'block':'none','important');
+      if(!records.some(function(r){return r.security===security;})){
+        records.push({frame:frame,area:area,security:security,parent:security.parentNode,next:security.nextSibling});
+        frame.querySelectorAll('input[type="file"]').forEach(function(input){
+          input.addEventListener('change',schedule);
+        });
+      }
+    });
+  }
+  function apply(){
+    init();
+    records.forEach(function(r){
+      if(mq.matches){
+        if(r.area.parentNode && (r.security.parentNode!==r.area.parentNode || r.security.previousElementSibling!==r.area)){
+          r.area.insertAdjacentElement('afterend',r.security);
+        }
+        r.security.classList.add('mobile-security-below-upload');
+        var show=!uploaded(r.frame,r.area);
+        r.security.style.setProperty('display',show?'block':'none','important');
+        r.security.style.setProperty('visibility','visible','important');
+      } else {
+        r.security.classList.remove('mobile-security-below-upload');
+        r.security.style.removeProperty('display');
+        r.security.style.removeProperty('visibility');
+        if(r.parent && r.security.parentNode!==r.parent){
+          if(r.next && r.next.parentNode===r.parent) r.parent.insertBefore(r.security,r.next);
+          else r.parent.appendChild(r.security);
+        }
+      }
     });
   }
   var queued=false;
   function schedule(){
-    if(queued)return; queued=true;
+    if(queued) return;
+    queued=true;
     requestAnimationFrame(function(){queued=false;apply();});
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',schedule);
@@ -5380,8 +5421,10 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
   new MutationObserver(schedule).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style','hidden']});
   window.addEventListener('resize',schedule);
   if(mq.addEventListener) mq.addEventListener('change',schedule);
+  else if(mq.addListener) mq.addListener(schedule);
 })();
 </script>
+
 
 
 <style id="mobile-remove-legacy-security-messages">
@@ -5445,6 +5488,144 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
     width:28px !important; height:28px !important;
     color:#16a34a !important;
     stroke:currentColor !important;
+  }
+}
+</style>
+
+
+<style id="mobile-light-description-security-contrast-fix">
+/* Mobile only: strengthen description and file-security text in light mode. */
+@media screen and (max-width:700px) {
+  html:not(.dark-mode) .heading p,
+  html:not(.dark-mode) .tool-info p,
+  html:not(.dark-mode) .home-tool-info p,
+  html:not(.dark-mode) .tool-description,
+  html:not(.dark-mode) .page-content .heading p,
+  html:not(.dark-mode) .page-content .tool-info p,
+  html:not(.dark-mode) .page-content .home-tool-info p,
+  html:not(.dark-mode) .page-content .tool-description,
+  html:not(.dark-mode) main .heading p,
+  html:not(.dark-mode) main .tool-info p,
+  html:not(.dark-mode) main .home-tool-info p,
+  html:not(.dark-mode) main .tool-description {
+    color:#263445 !important;
+    -webkit-text-fill-color:#263445 !important;
+  }
+  html:not(.dark-mode) body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button {
+    color:#263445 !important;
+    -webkit-text-fill-color:#263445 !important;
+    font-weight:600 !important;
+  }
+}
+</style>
+
+<style id="mobile-legacy-security-lines-final-cleanup">
+/* Mobile only: suppress legacy pre-upload and post-upload security messages.
+   Preserve the canonical Fill-master .wr-mobile-fill-upload-privacy line. */
+@media screen and (max-width:767px) {
+  html body .wr-file-security,
+  html body .wr-security-dialog,
+  html body .rotate-mobile-security-line,
+  html body .wru-post-privacy,
+  html body .merge-post-upload-privacy,
+  html body .tn-converter-postupload-security,
+  html body .wr-mobile-fill-privacy,
+  html body .wr-mobile-security-message,
+  html body .mobile-file-security-message,
+  html body .file-security-message,
+  html body [class*="postupload-security"],
+  html body [class*="post-upload-security"],
+  html body [class*="security-banner"] {
+    display:none !important;
+    visibility:hidden !important;
+    height:0 !important;
+    min-height:0 !important;
+    max-height:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+  }
+}
+</style>
+
+
+<style id="mobile-desktop-security-message-uniform-final">
+/* Reuse the existing desktop File security message on mobile, directly below upload. */
+@media screen and (max-width:700px) {
+  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload {
+    position:static !important;
+    inset:auto !important;
+    display:block !important;
+    float:none !important;
+    clear:both !important;
+    width:100% !important;
+    max-width:100% !important;
+    min-height:0 !important;
+    height:auto !important;
+    max-height:none !important;
+    box-sizing:border-box !important;
+    margin:10px 0 0 !important;
+    padding:0 !important;
+    border:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    transform:none !important;
+    text-align:center !important;
+    order:initial !important;
+    visibility:visible !important;
+    overflow:visible !important;
+  }
+  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button.wr-file-security-trigger {
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:6px !important;
+    min-height:0 !important;
+    height:auto !important;
+    margin:0 auto !important;
+    padding:0 !important;
+    border:0 !important;
+    border-radius:0 !important;
+    background:transparent !important;
+    color:#536273 !important;
+    box-shadow:none !important;
+    font-family:inherit !important;
+    font-size:11px !important;
+    font-weight:600 !important;
+    line-height:1.4 !important;
+    letter-spacing:0 !important;
+    text-align:center !important;
+    cursor:pointer !important;
+  }
+  html.dark-mode body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button.wr-file-security-trigger,
+  body.dark-mode .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button.wr-file-security-trigger {
+    color:#cbd5e1 !important;
+  }
+  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button.wr-file-security-trigger > span[aria-hidden="true"] {
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    width:18px !important;
+    height:18px !important;
+    min-width:18px !important;
+    min-height:18px !important;
+    flex:0 0 18px !important;
+    color:#16865f !important;
+  }
+  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button.wr-file-security-trigger > span[aria-hidden="true"] svg {
+    display:block !important;
+    width:18px !important;
+    height:18px !important;
+    color:#16865f !important;
+    stroke:currentColor !important;
+  }
+  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload[hidden] {
+    display:none !important;
+  }
+}
+@media screen and (min-width:701px) {
+  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload {
+    position:absolute !important;
   }
 }
 </style>
@@ -5519,7 +5700,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </nav>
 
 <div class="heading">
-  <div class="wrenchoo-mobile-heading-copy"><h1>Compressor</h1><p>Reduce image file size while keeping quality.</p></div><h1 class="wrenchoo-desktop-heading-old">Image Compressor</h1>
+  <div class="wrenchoo-mobile-heading-copy"><h1>Image Compressor</h1><p>Reduce image file size quickly while keeping your images looking clear.</p></div><h1 class="wrenchoo-desktop-heading-old">Image Compressor</h1>
   <p class="wrenchoo-desktop-description-old">Reduce image file size quickly while keeping your images looking clear.</p>
 </div>
 
@@ -9550,6 +9731,19 @@ html body:has(.tn-image-upload-area.has-image) .tn-image-controls.show > .tn-con
   }
 })();
 </script>
+
+
+<style id="mobile-heading-description-font-size-increase">
+/* Mobile only: slightly enlarge tool headings and descriptions. */
+@media screen and (max-width:767px) {
+  html body .wrenchoo-mobile-heading-copy h1 {
+    font-size:clamp(32px, 8.6vw, 37px) !important;
+  }
+  html body .wrenchoo-mobile-heading-copy p {
+    font-size:16px !important;
+  }
+}
+</style>
 
 </body>
 </html>

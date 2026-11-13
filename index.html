@@ -4171,6 +4171,62 @@ html.dark-mode .site-footer, html.dark-mode .toolnest-hybrid-footer { margin-top
 }
 </style>
 
+
+<style id="mobile-light-description-security-contrast-fix">
+/* Mobile only: strengthen description and file-security text in light mode. */
+@media screen and (max-width:700px) {
+  html:not(.dark-mode) .heading p,
+  html:not(.dark-mode) .tool-info p,
+  html:not(.dark-mode) .home-tool-info p,
+  html:not(.dark-mode) .tool-description,
+  html:not(.dark-mode) .page-content .heading p,
+  html:not(.dark-mode) .page-content .tool-info p,
+  html:not(.dark-mode) .page-content .home-tool-info p,
+  html:not(.dark-mode) .page-content .tool-description,
+  html:not(.dark-mode) main .heading p,
+  html:not(.dark-mode) main .tool-info p,
+  html:not(.dark-mode) main .home-tool-info p,
+  html:not(.dark-mode) main .tool-description {
+    color:#263445 !important;
+    -webkit-text-fill-color:#263445 !important;
+  }
+  html:not(.dark-mode) body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button {
+    color:#263445 !important;
+    -webkit-text-fill-color:#263445 !important;
+    font-weight:600 !important;
+  }
+}
+</style>
+
+<style id="mobile-legacy-security-lines-final-cleanup">
+/* Mobile only: suppress legacy pre-upload and post-upload security messages.
+   Preserve the canonical Fill-master .wr-mobile-fill-upload-privacy line. */
+@media screen and (max-width:767px) {
+  html body .wr-file-security,
+  html body .wr-security-dialog,
+  html body .rotate-mobile-security-line,
+  html body .wru-post-privacy,
+  html body .merge-post-upload-privacy,
+  html body .tn-converter-postupload-security,
+  html body .wr-mobile-fill-privacy,
+  html body .wr-mobile-security-message,
+  html body .mobile-file-security-message,
+  html body .file-security-message,
+  html body [class*="postupload-security"],
+  html body [class*="post-upload-security"],
+  html body [class*="security-banner"] {
+    display:none !important;
+    visibility:hidden !important;
+    height:0 !important;
+    min-height:0 !important;
+    max-height:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="wrenchoo-mobile-app-header">
@@ -5428,6 +5484,19 @@ html.dark-mode .home-tool-card::after {
   }
 }
 </style>
+
+<style id="mobile-heading-description-font-size-increase">
+/* Mobile only: slightly enlarge tool headings and descriptions. */
+@media screen and (max-width:767px) {
+  html body .wrenchoo-mobile-heading-copy h1 {
+    font-size:clamp(32px, 8.6vw, 37px) !important;
+  }
+  html body .wrenchoo-mobile-heading-copy p {
+    font-size:16px !important;
+  }
+}
+</style>
+
 </body>
 <style id="wrenchoo-final-pdf-mobile-fix">
 /* FINAL OVERRIDE: PDF tools must always be one column on phones. */
