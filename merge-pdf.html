@@ -6275,62 +6275,45 @@ html.dark-mode .wr-report-issue a:hover{color:#ffb4b4;background:rgba(153,27,27,
 <script id="mobile-file-security-placement-controller">
 (function(){
   var mq=window.matchMedia('(max-width:700px)');
-  var records=[];
-  function visible(el){
-    if(!el || el.hidden) return false;
-    var cs=window.getComputedStyle(el);
-    return cs.display!=='none' && cs.visibility!=='hidden' && el.getClientRects().length>0;
-  }
-  function uploaded(frame,area){
+  var frame=null, security=null, button=null, originalParent=null, originalNext=null;
+  function uploaded(){
+    var area=document.getElementById('uploadArea');
+    if(!area) return false;
     var cls=(' '+area.className+' ').toLowerCase();
     if(/(has-file|has-files|file-loaded|files-loaded|has-upload|uploaded|is-uploaded)/.test(cls)) return true;
-    var inputs=frame.querySelectorAll('input[type="file"]');
-    for(var i=0;i<inputs.length;i++){
-      if(inputs[i].files && inputs[i].files.length) return true;
-    }
+    var input=document.getElementById('pdfInput');
+    if(input && input.files && input.files.length) return true;
     var previews=area.querySelectorAll('.tn-upload-preview,.upload-preview,.file-preview,[data-uploaded="true"],.tn-file-preview');
-    for(var j=0;j<previews.length;j++) if(visible(previews[j])) return true;
-    var placeholders=area.querySelectorAll('.tn-shared-upload-placeholder,.upload-placeholder');
-    if(placeholders.length){
-      var anyPlaceholder=Array.prototype.some.call(placeholders,visible);
-      if(!anyPlaceholder) return true;
+    for(var i=0;i<previews.length;i++){
+      var cs=getComputedStyle(previews[i]);
+      if(cs.display!=='none' && cs.visibility!=='hidden' && previews[i].getClientRects().length) return true;
     }
     return false;
   }
-  function init(){
-    document.querySelectorAll('.tn-shared-upload-frame').forEach(function(frame){
-      var security=frame.querySelector(':scope > .wr-file-security') || frame.querySelector('.wr-file-security');
-      var area=frame.querySelector(':scope > .tn-shared-upload-area, :scope > .upload-area') || frame.querySelector('.tn-shared-upload-area,.upload-area');
-      if(!security || !area) return;
-      if(!records.some(function(r){return r.security===security;})){
-        records.push({frame:frame,area:area,security:security,parent:security.parentNode,next:security.nextSibling});
-        frame.querySelectorAll('input[type="file"]').forEach(function(input){
-          input.addEventListener('change',schedule);
-        });
-      }
-    });
-  }
   function apply(){
-    init();
-    records.forEach(function(r){
-      if(mq.matches){
-        if(r.area.parentNode && (r.security.parentNode!==r.area.parentNode || r.security.previousElementSibling!==r.area)){
-          r.area.insertAdjacentElement('afterend',r.security);
-        }
-        r.security.classList.add('mobile-security-below-upload');
-        var show=!uploaded(r.frame,r.area);
-        r.security.style.setProperty('display',show?'block':'none','important');
-        r.security.style.setProperty('visibility','visible','important');
-      } else {
-        r.security.classList.remove('mobile-security-below-upload');
-        r.security.style.removeProperty('display');
-        r.security.style.removeProperty('visibility');
-        if(r.parent && r.security.parentNode!==r.parent){
-          if(r.next && r.next.parentNode===r.parent) r.parent.insertBefore(r.security,r.next);
-          else r.parent.appendChild(r.security);
-        }
+    frame=document.querySelector('.tn-shared-upload-frame');
+    if(!frame) return;
+    security=frame.querySelector('.wr-file-security');
+    button=document.getElementById('uploadButton');
+    if(!security || !button) return;
+    if(!originalParent){ originalParent=security.parentNode; originalNext=security.nextSibling; }
+    if(mq.matches){
+      if(button.parentNode && security.previousElementSibling!==button){
+        button.insertAdjacentElement('afterend',security);
       }
-    });
+      security.classList.add('mobile-security-below-upload');
+      var show=!uploaded();
+      security.style.setProperty('display',show?'block':'none','important');
+      security.style.setProperty('visibility','visible','important');
+    } else {
+      security.classList.remove('mobile-security-below-upload');
+      security.style.removeProperty('display');
+      security.style.removeProperty('visibility');
+      if(originalParent && security.parentNode!==originalParent){
+        if(originalNext && originalNext.parentNode===originalParent) originalParent.insertBefore(security,originalNext);
+        else originalParent.appendChild(security);
+      }
+    }
   }
   var queued=false;
   function schedule(){
@@ -6341,6 +6324,8 @@ html.dark-mode .wr-report-issue a:hover{color:#ffb4b4;background:rgba(153,27,27,
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',schedule);
   else schedule();
   new MutationObserver(schedule).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style','hidden']});
+  var input=document.getElementById('pdfInput');
+  if(input) input.addEventListener('change',schedule);
   window.addEventListener('resize',schedule);
   if(mq.addEventListener) mq.addEventListener('change',schedule);
   else if(mq.addListener) mq.addListener(schedule);
@@ -10763,6 +10748,46 @@ html.dark-mode nav.category-nav .category-link.active::after {
 }
 </style>
 
+<style id="merge-mobile-security-button-adjacency-fix">
+@media screen and (max-width:700px) {
+  html body #uploadArea {
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    padding:0 !important;
+    margin:0 !important;
+    overflow:visible !important;
+  }
+  html body #uploadPlaceholder {
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    width:100% !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    padding:0 !important;
+    margin:0 !important;
+    overflow:visible !important;
+  }
+  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload {
+    position:static !important;
+    display:block !important;
+    width:100% !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    margin:10px 0 0 !important;
+    padding:0 !important;
+    float:none !important;
+    clear:both !important;
+    transform:none !important;
+    text-align:center !important;
+    visibility:visible !important;
+  }
+}
+</style>
 </body>
 </html>
 
