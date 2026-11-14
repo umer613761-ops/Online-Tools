@@ -7978,6 +7978,109 @@ body.dark-mode .wr-report-issue {
   }
 }
 </style>
+
+
+<style id="lock-unlock-desktop-cleanup-controls-v1">
+/* Desktop only: remove the filename/status strip and lay out the controls evenly. */
+@media screen and (min-width: 701px) {
+  #lockUnlockWorkspace > .wru-post-file {
+    display: none !important;
+  }
+
+  #lockUnlockWorkspace .lock-unlock-options {
+    display: grid !important;
+    grid-template-columns: minmax(230px, 0.78fr) minmax(260px, 1fr) minmax(260px, 1fr) !important;
+    align-items: end !important;
+    justify-content: stretch !important;
+    gap: 22px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 24px auto 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  #lockUnlockWorkspace .lock-unlock-mode {
+    display: flex !important;
+    flex: initial !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 18px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+  }
+
+  #lockUnlockWorkspace .lock-unlock-mode > label {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+  }
+
+  #lockUnlockWorkspace .lock-unlock-mode > label > input[type="radio"] {
+    flex: 0 0 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+    margin: 0 !important;
+  }
+
+  #lockUnlockWorkspace .lock-unlock-field {
+    display: flex !important;
+    flex: initial !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-end !important;
+    gap: 9px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+  #lockUnlockWorkspace .lock-unlock-field > label {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+    text-align: left !important;
+  }
+
+  #lockUnlockWorkspace .lock-unlock-field:has(#lockUnlockPassword) > label::after {
+    content: " (Use at least 6 characters)" !important;
+    color: #718096 !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+  }
+
+  #lockUnlockWorkspace .lock-unlock-field:has(#lockUnlockPassword) > .lock-unlock-password-note {
+    display: none !important;
+  }
+
+  #lockUnlockWorkspace .lock-unlock-field > input {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
+</style>
+
 </body>
 </html>
 
@@ -8793,6 +8896,52 @@ html.dark-mode body #lockUnlockWorkspace .lock-unlock-field:has(#lockUnlockPassw
   html:not(.dark-mode) body .wr-mobile-fill-upload-privacy .wr-mobile-fill-upload-privacy-text {
     color:#263548 !important;
     -webkit-text-fill-color:#263548 !important;
+  }
+}
+</style>
+
+
+<style id="lock-unlock-desktop-options-row-layout">
+@media screen and (min-width: 701px) {
+  #lockUnlockWorkspace .lock-unlock-options {
+    display: grid !important;
+    grid-template-columns: 210px 210px !important;
+    grid-template-rows: auto auto !important;
+    justify-content: center !important;
+    align-items: end !important;
+    column-gap: 22px !important;
+    row-gap: 18px !important;
+    width: max-content !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  #lockUnlockWorkspace .lock-unlock-options > .lock-unlock-mode {
+    grid-column: 1 / -1 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 32px !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  #lockUnlockWorkspace .lock-unlock-options > .lock-unlock-field {
+    grid-row: 2 !important;
+    width: 210px !important;
+    min-width: 0 !important;
+    max-width: 210px !important;
+    margin: 0 !important;
+  }
+
+  #lockUnlockWorkspace .lock-unlock-options > .lock-unlock-field > input {
+    width: 210px !important;
+    min-width: 0 !important;
+    max-width: 210px !important;
+    box-sizing: border-box !important;
   }
 }
 </style>
