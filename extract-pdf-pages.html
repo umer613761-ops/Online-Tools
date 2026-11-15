@@ -4221,11 +4221,14 @@ html.dark-mode .wr-report-issue a:hover{color:#ffb4b4;background:rgba(153,27,27,
 
 
 <style id="wrenchoo-report-security-colours-only">
-/* Colour-only update: preserve existing dimensions, spacing, borders, and positioning. */
-.wr-file-security button,
-html.dark-mode .wr-file-security button { background-color: #278344 !important; color: #ffffff !important; }
-.wr-file-security button:hover,
-html.dark-mode .wr-file-security button:hover { background-color: #216e38 !important; color: #ffffff !important; }
+/* Colour-only update: preserve existing dimensions, spacing, borders, and positioning.
+   The green security-button treatment is desktop-only; mobile uses the quiet text treatment. */
+@media (min-width:701px) {
+  .wr-file-security button,
+  html.dark-mode .wr-file-security button { background-color: #278344 !important; color: #ffffff !important; }
+  .wr-file-security button:hover,
+  html.dark-mode .wr-file-security button:hover { background-color: #216e38 !important; color: #ffffff !important; }
+}
 .wr-report-issue a,
 html.dark-mode .wr-report-issue a { background-color: #dc2626 !important; color: #ffffff !important; }
 .wr-report-issue a span,
@@ -4963,111 +4966,6 @@ html:not(.light-mode) .wr-fill-heading-style {
 
 
 
-<style id="mobile-file-security-under-upload-fixed">
-@media screen and (max-width:700px) {
-  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload {
-    position:static !important; inset:auto !important; display:block !important;
-    float:none !important; clear:both !important; width:100% !important;
-    max-width:100% !important; box-sizing:border-box !important;
-    margin:10px 0 0 !important; padding:0 !important; transform:none !important;
-    text-align:center !important; order:initial !important;
-  }
-  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button {
-    display:inline-flex !important; align-items:center !important; justify-content:center !important;
-    gap:6px !important; min-height:0 !important; padding:0 !important;
-    border:0 !important; border-radius:0 !important; background:transparent !important;
-    color:#718096 !important; box-shadow:none !important; font-family:inherit !important;
-    font-size:11px !important; font-weight:500 !important; line-height:1.4 !important;
-    letter-spacing:normal !important; text-align:center !important;
-  }
-  html.dark-mode body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button {
-    background:transparent !important; color:#cbd5e1 !important;
-    border:0 !important; box-shadow:none !important;
-  }
-  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button:hover,
-  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button:active {
-    background:transparent !important; border:0 !important; box-shadow:none !important;
-  }
-}
-</style>
-
-<script id="mobile-file-security-placement-controller">
-(function(){
-  var mq=window.matchMedia('(max-width:700px)');
-  var records=[];
-  function visible(el){
-    if(!el || el.hidden) return false;
-    var cs=window.getComputedStyle(el);
-    return cs.display!=='none' && cs.visibility!=='hidden' && el.getClientRects().length>0;
-  }
-  function uploaded(frame,area){
-    var cls=(' '+area.className+' ').toLowerCase();
-    if(/(has-file|has-files|file-loaded|files-loaded|has-upload|uploaded|is-uploaded)/.test(cls)) return true;
-    var inputs=frame.querySelectorAll('input[type="file"]');
-    for(var i=0;i<inputs.length;i++){
-      if(inputs[i].files && inputs[i].files.length) return true;
-    }
-    var previews=area.querySelectorAll('.tn-upload-preview,.upload-preview,.file-preview,[data-uploaded="true"],.tn-file-preview');
-    for(var j=0;j<previews.length;j++) if(visible(previews[j])) return true;
-    var placeholders=area.querySelectorAll('.tn-shared-upload-placeholder,.upload-placeholder');
-    if(placeholders.length){
-      var anyPlaceholder=Array.prototype.some.call(placeholders,visible);
-      if(!anyPlaceholder) return true;
-    }
-    return false;
-  }
-  function init(){
-    document.querySelectorAll('.tn-shared-upload-frame').forEach(function(frame){
-      var security=frame.querySelector(':scope > .wr-file-security') || frame.querySelector('.wr-file-security');
-      var area=frame.querySelector(':scope > .tn-shared-upload-area, :scope > .upload-area') || frame.querySelector('.tn-shared-upload-area,.upload-area');
-      if(!security || !area) return;
-      if(!records.some(function(r){return r.security===security;})){
-        records.push({frame:frame,area:area,security:security,parent:security.parentNode,next:security.nextSibling});
-        frame.querySelectorAll('input[type="file"]').forEach(function(input){
-          input.addEventListener('change',schedule);
-        });
-      }
-    });
-  }
-  function apply(){
-    init();
-    records.forEach(function(r){
-      if(mq.matches){
-        if(r.area.parentNode && (r.security.parentNode!==r.area.parentNode || r.security.previousElementSibling!==r.area)){
-          r.area.insertAdjacentElement('afterend',r.security);
-        }
-        r.security.classList.add('mobile-security-below-upload');
-        var show=!uploaded(r.frame,r.area);
-        r.security.style.setProperty('display',show?'block':'none','important');
-        r.security.style.setProperty('visibility','visible','important');
-      } else {
-        r.security.classList.remove('mobile-security-below-upload');
-        r.security.style.removeProperty('display');
-        r.security.style.removeProperty('visibility');
-        if(r.parent && r.security.parentNode!==r.parent){
-          if(r.next && r.next.parentNode===r.parent) r.parent.insertBefore(r.security,r.next);
-          else r.parent.appendChild(r.security);
-        }
-      }
-    });
-  }
-  var queued=false;
-  function schedule(){
-    if(queued) return;
-    queued=true;
-    requestAnimationFrame(function(){queued=false;apply();});
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',schedule);
-  else schedule();
-  new MutationObserver(schedule).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style','hidden']});
-  window.addEventListener('resize',schedule);
-  if(mq.addEventListener) mq.addEventListener('change',schedule);
-  else if(mq.addListener) mq.addListener(schedule);
-})();
-</script>
-
-
-
 <style id="mobile-remove-legacy-security-messages">
 @media screen and (max-width:700px) {
   html body .wr-mobile-fill-upload-privacy,
@@ -5115,25 +5013,6 @@ html:not(.light-mode) .wr-fill-heading-style {
 </style>
 
 
-<style id="mobile-security-shield-green-larger">
-@media screen and (max-width:700px) {
-  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload .wr-file-security-trigger > span {
-    display:inline-flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    flex:0 0 auto !important;
-    color:#16a34a !important;
-  }
-  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload .wr-file-security-trigger > span > svg {
-    display:block !important;
-    width:28px !important; height:28px !important;
-    color:#16a34a !important;
-    stroke:currentColor !important;
-  }
-}
-</style>
-
-
 <style id="mobile-light-description-security-contrast-fix">
 /* Mobile only: strengthen description and file-security text in light mode. */
 @media screen and (max-width:700px) {
@@ -5152,11 +5031,6 @@ html:not(.light-mode) .wr-fill-heading-style {
     color:#263445 !important;
     -webkit-text-fill-color:#263445 !important;
   }
-  html:not(.dark-mode) body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button {
-    color:#263445 !important;
-    -webkit-text-fill-color:#263445 !important;
-    font-weight:600 !important;
-  }
 }
 </style>
 
@@ -5164,7 +5038,6 @@ html:not(.light-mode) .wr-fill-heading-style {
 /* Mobile only: suppress legacy pre-upload and post-upload security messages.
    Preserve the canonical Fill-master .wr-mobile-fill-upload-privacy line. */
 @media screen and (max-width:767px) {
-  html body .wr-file-security,
   html body .wr-security-dialog,
   html body .rotate-mobile-security-line,
   html body .wru-post-privacy,
@@ -5189,6 +5062,27 @@ html:not(.light-mode) .wr-fill-heading-style {
 }
 </style>
 
+<style id="mobile-description-and-upload-spacing-only">
+@media screen and (max-width:767px) {
+  html body .wrenchoo-mobile-heading-copy > p,
+  html body .extract-pages-remove-style-intro > p,
+  html body .wr-redact-intro > p {
+    font-size:16px !important;
+    line-height:1.55 !important;
+    max-width:100% !important;
+    margin-top:14px !important;
+    margin-bottom:0 !important;
+  }
+  html body .tool-box {
+    margin-top:clamp(88px, 22vh, 280px) !important;
+  }
+  /* Once a PDF is loaded, the description is no longer the visual lead-in.
+     Remove its reserved gap instead of shifting/cropping the preview. */
+  html body:has(#extractPdfUploadArea.has-pages) .tool-box {
+    margin-top: 0 !important;
+  }
+}
+</style>
 
 <style id="mobile-desktop-security-message-uniform-final">
 /* Reuse the existing desktop File security message on mobile, directly below upload. */
@@ -5270,23 +5164,69 @@ html:not(.light-mode) .wr-fill-heading-style {
   }
 }
 </style>
-
-<style id="mobile-description-and-upload-spacing-only">
-@media screen and (max-width:767px) {
-  html body .wrenchoo-mobile-heading-copy > p,
-  html body .extract-pages-remove-style-intro > p,
-  html body .wr-redact-intro > p {
-    font-size:16px !important;
-    line-height:1.55 !important;
-    max-width:100% !important;
-    margin-top:14px !important;
-    margin-bottom:0 !important;
+<style id="mobile-security-shield-green-larger">
+@media screen and (max-width:700px) {
+  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload .wr-file-security-trigger > span {
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    flex:0 0 auto !important;
+    color:#16a34a !important;
   }
-  html body .tool-box {
-    margin-top:clamp(88px, 22vh, 280px) !important;
+  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload .wr-file-security-trigger > span > svg {
+    display:block !important;
+    width:28px !important; height:28px !important;
+    color:#16a34a !important;
+    stroke:currentColor !important;
   }
 }
 </style>
+<style id="mobile-security-shield-size-force">
+@media screen and (max-width:700px) {
+  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button.wr-file-security-trigger > span[aria-hidden="true"] {
+    display:inline-flex !important;
+    width:22px !important;
+    height:22px !important;
+    min-width:22px !important;
+    min-height:22px !important;
+    max-width:none !important;
+    max-height:none !important;
+    flex:0 0 22px !important;
+    align-items:center !important;
+    justify-content:center !important;
+    overflow:visible !important;
+    color:#16a34a !important;
+  }
+  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button.wr-file-security-trigger > span[aria-hidden="true"] > svg {
+    display:block !important;
+    width:22px !important;
+    height:22px !important;
+    min-width:22px !important;
+    min-height:22px !important;
+    max-width:none !important;
+    max-height:none !important;
+    flex:0 0 22px !important;
+    color:#16a34a !important;
+    stroke:#16a34a !important;
+  }
+}
+</style>
+
+<style id="extract-mobile-download-svg-actual-size">
+@media screen and (max-width:650px) {
+  html body #extractPdfWorkspace #extractPdfActions button.extract-download-button > svg.extract-download-icon {
+    display: block !important;
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    min-height: 22px !important;
+    max-width: 22px !important;
+    max-height: 22px !important;
+    flex: 0 0 22px !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="wrenchoo-mobile-app-header">
@@ -5980,8 +5920,8 @@ html.dark-mode .extract-page-button {
     const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     icon.setAttribute('class', 'extract-download-icon');
     icon.setAttribute('viewBox', '0 0 24 24');
-    icon.setAttribute('width', '28');
-    icon.setAttribute('height', '28');
+    icon.setAttribute('width', '22');
+    icon.setAttribute('height', '22');
     icon.setAttribute('fill', 'none');
     icon.setAttribute('stroke', 'currentColor');
     icon.setAttribute('stroke-width', '2.4');
@@ -6447,8 +6387,7 @@ html.dark-mode .extract-page-button {
 
 <style id="toolnest-pdf-outer-box-match-merge-final">
 /* Match the Merge PDF outer tool box exactly in dark mode. */
-html.dark-mode .tool-box,
-html:not(.light-mode) .tool-box {
+html.dark-mode .tool-box {
   background: #171d25 !important;
   border-color: #2e3946 !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22) !important;
@@ -7508,8 +7447,8 @@ body.dark-mode .wr-report-issue {
 <style id="wrenchoo-mobile-remove-legacy-desktop-upload-chrome">
 /* Mobile only: remove desktop upload-frame chrome and its floating security badge. Keep the upload button and all post-upload tool controls intact. */
 @media screen and (max-width:700px) {
-  .wr-file-security { display:none !important; }
-  .tn-shared-upload-frame {
+
+.tn-shared-upload-frame {
     width:100% !important; min-height:0 !important; height:auto !important;
     margin:0 !important; padding:0 !important; border:0 !important;
     border-radius:0 !important; background:transparent !important;
@@ -8347,7 +8286,7 @@ html.dark-mode .extract-page-card.is-selected {
 
 <style id="extract-mobile-upload-green-fill-master-final">
 @media screen and (max-width: 767px) {
- html body button#uploadButton, html body button.floating-upload-button, html body .tn-shared-upload-button, html body .wr-mobile-fill-tool-slot button, html body .wr-mobile-fill-tool-slot .tn-shared-upload-button { background:#218838 !important; background-color:#218838 !important; background-image:none !important; }
+ html body button#uploadButton, html body button.floating-upload-button, html body .tn-shared-upload-button, html body .wr-mobile-fill-tool-slot .tn-shared-upload-button { background:#218838 !important; background-color:#218838 !important; background-image:none !important; }
  html body button#uploadButton:hover, html body button#uploadButton:focus, html body button#uploadButton:active, html body button.floating-upload-button:hover, html body button.floating-upload-button:focus, html body button.floating-upload-button:active, html body .tn-shared-upload-button:hover, html body .tn-shared-upload-button:focus, html body .tn-shared-upload-button:active { background:#218838 !important; background-color:#218838 !important; background-image:none !important; }
 }
 </style>
@@ -8360,7 +8299,7 @@ html.dark-mode .extract-page-card.is-selected {
 }
 </style>
 <script id="extract-upload-button-master-green-runtime">
-(function(){function fix(){if(!window.matchMedia || !window.matchMedia('(max-width: 767px)').matches)return;document.querySelectorAll('button.tn-shared-upload-button, .tn-shared-upload-button, .wr-mobile-fill-tool-slot button').forEach(function(b){b.style.setProperty('background','#218838','important');b.style.setProperty('background-color','#218838','important');b.style.setProperty('background-image','none','important');b.style.setProperty('color','#ffffff','important');b.style.setProperty('-webkit-text-fill-color','#ffffff','important');});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix);else fix();window.addEventListener('resize',fix);})();
+(function(){function fix(){if(!window.matchMedia || !window.matchMedia('(max-width: 767px)').matches)return;document.querySelectorAll('button.tn-shared-upload-button, .tn-shared-upload-button, .wr-mobile-fill-tool-slot button.tn-shared-upload-button').forEach(function(b){b.style.setProperty('background','#218838','important');b.style.setProperty('background-color','#218838','important');b.style.setProperty('background-image','none','important');b.style.setProperty('color','#ffffff','important');b.style.setProperty('-webkit-text-fill-color','#ffffff','important');});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix);else fix();window.addEventListener('resize',fix);})();
 </script>
 
 
@@ -8369,7 +8308,7 @@ html.dark-mode .extract-page-card.is-selected {
 @media (max-width: 767px) {
   html body button.tn-shared-upload-button,
   html body .tn-shared-upload-button,
-  html body .wr-mobile-fill-tool-slot button {
+  html body .wr-mobile-fill-tool-slot button.tn-shared-upload-button {
     box-sizing: border-box !important;
     height: 54px !important;
     min-height: 54px !important;
@@ -8378,7 +8317,7 @@ html.dark-mode .extract-page-card.is-selected {
 }
 </style>
 <script id="extract-upload-button-height-54-mobile-runtime">
-(function(){function fix(){if(!window.matchMedia||!window.matchMedia('(max-width: 767px)').matches)return;document.querySelectorAll('button.tn-shared-upload-button, .tn-shared-upload-button, .wr-mobile-fill-tool-slot button').forEach(function(b){b.style.setProperty('box-sizing','border-box','important');b.style.setProperty('height','54px','important');b.style.setProperty('min-height','54px','important');b.style.setProperty('max-height','54px','important');});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix);else fix();window.addEventListener('resize',fix);})();
+(function(){function fix(){if(!window.matchMedia||!window.matchMedia('(max-width: 767px)').matches)return;document.querySelectorAll('button.tn-shared-upload-button, .tn-shared-upload-button, .wr-mobile-fill-tool-slot button.tn-shared-upload-button').forEach(function(b){b.style.setProperty('box-sizing','border-box','important');b.style.setProperty('height','54px','important');b.style.setProperty('min-height','54px','important');b.style.setProperty('max-height','54px','important');});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix);else fix();window.addEventListener('resize',fix);})();
 </script>
 
 <!-- Extract Pages mobile: remove dark button outline and reduce step-row typography by 1px -->
@@ -8959,38 +8898,6 @@ html.dark-mode .extract-page-card.is-selected {
 </style>
 
 
-<style id="mobile-security-shield-size-force">
-@media screen and (max-width:700px) {
-  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button.wr-file-security-trigger > span[aria-hidden="true"] {
-    display:inline-flex !important;
-    width:22px !important;
-    height:22px !important;
-    min-width:22px !important;
-    min-height:22px !important;
-    max-width:none !important;
-    max-height:none !important;
-    flex:0 0 22px !important;
-    align-items:center !important;
-    justify-content:center !important;
-    overflow:visible !important;
-    color:#16a34a !important;
-  }
-  html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button.wr-file-security-trigger > span[aria-hidden="true"] > svg {
-    display:block !important;
-    width:22px !important;
-    height:22px !important;
-    min-width:22px !important;
-    min-height:22px !important;
-    max-width:none !important;
-    max-height:none !important;
-    flex:0 0 22px !important;
-    color:#16a34a !important;
-    stroke:#16a34a !important;
-  }
-}
-</style>
-
-
 <style id="wrenchoo-mobile-tool-category-links-style">
 @media screen and (max-width: 767px) {
   .wrenchoo-mobile-tool-category-links {
@@ -9443,6 +9350,81 @@ html.dark-mode .extract-page-card.is-selected {
   }
 }
 </style>
+
+<script id="mobile-file-security-placement-controller">
+(function(){
+  var mq=window.matchMedia('(max-width:700px)');
+  var records=[];
+  function visible(el){
+    if(!el || el.hidden) return false;
+    var cs=window.getComputedStyle(el);
+    return cs.display!=='none' && cs.visibility!=='hidden' && el.getClientRects().length>0;
+  }
+  function uploaded(frame,area){
+    var cls=(' '+area.className+' ').toLowerCase();
+    if(/(has-file|has-files|file-loaded|files-loaded|has-upload|uploaded|is-uploaded)/.test(cls)) return true;
+    var inputs=frame.querySelectorAll('input[type="file"]');
+    for(var i=0;i<inputs.length;i++){
+      if(inputs[i].files && inputs[i].files.length) return true;
+    }
+    var previews=area.querySelectorAll('.tn-upload-preview,.upload-preview,.file-preview,[data-uploaded="true"],.tn-file-preview');
+    for(var j=0;j<previews.length;j++) if(visible(previews[j])) return true;
+    var placeholders=area.querySelectorAll('.tn-shared-upload-placeholder,.upload-placeholder');
+    if(placeholders.length){
+      var anyPlaceholder=Array.prototype.some.call(placeholders,visible);
+      if(!anyPlaceholder) return true;
+    }
+    return false;
+  }
+  function init(){
+    document.querySelectorAll('.tn-shared-upload-frame').forEach(function(frame){
+      var security=frame.querySelector(':scope > .wr-file-security') || frame.querySelector('.wr-file-security');
+      var area=frame.querySelector(':scope > .tn-shared-upload-area, :scope > .upload-area') || frame.querySelector('.tn-shared-upload-area,.upload-area');
+      if(!security || !area) return;
+      if(!records.some(function(r){return r.security===security;})){
+        records.push({frame:frame,area:area,security:security,parent:security.parentNode,next:security.nextSibling});
+        frame.querySelectorAll('input[type="file"]').forEach(function(input){
+          input.addEventListener('change',schedule);
+        });
+      }
+    });
+  }
+  function apply(){
+    init();
+    records.forEach(function(r){
+      if(mq.matches){
+        if(r.area.parentNode && (r.security.parentNode!==r.area.parentNode || r.security.previousElementSibling!==r.area)){
+          r.area.insertAdjacentElement('afterend',r.security);
+        }
+        r.security.classList.add('mobile-security-below-upload');
+        var show=!uploaded(r.frame,r.area);
+        r.security.style.setProperty('display',show?'block':'none','important');
+        r.security.style.setProperty('visibility','visible','important');
+      } else {
+        r.security.classList.remove('mobile-security-below-upload');
+        r.security.style.removeProperty('display');
+        r.security.style.removeProperty('visibility');
+        if(r.parent && r.security.parentNode!==r.parent){
+          if(r.next && r.next.parentNode===r.parent) r.parent.insertBefore(r.security,r.next);
+          else r.parent.appendChild(r.security);
+        }
+      }
+    });
+  }
+  var queued=false;
+  function schedule(){
+    if(queued) return;
+    queued=true;
+    requestAnimationFrame(function(){queued=false;apply();});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',schedule);
+  else schedule();
+  new MutationObserver(schedule).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style','hidden']});
+  window.addEventListener('resize',schedule);
+  if(mq.addEventListener) mq.addEventListener('change',schedule);
+  else if(mq.addListener) mq.addListener(schedule);
+})();
+</script>
 </body>
 </html>
 <style id="extract-fill-master-icons-v9">
@@ -9491,10 +9473,10 @@ html.dark-mode .extract-page-card.is-selected {
     flex:0 0 auto!important;
     color:#fff!important;
     -webkit-text-fill-color:#fff!important;
-    width:28px!important;
-    height:28px!important;
+    width:16px!important;
+    height:16px!important;
     display:block!important;
-    flex:0 0 28px!important;
+    flex:0 0 16px!important;
     color:#fff!important;
   }
   #extractPdfActions .extract-download-button .extract-download-label {
@@ -9645,3 +9627,51 @@ html.dark-mode .extract-page-card.is-selected {
   scheduleUpdate();
 })();
 </script>
+
+
+
+
+<style id="extract-mobile-preview-position-and-extract-button-visibility">
+@media screen and (max-width:650px) {
+  /* Keep the complete first-page canvas visible; reclaim space using internal padding only. */
+  html body #extractPdfUploadArea.has-pages {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* Keep the per-page Extract control clearly visible in light and dark themes. */
+  html body #extractPdfWorkspace .extract-page-header .extract-page-button,
+  html body #extractPdfWorkspace .extract-page-header .extract-page-button:hover,
+  html body #extractPdfWorkspace .extract-page-header .extract-page-button:focus,
+  html body #extractPdfWorkspace .extract-page-header .extract-page-button:active,
+  html body #extractPdfWorkspace .extract-page-header .extract-page-button:disabled {
+    background: #218838 !important;
+    background-color: #218838 !important;
+    background-image: none !important;
+    border: 1px solid #218838 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    opacity: 1 !important;
+    filter: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}
+</style>
+
+
+<style id="extract-mobile-download-icon-size-final">
+@media screen and (max-width:650px) {
+  html body #extractPdfWorkspace #extractPdfActions .extract-download-button .extract-download-icon {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    min-height: 20px !important;
+    flex: 0 0 20px !important;
+  }
+  html body #extractPdfWorkspace #extractPdfActions .extract-download-button .extract-download-icon svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+}
+</style>
