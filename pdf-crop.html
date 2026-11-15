@@ -6659,7 +6659,7 @@ html:not(.light-mode) .wr-fill-heading-style {
     position:static !important; inset:auto !important; display:block !important;
     float:none !important; clear:both !important; width:100% !important;
     max-width:100% !important; box-sizing:border-box !important;
-    margin:10px 0 0 !important; padding:0 !important; transform:none !important;
+    margin: 8px 0 0 !important; padding:0 !important; transform:none !important;
     text-align:center !important; order:initial !important;
   }
   html body .tn-shared-upload-frame .wr-file-security.mobile-security-below-upload button {
@@ -6723,8 +6723,15 @@ html:not(.light-mode) .wr-fill-heading-style {
     init();
     records.forEach(function(r){
       if(mq.matches){
-        if(r.area.parentNode && (r.security.parentNode!==r.area.parentNode || r.security.previousElementSibling!==r.area)){
-          r.area.insertAdjacentElement('afterend',r.security);
+        /* Place the security line directly after the upload button placeholder,
+           not after the full upload-area which can stretch to the bottom of the screen. */
+        /* Anchor to the actual upload button, not its placeholder.
+           The placeholder has a large min-height, so inserting after the
+           placeholder pushes the security line far below the button. */
+        var uploadButton = r.area.querySelector('#uploadButton, .floating-upload-button, .tn-shared-upload-button');
+        var placementTarget = uploadButton || r.area.querySelector('.upload-placeholder, .tn-shared-upload-placeholder') || r.area;
+        if(placementTarget.parentNode && (r.security.parentNode!==placementTarget.parentNode || r.security.previousElementSibling!==placementTarget)){
+          placementTarget.insertAdjacentElement('afterend',r.security);
         }
         r.security.classList.add('mobile-security-below-upload');
         var show=!uploaded(r.frame,r.area);
@@ -6985,6 +6992,27 @@ html:not(.light-mode) .wr-fill-heading-style {
   }
 }
 </style>
+
+
+<style id="crop-mobile-security-directly-under-upload-button">
+@media screen and (max-width:700px) {
+  html body .tn-shared-upload-frame .upload-placeholder > .wr-file-security.mobile-security-below-upload {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 8px 0 0 !important;
+    padding: 0 !important;
+    flex: 0 0 auto !important;
+    align-self: stretch !important;
+    order: initial !important;
+    transform: none !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="wrenchoo-mobile-app-header">
