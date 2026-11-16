@@ -8157,5 +8157,55 @@ html.dark-mode nav.category-nav .category-link.active::after {
   else if(mq.addListener) mq.addListener(schedule);
 })();
 </script>
+
+<style id="wr-rating-card-desktop-below-upload">
+@media (min-width: 701px) {
+  #wrenchoo-ratings {
+    display: block !important;
+    position: static !important;
+    float: none !important;
+    inset: auto !important;
+    grid-column: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+    clear: both !important;
+    margin: 28px 0 28px !important;
+  }
+}
+</style>
+<script id="wr-rating-card-desktop-relocation">
+(function () {
+  function placeRatingCard() {
+    var rating = document.getElementById('wrenchoo-ratings');
+    if (!rating) return;
+    if (!rating.__wrOriginalMarker) {
+      var marker = document.createComment(' original rating card position ');
+      rating.parentNode.insertBefore(marker, rating);
+      rating.__wrOriginalMarker = marker;
+    }
+    var marker = rating.__wrOriginalMarker;
+    if (window.matchMedia && window.matchMedia('(min-width: 701px)').matches) {
+      var toolBox = document.querySelector('.tool-box');
+      if (!toolBox) return;
+      var target = toolBox.closest('.tn-ad-left-column, .content, .wr-redact-main') || toolBox.parentElement;
+      if (target && rating.parentNode !== target) {
+        toolBox.insertAdjacentElement('afterend', rating);
+      } else if (target && rating.parentNode === target && toolBox.nextElementSibling !== rating) {
+        toolBox.insertAdjacentElement('afterend', rating);
+      }
+    } else if (marker && marker.parentNode && rating.parentNode !== marker.parentNode) {
+      marker.parentNode.insertBefore(rating, marker.nextSibling);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', placeRatingCard, { once: true });
+  } else {
+    placeRatingCard();
+  }
+  window.addEventListener('resize', placeRatingCard, { passive: true });
+})();
+</script>
+
 </body>
 </html>
