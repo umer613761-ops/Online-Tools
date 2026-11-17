@@ -5155,6 +5155,73 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
   }
 }
 </style>
+
+<style id="wrenchoo-desktop-ad-top-right-authoritative">
+/* Desktop: keep the existing advertisement in the top-right column on every page.
+   Mobile rules and the ad's original content are intentionally unchanged. */
+@media screen and (min-width: 1001px) {
+  html body :is(.page-layout, .tn-mobile-stack-layout, .wr-redact-layout, main.page-content > div):has(> .ad-column) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) clamp(280px, 18.75vw, 355px) !important;
+    column-gap: 28px !important;
+    row-gap: 24px !important;
+    align-items: start !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  html body :is(.page-layout, .tn-mobile-stack-layout, .wr-redact-layout, main.page-content > div):has(> .ad-column) > :not(.ad-column) {
+    grid-column: 1 !important;
+    min-width: 0 !important;
+  }
+
+  html body :is(.page-layout, .tn-mobile-stack-layout, .wr-redact-layout, main.page-content > div):has(> .ad-column) > .ad-column {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    align-self: start !important;
+    justify-self: stretch !important;
+    position: relative !important;
+    inset: auto !important;
+    float: none !important;
+    clear: none !important;
+    transform: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 280px 0 0 !important;
+    padding: 0 !important;
+    z-index: 1 !important;
+  }
+
+  html body .ad-column .ad-box {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    inset: auto !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+  /* The rating card belongs below the tool in the left column, never in the ad column. */
+  html body :is(.page-layout, .tn-mobile-stack-layout, .wr-redact-layout, main.page-content > div):has(> .ad-column) > #wrenchoo-ratings,
+  html body :is(.page-layout, .tn-mobile-stack-layout, .wr-redact-layout, main.page-content > div):has(> .ad-column) > .wr-ratings {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="wrenchoo-mobile-app-header">
