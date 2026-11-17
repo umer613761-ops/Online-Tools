@@ -3942,27 +3942,7 @@ html:not(.dark-mode) .tool-category-link:not(.active) {
     }
   }
 </style>
-<script id="wrenchoo-ad-final-zoom">
-(function () {
-  function update() {
-    if (window.innerWidth <= 700) {
-      document.body.classList.remove('wrenchoo-ad-zoom-stack');
-      return;
-    }
-    var dpr = window.devicePixelRatio || 1;
-    var key = 'wrenchooBaseDPR';
-    var base = parseFloat(sessionStorage.getItem(key) || '');
-    if (!base || !isFinite(base)) {
-      base = dpr;
-      sessionStorage.setItem(key, String(base));
-    }
-    document.body.classList.toggle('wrenchoo-ad-zoom-stack', dpr / base >= 1.20);
-  }
-  update();
-  window.addEventListener('resize', update);
-  if (window.visualViewport) window.visualViewport.addEventListener('resize', update);
-})();
-</script>
+
 
 <style id="wrenchoo-remove-outer-upload-frame">
 /* Remove the outer tool card around the upload/preview surface.
@@ -6939,21 +6919,7 @@ html.dark-mode .tn-image-cancel:active {
   }
 }
 </style>
-<script id="wrenchoo-desktop-zoom-ad-stack-final-script">
-(function () {
-  function updateZoomAdLayout() {
-    if (window.matchMedia('(max-width: 700px)').matches) {
-      document.body.classList.remove('tn-zoom-stacked');
-      return;
-    }
-    var ratio = window.outerWidth / Math.max(window.innerWidth, 1);
-    document.body.classList.toggle('tn-zoom-stacked', ratio >= 1.18);
-  }
-  updateZoomAdLayout();
-  window.addEventListener('resize', updateZoomAdLayout, { passive: true });
-  if (window.visualViewport) window.visualViewport.addEventListener('resize', updateZoomAdLayout, { passive: true });
-})();
-</script>
+
 
 <style id="wrenchoo-footer-categories-enhancement">
 @media (min-width: 651px) {
@@ -9534,49 +9500,7 @@ html.dark-mode .extract-page-card.is-selected {
   }
 }
 </style>
-<script id="wr-rating-card-desktop-relocation">
-(function () {
-  function placeRatingCard() {
-    var rating = document.getElementById('wrenchoo-ratings');
-    if (!rating) return;
-    if (!rating.__wrOriginalMarker && rating.parentNode) {
-      var marker = document.createComment(' original rating card position ');
-      rating.parentNode.insertBefore(marker, rating);
-      rating.__wrOriginalMarker = marker;
-    }
-    var marker = rating.__wrOriginalMarker;
-    var desktop = window.matchMedia && window.matchMedia('(min-width: 701px)').matches;
-    if (desktop) {
-      var toolBox = document.querySelector('.tool-box');
-      if (!toolBox) return;
-      var target = toolBox.closest('.tn-ad-left-column, .content, .wr-redact-main') || toolBox.parentElement;
-      if (!target) return;
 
-      /* Find the complete tool-area wrapper that is a direct child of target.
-         Insert the rating after that wrapper, not beside a nested upload box. */
-      var anchor = toolBox;
-      while (anchor.parentElement && anchor.parentElement !== target) {
-        anchor = anchor.parentElement;
-      }
-      if (anchor.parentElement === target && anchor.nextElementSibling !== rating) {
-        target.insertBefore(rating, anchor.nextSibling);
-      }
-    } else if (marker && marker.parentNode && rating.parentNode !== marker.parentNode) {
-      marker.parentNode.insertBefore(rating, marker.nextSibling);
-    }
-  }
-  function schedulePlacement() {
-    if (window.requestAnimationFrame) window.requestAnimationFrame(placeRatingCard);
-    else placeRatingCard();
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', schedulePlacement, { once: true });
-  } else {
-    schedulePlacement();
-  }
-  window.addEventListener('resize', schedulePlacement, { passive: true });
-})();
-</script>
 
 
 <style id="wrenchoo-desktop-solid-gold-rating-stars-final-v2">
@@ -9702,6 +9626,86 @@ html.dark-mode .extract-page-card.is-selected {
   }
 }
 </style>
+
+<style id="wrenchoo-desktop-right-column-structural-fix">
+/* Desktop structure: the tool and advertisement are the two grid columns.
+   Rating/FAQ content is placed inside the tool column by the script below. */
+@media screen and (min-width: 701px) {
+  body main :has(> .tn-ad-left-column):has(> .ad-column),
+  body main :has(> .content):has(> .ad-column),
+  body main .page-layout,
+  body main .tn-mobile-stack-layout,
+  body main .wr-redact-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 200px !important;
+    align-items: start !important;
+    column-gap: 28px !important;
+    row-gap: 0 !important;
+  }
+  body main :has(> .tn-ad-left-column):has(> .ad-column) > .tn-ad-left-column,
+  body main :has(> .content):has(> .ad-column) > .content,
+  body main .page-layout > .content,
+  body main .page-layout > .tn-ad-left-column,
+  body main .tn-mobile-stack-layout > .tn-ad-left-column,
+  body main .wr-redact-layout > .wr-redact-main {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    min-width: 0 !important;
+    width: auto !important;
+  }
+  body main :has(> .tn-ad-left-column):has(> .ad-column) > .ad-column,
+  body main :has(> .content):has(> .ad-column) > .ad-column,
+  body main .page-layout > .ad-column,
+  body main .tn-mobile-stack-layout > .ad-column,
+  body main .wr-redact-layout > .wr-redact-ad-column {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    display: block !important;
+    visibility: visible !important;
+    width: 200px !important;
+    min-width: 200px !important;
+    max-width: 200px !important;
+    align-self: start !important;
+    position: sticky !important;
+    top: 20px !important;
+    margin: 0 !important;
+  }
+  /* Prevent the rating/FAQ card from flashing in the ad column before relocation. */
+  #wrenchoo-ratings {
+    visibility: hidden !important;
+  }
+}
+</style>
+<script id="wrenchoo-desktop-rating-structural-placement">
+(function () {
+  var rating = document.getElementById('wrenchoo-ratings');
+  if (!rating) return;
+  var originalMarker = document.createComment('wrenchoo original rating location');
+  if (rating.parentNode) rating.parentNode.insertBefore(originalMarker, rating);
+
+  function place() {
+    var desktop = window.matchMedia && window.matchMedia('(min-width: 701px)').matches;
+    if (desktop) {
+      var left = document.querySelector('main .tn-ad-left-column, main .content, main .wr-redact-main');
+      if (!left) return;
+      if (rating.parentNode !== left) left.appendChild(rating);
+      rating.style.setProperty('visibility', 'visible', 'important');
+    } else {
+      if (originalMarker.parentNode && rating.parentNode !== originalMarker.parentNode) {
+        originalMarker.parentNode.insertBefore(rating, originalMarker.nextSibling);
+      }
+      rating.style.removeProperty('visibility');
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', place, { once: true });
+  } else {
+    place();
+  }
+  window.addEventListener('resize', place, { passive: true });
+})();
+</script>
+
 </body>
 </html>
 <style id="extract-fill-master-icons-v9">
