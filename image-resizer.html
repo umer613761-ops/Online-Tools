@@ -5055,6 +5055,98 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
   }
 }
 </style>
+
+<style id="wrenchoo-desktop-gold-rating-stars">
+/* Desktop-only 3D gold rating stars. Mobile rating styling is intentionally untouched. */
+@media (min-width: 701px) {
+  #wrenchoo-ratings .wr-rating-stars {
+    align-items: center !important;
+    gap: 7px !important;
+  }
+  #wrenchoo-ratings .wr-rating-star {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 34px !important;
+    height: 36px !important;
+    min-width: 34px !important;
+    min-height: 36px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 5px !important;
+    background: transparent !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+    transition: transform .18s ease, filter .18s ease !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #wrenchoo-ratings .wr-rating-star::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 3px 2px !important;
+    display: block !important;
+    background: linear-gradient(145deg,
+      #fff5c9 0%, #ffe38b 16%, #f8c341 38%,
+      #e9a91b 66%, #bd7908 100%) !important;
+    clip-path: polygon(50% 2%, 61.5% 35%, 97% 36.5%, 69.5% 58.5%, 79.5% 94%, 50% 73%, 20.5% 94%, 30.5% 58.5%, 3% 36.5%, 38.5% 35%) !important;
+    filter:
+      drop-shadow(0 1px 0 #fff0b3)
+      drop-shadow(0 2px 0 #c88712)
+      drop-shadow(0 3px 1px rgba(91, 54, 0, .48))
+      drop-shadow(0 5px 3px rgba(0, 0, 0, .22)) !important;
+    transition: background .18s ease, filter .18s ease !important;
+  }
+  /* Beveled upper face highlight for a raised, dimensional finish. */
+  #wrenchoo-ratings .wr-rating-star::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 3px 2px !important;
+    pointer-events: none !important;
+    clip-path: polygon(50% 2%, 61.5% 35%, 97% 36.5%, 69.5% 58.5%, 79.5% 94%, 50% 73%, 20.5% 94%, 30.5% 58.5%, 3% 36.5%, 38.5% 35%) !important;
+    background: linear-gradient(145deg,
+      rgba(255,255,255,.78) 0%, rgba(255,250,220,.34) 27%,
+      rgba(255,255,255,0) 54%, rgba(116,66,0,.18) 100%) !important;
+    opacity: .82 !important;
+    transition: opacity .18s ease, filter .18s ease !important;
+  }
+  #wrenchoo-ratings .wr-rating-star:hover,
+  #wrenchoo-ratings .wr-rating-star:focus-visible,
+  #wrenchoo-ratings .wr-rating-star.is-selected,
+  #wrenchoo-ratings .wr-rating-star.is-preview {
+    color: transparent !important;
+    transform: translateY(-2px) scale(1.08) !important;
+    outline: none !important;
+  }
+  #wrenchoo-ratings .wr-rating-star:hover::before,
+  #wrenchoo-ratings .wr-rating-star:focus-visible::before,
+  #wrenchoo-ratings .wr-rating-star.is-selected::before,
+  #wrenchoo-ratings .wr-rating-star.is-preview::before {
+    background: linear-gradient(145deg,
+      #fffbe0 0%, #ffedaa 18%, #ffd45a 42%,
+      #f0b32a 70%, #c9860b 100%) !important;
+    filter:
+      drop-shadow(0 1px 0 #fff7d4)
+      drop-shadow(0 2px 0 #d59619)
+      drop-shadow(0 4px 2px rgba(91, 54, 0, .48))
+      drop-shadow(0 6px 4px rgba(0, 0, 0, .25)) !important;
+  }
+  #wrenchoo-ratings .wr-rating-star:hover::after,
+  #wrenchoo-ratings .wr-rating-star:focus-visible::after,
+  #wrenchoo-ratings .wr-rating-star.is-selected::after,
+  #wrenchoo-ratings .wr-rating-star.is-preview::after {
+    opacity: 1 !important;
+    filter: brightness(1.08) !important;
+  }
+  #wrenchoo-ratings .wr-rating-star:focus-visible {
+    box-shadow: 0 0 0 3px rgba(248, 195, 65, .28) !important;
+  }
+}
+</style>
 </head>
 <body>
 <div id="wrenchoo-mobile-app-header">
@@ -8135,6 +8227,81 @@ html.dark-mode nav.category-nav .category-link.active::after {
 })();
 </script>
 
+
+<style id="wrenchoo-desktop-solid-gold-rating-stars-final-v2">
+/* Desktop rating stars: gold by default, clean five-point silhouette, restrained hover. */
+@media screen and (min-width: 701px) {
+  #wrenchoo-ratings .wr-rating-stars {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+  #wrenchoo-ratings .wr-rating-stars .wr-rating-star {
+    position: relative !important;
+    display: inline-flex !important;
+    flex: 0 0 30px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+    cursor: pointer !important;
+    transition: transform .16s ease, filter .16s ease !important;
+  }
+  #wrenchoo-ratings .wr-rating-stars .wr-rating-star::before {
+    content: "" !important;
+    position: absolute !important;
+    display: block !important;
+    left: 50% !important;
+    top: 50% !important;
+    width: 25px !important;
+    height: 25px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: linear-gradient(145deg, #ffe28a 0%, #f7c447 52%, #dfa51d 100%) !important;
+    clip-path: polygon(50% 2%, 61.5% 35%, 97% 36.5%, 69.5% 58.5%, 79.5% 94%, 50% 73%, 20.5% 94%, 30.5% 58.5%, 3% 36.5%, 38.5% 35%) !important;
+    transform: translate(-50%, -50%) !important;
+    filter: drop-shadow(0 1px 1px rgba(116, 78, 8, .22)) !important;
+    transition: filter .16s ease !important;
+    pointer-events: none !important;
+  }
+  #wrenchoo-ratings .wr-rating-stars .wr-rating-star:hover,
+  #wrenchoo-ratings .wr-rating-stars .wr-rating-star:focus-visible,
+  #wrenchoo-ratings .wr-rating-stars .wr-rating-star.is-selected,
+  #wrenchoo-ratings .wr-rating-stars .wr-rating-star.is-preview {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    transform: translateY(-1px) scale(1.045) !important;
+    outline: none !important;
+  }
+  #wrenchoo-ratings .wr-rating-stars .wr-rating-star:hover::before,
+  #wrenchoo-ratings .wr-rating-stars .wr-rating-star:focus-visible::before,
+  #wrenchoo-ratings .wr-rating-stars .wr-rating-star.is-selected::before,
+  #wrenchoo-ratings .wr-rating-stars .wr-rating-star.is-preview::before {
+    background: linear-gradient(145deg, #ffebad 0%, #ffd15a 52%, #edb32e 100%) !important;
+    filter: drop-shadow(0 2px 2px rgba(145, 99, 7, .28)) !important;
+  }
+  #wrenchoo-ratings .wr-rating-stars .wr-rating-star:focus-visible {
+    outline: 2px solid rgba(245, 190, 62, .55) !important;
+    outline-offset: 3px !important;
+  }
+}
+</style>
 </body>
 </html>
 
