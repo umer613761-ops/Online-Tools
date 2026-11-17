@@ -5804,6 +5804,14 @@ html:not(.light-mode) .wr-fill-heading-style {
   }
 }
 </style>
+
+<style id="wr-rating-first-paint-gate">
+@media (min-width: 701px) {
+  html:not(.wr-rating-placement-ready) #wrenchoo-ratings {
+    visibility: hidden !important;
+  }
+}
+</style>
 </head>
 <body>
 <!-- Exact mobile header markup copied from Fill PDF -->
@@ -9517,8 +9525,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
   function schedulePlacement() {
-    if (window.requestAnimationFrame) window.requestAnimationFrame(placeRatingCard);
-    else placeRatingCard();
+    function placeAndReveal() {
+      placeRatingCard();
+      document.documentElement.classList.add('wr-rating-placement-ready');
+    }
+    if (window.requestAnimationFrame) window.requestAnimationFrame(placeAndReveal);
+    else placeAndReveal();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', schedulePlacement, { once: true });

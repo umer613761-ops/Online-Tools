@@ -4726,6 +4726,14 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
   }
 }
 </style>
+
+<style id="wr-rating-first-paint-gate">
+@media (min-width: 701px) {
+  html:not(.wr-rating-placement-ready) #wrenchoo-ratings {
+    visibility: hidden !important;
+  }
+}
+</style>
 </head>
 <body>
 <div id="wrenchoo-mobile-app-header">
@@ -8208,8 +8216,12 @@ html body:has(.tn-image-upload-area.has-image) .tn-image-actions .tn-image-downl
     }
   }
   function schedulePlacement() {
-    if (window.requestAnimationFrame) window.requestAnimationFrame(placeRatingCard);
-    else placeRatingCard();
+    function placeAndReveal() {
+      placeRatingCard();
+      document.documentElement.classList.add('wr-rating-placement-ready');
+    }
+    if (window.requestAnimationFrame) window.requestAnimationFrame(placeAndReveal);
+    else placeAndReveal();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', schedulePlacement, { once: true });
