@@ -8741,6 +8741,49 @@ html.dark-mode body #addWatermarkWorkspace .wm-compact-file.is-disabled:hover {
   }
 }
 </style>
+<script id="wr-rating-card-desktop-relocation">
+(function () {
+  function placeRatingCard() {
+    var rating = document.getElementById('wrenchoo-ratings');
+    if (!rating) return;
+    if (!rating.__wrOriginalMarker && rating.parentNode) {
+      var marker = document.createComment(' original rating card position ');
+      rating.parentNode.insertBefore(marker, rating);
+      rating.__wrOriginalMarker = marker;
+    }
+    var marker = rating.__wrOriginalMarker;
+    var desktop = window.matchMedia && window.matchMedia('(min-width: 701px)').matches;
+    if (desktop) {
+      var toolBox = document.querySelector('.tool-box');
+      if (!toolBox) return;
+      var target = toolBox.closest('.tn-ad-left-column, .content, .wr-redact-main') || toolBox.parentElement;
+      if (!target) return;
+
+      /* Find the complete tool-area wrapper that is a direct child of target.
+         Insert the rating after that wrapper, not beside a nested upload box. */
+      var anchor = toolBox;
+      while (anchor.parentElement && anchor.parentElement !== target) {
+        anchor = anchor.parentElement;
+      }
+      if (anchor.parentElement === target && anchor.nextElementSibling !== rating) {
+        target.insertBefore(rating, anchor.nextSibling);
+      }
+    } else if (marker && marker.parentNode && rating.parentNode !== marker.parentNode) {
+      marker.parentNode.insertBefore(rating, marker.nextSibling);
+    }
+  }
+  function schedulePlacement() {
+    if (window.requestAnimationFrame) window.requestAnimationFrame(placeRatingCard);
+    else placeRatingCard();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', schedulePlacement, { once: true });
+  } else {
+    schedulePlacement();
+  }
+  window.addEventListener('resize', schedulePlacement, { passive: true });
+})();
+</script>
 </body>
 </html>
 
