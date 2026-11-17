@@ -4726,14 +4726,6 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
   }
 }
 </style>
-
-<style id="wr-rating-first-paint-gate">
-@media (min-width: 701px) {
-  html:not(.wr-rating-placement-ready) #wrenchoo-ratings {
-    visibility: hidden !important;
-  }
-}
-</style>
 </head>
 <body>
 <div id="wrenchoo-mobile-app-header">
@@ -8216,12 +8208,8 @@ html body:has(.tn-image-upload-area.has-image) .tn-image-actions .tn-image-downl
     }
   }
   function schedulePlacement() {
-    function placeAndReveal() {
-      placeRatingCard();
-      document.documentElement.classList.add('wr-rating-placement-ready');
-    }
-    if (window.requestAnimationFrame) window.requestAnimationFrame(placeAndReveal);
-    else placeAndReveal();
+    if (window.requestAnimationFrame) window.requestAnimationFrame(placeRatingCard);
+    else placeRatingCard();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', schedulePlacement, { once: true });
@@ -8304,6 +8292,55 @@ html body:has(.tn-image-upload-area.has-image) .tn-image-actions .tn-image-downl
   #wrenchoo-ratings .wr-rating-stars .wr-rating-star:focus-visible {
     outline: 2px solid rgba(245, 190, 62, .55) !important;
     outline-offset: 3px !important;
+  }
+}
+</style>
+
+
+<style id="wrenchoo-desktop-ad-column-always-visible">
+/* Desktop: keep the existing advertisement in the right-hand column at every desktop zoom level.
+   Mobile rules and the advertisement markup/content are intentionally unchanged. */
+@media screen and (min-width: 701px) {
+  html body .page-content > div[style*="grid-template-columns"] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 200px !important;
+    grid-auto-flow: row !important;
+    align-items: start !important;
+    gap: 28px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  html body .page-content > div[style*="grid-template-columns"] > .tn-ad-left-column {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    position: static !important;
+  }
+  html body .page-content > div[style*="grid-template-columns"] > aside.ad-column,
+  html body .page-content > div[style*="grid-template-columns"] > .ad-column {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    width: 200px !important;
+    min-width: 200px !important;
+    max-width: 200px !important;
+    position: sticky !important;
+    top: 20px !important;
+    margin: 76px 0 0 !important;
+    align-self: start !important;
+  }
+  html body .page-content > div[style*="grid-template-columns"] > .ad-column .ad-box {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 200px !important;
+    min-width: 200px !important;
+    max-width: 200px !important;
+    box-sizing: border-box !important;
   }
 }
 </style>
