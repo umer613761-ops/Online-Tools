@@ -5948,6 +5948,43 @@ html.dark-mode .tool-intro h1 { font-weight: 700 !important; }
   }
 }
 </style>
+
+<style id="wrenchoo-rating-desktop-position-fix">
+/* Desktop only: keep the rating card below the main tool area,
+   not in the narrow sidebar column. Preserve the mobile layout. */
+@media (min-width: 901px) {
+  /* Rotate PDF: the page grid is an inline-styled two-column wrapper. */
+  body .page-content > div[style*="grid-template-columns"] > #wrenchoo-ratings {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    align-self: start !important;
+  }
+  body .page-content > div[style*="grid-template-columns"] > .ad-column {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    align-self: start !important;
+  }
+
+  /* Crop PDF: rating card is a direct grid item beside content and ad. */
+  body .page-layout > #wrenchoo-ratings {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    align-self: start !important;
+  }
+  body .page-layout > .ad-column {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    align-self: start !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="wrenchoo-mobile-app-header">
