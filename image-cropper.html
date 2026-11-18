@@ -5428,6 +5428,11 @@ function actionRow(){const r=document.createElement("div");r.className="tn-image
 function addCancelButton(r){const c=btn("Cancel","tn-image-cancel");c.addEventListener("click",reset);r.appendChild(c);return c}
 function addActionButton(r,labelText,handler){const b=btn(labelText,"tn-image-reset");b.addEventListener("click",handler);r.appendChild(b);return b}
 function buildControls(){
+ /* Desktop only: keep all post-upload controls directly beneath the upload/preview area. */
+ if(!window.matchMedia("(max-width:700px)").matches){
+   const uploadFrame=area.closest(".tn-shared-upload-frame");
+   if(uploadFrame) uploadFrame.insertAdjacentElement("afterend",controls);
+ }
  controls.innerHTML="";controls.classList.add("show");
  if(kind==="compressor") buildCompressor();
  if(kind==="converter") buildConverter();
@@ -8464,5 +8469,311 @@ html.dark-mode nav.category-nav .category-link.active::after {
   }
 }
 </style>
+
+
+<style id="image-cropper-mobile-download-cancel-final-fix">
+/* Mobile only: restore the full labelled Download and Cancel action buttons. */
+@media screen and (max-width:650px) {
+  html body .tn-image-controls .tn-image-actions {
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:10px !important;
+    width:100% !important;
+  }
+  html body .tn-image-controls .tn-image-actions > button.tn-image-download,
+  html body .tn-image-controls .tn-image-actions > button.tn-image-cancel {
+    display:inline-flex !important;
+    flex:1 1 0 !important;
+    min-width:0 !important;
+    max-width:none !important;
+    box-sizing:border-box !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    justify-content:center !important;
+    padding:0 10px !important;
+    margin:0 !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    font-family:Arial,Helvetica,sans-serif !important;
+    font-size:18px !important;
+    font-weight:800 !important;
+    line-height:1 !important;
+    letter-spacing:0 !important;
+    text-indent:0 !important;
+    text-transform:none !important;
+    color:#fff !important;
+    -webkit-text-fill-color:#fff !important;
+    box-shadow:none !important;
+    transform:none !important;
+  }
+  html body .tn-image-controls .tn-image-actions > button.tn-image-download {
+    height:54px !important; min-height:54px !important; max-height:54px !important;
+    background:#218739 !important; background-color:#218739 !important;
+    border:1px solid #218739 !important; border-radius:18px !important;
+    gap:8px !important;
+  }
+  html body .tn-image-controls .tn-image-actions > button.tn-image-cancel {
+    height:48px !important; min-height:48px !important; max-height:48px !important;
+    background:#243342 !important; background-color:#243342 !important;
+    border:1px solid #455768 !important; border-radius:18px !important;
+    gap:6px !important;
+  }
+  html body .tn-image-controls .tn-image-actions > button.tn-image-download::before {
+    content:"" !important; display:inline-block !important;
+    flex:0 0 20px !important; width:20px !important; min-width:20px !important; height:20px !important;
+    background-color:#fff !important;
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3Cpath d='M12 15V3'/%3E%3C/svg%3E") center/contain no-repeat !important;
+    mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3Cpath d='M12 15V3'/%3E%3C/svg%3E") center/contain no-repeat !important;
+  }
+  html body .tn-image-controls .tn-image-actions > button.tn-image-cancel::before {
+    content:"×" !important; display:inline-block !important; flex:0 0 auto !important;
+    color:#fff !important; -webkit-text-fill-color:#fff !important;
+    font-family:Arial,Helvetica,sans-serif !important; font-size:32px !important;
+    font-weight:400 !important; line-height:.8 !important;
+  }
+  html body .tn-image-controls .tn-image-actions > button.tn-image-download:hover,
+  html body .tn-image-controls .tn-image-actions > button.tn-image-download:focus,
+  html body .tn-image-controls .tn-image-actions > button.tn-image-download:active {
+    background:#218739 !important; border-color:#218739 !important; color:#fff !important;
+  }
+  html body .tn-image-controls .tn-image-actions > button.tn-image-cancel:hover,
+  html body .tn-image-controls .tn-image-actions > button.tn-image-cancel:focus,
+  html body .tn-image-controls .tn-image-actions > button.tn-image-cancel:active {
+    background:#243342 !important; border-color:#455768 !important; color:#fff !important;
+  }
+}
+</style>
+
+
+<style id="image-cropper-desktop-cancel-authoritative-correction">
+/* Desktop only: style the actual dynamically-created Cropper action buttons.
+   This overrides the legacy red Cancel rule without changing mobile. */
+@media screen and (min-width:701px) {
+  .tn-image-controls .tn-image-actions.tn-crop-actions > button.tn-image-cancel,
+  .tn-image-controls .tn-image-actions.tn-crop-actions > button.tn-image-cancel:hover,
+  .tn-image-controls .tn-image-actions.tn-crop-actions > button.tn-image-cancel:focus,
+  .tn-image-controls .tn-image-actions.tn-crop-actions > button.tn-image-cancel:active {
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    width:208px !important;
+    min-width:208px !important;
+    max-width:208px !important;
+    height:84px !important;
+    min-height:84px !important;
+    max-height:84px !important;
+    padding:0 25px !important;
+    margin:0 !important;
+    box-sizing:border-box !important;
+    border:1px solid #455768 !important;
+    border-radius:35px !important;
+    background:#243342 !important;
+    background-color:#243342 !important;
+    color:#e2e8f0 !important;
+    -webkit-text-fill-color:#e2e8f0 !important;
+    font:800 22px/1 Arial,Helvetica,sans-serif !important;
+    box-shadow:none !important;
+    text-transform:none !important;
+    transform:none !important;
+    clip-path:none !important;
+    appearance:none !important;
+    -webkit-appearance:none !important;
+  }
+  .tn-image-controls .tn-image-actions.tn-crop-actions > button.tn-image-cancel::before {
+    content:"×" !important;
+    display:inline-block !important;
+    margin-right:12px !important;
+    color:#e2e8f0 !important;
+    -webkit-text-fill-color:#e2e8f0 !important;
+    font:400 43px/.8 Arial,Helvetica,sans-serif !important;
+  }
+  .tn-image-controls .tn-image-actions.tn-crop-actions > button.tn-image-cancel::after {
+    content:none !important;
+    display:none !important;
+  }
+  .tn-image-controls > button.tn-crop-desktop-undo {
+    border-radius:18px !important;
+  }
+  .tn-shared-upload-frame + .tn-image-controls {
+    display:flex !important;
+    width:100% !important;
+    margin:14px 0 0 !important;
+  }
+}
+</style>
+
 </body>
 </html>
+
+<style id="image-cropper-mobile-hide-upload-button-over-preview">
+/* Mobile only: remove the stray upload button/clone once an image is loaded.
+   This prevents the green Upload Image control from overlapping the preview. */
+@media screen and (max-width:700px) {
+  body:has(.tn-image-upload-area.has-image) .tn-shared-upload-button,
+  body:has(.tn-image-upload-area.has-image) .floating-upload-button,
+  body:has(.tn-image-upload-area.has-image) .upload-btn,
+  body:has(.tn-image-upload-area.has-image) .upload-button,
+  body:has(.tn-image-upload-area.has-image) .file-upload-button,
+  body:has(.tn-image-upload-area.has-image) label[for="tnImageFileInput"],
+  body:has(.tn-image-upload-area.has-image) .tn-image-upload-placeholder {
+    display:none !important;
+    visibility:hidden !important;
+    opacity:0 !important;
+    pointer-events:none !important;
+  }
+}
+</style>
+
+<style id="image-cropper-desktop-actions-position-and-style">
+/* Desktop only: action controls stay directly beneath the upload/preview area.
+   Mobile layout and styling are intentionally unchanged. */
+@media screen and (min-width:701px) {
+  .tn-shared-upload-frame > .tn-image-controls {
+    display:flex !important;
+    width:100% !important;
+    margin:14px 0 0 !important;
+    padding:0 !important;
+    border:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+  }
+  .tn-image-controls .tn-image-actions {
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:wrap !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:12px !important;
+    width:100% !important;
+    margin:0 !important;
+  }
+  .tn-image-controls .tn-image-cancel,
+  .tn-image-controls .tn-image-cancel:hover,
+  .tn-image-controls .tn-image-cancel:focus,
+  .tn-image-controls .tn-image-cancel:active {
+    background:#243342 !important;
+    background-color:#243342 !important;
+    border:1px solid #455768 !important;
+    color:#fff !important;
+    -webkit-text-fill-color:#fff !important;
+    border-radius:16px !important;
+  }
+  .tn-image-controls .tn-image-reset {
+    border-radius:14px !important;
+  }
+}
+</style>
+
+<style id="image-cropper-desktop-undo-spacing-and-report-position">
+/* Desktop only: separate Undo from the action buttons and keep Report inside the upload area. */
+@media screen and (min-width:701px) {
+  .tn-shared-upload-frame > .tn-image-controls {
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:0 !important;
+  }
+  .tn-shared-upload-frame > .tn-image-controls > button.tn-crop-desktop-undo,
+  .tn-shared-upload-frame .tn-image-controls > button.tn-crop-desktop-undo {
+    margin:0 0 14px !important;
+    align-self:center !important;
+  }
+  .tn-shared-upload-frame > .wr-report-issue {
+    display:flex !important;
+    width:100% !important;
+    justify-content:flex-end !important;
+    box-sizing:border-box !important;
+    margin:8px 14px 0 0 !important;
+    padding:0 !important;
+    position:relative !important;
+  }
+}
+</style>
+<script id="image-cropper-desktop-move-report-under-upload">
+(function(){
+  var report=null, originalParent=null, originalNext=null;
+  function placeReport(){
+    var desktop=window.matchMedia && window.matchMedia('(min-width:701px)').matches;
+    var frame=document.querySelector('.tn-shared-upload-frame');
+    if (!report) {
+      report=document.querySelector('.wr-report-issue');
+      if (report) { originalParent=report.parentNode; originalNext=report.nextSibling; }
+    }
+    if (!report) return;
+    if (desktop && frame && !frame.contains(report)) frame.appendChild(report);
+    else if (!desktop && originalParent && report.parentNode!==originalParent) {
+      if (originalNext && originalNext.parentNode===originalParent) originalParent.insertBefore(report,originalNext);
+      else originalParent.appendChild(report);
+    }
+  }
+  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded',placeReport,{once:true});
+  else placeReport();
+  new MutationObserver(placeReport).observe(document.documentElement,{childList:true,subtree:true});
+  window.addEventListener('resize',placeReport);
+})();
+</script>
+
+<style id="image-cropper-desktop-undo-gap-definitive-fix">
+/* Desktop only: the Undo button is a direct child of the generated controls panel,
+   immediately before the Download/Cancel row. Add real vertical separation there. */
+@media screen and (min-width:701px) {
+  html body .tn-image-controls.show > button.tn-crop-desktop-undo,
+  html body .tn-image-controls.show > button.tn-image-reset.tn-crop-desktop-undo {
+    display:inline-flex !important;
+    position:relative !important;
+    align-self:center !important;
+    margin:0 0 22px 0 !important;
+  }
+  html body .tn-image-controls.show > .tn-image-actions.tn-crop-actions {
+    margin-top:0 !important;
+  }
+}
+</style>
+
+<style id="image-cropper-desktop-undo-label-centering-final">
+/* Desktop only: center the Undo label within its own rounded button. */
+@media screen and (min-width:701px) {
+  html body .tn-image-controls.show > button.tn-crop-desktop-undo,
+  html body .tn-image-controls.show > button.tn-image-reset.tn-crop-desktop-undo {
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    box-sizing:border-box !important;
+    height:76px !important;
+    min-height:76px !important;
+    max-height:76px !important;
+    width:232px !important;
+    min-width:232px !important;
+    max-width:232px !important;
+    padding:0 20px !important;
+    line-height:1 !important;
+    text-align:center !important;
+    vertical-align:middle !important;
+    white-space:nowrap !important;
+    border-radius:24px !important;
+  }
+}
+</style>
+
+
+<style id="image-cropper-desktop-undo-compact-final">
+/* Desktop only: compact Undo control; keep it centered and separate from Download/Cancel. */
+@media screen and (min-width:701px) {
+  html body .tn-image-controls.show > button.tn-image-reset.tn-crop-desktop-undo,
+  html body .tn-image-controls.show > button.tn-crop-desktop-undo {
+    display:flex !important;
+    flex:0 0 180px !important;
+    width:180px !important; min-width:180px !important; max-width:180px !important;
+    height:56px !important; min-height:56px !important; max-height:56px !important;
+    padding:0 16px !important; margin:0 0 22px 0 !important;
+    box-sizing:border-box !important;
+    align-items:center !important; justify-content:center !important;
+    text-align:center !important; line-height:1 !important;
+    font-size:18px !important;
+    border-radius:18px !important;
+  }
+}
+</style>
