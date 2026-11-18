@@ -5776,6 +5776,41 @@ html:not(.light-mode) .wr-fill-heading-style {
 }
 </style>
 
+
+<style id="wrenchoo-desktop-ad-space-deleted">
+@media (min-width: 769px) {
+  .page-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    column-gap: 0 !important;
+    gap: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+  .page-layout > .content {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+  }
+  body :has(> .tn-ad-left-column) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    column-gap: 0 !important;
+    gap: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+  .tn-ad-left-column {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+  }
+}
+</style>
 </head>
 <body>
 <div id="wrenchoo-mobile-app-header">
@@ -6064,19 +6099,7 @@ html.dark-mode .wr-faq-answer {
   </div>
 </section>
 </section>
-<aside aria-label="Advertisement" class="ad-column">
-<div class="ad-box">
-<div class="ad-content">
-<div class="ad-label">ADVERTISEMENT</div>
-<div class="sample-ad">
-<div class="sample-ad-badge">TOOLNEST</div>
-<h3>Simple Tools.<br/>Better Productivity.</h3>
-<p>Fast, free and easy-to-use online tools for everyday tasks.</p>
-<a class="sample-ad-button">Explore Tools</a>
-</div>
-</div>
-</div>
-</aside>
+
 </div>
 </main>
 <!-- ========================================
@@ -10228,6 +10251,265 @@ html.dark-mode nav.category-nav .category-link.active::after {
   }
 }
 </style>
+
+<style id="wrenchoo-desktop-full-width-tools-20261118">
+@media (min-width: 1024px) {
+  /* Expand the page's main tool canvas across the available desktop viewport. */
+  html body main.page-content,
+  html body main.page-wrapper,
+  html body .page-content,
+  html body .page-wrapper {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Remove the old ad-column track from wrappers whose inline grid still reserves 200px. */
+  html body .page-layout,
+  html body .tn-mobile-stack-layout,
+  html body .page-content > div[style*="grid-template-columns"],
+  html body .page-wrapper > div[style*="grid-template-columns"] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    column-gap: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .tn-ad-left-column,
+  html body .page-layout > .content,
+  html body .page-content > div > .content {
+    grid-column: 1 !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Let each tool workspace use the expanded content width. */
+  html body main .tool-box,
+  html body main .tn-shared-tool-box,
+  html body main .tn-shared-tool-frame {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  html body main .tn-tool-category-bar {
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+  }
+}
+</style>
+
+
+<style id="wrenchoo-desktop-full-width-final-20261118">
+@media screen and (min-width: 1024px) {
+  html, body {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  /* Remove the page-level max-width that leaves unused space on the right. */
+  body main.page-content {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Use a single full-width content track instead of the former content/ad split. */
+  body main.page-content > .tn-mobile-stack-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-auto-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    column-gap: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  body main.page-content > .tn-mobile-stack-layout > .tn-ad-left-column {
+    display: block !important;
+    grid-column: 1 / -1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Override tool-specific 560px caps on headings and workspaces. */
+  body main.page-content .heading,
+  body main.page-content .tool-box,
+  body main.page-content .tn-shared-tool-box,
+  body main.page-content .tn-shared-tool-frame,
+  body main.page-content .tn-shared-upload-frame,
+  body main.page-content .tn-shared-upload-area {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
+</style>
+
+
+<style id="wrenchoo-match-merge-layout-desktop-20261118">
+@media screen and (min-width: 1024px) {
+  html, body {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  /* Match Merge PDF's full-width page shell on every other tool page. */
+  body > main.page-content,
+  body > main.page-wrapper,
+  body main.page-content,
+  body main.page-wrapper,
+  body .page-content,
+  body .page-wrapper {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Remove the former ad column and make the tool column the only grid track. */
+  body .page-layout,
+  body .tn-mobile-stack-layout,
+  body main.page-content > div[style*="grid-template-columns"],
+  body main.page-wrapper > div[style*="grid-template-columns"],
+  body .page-content > div[style*="grid-template-columns"] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-auto-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+    column-gap: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  body .page-layout > .content,
+  body .tn-mobile-stack-layout > .tn-ad-left-column,
+  body main.page-content > div[style*="grid-template-columns"] > .tn-ad-left-column,
+  body main.page-wrapper > div[style*="grid-template-columns"] > .tn-ad-left-column,
+  body .page-content > div[style*="grid-template-columns"] > .tn-ad-left-column,
+  body .wr-redact-layout > .wr-redact-main {
+    display: block !important;
+    grid-column: 1 / -1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Expand the tool title, navigation, workspace, upload area and preview frame. */
+  body .tn-tool-category-bar,
+  body .heading,
+  body .tool-box,
+  body .wr-redact-layout,
+  body .wr-redact-main,
+  body .tn-shared-tool-box,
+  body .tn-shared-tool-frame,
+  body .tn-shared-upload-frame,
+  body .tn-shared-upload-area,
+  body .upload-area,
+  body .wr-report-issue,
+  body .wr-ratings,
+  body .wr-faq {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
+</style>
+
+
+<style id="wrenchoo-remove-reserved-ad-column-all-tools-desktop-20261118">
+@media screen and (min-width: 1024px) {
+  /*
+   * Remove the unused 200px advertisement track from PDF and image tool
+   * content grids. This changes the grid structure; it does not hide tool
+   * content or alter mobile/tablet layouts.
+   */
+  html body .page-layout,
+  html body .tn-mobile-stack-layout,
+  html body .wr-redact-layout,
+  html body main.page-content > div[style*="grid-template-columns"]:has(> .tn-ad-left-column),
+  html body main.page-wrapper > div[style*="grid-template-columns"]:has(> .tn-ad-left-column),
+  html body .page-content > div[style*="grid-template-columns"]:has(> .tn-ad-left-column),
+  html body .page-wrapper > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-auto-columns: minmax(0, 1fr) !important;
+    column-gap: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .page-layout > .content,
+  html body .tn-mobile-stack-layout > .tn-ad-left-column,
+  html body .wr-redact-layout > .wr-redact-main,
+  html body main.page-content > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .tn-ad-left-column,
+  html body main.page-wrapper > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .tn-ad-left-column,
+  html body .page-content > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .tn-ad-left-column,
+  html body .page-wrapper > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .tn-ad-left-column {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Keep rating/FAQ sections below the full-width tool content. */
+  html body .page-layout > .wr-ratings,
+  html body .tn-mobile-stack-layout > .wr-ratings,
+  html body main.page-content > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .wr-ratings,
+  html body main.page-wrapper > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .wr-ratings,
+  html body .page-content > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .wr-ratings,
+  html body .page-wrapper > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .wr-ratings {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
+</style>
+
 </body>
 </html>
 
