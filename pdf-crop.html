@@ -7117,6 +7117,27 @@ html:not(.light-mode) .wr-fill-heading-style {
 }
 </style>
 
+
+<style id="wr-crop-hide-scope-reset-mobile">
+@media (max-width: 700px) {
+  #cropEditor .crop-toolbar .crop-mode,
+  #cropEditor .crop-toolbar #resetCrop {
+    display: none !important;
+  }
+}
+</style>
+
+<style id="wr-crop-mobile-hide-apply-reset-final">
+@media screen and (max-width: 700px) {
+  html body #cropEditor .crop-toolbar > label.crop-mode,
+  html body #cropEditor .crop-toolbar > label.crop-mode[for="cropScope"],
+  html body #cropEditor .crop-toolbar > #resetCrop {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="wrenchoo-mobile-app-header">
@@ -7191,6 +7212,11 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="crop-page-controls"><button type="button" id="previousPage" aria-label="Previous page">← Previous</button><span class="crop-page-count" id="pageCount">Page 1 of 1</span><button type="button" id="nextPage" aria-label="Next page">Next →</button></div>
       <label class="crop-mode" for="cropScope">Apply to <select id="cropScope"><option value="all">All Pages</option><option value="current">Current page</option></select></label>
       <button class="crop-reset" type="button" id="resetCrop">Reset crop</button>
+    </div>
+    <div class="wr-crop-mobile-controls" id="wrCropMobileControls" role="toolbar" aria-label="PDF crop controls">
+      <button type="button" class="is-active" data-crop-mode="scroll" aria-pressed="true">Scroll</button>
+      <button type="button" data-crop-mode="crop" aria-pressed="false">Crop</button>
+      <button type="button" id="wrCropUndo">Undo</button>
     </div>
     <div class="crop-canvas-stage" id="cropCanvasStage"><div class="crop-page-wrap" id="cropPageWrap"><canvas id="cropCanvas"></canvas><div class="crop-selection" id="cropSelection" role="group" aria-label="Crop area. Drag to move; use corner handles to resize"><span class="crop-handle nw" data-handle="nw"></span><span class="crop-handle ne" data-handle="ne"></span><span class="crop-handle sw" data-handle="sw"></span><span class="crop-handle se" data-handle="se"></span></div></div></div>
     <p class="crop-instructions">Drag inside the rectangle to move it. Drag a corner to resize the crop area.</p>
@@ -7330,6 +7356,42 @@ document.addEventListener('DOMContentLoaded', function () {
     </span>
   </div>
 </footer>
+
+<style id="wr-crop-mobile-floating-controls">
+@media screen and (max-width:700px) {
+  html body #uploadArea.has-files .wr-crop-mobile-controls {
+    position:sticky !important; top:8px !important; z-index:50 !important;
+    display:flex !important; align-items:center !important; gap:8px !important;
+    width:100% !important; box-sizing:border-box !important;
+    padding:8px !important; margin:0 0 10px !important;
+    border-radius:12px !important; background:#202c3b !important;
+    box-shadow:0 4px 14px rgba(0,0,0,.22) !important;
+  }
+  html body #uploadArea.has-files .wr-crop-mobile-controls button {
+    flex:1 1 0 !important; min-width:0 !important; height:40px !important;
+    border:1px solid #526477 !important; border-radius:8px !important;
+    background:#344456 !important; color:#f8fafc !important;
+    font:600 13px Arial,Helvetica,sans-serif !important;
+  }
+  html body #uploadArea.has-files .wr-crop-mobile-controls button.is-active {
+    background:#218739 !important; border-color:#35a653 !important; color:#fff !important;
+  }
+  html body #uploadArea.has-files:not(.wr-crop-mode-active) #cropSelection {
+    pointer-events:none !important;
+  }
+  html body #uploadArea.has-files.wr-crop-mode-active #cropSelection {
+    pointer-events:auto !important;
+  }
+  html body #uploadArea.has-files:not(.wr-crop-mode-active) #cropCanvasStage {
+    touch-action:pan-y !important;
+  }
+  html body #uploadArea.has-files.wr-crop-mode-active #cropCanvasStage {
+    touch-action:none !important;
+  }
+}
+@media screen and (min-width:701px) { .wr-crop-mobile-controls { display:none !important; } }
+</style>
+
 <script>
 (function(){
   const root=document.documentElement, toggle=document.getElementById('themeToggle');
@@ -7354,6 +7416,19 @@ document.addEventListener('DOMContentLoaded', function () {
   async function renderPage(){if(!pdfDoc)return;if(renderTask){try{renderTask.cancel()}catch(e){}renderTask=null;}const pdfPage=await pdfDoc.getPage(page);const natural=pdfPage.getViewport({scale:1});const mobileCropView=window.matchMedia('(max-width:700px)').matches;const maxW=Math.max(180,stage.clientWidth-(mobileCropView?16:42)),maxH=Math.max(240,Math.min(window.innerHeight*.62,780));renderScale=Math.min(maxW/natural.width,maxH/natural.height,1.8);const viewport=pdfPage.getViewport({scale:renderScale});const dpr=window.devicePixelRatio||1;canvas.width=Math.round(viewport.width*dpr);canvas.height=Math.round(viewport.height*dpr);canvas.style.width=viewport.width+'px';canvas.style.height=viewport.height+'px';wrap.style.width=viewport.width+'px';wrap.style.height=viewport.height+'px';ctx.setTransform(1,0,0,1,0,0);renderTask=pdfPage.render({canvasContext:ctx,viewport:viewport,transform:dpr===1?null:[dpr,0,0,dpr,0,0],background:'rgba(0,0,0,0)'});try{await renderTask.promise;}catch(e){if(e.name!=='RenderingCancelledException')throw e;}pageCount.textContent='Page '+page+' of '+totalPages;prev.disabled=page<=1;next.disabled=page>=totalPages;}
   prev.addEventListener('click',async()=>{if(page>1){page--;await renderPage();}});next.addEventListener('click',async()=>{if(page<totalPages){page++;await renderPage();}});
   document.getElementById('resetCrop').addEventListener('click',()=>setCrop({x:.12,y:.12,w:.76,h:.76}));
+  (function(){
+    const controls=document.getElementById('wrCropMobileControls');
+    const undo=document.getElementById('wrCropUndo');
+    if(!controls||!undo)return;
+    const modeButtons=controls.querySelectorAll('[data-crop-mode]');
+    function setMobileMode(mode){
+      uploadArea.classList.toggle('wr-crop-mode-active',mode==='crop');
+      modeButtons.forEach(button=>{const active=button.dataset.cropMode===mode;button.classList.toggle('is-active',active);button.setAttribute('aria-pressed',String(active));});
+    }
+    modeButtons.forEach(button=>button.addEventListener('click',()=>setMobileMode(button.dataset.cropMode)));
+    undo.addEventListener('click',()=>document.getElementById('resetCrop').click());
+    setMobileMode('scroll');
+  })();
   selection.addEventListener('pointerdown',e=>{if(e.target.classList.contains('crop-handle'))return;e.preventDefault();const r=wrap.getBoundingClientRect();drag={mode:'move',startX:e.clientX,startY:e.clientY,rect:{...baseCrop},w:r.width,h:r.height};selection.setPointerCapture?.(e.pointerId);});
   selection.querySelectorAll('.crop-handle').forEach(handle=>handle.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();const r=wrap.getBoundingClientRect();drag={mode:handle.dataset.handle,startX:e.clientX,startY:e.clientY,rect:{...baseCrop},w:r.width,h:r.height};handle.setPointerCapture?.(e.pointerId);}));
   window.addEventListener('pointermove',e=>{if(!drag)return;const dx=(e.clientX-drag.startX)/drag.w,dy=(e.clientY-drag.startY)/drag.h;let {x,y,w,h}=drag.rect;const min=.06;if(drag.mode==='move'){x=Math.max(0,Math.min(1-w,x+dx));y=Math.max(0,Math.min(1-h,y+dy));}else{if(drag.mode.includes('w')){const nx=Math.max(0,Math.min(x+w-min,x+dx));w=w+x-nx;x=nx;}if(drag.mode.includes('e'))w=Math.max(min,Math.min(1-x,w+dx));if(drag.mode.includes('n')){const ny=Math.max(0,Math.min(y+h-min,y+dy));h=h+y-ny;y=ny;}if(drag.mode.includes('s'))h=Math.max(min,Math.min(1-y,h+dy));}setCrop({x,y,w,h});});
