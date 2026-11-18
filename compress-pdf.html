@@ -5883,7 +5883,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <button class="tn-shared-upload-button" id="compressUploadButton" type="button">
           Upload PDF File
         </button>
-        <input id="compressFileInput" type="file" accept="application/pdf" hidden>
+        <input id="compressFileInput" type="file" accept=".pdf,application/pdf" hidden>
       </div>
 
       <div id="compressPreview" class="compress-preview" hidden>
@@ -6283,7 +6283,12 @@ html.dark-mode .category-nav .category-link.active:focus {
     const file = fileInput.files && fileInput.files[0];
     if (!file) return;
 
-    if (file.type !== "application/pdf") {
+    // Mobile file providers sometimes report PDF files with an empty or
+    // generic MIME type. Accept a .pdf filename on mobile as well.
+    const isMobileUpload = window.matchMedia("(max-width: 700px)").matches;
+    const isPdfByName = /\.pdf$/i.test(file.name || "");
+    const isPdfByType = file.type === "application/pdf" || file.type === "application/x-pdf";
+    if (!isPdfByType && !(isMobileUpload && isPdfByName)) {
       return;
     }
 
