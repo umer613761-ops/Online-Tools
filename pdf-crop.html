@@ -5094,7 +5094,7 @@ html.dark-mode .tn-tool-category-link { color: #d7dee7 !important; }
   .tn-tool-category-link {
     display: block !important;
     text-align: left !important;
-    padding-left: 18px !important;
+    padding-left: 22px !important;
   }
   .tn-tool-category-link::before {
     top: 6px !important;
@@ -7283,30 +7283,7 @@ document.addEventListener('DOMContentLoaded', function () {
   </section>
 </section>
 
-<aside class="ad-column">
-<div class="ad-box">
-<div class="ad-content">
-<div class="ad-label">
-              ADVERTISEMENT
-            </div>
-<div class="sample-ad">
-<div class="sample-ad-badge">
-                TOOLNEST
-              </div>
-<h3>
-                Simple Tools.<br/>
-                Better Productivity.
-              </h3>
-<p>
-                Fast, free and easy-to-use online tools for everyday tasks.
-              </p>
-<div class="sample-ad-button">
-                Explore Tools
-              </div>
-</div>
-</div>
-</div>
-</aside>
+
 </div></main>
 
 
@@ -9452,6 +9429,39 @@ html.dark-mode nav.category-nav .category-link.active::after {
 }
 </style>
 
+
+<style id="pdf-crop-desktop-nav-security-alignment">
+@media screen and (min-width: 1001px) {
+  /* Give the tool navigation the same right-side inset as the page content. */
+  .tool-category-bar,
+  .tool-category-list {
+    box-sizing: border-box !important;
+    padding-left: 22px !important;
+    padding-right: 22px !important;
+  }
+  /* Align the security notice with the page's 22px right gutter. */
+  .wr-file-security {
+    right: 22px !important;
+  }
+}
+</style>
+
+<style>
+/* Desktop PDF navigation spacing matched to Merge PDF: distribute links evenly across available width. */
+@media screen and (min-width: 1001px) {
+  html body main .tn-tool-category-bar { width: 100% !important; max-width: none !important; }
+  html body main .tn-tool-category-list {
+    display: grid !important;
+    grid-template-columns: repeat(8, max-content) !important;
+    justify-content: space-between !important;
+    column-gap: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+</style>
 </body>
 </html>
 <style id="wr-report-issue-prominent">
@@ -10198,6 +10208,56 @@ html.dark-mode .upload-area.has-files {
     min-height:0 !important;
     max-height:none !important;
     margin-top:24px !important;
+  }
+}
+
+
+/* Desktop-only full-width correction: content wrappers are preserved; only ad columns are removed. */
+@media screen and (min-width: 1001px) {
+  html body main.page-wrapper,
+  html body main .content,
+  html body main .tn-mobile-stack-layout,
+  html body main .page-layout,
+  html body main .wr-redact-layout,
+  html body main.page-content > div:has(> .ad-column) {
+    display: block !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  /* Desktop side gutters set to 22px. */
+  html body main.page-wrapper {
+    padding-left: 22px !important;
+    padding-right: 22px !important;
+  }
+  /* Image-tool content column (includes navigation and tool) must remain visible and expand. */
+  html body main .tn-mobile-stack-layout > .tn-ad-left-column,
+  html body main .tn-mobile-stack-layout > .content,
+  html body main .page-layout > .content,
+  html body main .wr-redact-layout > .content {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+  html body main .tn-mobile-stack-layout > .ad-column,
+  html body main .page-layout > .ad-column,
+  html body main .wr-redact-layout > .ad-column,
+  html body main.page-content > div:has(> .ad-column) > .ad-column {
+    display: none !important;
+    width: 0 !important;
+    min-width: 0 !important;
+  }
+  html body main .content,
+  html body main .tn-mobile-stack-layout,
+  html body main .page-layout,
+  html body main .wr-redact-layout {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 }
 </style>
