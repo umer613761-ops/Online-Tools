@@ -3505,7 +3505,7 @@ html.dark-mode #wrenchoo-ratings .wr-rating-review::placeholder { color:#AEB7BF 
 .wr-faq {
   margin-top: 48px !important;
   margin-bottom: 42px !important;
-  padding: 28px 30px 30px !important;
+  padding: 28px 22px 30px !important;
   background: #ffffff !important;
   border: 1px solid #dfe5eb !important;
   border-radius: 12px !important;
@@ -4836,6 +4836,19 @@ html.dark-mode .wr-report-issue a:hover span { color: #ffffff !important; }
   }
 }
 </style>
+
+<style id="desktop-ad-track-removed-root">
+@media screen and (min-width: 1024px) {
+  html body .tn-mobile-stack-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important; max-width: none !important; margin-left: 0 !important; margin-right: 0 !important;
+  }
+  html body .tn-mobile-stack-layout > .tn-ad-left-column {
+    grid-column: 1 / -1 !important; width: 100% !important; max-width: none !important; min-width: 0 !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="wrenchoo-mobile-app-header">
@@ -4898,7 +4911,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 </nav>
 <main>
-<div class="tn-mobile-stack-layout" style="display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 28px; align-items: start; width: 100%; max-width: 1200px; margin: 0 auto; padding: 28px 22px 60px;"><div class="tn-ad-left-column"><!-- ========================================
+<div class="tn-mobile-stack-layout" style="display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: start; width: 100%; max-width: none; margin: 0; padding: 22px 22px 60px;"><div class="tn-ad-left-column"><!-- ========================================
              IMAGE TOOL NAVIGATION
         ========================================= -->
 <nav class="tn-tool-category-bar" aria-label="Image tools">
@@ -5797,7 +5810,7 @@ html.dark-mode main .tool-description {
 @media (min-width: 701px) {
   body:not(.tn-zoom-stacked) .tn-mobile-stack-layout {
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) 200px !important;
+    grid-template-columns: minmax(0, 1fr) !important;
     gap: 28px !important;
     align-items: start !important;
     width: 100% !important;
@@ -8627,59 +8640,7 @@ html body:has(.tn-image-upload-area.has-image) .tn-image-actions .tn-image-downl
 </style>
 
 
-<style id="wrenchoo-remove-reserved-ad-column-all-tools-desktop-20261118">
-@media screen and (min-width: 1024px) {
-  /*
-   * Remove the unused 200px advertisement track from PDF and image tool
-   * content grids. This changes the grid structure; it does not hide tool
-   * content or alter mobile/tablet layouts.
-   */
-  html body .page-layout,
-  html body .tn-mobile-stack-layout,
-  html body .wr-redact-layout,
-  html body main.page-content > div[style*="grid-template-columns"]:has(> .tn-ad-left-column),
-  html body main.page-wrapper > div[style*="grid-template-columns"]:has(> .tn-ad-left-column),
-  html body .page-content > div[style*="grid-template-columns"]:has(> .tn-ad-left-column),
-  html body .page-wrapper > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) !important;
-    grid-auto-columns: minmax(0, 1fr) !important;
-    column-gap: 0 !important;
-    width: 100% !important;
-    max-width: none !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-  }
 
-  html body .page-layout > .content,
-  html body .tn-mobile-stack-layout > .tn-ad-left-column,
-  html body .wr-redact-layout > .wr-redact-main,
-  html body main.page-content > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .tn-ad-left-column,
-  html body main.page-wrapper > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .tn-ad-left-column,
-  html body .page-content > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .tn-ad-left-column,
-  html body .page-wrapper > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .tn-ad-left-column {
-    grid-column: 1 / -1 !important;
-    width: 100% !important;
-    max-width: none !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Keep rating/FAQ sections below the full-width tool content. */
-  html body .page-layout > .wr-ratings,
-  html body .tn-mobile-stack-layout > .wr-ratings,
-  html body main.page-content > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .wr-ratings,
-  html body main.page-wrapper > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .wr-ratings,
-  html body .page-content > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .wr-ratings,
-  html body .page-wrapper > div[style*="grid-template-columns"]:has(> .tn-ad-left-column) > .wr-ratings {
-    grid-column: 1 / -1 !important;
-    width: 100% !important;
-    max-width: none !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-  }
-}
-</style>
 
 
 <style id="wrenchoo-image-tools-remove-1200px-cap-desktop-20261118">
@@ -8807,6 +8768,22 @@ html body:has(.tn-image-upload-area.has-image) .tn-image-actions .tn-image-downl
     max-width: none !important;
     min-width: 0 !important;
     box-sizing: border-box !important;
+  }
+}
+</style>
+
+
+<style id="desktop-side-padding-22px-final">
+@media screen and (min-width: 1024px) {
+  /* Make the visible page edge exactly 22px: remove main padding and
+     apply the spacing only once to the tool wrapper. */
+  html body main:has(> .tn-mobile-stack-layout) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  html body main > .tn-mobile-stack-layout {
+    padding-left: 22px !important;
+    padding-right: 22px !important;
   }
 }
 </style>
